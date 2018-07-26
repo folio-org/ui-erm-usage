@@ -38,7 +38,9 @@
     "route": "/ermusage",
     "hasSettings": true,
     "queryResource": "query",
-    "okapiInterfaces": {},
+    "okapiInterfaces": {
+      "vendor": "1.0"
+    },
     "permissionSets": [
       {
         "permissionName": "module.erm-usage.enabled",
