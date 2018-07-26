@@ -93,10 +93,11 @@ class UsageDataProviders extends React.Component {
     const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly } = this.props;
 
     const resultsFormatter = {
-      label: udp => udp.label,
-      serviceType: udp => udp.serviceType,
-      serviceUrl: udp => udp.serviceUrl,
-      aggregator: udp => (udp.aggregator ? 'yes' : 'no'),
+      name: udp => udp.label,
+      vendor: udp => udp.platformId,
+      harvestingStatus: udp => udp.harvestingStatus,
+      aggregator: udp => (udp.aggregator ? udp.aggregator.id : 'None'),
+      latestStats: () => 'TODO',
     };
 
     return (<SearchAndSort
@@ -108,7 +109,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['label', 'serviceType', 'serviceUrl', 'aggregator']}
+      visibleColumns={['name', 'vendor', 'harvestingStatus', 'aggregator', 'latestStats']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -119,10 +120,11 @@ class UsageDataProviders extends React.Component {
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}
       columnMapping={{
-        label: 'Label',
-        serviceType: 'Service Type',
-        serviceUrl: 'Service Url',
-        aggregator: 'Aggregator?'
+        name: 'Platform Name',
+        vendor: 'Vendor',
+        harvestingStatus: 'Harvesting Status',
+        aggregator: 'Aggregator',
+        latestStats: 'Latest Statistics'
       }}
       browseOnly={browseOnly}
     />);

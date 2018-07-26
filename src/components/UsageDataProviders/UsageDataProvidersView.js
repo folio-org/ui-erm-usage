@@ -1,13 +1,16 @@
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Pane from '@folio/stripes-components/lib/Pane';
-import { Accordion } from '@folio/stripes-components/lib/Accordion';
+import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
 import IconButton from '@folio/stripes-components/lib/IconButton';
 import IfPermission from '@folio/stripes-components/lib/IfPermission';
 import TitleManager from '../../../../stripes-core/src/components/TitleManager';
+
+import HarvestingConfiguration from '../ViewSections/HarvestingConfiguration/HarvestingConfiguration';
 
 class UsageDataProvidersView extends React.Component {
   static manifest = Object.freeze({
@@ -33,7 +36,7 @@ class UsageDataProvidersView extends React.Component {
       .isRequired,
     paneWidth: PropTypes.string,
     resources: PropTypes.shape({
-      usageDataProvider: PropTypes.arrayOf(PropTypes.object),
+      usageDataProvider: PropTypes.shape(),
       query: PropTypes.object,
     }),
     onClose: PropTypes.func,
@@ -46,7 +49,32 @@ class UsageDataProvidersView extends React.Component {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
+
+    this.state = {
+      accordions: {
+        harvestingAccordion: true,
+        uploadAccordion: false,
+      },
+    };
+
     this.log('UDPView');
+  }
+
+  handleExpandAll = (obj) => {
+    this.setState((curState) => {
+      const newState = _.cloneDeep(curState);
+      newState.accordions = obj;
+      return newState;
+    });
+  }
+
+  handleAccordionToggle = ({ id }) => {
+    this.setState((state) => {
+      const newState = _.cloneDeep(state);
+      if (!_.has(newState.accordions, id)) newState.accordions[id] = true;
+      newState.accordions[id] = !newState.accordions[id];
+      return newState;
+    });
   }
 
   render() {
@@ -102,20 +130,40 @@ class UsageDataProvidersView extends React.Component {
       <Pane
         id="pane-udpdetails"
         defaultWidth={this.props.paneWidth}
-        paneTitle="UDP"
+        paneTitle={udp.label}
         lastMenu={detailMenu}
         dismissible
         onClose={this.props.onClose}
       >
         <TitleManager record={udp.label} />
-        <Accordion open label="UDP Information" id="ex-1">
+        <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
+        <Row>
+          <Col xs={3}>
+            <KeyValue label="Content vendor" value={_.get(udp, 'vendorId', 'N/A')} />
+          </Col>
+          <Col xs={3}>
+            <KeyValue label="Content platform" value={_.get(udp, 'platformId', 'N/A')} />
+          </Col>
+          <Col xs={3}>
+            <KeyValue label="Harvesting" value={_.get(udp, 'harvestingStatus', 'N/A')} />
+          </Col>
+        </Row>
+        <HarvestingConfiguration
+          accordionId="harvestingAccordion"
+          usageDataProvider={udp}
+          expanded={this.state.accordions.harvestingAccordion}
+          onToggle={this.handleAccordionToggle}
+        />
+        <Accordion
+          open={this.state.accordions.uploadAccordion}
+          onToggle={this.handleAccordionToggle}
+          label="COUNTER file upload"
+          id="uploadAccordion"
+        >
           {
             <Row>
               <Col xs={3}>
-                <KeyValue label="Name" value={udp.label || ''} />
-              </Col>
-              <Col xs={3}>
-                <KeyValue label="Id" value={udp.id} />
+                <KeyValue label="TODO" value="TODO" />
               </Col>
             </Row>
           }
