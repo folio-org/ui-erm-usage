@@ -1,0 +1,57 @@
+{
+  "name": "@folio/erm-usage",
+  "version": "0.1.0",
+  "description": "eUsage Module",
+  "main": "src/index.js",
+  "repository": "",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "start": "stripes serve",
+    "build": "stripes build --output ./output",
+    "test": "stripes test nightmare --run demo --show",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.3",
+    "eslint": "^4.8.0",
+    "@folio/eslint-config-stripes": "^1.1.0"
+  },
+  "dependencies": {
+    "@folio/stripes-components": "^3.0.0",
+    "@folio/stripes-smart-components": "^1.4.19",
+    "@folio/stripes-form": "^0.8.2",
+    "prop-types": "^15.6.0",
+    "react-router-dom": "^4.1.1"
+  },
+  "peerDependencies": {
+    "@folio/stripes-connect": "^3.1.0",
+    "@folio/stripes-core": "^2.7.0",
+    "react": "*"
+  },
+  "stripes": {
+    "type": "app",
+    "displayName": "eUsage",
+    "route": "/ermusage",
+    "hasSettings": true,
+    "queryResource": "query",
+    "okapiInterfaces": {},
+    "permissionSets": [
+      {
+        "permissionName": "module.erm-usage.enabled",
+        "displayName": "UI: erm-usage module is enabled",
+        "visible": true
+      },
+      {
+        "permissionName": "settings.erm-usage.enabled",
+        "displayName": "Settings (erm-usage): display list of settings pages",
+        "subPermissions": [
+          "settings.enabled"
+        ],
+        "visible": true
+      }
+    ]
+  }
+}
