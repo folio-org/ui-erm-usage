@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Pane from '@folio/stripes-components/lib/Pane';
 import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
@@ -126,6 +127,8 @@ class UsageDataProvidersView extends React.Component {
       </PaneMenu>
     );
 
+    const vendorLink = udp.vendorName ? <Link to={`/vendors/view/${udp.vendorId}`}>{udp.vendorName}</Link> : '';
+
     return (
       <Pane
         id="pane-udpdetails"
@@ -139,7 +142,7 @@ class UsageDataProvidersView extends React.Component {
         <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
         <Row>
           <Col xs={3}>
-            <KeyValue label="Content vendor" value={_.get(udp, 'vendorId', 'N/A')} />
+            <KeyValue label="Content vendor" value={vendorLink} />
           </Col>
           <Col xs={3}>
             <KeyValue label="Content platform" value={_.get(udp, 'platformId', 'N/A')} />

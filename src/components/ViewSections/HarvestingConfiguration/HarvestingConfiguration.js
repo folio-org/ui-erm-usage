@@ -25,7 +25,7 @@ class HarvestingConfiguration extends React.Component {
         <Col xs={3}>
           <KeyValue
             label="Aggregator name"
-            value={_.get(udp, 'aggregator.id', 'N/A')}
+            value={_.get(udp, 'aggregator.name', 'N/A')}
           />
         </Col>
         <Col xs={3}>
