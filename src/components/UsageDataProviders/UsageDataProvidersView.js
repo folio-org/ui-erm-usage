@@ -12,6 +12,7 @@ import IfPermission from '@folio/stripes-components/lib/IfPermission';
 import TitleManager from '../../../../stripes-core/src/components/TitleManager';
 
 import HarvestingConfiguration from '../ViewSections/HarvestingConfiguration/HarvestingConfiguration';
+import SushiCredentials from '../ViewSections/SushiCredentials/SushiCredentials';
 
 class UsageDataProvidersView extends React.Component {
   static manifest = Object.freeze({
@@ -54,6 +55,7 @@ class UsageDataProvidersView extends React.Component {
     this.state = {
       accordions: {
         harvestingAccordion: true,
+        sushiCredsAccordion: false,
         uploadAccordion: false,
       },
     };
@@ -155,6 +157,12 @@ class UsageDataProvidersView extends React.Component {
           accordionId="harvestingAccordion"
           usageDataProvider={udp}
           expanded={this.state.accordions.harvestingAccordion}
+          onToggle={this.handleAccordionToggle}
+        />
+        <SushiCredentials
+          accordionId="sushiCredsAccordion"
+          usageDataProvider={udp}
+          expanded={this.state.accordions.sushiCredsAccordion}
           onToggle={this.handleAccordionToggle}
         />
         <Accordion
