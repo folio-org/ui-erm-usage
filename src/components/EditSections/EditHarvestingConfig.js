@@ -25,6 +25,17 @@ class EditHarvestingConfig extends React.Component {
         { value: 'in process', label: 'In Process' },
         { value: 'not possible', label: 'Not Possible' }
       ];
+    const serviceTypeOptions =
+      [
+        { value: 'SUSHI', label: 'SUSHI' },
+        { value: 'SUSHI lite', label: 'SUHSI lite' },
+      ];
+    const reportReleaseOptions =
+      [
+        { value: '4', label: 'Counter 4' },
+        { value: '5', label: 'Counter 5' },
+      ];
+
     const availableReports = ['JR1', 'JR1 GOA', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5', 'DB1', 'DB2', 'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR6', 'BR7', 'MR1', 'MR2', 'TR1', 'TR1 Mobile', 'TR2', 'TR3', 'TR4'];
 
     const checkBoxes =
@@ -49,9 +60,10 @@ class EditHarvestingConfig extends React.Component {
             <Row>
               <Col xs={4}>
                 <Field
-                  label="Harvesting Status"
+                  label="Harvesting Status *"
                   name="harvestingStatus"
                   id="addudp_harvestingstatus"
+                  placeholder="Select a harvesting status"
                   component={Select}
                   dataOptions={harvestingStatusOptions}
                   required
@@ -61,6 +73,7 @@ class EditHarvestingConfig extends React.Component {
             </Row>
             <Row>
               <Col xs={4}>
+                { 'Aggregator *' }
                 <Checkbox
                   name="use_aggregator"
                   label="Harvest statistics via an aggregator"
@@ -70,9 +83,10 @@ class EditHarvestingConfig extends React.Component {
               </Col>
               <Col xs={4}>
                 <Field
-                  label="Choose aggregator"
+                  label="Choose aggregator *"
                   name="aggregator.id"
                   id="addudp_aggid"
+                  placeholder="Select an aggregator"
                   component={TextField}
                   disabled={!this.state.use_agg_checkbox}
                   required
@@ -84,9 +98,9 @@ class EditHarvestingConfig extends React.Component {
                   label="Vendor code"
                   name="aggregator.vendorCode"
                   id="addudp_vendorcode"
+                  placeholder="Enter the aggregator's vendor code"
                   component={TextField}
                   disabled={!this.state.use_agg_checkbox}
-                  required
                   fullWidth
                 />
               </Col>
@@ -97,12 +111,13 @@ class EditHarvestingConfig extends React.Component {
               </Col>
               <Col xs={4}>
                 <Field
-                  label="Service type"
+                  label="Service type *"
                   name="serviceType"
                   id="addudp_servicetype"
-                  component={TextField}
+                  placeholder="Select the vendor's API"
+                  component={Select}
+                  dataOptions={serviceTypeOptions}
                   disabled={this.state.use_agg_checkbox}
-                  required
                   fullWidth
                 />
               </Col>
@@ -111,9 +126,9 @@ class EditHarvestingConfig extends React.Component {
                   label="Service URL"
                   name="serviceUrl"
                   id="addudp_serviceurl"
+                  placeholder="Enter the vendor's service URL"
                   component={TextField}
                   disabled={this.state.use_agg_checkbox}
-                  required
                   fullWidth
                 />
               </Col>
@@ -121,15 +136,19 @@ class EditHarvestingConfig extends React.Component {
             <Row>
               <Col xs={4}>
                 <Field
-                  label="Report release"
+                  label="Report release *"
                   name="reportRelease"
                   id="addudp_reportrelease"
-                  component={TextField}
+                  placeholder="Select the report release"
+                  component={Select}
+                  dataOptions={reportReleaseOptions}
                   required
                   fullWidth
                 />
               </Col>
               <Col xs={8}>
+                { 'Requested reports *' }
+                <br />
                 { checkBoxes }
               </Col>
             </Row>

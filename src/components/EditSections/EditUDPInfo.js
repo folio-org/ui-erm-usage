@@ -18,10 +18,8 @@ const EditUDPInfo = ({ initialValues, expanded, onToggle, accordionId }) => {
           <Row>
             <Col xs={4}>
               <Field
-                label="Usage Data Provider Name"
-                initial="Label"
-                value="Value"
-                placeholder="Check out the spinner!"
+                label="Provider Name *"
+                placeholder="Enter a name to identify the usage data provider"
                 name="label"
                 id="addudp_providername"
                 component={TextField}
@@ -31,10 +29,10 @@ const EditUDPInfo = ({ initialValues, expanded, onToggle, accordionId }) => {
             </Col>
             <Col xs={4}>
               <Field
-                label="Content Vendor Id"
+                label="Content Vendor Id *"
                 name="vendorId"
                 id="addudp_vendorid"
-                value="Value"
+                placeholder="Link the content vendor"
                 component={TextField}
                 required
                 fullWidth
@@ -42,9 +40,10 @@ const EditUDPInfo = ({ initialValues, expanded, onToggle, accordionId }) => {
             </Col>
             <Col xs={4}>
               <Field
-                label="Content Platform Id"
+                label="Content Platform Id *"
                 name="platformId"
                 id="addudp_platformid"
+                placeholder="Link the content platform"
                 component={TextField}
                 required
                 fullWidth

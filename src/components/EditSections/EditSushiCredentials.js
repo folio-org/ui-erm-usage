@@ -18,9 +18,10 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
           <Row>
             <Col xs={4}>
               <Field
-                label="Customer ID"
+                label="Customer ID *"
                 name="customerId"
                 id="addudp_customerid"
+                placeholder="Enter the SUSHI customer ID"
                 component={TextField}
                 required
                 fullWidth
@@ -28,9 +29,10 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
             </Col>
             <Col xs={4}>
               <Field
-                label="Requestor Id"
+                label="Requestor ID *"
                 name="requestorId"
                 id="addudp_requestorid"
+                placeholder="Enter the SUSHI requestor ID"
                 component={TextField}
                 required
                 fullWidth
@@ -41,8 +43,8 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
                 label="API key"
                 name="apiKey"
                 id="addudp_apikey"
+                placeholder="Enter the SUSHI API key"
                 component={TextField}
-                required
                 fullWidth
               />
             </Col>
@@ -53,8 +55,8 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
                 label="Requestor name"
                 name="requestorName"
                 id="addudp_reqname"
+                placeholder="Enter the SUSHI reuestor name"
                 component={TextField}
-                required
                 fullWidth
               />
             </Col>
@@ -63,8 +65,8 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
                 label="Requestor Mail"
                 name="requestorMail"
                 id="addudp_requestormail"
+                placeholder="Enter the SUSHI reuestor mail"
                 component={TextField}
-                required
                 fullWidth
               />
             </Col>
