@@ -14,6 +14,41 @@ import EditUDPInfo from '../EditSections/EditUDPInfo';
 import EditHarvestConfig from '../EditSections/EditHarvestingConfig';
 import EditSushiCredentials from '../EditSections/EditSushiCredentials';
 
+function validate(values) {
+  const errors = {};
+  errors.udp = {};
+
+  if (!values.label || !values.vendorId || !values.platformId) {
+    errors.info = 'Please fill this in to continue';
+  }
+
+  if (!values.harvestingStatus) {
+    errors.harvestingStatus = 'Please select a harvesting status';
+  }
+
+  if (!values.serviceType && !values.aggregator) {
+    errors.aggregator = 'Please select an aggregator if harvesting via aggerator';
+  }
+
+  if (!values.aggregator && !values.serviceType) {
+    errors.serviceType = 'Please select a service type if not harvesting via aggerator';
+  }
+
+  if (!values.reportRelease) {
+    errors.reportRelease = 'Please select a report release';
+  }
+
+  if (!values.requestedReports || _.size(values.requestedReports) === 0) {
+    errors.requestedReports = 'Please select at least one report';
+  }
+
+  if (!values.customerId || !values.requestorId) {
+    errors.sushiCreds = 'Please fill this in to continue';
+  }
+
+  return errors;
+}
+
 class UsageDataProviderForm extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
@@ -122,5 +157,6 @@ class UsageDataProviderForm extends React.Component {
 }
 
 export default stripesForm({
-  form: 'form-udProvider'
+  form: 'form-udProvider',
+  validate
 })(UsageDataProviderForm);
