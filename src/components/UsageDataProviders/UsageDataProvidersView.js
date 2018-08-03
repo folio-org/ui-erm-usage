@@ -129,7 +129,7 @@ class UsageDataProvidersView extends React.Component {
       </PaneMenu>
     );
 
-    const vendorLink = udp.vendorName ? <Link to={`/vendors/view/${udp.vendorId}`}>{udp.vendorName}</Link> : '';
+    const vendorLink = udp.vendorId ? <Link to={`/vendors/view/${udp.vendorId}`}>{udp.vendorId}</Link> : '';
 
     return (
       <Pane

@@ -1,42 +1,122 @@
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Paneset from '@folio/stripes-components/lib/Paneset';
 import Pane from '@folio/stripes-components/lib/Pane';
 import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
 import Button from '@folio/stripes-components/lib/Button';
+import IconButton from '@folio/stripes-components/lib/IconButton';
 import stripesForm from '@folio/stripes-form';
+import { ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
+import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
+
+import EditUDPInfo from '../EditSections/EditUDPInfo';
+import EditHarvestConfig from '../EditSections/EditHarvestingConfig';
+import EditSushiCredentials from '../EditSections/EditSushiCredentials';
 
 class UsageDataProviderForm extends React.Component {
   static propTypes = {
+    stripes: PropTypes.shape({
+      connect: PropTypes.func,
+    }).isRequired,
+    handleSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
     initialValues: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
     parentResources: PropTypes.shape().isRequired
   };
 
-  render() {
-    const lastMenu =
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sections: {
+        editUDPInfo: true,
+        editHarvestingConfig: true,
+        editSushiCredentials: true,
+      },
+    };
+
+    this.handleExpandAll = this.handleExpandAll.bind(this);
+  }
+
+  getAddFirstMenu() {
+    const { onCancel } = this.props;
+
+    return (
+      <PaneMenu>
+        <IconButton
+          id="clickable-closeudpdialog"
+          onClick={onCancel}
+          title="Close new UsageDataProvider Dialog"
+          ariaLabel="Close new UsageDataProvider Dialog"
+          icon="closeX"
+        />
+      </PaneMenu>
+    );
+  }
+
+  getLastMenu(id, label) {
+    const { pristine, submitting } = this.props;
+
+    return (
       <PaneMenu>
         <Button
-          id="id"
+          id={id}
           type="submit"
-          title="label"
-          disabled="true"
+          title={label}
+          disabled={pristine || submitting}
           buttonStyle="primary paneHeaderNewButton"
           marginBottom0
         >
-          label
+          {label}
         </Button>
-      </PaneMenu>;
+      </PaneMenu>
+    );
+  }
+
+  handleExpandAll(sections) {
+    this.setState({ sections });
+  }
+
+  handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  }
+
+  handleSectionToggle = ({ id }) => {
+    this.setState((state) => {
+      const newState = _.cloneDeep(state);
+      newState.sections[id] = !newState.sections[id];
+      return newState;
+    });
+  }
+
+  render() {
+    const { initialValues, handleSubmit } = this.props;
+    const { sections } = this.state;
+    const firstMenu = this.getAddFirstMenu();
+    const paneTitle = 'Create UsageDataProvider';
+    const lastMenu = this.getLastMenu('clickable-createnewudp', 'Create new UsageDataProvider');
 
     return (
-      <Paneset>
-        <Pane defaultWidth="100%" dismissible onClose={this.props.onCancel} lastMenu={lastMenu}>
-          <div>This is my form</div>
-        </Pane>
-      </Paneset>
+      <form id="form-udp" onSubmit={handleSubmit} onKeyDown={this.handleKeyDown}>
+        <Paneset isRoot>
+          <Pane defaultWidth="100%" firstMenu={firstMenu} lastMenu={lastMenu} paneTitle={paneTitle}>
+            <Row end="xs">
+              <Col xs>
+                <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
+              </Col>
+            </Row>
+            <EditUDPInfo accordionId="editUDPInfo" expanded={sections.editUDPInfo} onToggle={this.handleSectionToggle} {...this.props} />
+            <EditHarvestConfig accordionId="editHarvestingConfig" expanded={sections.editHarvestingConfig} onToggle={this.handleSectionToggle} {...this.props} />
+            <EditSushiCredentials accordionId="editSushiCredentials" expanded={sections.editSushiCredentials} onToggle={this.handleSectionToggle} {...this.props} />
+            <div>This is my form</div>
+          </Pane>
+        </Paneset>
+      </form>
     );
   }
 }

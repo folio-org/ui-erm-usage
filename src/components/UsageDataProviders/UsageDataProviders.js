@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -86,7 +87,12 @@ class UsageDataProviders extends React.Component {
     browseOnly: false,
   }
 
-  create = () => {
+  create = (usageDataProvider) => {
+    const { mutator } = this.props;
+    const reports = usageDataProvider.requestedReports;
+    const filtered = _.keys(_.pickBy(reports));
+    usageDataProvider.requestedReports = filtered;
+    mutator.records.POST(usageDataProvider);
   }
 
   render() {
@@ -94,7 +100,7 @@ class UsageDataProviders extends React.Component {
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => udp.platformId,
+      vendor: udp => udp.vendorId,
       harvestingStatus: udp => udp.harvestingStatus,
       aggregator: udp => (udp.aggregator ? udp.aggregator.id : 'None'),
       latestStats: () => 'TODO',
