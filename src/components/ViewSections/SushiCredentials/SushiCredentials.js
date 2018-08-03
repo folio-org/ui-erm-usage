@@ -29,19 +29,19 @@ class SushiCredentials extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Customer ID"
-                  value={_.get(usageDataProvider, 'customerId', 'N/A')}
+                  value={_.get(usageDataProvider, 'customerId', '')}
                 />
               </Col>
               <Col xs={3}>
                 <KeyValue
                   label="Requestor ID"
-                  value={_.get(usageDataProvider, 'requestorId', 'N/A')}
+                  value={_.get(usageDataProvider, 'requestorId', '')}
                 />
               </Col>
               <Col xs={3}>
                 <KeyValue
                   label="API key"
-                  value={_.get(usageDataProvider, 'apiKey', 'N/A')}
+                  value={_.get(usageDataProvider, 'apiKey', '')}
                 />
               </Col>
             </Row>
@@ -49,13 +49,13 @@ class SushiCredentials extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Requestor name"
-                  value={_.get(usageDataProvider, 'requestorName', 'N/A')}
+                  value={_.get(usageDataProvider, 'requestorName', '')}
                 />
               </Col>
               <Col xs={3}>
                 <KeyValue
                   label="Requestor mail"
-                  value={_.get(usageDataProvider, 'requestorMail', 'N/A')}
+                  value={_.get(usageDataProvider, 'requestorMail', '')}
                 />
               </Col>
             </Row>

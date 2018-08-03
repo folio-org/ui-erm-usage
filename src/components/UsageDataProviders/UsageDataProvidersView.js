@@ -147,10 +147,10 @@ class UsageDataProvidersView extends React.Component {
             <KeyValue label="Content vendor" value={vendorLink} />
           </Col>
           <Col xs={3}>
-            <KeyValue label="Content platform" value={_.get(udp, 'platformId', 'N/A')} />
+            <KeyValue label="Content platform" value={_.get(udp, 'platformId', '')} />
           </Col>
           <Col xs={3}>
-            <KeyValue label="Harvesting" value={_.get(udp, 'harvestingStatus', 'N/A')} />
+            <KeyValue label="Harvesting" value={_.get(udp, 'harvestingStatus', '')} />
           </Col>
         </Row>
         <HarvestingConfiguration

@@ -25,13 +25,13 @@ class HarvestingConfiguration extends React.Component {
         <Col xs={3}>
           <KeyValue
             label="Aggregator ID"
-            value={_.get(udp, 'aggregator.id', 'N/A')}
+            value={_.get(udp, 'aggregator.id', '')}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
             label="Vendor code"
-            value={_.get(udp, 'aggregator.vendorCode', 'N/A')}
+            value={_.get(udp, 'aggregator.vendorCode', '')}
           />
         </Col>
       </Row>);
@@ -49,13 +49,13 @@ class HarvestingConfiguration extends React.Component {
         <Col xs={3}>
           <KeyValue
             label="Service Type"
-            value={_.get(udp, 'serviceType', 'N/A')}
+            value={_.get(udp, 'serviceType', '')}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
             label="Service Url"
-            value={_.get(udp, 'serviceUrl', 'N/A')}
+            value={_.get(udp, 'serviceUrl', '')}
           />
         </Col>
       </Row>);
@@ -89,7 +89,7 @@ class HarvestingConfiguration extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Harvesting status"
-                  value={_.get(usageDataProvider, 'harvestingStatus', 'N/A')}
+                  value={_.get(usageDataProvider, 'harvestingStatus', '')}
                 />
               </Col>
             </Row>
@@ -98,13 +98,13 @@ class HarvestingConfiguration extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Report release"
-                  value={_.get(usageDataProvider, 'reportRelease', 'N/A')}
+                  value={_.get(usageDataProvider, 'reportRelease', '')}
                 />
               </Col>
               <Col xs={3}>
                 <KeyValue
                   label="Requested report"
-                  value={_.get(usageDataProvider, 'requestedReports', 'N/A')}
+                  value={_.get(usageDataProvider, 'requestedReports', '')}
                 />
               </Col>
             </Row>
