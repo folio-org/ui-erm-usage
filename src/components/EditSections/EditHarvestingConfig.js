@@ -5,11 +5,19 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import TextField from '@folio/stripes-components/lib/TextField';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Checkbox from '@folio/stripes-components/lib/Checkbox';
+import Select from '@folio/stripes-components/lib/Select';
 
 class EditHarvestingConfig extends React.Component {
   render() {
     const { initialValues, expanded, onToggle, accordionId } = this.props;
 
+    const harvestingStatusOptions =
+      [
+        { value: 'active', label: 'Active' },
+        { value: 'inactive', label: 'Inactive' },
+        { value: 'in process', label: 'In Process' },
+        { value: 'not possible', label: 'Not Possible' }
+      ];
     const availableReports = ['JR1', 'JR1 GOA', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5', 'DB1', 'DB2', 'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR6', 'BR7', 'MR1', 'MR2', 'TR1', 'TR1 Mobile', 'TR2', 'TR3', 'TR4'];
 
     const checkBoxes =
@@ -37,7 +45,8 @@ class EditHarvestingConfig extends React.Component {
                   label="Harvesting Status"
                   name="harvestingStatus"
                   id="addudp_harvestingstatus"
-                  component={TextField}
+                  component={Select}
+                  dataOptions={harvestingStatusOptions}
                   required
                   fullWidth
                 />

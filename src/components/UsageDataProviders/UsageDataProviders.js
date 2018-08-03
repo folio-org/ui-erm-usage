@@ -92,6 +92,7 @@ class UsageDataProviders extends React.Component {
     const reports = usageDataProvider.requestedReports;
     const filtered = _.keys(_.pickBy(reports));
     usageDataProvider.requestedReports = filtered;
+    console.log('Filtered Reports: ' + filtered);
     mutator.records.POST(usageDataProvider);
   }
 
