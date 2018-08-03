@@ -8,6 +8,13 @@ import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
 
 class EditHarvestingConfig extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      use_agg_checkbox: true,
+    };
+  }
+
   render() {
     const { initialValues, expanded, onToggle, accordionId } = this.props;
 
@@ -53,22 +60,21 @@ class EditHarvestingConfig extends React.Component {
               </Col>
             </Row>
             <Row>
-              {/* <Col xs={4}>
-                <Field
-                  label="Aggregator"
-                  name="aggregatorRadioId"
-                  id="addudp_aggradio"
-                  component={TextField}
-                  required
-                  fullWidth
+              <Col xs={4}>
+                <Checkbox
+                  name="use_aggregator"
+                  label="Harvest statistics via an aggregator"
+                  onChange={() => { this.setState({ use_agg_checkbox: !this.state.use_agg_checkbox }); }}
+                  checked={this.state.use_agg_checkbox}
                 />
-              </Col> */}
+              </Col>
               <Col xs={4}>
                 <Field
                   label="Choose aggregator"
                   name="aggregator.id"
                   id="addudp_aggid"
                   component={TextField}
+                  disabled={!this.state.use_agg_checkbox}
                   required
                   fullWidth
                 />
@@ -79,6 +85,7 @@ class EditHarvestingConfig extends React.Component {
                   name="aggregator.vendorCode"
                   id="addudp_vendorcode"
                   component={TextField}
+                  disabled={!this.state.use_agg_checkbox}
                   required
                   fullWidth
                 />
@@ -94,6 +101,7 @@ class EditHarvestingConfig extends React.Component {
                   name="serviceType"
                   id="addudp_servicetype"
                   component={TextField}
+                  disabled={this.state.use_agg_checkbox}
                   required
                   fullWidth
                 />
@@ -104,6 +112,7 @@ class EditHarvestingConfig extends React.Component {
                   name="serviceUrl"
                   id="addudp_serviceurl"
                   component={TextField}
+                  disabled={this.state.use_agg_checkbox}
                   required
                   fullWidth
                 />
