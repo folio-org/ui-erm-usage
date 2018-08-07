@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import EntryManager from '@folio/stripes-smart-components/lib/EntryManager';
 import AggregatorDetails from './AggregatorDetail';
+import AggregatorForm from './AggregatorForm';
 
 class AggregatorManager extends React.Component {
   static manifest = Object.freeze({
@@ -37,6 +38,7 @@ class AggregatorManager extends React.Component {
     super(props);
     this.validate = this.validate.bind(this);
     // connect form
+    this.cAggregatorForm = props.stripes.connect(AggregatorForm);
   }
 
   validate(values) {
@@ -54,7 +56,7 @@ class AggregatorManager extends React.Component {
         parentMutator={this.props.mutator}
         entryList={entryList}
         detailComponent={AggregatorDetails}
-        formComponent={() => console.log('FORM')}
+        entryFormComponent={this.cAggregatorForm}
         paneTitle={this.props.label}
         entryLabel={this.props.label}
         onSelect={this.onSelect}
