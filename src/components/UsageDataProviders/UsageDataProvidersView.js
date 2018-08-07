@@ -55,7 +55,6 @@ class UsageDataProvidersView extends React.Component {
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
-    notesToggle: PropTypes.func,
   };
 
   constructor(props) {
@@ -92,10 +91,6 @@ class UsageDataProvidersView extends React.Component {
   }
 
   update = (udp) => {
-    // const reports = udp.requestedReports;
-    // const filtered = _.keys(_.pickBy(reports));
-    // udp.requestedReports = filtered;
-    // console.log('Filtered Reports: ' + filtered);
     this.props.mutator.usageDataProvider.PUT(udp).then(() => {
       this.props.onCloseEdit();
     });
@@ -117,30 +112,6 @@ class UsageDataProvidersView extends React.Component {
 
     const detailMenu = (
       <PaneMenu>
-        <IfPermission perm={this.props.newRecordPerms}>
-          <IconButton
-            icon="trashBin"
-            id="clickable-deleteorganization"
-            style={{
-            visibility: !udp
-              ? 'hidden'
-              : 'visible'
-          }}
-            onClick={() => ''}
-            title="Delete Organization"
-          />
-        </IfPermission>
-        <IconButton
-          icon="comment"
-          id="clickable-show-notes"
-          style={{
-          visibility: !udp
-            ? 'hidden'
-            : 'visible'
-        }}
-          onClick={this.props.notesToggle}
-          title="Show Notes"
-        />
         <IfPermission perm={this.props.newRecordPerms}>
           <IconButton
             icon="edit"
