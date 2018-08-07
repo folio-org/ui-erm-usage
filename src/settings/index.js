@@ -1,7 +1,7 @@
 import React from 'react';
 import Settings from '@folio/stripes-components/lib/Settings';
 import GeneralSettings from './general-settings';
-import SomeFeatureSettings from './some-feature-settings';
+import AggregatorManager from './Aggregators/AggregatorManager';
 
 /*
   STRIPES-NEW-APP
@@ -17,9 +17,9 @@ export default class ErmUsageSettings extends React.Component {
       component: GeneralSettings,
     },
     {
-      route: 'somefeature',
-      label: this.props.stripes.intl.formatMessage({ id: 'ui-erm-usage.settings.some-feature' }),
-      component: SomeFeatureSettings,
+      route: 'aggregators',
+      label: 'Aggregators',
+      component: AggregatorManager,
     },
   ];
 
