@@ -133,8 +133,10 @@ class UsageDataProviderForm extends React.Component {
     const { initialValues, handleSubmit } = this.props;
     const { sections } = this.state;
     const firstMenu = this.getAddFirstMenu();
-    const paneTitle = 'Create UsageDataProvider';
-    const lastMenu = this.getLastMenu('clickable-createnewudp', 'Create new UsageDataProvider');
+    const paneTitle = initialValues.id ? initialValues.label : 'Create UsageDataProvider';
+    const lastMenu = initialValues.id ?
+      this.getLastMenu('clickable-createnewudp', 'Update UsageDataProvider') :
+      this.getLastMenu('clickable-createnewudp', 'Create UsageDataProvider');
 
     return (
       <form id="form-udp" onSubmit={handleSubmit} onKeyDown={this.handleKeyDown}>

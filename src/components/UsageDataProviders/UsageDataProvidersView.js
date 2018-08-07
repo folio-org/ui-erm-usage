@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Pane from '@folio/stripes-components/lib/Pane';
 import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
+import Layer from '@folio/stripes-components/lib/Layer';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
@@ -11,6 +12,7 @@ import IconButton from '@folio/stripes-components/lib/IconButton';
 import IfPermission from '@folio/stripes-components/lib/IfPermission';
 import TitleManager from '../../../../stripes-core/src/components/TitleManager';
 
+import UsageDataProviderForm from './UsageDataProviderForm';
 import HarvestingConfiguration from '../ViewSections/HarvestingConfiguration/HarvestingConfiguration';
 import SushiCredentials from '../ViewSections/SushiCredentials/SushiCredentials';
 
@@ -41,9 +43,18 @@ class UsageDataProvidersView extends React.Component {
       usageDataProvider: PropTypes.shape(),
       query: PropTypes.object,
     }),
+    mutator: PropTypes.shape({
+      usageDataProvider: PropTypes.shape({
+        PUT: PropTypes.func.isRequired,
+      }),
+      query: PropTypes.object.isRequired,
+    }),
+    parentResources: PropTypes.shape({}),
+    parentMutator: PropTypes.shape({}),
     onClose: PropTypes.func,
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
+    onCloseEdit: PropTypes.func,
     notesToggle: PropTypes.func,
   };
 
@@ -80,11 +91,29 @@ class UsageDataProvidersView extends React.Component {
     });
   }
 
+  update = (udp) => {
+    // const reports = udp.requestedReports;
+    // const filtered = _.keys(_.pickBy(reports));
+    // udp.requestedReports = filtered;
+    // console.log('Filtered Reports: ' + filtered);
+    this.props.mutator.usageDataProvider.PUT(udp).then(() => {
+      this.props.onCloseEdit();
+    });
+  }
+
+  getUdpFormData = (udp) => {
+    const udpFormData = udp ? _.cloneDeep(udp) : udp;
+    return udpFormData;
+  }
+
   render() {
-    const records = (this.props.resources.usageDataProvider || {}).records || [];
+    const { resources, stripes } = this.props;
+    const query = resources.query;
+    const records = (resources.usageDataProvider || {}).records || [];
     const udp = records.length
       ? records[0]
       : {};
+    const udpFormData = this.getUdpFormData(udp);
 
     const detailMenu = (
       <PaneMenu>
@@ -179,6 +208,20 @@ class UsageDataProvidersView extends React.Component {
             </Row>
           }
         </Accordion>
+
+        <Layer isOpen={query.layer ? query.layer === 'edit' : false} contentLabel="Edit Usage Data Provider Dialog">
+          <UsageDataProviderForm
+            stripes={stripes}
+            initialValues={udpFormData}
+            onSubmit={(record) => { this.update(record); }}
+            onCancel={this.props.onCloseEdit}
+            parentResources={{
+              ...this.props.resources,
+              ...this.props.parentResources,
+            }}
+            parentMutator={this.props.parentMutator}
+          />
+        </Layer>
       </Pane>
     );
   }

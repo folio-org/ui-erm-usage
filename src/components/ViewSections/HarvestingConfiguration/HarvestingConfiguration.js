@@ -76,6 +76,13 @@ class HarvestingConfiguration extends React.Component {
 
     const provider = this.createProvider(usageDataProvider);
 
+    const reports = _.get(usageDataProvider, 'requestedReports', '');
+    let requestedReports = '';
+    if (!_.isEmpty(reports)) {
+      requestedReports = reports.join(', ');
+    }
+
+
     return (
       <Accordion
         open={expanded}
@@ -104,7 +111,7 @@ class HarvestingConfiguration extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Requested report"
-                  value={_.get(usageDataProvider, 'requestedReports', '')}
+                  value={requestedReports}
                 />
               </Col>
             </Row>

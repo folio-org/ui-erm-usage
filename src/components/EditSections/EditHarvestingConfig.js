@@ -6,17 +6,18 @@ import TextField from '@folio/stripes-components/lib/TextField';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
+import EditSelectedReports from '../EditSections/EditSelectedReports';
 
 class EditHarvestingConfig extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      use_agg_checkbox: true,
+      use_agg_checkbox: props.initialValues.aggregator,
     };
   }
 
   render() {
-    const { initialValues, expanded, onToggle, accordionId } = this.props;
+    const { expanded, onToggle, accordionId } = this.props;
 
     const harvestingStatusOptions =
       [
@@ -35,18 +36,6 @@ class EditHarvestingConfig extends React.Component {
         { value: '4', label: 'Counter 4' },
         { value: '5', label: 'Counter 5' },
       ];
-
-    const availableReports = ['JR1', 'JR1 GOA', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5', 'DB1', 'DB2', 'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR6', 'BR7', 'MR1', 'MR2', 'TR1', 'TR1 Mobile', 'TR2', 'TR3', 'TR4'];
-
-    const checkBoxes =
-      availableReports.map(r =>
-        <Field
-          label={r}
-          name={`requestedReports.${r}`}
-          id={r}
-          component={Checkbox}
-          inline
-        />);
 
     return (
       <Accordion
@@ -149,7 +138,7 @@ class EditHarvestingConfig extends React.Component {
               <Col xs={8}>
                 { 'Requested reports *' }
                 <br />
-                { checkBoxes }
+                <EditSelectedReports />
               </Col>
             </Row>
           </Col>
