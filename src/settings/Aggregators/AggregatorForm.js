@@ -9,6 +9,7 @@ import Button from '@folio/stripes-components/lib/Button';
 import Icon from '@folio/stripes-components/lib/Icon';
 import Pane from '@folio/stripes-components/lib/Pane';
 import TextField from '@folio/stripes-components/lib/TextField';
+import Select from '@folio/stripes-components/lib/Select';
 import Paneset from '@folio/stripes-components/lib/Paneset';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
@@ -152,6 +153,13 @@ class AggregatorForm extends React.Component {
     const disabled = !stripes.hasPerm('settings.erm.enabled');
     const name = aggregator.label || '';
 
+    const accountConfigTypes =
+      [
+        { value: 'Mail', label: 'Mail' },
+        { value: 'API', label: 'API' },
+        { value: 'Manual', label: 'Manual' }
+      ];
+
     const confirmationMessage = (
       <SafeHTMLMessage
         id="ui-organization.settings.servicePoints.deleteServicePointMessage"
@@ -253,8 +261,9 @@ class AggregatorForm extends React.Component {
                     label="Config type *"
                     name="accountConfig.configType"
                     id="input-aggregaor-account-type"
-                    component={TextField}
-                    autoFocus
+                    placeholder="Select a config type"
+                    component={Select}
+                    dataOptions={accountConfigTypes}
                     required
                     fullWidth
                     disabled={disabled}
@@ -269,7 +278,10 @@ class AggregatorForm extends React.Component {
                     fullWidth
                     disabled={disabled}
                   />
-                  <DisplayContactsForm />
+                  <div>
+                    Display Contacts
+                    <DisplayContactsForm />
+                  </div>
                 </Col>
               </Row>
             </Accordion>

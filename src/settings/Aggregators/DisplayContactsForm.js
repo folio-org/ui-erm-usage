@@ -5,7 +5,6 @@ import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
 const DisplayContactsForm = () => (
   <RepeatableField
     name="accountConfig.displayContact"
-    label="Display Contacts"
     addLabel="Add Display Contact"
     addButtonId="clickable-add-language"
     template={[{

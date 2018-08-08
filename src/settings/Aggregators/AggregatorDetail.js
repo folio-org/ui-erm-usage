@@ -7,9 +7,6 @@ import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accord
 
 class AggregatorDetails extends React.Component {
   static propTypes = {
-    stripes: PropTypes.shape({
-      connect: PropTypes.func.isRequired,
-    }).isRequired,
     initialValues: PropTypes.object,
   }
 
