@@ -4,4 +4,8 @@ module.exports = {
     'hasAllPerms': true,
     'logCategories': 'core,path,action,xhr,connect,connect-lifecycle'
   },
+  'modules': {
+    'plugin-find-vendor': {},
+    '@folio/vendors': {}
+  }
 };

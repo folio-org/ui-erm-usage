@@ -14,10 +14,34 @@ class EditHarvestingConfig extends React.Component {
     this.state = {
       use_agg_checkbox: props.initialValues.aggregator,
     };
+
+    // this.columnMapping =
+    // {
+    //   name: 'Name',
+    //   code: 'Code',
+    //   description: 'description',
+    // };
+
+    this.columnMapping = {
+      name: 'Name',
+      patronGroup: 'Patron Group',
+      username: 'Username',
+      barcode: 'Barcode',
+    };
+    this.selectUser = this.selectUser.bind(this);
+  }
+
+  selectUser(user) {
+    console.log(user);
+  }
+
+  selectVendor(vendor) {
+    console.log(vendor);
   }
 
   render() {
     const { expanded, onToggle, accordionId } = this.props;
+    const disableRecordCreation = true;
 
     const harvestingStatusOptions =
       [
