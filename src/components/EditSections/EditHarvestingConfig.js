@@ -11,37 +11,20 @@ import EditSelectedReports from '../EditSections/EditSelectedReports';
 class EditHarvestingConfig extends React.Component {
   constructor(props) {
     super(props);
+
+    const useAgg = props.initialValues.aggregator ? props.initialValues.aggregator : false;
     this.state = {
-      use_agg_checkbox: props.initialValues.aggregator,
+      use_agg_checkbox: useAgg,
     };
-
-    // this.columnMapping =
-    // {
-    //   name: 'Name',
-    //   code: 'Code',
-    //   description: 'description',
-    // };
-
-    this.columnMapping = {
-      name: 'Name',
-      patronGroup: 'Patron Group',
-      username: 'Username',
-      barcode: 'Barcode',
-    };
-    this.selectUser = this.selectUser.bind(this);
+    this.handleUseAggChange = this.handleUseAggChange.bind(this); 
   }
 
-  selectUser(user) {
-    console.log(user);
-  }
-
-  selectVendor(vendor) {
-    console.log(vendor);
+  handleUseAggChange(e) {
+    this.setState({ use_agg_checkbox: e.target.checked });
   }
 
   render() {
     const { expanded, onToggle, accordionId } = this.props;
-    const disableRecordCreation = true;
 
     const harvestingStatusOptions =
       [
@@ -90,7 +73,7 @@ class EditHarvestingConfig extends React.Component {
                 <Checkbox
                   name="use_aggregator"
                   label="Harvest statistics via an aggregator"
-                  onChange={() => { this.setState({ use_agg_checkbox: !this.state.use_agg_checkbox }); }}
+                  onChange={this.handleUseAggChange}
                   checked={this.state.use_agg_checkbox}
                 />
               </Col>
