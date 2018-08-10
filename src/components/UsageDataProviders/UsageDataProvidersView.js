@@ -115,7 +115,7 @@ class UsageDataProvidersView extends React.Component {
 
     const detailMenu = (
       <PaneMenu>
-        <IfPermission perm={this.props.newRecordPerms}>
+        <IfPermission perm="eusage.item.put">
           <IconButton
             icon="edit"
             id="clickable-editorganization"

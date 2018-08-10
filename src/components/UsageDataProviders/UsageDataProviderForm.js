@@ -142,7 +142,7 @@ class UsageDataProviderForm extends React.Component {
       this.getLastMenu('clickable-createnewudp', 'Create UsageDataProvider');
 
     return (
-      <form id="form-udp" onSubmit={handleSubmit} onKeyDown={this.handleKeyDown}>
+      <form id="form-udp" onSubmit={handleSubmit}>
         <Paneset isRoot>
           <Pane defaultWidth="100%" firstMenu={firstMenu} lastMenu={lastMenu} paneTitle={paneTitle}>
             <Row end="xs">
