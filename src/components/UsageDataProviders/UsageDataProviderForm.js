@@ -10,9 +10,12 @@ import stripesForm from '@folio/stripes-form';
 import { ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 
-import EditUDPInfo from '../EditSections/EditUDPInfo';
-import EditHarvestConfig from '../EditSections/EditHarvestingConfig';
-import EditSushiCredentials from '../EditSections/EditSushiCredentials';
+import {
+  EditUDPInfo,
+  EditHarvestingConfig,
+  EditSushiCredentials
+} from '../EditSections';
+
 
 function validate(values) {
   const errors = {};
@@ -148,9 +151,8 @@ class UsageDataProviderForm extends React.Component {
               </Col>
             </Row>
             <EditUDPInfo accordionId="editUDPInfo" expanded={sections.editUDPInfo} onToggle={this.handleSectionToggle} {...this.props} />
-            <EditHarvestConfig accordionId="editHarvestingConfig" expanded={sections.editHarvestingConfig} onToggle={this.handleSectionToggle} {...this.props} />
+            <EditHarvestingConfig accordionId="editHarvestingConfig" expanded={sections.editHarvestingConfig} onToggle={this.handleSectionToggle} {...this.props} />
             <EditSushiCredentials accordionId="editSushiCredentials" expanded={sections.editSushiCredentials} onToggle={this.handleSectionToggle} {...this.props} />
-            <div>This is my form</div>
           </Pane>
         </Paneset>
       </form>

@@ -6,7 +6,10 @@ import TextField from '@folio/stripes-components/lib/TextField';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
-import EditSelectedReports from '../EditSections/EditSelectedReports';
+
+import {
+  EditSelectedReports
+} from '../../EditSections';
 
 class EditHarvestingConfig extends React.Component {
   constructor(props) {
@@ -16,7 +19,7 @@ class EditHarvestingConfig extends React.Component {
     this.state = {
       use_agg_checkbox: useAgg,
     };
-    this.handleUseAggChange = this.handleUseAggChange.bind(this); 
+    this.handleUseAggChange = this.handleUseAggChange.bind(this);
   }
 
   handleUseAggChange(e) {

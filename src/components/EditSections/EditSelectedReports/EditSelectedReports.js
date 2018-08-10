@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Select from '@folio/stripes-components/lib/Select';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
-import reports from '../../data/reports';
+import reports from '../../../data/reports';
 
 const renderSelectedReport = ({ field, fieldIndex }) => {
   const reportOptions = reports.selectedOptions(field);

@@ -13,8 +13,11 @@ import IfPermission from '@folio/stripes-components/lib/IfPermission';
 import TitleManager from '../../../../stripes-core/src/components/TitleManager';
 
 import UsageDataProviderForm from './UsageDataProviderForm';
-import HarvestingConfiguration from '../ViewSections/HarvestingConfiguration/HarvestingConfiguration';
-import SushiCredentials from '../ViewSections/SushiCredentials/SushiCredentials';
+
+import {
+  HarvestingConfiguration,
+  SushiCredentials
+} from '../ViewSections';
 
 class UsageDataProvidersView extends React.Component {
   static manifest = Object.freeze({
