@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -89,10 +88,6 @@ class UsageDataProviders extends React.Component {
 
   create = (usageDataProvider) => {
     const { mutator } = this.props;
-    const reports = usageDataProvider.requestedReports;
-    const filtered = _.keys(_.pickBy(reports));
-    usageDataProvider.requestedReports = filtered;
-    console.log('Filtered Reports: ' + filtered);
     mutator.records.POST(usageDataProvider);
   }
 
