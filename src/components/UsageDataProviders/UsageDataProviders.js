@@ -86,9 +86,17 @@ class UsageDataProviders extends React.Component {
     browseOnly: false,
   }
 
+  closeNewInstance = (e) => {
+    if (e) e.preventDefault();
+    this.props.mutator.query.update({ layer: null });
+  }
+
   create = (usageDataProvider) => {
     const { mutator } = this.props;
-    mutator.records.POST(usageDataProvider);
+    mutator.records.POST(usageDataProvider)
+      .then(() => {
+        this.closeNewInstance();
+      });
   }
 
   render() {
