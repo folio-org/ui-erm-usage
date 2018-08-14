@@ -7,7 +7,7 @@ class ContentVendorInfo extends React.Component {
   static manifest = Object.freeze({
     vendor: {
       type: 'okapi',
-      path: 'vendor/%{ven.id}',
+      path: 'vendor/%{currentVendor.id}',
     },
     currentVendor: { id: null },
   });
@@ -18,7 +18,7 @@ class ContentVendorInfo extends React.Component {
       vendor: PropTypes.shape(),
     }),
     mutator: PropTypes.shape({
-      ven: PropTypes.shape({
+      currentVendor: PropTypes.shape({
         replace: PropTypes.func,
       }),
     }).isRequired,
@@ -27,12 +27,12 @@ class ContentVendorInfo extends React.Component {
   constructor(props) {
     super(props);
 
-    this.props.mutator.ven.replace({ id: props.vendorId });
+    this.props.mutator.currentVendor.replace({ id: props.vendorId });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.vendorId !== prevProps.vendorId) {
-      this.props.mutator.ven.replace({ id: this.props.vendorId });
+      this.props.mutator.currentVendor.replace({ id: this.props.vendorId });
     }
   }
 
