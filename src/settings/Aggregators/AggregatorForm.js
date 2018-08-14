@@ -28,7 +28,6 @@ class AggregatorForm extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
-    change: PropTypes.func,
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
@@ -147,7 +146,7 @@ class AggregatorForm extends React.Component {
   }
 
   render() {
-    const { stripes, handleSubmit, initialValues, change } = this.props;
+    const { stripes, handleSubmit, initialValues } = this.props;
     const aggregator = initialValues || {};
     const { confirmDelete, sections } = this.state;
     const disabled = !stripes.hasPerm('settings.erm.enabled');

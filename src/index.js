@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from 'react-router-dom/Switch';
 import Route from 'react-router-dom/Route';
-import Paneset from '@folio/stripes-components/lib/Paneset';
 import Settings from './settings';
 import UsageDataProviders from './components/UsageDataProviders/UsageDataProviders';
 

@@ -5,7 +5,7 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import TextField from '@folio/stripes-components/lib/TextField';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
 
-const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }) => {
+const EditSushiCredentials = ({ expanded, onToggle, accordionId }) => {
   return (
     <Accordion
       label="SUSHI Credentials"
@@ -78,7 +78,6 @@ const EditSushiCredentials = ({ initialValues, expanded, onToggle, accordionId }
 };
 
 EditSushiCredentials.propTypes = {
-  initialValues: PropTypes.object,
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,
   accordionId: PropTypes.string.isRequired,

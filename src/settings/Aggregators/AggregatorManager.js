@@ -41,7 +41,7 @@ class AggregatorManager extends React.Component {
     this.cAggregatorForm = props.stripes.connect(AggregatorForm);
   }
 
-  validate(values) {
+  validate() {
     const errors = {};
     // TODO!
     return errors;

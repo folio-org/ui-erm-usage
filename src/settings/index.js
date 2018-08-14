@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Settings from '@folio/stripes-components/lib/Settings';
 import GeneralSettings from './general-settings';
 import AggregatorManager from './Aggregators/AggregatorManager';
@@ -29,3 +30,11 @@ export default class ErmUsageSettings extends React.Component {
     );
   }
 }
+
+ErmUsageSettings.propTypes = {
+  stripes: PropTypes.shape({
+    intl: PropTypes.shape({
+      formatMessage: PropTypes.func.isRequired
+    }).isRequired,
+  }),
+};
