@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Pane from '@folio/stripes-components/lib/Pane';
 import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
 import Layer from '@folio/stripes-components/lib/Layer';
@@ -16,7 +15,8 @@ import UsageDataProviderForm from './UsageDataProviderForm';
 
 import {
   HarvestingConfiguration,
-  SushiCredentials
+  SushiCredentials,
+  ContentVendorInfo
 } from '../ViewSections';
 
 class UsageDataProvidersView extends React.Component {
@@ -73,7 +73,7 @@ class UsageDataProvidersView extends React.Component {
       },
     };
 
-    this.log('UDPView');
+    this.cVendorInfo = this.props.stripes.connect(ContentVendorInfo);
   }
 
   handleExpandAll = (obj) => {
@@ -104,6 +104,19 @@ class UsageDataProvidersView extends React.Component {
     return udpFormData;
   }
 
+  renderVendorInfo = (udp) => {
+    if (udp.vendorId) {
+      return (
+        <div>
+          <this.cVendorInfo stripes={this.props.stripes} vendorId={udp.vendorId} />
+        </div>);
+    } else {
+      return (
+        <div>No Vendor</div>
+      );
+    }
+  }
+
   render() {
     const { resources, stripes } = this.props;
     const query = resources.query;
@@ -132,8 +145,7 @@ class UsageDataProvidersView extends React.Component {
       </PaneMenu>
     );
 
-    const vendorLink = udp.vendorId ? <Link to={`/vendors/view/${udp.vendorId}`}>{udp.vendorId}</Link> : '';
-
+    const vendorInfo = this.renderVendorInfo(udp);
     return (
       <Pane
         id="pane-udpdetails"
@@ -147,7 +159,7 @@ class UsageDataProvidersView extends React.Component {
         <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
         <Row>
           <Col xs={3}>
-            <KeyValue label="Content vendor" value={vendorLink} />
+            { vendorInfo }
           </Col>
           <Col xs={3}>
             <KeyValue label="Content platform" value={_.get(udp, 'platformId', '')} />
