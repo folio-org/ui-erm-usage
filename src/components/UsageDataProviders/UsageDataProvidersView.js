@@ -146,16 +146,17 @@ class UsageDataProvidersView extends React.Component {
     );
 
     const vendorInfo = this.renderVendorInfo(udp);
+    const label = _.get(udp, 'label', 'No LABEL');
     return (
       <Pane
         id="pane-udpdetails"
         defaultWidth={this.props.paneWidth}
-        paneTitle={udp.label}
+        paneTitle={label}
         lastMenu={detailMenu}
         dismissible
         onClose={this.props.onClose}
       >
-        <TitleManager record={udp.label} />
+        <TitleManager record={label} />
         <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
         <Row>
           <Col xs={3}>
@@ -173,6 +174,7 @@ class UsageDataProvidersView extends React.Component {
           usageDataProvider={udp}
           expanded={this.state.accordions.harvestingAccordion}
           onToggle={this.handleAccordionToggle}
+          stripes={stripes}
         />
         <SushiCredentials
           accordionId="sushiCredsAccordion"

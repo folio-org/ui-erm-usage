@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
+import AggregatorInfo from '../AggregatorInfo';
 
 class HarvestingConfiguration extends React.Component {
   static propTypes = {
@@ -11,9 +12,21 @@ class HarvestingConfiguration extends React.Component {
     onToggle: PropTypes.func,
     accordionId: PropTypes.string.isRequired,
     usageDataProvider: PropTypes.object.isRequired,
+    stripes: PropTypes.shape({
+      connect: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.cAggregatorInfo = this.props.stripes.connect(AggregatorInfo);
+  }
+
   createAggregatorView = udp => {
+    const aggregatorId = _.get(udp, 'aggregator.id', '');
+    const aggregatorInfo = this.renderAggregatorInfo(aggregatorId);
+
     return (
       <Row>
         <Col xs={3}>
@@ -23,10 +36,7 @@ class HarvestingConfiguration extends React.Component {
           />
         </Col>
         <Col xs={3}>
-          <KeyValue
-            label="Aggregator ID"
-            value={_.get(udp, 'aggregator.id', '')}
-          />
+          { aggregatorInfo }
         </Col>
         <Col xs={3}>
           <KeyValue
@@ -35,6 +45,13 @@ class HarvestingConfiguration extends React.Component {
           />
         </Col>
       </Row>);
+  }
+
+  renderAggregatorInfo = (aggregatorId) => {
+    return (
+      <div>
+        <this.cAggregatorInfo stripes={this.props.stripes} aggregatorId={aggregatorId} />
+      </div>);
   }
 
   createVendorView = udp => {
@@ -60,7 +77,6 @@ class HarvestingConfiguration extends React.Component {
         </Col>
       </Row>);
   }
-
 
   createProvider = udp => {
     const isAggregator = _.has(udp, 'aggregator');
