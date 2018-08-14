@@ -8,7 +8,8 @@ import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
 
 import {
-  EditSelectedReports
+  EditSelectedReports,
+  AggregatorSelect
 } from '../../EditSections';
 
 class EditHarvestingConfig extends React.Component {
@@ -20,6 +21,7 @@ class EditHarvestingConfig extends React.Component {
       use_agg_checkbox: useAgg,
     };
     this.handleUseAggChange = this.handleUseAggChange.bind(this);
+    this.cAggregatorSelect = this.props.stripes.connect(AggregatorSelect);
   }
 
   handleUseAggChange(e) {
@@ -81,16 +83,7 @@ class EditHarvestingConfig extends React.Component {
                 />
               </Col>
               <Col xs={4}>
-                <Field
-                  label="Choose aggregator *"
-                  name="aggregator.id"
-                  id="addudp_aggid"
-                  placeholder="Select an aggregator"
-                  component={TextField}
-                  disabled={!this.state.use_agg_checkbox}
-                  required
-                  fullWidth
-                />
+                <this.cAggregatorSelect disabled={!this.state.use_agg_checkbox} />
               </Col>
               <Col xs={4}>
                 <Field
@@ -163,6 +156,9 @@ EditHarvestingConfig.propTypes = {
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,
   accordionId: PropTypes.string.isRequired,
+  stripes: PropTypes.shape({
+    connect: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default EditHarvestingConfig;
