@@ -72,7 +72,6 @@ class UsageDataProviderForm extends React.Component {
     };
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
-    this.deleteUDP = this.deleteUDP.bind(this);
   }
 
   getAddFirstMenu() {
