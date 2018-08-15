@@ -52,8 +52,8 @@ class UsageDataProvidersView extends React.Component {
       }),
       query: PropTypes.object.isRequired,
     }),
-    parentResources: PropTypes.shape({}),
-    parentMutator: PropTypes.shape({}),
+    parentResources: PropTypes.shape(),
+    parentMutator: PropTypes.shape().isRequired,
     onClose: PropTypes.func,
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
@@ -118,6 +118,17 @@ class UsageDataProvidersView extends React.Component {
     }
   }
 
+  deleteUDP = (udp) => {
+    const { parentMutator } = this.props;
+    parentMutator.records.DELETE({ id: udp.id })
+      .then(() => {
+        parentMutator.query.update({
+          _path: '/ermusage',
+          layer: null
+        });
+      });
+  }
+
   render() {
     const { resources, stripes } = this.props;
     const query = resources.query;
@@ -129,6 +140,15 @@ class UsageDataProvidersView extends React.Component {
 
     const detailMenu = (
       <PaneMenu>
+        <IfPermission perm="eusage.item.put">
+          <IconButton
+            icon="trashBin"
+            id="clickable-deleteorganization"
+            style={{ visibility: !udp ? 'hidden' : 'visible' }}
+            onClick={() => this.deleteUDP(udp)}
+            title="Delete Organization"
+          />
+        </IfPermission>
         <IconButton
           icon="comment"
           id="clickable-show-notes"

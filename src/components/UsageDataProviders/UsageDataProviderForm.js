@@ -1,13 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Paneset from '@folio/stripes-components/lib/Paneset';
-import Pane from '@folio/stripes-components/lib/Pane';
-import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
-import Button from '@folio/stripes-components/lib/Button';
-import IconButton from '@folio/stripes-components/lib/IconButton';
+import { Button, ExpandAllButton, IconButton, Pane, PaneMenu, Paneset } from '@folio/stripes-components';
 import stripesForm from '@folio/stripes-form';
-import { ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 
 import {
@@ -15,7 +10,6 @@ import {
   EditHarvestingConfig,
   EditSushiCredentials
 } from '../EditSections';
-
 
 function validate(values) {
   const errors = {};
@@ -62,7 +56,8 @@ class UsageDataProviderForm extends React.Component {
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
     initialValues: PropTypes.object,
-    parentResources: PropTypes.shape().isRequired
+    parentResources: PropTypes.shape().isRequired,
+    parentMutator: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -77,6 +72,7 @@ class UsageDataProviderForm extends React.Component {
     };
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
+    this.deleteUDP = this.deleteUDP.bind(this);
   }
 
   getAddFirstMenu() {
