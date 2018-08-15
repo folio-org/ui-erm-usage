@@ -58,6 +58,7 @@ class UsageDataProvidersView extends React.Component {
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
+    notesToggle: PropTypes.func,
   };
 
   constructor(props) {
@@ -128,6 +129,13 @@ class UsageDataProvidersView extends React.Component {
 
     const detailMenu = (
       <PaneMenu>
+        <IconButton
+          icon="comment"
+          id="clickable-show-notes"
+          style={{ visibility: !udp ? 'hidden' : 'visible' }}
+          onClick={this.props.notesToggle}
+          aria-label="Notes"
+        />
         <IfPermission perm="eusage.item.put">
           <IconButton
             icon="edit"
