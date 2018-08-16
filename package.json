@@ -39,9 +39,11 @@
     "type": "app",
     "displayName": "eUsage",
     "route": "/ermusage",
+    "home": "/ermusage",
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {
+      "erm-usage": "0.0.1",
       "vendor": "1.0"
     },
     "permissionSets": [
@@ -57,6 +59,16 @@
           "settings.enabled"
         ],
         "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.view ",
+        "displayName": "eUsage: Can view usage data providers and COUNTER reports",
+        "description": "Can view usage data providers and COUNTER reports",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "ermusage.view"
+        ],
+	"visible": true
       }
     ]
   }

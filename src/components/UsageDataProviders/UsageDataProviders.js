@@ -124,8 +124,8 @@ class UsageDataProviders extends React.Component {
       onSelectRow={onSelectRow}
       onCreate={this.create}
       onComponentWillUnmount={onComponentWillUnmount}
-      viewRecordPerms="users.item.get"
-      newRecordPerms="users.item.post,login.item.post,perms.users.item.post"
+      viewRecordPerms="usagedataproviders.item.get"
+      newRecordPerms="usagedataproviders.item.post"
       parentResources={this.props.resources}
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}

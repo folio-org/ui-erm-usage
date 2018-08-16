@@ -140,7 +140,7 @@ class UsageDataProvidersView extends React.Component {
 
     const detailMenu = (
       <PaneMenu>
-        <IfPermission perm="eusage.item.put">
+        <IfPermission perm="usagedataproviders.item.delete">
           <IconButton
             icon="trashBin"
             id="clickable-deleteorganization"
@@ -156,7 +156,7 @@ class UsageDataProvidersView extends React.Component {
           onClick={this.props.notesToggle}
           aria-label="Notes"
         />
-        <IfPermission perm="eusage.item.put">
+        <IfPermission perm="usagedataproviders.item.put">
           <IconButton
             icon="edit"
             id="clickable-editorganization"
