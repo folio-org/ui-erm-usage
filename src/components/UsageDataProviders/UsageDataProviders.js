@@ -53,9 +53,7 @@ class UsageDataProviders extends React.Component {
             'cql.allRecords=1',
             '(label="%{query.query}*")',
             {
-              'Label': 'label',
-              'Service Type': 'serviceType',
-              'Service Url': 'serviceUrl'
+              'Platform Name': 'label'
             },
             filterConfig,
             2,
