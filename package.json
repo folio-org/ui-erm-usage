@@ -68,7 +68,7 @@
           "module.erm-usage.enabled",
           "ermusage.view"
         ],
-	"visible": true
+	      "visible": true
       }
     ]
   }

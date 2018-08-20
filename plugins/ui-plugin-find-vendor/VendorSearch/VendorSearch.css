@@ -1,0 +1,22 @@
+
+.searchControl {
+  margin-left: -3px;
+  margin-top: 8px;
+  display: flex;
+
+  &.marginBottom0 {
+    margin-bottom: 0;
+  }
+
+  &.marginTop0 {
+    margin-top: 0;
+  }
+}
+
+.vendorSearchModal {
+  min-height: 400px;
+}
+
+.vendorError {
+  color: red
+}

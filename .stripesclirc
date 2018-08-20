@@ -1,0 +1,7 @@
+{
+  "configFile": "stripes.config.js",
+  "url": "http://localhost:9130",
+  "aliases": {
+    "plugin-find-vendor": "./plugins/ui-plugin-find-vendor/"
+  }
+}

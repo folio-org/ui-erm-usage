@@ -4,8 +4,8 @@ module.exports = {
     'logCategories': 'core,path,action,xhr,connect,connect-lifecycle'
   },
   'modules': {
-    'plugin-find-vendor': {},
+    '@folio/users': {},
     '@folio/vendors': {},
-    '@folio/users': {}
-  }
+    'plugin-find-vendor': {}
+  },
 };
