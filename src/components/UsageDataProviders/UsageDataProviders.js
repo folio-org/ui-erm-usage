@@ -7,7 +7,11 @@ import packageInfo from '../../../package';
 
 import UsageDataProvidersView from './UsageDataProvidersView';
 import UsageDataProviderForm from './UsageDataProviderForm';
-import VendorName from '../ViewSections/VendorName';
+
+import {
+  VendorName,
+  AggregatorName
+} from '../ViewSections';
 
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;
@@ -110,7 +114,11 @@ class UsageDataProviders extends React.Component {
   }
 
   renderAggregatorName = (udp) => {
-    
+    return (
+      <AggregatorName
+        aggregatorId={udp.aggregator.id}
+        stripes={this.props.stripes}
+      />);
   }
 
   render() {
@@ -120,7 +128,7 @@ class UsageDataProviders extends React.Component {
       name: udp => udp.label,
       vendor: udp => this.renderVendorName(udp),
       harvestingStatus: udp => udp.harvestingStatus,
-      aggregator: udp => (udp.aggregator ? udp.aggregator.id : 'None'),
+      aggregator: udp => (udp.aggregator ? this.renderAggregatorName(udp) : 'None'),
       latestStats: () => 'TODO',
     };
 
