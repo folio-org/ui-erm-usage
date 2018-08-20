@@ -16,7 +16,8 @@ import UsageDataProviderForm from './UsageDataProviderForm';
 import {
   HarvestingConfiguration,
   SushiCredentials,
-  ContentVendorInfo
+  ContentVendorInfo,
+  Notes
 } from '../ViewSections';
 
 class UsageDataProvidersView extends React.Component {
@@ -71,6 +72,7 @@ class UsageDataProvidersView extends React.Component {
         harvestingAccordion: true,
         sushiCredsAccordion: false,
         uploadAccordion: false,
+        notesAccordion: false
       },
     };
 
@@ -208,6 +210,12 @@ class UsageDataProvidersView extends React.Component {
           accordionId="sushiCredsAccordion"
           usageDataProvider={udp}
           expanded={this.state.accordions.sushiCredsAccordion}
+          onToggle={this.handleAccordionToggle}
+        />
+        <Notes
+          accordionId="notesAccordion"
+          usageDataProvider={udp}
+          expanded={this.state.accordions.notesAccordion}
           onToggle={this.handleAccordionToggle}
         />
         <Accordion

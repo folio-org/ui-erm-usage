@@ -8,7 +8,8 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import {
   EditUDPInfo,
   EditHarvestingConfig,
-  EditSushiCredentials
+  EditSushiCredentials,
+  EditNotes
 } from '../EditSections';
 
 function validate(values) {
@@ -68,6 +69,7 @@ class UsageDataProviderForm extends React.Component {
         editUDPInfo: true,
         editHarvestingConfig: true,
         editSushiCredentials: true,
+        editNotes: true
       },
     };
 
@@ -148,6 +150,7 @@ class UsageDataProviderForm extends React.Component {
             <EditUDPInfo accordionId="editUDPInfo" expanded={sections.editUDPInfo} onToggle={this.handleSectionToggle} {...this.props} />
             <EditHarvestingConfig accordionId="editHarvestingConfig" expanded={sections.editHarvestingConfig} onToggle={this.handleSectionToggle} {...this.props} />
             <EditSushiCredentials accordionId="editSushiCredentials" expanded={sections.editSushiCredentials} onToggle={this.handleSectionToggle} {...this.props} />
+            <EditNotes accordionId="editNotes" expanded={sections.editNotes} onToggle={this.handleSectionToggle} {...this.props} />
           </Pane>
         </Paneset>
       </form>

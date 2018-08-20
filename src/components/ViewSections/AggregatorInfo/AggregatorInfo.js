@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Icon } from '@folio/stripes-components';
 
 class AggregatorInfo extends React.Component {
