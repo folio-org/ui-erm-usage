@@ -36,7 +36,7 @@ class HarvestingConfiguration extends React.Component {
           />
         </Col>
         <Col xs={3}>
-          { aggregatorInfo }
+          <KeyValue label="Aggregator" value={aggregatorInfo} />
         </Col>
         <Col xs={3}>
           <KeyValue

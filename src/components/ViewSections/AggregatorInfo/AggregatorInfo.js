@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
+import { Icon } from '@folio/stripes-components';
 
 class AggregatorInfo extends React.Component {
   static manifest = Object.freeze({
@@ -37,12 +38,12 @@ class AggregatorInfo extends React.Component {
 
   render() {
     const { aggregator } = this.props.resources;
-    if (!aggregator || !aggregator.hasLoaded || aggregator.records.length !== 1) return null;
-    const currentAgg = aggregator.records[0];
-
-    return (
-      <KeyValue label="Aggregator" value={currentAgg.label} />
-    );
+    if (!aggregator || !aggregator.hasLoaded || aggregator.records.length !== 1) {
+      return <div style={{ paddingTop: '1rem' }}><Icon icon="spinner-ellipsis" width="100px" /></div>;
+    } else {
+      const currentAgg = aggregator.records[0];
+      return currentAgg.label;
+    }
   }
 }
 
