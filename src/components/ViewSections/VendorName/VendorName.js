@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { SubmissionError } from 'redux-form';
 
 class VendorName extends React.Component {
   static propTypes = {
@@ -21,13 +22,15 @@ class VendorName extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.fechVendorName(this.props.vendorId);
+  }
+
   fechVendorName = (vendorId) => {
     return fetch(`${this.okapiUrl}/vendor/${vendorId}`, { headers: this.httpHeaders })
       .then((response) => {
         if (response.status >= 400) {
-          // throw new SubmissionError({ patron: { identifier: `Error ${response.status} retrieving patron by id`, _error: 'Scan failed' } });
-          console.log('error');
-          return null;
+          throw new SubmissionError({ identifier: `Error ${response.status} retrieving vendor name by id`, _error: 'Fetch vendor name failed' });
         } else {
           return response.json();
         }
@@ -40,7 +43,6 @@ class VendorName extends React.Component {
   }
 
   render() {
-    this.fechVendorName(this.props.vendorId);
     return (
       <div>
         {this.state.vendorName}
