@@ -188,7 +188,7 @@ class UsageDataProvidersView extends React.Component {
         <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
         <Row>
           <Col xs={3}>
-            { vendorInfo }
+            <KeyValue label="Content vendor" value={vendorInfo} />
           </Col>
           <Col xs={3}>
             <KeyValue label="Content platform" value={_.get(udp, 'platformId', '')} />

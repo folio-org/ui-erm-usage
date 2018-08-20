@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import KeyValue from '@folio/stripes-components/lib/KeyValue';
+import { Icon } from '@folio/stripes-components';
 
 class ContentVendorInfo extends React.Component {
   static manifest = Object.freeze({
@@ -38,13 +38,12 @@ class ContentVendorInfo extends React.Component {
 
   render() {
     const { vendor } = this.props.resources;
-    if (!vendor || !vendor.hasLoaded || vendor.records.length !== 1) return null;
-    const currentVendor = vendor.records[0];
-    const vendorLink = <Link to={`/vendors/view/${currentVendor.id}`}>{currentVendor.name}</Link>;
-
-    return (
-      <KeyValue label="Content vendor" value={vendorLink} />
-    );
+    if (!vendor || !vendor.hasLoaded || vendor.records.length !== 1) {
+      return <div style={{ paddingTop: '1rem' }}><Icon icon="spinner-ellipsis" width="100px" /></div>;
+    } else {
+      const currentVendor = vendor.records[0];
+      return <Link to={`/vendors/view/${currentVendor.id}`}>{currentVendor.name}</Link>;
+    }
   }
 }
 
