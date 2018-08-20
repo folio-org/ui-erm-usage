@@ -7,6 +7,7 @@ import packageInfo from '../../../package';
 
 import UsageDataProvidersView from './UsageDataProvidersView';
 import UsageDataProviderForm from './UsageDataProviderForm';
+import VendorName from '../ViewSections/VendorName';
 
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;
@@ -75,6 +76,7 @@ class UsageDataProviders extends React.Component {
         update: PropTypes.func,
       }).isRequired,
     }).isRequired,
+    stripes: PropTypes.object,
     onSelectRow: PropTypes.func,
     onComponentWillUnmount: PropTypes.func,
     showSingleResult: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
@@ -99,12 +101,24 @@ class UsageDataProviders extends React.Component {
       });
   }
 
+  renderVendorName = (udp) => {
+    return (
+      <VendorName
+        vendorId={udp.vendorId}
+        stripes={this.props.stripes}
+      />);
+  }
+
+  renderAggregatorName = (udp) => {
+    
+  }
+
   render() {
     const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly } = this.props;
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => udp.vendorId,
+      vendor: udp => this.renderVendorName(udp),
       harvestingStatus: udp => udp.harvestingStatus,
       aggregator: udp => (udp.aggregator ? udp.aggregator.id : 'None'),
       latestStats: () => 'TODO',
