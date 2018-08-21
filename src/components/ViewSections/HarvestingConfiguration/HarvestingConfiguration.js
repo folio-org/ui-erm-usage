@@ -98,6 +98,8 @@ class HarvestingConfiguration extends React.Component {
       requestedReports = reports.join(', ');
     }
 
+    const counterVersion = _.get(usageDataProvider, 'reportRelease', '');
+    const reportRelease = counterVersion == 4 ? 'Counter 4' : 'Counter 5';
 
     return (
       <Accordion
@@ -121,7 +123,7 @@ class HarvestingConfiguration extends React.Component {
               <Col xs={3}>
                 <KeyValue
                   label="Report release"
-                  value={_.get(usageDataProvider, 'reportRelease', '')}
+                  value={reportRelease}
                 />
               </Col>
               <Col xs={3}>
