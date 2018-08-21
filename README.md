@@ -14,6 +14,8 @@ In order to view and log into the platform being served up, a suitable Okapi bac
 
 ## Run your new app
 
+See [Getting started](docs/getting-started.md "Getting started") for detailed information.
+
 Run the following from the ui-erm-usage directory to serve your new app using a development server:
 ```
 stripes serve
@@ -29,9 +31,12 @@ To specify your own tenant ID or to use an Okapi instance other than http://loca
 stripes serve --okapi http://my-okapi.example.com:9130 --tenant my-tenant-id
 ```
 
+
 ## Run the tests
 
-Run the included UI test `demo` with the following command:
+Attention: Currently not implemented.
+
+~~Run the included UI test `demo` with the following command:~~
 ```
 stripes test --run demo --show
 ```
