@@ -99,7 +99,7 @@ class HarvestingConfiguration extends React.Component {
     }
 
     const counterVersion = _.get(usageDataProvider, 'reportRelease', '');
-    const reportRelease = counterVersion == 4 ? 'Counter 4' : 'Counter 5';
+    const reportRelease = counterVersion === 4 ? 'Counter 4' : 'Counter 5';
 
     return (
       <Accordion
