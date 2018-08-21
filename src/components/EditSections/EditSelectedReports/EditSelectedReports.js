@@ -3,16 +3,23 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Select from '@folio/stripes-components/lib/Select';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
-import reports from '../../../data/reports';
+import counter4Reports from '../../../data/counter4Reports';
+import counter5Reports from '../../../data/counter5Reports';
 
 const renderSelectedReport = ({ field, fieldIndex }) => {
-  const reportOptions = reports.selectedOptions(field);
+  const counter4Options = counter4Reports.selectedOptions(field);
+  const counter5Options = counter5Reports.selectedOptions(field);
   return (
     <Field
       label={fieldIndex === 0 ? 'Select reports' : null}
       name={`${field}`}
       component={Select}
-      dataOptions={[{ label: 'Select Report', value: '' }, ...reportOptions]}
+      dataOptions={[
+        { label: 'Counter 5 Reports', value: '', disabled: true },
+        ...counter5Options,
+        { label: 'Counter 4 Reports', value: '', disabled: true },
+        ...counter4Options
+      ]}
     />
   );
 };

@@ -9,6 +9,10 @@ export const data = [
     code: 'jr1_goa'
   },
   {
+    name: 'JR1a',
+    code: 'jr1_a'
+  },
+  {
     name: 'JR2',
     code: 'jr2'
   },
@@ -30,12 +34,16 @@ export const data = [
     code: 'jr5'
   },
   {
-    name: 'DB1',
-    code: 'db1'
+    name: 'DR1',
+    code: 'dr1'
   },
   {
-    name: 'DB2',
-    code: 'db2'
+    name: 'DR2',
+    code: 'dr2'
+  },
+  {
+    name: 'PR1',
+    code: 'pr1'
   },
   {
     name: 'BR1',
@@ -56,10 +64,6 @@ export const data = [
   {
     name: 'BR5',
     code: 'br5'
-  },
-  {
-    name: 'BR6',
-    code: 'br6'
   },
   {
     name: 'BR7',
@@ -86,12 +90,12 @@ export const data = [
     code: 'tr3'
   },
   {
-    name: 'TR4',
-    code: 'tr4'
+    name: 'TR3 Mobile',
+    code: 'tr3_mobile'
   }
 ];
 
-const reports = {
+const counter4Reports = {
 
   selectedOptions: selected => data.map(
     r => ({
@@ -103,4 +107,4 @@ const reports = {
 
 };
 
-export default reports;
+export default counter4Reports;
