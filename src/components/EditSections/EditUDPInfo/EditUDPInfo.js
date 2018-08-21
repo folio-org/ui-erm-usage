@@ -74,7 +74,7 @@ class EditUDPInfo extends React.Component {
           columnMapping={this.columnMapping}
           disableRecordCreation={disableRecordCreation}
         >
-          <div style={{ background: 'red' }}>Plugin goes here</div>
+          <div style={{ background: 'red' }}>Plugin not found</div>
         </Pluggable>
       </div>
     );
