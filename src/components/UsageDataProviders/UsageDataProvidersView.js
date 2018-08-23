@@ -9,7 +9,7 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
 import IconButton from '@folio/stripes-components/lib/IconButton';
 import IfPermission from '@folio/stripes-components/lib/IfPermission';
-import TitleManager from '../../../../stripes-core/src/components/TitleManager';
+import TitleManager from '@folio/stripes-core/src/components/TitleManager';
 
 import UsageDataProviderForm from './UsageDataProviderForm';
 

@@ -120,7 +120,7 @@ class UsageDataProviders extends React.Component {
   }
 
   render() {
-    const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly } = this.props;
+    const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes } = this.props;
 
     const resultsFormatter = {
       name: udp => udp.label,
@@ -157,6 +157,7 @@ class UsageDataProviders extends React.Component {
         latestStats: 'Latest Statistics'
       }}
       browseOnly={browseOnly}
+      stripes={stripes}
     />);
   }
 }
