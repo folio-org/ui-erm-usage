@@ -70,7 +70,7 @@ class EditUDPInfo extends React.Component {
               sort: 'Name',
             });
           }}
-          visibleColumns={['name', 'code', 'description', 'barcode']}
+          visibleColumns={['name', 'code', 'description']}
           columnMapping={this.columnMapping}
           disableRecordCreation={disableRecordCreation}
         >
