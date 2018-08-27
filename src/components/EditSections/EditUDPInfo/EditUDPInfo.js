@@ -8,6 +8,7 @@ import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Pluggable from '@folio/stripes-components/lib/Pluggable';
 import { Link } from 'react-router-dom';
 import css from './VendorView.css';
+import { VendorName } from '../../ViewSections';
 
 class EditUDPInfo extends React.Component {
   constructor(props) {
@@ -20,32 +21,33 @@ class EditUDPInfo extends React.Component {
     };
     this.selectVendor = this.selectVendor.bind(this);
 
+    const intialVendor = props.initialValues.vendorId || '';
     this.state = {
-      vendor: {},
+      vendorId: intialVendor,
     };
   }
 
   selectVendor(v) {
     this.props.change('vendorId', v.id);
-    this.setState({ vendor: v });
+    this.setState({ vendorId: v.id });
   }
 
   renderSelectedVendor() {
     const disableRecordCreation = true;
-    const selectedVendor = this.state.vendor;
+    const selectedVendorId = this.state.vendorId;
     let vendorDiv;
-    if (_.isEmpty(selectedVendor)) {
+    if (_.isEmpty(selectedVendorId)) {
       vendorDiv =
         <div className={`${css.section} ${css.active}`}>
           Please select vendor
         </div>;
     } else {
-      const path = `/vendors/view/${selectedVendor.id}`;
       vendorDiv =
         <div className={`${css.section} ${css.active}`}>
-          <Link to={path}>
-            <strong>{selectedVendor.name}</strong>
-          </Link>
+          <VendorName
+            vendorId={selectedVendorId}
+            stripes={this.props.stripes}
+          />
         </div>;
     }
 
