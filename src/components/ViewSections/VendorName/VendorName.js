@@ -26,6 +26,12 @@ class VendorName extends React.Component {
     this.fechVendorName(this.props.vendorId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.vendorId !== prevProps.vendorId) {
+      this.fechVendorName(this.props.vendorId);
+    }
+  }
+
   fechVendorName = (vendorId) => {
     return fetch(`${this.okapiUrl}/vendor/${vendorId}`, { headers: this.httpHeaders })
       .then((response) => {
