@@ -26,6 +26,12 @@ class AggregatorName extends React.Component {
     this.fechAggregatorName(this.props.aggregatorId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.aggregatorId !== prevProps.aggregatorId) {
+      this.fechAggregatorName(this.props.aggregatorId);
+    }
+  }
+
   fechAggregatorName = (aggregatorId) => {
     return fetch(`${this.okapiUrl}/aggregator-settings/${aggregatorId}`, { headers: this.httpHeaders })
       .then((response) => {
