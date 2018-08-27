@@ -42,9 +42,19 @@ class AggregatorDetails extends React.Component {
     });
   }
 
+  renderContact = (aggregator) => {
+    if (aggregator.accountConfig && aggregator.accountConfig.displayContact) {
+      return aggregator.accountConfig.displayContact.map((item, i) => <p key={i}>{item}</p>);
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const aggregator = this.props.initialValues;
     const { sections } = this.state;
+
+    const contacts = this.renderContact(aggregator);
 
     return (
       <div>
@@ -91,7 +101,7 @@ class AggregatorDetails extends React.Component {
             <Col xs={4}>
               <KeyValue label="Type" value={aggregator.accountConfig.configType} />
               <KeyValue label="Mail" value={aggregator.accountConfig.configMail} />
-              <KeyValue label="Contact" value={aggregator.accountConfig.displayContact} />
+              <KeyValue label="Contact" value={contacts} />
             </Col>
           </Row>
         </Accordion>
