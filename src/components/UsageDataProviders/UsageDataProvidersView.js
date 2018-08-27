@@ -195,9 +195,6 @@ class UsageDataProvidersView extends React.Component {
           <Col xs={3}>
             <KeyValue label="Content platform" value={_.get(udp, 'platformId', '')} />
           </Col>
-          <Col xs={3}>
-            <KeyValue label="Harvesting" value={_.get(udp, 'harvestingStatus', '')} />
-          </Col>
         </Row>
         <HarvestingConfiguration
           accordionId="harvestingAccordion"
