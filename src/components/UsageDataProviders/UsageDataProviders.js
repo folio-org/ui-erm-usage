@@ -159,7 +159,7 @@ class UsageDataProviders extends React.Component {
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}
       columnMapping={{
-        name: 'Platform Name',
+        name: 'Provider Name',
         vendor: 'Vendor',
         harvestingStatus: 'Harvesting Status',
         aggregator: 'Aggregator',

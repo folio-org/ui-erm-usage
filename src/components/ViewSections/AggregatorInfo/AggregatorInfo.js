@@ -18,12 +18,12 @@ const AggregatorInfo = ({ usageDataProvider, stripes }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label="Aggregator"
+          label="Is aggregator?"
           value="Yes"
         />
       </Col>
       <Col xs={3}>
-        <KeyValue label="Aggregator" value={aggregatorInfo} />
+        <KeyValue label="Aggregator name" value={aggregatorInfo} />
       </Col>
       <Col xs={3}>
         <KeyValue

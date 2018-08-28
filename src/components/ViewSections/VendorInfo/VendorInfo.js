@@ -9,7 +9,7 @@ const VendorInfo = ({ usageDataProvider }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label="Aggregator"
+          label="Is aggregator?"
           value="No"
         />
       </Col>
