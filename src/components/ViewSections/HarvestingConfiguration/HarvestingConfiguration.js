@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
-import AggregatorInfo from '../AggregatorInfo';
+import AggregatorName from '../AggregatorName';
 
 class HarvestingConfiguration extends React.Component {
   static propTypes = {
@@ -16,12 +16,6 @@ class HarvestingConfiguration extends React.Component {
       connect: PropTypes.func.isRequired,
     }).isRequired,
   };
-
-  constructor(props) {
-    super(props);
-
-    this.cAggregatorInfo = this.props.stripes.connect(AggregatorInfo);
-  }
 
   createAggregatorView = udp => {
     const aggregatorId = _.get(udp, 'aggregator.id', '');
@@ -49,9 +43,10 @@ class HarvestingConfiguration extends React.Component {
 
   renderAggregatorInfo = (aggregatorId) => {
     return (
-      <div>
-        <this.cAggregatorInfo stripes={this.props.stripes} aggregatorId={aggregatorId} />
-      </div>);
+      <AggregatorName
+        aggregatorId={aggregatorId}
+        stripes={this.props.stripes}
+      />);
   }
 
   createVendorView = udp => {
