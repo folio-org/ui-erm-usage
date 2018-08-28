@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
-import AggregatorName from '../AggregatorName';
+import {
+  AggregatorInfo,
+  VendorInfo
+} from '../../ViewSections';
 
 class HarvestingConfiguration extends React.Component {
   static propTypes = {
@@ -17,68 +20,21 @@ class HarvestingConfiguration extends React.Component {
     }).isRequired,
   };
 
-  createAggregatorView = udp => {
-    const aggregatorId = _.get(udp, 'aggregator.id', '');
-    const aggregatorInfo = this.renderAggregatorInfo(aggregatorId);
-
-    return (
-      <Row>
-        <Col xs={3}>
-          <KeyValue
-            label="Aggregator"
-            value="Yes"
-          />
-        </Col>
-        <Col xs={3}>
-          <KeyValue label="Aggregator" value={aggregatorInfo} />
-        </Col>
-        <Col xs={3}>
-          <KeyValue
-            label="Vendor code"
-            value={_.get(udp, 'aggregator.vendorCode', '')}
-          />
-        </Col>
-      </Row>);
-  }
-
-  renderAggregatorInfo = (aggregatorId) => {
-    return (
-      <AggregatorName
-        aggregatorId={aggregatorId}
-        stripes={this.props.stripes}
-      />);
-  }
-
-  createVendorView = udp => {
-    return (
-      <Row>
-        <Col xs={3}>
-          <KeyValue
-            label="Aggregator"
-            value="No"
-          />
-        </Col>
-        <Col xs={3}>
-          <KeyValue
-            label="Service Type"
-            value={_.get(udp, 'serviceType', '')}
-          />
-        </Col>
-        <Col xs={3}>
-          <KeyValue
-            label="Service Url"
-            value={_.get(udp, 'serviceUrl', '')}
-          />
-        </Col>
-      </Row>);
-  }
-
   createProvider = udp => {
     const isAggregator = _.has(udp, 'aggregator');
     if (isAggregator) {
-      return this.createAggregatorView(udp);
+      return (
+        <AggregatorInfo
+          usageDataProvider={udp}
+          stripes={this.props.stripes}
+        />
+      );
     } else {
-      return this.createVendorView(udp);
+      return (
+        <VendorInfo
+          usageDataProvider={udp}
+        />
+      );
     }
   }
 
