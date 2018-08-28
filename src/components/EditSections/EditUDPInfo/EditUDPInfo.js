@@ -21,9 +21,9 @@ class EditUDPInfo extends React.Component {
     };
     this.selectVendor = this.selectVendor.bind(this);
 
-    const intialVendor = props.initialValues.vendorId || '';
+    const intialVendorId = props.initialValues.vendorId || '';
     this.state = {
-      vendorId: intialVendor,
+      vendorId: intialVendorId,
     };
   }
 
