@@ -10,7 +10,8 @@ import UsageDataProviderForm from './UsageDataProviderForm';
 
 import {
   VendorName,
-  AggregatorName
+  AggregatorName,
+  LatestReportDate
 } from '../ViewSections';
 
 const INITIAL_RESULT_COUNT = 30;
@@ -119,6 +120,14 @@ class UsageDataProviders extends React.Component {
       />);
   }
 
+  renderLatestReportDate = (udp) => {
+    return (
+      <LatestReportDate
+        vendorId={udp.vendorId}
+        stripes={this.props.stripes}
+      />);
+  }
+
   render() {
     const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes } = this.props;
 
@@ -127,7 +136,7 @@ class UsageDataProviders extends React.Component {
       vendor: udp => this.renderVendorName(udp),
       harvestingStatus: udp => udp.harvestingStatus,
       aggregator: udp => (udp.aggregator ? this.renderAggregatorName(udp) : 'None'),
-      latestStats: () => 'TODO',
+      latestStats: udp => this.renderLatestReportDate(udp),
     };
 
     return (<SearchAndSort
