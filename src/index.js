@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from 'react-router-dom/Switch';
 import Route from 'react-router-dom/Route';
-import Settings from './settings';
-import UsageDataProviders from './components/UsageDataProviders/UsageDataProviders';
+import Settings from './Settings';
+import UsageDataProviders from './Main';
 
 /*
   STRIPES-NEW-APP
