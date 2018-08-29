@@ -196,25 +196,30 @@ class UsageDataProvidersView extends React.Component {
             <KeyValue label="Content platform" value={_.get(udp, 'platformId', '')} />
           </Col>
         </Row>
-        <HarvestingConfiguration
-          accordionId="harvestingAccordion"
-          usageDataProvider={udp}
-          expanded={this.state.accordions.harvestingAccordion}
+        <Accordion
+          open={this.state.accordions.harvestingAccordion}
           onToggle={this.handleAccordionToggle}
-          stripes={stripes}
-        />
-        <SushiCredentials
-          accordionId="sushiCredsAccordion"
-          usageDataProvider={udp}
-          expanded={this.state.accordions.sushiCredsAccordion}
+          label="Harvesting configuration"
+          id="harvestingAccordion"
+        >
+          <HarvestingConfiguration usageDataProvider={udp} stripes={this.props.stripes} />
+        </Accordion>
+        <Accordion
+          open={this.state.accordions.sushiCredsAccordion}
           onToggle={this.handleAccordionToggle}
-        />
-        <Notes
-          accordionId="notesAccordion"
-          usageDataProvider={udp}
-          expanded={this.state.accordions.notesAccordion}
+          label="SUSHI credentials"
+          id="sushiCredsAccordion"
+        >
+          <SushiCredentials usageDataProvider={udp} />
+        </Accordion>
+        <Accordion
+          open={this.state.accordions.notesAccordion}
           onToggle={this.handleAccordionToggle}
-        />
+          label="Notes"
+          id="notesAccordion"
+        >
+          <Notes usageDataProvider={udp} />
+        </Accordion>
         <Accordion
           open={this.state.accordions.uploadAccordion}
           onToggle={this.handleAccordionToggle}

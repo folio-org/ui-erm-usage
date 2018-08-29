@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import KeyValue from '@folio/stripes-components/lib/KeyValue';
-import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import {
   AggregatorInfo,
   VendorInfo
@@ -11,9 +10,6 @@ import {
 
 class HarvestingConfiguration extends React.Component {
   static propTypes = {
-    expanded: PropTypes.bool,
-    onToggle: PropTypes.func,
-    accordionId: PropTypes.string.isRequired,
     usageDataProvider: PropTypes.object.isRequired,
     stripes: PropTypes.shape({
       connect: PropTypes.func.isRequired,
@@ -39,7 +35,7 @@ class HarvestingConfiguration extends React.Component {
   }
 
   render() {
-    const { usageDataProvider, expanded, accordionId, onToggle } = this.props;
+    const { usageDataProvider } = this.props;
 
     const provider = this.createProvider(usageDataProvider);
 
@@ -53,40 +49,31 @@ class HarvestingConfiguration extends React.Component {
     const reportRelease = counterVersion === 4 ? 'Counter 4' : 'Counter 5';
 
     return (
-      <Accordion
-        open={expanded}
-        onToggle={onToggle}
-        label="Harvesting configuration"
-        id={accordionId}
-      >
-        {
-          <div>
-            <Row>
-              <Col xs={3}>
-                <KeyValue
-                  label="Harvesting status"
-                  value={_.get(usageDataProvider, 'harvestingStatus', '')}
-                />
-              </Col>
-            </Row>
-            { provider }
-            <Row>
-              <Col xs={3}>
-                <KeyValue
-                  label="Report release"
-                  value={reportRelease}
-                />
-              </Col>
-              <Col xs={3}>
-                <KeyValue
-                  label="Requested report"
-                  value={requestedReports}
-                />
-              </Col>
-            </Row>
-          </div>
-        }
-      </Accordion>
+      <div>
+        <Row>
+          <Col xs={3}>
+            <KeyValue
+              label="Harvesting status"
+              value={_.get(usageDataProvider, 'harvestingStatus', '')}
+            />
+          </Col>
+        </Row>
+        { provider }
+        <Row>
+          <Col xs={3}>
+            <KeyValue
+              label="Report release"
+              value={reportRelease}
+            />
+          </Col>
+          <Col xs={3}>
+            <KeyValue
+              label="Requested report"
+              value={requestedReports}
+            />
+          </Col>
+        </Row>
+      </div>
     );
   }
 }
