@@ -14,7 +14,7 @@ class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const useAgg = props.initialValues.aggregator ? props.initialValues.aggregator : false;
+    const useAgg = props.initialValues.aggregator !== undefined || false;
     this.state = {
       use_agg_checkbox: useAgg,
     };
