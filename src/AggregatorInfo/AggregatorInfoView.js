@@ -32,7 +32,7 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
         />
       </Col>
     </Row>);
-}
+};
 
 AggregatorInfoView.propTypes = {
   usageDataProvider: PropTypes.object.isRequired,

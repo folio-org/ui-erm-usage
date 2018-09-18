@@ -158,5 +158,7 @@ class UsageDataProviderForm extends React.Component {
 
 export default stripesForm({
   form: 'form-udProvider',
+  navigationCheck: true,
+  enableReinitialize: true,
   validate
 })(UsageDataProviderForm);

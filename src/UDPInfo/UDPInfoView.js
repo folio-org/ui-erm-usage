@@ -35,7 +35,7 @@ class UDPInfoView extends React.Component {
 
   render() {
     const { usageDataProvider } = this.props;
-    const vendorInfo = this.renderVendorInfo(usageDataProvider);
+    const vendorInfo = usageDataProvider ? this.renderVendorInfo(usageDataProvider) : null;
 
     return (
       <React.Fragment>

@@ -10,6 +10,7 @@ import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
 import IconButton from '@folio/stripes-components/lib/IconButton';
 import IfPermission from '@folio/stripes-components/lib/IfPermission';
 import TitleManager from '@folio/stripes-core/src/components/TitleManager';
+import { Icon } from '@folio/stripes-components';
 
 import UsageDataProviderForm from './UsageDataProviderForm';
 
@@ -21,11 +22,6 @@ import { NotesView } from '../Notes';
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
     query: {},
-    usageDataProvider: {
-      type: 'okapi',
-      path: 'usage-data-providers/:{id}',
-      pk: 'id'
-    }
   });
 
   static propTypes = {
@@ -46,10 +42,12 @@ class UsageDataProviderView extends React.Component {
       query: PropTypes.object,
     }),
     mutator: PropTypes.shape({
-      usageDataProvider: PropTypes.shape({
-        PUT: PropTypes.func.isRequired,
-      }),
       query: PropTypes.object.isRequired,
+    }),
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string
+      })
     }),
     parentResources: PropTypes.shape(),
     parentMutator: PropTypes.shape().isRequired,
@@ -64,6 +62,7 @@ class UsageDataProviderView extends React.Component {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
+    this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
 
     this.state = {
       accordions: {
@@ -73,6 +72,13 @@ class UsageDataProviderView extends React.Component {
         notesAccordion: false
       },
     };
+  }
+
+  getData = () => {
+    const { parentResources, match: { params: { id } } } = this.props;
+    const udp = (parentResources.records || {}).records || [];
+    if (!udp || udp.length === 0 || !id) return null;
+    return udp.find(u => u.id === id);
   }
 
   handleExpandAll = (obj) => {
@@ -93,7 +99,7 @@ class UsageDataProviderView extends React.Component {
   }
 
   update = (udp) => {
-    this.props.mutator.usageDataProvider.PUT(udp).then(() => {
+    this.props.parentMutator.records.PUT(udp).then(() => {
       this.props.onCloseEdit();
     });
   }
@@ -117,114 +123,115 @@ class UsageDataProviderView extends React.Component {
   render() {
     const { resources, stripes } = this.props;
     const query = resources.query;
-    const records = (resources.usageDataProvider || {}).records || [];
-    const udp = records.length
-      ? records[0]
-      : {};
-    const udpFormData = this.getUdpFormData(udp);
+    const initialValues = this.getData();
 
-    const detailMenu = (
-      <PaneMenu>
-        <IfPermission perm="usagedataproviders.item.delete">
+    if (_.isEmpty(initialValues)) {
+      return <div style={{ paddingTop: '1rem' }}><Icon icon="spinner-ellipsis" width="100px" /></div>;
+    } else {
+      const udpFormData = this.getUdpFormData(initialValues);
+      const detailMenu = (
+        <PaneMenu>
+          <IfPermission perm="usagedataproviders.item.delete">
+            <IconButton
+              icon="trashBin"
+              id="clickable-deleteorganization"
+              style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
+              onClick={() => this.deleteUDP(initialValues)}
+              title="Delete Organization"
+            />
+          </IfPermission>
           <IconButton
-            icon="trashBin"
-            id="clickable-deleteorganization"
-            style={{ visibility: !udp ? 'hidden' : 'visible' }}
-            onClick={() => this.deleteUDP(udp)}
-            title="Delete Organization"
+            icon="comment"
+            id="clickable-show-notes"
+            style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
+            onClick={this.props.notesToggle}
+            aria-label="Notes"
           />
-        </IfPermission>
-        <IconButton
-          icon="comment"
-          id="clickable-show-notes"
-          style={{ visibility: !udp ? 'hidden' : 'visible' }}
-          onClick={this.props.notesToggle}
-          aria-label="Notes"
-        />
-        <IfPermission perm="usagedataproviders.item.put">
-          <IconButton
-            icon="edit"
-            id="clickable-editorganization"
-            style={{
-            visibility: !udp
-              ? 'hidden'
-              : 'visible'
-          }}
-            onClick={this.props.onEdit}
-            href={this.props.editLink}
-            title="Edit Organization"
-          />
-        </IfPermission>
-      </PaneMenu>
-    );
-
-    const label = _.get(udp, 'label', 'No LABEL');
-    return (
-      <Pane
-        id="pane-udpdetails"
-        defaultWidth={this.props.paneWidth}
-        paneTitle={label}
-        lastMenu={detailMenu}
-        dismissible
-        onClose={this.props.onClose}
-      >
-        <TitleManager record={label} />
-        <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
-        <UDPInfoView usageDataProvider={udp} stripes={this.props.stripes} />
-        <Accordion
-          open={this.state.accordions.harvestingAccordion}
-          onToggle={this.handleAccordionToggle}
-          label="Harvesting configuration"
-          id="harvestingAccordion"
-        >
-          <HarvestingConfigurationView usageDataProvider={udp} stripes={this.props.stripes} />
-        </Accordion>
-        <Accordion
-          open={this.state.accordions.sushiCredsAccordion}
-          onToggle={this.handleAccordionToggle}
-          label="SUSHI credentials"
-          id="sushiCredsAccordion"
-        >
-          <SushiCredentialsView usageDataProvider={udp} />
-        </Accordion>
-        <Accordion
-          open={this.state.accordions.notesAccordion}
-          onToggle={this.handleAccordionToggle}
-          label="Notes"
-          id="notesAccordion"
-        >
-          <NotesView usageDataProvider={udp} />
-        </Accordion>
-        <Accordion
-          open={this.state.accordions.uploadAccordion}
-          onToggle={this.handleAccordionToggle}
-          label="COUNTER file upload"
-          id="uploadAccordion"
-        >
-          {
-            <Row>
-              <Col xs={3}>
-                <KeyValue label="TODO" value="TODO" />
-              </Col>
-            </Row>
-          }
-        </Accordion>
-
-        <Layer isOpen={query.layer ? query.layer === 'edit' : false} contentLabel="Edit Usage Data Provider Dialog">
-          <UsageDataProviderForm
-            stripes={stripes}
-            initialValues={udpFormData}
-            onSubmit={(record) => { this.update(record); }}
-            onCancel={this.props.onCloseEdit}
-            parentResources={{
-              ...this.props.resources,
-              ...this.props.parentResources,
+          <IfPermission perm="usagedataproviders.item.put">
+            <IconButton
+              icon="edit"
+              id="clickable-editorganization"
+              style={{
+              visibility: !initialValues
+                ? 'hidden'
+                : 'visible'
             }}
-            parentMutator={this.props.parentMutator}
-          />
-        </Layer>
-      </Pane>
-    );
+              onClick={this.props.onEdit}
+              href={this.props.editLink}
+              title="Edit Organization"
+            />
+          </IfPermission>
+        </PaneMenu>
+      );
+
+      const label = _.get(initialValues, 'label', 'No LABEL');
+      return (
+        <Pane
+          id="pane-udpdetails"
+          defaultWidth={this.props.paneWidth}
+          paneTitle={label}
+          lastMenu={detailMenu}
+          dismissible
+          onClose={this.props.onClose}
+        >
+          <TitleManager record={label} />
+          <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
+          <UDPInfoView usageDataProvider={initialValues} stripes={this.props.stripes} />
+          <Accordion
+            open={this.state.accordions.harvestingAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="Harvesting configuration"
+            id="harvestingAccordion"
+          >
+            <HarvestingConfigurationView usageDataProvider={initialValues} stripes={this.props.stripes} />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.sushiCredsAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="SUSHI credentials"
+            id="sushiCredsAccordion"
+          >
+            <SushiCredentialsView usageDataProvider={initialValues} />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.notesAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="Notes"
+            id="notesAccordion"
+          >
+            <NotesView usageDataProvider={initialValues} />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.uploadAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="COUNTER file upload"
+            id="uploadAccordion"
+          >
+            {
+              <Row>
+                <Col xs={3}>
+                  <KeyValue label="TODO" value="TODO" />
+                </Col>
+              </Row>
+            }
+          </Accordion>
+
+          <Layer isOpen={query.layer ? query.layer === 'edit' : false} contentLabel="Edit Usage Data Provider Dialog">
+            <this.connectedUsageDataProviderForm
+              stripes={stripes}
+              initialValues={udpFormData}
+              onSubmit={(record) => { this.update(record); }}
+              onCancel={this.props.onCloseEdit}
+              parentResources={{
+                ...this.props.resources,
+                ...this.props.parentResources,
+              }}
+              parentMutator={this.props.parentMutator}
+            />
+          </Layer>
+        </Pane>
+      );
+    }
   }
 }
 
