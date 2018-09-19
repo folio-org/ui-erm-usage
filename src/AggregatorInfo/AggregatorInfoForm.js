@@ -26,9 +26,10 @@ class AggregatorInfoForm extends React.Component {
       return [];
     }
 
-    return aggregators.map(a => {
+    const aggs = aggregators.map(a => {
       return { value: a.id, label: a.label };
     });
+    return _.sortBy(aggs, ['label', 'value']);
   }
 
   render() {
