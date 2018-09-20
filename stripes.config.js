@@ -7,6 +7,6 @@ module.exports = {
   'modules': {
     '@folio/users': {},
     '@folio/vendors': {},
-    'plugin-find-vendor': {}
+    '@folio/plugin-find-vendor': {}
   },
 };
