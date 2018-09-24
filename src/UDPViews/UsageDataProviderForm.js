@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { change } from 'redux-form';
 import { Button, ExpandAllButton, IconButton, Pane, PaneMenu, Paneset } from '@folio/stripes-components';
 import stripesForm from '@folio/stripes-form';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
@@ -62,6 +63,8 @@ class UsageDataProviderForm extends React.Component {
   constructor(props) {
     super(props);
 
+    const useAgg = _.has(props.initialValues, 'aggregator');
+
     this.state = {
       sections: {
         editUDPInfo: true,
@@ -69,6 +72,7 @@ class UsageDataProviderForm extends React.Component {
         editSushiCredentials: true,
         editNotes: true
       },
+      useAggregator: useAgg
     };
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
@@ -127,6 +131,24 @@ class UsageDataProviderForm extends React.Component {
     });
   }
 
+  changeFormValue = (key, value) => {
+    this.props.stripes.store.dispatch(change('form-udProvider', key, value));
+  }
+
+  /**
+   * If we are using an aggregator the parameters for direct fetching of vendor (serviceUrl and serviceType) shall be null.
+   * If we want to fetch statistics from vendor directly, aggregator shall be null.
+   */
+  changeAggregatorVendor = (useAgg) => {
+    this.setState({ useAggregator: useAgg });
+    if (useAgg) {
+      this.changeFormValue('serviceUrl', null);
+      this.changeFormValue('serviceType', null);
+    } else {
+      this.changeFormValue('aggregator', null);
+    }
+  }
+
   render() {
     const { initialValues, handleSubmit } = this.props;
     const { sections } = this.state;
@@ -146,7 +168,14 @@ class UsageDataProviderForm extends React.Component {
               </Col>
             </Row>
             <UDPInfoForm accordionId="editUDPInfo" expanded={sections.editUDPInfo} onToggle={this.handleSectionToggle} {...this.props} />
-            <HarvestingConfigurationForm accordionId="editHarvestingConfig" expanded={sections.editHarvestingConfig} onToggle={this.handleSectionToggle} {...this.props} />
+            <HarvestingConfigurationForm
+              accordionId="editHarvestingConfig"
+              expanded={sections.editHarvestingConfig}
+              onToggle={this.handleSectionToggle}
+              useAggregator={this.state.useAggregator}
+              changeUseAggregator={this.changeAggregatorVendor}
+              {...this.props}
+            />
             <SushiCredentialsForm accordionId="editSushiCredentials" expanded={sections.editSushiCredentials} onToggle={this.handleSectionToggle} {...this.props} />
             <NotesForm accordionId="editNotes" expanded={sections.editNotes} onToggle={this.handleSectionToggle} {...this.props} />
           </Pane>

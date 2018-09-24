@@ -14,20 +14,16 @@ class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const useAgg = props.initialValues.aggregator !== undefined || false;
-    this.state = {
-      use_agg_checkbox: useAgg,
-    };
     this.handleUseAggChange = this.handleUseAggChange.bind(this);
     this.cAggregatorForm = this.props.stripes.connect(AggregatorInfoForm);
   }
 
   handleUseAggChange(e) {
-    this.setState({ use_agg_checkbox: e.target.checked });
+    this.props.changeUseAggregator(e.target.checked);
   }
 
   render() {
-    const { expanded, onToggle, accordionId } = this.props;
+    const { expanded, onToggle, accordionId, useAggregator } = this.props;
 
     const harvestingStatusOptions =
       [
@@ -73,16 +69,16 @@ class HarvestingConfigurationForm extends React.Component {
                   name="use_aggregator"
                   label="Harvest statistics via an aggregator"
                   onChange={this.handleUseAggChange}
-                  checked={this.state.use_agg_checkbox}
+                  checked={useAggregator}
                 />
               </Col>
-              <this.cAggregatorForm disabled={!this.state.use_agg_checkbox} />
+              <this.cAggregatorForm disabled={!useAggregator} />
             </Row>
             <Row>
               <Col xs={4}>
                 { 'If no aggregator is used please define the vendor\'s SUSHI endpoint' }
               </Col>
-              <VendorInfoForm disabled={this.state.use_agg_checkbox} />
+              <VendorInfoForm disabled={useAggregator} />
             </Row>
             <Row>
               <Col xs={4}>
@@ -111,13 +107,14 @@ class HarvestingConfigurationForm extends React.Component {
 }
 
 HarvestingConfigurationForm.propTypes = {
-  initialValues: PropTypes.object,
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,
   accordionId: PropTypes.string.isRequired,
   stripes: PropTypes.shape({
     connect: PropTypes.func.isRequired,
   }).isRequired,
+  useAggregator: PropTypes.bool.isRequired,
+  changeUseAggregator: PropTypes.func.isRequired,
 };
 
 export default HarvestingConfigurationForm;
