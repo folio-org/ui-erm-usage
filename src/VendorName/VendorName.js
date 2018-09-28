@@ -33,6 +33,7 @@ class VendorName extends React.Component {
   }
 
   fechVendorName = (vendorId) => {
+    this.setState({ vendorName: '-' });
     return fetch(`${this.okapiUrl}/vendor/${vendorId}`, { headers: this.httpHeaders })
       .then((response) => {
         if (response.status >= 400) {
