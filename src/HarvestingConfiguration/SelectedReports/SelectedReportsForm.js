@@ -33,7 +33,7 @@ const SelectedReportsForm = () => (
   <RepeatableField
     name="requestedReports"
     addLabel="Add reports"
-    addButtonId="clickable-add-language"
+    addButtonId="clickable-add-report"
     template={[{
         render(fieldObj) { return renderSelectedReport(fieldObj); },
       }]}

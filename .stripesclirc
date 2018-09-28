@@ -1,4 +1,3 @@
 {
-  "configFile": "stripes.config.js",
-  "url": "http://localhost:9130"
+  "configFile": "stripes.config.js"
 }

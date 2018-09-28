@@ -66,7 +66,7 @@ class HarvestingConfigurationForm extends React.Component {
               <Col xs={4}>
                 { 'Aggregator *' }
                 <Checkbox
-                  name="use_aggregator"
+                  name="useAggregator"
                   label="Harvest statistics via an aggregator"
                   onChange={this.handleUseAggChange}
                   checked={useAggregator}

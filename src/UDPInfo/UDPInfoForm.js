@@ -5,9 +5,7 @@ import { Field } from 'redux-form';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import TextField from '@folio/stripes-components/lib/TextField';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
-import Pluggable from '@folio/stripes-components/lib/Pluggable';
-import css from './VendorView.css';
-import VendorName from '../VendorName';
+import FindVendor from '../FindVendor/FindVendor';
 
 class UDPInfoForm extends React.Component {
   constructor(props) {
@@ -31,59 +29,8 @@ class UDPInfoForm extends React.Component {
     this.setState({ vendorId: v.id });
   }
 
-  renderSelectedVendor() {
-    const disableRecordCreation = true;
-    const selectedVendorId = this.state.vendorId;
-    let vendorDiv;
-    if (_.isEmpty(selectedVendorId)) {
-      vendorDiv =
-        <div className={`${css.section} ${css.active}`}>
-          Please select vendor
-        </div>;
-    } else {
-      vendorDiv =
-        <div className={`${css.section} ${css.active}`}>
-          <VendorName
-            vendorId={selectedVendorId}
-            stripes={this.props.stripes}
-          />
-        </div>;
-    }
-
-    return (
-      <div>
-        Content Vendor *
-        { vendorDiv }
-        <Pluggable
-          aria-haspopup="true"
-          type="find-vendor"
-          id="clickable-find-vendor"
-          {...this.props}
-          searchLabel="Vendor look-up"
-          marginTop0
-          searchButtonStyle="link"
-          dataKey="vendor"
-          selectVendor={this.selectVendor}
-          onCloseModal={(modalProps) => {
-            modalProps.parentMutator.query.update({
-              query: '',
-              filters: '',
-              sort: 'Name',
-            });
-          }}
-          visibleColumns={['name', 'code', 'description']}
-          columnMapping={this.columnMapping}
-          disableRecordCreation={disableRecordCreation}
-        >
-          <div style={{ background: 'red' }}>Plugin not found</div>
-        </Pluggable>
-      </div>
-    );
-  }
-
   render() {
     const { expanded, onToggle, accordionId } = this.props;
-    const vendor = this.renderSelectedVendor();
 
     return (
       <Accordion
@@ -107,7 +54,11 @@ class UDPInfoForm extends React.Component {
                 />
               </Col>
               <Col xs={4}>
-                { vendor }
+                <FindVendor
+                  intialVendorId={this.state.vendorId}
+                  change={this.props.change}
+                  stripes={this.props.stripes}
+                />
               </Col>
               <Col xs={4}>
                 <Field
