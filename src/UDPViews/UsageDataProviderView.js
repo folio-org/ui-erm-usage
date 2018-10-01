@@ -18,6 +18,7 @@ import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import { SushiCredentialsView } from '../SushiCredentials';
 import { NotesView } from '../Notes';
+import StatisticsOverview from '../StatisticsOverview/StatisticsOverview';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -63,13 +64,15 @@ class UsageDataProviderView extends React.Component {
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
+    this.connectedStatisticsOverview = this.props.stripes.connect(StatisticsOverview);
 
     this.state = {
       accordions: {
         harvestingAccordion: true,
         sushiCredsAccordion: false,
         uploadAccordion: false,
-        notesAccordion: false
+        notesAccordion: false,
+        statisticsAccordion: false
       },
     };
   }
@@ -152,10 +155,10 @@ class UsageDataProviderView extends React.Component {
               icon="edit"
               id="clickable-editorganization"
               style={{
-              visibility: !initialValues
-                ? 'hidden'
-                : 'visible'
-            }}
+                visibility: !initialValues
+                  ? 'hidden'
+                  : 'visible'
+              }}
               onClick={this.props.onEdit}
               href={this.props.editLink}
               title="Edit Organization"
@@ -165,6 +168,9 @@ class UsageDataProviderView extends React.Component {
       );
 
       const label = _.get(initialValues, 'label', 'No LABEL');
+      const vendorId = _.get(initialValues, 'vendorId', '');
+      const platformId = _.get(initialValues, 'platformId', '');
+
       return (
         <Pane
           id="pane-udpdetails"
@@ -200,6 +206,18 @@ class UsageDataProviderView extends React.Component {
             id="notesAccordion"
           >
             <NotesView usageDataProvider={initialValues} />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.statisticsAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="Statistics"
+            id="statisticsAccordion"
+          >
+            <this.connectedStatisticsOverview
+              stripes={stripes}
+              vendorId={vendorId}
+              platformId={platformId}
+            />
           </Accordion>
           <Accordion
             open={this.state.accordions.uploadAccordion}
