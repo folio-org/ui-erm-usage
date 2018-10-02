@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { SubmissionError } from 'redux-form';
 import Button from '@folio/stripes-components/lib/Button';
 
 class StatisticsOverview extends React.Component {
@@ -16,9 +17,20 @@ class StatisticsOverview extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
+      okapi: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        tenant: PropTypes.string.isRequired
+      }).isRequired,
+      store: PropTypes.shape({
+        getState: PropTypes.func
+      })
     }).isRequired,
     resources: PropTypes.shape({
       counterReports: PropTypes.shape(),
+    }),
+    mutator: PropTypes.shape({
+      vendorId: PropTypes.object.isRequired,
+      platformId: PropTypes.object.isRequired,
     }),
     vendorId: PropTypes.string.isRequired,
     platformId: PropTypes.string.isRequired,
@@ -32,7 +44,7 @@ class StatisticsOverview extends React.Component {
       'X-Okapi-Token': props.stripes.store.getState().okapi.token,
       'Content-Type': 'application/json',
     });
-    
+
     this.props.mutator.vendorId.replace({ id: props.vendorId });
     this.props.mutator.platformId.replace({ id: props.platformId });
   }

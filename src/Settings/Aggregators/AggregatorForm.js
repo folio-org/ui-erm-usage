@@ -101,7 +101,8 @@ class AggregatorForm extends React.Component {
               onClick={this.beginDelete}
               disabled={confirmDelete}
               marginBottom0
-            >delete
+            >
+              delete
             </Button>
           </IfPermission>
         }
@@ -112,7 +113,8 @@ class AggregatorForm extends React.Component {
           buttonStyle="primary paneHeaderNewButton"
           marginBottom0
           disabled={(pristine || submitting)}
-        >{saveLabel}
+        >
+          {saveLabel}
         </Button>
       </PaneMenu>
     );
@@ -139,7 +141,13 @@ class AggregatorForm extends React.Component {
     const aggregator = initialValues || {};
 
     if (aggregator.id) {
-      return (<div><Icon size="small" icon="edit" /><span>{`Edit: ${aggregator.label}`}</span></div>);
+      return (
+        <div>
+          <Icon size="small" icon="edit" />
+          <span>
+            {`Edit: ${aggregator.label}`}
+          </span>
+        </div>);
     }
 
     return 'New aggregator';

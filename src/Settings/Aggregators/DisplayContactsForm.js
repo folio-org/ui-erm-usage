@@ -8,8 +8,8 @@ const DisplayContactsForm = () => (
     addLabel="Add Display Contact"
     addButtonId="clickable-add-language"
     template={[{
-        component: TextField,
-      }]}
+      component: TextField,
+    }]}
   />
 );
 

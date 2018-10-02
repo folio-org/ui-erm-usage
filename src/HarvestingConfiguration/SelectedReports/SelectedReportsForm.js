@@ -35,8 +35,8 @@ const SelectedReportsForm = () => (
     addLabel="Add reports"
     addButtonId="clickable-add-report"
     template={[{
-        render(fieldObj) { return renderSelectedReport(fieldObj); },
-      }]}
+      render(fieldObj) { return renderSelectedReport(fieldObj); },
+    }]}
   />
 );
 

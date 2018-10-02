@@ -9,7 +9,6 @@ import css from '../UDPInfo/VendorView.css';
 import VendorName from '../VendorName';
 
 class FindVendor extends React.Component {
-
   constructor(props) {
     super(props);
     const id = props.intialVendorId || '';

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
@@ -80,6 +79,7 @@ class UDPInfoForm extends React.Component {
 }
 
 UDPInfoForm.propTypes = {
+  stripes: PropTypes.object,
   initialValues: PropTypes.object,
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,

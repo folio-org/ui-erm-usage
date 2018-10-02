@@ -76,4 +76,3 @@ class AggregatorManager extends React.Component {
 }
 
 export default AggregatorManager;
-
