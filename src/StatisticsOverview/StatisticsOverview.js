@@ -26,6 +26,13 @@ class StatisticsOverview extends React.Component {
 
   constructor(props) {
     super(props);
+    this.okapiUrl = props.stripes.okapi.url;
+    this.httpHeaders = Object.assign({}, {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'Content-Type': 'application/json',
+    });
+    
     this.props.mutator.vendorId.replace({ id: props.vendorId });
     this.props.mutator.platformId.replace({ id: props.platformId });
   }
@@ -39,17 +46,29 @@ class StatisticsOverview extends React.Component {
     }
   }
 
-  downloadStats = (e) => {
-    console.log(e);
-    // TODO: Let user download report
+  downloadReport = (id) => {
+    return fetch(`${this.okapiUrl}/counter-reports/${id}`, { headers: this.httpHeaders })
+      .then((response) => {
+        if (response.status >= 400) {
+          throw new SubmissionError({ identifier: `Error ${response.status} downloading counter report by id`, _error: 'Fetch report failed' });
+        } else {
+          return response.text();
+        }
+      })
+      .then((res) => {
+        const anchor = document.createElement('a');
+        anchor.href = `data:application/json,${res}`;
+        anchor.download = `${id}.json`;
+        anchor.click();
+      });
   }
 
   renderStats = (stats) => {
     return stats.map(e => {
-      const begin = `Begin: ${e.beginDate}`;
-      const report = `Report: ${e.reportName}`;
-      const release = `Release: ${e.release}`;
-      const format = `Format: ${e.format}`;
+      const begin = `Begin: ${e.beginDate} -- `;
+      const report = `Report: ${e.reportName} -- `;
+      const release = `Release: ${e.release} -- `;
+      const format = `Format: ${e.format} -- `;
       const reportId = e.id;
       return (
         <div>
@@ -59,9 +78,9 @@ class StatisticsOverview extends React.Component {
           { format }
           <Button
             id="clickable-download-stats-by-id"
-            onClick={() => this.downloadStats(reportId)}
+            onClick={() => this.downloadReport(reportId)}
           >
-            { `Download ${reportId}` }
+            Download
           </Button>
         </div>
       );
@@ -75,7 +94,7 @@ class StatisticsOverview extends React.Component {
     const numberReports = !_.isEmpty(records) ? records[0].totalRecords : 0;
     const stats = !_.isEmpty(records) ? records[0].counterReports : [];
     const renderedStats = this.renderStats(stats);
-    const res = 'Statistics! Found: ' + numberReports;
+    const res = `Found ${numberReports} reports`;
     return (
       <div>
         { res }
