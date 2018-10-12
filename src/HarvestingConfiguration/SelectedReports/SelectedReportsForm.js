@@ -12,7 +12,7 @@ class SelectedReportsForm extends React.Component {
     return (
       <Fragment>
         <Field
-          label={index === 0 ? 'Select reports' : null}
+          label={index === 0 ? 'Selected report(s)' : null}
           name={identifier}
           type="text"
           component={Select}
@@ -34,6 +34,7 @@ class SelectedReportsForm extends React.Component {
         component={RepeatableField}
         name="requestedReports"
         renderField={this.renderField}
+        emptyMessage="Select at least one report"
       />
     );
   }
