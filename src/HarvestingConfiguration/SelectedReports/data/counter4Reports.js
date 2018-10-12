@@ -105,6 +105,13 @@ const counter4Reports = {
     })
   ),
 
+  getOptions: () => data.map(
+    r => ({
+      label: r.name,
+      value: r.name
+    })
+  ),
+
 };
 
 export default counter4Reports;

@@ -5,6 +5,7 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
+import TextField from '@folio/stripes-components/lib/TextField';
 
 import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from '../AggregatorInfo';
@@ -99,6 +100,31 @@ class HarvestingConfigurationForm extends React.Component {
                 <SelectedReportsForm />
               </Col>
             </Row>
+            <Row>
+              <Col xs={3}>
+                <Field
+                  label="Harvesting start *"
+                  name="harvestingStart"
+                  id="input-harvestingStart"
+                  component={TextField}
+                  placeholder="YYYY-MM"
+                  autoFocus
+                  required
+                  fullWidth
+                />
+              </Col>
+              <Col xs={3}>
+                <Field
+                  label="Harvesting end"
+                  name="harvestingEnd"
+                  id="input-harvestingEnd"
+                  component={TextField}
+                  placeholder="YYYY-MM"
+                  autoFocus
+                  fullWidth
+                />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Accordion>
@@ -115,6 +141,7 @@ HarvestingConfigurationForm.propTypes = {
   }).isRequired,
   useAggregator: PropTypes.bool.isRequired,
   changeUseAggregator: PropTypes.func.isRequired,
+  initialValues: PropTypes.object.isRequired,
 };
 
 export default HarvestingConfigurationForm;

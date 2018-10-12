@@ -45,6 +45,8 @@ class HarvestingConfigurationView extends React.Component {
 
     const counterVersion = _.get(usageDataProvider, 'reportRelease', '');
     const reportRelease = counterVersion === 4 ? 'Counter 4' : 'Counter 5';
+    const harvestingStart = _.get(usageDataProvider, 'harvestingStart', '-');
+    const harvestingEnd = _.get(usageDataProvider, 'harvestingEnd', '-');
 
     return (
       <div>
@@ -68,6 +70,18 @@ class HarvestingConfigurationView extends React.Component {
             <KeyValue
               label="Requested report"
               value={requestedReports}
+            />
+          </Col>
+          <Col xs={3}>
+            <KeyValue
+              label="Harvesting Start"
+              value={harvestingStart}
+            />
+          </Col>
+          <Col xs={3}>
+            <KeyValue
+              label="Harvesting End"
+              value={harvestingEnd}
             />
           </Col>
         </Row>

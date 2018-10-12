@@ -147,7 +147,8 @@ class AggregatorForm extends React.Component {
           <span>
             {`Edit: ${aggregator.label}`}
           </span>
-        </div>);
+        </div>
+      );
     }
 
     return 'New aggregator';
@@ -159,6 +160,11 @@ class AggregatorForm extends React.Component {
     const { confirmDelete, sections } = this.state;
     const disabled = !stripes.hasPerm('settings.erm.enabled');
     const name = aggregator.label || '';
+
+    const serviceTypes =
+      [
+        { value: 'NSS', label: 'Nationaler Statistikserver' },
+      ];
 
     const accountConfigTypes =
       [
@@ -189,13 +195,6 @@ class AggregatorForm extends React.Component {
               onToggle={this.handleSectionToggle}
               label="General information"
             >
-              {/* {servicePoint.metadata && servicePoint.metadata.createdDate &&
-                <Row>
-                  <Col xs={12}>
-                    <this.cViewMetaData metadata={servicePoint.metadata} />
-                  </Col>
-                </Row>
-              } */}
               <Row>
                 <Col xs={8}>
                   <Field
@@ -207,6 +206,16 @@ class AggregatorForm extends React.Component {
                     required
                     fullWidth
                     disabled={disabled}
+                  />
+                  <Field
+                    label="Service Type *"
+                    name="serviceType"
+                    id="input-aggregaor-service-type"
+                    placeholder="Select a service type"
+                    component={Select}
+                    dataOptions={serviceTypes}
+                    required
+                    fullWidth
                   />
                   <Field
                     label="Service URL *"

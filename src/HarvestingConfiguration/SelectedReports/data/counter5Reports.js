@@ -28,6 +28,13 @@ const counter5Reports = {
     })
   ),
 
+  getOptions: () => data.map(
+    r => ({
+      label: r.name,
+      value: r.name
+    })
+  ),
+
 };
 
 export default counter5Reports;
