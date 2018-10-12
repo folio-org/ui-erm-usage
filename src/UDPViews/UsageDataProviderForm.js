@@ -43,6 +43,15 @@ function validate(values) {
     errors.sushiCreds = 'Please fill this in to continue';
   }
 
+  const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/g;
+  if (!values.harvestingStart || !yyyyMMRegex.test(values.harvestingStart)) {
+    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
+  }
+
+  if (values.harvestingEnd && !yyyyMMRegex.test(values.harvestingEnd)) {
+    errors.harvestingEnd = 'Please fill this in the format YYYY-MM to continue';
+  }
+
   return errors;
 }
 
@@ -161,13 +170,26 @@ class UsageDataProviderForm extends React.Component {
     return (
       <form id="form-udp" onSubmit={handleSubmit}>
         <Paneset isRoot>
-          <Pane defaultWidth="100%" firstMenu={firstMenu} lastMenu={lastMenu} paneTitle={paneTitle}>
+          <Pane
+            defaultWidth="100%"
+            firstMenu={firstMenu}
+            lastMenu={lastMenu}
+            paneTitle={paneTitle}
+          >
             <Row end="xs">
               <Col xs>
-                <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
+                <ExpandAllButton
+                  accordionStatus={sections}
+                  onToggle={this.handleExpandAll}
+                />
               </Col>
             </Row>
-            <UDPInfoForm accordionId="editUDPInfo" expanded={sections.editUDPInfo} onToggle={this.handleSectionToggle} {...this.props} />
+            <UDPInfoForm
+              accordionId="editUDPInfo"
+              expanded={sections.editUDPInfo}
+              onToggle={this.handleSectionToggle}
+              {...this.props}
+            />
             <HarvestingConfigurationForm
               accordionId="editHarvestingConfig"
               expanded={sections.editHarvestingConfig}
@@ -176,8 +198,18 @@ class UsageDataProviderForm extends React.Component {
               changeUseAggregator={this.changeAggregatorVendor}
               {...this.props}
             />
-            <SushiCredentialsForm accordionId="editSushiCredentials" expanded={sections.editSushiCredentials} onToggle={this.handleSectionToggle} {...this.props} />
-            <NotesForm accordionId="editNotes" expanded={sections.editNotes} onToggle={this.handleSectionToggle} {...this.props} />
+            <SushiCredentialsForm
+              accordionId="editSushiCredentials"
+              expanded={sections.editSushiCredentials}
+              onToggle={this.handleSectionToggle}
+              {...this.props}
+            />
+            <NotesForm
+              accordionId="editNotes"
+              expanded={sections.editNotes}
+              onToggle={this.handleSectionToggle}
+              {...this.props}
+            />
           </Pane>
         </Paneset>
       </form>

@@ -101,14 +101,26 @@ class HarvestingConfigurationForm extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col xs={3}>
                 <Field
-                  label="Harvesting start * (Format: YYYY-MM)"
+                  label="Harvesting start *"
                   name="harvestingStart"
                   id="input-harvestingStart"
                   component={TextField}
+                  placeholder="YYYY-MM"
                   autoFocus
                   required
+                  fullWidth
+                />
+              </Col>
+              <Col xs={3}>
+                <Field
+                  label="Harvesting end"
+                  name="harvestingEnd"
+                  id="input-harvestingEnd"
+                  component={TextField}
+                  placeholder="YYYY-MM"
+                  autoFocus
                   fullWidth
                 />
               </Col>

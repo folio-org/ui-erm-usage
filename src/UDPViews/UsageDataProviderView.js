@@ -152,10 +152,10 @@ class UsageDataProviderView extends React.Component {
               icon="edit"
               id="clickable-editorganization"
               style={{
-              visibility: !initialValues
-                ? 'hidden'
-                : 'visible'
-            }}
+                visibility: !initialValues
+                  ? 'hidden'
+                  : 'visible'
+              }}
               onClick={this.props.onEdit}
               href={this.props.editLink}
               title="Edit Organization"
@@ -175,15 +175,28 @@ class UsageDataProviderView extends React.Component {
           onClose={this.props.onClose}
         >
           <TitleManager record={label} />
-          <Row end="xs"><Col xs><ExpandAllButton accordionStatus={this.state.accordions} onToggle={this.handleExpandAll} /></Col></Row>
-          <UDPInfoView usageDataProvider={initialValues} stripes={this.props.stripes} />
+          <Row end="xs">
+            <Col xs>
+              <ExpandAllButton
+                accordionStatus={this.state.accordions}
+                onToggle={this.handleExpandAll}
+              />
+            </Col>
+          </Row>
+          <UDPInfoView
+            usageDataProvider={initialValues}
+            stripes={this.props.stripes}
+          />
           <Accordion
             open={this.state.accordions.harvestingAccordion}
             onToggle={this.handleAccordionToggle}
             label="Harvesting configuration"
             id="harvestingAccordion"
           >
-            <HarvestingConfigurationView usageDataProvider={initialValues} stripes={this.props.stripes} />
+            <HarvestingConfigurationView
+              usageDataProvider={initialValues}
+              stripes={this.props.stripes}
+            />
           </Accordion>
           <Accordion
             open={this.state.accordions.sushiCredsAccordion}
@@ -216,7 +229,10 @@ class UsageDataProviderView extends React.Component {
             }
           </Accordion>
 
-          <Layer isOpen={query.layer ? query.layer === 'edit' : false} contentLabel="Edit Usage Data Provider Dialog">
+          <Layer
+            isOpen={query.layer ? query.layer === 'edit' : false}
+            contentLabel="Edit Usage Data Provider Dialog"
+          >
             <this.connectedUsageDataProviderForm
               stripes={stripes}
               initialValues={udpFormData}
