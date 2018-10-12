@@ -8,7 +8,7 @@ class StatisticsOverview extends React.Component {
   static manifest = Object.freeze({
     counterReports: {
       type: 'okapi',
-      path: 'counter-reports?query=(vendorId==%{vendorId.id} and platformId=%{platformId.id}) sortby beginDate/sort.descending',
+      path: 'counter-reports?tiny=true&query=(vendorId==%{vendorId.id} and platformId=%{platformId.id}) sortby yearMonth/sort.descending',
     },
     vendorId: { id: null },
     platformId: { id: null },
@@ -75,28 +75,49 @@ class StatisticsOverview extends React.Component {
       });
   }
 
+  compareYearMonth = (a, b) => {
+    if (a.yearMonth < b.yearMonth) {
+      return -1;
+    }
+    if (a.yearMonth > b.yearMonth) {
+      return 1;
+    }
+    return 0;
+  }
+
   renderStats = (stats) => {
-    return stats.map(e => {
-      const begin = `Begin: ${e.beginDate} -- `;
-      const report = `Report: ${e.reportName} -- `;
-      const release = `Release: ${e.release} -- `;
-      const format = `Format: ${e.format} -- `;
-      const reportId = e.id;
-      return (
-        <div>
-          { begin }
-          { report }
-          { release }
-          { format }
+    return stats.sort(this.compareYearMonth)
+      .map(e => {
+        const yearMonth = `Month: ${e.yearMonth} -- `;
+        const report = `Report: ${e.reportName} -- `;
+        const release = `Release: ${e.release} -- `;
+        const format = `Format: ${e.format} -- `;
+        const reportId = e.id;
+        const isFailed = !!e.failedAttempts; // e.failedAttempts || false;
+
+        const download = isFailed ?
+          <font color="red">
+            <b>
+              failed...
+            </b>
+          </font> :
           <Button
             id="clickable-download-stats-by-id"
             onClick={() => this.downloadReport(reportId)}
           >
             Download
-          </Button>
-        </div>
-      );
-    });
+          </Button>;
+
+        return (
+          <div key={reportId}>
+            { yearMonth }
+            { report }
+            { release }
+            { format }
+            { download }
+          </div>
+        );
+      });
   }
 
   render() {

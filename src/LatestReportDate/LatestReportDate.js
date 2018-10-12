@@ -34,7 +34,7 @@ class LatestReportDate extends React.Component {
 
   fechLatestReportDate = (vendorId) => {
     return fetch(
-      `${this.okapiUrl}/counter-reports?limit=1&query=(vendorId==${vendorId}) sortby beginDate/sort.descending`,
+      `${this.okapiUrl}/counter-reports?tiny=true&limit=1&query=(vendorId==${vendorId} and cql.allRecords=1 NOT failedAttempts="") sortby yearMonth/sort.descending`,
       { headers: this.httpHeaders }
     )
       .then((response) => {
@@ -46,7 +46,7 @@ class LatestReportDate extends React.Component {
       })
       .then((json) => {
         const currentReport = json.counterReports[0];
-        const latestDate = (currentReport && currentReport.beginDate) ? currentReport.beginDate : '-';
+        const latestDate = (currentReport && currentReport.yearMonth) ? currentReport.yearMonth : '-';
         this.setState({
           date: latestDate
         });

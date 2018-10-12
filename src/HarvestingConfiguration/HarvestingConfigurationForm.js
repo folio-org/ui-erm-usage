@@ -141,7 +141,6 @@ HarvestingConfigurationForm.propTypes = {
   }).isRequired,
   useAggregator: PropTypes.bool.isRequired,
   changeUseAggregator: PropTypes.func.isRequired,
-  initialValues: PropTypes.object.isRequired,
 };
 
 export default HarvestingConfigurationForm;

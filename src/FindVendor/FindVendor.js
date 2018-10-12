@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import TextField from '@folio/stripes-components/lib/TextField';
 import Button from '@folio/stripes-components/lib/Button';
-import Pluggable from '@folio/stripes-components/lib/Pluggable';
+import Pluggable from '@folio/stripes-core/src/Pluggable';
 import css from '../UDPInfo/VendorView.css';
 import VendorName from '../VendorName';
 
