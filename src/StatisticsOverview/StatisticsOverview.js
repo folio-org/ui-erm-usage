@@ -85,7 +85,18 @@ class StatisticsOverview extends React.Component {
     return 0;
   }
 
+  groupByYear = (stats) => {
+    stats.forEach(e => {
+      e.year = e.yearMonth.substring(0, 4);
+      e.month = e.yearMonth.substring(5, 7);
+    });
+    return _.groupBy(stats, 'year');
+  }
+
   renderStats = (stats) => {
+
+    const groupedStats = this.groupByYear(stats);
+
     return stats.sort(this.compareYearMonth)
       .map(e => {
         const yearMonth = `Month: ${e.yearMonth} -- `;
@@ -95,14 +106,21 @@ class StatisticsOverview extends React.Component {
         const reportId = e.id;
         const isFailed = !!e.failedAttempts; // e.failedAttempts || false;
 
+
         const download = isFailed ?
           <font color="red">
             <b>
-              failed...
+              <Button
+                id="clickable-download-stats-by-id"
+                buttonStyle="danger"
+              >
+                Failed
+              </Button>
             </b>
           </font> :
           <Button
             id="clickable-download-stats-by-id"
+            buttonStyle="success"
             onClick={() => this.downloadReport(reportId)}
           >
             Download
