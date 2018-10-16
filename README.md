@@ -6,17 +6,19 @@ This software is distributed under the terms of the Apache License, Version 2.0.
 
 ## Introduction
 
-Congratulations on creating a new Stripes UI app module!  Follow the instructions below to run ui-erm-usage and start your development.
+The ERM-Usage UI Module, or `ui-erm-usage`, is a Stripes UI module for managing usage statistics. It allows to enter credentials for accessing usage data providers. These credentials are used by the backend module [mod-erm-usage](https://github.com/folio-org/mod-erm-usage) to harvest usage statistics periodically.
 
 ## Prerequisites
 
 In order to view and log into the platform being served up, a suitable Okapi backend will need to be running. The [Folio testing-backend](https://app.vagrantup.com/folio/boxes/testing-backend) Vagrant box should work if your app does not yet have its own backend module.
 
-## Run your new app
+Additionally, until it is part of the Okapi backends, the [mod-erm-usage](https://github.com/folio-org/mod-erm-usage) module needs to be running.
 
-See [Getting started](docs/getting-started.md "Getting started") for detailed information.
+## Running
 
-Run the following from the ui-erm-usage directory to serve your new app using a development server:
+Note that the following commands require that [`stripes-cli`](https://github.com/folio-org/stripes-cli) is installed globally.
+
+Run the following from the ui-erm directory to serve `ui-erm-usage` by itself using a development server:
 ```
 stripes serve
 ```
@@ -31,20 +33,7 @@ To specify your own tenant ID or to use an Okapi instance other than http://loca
 stripes serve --okapi http://my-okapi.example.com:9130 --tenant my-tenant-id
 ```
 
-
-## Run the tests
-
-Attention: Currently not implemented.
-
-~~Run the included UI test `demo` with the following command:~~
-```
-stripes test --run demo --show
-```
-
-## What to do next?
-
-Now that your new app is running, search the code for "`stripes-new-app`" to find comments and subbed placeholders that may need your attention.
+## More info
 
 Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes-core/blob/master/doc/dev-guide.md).
 
-Update this README with information about your app.
