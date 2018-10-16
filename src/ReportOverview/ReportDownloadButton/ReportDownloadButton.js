@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
 import Button from '@folio/stripes-components/lib/Button';
+import Popover from '@folio/stripes-components/lib/Popover';
 
 class ReportDownloadButton extends React.Component {
   static propTypes = {
@@ -64,22 +65,32 @@ class ReportDownloadButton extends React.Component {
         </Button>
       );
     } else if (report.failedAttempts < 3) {
+      const info = 'Warn: No report available, but will be loaded in future.';
       return (
-        <Button
-          id="clickable-download-stats-by-id"
-          buttonStyle="warning"
-        >
-          N
-        </Button>
+        <Popover>
+          <Button
+            id="clickable-download-stats-by-id"
+            buttonStyle="warning"
+            data-role="target"
+          >
+            N
+          </Button>
+          <p data-role="popover">{info}</p>
+        </Popover>
       );
     } else {
+      const info = 'Error: No report available. Something went wrong. Will NOT try again to fetch report.';
       return (
-        <Button
-          id="clickable-download-stats-by-id"
-          buttonStyle="danger"
-        >
-          N
-        </Button>
+        <Popover>
+          <Button
+            id="clickable-download-stats-by-id"
+            buttonStyle="danger"
+            data-role="target"
+          >
+            N
+          </Button>
+          <p data-role="popover">{info}</p>
+        </Popover>
       );
     }
   }
