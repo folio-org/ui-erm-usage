@@ -18,7 +18,7 @@ import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import { SushiCredentialsView } from '../SushiCredentials';
 import { NotesView } from '../Notes';
-import StatisticsOverview from '../StatisticsOverview/StatisticsOverview';
+import ReportOverview from '../ReportOverview';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -64,7 +64,7 @@ class UsageDataProviderView extends React.Component {
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
-    this.connectedStatisticsOverview = this.props.stripes.connect(StatisticsOverview);
+    this.connectedReportOverview = this.props.stripes.connect(ReportOverview);
 
     this.state = {
       accordions: {
@@ -137,10 +137,10 @@ class UsageDataProviderView extends React.Component {
           <IfPermission perm="usagedataproviders.item.delete">
             <IconButton
               icon="trashBin"
-              id="clickable-deleteorganization"
+              id="clickable-delete-udp"
               style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
               onClick={() => this.deleteUDP(initialValues)}
-              title="Delete Organization"
+              title="Delete Usagedata Provider"
             />
           </IfPermission>
           <IconButton
@@ -153,7 +153,7 @@ class UsageDataProviderView extends React.Component {
           <IfPermission perm="usagedataproviders.item.put">
             <IconButton
               icon="edit"
-              id="clickable-editorganization"
+              id="clickable-edit-udp"
               style={{
                 visibility: !initialValues
                   ? 'hidden'
@@ -161,7 +161,7 @@ class UsageDataProviderView extends React.Component {
               }}
               onClick={this.props.onEdit}
               href={this.props.editLink}
-              title="Edit Organization"
+              title="Edit Usagedata Provider"
             />
           </IfPermission>
         </PaneMenu>
@@ -226,7 +226,7 @@ class UsageDataProviderView extends React.Component {
             label="Statistics"
             id="statisticsAccordion"
           >
-            <this.connectedStatisticsOverview
+            <this.connectedReportOverview
               stripes={stripes}
               vendorId={vendorId}
               platformId={platformId}
