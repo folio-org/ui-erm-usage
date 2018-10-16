@@ -92,6 +92,7 @@ class ReportOverview extends React.Component {
             contentData={reportsOfAYear}
             visibleColumns={visibleColumns}
             columnWidths={columnWidths}
+            interactive={false}
             columnMapping={{
               'report': 'Report',
               '01': 'Jan',
