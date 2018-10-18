@@ -44,7 +44,7 @@ class UDPInfoView extends React.Component {
             <KeyValue label="Content vendor" value={vendorInfo} />
           </Col>
           <Col xs={3}>
-            <KeyValue label="Content platform" value={_.get(usageDataProvider, 'platformId', '')} />
+            <KeyValue label="Content platform" value={_.get(usageDataProvider, 'platformId', '-')} />
           </Col>
         </Row>
       </React.Fragment>

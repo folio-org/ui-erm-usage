@@ -16,13 +16,13 @@ const VendorInfoView = ({ usageDataProvider }) => {
       <Col xs={3}>
         <KeyValue
           label="Service Type"
-          value={_.get(usageDataProvider, 'serviceType', '')}
+          value={_.get(usageDataProvider, 'serviceType', '-')}
         />
       </Col>
       <Col xs={3}>
         <KeyValue
           label="Service Url"
-          value={_.get(usageDataProvider, 'serviceUrl', '')}
+          value={_.get(usageDataProvider, 'serviceUrl', '-')}
         />
       </Col>
     </Row>);

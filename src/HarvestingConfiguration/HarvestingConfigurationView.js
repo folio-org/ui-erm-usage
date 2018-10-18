@@ -54,7 +54,7 @@ class HarvestingConfigurationView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label="Harvesting status"
-              value={_.get(usageDataProvider, 'harvestingStatus', '')}
+              value={_.get(usageDataProvider, 'harvestingStatus', '-')}
             />
           </Col>
         </Row>

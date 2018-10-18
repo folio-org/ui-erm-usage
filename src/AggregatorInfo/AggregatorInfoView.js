@@ -28,7 +28,7 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
       <Col xs={3}>
         <KeyValue
           label="Vendor code"
-          value={_.get(usageDataProvider, 'aggregator.vendorCode', '')}
+          value={_.get(usageDataProvider, 'aggregator.vendorCode', '-')}
         />
       </Col>
     </Row>);
