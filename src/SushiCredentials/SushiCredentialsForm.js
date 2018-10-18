@@ -55,7 +55,7 @@ const SushiCredentialsForm = ({ expanded, onToggle, accordionId }) => {
                 label="Requestor name"
                 name="requestorName"
                 id="addudp_reqname"
-                placeholder="Enter the SUSHI reuestor name"
+                placeholder="Enter the SUSHI requestor name"
                 component={TextField}
                 fullWidth
               />
@@ -65,7 +65,7 @@ const SushiCredentialsForm = ({ expanded, onToggle, accordionId }) => {
                 label="Requestor Mail"
                 name="requestorMail"
                 id="addudp_requestormail"
-                placeholder="Enter the SUSHI reuestor mail"
+                placeholder="Enter the SUSHI requestor mail"
                 component={TextField}
                 fullWidth
               />
