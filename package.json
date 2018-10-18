@@ -41,7 +41,7 @@
   },
   "stripes": {
     "type": "app",
-    "displayName": "eUsage",
+    "displayName": "ERM-Usage",
     "route": "/ermusage",
     "home": "/ermusage",
     "hasSettings": true,
