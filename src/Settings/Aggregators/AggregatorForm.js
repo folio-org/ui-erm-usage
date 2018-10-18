@@ -163,7 +163,7 @@ class AggregatorForm extends React.Component {
 
     const serviceTypes =
       [
-        { value: 'NSS', label: 'Nationaler Statistikserver' },
+        { value: 'NSS', label: 'Nationaler Statistikserver (NSS)' },
       ];
 
     const accountConfigTypes =

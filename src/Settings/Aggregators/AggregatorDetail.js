@@ -69,16 +69,10 @@ class AggregatorDetails extends React.Component {
           onToggle={this.handleSectionToggle}
           label="General Information"
         >
-          {/* {servicePoint.metadata && servicePoint.metadata.createdDate &&
-            <Row>
-              <Col xs={12}>
-                <this.cViewMetaData metadata={servicePoint.metadata} />
-              </Col>
-            </Row>
-          } */}
           <Row>
             <Col xs={4}>
               <KeyValue label="Name" value={aggregator.label} />
+              <KeyValue label="Service Type" value={aggregator.serviceType} />
               <KeyValue label="Service URL" value={aggregator.serviceUrl} />
             </Col>
           </Row>
