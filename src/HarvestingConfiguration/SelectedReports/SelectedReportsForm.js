@@ -6,24 +6,27 @@ import counter4Reports from './data/counter4Reports';
 import counter5Reports from './data/counter5Reports';
 
 class SelectedReportsForm extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.counter4Options = counter4Reports.getOptions();
+    this.counter5Options = counter5Reports.getOptions();
+  }
+
   renderField = (identifier, index) => {
-    const counter4Options = counter4Reports.getOptions();
-    const counter5Options = counter5Reports.getOptions();
     return (
-      <Fragment>
-        <Field
-          label={index === 0 ? 'Selected report(s)' : null}
-          name={identifier}
-          type="text"
-          component={Select}
-          dataOptions={[
-            { label: 'Counter 4 Reports', value: '', disabled: true },
-            ...counter4Options,
-            { label: 'Counter 5 Reports', value: '', disabled: true },
-            ...counter5Options
-          ]}
-        />
-      </Fragment>
+      <Field
+        label={index === 0 ? 'Selected report(s)' : null}
+        name={identifier}
+        component={Select}
+        dataOptions={[
+          { label: 'Counter 4 Reports', value: '', disabled: true },
+          ...this.counter4Options,
+          { label: 'Counter 5 Reports', value: '', disabled: true },
+          ...this.counter5Options
+        ]}
+      />
     );
   }
 
