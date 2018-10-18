@@ -132,6 +132,7 @@ class UsageDataProviders extends React.Component {
     const resultsFormatter = {
       name: udp => udp.label,
       vendor: udp => this.renderVendorName(udp),
+      platform: udp => udp.platformId,
       harvestingStatus: udp => udp.harvestingStatus,
       aggregator: udp => (udp.aggregator ? this.renderAggregatorName(udp) : 'None'),
       latestStats: udp => this.renderLatestReportDate(udp),
@@ -146,7 +147,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['name', 'vendor', 'harvestingStatus', 'aggregator', 'latestStats']}
+      visibleColumns={['name', 'vendor', 'platform', 'harvestingStatus', 'aggregator', 'latestStats']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -159,6 +160,7 @@ class UsageDataProviders extends React.Component {
       columnMapping={{
         name: 'Provider Name',
         vendor: 'Vendor',
+        platform: 'Platform',
         harvestingStatus: 'Harvesting Status',
         aggregator: 'Aggregator',
         latestStats: 'Latest Statistics'
