@@ -11,6 +11,7 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     <AggregatorName
       aggregatorId={aggregatorId}
       stripes={stripes}
+      asLink
     />
   );
 

@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { SubmissionError } from 'redux-form';
 
 class AggregatorName extends React.Component {
   static propTypes = {
     aggregatorId: PropTypes.string.isRequired,
     stripes: PropTypes.object,
+    asLink: PropTypes.bool,
+  }
+
+  defaultProps = {
+    asLink: false,
   }
 
   constructor(props) {
@@ -48,10 +54,24 @@ class AggregatorName extends React.Component {
       });
   }
 
+  renderAggregatorName = (aggregatorName, aggregatorId, asLink, stripes) => {
+    if (asLink && stripes.hasPerm('settings.erm-usage.enabled')) {
+      return (
+        <Link to={`/settings/ermusage/aggregators/${aggregatorId}`}>
+          {aggregatorName}
+        </Link>
+      );
+    } else {
+      return aggregatorName;
+    }
+  }
+
   render() {
+    const { stripes, asLink, aggregatorId } = this.props;
+    const aggName = this.renderAggregatorName(this.state.aggregatorName, aggregatorId, asLink, stripes);
     return (
       <div>
-        {this.state.aggregatorName}
+        {aggName}
       </div>
     );
   }
