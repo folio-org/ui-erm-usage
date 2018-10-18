@@ -52,25 +52,23 @@ class AggregatorManager extends React.Component {
     const entryList = _.sortBy((this.props.resources.entries || {}).records || [], ['label']);
 
     return (
-      <Pane defaultWidth="fill" fluidContentWidth>
-        <EntryManager
-          {...this.props}
-          parentMutator={this.props.mutator}
-          entryList={entryList}
-          detailComponent={AggregatorDetails}
-          entryFormComponent={this.cAggregatorForm}
-          paneTitle={this.props.label}
-          entryLabel={this.props.label}
-          onSelect={this.onSelect}
-          validate={this.validate}
-          nameKey="label"
-          permissions={{
-            put: 'settings.erm.enabled',
-            post: 'settings.erm.enabled',
-            delete: 'settings.erm.enabled',
-          }}
-        />
-      </Pane>
+      <EntryManager
+        {...this.props}
+        parentMutator={this.props.mutator}
+        entryList={entryList}
+        detailComponent={AggregatorDetails}
+        entryFormComponent={this.cAggregatorForm}
+        paneTitle={this.props.label}
+        entryLabel={this.props.label}
+        onSelect={this.onSelect}
+        validate={this.validate}
+        nameKey="label"
+        permissions={{
+          put: 'settings.erm.enabled',
+          post: 'settings.erm.enabled',
+          delete: 'settings.erm.enabled',
+        }}
+      />
     );
   }
 }
