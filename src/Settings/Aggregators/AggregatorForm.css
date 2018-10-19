@@ -1,0 +1,9 @@
+.AggregatorFormRoot {
+  height: 100%;
+  overflow: auto;
+}
+
+.AggregatorFormContent {
+  margin: 0 auto;
+  max-width: 50em;
+}

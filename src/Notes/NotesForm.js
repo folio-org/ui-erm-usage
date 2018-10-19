@@ -14,7 +14,7 @@ const NotesForm = ({ expanded, onToggle, accordionId }) => {
       onToggle={onToggle}
     >
       <Row>
-        <Col xs={12}>
+        <Col xs>
           <Field
             label="Notes"
             name="notes"

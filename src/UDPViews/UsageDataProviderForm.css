@@ -1,0 +1,9 @@
+.UDPFormRoot {
+  height: 100%;
+  overflow: auto;
+}
+
+.UDPFormContent {
+  margin: 0 auto;
+  max-width: 50em;
+}

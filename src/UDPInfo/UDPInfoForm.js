@@ -39,7 +39,7 @@ class UDPInfoForm extends React.Component {
         onToggle={onToggle}
       >
         <Row>
-          <Col xs={8}>
+          <Col xs>
             <Row>
               <Col xs={4}>
                 <Field

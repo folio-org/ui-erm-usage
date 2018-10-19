@@ -14,7 +14,7 @@ const SushiCredentialsForm = ({ expanded, onToggle, accordionId }) => {
       onToggle={onToggle}
     >
       <Row>
-        <Col xs={8}>
+        <Col xs>
           <Row>
             <Col xs={4}>
               <Field

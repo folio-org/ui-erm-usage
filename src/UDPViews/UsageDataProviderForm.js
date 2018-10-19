@@ -10,6 +10,7 @@ import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 import { SushiCredentialsForm } from '../SushiCredentials';
 import { NotesForm } from '../Notes';
+import css from './UsageDataProviderForm.css';
 
 function validate(values) {
   const errors = {};
@@ -168,7 +169,7 @@ class UsageDataProviderForm extends React.Component {
       this.getLastMenu('clickable-createnewudp', 'Create UsageDataProvider');
 
     return (
-      <form id="form-udp" onSubmit={handleSubmit}>
+      <form className={css.UDPFormRoot} id="form-udp" onSubmit={handleSubmit}>
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
@@ -176,40 +177,42 @@ class UsageDataProviderForm extends React.Component {
             lastMenu={lastMenu}
             paneTitle={paneTitle}
           >
-            <Row end="xs">
-              <Col xs>
-                <ExpandAllButton
-                  accordionStatus={sections}
-                  onToggle={this.handleExpandAll}
-                />
-              </Col>
-            </Row>
-            <UDPInfoForm
-              accordionId="editUDPInfo"
-              expanded={sections.editUDPInfo}
-              onToggle={this.handleSectionToggle}
-              {...this.props}
-            />
-            <HarvestingConfigurationForm
-              accordionId="editHarvestingConfig"
-              expanded={sections.editHarvestingConfig}
-              onToggle={this.handleSectionToggle}
-              useAggregator={this.state.useAggregator}
-              changeUseAggregator={this.changeAggregatorVendor}
-              {...this.props}
-            />
-            <SushiCredentialsForm
-              accordionId="editSushiCredentials"
-              expanded={sections.editSushiCredentials}
-              onToggle={this.handleSectionToggle}
-              {...this.props}
-            />
-            <NotesForm
-              accordionId="editNotes"
-              expanded={sections.editNotes}
-              onToggle={this.handleSectionToggle}
-              {...this.props}
-            />
+            <div className={css.UDPFormContent}>
+              <Row end="xs">
+                <Col xs>
+                  <ExpandAllButton
+                    accordionStatus={sections}
+                    onToggle={this.handleExpandAll}
+                  />
+                </Col>
+              </Row>
+              <UDPInfoForm
+                accordionId="editUDPInfo"
+                expanded={sections.editUDPInfo}
+                onToggle={this.handleSectionToggle}
+                {...this.props}
+              />
+              <HarvestingConfigurationForm
+                accordionId="editHarvestingConfig"
+                expanded={sections.editHarvestingConfig}
+                onToggle={this.handleSectionToggle}
+                useAggregator={this.state.useAggregator}
+                changeUseAggregator={this.changeAggregatorVendor}
+                {...this.props}
+              />
+              <SushiCredentialsForm
+                accordionId="editSushiCredentials"
+                expanded={sections.editSushiCredentials}
+                onToggle={this.handleSectionToggle}
+                {...this.props}
+              />
+              <NotesForm
+                accordionId="editNotes"
+                expanded={sections.editNotes}
+                onToggle={this.handleSectionToggle}
+                {...this.props}
+              />
+            </div>
           </Pane>
         </Paneset>
       </form>

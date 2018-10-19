@@ -6,7 +6,7 @@ import { Accordion } from '@folio/stripes-components/lib/Accordion';
 import Checkbox from '@folio/stripes-components/lib/Checkbox';
 import Select from '@folio/stripes-components/lib/Select';
 import TextField from '@folio/stripes-components/lib/TextField';
-
+import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from '../AggregatorInfo';
 import { VendorInfoForm } from '../VendorInfo';
@@ -48,7 +48,7 @@ class HarvestingConfigurationForm extends React.Component {
         onToggle={onToggle}
       >
         <Row>
-          <Col xs={8}>
+          <Col xs>
             <Row>
               <Col xs={4}>
                 <Field
@@ -65,7 +65,9 @@ class HarvestingConfigurationForm extends React.Component {
             </Row>
             <Row>
               <Col xs={4}>
-                { 'Aggregator *' }
+                <div className={formCss.label}>
+                  { 'Aggregator *' }
+                </div>
                 <Checkbox
                   name="useAggregator"
                   label="Harvest statistics via an aggregator"
@@ -95,9 +97,7 @@ class HarvestingConfigurationForm extends React.Component {
                 />
               </Col>
               <Col xs={8}>
-                { 'Requested reports *' }
-                <br />
-                <SelectedReportsForm />
+                <SelectedReportsForm label="Requested reports *" />
               </Col>
             </Row>
             <Row>

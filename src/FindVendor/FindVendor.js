@@ -5,6 +5,7 @@ import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
 import TextField from '@folio/stripes-components/lib/TextField';
 import Button from '@folio/stripes-components/lib/Button';
 import Pluggable from '@folio/stripes-core/src/Pluggable';
+import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
 import css from '../UDPInfo/VendorView.css';
 import VendorName from '../VendorName';
 
@@ -115,7 +116,11 @@ class FindVendor extends React.Component {
 
     return (
       <React.Fragment>
-        Content Vendor Id *
+        <div
+          className={formCss.label}
+        >
+          Content Vendor Id *
+        </div>
         <Row>
           <Col xs={8}>
             { vendorIdField }
@@ -125,10 +130,14 @@ class FindVendor extends React.Component {
           </Col>
         </Row>
         <Row>
-          { pluggable }
+          <Col xs>
+            { pluggable }
+          </Col>
         </Row>
         <Row>
-          { vendorName }
+          <Col xs>
+            { vendorName }
+          </Col>
         </Row>
       </React.Fragment>
     );

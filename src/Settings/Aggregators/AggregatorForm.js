@@ -17,6 +17,7 @@ import stripesForm from '@folio/stripes-form';
 import ConfirmationModal from '@folio/stripes-components/lib/ConfirmationModal';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
+import css from './AggregatorForm.css';
 
 class AggregatorForm extends React.Component {
   static propTypes = {
@@ -181,136 +182,135 @@ class AggregatorForm extends React.Component {
     );
 
     return (
-      <form id="form-service-point" onSubmit={handleSubmit(this.save)}>
+      <form id="form-service-point" className={css.AggregatorFormRoot} onSubmit={handleSubmit(this.save)}>
         <Paneset isRoot>
           <Pane defaultWidth="100%" firstMenu={this.addFirstMenu()} lastMenu={this.saveLastMenu()} paneTitle={this.renderPaneTitle()}>
-            <Row end="xs">
-              <Col xs>
-                <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
-              </Col>
-            </Row>
-            <Accordion
-              open={sections.generalSection}
-              id="generalSection"
-              onToggle={this.handleSectionToggle}
-              label="General information"
-            >
-              <Row>
-                <Col xs={8}>
-                  <Field
-                    label="Name *"
-                    name="label"
-                    id="input-aggregaor-label"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                  <Field
-                    label="Service Type *"
-                    name="serviceType"
-                    id="input-aggregaor-service-type"
-                    placeholder="Select a service type"
-                    component={Select}
-                    dataOptions={serviceTypes}
-                    required
-                    fullWidth
-                  />
-                  <Field
-                    label="Service URL *"
-                    name="serviceUrl"
-                    id="input-aggregaor-service-url"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
+            <div className={css.AggregatorFormContent}>
+              <Row end="xs">
+                <Col xs>
+                  <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
                 </Col>
               </Row>
-              <Row>
-                <Col xs={8}>
-                  <Field
-                    label="Username *"
-                    name="username"
-                    id="input-aggregaor-username"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                  <Field
-                    label="Password *"
-                    name="password"
-                    id="input-aggregaor-password"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                  <Field
-                    label="API Key *"
-                    name="apiKey"
-                    id="input-aggregaor-api-key"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                </Col>
-              </Row>
-            </Accordion>
+              <Accordion
+                open={sections.generalSection}
+                id="generalSection"
+                onToggle={this.handleSectionToggle}
+                label="General information"
+              >
+                <Row>
+                  <Col xs={8}>
+                    <Field
+                      label="Name *"
+                      name="label"
+                      id="input-aggregaor-label"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Service Type *"
+                      name="serviceType"
+                      id="input-aggregaor-service-type"
+                      placeholder="Select a service type"
+                      component={Select}
+                      dataOptions={serviceTypes}
+                      required
+                      fullWidth
+                    />
+                    <Field
+                      label="Service URL *"
+                      name="serviceUrl"
+                      id="input-aggregaor-service-url"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={8}>
+                    <Field
+                      label="Username *"
+                      name="username"
+                      id="input-aggregaor-username"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Password *"
+                      name="password"
+                      id="input-aggregaor-password"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="API Key *"
+                      name="apiKey"
+                      id="input-aggregaor-api-key"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                  </Col>
+                </Row>
+              </Accordion>
 
-            <Accordion
-              open={sections.accountConfig}
-              id="accountConfig"
-              onToggle={this.handleSectionToggle}
-              label="Account Configuration"
-            >
-              <Row>
-                <Col xs={8}>
-                  <Field
-                    label="Config type *"
-                    name="accountConfig.configType"
-                    id="input-aggregaor-account-type"
-                    placeholder="Select a config type"
-                    component={Select}
-                    dataOptions={accountConfigTypes}
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                  <Field
-                    label="Config mail *"
-                    name="accountConfig.configMail"
-                    id="input-aggregaor-service-url"
-                    component={TextField}
-                    autoFocus
-                    required
-                    fullWidth
-                    disabled={disabled}
-                  />
-                  <div>
-                    Display Contacts
+              <Accordion
+                open={sections.accountConfig}
+                id="accountConfig"
+                onToggle={this.handleSectionToggle}
+                label="Account Configuration"
+              >
+                <Row>
+                  <Col xs={8}>
+                    <Field
+                      label="Config type *"
+                      name="accountConfig.configType"
+                      id="input-aggregaor-account-type"
+                      placeholder="Select a config type"
+                      component={Select}
+                      dataOptions={accountConfigTypes}
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Config mail *"
+                      name="accountConfig.configMail"
+                      id="input-aggregaor-service-url"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
                     <DisplayContactsForm />
-                  </div>
-                </Col>
-              </Row>
-            </Accordion>
+                  </Col>
+                </Row>
+              </Accordion>
 
-            <ConfirmationModal
-              id="deleteaggregator-confirmation"
-              open={confirmDelete}
-              heading="Delete Aggregator"
-              message={confirmationMessage}
-              onConfirm={() => { this.confirmDelete(true); }}
-              onCancel={() => { this.confirmDelete(false); }}
-              confirmLabel="Delete Aggregator"
-            />
+              <ConfirmationModal
+                id="deleteaggregator-confirmation"
+                open={confirmDelete}
+                heading="Delete Aggregator"
+                message={confirmationMessage}
+                onConfirm={() => { this.confirmDelete(true); }}
+                onCancel={() => { this.confirmDelete(false); }}
+                confirmLabel="Delete Aggregator"
+              />
+            </div>
           </Pane>
         </Paneset>
       </form>

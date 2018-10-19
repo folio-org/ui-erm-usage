@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Field, FieldArray } from 'redux-form';
 import Select from '@folio/stripes-components/lib/Select';
 import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
+import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
 import counter4Reports from './data/counter4Reports';
 import counter5Reports from './data/counter5Reports';
 
@@ -17,7 +19,6 @@ class SelectedReportsForm extends React.Component {
   renderField = (identifier, index) => {
     return (
       <Field
-        label={index === 0 ? 'Selected report(s)' : null}
         name={identifier}
         component={Select}
         dataOptions={[
@@ -32,15 +33,23 @@ class SelectedReportsForm extends React.Component {
 
   render() {
     return (
-      <FieldArray
-        addLabel="+ Add report"
-        component={RepeatableField}
-        name="requestedReports"
-        renderField={this.renderField}
-        emptyMessage="Select at least one report"
-      />
+      <Fragment>
+        <div className={formCss.label}>
+          {this.props.label}
+        </div>
+        <FieldArray
+          addLabel="+ Add report"
+          component={RepeatableField}
+          name="requestedReports"
+          renderField={this.renderField}
+        />
+      </Fragment>
     );
   }
 }
+
+SelectedReportsForm.propTypes = {
+  label: PropTypes.string,
+};
 
 export default SelectedReportsForm;

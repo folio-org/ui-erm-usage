@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
-import TextField from '@folio/stripes-components/lib/TextField';
-import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
+import {
+  TextField,
+  RepeatableField
+} from '@folio/stripes-components';
+import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
 import { Field, FieldArray } from 'redux-form';
 
 class DisplayContactsForm extends React.Component {
@@ -8,7 +11,6 @@ class DisplayContactsForm extends React.Component {
     return (
       <Fragment>
         <Field
-          label="Add Display Contact"
           name={identifier}
           id="input-display-contact"
           component={TextField}
@@ -19,12 +21,17 @@ class DisplayContactsForm extends React.Component {
 
   render() {
     return (
-      <FieldArray
-        addLabel="+ Add Display Contact"
-        component={RepeatableField}
-        name="accountConfig.displayContact"
-        renderField={this.renderField}
-      />
+      <Fragment>
+        <div className={formCss.label}>
+          Contacts
+        </div>
+        <FieldArray
+          addLabel="+ Add contact"
+          component={RepeatableField}
+          name="accountConfig.displayContact"
+          renderField={this.renderField}
+        />
+      </Fragment>
     );
   }
 }
