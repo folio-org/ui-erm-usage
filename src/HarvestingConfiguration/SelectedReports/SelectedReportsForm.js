@@ -1,55 +1,185 @@
-import React, { Fragment } from 'react';
+import _ from 'lodash';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldArray } from 'redux-form';
-import Select from '@folio/stripes-components/lib/Select';
-import RepeatableField from '@folio/stripes-components/lib/RepeatableField';
+import { FieldArray } from 'redux-form';
+import {
+  Icon,
+  Button,
+  Dropdown,
+  DropdownMenu,
+  List,
+  ConfirmationModal
+} from '@folio/stripes/components';
 import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
-import counter4Reports from './data/counter4Reports';
-import counter5Reports from './data/counter5Reports';
+import counterReports from './data/counterReports';
+import ReportList from '../ReportList';
 
 class SelectedReportsForm extends React.Component {
+  static propTypes = {
+    initialValues: PropTypes.object,
+    counterVersion: PropTypes.string,
+    label: PropTypes.string,
+  };
 
   constructor(props) {
     super(props);
 
-    this.counter4Options = counter4Reports.getOptions();
-    this.counter5Options = counter5Reports.getOptions();
+    this.state = {
+      addReportOpen: false,
+      searchTerm: '',
+      confirmClear: false,
+    };
+    this.fields = null;
+    this.counterReports = counterReports.getOptions();
   }
 
-  renderField = (identifier, index) => {
+  componentDidUpdate(prevProps) {
+    if (this.props.counterVersion !== prevProps.counterVersion) {
+      if (!_.isEmpty(this.fields)) {
+        this.beginClearReports();
+      }
+    }
+  }
+
+  beginClearReports = () => {
+    this.setState({
+      confirmClear: true,
+    });
+  }
+
+  confirmClearReports = (confirmation) => {
+    if (confirmation) {
+      this.fields.removeAll();
+      setTimeout(() => {
+        this.forceUpdate();
+      });
+    }
+    this.setState({ confirmClear: false });
+  }
+
+  onChangeSearch = (e) => {
+    const searchTerm = e.target.value;
+    this.setState({ searchTerm });
+  }
+
+  onToggleAddReport = () => {
+    const isOpen = this.state.addReportOpen;
+    this.setState({
+      addReportOpen: !isOpen,
+      searchTerm: ''
+    });
+  }
+
+  addReportHandler = (report) => {
+    this.fields.unshift(report);
+    setTimeout(() => this.onToggleAddReport());
+  }
+
+  isReportAvailable = (report) => {
+    return _.includes(report.value.toLowerCase(),
+      this.state.searchTerm.toLowerCase());
+  }
+
+  removeReport = (index) => {
+    this.fields.remove(index);
+    setTimeout(() => this.forceUpdate());
+  }
+
+  renderItem = (item, index) => {
+    const title = 'Add Report Title';
     return (
-      <Field
-        name={identifier}
-        component={Select}
-        dataOptions={[
-          { label: 'Counter 4 Reports', value: '', disabled: true },
-          ...this.counter4Options,
-          { label: 'Counter 5 Reports', value: '', disabled: true },
-          ...this.counter5Options
-        ]}
+      <li key={item}>
+        {item}
+        <Button
+          buttonStyle="fieldControl"
+          align="end"
+          type="button"
+          id="clickable-remove-report"
+          onClick={() => this.removeReport(index)}
+          aria-label={item}
+          title={title}
+        >
+          <Icon icon="hollowX" />
+        </Button>
+      </li>
+    );
+  }
+
+  renderList = ({ fields }) => {
+    this.fields = fields;
+    const listFormatter = (fieldName, index) => (this.renderItem(fields.get(index), index));
+
+    return (
+      <List
+        items={fields}
+        itemFormatter={listFormatter}
+        isEmptyMessage="No Report"
       />
     );
   }
 
   render() {
+    const { confirmClear } = this.state;
+
+    const counterVersion = this.props.counterVersion || this.props.initialValues.reportRelease;
+    const counterReportsCurrentVersion = _.filter(this.counterReports, ['counterVersion', '' + counterVersion]);
+    const availReportNames = _.filter(counterReportsCurrentVersion, this.isReportAvailable).map(f => f.value);
+
+    const confirmationMessage = 'Do you want to clear selected reports when changing Counter version?';
+
+    const reports = (
+      <ReportList
+        items={availReportNames}
+        onClickItem={this.addReportHandler}
+        onChangeSearch={this.onChangeSearch}
+        counterVersion={counterVersion}
+      />
+    );
+
+    const reportsDropdownButton = (
+      <Dropdown
+        id="section-add-report"
+        style={{ float: 'right' }}
+        pullRight
+        open={this.state ? this.state.addReportOpen : false}
+        onToggle={this.onToggleAddReport}
+      >
+        <Button align="end" bottomMargin0 data-role="toggle" aria-haspopup="true" id="clickable-add-report">
+          &#43;
+          {' '}
+          Add Report
+        </Button>
+        <DropdownMenu
+          data-role="menu"
+          width="40em"
+          aria-label="Available Reports"
+          onToggle={this.onToggleAddReport}
+        >
+          {reports}
+        </DropdownMenu>
+      </Dropdown>
+    );
+
     return (
-      <Fragment>
+      <React.Fragment>
         <div className={formCss.label}>
           {this.props.label}
         </div>
-        <FieldArray
-          addLabel="+ Add report"
-          component={RepeatableField}
-          name="requestedReports"
-          renderField={this.renderField}
+        <div>{reportsDropdownButton}</div>
+        <FieldArray name="requestedReports" component={this.renderList} />
+
+        <ConfirmationModal
+          id="clear-report-selection-confirmation"
+          open={confirmClear}
+          heading="Clear report selection"
+          message={confirmationMessage}
+          onConfirm={() => { this.confirmClearReports(true); }}
+          onCancel={() => { this.confirmClearReports(false); }}
+          confirmLabel="Clear reports"
         />
-      </Fragment>
+      </React.Fragment>
     );
   }
 }
-
-SelectedReportsForm.propTypes = {
-  label: PropTypes.string,
-};
 
 export default SelectedReportsForm;

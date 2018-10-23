@@ -39,6 +39,7 @@ class HarvestingConfigurationForm extends React.Component {
         { value: '4', label: 'Counter 4' },
         { value: '5', label: 'Counter 5' },
       ];
+    const selectedCounterVersion = this.props.stripes.store.getState().form['form-udProvider'].values.reportRelease;
 
     return (
       <Accordion
@@ -97,7 +98,11 @@ class HarvestingConfigurationForm extends React.Component {
                 />
               </Col>
               <Col xs={8}>
-                <SelectedReportsForm label="Requested reports *" />
+                <SelectedReportsForm
+                  label="Requested reports *"
+                  initialValues={this.props.initialValues}
+                  counterVersion={selectedCounterVersion}
+                />
               </Col>
             </Row>
             <Row>
@@ -138,9 +143,13 @@ HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,
   stripes: PropTypes.shape({
     connect: PropTypes.func.isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func.isRequired,
+    }).isRequired,
   }).isRequired,
   useAggregator: PropTypes.bool.isRequired,
   changeUseAggregator: PropTypes.func.isRequired,
+  initialValues: PropTypes.object,
 };
 
 export default HarvestingConfigurationForm;
