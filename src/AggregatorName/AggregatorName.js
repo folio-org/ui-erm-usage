@@ -1,7 +1,11 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { SubmissionError } from 'redux-form';
+import {
+  InfoPopover
+} from '@folio/stripes/components';
 
 class AggregatorName extends React.Component {
   static propTypes = {
@@ -25,6 +29,7 @@ class AggregatorName extends React.Component {
 
     this.state = {
       aggregatorName: '-',
+      contact: '-'
     };
   }
 
@@ -49,7 +54,8 @@ class AggregatorName extends React.Component {
       })
       .then((json) => {
         this.setState({
-          aggregatorName: json.label
+          aggregatorName: json.label,
+          contact: json.accountConfig.displayContact
         });
       });
   }
@@ -66,12 +72,24 @@ class AggregatorName extends React.Component {
     }
   }
 
+  renderContactInfo = (contactInfo, asLink) => {
+    if (asLink && !_.isEmpty(contactInfo) && !(contactInfo === '-')) {
+      return (
+        <InfoPopover content={contactInfo} />
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { stripes, asLink, aggregatorId } = this.props;
     const aggName = this.renderAggregatorName(this.state.aggregatorName, aggregatorId, asLink, stripes);
+    const contact = this.renderContactInfo(this.state.contact, asLink);
     return (
       <div>
         {aggName}
+        {contact}
       </div>
     );
   }
