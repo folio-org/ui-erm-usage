@@ -45,8 +45,10 @@ function validate(values) {
   }
 
   const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/g;
-  if (!values.harvestingStart || !yyyyMMRegex.test(values.harvestingStart)) {
-    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
+  if (!values.harvestingStart) {
+    errors.harvestingStartExist = 'Please fill this in the format YYYY-MM to continue';
+  } else if (!yyyyMMRegex.test(values.harvestingStart)) {
+    errors.harvestingStartFormat = 'Please fill this in the format YYYY-MM to continue';
   }
 
   if (values.harvestingEnd && !yyyyMMRegex.test(values.harvestingEnd)) {
