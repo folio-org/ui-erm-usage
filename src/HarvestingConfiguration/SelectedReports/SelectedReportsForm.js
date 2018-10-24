@@ -72,7 +72,11 @@ class SelectedReportsForm extends React.Component {
   }
 
   addReportHandler = (report) => {
-    this.fields.unshift(report);
+    if (_.isEmpty(this.fields.getAll())) {
+      this.fields.unshift(report);
+    } else if (this.fields.getAll().indexOf(report) < 0) {
+      this.fields.unshift(report);
+    }
     setTimeout(() => this.onToggleAddReport());
   }
 
