@@ -14,7 +14,7 @@ function ReportList(props) {
 
   const reportFormatter = item => (
     <li key={item}>
-      <button type="button" onClick={() => { handleItemClick(item); }}>
+      <button type="button" className={css.itemControl} onClick={() => { handleItemClick(item); }}>
         {item}
       </button>
     </li>
@@ -23,7 +23,7 @@ function ReportList(props) {
   const search = 'Search';
   const counterVersionInfo = counterVersion ? `Select Counter ${counterVersion} report` : 'Select Counter report release first!';
   return (
-    <div>
+    <div className={css.root}>
       <TextField
         noBorder
         placeholder={search}
@@ -33,10 +33,13 @@ function ReportList(props) {
       <div className={css.reportVersionInfo}>
         { counterVersionInfo }
       </div>
-      <List
-        itemFormatter={reportFormatter}
-        items={props.items}
-      />
+      <div className={css.dropdownBody}>
+        <List
+          itemFormatter={reportFormatter}
+          items={props.items}
+          listClass={css.ReportList}
+        />
+      </div>
     </div>
   );
 }

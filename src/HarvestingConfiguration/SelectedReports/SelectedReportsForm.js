@@ -13,6 +13,7 @@ import {
 import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
 import counterReports from './data/counterReports';
 import ReportList from '../ReportList';
+import css from './SelectedReportsForm.css';
 
 class SelectedReportsForm extends React.Component {
   static propTypes = {
@@ -136,6 +137,10 @@ class SelectedReportsForm extends React.Component {
       />
     );
 
+    const tether = {
+      attachment: 'middle center',
+    };
+
     const reportsDropdownButton = (
       <Dropdown
         id="section-add-report"
@@ -151,8 +156,6 @@ class SelectedReportsForm extends React.Component {
         </Button>
         <DropdownMenu
           data-role="menu"
-          width="40em"
-          aria-label="Available Reports"
           onToggle={this.onToggleAddReport}
         >
           {reports}
@@ -165,7 +168,9 @@ class SelectedReportsForm extends React.Component {
         <div className={formCss.label}>
           {this.props.label}
         </div>
-        <div>{reportsDropdownButton}</div>
+        <div className={css.reportListDropdownWrap}>
+          {reportsDropdownButton}
+        </div>
         <FieldArray name="requestedReports" component={this.renderList} />
 
         <ConfirmationModal
