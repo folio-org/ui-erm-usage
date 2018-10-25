@@ -46,10 +46,7 @@
     "home": "/ermusage",
     "hasSettings": true,
     "queryResource": "query",
-    "okapiInterfaces": {
-      "erm-usage": "0.0.1",
-      "vendor": "1.0"
-    },
+    "okapiInterfaces": {},
     "permissionSets": [
       {
         "permissionName": "module.erm-usage.enabled",
