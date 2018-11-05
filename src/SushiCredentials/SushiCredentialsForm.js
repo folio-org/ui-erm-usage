@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import TextField from '@folio/stripes-components/lib/TextField';
-import { Accordion } from '@folio/stripes-components/lib/Accordion';
+import {
+  Accordion,
+  Col,
+  Row,
+  TextField
+} from '@folio/stripes/components';
 
 const SushiCredentialsForm = ({ expanded, onToggle, accordionId }) => {
   return (

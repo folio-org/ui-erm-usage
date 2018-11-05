@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Icon,
-  TextField,
   List,
+  TextField
 } from '@folio/stripes/components';
 import css from './ReportList.css';
 

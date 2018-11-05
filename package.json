@@ -22,10 +22,6 @@
     "eslint": "^5.6.0"
   },
   "dependencies": {
-    "@folio/react-intl-safe-html": "^1.0.2",
-    "@folio/stripes-components": "^4.2.0",
-    "@folio/stripes-form": "^1.1.1",
-    "@folio/stripes-smart-components": "^1.1.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
     "react-intl": "^2.7.1",
@@ -33,11 +29,8 @@
     "redux-form": "^7.4.2"
   },
   "peerDependencies": {
-    "@folio/stripes-core": "^2.15.4",
+    "@folio/stripes": "^1.0.0",
     "react": "*"
-  },
-  "optionalDependencies": {
-    "@folio/plugin-find-vendor": "^1.0.0"
   },
   "stripes": {
     "type": "app",

@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import MultiColumnList from '@folio/stripes-components/lib/MultiColumnList';
+import {
+  MultiColumnList
+} from '@folio/stripes/components';
 import ReportDownloadButton from './ReportDownloadButton';
 import groupByYearAndReport from './util';
 

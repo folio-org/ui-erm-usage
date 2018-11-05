@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import { Accordion } from '@folio/stripes-components/lib/Accordion';
-import Checkbox from '@folio/stripes-components/lib/Checkbox';
-import Select from '@folio/stripes-components/lib/Select';
-import TextField from '@folio/stripes-components/lib/TextField';
-import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
+import {
+  Accordion,
+  Checkbox,
+  Col,
+  Row,
+  Select,
+  TextField
+} from '@folio/stripes/components';
+import formCss from '../sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from '../AggregatorInfo';
 import { VendorInfoForm } from '../VendorInfo';

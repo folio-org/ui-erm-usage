@@ -1,8 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import KeyValue from '@folio/stripes-components/lib/KeyValue';
+import {
+  Col,
+  KeyValue,
+  Row
+} from '@folio/stripes/components';
 import { AggregatorInfoView } from '../AggregatorInfo';
 import { VendorInfoView } from '../VendorInfo';
 

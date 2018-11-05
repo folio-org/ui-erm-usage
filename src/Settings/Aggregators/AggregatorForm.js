@@ -1,20 +1,24 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import SafeHTMLMessage from '@folio/react-intl-safe-html';
-import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
-import IfPermission from '@folio/stripes-components/lib/IfPermission';
-import IconButton from '@folio/stripes-components/lib/IconButton';
-import Button from '@folio/stripes-components/lib/Button';
-import Icon from '@folio/stripes-components/lib/Icon';
-import Pane from '@folio/stripes-components/lib/Pane';
-import TextField from '@folio/stripes-components/lib/TextField';
-import Select from '@folio/stripes-components/lib/Select';
-import Paneset from '@folio/stripes-components/lib/Paneset';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
-import stripesForm from '@folio/stripes-form';
-import ConfirmationModal from '@folio/stripes-components/lib/ConfirmationModal';
+import {
+  Accordion,
+  Button,
+  Col,
+  ConfirmationModal,
+  ExpandAllButton,
+  Icon,
+  IconButton,
+  IfPermission,
+  Pane,
+  PaneMenu,
+  Paneset,
+  Row,
+  Select,
+  TextField,
+
+} from '@folio/stripes/components';
+import stripesForm from '@folio/stripes/form';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
 import css from './AggregatorForm.css';
@@ -175,10 +179,7 @@ class AggregatorForm extends React.Component {
       ];
 
     const confirmationMessage = (
-      <SafeHTMLMessage
-        id="ui-organization.settings.servicePoints.deleteServicePointMessage"
-        values={{ name }}
-      />
+      <div>{`Do you really want to delete ${name}?`}</div>
     );
 
     return (

@@ -1,11 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import TextField from '@folio/stripes-components/lib/TextField';
-import Button from '@folio/stripes-components/lib/Button';
-import Pluggable from '@folio/stripes-core/src/Pluggable';
-import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
+import {
+  Button,
+  Col,
+  Row,
+  TextField
+} from '@folio/stripes/components';
+import {
+  Pluggable
+} from '@folio/stripes/core';
+
+import formCss from '../sharedStyles/form.css';
 import css from '../UDPInfo/VendorView.css';
 import VendorName from '../VendorName';
 

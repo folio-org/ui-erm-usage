@@ -10,7 +10,7 @@ import {
   List,
   ConfirmationModal
 } from '@folio/stripes/components';
-import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
+import formCss from '../../sharedStyles/form.css';
 import counterReports from './data/counterReports';
 import ReportList from '../ReportList';
 import css from './SelectedReportsForm.css';
@@ -140,10 +140,6 @@ class SelectedReportsForm extends React.Component {
         counterVersion={counterVersion}
       />
     );
-
-    const tether = {
-      attachment: 'middle center',
-    };
 
     const reportsDropdownButton = (
       <Dropdown

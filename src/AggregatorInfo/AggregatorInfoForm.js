@@ -2,9 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import Select from '@folio/stripes-components/lib/Select';
-import { Col } from '@folio/stripes-components/lib/LayoutGrid';
-import TextField from '@folio/stripes-components/lib/TextField';
+import {
+  Col,
+  Select,
+  TextField
+} from '@folio/stripes/components';
 
 class AggregatorInfoForm extends React.Component {
   static manifest = Object.freeze({

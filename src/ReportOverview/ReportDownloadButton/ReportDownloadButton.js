@@ -2,8 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
-import Button from '@folio/stripes-components/lib/Button';
-import Popover from '@folio/stripes-components/lib/Popover';
+import {
+  Button,
+  Popover
+} from '@folio/stripes/components';
 
 class ReportDownloadButton extends React.Component {
   static propTypes = {

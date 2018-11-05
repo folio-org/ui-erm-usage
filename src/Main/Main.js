@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import SearchAndSort from '@folio/stripes-smart-components/lib/SearchAndSort';
-import { makeQueryFunction } from '@folio/stripes-smart-components';
+import {
+  makeQueryFunction,
+  SearchAndSort
+} from '@folio/stripes/smart-components';
 import packageInfo from '../../package';
 
 import UsageDataProvidersView from '../UDPViews/UsageDataProviderView';

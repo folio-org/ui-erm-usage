@@ -2,9 +2,17 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { change } from 'redux-form';
-import { Button, ExpandAllButton, IconButton, Pane, PaneMenu, Paneset } from '@folio/stripes-components';
-import stripesForm from '@folio/stripes-form';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
+import {
+  Button,
+  Col,
+  ExpandAllButton,
+  IconButton,
+  Pane,
+  PaneMenu,
+  Paneset,
+  Row
+} from '@folio/stripes/components';
+import stripesForm from '@folio/stripes/form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';

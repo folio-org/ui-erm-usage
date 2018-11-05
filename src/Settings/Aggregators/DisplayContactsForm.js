@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 import {
+  Field,
+  FieldArray
+} from 'redux-form';
+import {
   TextField,
   RepeatableField
-} from '@folio/stripes-components';
-import formCss from '@folio/stripes-components/lib/sharedStyles/form.css';
-import { Field, FieldArray } from 'redux-form';
+} from '@folio/stripes/components';
+import formCss from '../../sharedStyles/form.css';
 
 class DisplayContactsForm extends React.Component {
   renderField = (identifier) => {

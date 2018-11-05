@@ -1,19 +1,21 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Pane from '@folio/stripes-components/lib/Pane';
-import { Accordion, ExpandAllButton } from '@folio/stripes-components/lib/Accordion';
-import Layer from '@folio/stripes-components/lib/Layer';
-import KeyValue from '@folio/stripes-components/lib/KeyValue';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import PaneMenu from '@folio/stripes-components/lib/PaneMenu';
-import IconButton from '@folio/stripes-components/lib/IconButton';
-import IfPermission from '@folio/stripes-components/lib/IfPermission';
-import TitleManager from '@folio/stripes-core/src/components/TitleManager';
-import { Icon } from '@folio/stripes-components';
-
+import {
+  Col,
+  Accordion,
+  ExpandAllButton,
+  Icon,
+  IconButton,
+  IfPermission,
+  KeyValue,
+  Layer,
+  Pane,
+  PaneMenu,
+  Row
+} from '@folio/stripes/components';
+import { TitleManager } from '@folio/stripes/core';
 import UsageDataProviderForm from './UsageDataProviderForm';
-
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import { SushiCredentialsView } from '../SushiCredentials';

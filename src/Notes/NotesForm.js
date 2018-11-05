@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Row, Col } from '@folio/stripes-components/lib/LayoutGrid';
-import TextArea from '@folio/stripes-components/lib/TextArea';
-import { Accordion } from '@folio/stripes-components/lib/Accordion';
+import {
+  Accordion,
+  Col,
+  Row,
+  TextArea
+} from '@folio/stripes/components';
 
 const NotesForm = ({ expanded, onToggle, accordionId }) => {
   return (

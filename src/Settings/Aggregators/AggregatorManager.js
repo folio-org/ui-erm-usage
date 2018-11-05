@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import EntryManager from '@folio/stripes-smart-components/lib/EntryManager';
-import Pane from '@folio/stripes-components/lib/Pane';
+import { EntryManager } from '@folio/stripes/smart-components';
 import AggregatorDetails from './AggregatorDetail';
 import AggregatorForm from './AggregatorForm';
 

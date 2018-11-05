@@ -1,0 +1,14 @@
+/**
+ * Label
+ */
+ .label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-text);
+
+  &.required::after {
+    content: '(required)';
+    margin: 0 4px;
+    color: #666;
+  }
+}
