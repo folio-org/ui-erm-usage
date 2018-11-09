@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SubmissionError } from 'redux-form';
 import {
   Button,
   Popover
 } from '@folio/stripes/components';
+import downloadReport from './DownloadReport';
 
 class ReportDownloadButton extends React.Component {
   static propTypes = {
@@ -31,23 +31,6 @@ class ReportDownloadButton extends React.Component {
     });
   }
 
-  downloadReport = (id) => {
-    return fetch(`${this.okapiUrl}/counter-reports/${id}`, { headers: this.httpHeaders })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new SubmissionError({ identifier: `Error ${response.status} downloading counter report by id`, _error: 'Fetch report failed' });
-        } else {
-          return response.text();
-        }
-      })
-      .then((res) => {
-        const anchor = document.createElement('a');
-        anchor.href = `data:application/json,${res}`;
-        anchor.download = `${id}.json`;
-        anchor.click();
-      });
-  }
-
   render() {
     const report = this.props.report;
     if (_.isUndefined(report)) {
@@ -56,12 +39,11 @@ class ReportDownloadButton extends React.Component {
 
     const isFailed = !!report.failedAttempts;
     if (!isFailed) {
-      const reportId = report.id;
       return (
         <Button
           id="clickable-download-stats-by-id"
           buttonStyle="success"
-          onClick={() => this.downloadReport(reportId)}
+          onClick={() => downloadReport(report.id, this.okapiUrl, this.httpHeaders)}
         >
           Y
         </Button>
