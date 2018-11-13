@@ -32,9 +32,7 @@ class HarvestingConfigurationForm extends React.Component {
     const harvestingStatusOptions =
       [
         { value: 'active', label: 'Active' },
-        { value: 'inactive', label: 'Inactive' },
-        { value: 'in process', label: 'In Process' },
-        { value: 'not possible', label: 'Not Possible' }
+        { value: 'inactive', label: 'Inactive' }
       ];
 
     const reportReleaseOptions =

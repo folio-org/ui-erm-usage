@@ -23,9 +23,7 @@ const filterConfig = [
     cql: 'harvestingStatus',
     values: [
       { name: 'Active', cql: 'active' },
-      { name: 'Inactive', cql: 'inactive' },
-      { name: 'In Process', cql: 'in process' },
-      { name: 'Not Possible', cql: 'not possible' },
+      { name: 'Inactive', cql: 'inactive' }
     ],
   }
 ];
