@@ -52,15 +52,19 @@ function validate(values) {
     errors.sushiCreds = 'Please fill this in to continue';
   }
 
-  const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/g;
+  const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/;
   if (!values.harvestingStart) {
-    errors.harvestingStartExist = 'Please fill this in the format YYYY-MM to continue';
-  } else if (!yyyyMMRegex.test(values.harvestingStart)) {
-    errors.harvestingStartFormat = 'Please fill this in the format YYYY-MM to continue';
+    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
+  } else if (!(yyyyMMRegex.test(values.harvestingStart))) {
+    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
   }
 
-  if (values.harvestingEnd && !yyyyMMRegex.test(values.harvestingEnd)) {
-    errors.harvestingEnd = 'Please fill this in the format YYYY-MM to continue';
+  if (values.harvestingEnd) {
+    if (!(yyyyMMRegex.test(values.harvestingEnd))) {
+      errors.harvestingEnd = 'Please fill this in the format YYYY-MM to continue';
+    } else if (new Date(values.harvestingEnd) < new Date(values.harvestingStart)) {
+      errors.harvestingEnd = 'End date must be greater than start date';
+    }
   }
 
   return errors;
