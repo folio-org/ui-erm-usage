@@ -15,8 +15,8 @@ class VendorInfoForm extends React.Component {
   render() {
     const serviceTypeOptions =
       [
-        { value: 'SUSHI', label: 'SUSHI' },
-        { value: 'SUSHI lite', label: 'SUHSI lite' },
+        { value: 'cs41', label: 'COUNTER-SUSHI 4' },
+        // { value: 'cs5', label: 'COUNTER-SUSHI 5' },
       ];
 
     return (
