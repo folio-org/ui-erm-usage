@@ -35,8 +35,8 @@
   "stripes": {
     "type": "app",
     "displayName": "eUsage",
-    "route": "/ermusage",
-    "home": "/ermusage",
+    "route": "/eusage",
+    "home": "/eusage",
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {},

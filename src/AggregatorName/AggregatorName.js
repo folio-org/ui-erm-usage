@@ -63,7 +63,7 @@ class AggregatorName extends React.Component {
   renderAggregatorName = (aggregatorName, aggregatorId, asLink, stripes) => {
     if (asLink && stripes.hasPerm('settings.erm-usage.enabled')) {
       return (
-        <Link to={`/settings/ermusage/aggregators/${aggregatorId}`}>
+        <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
           {aggregatorName}
         </Link>
       );

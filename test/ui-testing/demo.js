@@ -36,10 +36,10 @@ module.exports.test = (uiTestCtx) => {
         nightmare
           .wait(config.select.settings)
           .click(config.select.settings)
-          .wait('a[href="/settings/ermusage"]')
-          .click('a[href="/settings/ermusage"]')
-          .wait('a[href="/settings/ermusage/general"]')
-          .click('a[href="/settings/ermusage/general"]')
+          .wait('a[href="/settings/eusage"]')
+          .click('a[href="/settings/eusage"]')
+          .wait('a[href="/settings/eusage/general"]')
+          .click('a[href="/settings/eusage/general"]')
           .wait('#stripes-new-app-settings-message')
           .then(result => { done(); })
           .catch(done);

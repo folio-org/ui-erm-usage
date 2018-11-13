@@ -18,9 +18,6 @@ Additionally, until it is part of the Okapi backends, the [mod-erm-usage](https:
 
 * See manual in [FOLIO ERM platform](https://github.com/folio-org/platform-erm#developing-and-contributing-to-erm-modules).
 * If you want to clone ui-erm-usage locally to make local modifications or contribute to it, select _ui-erm-usage_ as a module when executing `stripes workspace`.
-* Note (2018-11-12):
-There are some issues if ui-erm and ui-erm-usage are activated in parallel. However, ui-erm will be renamed to ui-agreements in the future. Thus, we expect that the issue will be solved with this change.
-However, in order to use the ui-erm-usage module change the _stripes.config.js_ and remove _@folio/erm_, _@folio/licenses_ and _@folio/orders_ from the modules section. Then run `stripes serve stripes.config.js` to start serving.
 
 ## Running
 

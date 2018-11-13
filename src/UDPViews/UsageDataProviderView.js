@@ -119,7 +119,7 @@ class UsageDataProviderView extends React.Component {
     parentMutator.records.DELETE({ id: udp.id })
       .then(() => {
         parentMutator.query.update({
-          _path: '/ermusage',
+          _path: '/eusage',
           layer: null
         });
       });
