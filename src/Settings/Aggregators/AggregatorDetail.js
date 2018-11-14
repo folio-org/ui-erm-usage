@@ -80,11 +80,20 @@ class AggregatorDetails extends React.Component {
               <KeyValue label="Service URL" value={aggregator.serviceUrl} />
             </Col>
           </Row>
+        </Accordion>
+
+        <Accordion
+          open={sections.aggregatorConfig}
+          id="aggregatorConfig"
+          onToggle={this.handleSectionToggle}
+          label="Aggregator Configuration"
+        >
           <Row>
             <Col xs={8}>
-              <KeyValue label="Username" value={aggregator.username} />
-              <KeyValue label="Password" value={aggregator.password} />
-              <KeyValue label="API Key" value={aggregator.apiKey} />
+              <KeyValue label="API Key" value={aggregator.aggregatorConfig.apiKey} />
+              <KeyValue label="Requestor Id" value={aggregator.aggregatorConfig.requestorId} />
+              <KeyValue label="Customer Id" value={aggregator.aggregatorConfig.customerId} />
+              <KeyValue label="Report release" value={aggregator.aggregatorConfig.reportRelease} />
             </Col>
           </Row>
         </Accordion>

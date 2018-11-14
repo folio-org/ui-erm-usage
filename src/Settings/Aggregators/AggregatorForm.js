@@ -51,7 +51,8 @@ class AggregatorForm extends React.Component {
       confirmDelete: false,
       sections: {
         generalSection: true,
-        accountConfig: true
+        accountConfig: true,
+        aggregatorConfig: true
       },
     };
   }
@@ -232,32 +233,50 @@ class AggregatorForm extends React.Component {
                     />
                   </Col>
                 </Row>
+              </Accordion>
+
+              <Accordion
+                open={sections.aggregatorConfig}
+                id="aggregatorConfig"
+                onToggle={this.handleSectionToggle}
+                label="Aggregator Configuration"
+              >
                 <Row>
                   <Col xs={8}>
                     <Field
-                      label="Username *"
-                      name="username"
-                      id="input-aggregaor-username"
-                      component={TextField}
-                      autoFocus
-                      required
-                      fullWidth
-                      disabled={disabled}
-                    />
-                    <Field
-                      label="Password *"
-                      name="password"
-                      id="input-aggregaor-password"
-                      component={TextField}
-                      autoFocus
-                      required
-                      fullWidth
-                      disabled={disabled}
-                    />
-                    <Field
                       label="API Key *"
-                      name="apiKey"
-                      id="input-aggregaor-api-key"
+                      name="aggregatorConfig.apiKey"
+                      id="input-aggregator-config-api-key"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Requestor Id *"
+                      name="aggregatorConfig.requestorId"
+                      id="input-aggregator-config-requestor-id"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Customer Id *"
+                      name="aggregatorConfig.customerId"
+                      id="input-aggregator-config-customer-id"
+                      component={TextField}
+                      autoFocus
+                      required
+                      fullWidth
+                      disabled={disabled}
+                    />
+                    <Field
+                      label="Report release *"
+                      name="aggregatorConfig.reportRelease"
+                      id="input-aggregator-config-reportRelease"
                       component={TextField}
                       autoFocus
                       required
