@@ -2,12 +2,15 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Accordion,
   Col,
   KeyValue,
   Row
 } from '@folio/stripes/components';
 import { AggregatorInfoView } from '../AggregatorInfo';
 import { VendorInfoView } from '../VendorInfo';
+import { SushiCredentialsView } from '../SushiCredentials';
+import { NotesView } from '../Notes';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
@@ -15,6 +18,8 @@ class HarvestingConfigurationView extends React.Component {
     stripes: PropTypes.shape({
       connect: PropTypes.func.isRequired,
     }).isRequired,
+    sushiCredsOpen: PropTypes.bool,
+    onToggle: PropTypes.func,
   };
 
   createProvider = udp => {
@@ -36,7 +41,7 @@ class HarvestingConfigurationView extends React.Component {
   }
 
   render() {
-    const { usageDataProvider } = this.props;
+    const { usageDataProvider, onToggle, sushiCredsOpen } = this.props;
 
     const provider = this.createProvider(usageDataProvider);
 
@@ -88,6 +93,15 @@ class HarvestingConfigurationView extends React.Component {
             />
           </Col>
         </Row>
+        <Accordion
+          open={sushiCredsOpen}
+          onToggle={onToggle}
+          label="SUSHI credentials"
+          id="sushiCredsAccordion"
+        >
+          <SushiCredentialsView usageDataProvider={usageDataProvider} />
+        </Accordion>
+        <NotesView usageDataProvider={usageDataProvider} />
       </div>
     );
   }
