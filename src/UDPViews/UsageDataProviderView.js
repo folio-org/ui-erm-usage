@@ -19,6 +19,7 @@ import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import ReportOverview from '../ReportOverview';
+import { NotesView } from '../Notes';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -205,6 +206,14 @@ class UsageDataProviderView extends React.Component {
               sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
               onToggle={this.handleAccordionToggle}
             />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.notesAccordion}
+            onToggle={this.handleAccordionToggle}
+            label="Notes"
+            id="notesAccordion"
+          >
+            <NotesView usageDataProvider={initialValues} />
           </Accordion>
           <Accordion
             open={this.state.accordions.statisticsAccordion}

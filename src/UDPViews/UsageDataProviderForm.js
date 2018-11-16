@@ -16,7 +16,6 @@ import stripesForm from '@folio/stripes/form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
-import { SushiCredentialsForm } from '../SushiCredentials';
 import { NotesForm } from '../Notes';
 import css from './UsageDataProviderForm.css';
 
@@ -92,9 +91,9 @@ class UsageDataProviderForm extends React.Component {
     this.state = {
       sections: {
         editUDPInfo: true,
-        editHarvestingConfig: true,
-        editSushiCredentials: true,
-        editNotes: true
+        editHarvestingConfig: false,
+        editSushiCredentials: false,
+        editNotes: false
       },
       useAggregator: useAgg
     };
@@ -212,12 +211,7 @@ class UsageDataProviderForm extends React.Component {
                 onToggle={this.handleSectionToggle}
                 useAggregator={this.state.useAggregator}
                 changeUseAggregator={this.changeAggregatorVendor}
-                {...this.props}
-              />
-              <SushiCredentialsForm
-                accordionId="editSushiCredentials"
-                expanded={sections.editSushiCredentials}
-                onToggle={this.handleSectionToggle}
+                sushiFormExpanded={sections.editSushiCredentials}
                 {...this.props}
               />
               <NotesForm

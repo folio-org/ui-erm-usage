@@ -13,6 +13,7 @@ import formCss from '../sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from '../AggregatorInfo';
 import { VendorInfoForm } from '../VendorInfo';
+import { SushiCredentialsForm } from '../SushiCredentials';
 
 class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   render() {
-    const { expanded, onToggle, accordionId, useAggregator } = this.props;
+    const { expanded, accordionId, useAggregator, sushiFormExpanded } = this.props;
+    const onToggleAccordion = this.props.onToggle;
 
     const harvestingStatusOptions =
       [
@@ -47,90 +49,105 @@ class HarvestingConfigurationForm extends React.Component {
         label="Harvesting Configuration"
         open={expanded}
         id={accordionId}
-        onToggle={onToggle}
+        onToggle={onToggleAccordion}
       >
         <Row>
           <Col xs>
-            <Row>
-              <Col xs={4}>
-                <Field
-                  label="Harvesting Status *"
-                  name="harvestingStatus"
-                  id="addudp_harvestingstatus"
-                  placeholder="Select a harvesting status"
-                  component={Select}
-                  dataOptions={harvestingStatusOptions}
-                  required
-                  fullWidth
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={4}>
-                <div className={formCss.label}>
-                  { 'Aggregator *' }
-                </div>
-                <Checkbox
-                  name="useAggregator"
-                  label="Harvest statistics via an aggregator"
-                  onChange={this.handleUseAggChange}
-                  checked={useAggregator}
-                />
-              </Col>
-              <this.cAggregatorForm disabled={!useAggregator} />
-            </Row>
-            <Row>
-              <Col xs={4}>
-                { 'If no aggregator is used please define the vendor\'s SUSHI endpoint' }
-              </Col>
-              <VendorInfoForm disabled={useAggregator} />
-            </Row>
-            <Row>
-              <Col xs={4}>
-                <Field
-                  label="Report release *"
-                  name="reportRelease"
-                  id="addudp_reportrelease"
-                  placeholder="Select the report release"
-                  component={Select}
-                  dataOptions={reportReleaseOptions}
-                  required
-                  fullWidth
-                />
-              </Col>
-              <Col xs={8}>
-                <SelectedReportsForm
-                  label="Requested reports *"
-                  initialValues={this.props.initialValues}
-                  counterVersion={selectedCounterVersion}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={3}>
-                <Field
-                  label="Harvesting start *"
-                  name="harvestingStart"
-                  id="input-harvestingStart"
-                  component={TextField}
-                  placeholder="YYYY-MM"
-                  autoFocus
-                  required
-                  fullWidth
-                />
-              </Col>
-              <Col xs={3}>
-                <Field
-                  label="Harvesting end"
-                  name="harvestingEnd"
-                  id="input-harvestingEnd"
-                  component={TextField}
-                  placeholder="YYYY-MM"
-                  autoFocus
-                  fullWidth
-                />
-              </Col>
-            </Row>
+            <section className={formCss.separator}>
+              <Row>
+                <Col xs={4}>
+                  <Field
+                    label="Harvesting Status *"
+                    name="harvestingStatus"
+                    id="addudp_harvestingstatus"
+                    placeholder="Select a harvesting status"
+                    component={Select}
+                    dataOptions={harvestingStatusOptions}
+                    required
+                    fullWidth
+                  />
+                </Col>
+              </Row>
+            </section>
+            <section className={formCss.separator}>
+              <Row>
+                <Col xs={4}>
+                  <div className={formCss.label}>
+                    { 'Aggregator *' }
+                  </div>
+                  <Checkbox
+                    name="useAggregator"
+                    label="Harvest statistics via an aggregator"
+                    onChange={this.handleUseAggChange}
+                    checked={useAggregator}
+                  />
+                </Col>
+                <this.cAggregatorForm disabled={!useAggregator} />
+              </Row>
+              <Row>
+                <Col xs={4}>
+                  { 'If no aggregator is used please define the vendor\'s SUSHI endpoint' }
+                </Col>
+                <VendorInfoForm disabled={useAggregator} />
+              </Row>
+            </section>
+            <section className={formCss.separator}>
+              <Row>
+                <Col xs={4}>
+                  <Field
+                    label="Report release *"
+                    name="reportRelease"
+                    id="addudp_reportrelease"
+                    placeholder="Select the report release"
+                    component={Select}
+                    dataOptions={reportReleaseOptions}
+                    required
+                    fullWidth
+                  />
+                </Col>
+                <Col xs={8}>
+                  <SelectedReportsForm
+                    label="Requested reports *"
+                    initialValues={this.props.initialValues}
+                    counterVersion={selectedCounterVersion}
+                  />
+                </Col>
+              </Row>
+            </section>
+            <section className={formCss.separator}>
+              <Row>
+                <Col xs={4}>
+                  <Field
+                    label="Harvesting start *"
+                    name="harvestingStart"
+                    id="input-harvestingStart"
+                    component={TextField}
+                    placeholder="YYYY-MM"
+                    autoFocus
+                    required
+                    fullWidth
+                  />
+                </Col>
+                <Col xs={4}>
+                  <Field
+                    label="Harvesting end"
+                    name="harvestingEnd"
+                    id="input-harvestingEnd"
+                    component={TextField}
+                    placeholder="YYYY-MM"
+                    autoFocus
+                    fullWidth
+                  />
+                </Col>
+              </Row>
+            </section>
+            <section className={formCss.separator}>
+              <SushiCredentialsForm
+                accordionId="editSushiCredentials"
+                expanded={sushiFormExpanded}
+                onToggle={onToggleAccordion}
+              />
+            </section>
           </Col>
         </Row>
       </Accordion>
@@ -140,6 +157,7 @@ class HarvestingConfigurationForm extends React.Component {
 
 HarvestingConfigurationForm.propTypes = {
   expanded: PropTypes.bool,
+  sushiFormExpanded: PropTypes.bool,
   onToggle: PropTypes.func,
   accordionId: PropTypes.string.isRequired,
   stripes: PropTypes.shape({

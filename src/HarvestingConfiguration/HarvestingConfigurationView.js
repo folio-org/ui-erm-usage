@@ -10,7 +10,6 @@ import {
 import { AggregatorInfoView } from '../AggregatorInfo';
 import { VendorInfoView } from '../VendorInfo';
 import { SushiCredentialsView } from '../SushiCredentials';
-import { NotesView } from '../Notes';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
@@ -101,7 +100,6 @@ class HarvestingConfigurationView extends React.Component {
         >
           <SushiCredentialsView usageDataProvider={usageDataProvider} />
         </Accordion>
-        <NotesView usageDataProvider={usageDataProvider} />
       </div>
     );
   }
