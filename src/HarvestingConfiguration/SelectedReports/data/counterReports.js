@@ -42,13 +42,13 @@ export const data = [
     counterVersion: '4'
   },
   {
-    name: 'DB1',
-    code: 'db1',
+    name: 'DR1',
+    code: 'dr1',
     counterVersion: '4'
   },
   {
-    name: 'DB2',
-    code: 'db2',
+    name: 'DR2',
+    code: 'dr2',
     counterVersion: '4'
   },
   {
