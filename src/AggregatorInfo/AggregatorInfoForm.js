@@ -47,7 +47,7 @@ class AggregatorInfoForm extends React.Component {
       <React.Fragment>
         <Col xs={4}>
           <Field
-            label="Choose aggregator *"
+            label="Aggregator *"
             name="aggregator.id"
             id="addudp_aggid"
             placeholder="Select an aggregator"

@@ -1,9 +1,11 @@
 /**
- * Label
- */
- .label {
+* Label
+*/
+.label {
   display: block;
-  margin-bottom: 6px;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height);
+  margin-bottom: 0.25rem;
   color: var(--color-text);
 
   &.required::after {
@@ -11,7 +13,6 @@
     margin: 0 4px;
     color: #666;
   }
-
 }
 
 .separator {

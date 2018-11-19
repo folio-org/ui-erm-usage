@@ -72,9 +72,6 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <div className={formCss.label}>
-                    { 'Aggregator *' }
-                  </div>
                   <Checkbox
                     name="useAggregator"
                     label="Harvest statistics via an aggregator"
