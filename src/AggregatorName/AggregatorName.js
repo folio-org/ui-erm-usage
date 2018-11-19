@@ -14,7 +14,7 @@ class AggregatorName extends React.Component {
     asLink: PropTypes.bool,
   }
 
-  defaultProps = {
+  static defaultProps = {
     asLink: false,
   }
 
