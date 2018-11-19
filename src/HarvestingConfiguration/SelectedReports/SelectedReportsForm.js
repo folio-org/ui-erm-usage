@@ -18,7 +18,7 @@ import css from './SelectedReportsForm.css';
 class SelectedReportsForm extends React.Component {
   static propTypes = {
     initialValues: PropTypes.object,
-    counterVersion: PropTypes.string,
+    counterVersion: PropTypes.number,
     label: PropTypes.string,
   };
 

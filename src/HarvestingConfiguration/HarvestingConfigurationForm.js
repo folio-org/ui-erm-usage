@@ -39,8 +39,8 @@ class HarvestingConfigurationForm extends React.Component {
 
     const reportReleaseOptions =
       [
-        { value: '4', label: 'Counter 4' },
-        { value: '5', label: 'Counter 5' },
+        { value: 4, label: 'Counter 4' },
+        { value: 5, label: 'Counter 5' },
       ];
     const selectedCounterVersion = this.props.stripes.store.getState().form['form-udProvider'].values.reportRelease;
 

@@ -48,7 +48,7 @@ ReportList.propTypes = {
   onChangeSearch: PropTypes.func.isRequired,
   onClickItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
-  counterVersion: PropTypes.string,
+  counterVersion: PropTypes.number,
 };
 
 export default ReportList;
