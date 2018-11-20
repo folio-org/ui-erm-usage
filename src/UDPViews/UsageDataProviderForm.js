@@ -194,6 +194,7 @@ class UsageDataProviderForm extends React.Component {
               <Row end="xs">
                 <Col xs>
                   <ExpandAllButton
+                    id="clickable-expand-all"
                     accordionStatus={sections}
                     onToggle={this.handleExpandAll}
                   />

@@ -36,7 +36,7 @@
     "type": "app",
     "displayName": "eUsage",
     "route": "/eusage",
-    "home": "/eusage",
+    "home": "/eusage?filters=harvestingStatus.Active",
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {},

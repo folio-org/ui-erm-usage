@@ -5,14 +5,14 @@ module.exports.test = function uiTest(uiTestCtx) {
 
     this.timeout(Number(config.test_timeout));
 
-    const label = '__000Test UDP 1';
-    const vendorId = 'f8b7e8ea-3afb-446d-9ec9-7a6c69d104ae';
+    const label = '__000Test UDP 1' + Math.random();
+    const vendorId = 'c446712d-fcb4-4954-92c5-57dc1a96ded3';
     const platformId = '4a9c5aa2-2acc-46fc-9e0c-bc8598cff6b1';
     const harvestingStatus = 'active';
-    const serviceType = 'COUNTER-SUSHI4';
+    const serviceType = 'cs41';
     const serviceUrl = 'www.testService.com';
-    const reportRelease = '5';
-    const requestedReport0 = 'DR';
+    const reportRelease = 4;
+    const requestedReport0 = 'JR1';
     const customerId = 'testCustomerId';
     const requestorId = 'testRequestorId';
     const harvestingStart = '2018-01';
@@ -34,6 +34,8 @@ module.exports.test = function uiTest(uiTestCtx) {
           .wait('#clickable-newusageDataProvider')
           .click('#clickable-newusageDataProvider')
           .wait(55)
+          .click('#accordion-toggle-button-editHarvestingConfig')
+          .wait(25)
           .insert('input[name=label]', label)
           .insert('input[name=vendorId]', vendorId)
           .click('#clickable-find-vendor-by-id')
@@ -45,11 +47,12 @@ module.exports.test = function uiTest(uiTestCtx) {
           .insert('input[name=serviceUrl]', serviceUrl)
           .select('select[name=reportRelease]', reportRelease)
           .click('#clickable-add-report')
-          .wait('select[name="requestedReports[0]"]')
-          .select('select[name="requestedReports[0]"]', requestedReport0)
+          .wait('div[name=add-report-list]')
+          .click(`#add-report-${requestedReport0}`)
+          .wait(55)
+          .insert('input[name=harvestingStart]', harvestingStart)
           .insert('input[name=customerId]', customerId)
           .insert('input[name=requestorId]', requestorId)
-          .insert('input[name=harvestingStart]', harvestingStart)
           .click('#clickable-createnewudp')
           .wait('#clickable-newusageDataProvider')
           .then(() => { done(); })
@@ -57,26 +60,47 @@ module.exports.test = function uiTest(uiTestCtx) {
       });
       it('should find new udp in list ', (done) => {
         nightmare
-          // .wait('#list-erm-usage')
-          // .url()
-          .wait('input[name=input-usageDataProvider-search]')
-          .insert('input[name=input-usageDataProvider-search]', label)
-          // .check('input[id=clickable-filter-harvestingStatus-Active]')
-          // .wait(1000)
-          // .click('#clickable-list-column-name')
-          .wait(100)
-          .evaluate((udpLabel) => {
-            const sel = `#list-erm-usage div[role="listitem"]:nth-child(1) > a > div[title="${udpLabel}"]`;
-            const selUdp = document.querySelector(sel);
-            if (selUdp === null) {
-              throw new Error(`Can't find newly created udp (${udpLabel}) at top of sorted list with selector: ${sel}`);
+          .wait('#list-erm-usage')
+          .check('#clickable-filter-harvestingStatus-Active')
+          .insert('#input-usageDataProvider-search', label)
+          .click('[data-test-search-and-sort-submit]')
+          .wait(1000)
+          .evaluate((name) => {
+            const node = Array.from(
+              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+            ).find(e => e.textContent === name);
+            if (!node) {
+              throw new Error(`Can't find newly created udp (${name}) at top of sorted list`);
             }
           }, label)
+          .wait('#clickable-delete-udp')
+          .click('#clickable-delete-udp')
           .then(() => { done(); })
           .catch(done);
       });
-
       // TODO: Delete udp
+      // it('should delete udp', (done) => {
+      //   nightmare
+      //     .wait('#clickable-delete-udp')
+      //     .wait(10000)
+      //     // .click('#clickable-delete-udp')
+      //     .wait(1000)
+      //     // .wait('#list-erm-usage')
+      //     // .check('#clickable-filter-harvestingStatus-Active')
+      //     // .insert('#input-usageDataProvider-search', label)
+      //     // .click('[data-test-search-and-sort-submit]')
+      //     // .wait(1000)
+      //     // .evaluate((name) => {
+      //     //   const node = Array.from(
+      //     //     document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+      //     //   ).find(e => e.textContent === name);
+      //     //   if (node) {
+      //     //     throw new Error(`UDP ${name} was not deleted`);
+      //     //   }
+      //     // }, label)
+      //     .then(() => { done(); })
+      //     .catch(done);
+      // });
     });
   });
 };
