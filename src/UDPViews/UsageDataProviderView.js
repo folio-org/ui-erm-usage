@@ -191,6 +191,7 @@ class UsageDataProviderView extends React.Component {
             </Col>
           </Row>
           <UDPInfoView
+            id="udpInfo"
             usageDataProvider={initialValues}
             stripes={this.props.stripes}
           />

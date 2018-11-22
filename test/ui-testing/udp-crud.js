@@ -6,7 +6,7 @@ module.exports.test = function uiTest(uiTestCtx) {
     this.timeout(Number(config.test_timeout));
 
     const label = '__000Test UDP 1' + Math.random();
-    const vendorId = 'c446712d-fcb4-4954-92c5-57dc1a96ded3';
+    const changedLabel = label + '_CHANGED';
     const platformId = '4a9c5aa2-2acc-46fc-9e0c-bc8598cff6b1';
     const harvestingStatus = 'active';
     const serviceType = 'cs41';
@@ -17,7 +17,7 @@ module.exports.test = function uiTest(uiTestCtx) {
     const requestorId = 'testRequestorId';
     const harvestingStart = '2018-01';
 
-    describe('Login > Open module "ERM-Usage" > Create new usage data provider > Sort list by label > Confirm creation of new udp > Logout', () => {
+    describe('Login > Open module "ERM-Usage > Create new usage data provider > Sort list by label > Confirm creation of new udp > Change udp > Delete udp > Logout', () => {
       before((done) => {
         login(nightmare, config, done);
       });
@@ -37,9 +37,14 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('#accordion-toggle-button-editHarvestingConfig')
           .wait(25)
           .insert('input[name=label]', label)
-          .insert('input[name=vendorId]', vendorId)
-          .click('#clickable-find-vendor-by-id')
-          .wait('div[name=vendorName]')
+
+          // Select the first vendor in plugin-find-vendor
+          .click('#clickable-plugin-find-vendor')
+          .wait(3000)
+          .wait('#list-vendors')
+          .click('div[role="listitem"] a')
+          .wait(500)
+
           .insert('input[name=platformId]', platformId)
           .select('select[name=harvestingStatus]', harvestingStatus)
           .uncheck('input[name=useAggregator]')
@@ -73,34 +78,56 @@ module.exports.test = function uiTest(uiTestCtx) {
               throw new Error(`Can't find newly created udp (${name}) at top of sorted list`);
             }
           }, label)
-          .wait('#clickable-delete-udp')
-          .click('#clickable-delete-udp')
           .then(() => { done(); })
           .catch(done);
       });
-      // TODO: Delete udp
-      // it('should delete udp', (done) => {
-      //   nightmare
-      //     .wait('#clickable-delete-udp')
-      //     .wait(10000)
-      //     // .click('#clickable-delete-udp')
-      //     .wait(1000)
-      //     // .wait('#list-erm-usage')
-      //     // .check('#clickable-filter-harvestingStatus-Active')
-      //     // .insert('#input-usageDataProvider-search', label)
-      //     // .click('[data-test-search-and-sort-submit]')
-      //     // .wait(1000)
-      //     // .evaluate((name) => {
-      //     //   const node = Array.from(
-      //     //     document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
-      //     //   ).find(e => e.textContent === name);
-      //     //   if (node) {
-      //     //     throw new Error(`UDP ${name} was not deleted`);
-      //     //   }
-      //     // }, label)
-      //     .then(() => { done(); })
-      //     .catch(done);
-      // });
+      it('should change udp', (done) => {
+        nightmare
+          .wait('#clickable-edit-udp')
+          .click('#clickable-edit-udp')
+          .wait('input[name=label]')
+          .insert('input[name=label]', '')
+          .insert('input[name=label]', changedLabel)
+
+          .click('#clickable-createnewudp')
+          .wait('#clickable-newusageDataProvider')
+          .then(() => { done(); })
+          .catch(done);
+      });
+      it('should find changed udp', (done) => {
+        nightmare
+          .wait('#udpInfo')
+          .insert('#input-usageDataProvider-search', '')
+          .insert('#input-usageDataProvider-search', changedLabel)
+          .click('[data-test-search-and-sort-submit]')
+          .wait(5000)
+          .evaluate((name) => {
+            const node = Array.from(
+              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+            ).find(e => e.textContent === name);
+            if (!node) {
+              throw new Error(`Can't find newly created udp (${name}) at top of sorted list`);
+            }
+          }, changedLabel)
+          .then(done)
+          .catch(done);
+      });
+      it('should delete udp', (done) => {
+        nightmare
+          .wait('#clickable-delete-udp')
+          .click('#clickable-delete-udp')
+          .wait(1000)
+          .evaluate((name) => {
+            const node = Array.from(
+              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+            ).find(e => e.textContent === name);
+            if (node) {
+              throw new Error(`Can find udp ${name} at top of sorted list, thus delete was not successful`);
+            }
+          }, changedLabel)
+          .then(() => { done(); })
+          .catch(done);
+      });
     });
   });
 };
