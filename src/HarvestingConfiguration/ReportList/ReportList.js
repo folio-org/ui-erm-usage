@@ -14,7 +14,12 @@ function ReportList(props) {
 
   const reportFormatter = item => (
     <li key={item}>
-      <button type="button" className={css.itemControl} onClick={() => { handleItemClick(item); }}>
+      <button
+        type="button"
+        id={`add-report-${item}`}
+        className={css.itemControl}
+        onClick={() => { handleItemClick(item); }}
+      >
         {item}
       </button>
     </li>
@@ -33,7 +38,10 @@ function ReportList(props) {
       <div className={css.reportVersionInfo}>
         { counterVersionInfo }
       </div>
-      <div className={css.dropdownBody}>
+      <div
+        name="add-report-list"
+        className={css.dropdownBody}
+      >
         <List
           itemFormatter={reportFormatter}
           items={props.items}
@@ -48,7 +56,7 @@ ReportList.propTypes = {
   onChangeSearch: PropTypes.func.isRequired,
   onClickItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.string).isRequired,
-  counterVersion: PropTypes.string,
+  counterVersion: PropTypes.number,
 };
 
 export default ReportList;

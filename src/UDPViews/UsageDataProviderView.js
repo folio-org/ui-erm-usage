@@ -18,9 +18,8 @@ import { TitleManager } from '@folio/stripes/core';
 import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import { SushiCredentialsView } from '../SushiCredentials';
-import { NotesView } from '../Notes';
 import ReportOverview from '../ReportOverview';
+import { NotesView } from '../Notes';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -70,7 +69,7 @@ class UsageDataProviderView extends React.Component {
 
     this.state = {
       accordions: {
-        harvestingAccordion: true,
+        harvestingAccordion: false,
         sushiCredsAccordion: false,
         uploadAccordion: false,
         notesAccordion: false,
@@ -192,6 +191,7 @@ class UsageDataProviderView extends React.Component {
             </Col>
           </Row>
           <UDPInfoView
+            id="udpInfo"
             usageDataProvider={initialValues}
             stripes={this.props.stripes}
           />
@@ -204,15 +204,9 @@ class UsageDataProviderView extends React.Component {
             <HarvestingConfigurationView
               usageDataProvider={initialValues}
               stripes={this.props.stripes}
+              sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+              onToggle={this.handleAccordionToggle}
             />
-          </Accordion>
-          <Accordion
-            open={this.state.accordions.sushiCredsAccordion}
-            onToggle={this.handleAccordionToggle}
-            label="SUSHI credentials"
-            id="sushiCredsAccordion"
-          >
-            <SushiCredentialsView usageDataProvider={initialValues} />
           </Accordion>
           <Accordion
             open={this.state.accordions.notesAccordion}

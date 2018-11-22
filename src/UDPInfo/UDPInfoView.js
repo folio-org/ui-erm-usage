@@ -10,6 +10,7 @@ import ContentVendorInfo from './ContentVendorInfo';
 
 class UDPInfoView extends React.Component {
   static propTypes = {
+    id: PropTypes.string,
     usageDataProvider: PropTypes.object.isRequired,
     stripes: PropTypes
       .shape({
@@ -37,19 +38,21 @@ class UDPInfoView extends React.Component {
   }
 
   render() {
-    const { usageDataProvider } = this.props;
+    const { usageDataProvider, id } = this.props;
     const vendorInfo = usageDataProvider ? this.renderVendorInfo(usageDataProvider) : null;
 
     return (
       <React.Fragment>
-        <Row>
-          <Col xs={3}>
-            <KeyValue label="Content vendor" value={vendorInfo} />
-          </Col>
-          <Col xs={3}>
-            <KeyValue label="Content platform" value={_.get(usageDataProvider, 'platformId', '-')} />
-          </Col>
-        </Row>
+        <div id={id}>
+          <Row>
+            <Col xs={3}>
+              <KeyValue label="Content vendor" value={vendorInfo} />
+            </Col>
+            <Col xs={3}>
+              <KeyValue label="Content platform" value={_.get(usageDataProvider, 'platformId', '-')} />
+            </Col>
+          </Row>
+        </div>
       </React.Fragment>
     );
   }

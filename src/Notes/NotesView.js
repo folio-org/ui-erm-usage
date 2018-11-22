@@ -15,7 +15,7 @@ class NotesView extends React.Component {
   render() {
     const { usageDataProvider } = this.props;
     const rawNotes = _.get(usageDataProvider, 'notes', '');
-    const n = rawNotes.split('\n').map((item, i) => <p key={i}>{item}</p>);
+    const n = _.isEmpty(rawNotes) ? '-' : rawNotes.split('\n').map((item, i) => <p key={i}>{item}</p>);
 
     return (
       <div>

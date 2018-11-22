@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
 import {
   Button,
   Col,
@@ -11,7 +12,6 @@ import {
   Pluggable
 } from '@folio/stripes/core';
 
-import formCss from '../sharedStyles/form.css';
 import css from '../UDPInfo/VendorView.css';
 import VendorName from '../VendorName';
 
@@ -66,7 +66,7 @@ class FindVendor extends React.Component {
         <TextField
           placeholder="Enter vendor-id"
           onChange={this.changeInputVendorId}
-          name="vendorId"
+          name="vendorIdTMP"
         />
       );
     } else {
@@ -74,7 +74,7 @@ class FindVendor extends React.Component {
         <TextField
           value={vendorId}
           onChange={this.changeInputVendorId}
-          name="vendorId"
+          name="vendorIdTMP"
         />
       );
     }
@@ -83,11 +83,9 @@ class FindVendor extends React.Component {
   render() {
     const disableRecordCreation = true;
     const selectedVendorId = this.state.vendorId;
-
     const vendorName = this.renderVendorName(selectedVendorId);
-    const vendorIdField = this.renderVendorIdField(selectedVendorId);
 
-    const button =
+    const enterVendorIdButton =
       <Button
         id="clickable-find-vendor-by-id"
         onClick={this.updateVendorId}
@@ -103,7 +101,7 @@ class FindVendor extends React.Component {
         {...this.props}
         searchLabel="Vendor look-up"
         marginTop0
-        searchButtonStyle="link"
+        searchButtonStyle="default"
         dataKey="vendor"
         selectVendor={this.selectVendor}
         onCloseModal={(modalProps) => {
@@ -122,17 +120,21 @@ class FindVendor extends React.Component {
 
     return (
       <React.Fragment>
-        <div
-          className={formCss.label}
-        >
-          Content Vendor Id *
-        </div>
         <Row>
-          <Col xs={8}>
-            { vendorIdField }
-          </Col>
-          <Col xs={4}>
-            { button }
+          <Col xs style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <Field
+              label="Content Vendor Id *"
+              placeholder="Enter vendor-id"
+              id="vendor-id"
+              name="vendorId"
+              component={TextField}
+              onChange={this.changeInputVendorId}
+              required
+              fullWidth
+            />
+            <div style={{ marginLeft: '10px', top: '2px', position: 'relative' }}>
+              { enterVendorIdButton }
+            </div>
           </Col>
         </Row>
         <Row>
