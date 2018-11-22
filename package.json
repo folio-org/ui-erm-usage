@@ -11,7 +11,8 @@
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
-    "test": "stripes test nightmare",
+    "test": "stripes test nightmare --run udp-crud",
+    "test-udp-crud": "stripes test nightmare --run udp-crud",
     "lint": "eslint src"
   },
   "devDependencies": {
