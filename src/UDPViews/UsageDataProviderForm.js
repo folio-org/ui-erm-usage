@@ -212,7 +212,6 @@ class UsageDataProviderForm extends React.Component {
                 onToggle={this.handleSectionToggle}
                 useAggregator={this.state.useAggregator}
                 changeUseAggregator={this.changeAggregatorVendor}
-                sushiFormExpanded={sections.editSushiCredentials}
                 {...this.props}
               />
               <NotesForm

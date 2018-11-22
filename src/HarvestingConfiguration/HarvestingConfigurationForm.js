@@ -28,7 +28,7 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   render() {
-    const { expanded, accordionId, useAggregator, sushiFormExpanded } = this.props;
+    const { expanded, accordionId, useAggregator } = this.props;
     const onToggleAccordion = this.props.onToggle;
 
     const harvestingStatusOptions =
@@ -141,7 +141,6 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <SushiCredentialsForm
                 accordionId="editSushiCredentials"
-                expanded={sushiFormExpanded}
                 onToggle={onToggleAccordion}
               />
             </section>
@@ -154,7 +153,6 @@ class HarvestingConfigurationForm extends React.Component {
 
 HarvestingConfigurationForm.propTypes = {
   expanded: PropTypes.bool,
-  sushiFormExpanded: PropTypes.bool,
   onToggle: PropTypes.func,
   accordionId: PropTypes.string.isRequired,
   stripes: PropTypes.shape({
