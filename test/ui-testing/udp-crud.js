@@ -34,8 +34,6 @@ module.exports.test = function uiTest(uiTestCtx) {
           .wait('#clickable-newusageDataProvider')
           .click('#clickable-newusageDataProvider')
           .wait(55)
-          .click('#accordion-toggle-button-editHarvestingConfig')
-          .wait(25)
           .insert('input[name=label]', label)
 
           // Select the first vendor in plugin-find-vendor
