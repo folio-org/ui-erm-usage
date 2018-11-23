@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { Settings } from '@folio/stripes/smart-components';
 import GeneralSettings from './general-settings';
 import AggregatorManager from './Aggregators/AggregatorManager';
@@ -14,7 +14,7 @@ export default class ErmUsageSettings extends React.Component {
   pages = [
     {
       route: 'general',
-      label: this.props.stripes.intl.formatMessage({ id: 'ui-erm-usage.settings.general' }),
+      label: <FormattedMessage id="ui-erm-usage.settings.general" />,
       component: GeneralSettings,
     },
     {
@@ -30,11 +30,3 @@ export default class ErmUsageSettings extends React.Component {
     );
   }
 }
-
-ErmUsageSettings.propTypes = {
-  stripes: PropTypes.shape({
-    intl: PropTypes.shape({
-      formatMessage: PropTypes.func.isRequired
-    }).isRequired,
-  }),
-};
