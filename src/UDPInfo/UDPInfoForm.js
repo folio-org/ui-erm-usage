@@ -51,7 +51,6 @@ class UDPInfoForm extends React.Component {
                   name="label"
                   id="addudp_providername"
                   component={TextField}
-                  required
                   fullWidth
                 />
               </Col>
@@ -69,7 +68,6 @@ class UDPInfoForm extends React.Component {
                   id="addudp_platformid"
                   placeholder="Link the content platform"
                   component={TextField}
-                  required
                   fullWidth
                 />
               </Col>

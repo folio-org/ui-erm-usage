@@ -63,7 +63,6 @@ class HarvestingConfigurationForm extends React.Component {
                     placeholder="Select a harvesting status"
                     component={Select}
                     dataOptions={harvestingStatusOptions}
-                    required
                     fullWidth
                   />
                 </Col>
@@ -98,7 +97,6 @@ class HarvestingConfigurationForm extends React.Component {
                     placeholder="Select the report release"
                     component={Select}
                     dataOptions={reportReleaseOptions}
-                    required
                     fullWidth
                   />
                 </Col>
@@ -120,8 +118,6 @@ class HarvestingConfigurationForm extends React.Component {
                     id="input-harvestingStart"
                     component={TextField}
                     placeholder="YYYY-MM"
-                    autoFocus
-                    required
                     fullWidth
                   />
                 </Col>
@@ -132,7 +128,6 @@ class HarvestingConfigurationForm extends React.Component {
                     id="input-harvestingEnd"
                     component={TextField}
                     placeholder="YYYY-MM"
-                    autoFocus
                     fullWidth
                   />
                 </Col>

@@ -17,7 +17,6 @@ const SushiCredentialsForm = () => {
             id="addudp_customerid"
             placeholder="Enter the SUSHI customer ID"
             component={TextField}
-            required
             fullWidth
           />
         </Col>
@@ -28,7 +27,6 @@ const SushiCredentialsForm = () => {
             id="addudp_requestorid"
             placeholder="Enter the SUSHI requestor ID"
             component={TextField}
-            required
             fullWidth
           />
         </Col>

@@ -129,7 +129,6 @@ class FindVendor extends React.Component {
               name="vendorId"
               component={TextField}
               onChange={this.changeInputVendorId}
-              required
               fullWidth
             />
             <div style={{ marginLeft: '10px', top: '2px', position: 'relative' }}>

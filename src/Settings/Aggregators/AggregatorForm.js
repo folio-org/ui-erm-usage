@@ -23,6 +23,56 @@ import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
 import css from './AggregatorForm.css';
 
+// function validate(values) {
+//   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+//   const errors = {};
+//   errors.aggregatorConfig = {};
+//   values.accountConfig = {};
+
+//   if (!values.label) {
+//     errors.label = 'Please fill this in to continue';
+//   }
+
+//   if (!values.serviceType) {
+//     errors.serviceType = 'Please fill this in to continue';
+//   }
+
+//   if (!values.serviceUrl) {
+//     errors.serviceUrl = 'Please fill this in to continue';
+//   }
+
+//   if (!values.aggregatorConfig || !values.aggregatorConfig.apiKey) {
+//     errors.aggregatorConfig.apiKey = 'Please fill this in to continue';
+//   }
+
+//   if (!values.aggregatorConfig || !values.aggregatorConfig.requestorId) {
+//     errors.aggregatorConfig.requestorId = 'Please fill this in to continue';
+//   }
+
+//   if (!values.aggregatorConfig || !values.aggregatorConfig.customerId) {
+//     errors.aggregatorConfig.customerId = 'Please fill this in to continue';
+//   }
+
+//   if (!values.aggregatorConfig || !values.aggregatorConfig.reportRelease) {
+//     errors.aggregatorConfig.reportRelease = 'Please fill this in to continue';
+//   }
+
+//   if (!values.accountConfig || !values.accountConfig.configType) {
+//     errors.aggregatorConfig.configType = 'Please fill this in to continue';
+//   }
+
+//   if (!values.accountConfig || !values.accountConfig.configMail) {
+//     errors.aggregatorConfig.configMail = 'Please fill this in to continue';
+//   }
+
+//   if (values.accountConfig && values.accountConfig.configMail && !(mailRegex.test(values.accountConfig.configMail))) {
+//     errors.aggregatorConfig.configMail = 'Mail address is not valid';
+//   }
+
+//   return errors;
+// }
+
 class AggregatorForm extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
@@ -206,8 +256,6 @@ class AggregatorForm extends React.Component {
                       name="label"
                       id="input-aggregaor-label"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -218,7 +266,6 @@ class AggregatorForm extends React.Component {
                       placeholder="Select a service type"
                       component={Select}
                       dataOptions={serviceTypes}
-                      required
                       fullWidth
                     />
                     <Field
@@ -226,8 +273,6 @@ class AggregatorForm extends React.Component {
                       name="serviceUrl"
                       id="input-aggregaor-service-url"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -248,8 +293,6 @@ class AggregatorForm extends React.Component {
                       name="aggregatorConfig.apiKey"
                       id="input-aggregator-config-api-key"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -258,8 +301,6 @@ class AggregatorForm extends React.Component {
                       name="aggregatorConfig.requestorId"
                       id="input-aggregator-config-requestor-id"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -268,8 +309,6 @@ class AggregatorForm extends React.Component {
                       name="aggregatorConfig.customerId"
                       id="input-aggregator-config-customer-id"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -278,8 +317,6 @@ class AggregatorForm extends React.Component {
                       name="aggregatorConfig.reportRelease"
                       id="input-aggregator-config-reportRelease"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -302,7 +339,6 @@ class AggregatorForm extends React.Component {
                       placeholder="Select a config type"
                       component={Select}
                       dataOptions={accountConfigTypes}
-                      required
                       fullWidth
                       disabled={disabled}
                     />
@@ -311,8 +347,6 @@ class AggregatorForm extends React.Component {
                       name="accountConfig.configMail"
                       id="input-aggregaor-service-url"
                       component={TextField}
-                      autoFocus
-                      required
                       fullWidth
                       disabled={disabled}
                     />

@@ -23,8 +23,16 @@ function validate(values) {
   const errors = {};
   errors.udp = {};
 
-  if (!values.label || !values.vendorId || !values.platformId) {
-    errors.info = 'Please fill this in to continue';
+  if (!values.label) {
+    errors.label = 'Please fill this in to continue';
+  }
+
+  if (!values.vendorId) {
+    errors.vendorId = 'Please fill this in to continue';
+  }
+
+  if (!values.platformId) {
+    errors.platformId = 'Please fill this in to continue';
   }
 
   if (!values.harvestingStatus) {
@@ -47,10 +55,6 @@ function validate(values) {
     errors.requestedReports = 'Please select at least one report';
   }
 
-  if (!values.customerId || !values.requestorId) {
-    errors.sushiCreds = 'Please fill this in to continue';
-  }
-
   const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/;
   if (!values.harvestingStart) {
     errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
@@ -64,6 +68,14 @@ function validate(values) {
     } else if (new Date(values.harvestingEnd) < new Date(values.harvestingStart)) {
       errors.harvestingEnd = 'End date must be greater than start date';
     }
+  }
+
+  if (!values.customerId) {
+    errors.customerId = 'Please fill this in to continue';
+  }
+
+  if (!values.requestorId) {
+    errors.requestorId = 'Please fill this in to continue';
   }
 
   return errors;
@@ -91,8 +103,7 @@ class UsageDataProviderForm extends React.Component {
     this.state = {
       sections: {
         editUDPInfo: true,
-        editHarvestingConfig: false,
-        editSushiCredentials: false,
+        editHarvestingConfig: true,
         editNotes: false
       },
       useAggregator: useAgg
@@ -232,5 +243,4 @@ export default stripesForm({
   form: 'form-udProvider',
   navigationCheck: true,
   enableReinitialize: true,
-  validate
 })(UsageDataProviderForm);

@@ -54,7 +54,6 @@ class AggregatorInfoForm extends React.Component {
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
-            required
             fullWidth
           />
         </Col>
