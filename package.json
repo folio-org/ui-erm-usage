@@ -67,6 +67,13 @@
         ],
         "visible": true
       }
+    ],
+    "icons": [
+      {
+        "name": "app",
+        "alt": "ERM usage statistics",
+        "title": "eUsage"
+      }
     ]
   }
 }
