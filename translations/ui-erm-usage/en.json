@@ -7,5 +7,14 @@
   "settings.some-feature.message": "These are your settings for some app feature.",
   "ui-erm-usage.resultCount": "ResultCount:",
   "resultCount": "{count, number} Records found",
-  "erm-usage": "ERM Usage"
+  "erm-usage": "ERM Usage",
+
+  "meta.title": "eUsage",
+
+  "information.providerName": "Provider Name",
+  "information.vendor": "Vendor",
+  "information.platform": "Platform",
+  "information.harvestingStatus": "Harvesting Status",
+  "information.aggregator": "Aggregator",
+  "information.latestStatistics": "Latest Statistics"
 }
