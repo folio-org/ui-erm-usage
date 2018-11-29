@@ -41,6 +41,9 @@
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {
+      "usage-data-providers": "0.1",
+      "aggregator-settings": "0.1",
+      "counter-reports": "0.1",
       "vendor": "1.0"
     },
     "permissionSets": [
