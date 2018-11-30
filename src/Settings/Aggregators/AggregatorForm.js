@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Accordion,
   Button,
   Col,
@@ -22,56 +25,6 @@ import stripesForm from '@folio/stripes/form';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
 import css from './AggregatorForm.css';
-
-// function validate(values) {
-//   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-//   const errors = {};
-//   errors.aggregatorConfig = {};
-//   values.accountConfig = {};
-
-//   if (!values.label) {
-//     errors.label = 'Please fill this in to continue';
-//   }
-
-//   if (!values.serviceType) {
-//     errors.serviceType = 'Please fill this in to continue';
-//   }
-
-//   if (!values.serviceUrl) {
-//     errors.serviceUrl = 'Please fill this in to continue';
-//   }
-
-//   if (!values.aggregatorConfig || !values.aggregatorConfig.apiKey) {
-//     errors.aggregatorConfig.apiKey = 'Please fill this in to continue';
-//   }
-
-//   if (!values.aggregatorConfig || !values.aggregatorConfig.requestorId) {
-//     errors.aggregatorConfig.requestorId = 'Please fill this in to continue';
-//   }
-
-//   if (!values.aggregatorConfig || !values.aggregatorConfig.customerId) {
-//     errors.aggregatorConfig.customerId = 'Please fill this in to continue';
-//   }
-
-//   if (!values.aggregatorConfig || !values.aggregatorConfig.reportRelease) {
-//     errors.aggregatorConfig.reportRelease = 'Please fill this in to continue';
-//   }
-
-//   if (!values.accountConfig || !values.accountConfig.configType) {
-//     errors.aggregatorConfig.configType = 'Please fill this in to continue';
-//   }
-
-//   if (!values.accountConfig || !values.accountConfig.configMail) {
-//     errors.aggregatorConfig.configMail = 'Please fill this in to continue';
-//   }
-
-//   if (values.accountConfig && values.accountConfig.configMail && !(mailRegex.test(values.accountConfig.configMail))) {
-//     errors.aggregatorConfig.configMail = 'Mail address is not valid';
-//   }
-
-//   return errors;
-// }
 
 class AggregatorForm extends React.Component {
   static propTypes = {
@@ -140,19 +93,27 @@ class AggregatorForm extends React.Component {
     );
   }
 
+  createSaveLabel = edit => {
+    if (!_.isEmpty(edit)) {
+      return <FormattedMessage id="ui-erm-usage.aggregator.form.saveAndClose" />;
+    } else {
+      return <FormattedMessage id="ui-erm-usage.aggregator.form.create" />;
+    }
+  }
+
   saveLastMenu() {
     const { pristine, submitting, initialValues } = this.props;
     const { confirmDelete } = this.state;
     const edit = initialValues && initialValues.id;
-    const saveLabel = edit ? 'Save and close' : 'Create aggregator';
+    const saveLabel = this.createSaveLabel(edit);
 
     return (
       <PaneMenu>
         {edit &&
           <IfPermission perm="settings.erm.enabled">
             <Button
-              id="clickable-delete-service-point"
-              title="Delete"
+              id="clickable-delete-aggregator"
+              title={<FormattedMessage id="ui-erm-usage.aggregator.form.delete" />}
               buttonStyle="danger"
               onClick={this.beginDelete}
               disabled={confirmDelete}
@@ -165,7 +126,7 @@ class AggregatorForm extends React.Component {
         <Button
           id="clickable-save-service-point"
           type="submit"
-          title="Save and close"
+          title={<FormattedMessage id="ui-erm-usage.aggregator.form.saveAndClose" />}
           buttonStyle="primary paneHeaderNewButton"
           marginBottom0
           disabled={(pristine || submitting)}
@@ -207,7 +168,7 @@ class AggregatorForm extends React.Component {
       );
     }
 
-    return 'New aggregator';
+    return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
   }
 
   render() {
@@ -230,7 +191,12 @@ class AggregatorForm extends React.Component {
       ];
 
     const confirmationMessage = (
-      <div>{`Do you really want to delete ${name}?`}</div>
+      <FormattedMessage
+        id="ui-erm-usage.aggregator.form.delete.confirm.message"
+        values={{
+          aggName: name
+        }}
+      />
     );
 
     return (
@@ -247,12 +213,16 @@ class AggregatorForm extends React.Component {
                 open={sections.generalSection}
                 id="generalSection"
                 onToggle={this.handleSectionToggle}
-                label="General information"
+                label={<FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />}
               >
                 <Row>
                   <Col xs={8}>
                     <Field
-                      label="Name *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.name">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="label"
                       id="input-aggregaor-label"
                       component={TextField}
@@ -260,7 +230,11 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                     />
                     <Field
-                      label="Service Type *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.serviceType">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="serviceType"
                       id="input-aggregaor-service-type"
                       placeholder="Select a service type"
@@ -269,7 +243,11 @@ class AggregatorForm extends React.Component {
                       fullWidth
                     />
                     <Field
-                      label="Service URL *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="serviceUrl"
                       id="input-aggregaor-service-url"
                       component={TextField}
@@ -284,12 +262,16 @@ class AggregatorForm extends React.Component {
                 open={sections.aggregatorConfig}
                 id="aggregatorConfig"
                 onToggle={this.handleSectionToggle}
-                label="Aggregator Configuration"
+                label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
               >
                 <Row>
                   <Col xs={8}>
                     <Field
-                      label="API Key *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.apiKey">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="aggregatorConfig.apiKey"
                       id="input-aggregator-config-api-key"
                       component={TextField}
@@ -297,7 +279,11 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                     />
                     <Field
-                      label="Requestor Id *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.requestorId">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="aggregatorConfig.requestorId"
                       id="input-aggregator-config-requestor-id"
                       component={TextField}
@@ -305,7 +291,11 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                     />
                     <Field
-                      label="Customer Id *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.customerId">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="aggregatorConfig.customerId"
                       id="input-aggregator-config-customer-id"
                       component={TextField}
@@ -313,7 +303,11 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                     />
                     <Field
-                      label="Report release *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.reportRelease">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="aggregatorConfig.reportRelease"
                       id="input-aggregator-config-reportRelease"
                       component={TextField}
@@ -328,12 +322,16 @@ class AggregatorForm extends React.Component {
                 open={sections.accountConfig}
                 id="accountConfig"
                 onToggle={this.handleSectionToggle}
-                label="Account Configuration"
+                label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
               >
                 <Row>
                   <Col xs={8}>
                     <Field
-                      label="Config type *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="accountConfig.configType"
                       id="input-aggregaor-account-type"
                       placeholder="Select a config type"
@@ -343,7 +341,11 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                     />
                     <Field
-                      label="Config mail *"
+                      label={
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
+                          {(msg) => msg + ' *'}
+                        </FormattedMessage>
+                      }
                       name="accountConfig.configMail"
                       id="input-aggregaor-service-url"
                       component={TextField}
@@ -358,11 +360,11 @@ class AggregatorForm extends React.Component {
               <ConfirmationModal
                 id="deleteaggregator-confirmation"
                 open={confirmDelete}
-                heading="Delete Aggregator"
+                heading={<FormattedMessage id="aggregator.form.delete.confirm.title" />}
                 message={confirmationMessage}
                 onConfirm={() => { this.confirmDelete(true); }}
                 onCancel={() => { this.confirmDelete(false); }}
-                confirmLabel="Delete Aggregator"
+                confirmLabel={<FormattedMessage id="aggregator.form.delete.confirm.title" />}
               />
             </div>
           </Pane>

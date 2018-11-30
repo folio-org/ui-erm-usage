@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
+} from 'react-intl';
+import {
   Col,
   KeyValue,
   Row
@@ -46,10 +49,16 @@ class UDPInfoView extends React.Component {
         <div id={id}>
           <Row>
             <Col xs={3}>
-              <KeyValue label="Content vendor" value={vendorInfo} />
+              <KeyValue
+                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentVendor" />}
+                value={vendorInfo}
+              />
             </Col>
             <Col xs={3}>
-              <KeyValue label="Content platform" value={_.get(usageDataProvider, 'platformId', '-')} />
+              <KeyValue
+                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentPlatform" />}
+                value={_.get(usageDataProvider, 'platformId', '-')}
+              />
             </Col>
           </Row>
         </div>

@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Accordion,
   Checkbox,
   Col,
@@ -57,7 +60,11 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <Field
-                    label="Harvesting Status *"
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus">
+                        {(msg) => msg + ' *'}
+                      </FormattedMessage>
+                    }
                     name="harvestingStatus"
                     id="addudp_harvestingstatus"
                     placeholder="Select a harvesting status"
@@ -73,7 +80,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   <Checkbox
                     name="useAggregator"
-                    label="Harvest statistics via an aggregator"
+                    label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator" />}
                     onChange={this.handleUseAggChange}
                     checked={useAggregator}
                   />
@@ -82,7 +89,7 @@ class HarvestingConfigurationForm extends React.Component {
               </Row>
               <Row>
                 <Col xs={4}>
-                  { 'If no aggregator is used please define the vendor\'s SUSHI endpoint' }
+                  {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
                 <VendorInfoForm disabled={useAggregator} />
               </Row>
@@ -91,7 +98,11 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <Field
-                    label="Report release *"
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease">
+                        {(msg) => msg + ' *'}
+                      </FormattedMessage>
+                    }
                     name="reportRelease"
                     id="addudp_reportrelease"
                     placeholder="Select the report release"
@@ -102,7 +113,11 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <Col xs={8}>
                   <SelectedReportsForm
-                    label="Requested reports *"
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport">
+                        {(msg) => msg + ' *'}
+                      </FormattedMessage>
+                    }
                     initialValues={this.props.initialValues}
                     counterVersion={selectedCounterVersion}
                   />
@@ -113,7 +128,11 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <Field
-                    label="Harvesting start *"
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart">
+                        {(msg) => msg + ' *'}
+                      </FormattedMessage>
+                    }
                     name="harvestingStart"
                     id="input-harvestingStart"
                     component={TextField}
@@ -123,7 +142,7 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <Col xs={4}>
                   <Field
-                    label="Harvesting end"
+                    label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
                     name="harvestingEnd"
                     id="input-harvestingEnd"
                     component={TextField}

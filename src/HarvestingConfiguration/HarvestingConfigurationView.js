@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Accordion,
   Col,
   KeyValue,
@@ -60,7 +63,7 @@ class HarvestingConfigurationView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label="Harvesting status"
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
               value={_.get(usageDataProvider, 'harvestingStatus', '-')}
             />
           </Col>
@@ -69,25 +72,25 @@ class HarvestingConfigurationView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label="Report release"
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
               value={reportRelease}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="Requested report"
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />}
               value={requestedReports}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="Harvesting Start"
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />}
               value={harvestingStart}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="Harvesting End"
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
               value={harvestingEnd}
             />
           </Col>
@@ -95,7 +98,7 @@ class HarvestingConfigurationView extends React.Component {
         <Accordion
           open={sushiCredsOpen}
           onToggle={onToggle}
-          label="SUSHI credentials"
+          label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />}
           id="sushiCredsAccordion"
         >
           <SushiCredentialsView usageDataProvider={usageDataProvider} />

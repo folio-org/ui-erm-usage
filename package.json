@@ -35,7 +35,7 @@
   },
   "stripes": {
     "type": "app",
-    "displayName": "eUsage",
+    "displayName": "ui-erm-usage.meta.title",
     "route": "/eusage",
     "home": "/eusage?filters=harvestingStatus.Active",
     "hasSettings": true,

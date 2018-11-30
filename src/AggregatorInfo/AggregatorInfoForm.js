@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import { Field } from 'redux-form';
 import {
   Col,
@@ -47,7 +50,11 @@ class AggregatorInfoForm extends React.Component {
       <React.Fragment>
         <Col xs={4}>
           <Field
-            label="Aggregator *"
+            label={
+              <FormattedMessage id="ui-erm-usage.information.aggregator">
+                {(msg) => msg + ' *'}
+              </FormattedMessage>
+            }
             name="aggregator.id"
             id="addudp_aggid"
             placeholder="Select an aggregator"
@@ -59,7 +66,7 @@ class AggregatorInfoForm extends React.Component {
         </Col>
         <Col xs={4}>
           <Field
-            label="Vendor code"
+            label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.vendorCode" />}
             name="aggregator.vendorCode"
             id="addudp_vendorcode"
             placeholder="Enter the aggregator's vendor code"

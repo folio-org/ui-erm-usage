@@ -1,11 +1,23 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import {
   Icon,
   List,
   TextField
 } from '@folio/stripes/components';
 import css from './ReportList.css';
+
+const counterVersionInfo = cVersion => {
+  if (!_.isEmpty(cVersion)) {
+    return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
+  } else {
+    return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportFirst" />;
+  }
+};
 
 function ReportList(props) {
   const { onChangeSearch, onClickItem, counterVersion } = props;
@@ -26,7 +38,8 @@ function ReportList(props) {
   );
 
   const search = 'Search';
-  const counterVersionInfo = counterVersion ? `Select Counter ${counterVersion} report` : 'Select Counter report release first!';
+
+  const counterVersionInf = counterVersionInfo(counterVersion);
   return (
     <div className={css.root}>
       <TextField
@@ -36,7 +49,7 @@ function ReportList(props) {
         onChange={handleSearchChange}
       />
       <div className={css.reportVersionInfo}>
-        { counterVersionInfo }
+        { counterVersionInf }
       </div>
       <div
         name="add-report-list"

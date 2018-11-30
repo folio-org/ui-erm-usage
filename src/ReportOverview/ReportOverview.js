@@ -2,6 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  injectIntl,
+  intlShape
+} from 'react-intl';
+import {
   MultiColumnList
 } from '@folio/stripes/components';
 import ReportDownloadButton from './ReportDownloadButton';
@@ -37,6 +41,7 @@ class ReportOverview extends React.Component {
     }),
     vendorId: PropTypes.string.isRequired,
     platformId: PropTypes.string.isRequired,
+    intl: intlShape.isRequired,
   };
 
   constructor(props) {
@@ -76,6 +81,7 @@ class ReportOverview extends React.Component {
   };
 
   createReportOverviewPerYear = (groupedStats) => {
+    const { intl } = this.props;
     const years = _.keys(groupedStats);
     const visibleColumns = ['report', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const columnWidths = { 'report': '50px', '01': '50px', '02': '50px', '03': '50px', '04': '50px', '05': '50px', '06': '50px', '07': '50px', '08': '50px', '09': '50px', '10': '50px', '11': '50px', '12': '50px' };
@@ -96,19 +102,19 @@ class ReportOverview extends React.Component {
             columnWidths={columnWidths}
             interactive={false}
             columnMapping={{
-              'report': 'Report',
-              '01': 'Jan',
-              '02': 'Feb',
-              '03': 'Mar',
-              '04': 'Apr',
-              '05': 'May',
-              '06': 'Jun',
-              '07': 'Jul',
-              '08': 'Aug',
-              '09': 'Sep',
-              '10': 'Oct',
-              '11': 'Nov',
-              '12': 'Dec',
+              'report': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.report' }),
+              '01': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.01' }),
+              '02': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.02' }),
+              '03': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.03' }),
+              '04': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.04' }),
+              '05': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.05' }),
+              '06': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.06' }),
+              '07': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.07' }),
+              '08': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.08' }),
+              '09': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.09' }),
+              '10': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.10' }),
+              '11': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.11' }),
+              '12': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.12' }),
             }}
           />
         </React.Fragment>
@@ -136,4 +142,4 @@ class ReportOverview extends React.Component {
   }
 }
 
-export default ReportOverview;
+export default injectIntl(ReportOverview);

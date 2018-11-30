@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Row,
   Col,
   KeyValue
@@ -22,16 +25,19 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label="Is aggregator?"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.isAggregator" />}
           value="Yes"
         />
       </Col>
       <Col xs={3}>
-        <KeyValue label="Aggregator name" value={aggregatorInfo} />
+        <KeyValue
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.aggregatorName" />}
+          value={aggregatorInfo}
+        />
       </Col>
       <Col xs={3}>
         <KeyValue
-          label="Vendor code"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />}
           value={_.get(usageDataProvider, 'aggregator.vendorCode', '-')}
         />
       </Col>

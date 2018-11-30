@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  injectIntl,
+  intlShape
+} from 'react-intl';
+import {
   makeQueryFunction,
   SearchAndSort
 } from '@folio/stripes/smart-components';
@@ -81,6 +85,7 @@ class UsageDataProviders extends React.Component {
     onComponentWillUnmount: PropTypes.func,
     showSingleResult: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
     browseOnly: PropTypes.bool,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {
@@ -126,7 +131,7 @@ class UsageDataProviders extends React.Component {
   }
 
   render() {
-    const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes } = this.props;
+    const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes, intl } = this.props;
 
     const resultsFormatter = {
       name: udp => udp.label,
@@ -157,12 +162,12 @@ class UsageDataProviders extends React.Component {
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}
       columnMapping={{
-        name: 'Provider Name',
-        vendor: 'Vendor',
-        platform: 'Platform',
-        harvestingStatus: 'Harvesting Status',
-        aggregator: 'Aggregator',
-        latestStats: 'Latest Statistics'
+        name: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
+        vendor: intl.formatMessage({ id: 'ui-erm-usage.information.vendor' }),
+        platform: intl.formatMessage({ id: 'ui-erm-usage.information.platform' }),
+        harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
+        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' }),
+        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' })
       }}
       browseOnly={browseOnly}
       stripes={stripes}
@@ -170,4 +175,4 @@ class UsageDataProviders extends React.Component {
   }
 }
 
-export default UsageDataProviders;
+export default injectIntl(UsageDataProviders);
