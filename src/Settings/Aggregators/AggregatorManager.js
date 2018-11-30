@@ -86,8 +86,6 @@ class AggregatorManager extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.validateAgg = this.validateAgg.bind(this);
-    // connect form
     this.cAggregatorForm = props.stripes.connect(AggregatorForm);
   }
 

@@ -22,7 +22,7 @@ class SelectedReportsForm extends React.Component {
   static propTypes = {
     initialValues: PropTypes.object,
     counterVersion: PropTypes.number,
-    label: PropTypes.string,
+    label: PropTypes.object,
   };
 
   constructor(props) {

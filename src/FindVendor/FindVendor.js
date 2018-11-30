@@ -105,7 +105,7 @@ class FindVendor extends React.Component {
         type="find-vendor"
         id="clickable-find-vendor"
         {...this.props}
-        searchLabel={<FormattedMessage id="ui-erm-usage.udp.form.findVendor.searchLabel" />}
+        searchLabel="Vendor look-up"
         marginTop0
         searchButtonStyle="default"
         dataKey="vendor"

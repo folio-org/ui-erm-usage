@@ -251,7 +251,7 @@ class UsageDataProviderView extends React.Component {
 
           <Layer
             isOpen={query.layer ? query.layer === 'edit' : false}
-            contentLabel={<FormattedMessage id="ui-erm-usage.udp.editUDPDialog" />}
+            contentLabel="Edit Usage Data Provider Dialog"
           >
             <this.connectedUsageDataProviderForm
               stripes={stripes}

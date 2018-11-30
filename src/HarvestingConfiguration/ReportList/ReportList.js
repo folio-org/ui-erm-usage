@@ -11,6 +11,14 @@ import {
 } from '@folio/stripes/components';
 import css from './ReportList.css';
 
+const counterVersionInfo = cVersion => {
+  if (!_.isEmpty(cVersion)) {
+    return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
+  } else {
+    return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportFirst" />;
+  }
+};
+
 function ReportList(props) {
   const { onChangeSearch, onClickItem, counterVersion } = props;
   const handleSearchChange = e => onChangeSearch(e);
@@ -30,14 +38,8 @@ function ReportList(props) {
   );
 
   const search = 'Search';
-  const counterVersionInfo = cVersion => {
-    if (!_.isEmpty(cVersion)) {
-      return <FormattedMessage id="udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
-    } else {
-      return <FormattedMessage id="udp.form.reportList.selectReportFirst" />;
-    }
-  };
 
+  const counterVersionInf = counterVersionInfo(counterVersion);
   return (
     <div className={css.root}>
       <TextField
@@ -47,7 +49,7 @@ function ReportList(props) {
         onChange={handleSearchChange}
       />
       <div className={css.reportVersionInfo}>
-        { counterVersionInfo }
+        { counterVersionInf }
       </div>
       <div
         name="add-report-list"
