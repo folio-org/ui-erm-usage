@@ -35,7 +35,7 @@ class UDPInfoForm extends React.Component {
   }
 
   render() {
-    const { expanded, onToggle, accordionId, intl } = this.props;
+    const { expanded, onToggle, accordionId } = this.props;
 
     return (
       <Accordion

@@ -246,4 +246,5 @@ export default stripesForm({
   form: 'form-udProvider',
   navigationCheck: true,
   enableReinitialize: true,
+  validate
 })(UsageDataProviderForm);

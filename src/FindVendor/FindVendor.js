@@ -86,7 +86,6 @@ class FindVendor extends React.Component {
   }
 
   render() {
-    const { intl } = this.props;
     const disableRecordCreation = true;
     const selectedVendorId = this.state.vendorId;
     const vendorName = this.renderVendorName(selectedVendorId);
