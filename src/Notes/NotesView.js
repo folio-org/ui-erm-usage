@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Col,
   KeyValue,
   Row
@@ -22,7 +25,7 @@ class NotesView extends React.Component {
         <Row>
           <Col xs={12}>
             <KeyValue
-              label="Notes"
+              label={<FormattedMessage id="ui-erm-usage.udp.notes" />}
               value={n}
             />
           </Col>

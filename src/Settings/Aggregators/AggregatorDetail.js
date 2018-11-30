@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Accordion,
   Col,
   ExpandAllButton,
@@ -71,13 +74,13 @@ class AggregatorDetails extends React.Component {
           open={sections.generalInformation}
           id="generalInformation"
           onToggle={this.handleSectionToggle}
-          label="General Information"
+          label={<FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />}
         >
           <Row>
             <Col xs={4}>
-              <KeyValue label="Name" value={aggregator.label} />
-              <KeyValue label="Service Type" value={aggregator.serviceType} />
-              <KeyValue label="Service URL" value={aggregator.serviceUrl} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.name" />} value={aggregator.label} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />} value={aggregator.serviceType} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />} value={aggregator.serviceUrl} />
             </Col>
           </Row>
         </Accordion>
@@ -86,14 +89,14 @@ class AggregatorDetails extends React.Component {
           open={sections.aggregatorConfig}
           id="aggregatorConfig"
           onToggle={this.handleSectionToggle}
-          label="Aggregator Configuration"
+          label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
         >
           <Row>
             <Col xs={8}>
-              <KeyValue label="API Key" value={aggregator.aggregatorConfig.apiKey} />
-              <KeyValue label="Requestor Id" value={aggregator.aggregatorConfig.requestorId} />
-              <KeyValue label="Customer Id" value={aggregator.aggregatorConfig.customerId} />
-              <KeyValue label="Report release" value={aggregator.aggregatorConfig.reportRelease} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.apiKey" />} value={aggregator.aggregatorConfig.apiKey} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.requestorId" />} value={aggregator.aggregatorConfig.requestorId} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.customerId" />} value={aggregator.aggregatorConfig.customerId} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.reportRelease" />} value={aggregator.aggregatorConfig.reportRelease} />
             </Col>
           </Row>
         </Accordion>
@@ -102,13 +105,13 @@ class AggregatorDetails extends React.Component {
           open={sections.accountConfig}
           id="accountConfig"
           onToggle={this.handleSectionToggle}
-          label="Account Configuration"
+          label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
         >
           <Row>
             <Col xs={4}>
-              <KeyValue label="Type" value={aggregator.accountConfig.configType} />
-              <KeyValue label="Mail" value={aggregator.accountConfig.configMail} />
-              <KeyValue label="Contact" value={contacts} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />} value={aggregator.accountConfig.configType} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />} value={aggregator.accountConfig.configMail} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.contact" />} value={contacts} />
             </Col>
           </Row>
         </Accordion>

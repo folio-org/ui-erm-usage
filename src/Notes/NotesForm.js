@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import { Field } from 'redux-form';
 import {
   Accordion,
@@ -19,7 +22,7 @@ const NotesForm = ({ expanded, onToggle, accordionId }) => {
       <Row>
         <Col xs>
           <Field
-            label="Notes"
+            label={<FormattedMessage id="ui-erm-usage.udp.notes" />}
             name="notes"
             id="addudp_notes"
             placeholder="Enter notes"

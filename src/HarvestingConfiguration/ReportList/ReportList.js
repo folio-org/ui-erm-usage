@@ -1,5 +1,9 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import {
   Icon,
   List,
@@ -26,7 +30,14 @@ function ReportList(props) {
   );
 
   const search = 'Search';
-  const counterVersionInfo = counterVersion ? `Select Counter ${counterVersion} report` : 'Select Counter report release first!';
+  const counterVersionInfo = cVersion => {
+    if (!_.isEmpty(cVersion)) {
+      return <FormattedMessage id="udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
+    } else {
+      return <FormattedMessage id="udp.form.reportList.selectReportFirst" />;
+    }
+  };
+
   return (
     <div className={css.root}>
       <TextField

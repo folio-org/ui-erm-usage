@@ -1,6 +1,9 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Col,
   Row,
   TextField
@@ -12,7 +15,11 @@ const SushiCredentialsForm = () => {
       <Row>
         <Col xs={4}>
           <Field
-            label="Customer ID *"
+            label={
+              <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
+                {(msg) => msg + ' *'}
+              </FormattedMessage>
+            }
             name="customerId"
             id="addudp_customerid"
             placeholder="Enter the SUSHI customer ID"
@@ -22,7 +29,11 @@ const SushiCredentialsForm = () => {
         </Col>
         <Col xs={4}>
           <Field
-            label="Requestor ID *"
+            label={
+              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId">
+                {(msg) => msg + ' *'}
+              </FormattedMessage>
+            }
             name="requestorId"
             id="addudp_requestorid"
             placeholder="Enter the SUSHI requestor ID"
@@ -32,7 +43,7 @@ const SushiCredentialsForm = () => {
         </Col>
         <Col xs={4}>
           <Field
-            label="API key"
+            label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
             name="apiKey"
             id="addudp_apikey"
             placeholder="Enter the SUSHI API key"
@@ -44,7 +55,7 @@ const SushiCredentialsForm = () => {
       <Row>
         <Col xs={4}>
           <Field
-            label="Requestor name"
+            label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
             name="requestorName"
             id="addudp_reqname"
             placeholder="Enter the SUSHI requestor name"
@@ -54,7 +65,7 @@ const SushiCredentialsForm = () => {
         </Col>
         <Col xs={8}>
           <Field
-            label="Requestor Mail"
+            label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
             name="requestorMail"
             id="addudp_requestormail"
             placeholder="Enter the SUSHI requestor mail"

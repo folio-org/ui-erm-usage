@@ -3,6 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
   Col,
   Row,
@@ -52,7 +55,9 @@ class FindVendor extends React.Component {
         name="vendorName"
         className={`${css.section} ${css.active}`}
       >
-        <b>Vendor</b>
+        <b>
+          {<FormattedMessage id="ui-erm-usage.information.vendor" />}
+        </b>
         <VendorName
           vendorId={vendorId}
           stripes={this.props.stripes}
@@ -81,6 +86,7 @@ class FindVendor extends React.Component {
   }
 
   render() {
+    const { intl } = this.props;
     const disableRecordCreation = true;
     const selectedVendorId = this.state.vendorId;
     const vendorName = this.renderVendorName(selectedVendorId);
@@ -90,7 +96,7 @@ class FindVendor extends React.Component {
         id="clickable-find-vendor-by-id"
         onClick={this.updateVendorId}
       >
-        Enter
+        {<FormattedMessage id="ui-erm-usage.udp.form.findVendor.findVendorByIdButton" />}
       </Button>;
 
     const pluggable =
@@ -99,7 +105,7 @@ class FindVendor extends React.Component {
         type="find-vendor"
         id="clickable-find-vendor"
         {...this.props}
-        searchLabel="Vendor look-up"
+        searchLabel={<FormattedMessage id="ui-erm-usage.udp.form.findVendor.searchLabel" />}
         marginTop0
         searchButtonStyle="default"
         dataKey="vendor"
@@ -123,7 +129,11 @@ class FindVendor extends React.Component {
         <Row>
           <Col xs style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             <Field
-              label="Content Vendor Id *"
+              label={
+                <FormattedMessage id="ui-erm-usage.udp.form.findVendor.contenVendorId">
+                  {(msg) => msg + ' *'}
+                </FormattedMessage>
+              }
               placeholder="Enter vendor-id"
               id="vendor-id"
               name="vendorId"

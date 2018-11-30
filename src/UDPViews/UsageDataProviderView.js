@@ -2,6 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
+} from 'react-intl';
+import {
   Col,
   Accordion,
   ExpandAllButton,
@@ -198,7 +201,7 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.harvestingAccordion}
             onToggle={this.handleAccordionToggle}
-            label="Harvesting configuration"
+            label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
             id="harvestingAccordion"
           >
             <HarvestingConfigurationView
@@ -211,7 +214,7 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.notesAccordion}
             onToggle={this.handleAccordionToggle}
-            label="Notes"
+            label={<FormattedMessage id="ui-erm-usage.udp.notes" />}
             id="notesAccordion"
           >
             <NotesView usageDataProvider={initialValues} />
@@ -219,7 +222,7 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.statisticsAccordion}
             onToggle={this.handleAccordionToggle}
-            label="Statistics"
+            label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
             id="statisticsAccordion"
           >
             <this.connectedReportOverview
@@ -231,13 +234,16 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.uploadAccordion}
             onToggle={this.handleAccordionToggle}
-            label="COUNTER file upload"
+            label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
             id="uploadAccordion"
           >
             {
               <Row>
                 <Col xs={3}>
-                  <KeyValue label="TODO" value="TODO" />
+                  <KeyValue
+                    label="TODO"
+                    value="TODO"
+                  />
                 </Col>
               </Row>
             }
@@ -245,7 +251,7 @@ class UsageDataProviderView extends React.Component {
 
           <Layer
             isOpen={query.layer ? query.layer === 'edit' : false}
-            contentLabel="Edit Usage Data Provider Dialog"
+            contentLabel={<FormattedMessage id="ui-erm-usage.udp.editUDPDialog" />}
           >
             <this.connectedUsageDataProviderForm
               stripes={stripes}

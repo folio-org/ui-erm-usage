@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import { FieldArray } from 'redux-form';
 import {
   Icon,
@@ -91,7 +94,7 @@ class SelectedReportsForm extends React.Component {
   }
 
   renderItem = (item, index) => {
-    const title = 'Add Report Title';
+    const title = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportTitle" />;
     return (
       <li key={item}>
         {item}
@@ -118,7 +121,7 @@ class SelectedReportsForm extends React.Component {
       <List
         items={fields}
         itemFormatter={listFormatter}
-        isEmptyMessage="No Report"
+        isEmptyMessage={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.emptyListMessage" />}
       />
     );
   }
@@ -130,7 +133,7 @@ class SelectedReportsForm extends React.Component {
     const counterReportsCurrentVersion = _.filter(this.counterReports, ['counterVersion', '' + counterVersion]);
     const availReportNames = _.filter(counterReportsCurrentVersion, this.isReportAvailable).map(f => f.value);
 
-    const confirmationMessage = 'Do you want to clear selected reports when changing Counter version?';
+    const confirmationMessage = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />;
 
     const reports = (
       <ReportList
@@ -152,7 +155,7 @@ class SelectedReportsForm extends React.Component {
         <Button align="end" bottomMargin0 data-role="toggle" aria-haspopup="true" id="clickable-add-report">
           &#43;
           {' '}
-          Add Report
+          {<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportButton" />}
         </Button>
         <DropdownMenu
           data-role="menu"
@@ -176,11 +179,11 @@ class SelectedReportsForm extends React.Component {
         <ConfirmationModal
           id="clear-report-selection-confirmation"
           open={confirmClear}
-          heading="Clear report selection"
+          heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
           message={confirmationMessage}
           onConfirm={() => { this.confirmClearReports(true); }}
           onCancel={() => { this.confirmClearReports(false); }}
-          confirmLabel="Clear reports"
+          confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />}
         />
       </React.Fragment>
     );

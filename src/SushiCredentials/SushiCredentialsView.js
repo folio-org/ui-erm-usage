@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Col,
   KeyValue,
   Row
@@ -20,19 +23,19 @@ class SushiCredentialsView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label="Customer ID"
+              label={<FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />}
               value={_.get(usageDataProvider, 'customerId', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="Requestor ID"
+              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />}
               value={_.get(usageDataProvider, 'requestorId', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="API key"
+              label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
               value={_.get(usageDataProvider, 'apiKey', '-')}
             />
           </Col>
@@ -40,13 +43,13 @@ class SushiCredentialsView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label="Requestor name"
+              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
               value={_.get(usageDataProvider, 'requestorName', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label="Requestor mail"
+              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
               value={_.get(usageDataProvider, 'requestorMail', '-')}
             />
           </Col>

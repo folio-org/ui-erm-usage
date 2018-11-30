@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Accordion,
   Col,
   Row,
@@ -32,11 +35,11 @@ class UDPInfoForm extends React.Component {
   }
 
   render() {
-    const { expanded, onToggle, accordionId } = this.props;
+    const { expanded, onToggle, accordionId, intl } = this.props;
 
     return (
       <Accordion
-        label="Usage Data Provider Information"
+        label={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.title" />}
         open={expanded}
         id={accordionId}
         onToggle={onToggle}
@@ -46,7 +49,10 @@ class UDPInfoForm extends React.Component {
             <Row>
               <Col xs={4}>
                 <Field
-                  label="Provider Name *"
+                  label={
+                    <FormattedMessage id="ui-erm-usage.information.providerName">
+                      {(msg) => msg + ' *'}
+                    </FormattedMessage>}
                   placeholder="Enter a name to identify the usage data provider"
                   name="label"
                   id="addudp_providername"
@@ -63,7 +69,11 @@ class UDPInfoForm extends React.Component {
               </Col>
               <Col xs={4}>
                 <Field
-                  label="Content Platform Id *"
+                  label={
+                    <FormattedMessage id="ui-erm-usage.udp.form.udpInfo.contentPlatformId">
+                      {(msg) => msg + ' *'}
+                    </FormattedMessage>
+                  }
                   name="platformId"
                   id="addudp_platformid"
                   placeholder="Link the content platform"

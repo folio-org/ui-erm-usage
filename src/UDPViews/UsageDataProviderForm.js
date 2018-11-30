@@ -3,6 +3,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { change } from 'redux-form';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
   Col,
   ExpandAllButton,
@@ -120,8 +123,8 @@ class UsageDataProviderForm extends React.Component {
         <IconButton
           id="clickable-closeudpdialog"
           onClick={onCancel}
-          title="Close new UsageDataProvider Dialog"
-          ariaLabel="Close new UsageDataProvider Dialog"
+          title={<FormattedMessage id="ui-erm-usage.udp.form.close" />}
+          ariaLabel={<FormattedMessage id="ui-erm-usage.udp.form.close" />}
           icon="closeX"
         />
       </PaneMenu>
@@ -187,10 +190,10 @@ class UsageDataProviderForm extends React.Component {
     const { initialValues, handleSubmit } = this.props;
     const { sections } = this.state;
     const firstMenu = this.getAddFirstMenu();
-    const paneTitle = initialValues.id ? initialValues.label : 'Create UsageDataProvider';
+    const paneTitle = initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />;
     const lastMenu = initialValues.id ?
-      this.getLastMenu('clickable-createnewudp', 'Update UsageDataProvider') :
-      this.getLastMenu('clickable-createnewudp', 'Create UsageDataProvider');
+      this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.updateUDP" />) :
+      this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
 
     return (
       <form className={css.UDPFormRoot} id="form-udp" onSubmit={handleSubmit}>

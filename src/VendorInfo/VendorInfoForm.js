@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage
+} from 'react-intl';
 import { Field } from 'redux-form';
 import {
   Col,
@@ -23,10 +26,13 @@ class VendorInfoForm extends React.Component {
       <React.Fragment>
         <Col xs={4}>
           <Field
-            label="Service type *"
+            label={
+              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType">
+                {(msg) => msg + ' *'}
+              </FormattedMessage>}
             name="serviceType"
             id="addudp_servicetype"
-            placeholder="Select the vendor's API"
+            placeholder="Select the vendor's API type"
             component={Select}
             dataOptions={serviceTypeOptions}
             disabled={this.props.disabled}
@@ -35,10 +41,10 @@ class VendorInfoForm extends React.Component {
         </Col>
         <Col xs={4}>
           <Field
-            label="Service URL"
+            label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="serviceUrl"
             id="addudp_serviceurl"
-            placeholder="Enter the vendor's service URL"
+            placeholder="Enter the vendor's serviceURL"
             component={TextField}
             disabled={this.props.disabled}
             fullWidth
