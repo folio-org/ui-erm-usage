@@ -10,14 +10,16 @@ import {
   ExpandAllButton,
   Icon,
   IconButton,
-  IfPermission,
   KeyValue,
   Layer,
   Pane,
   PaneMenu,
   Row
 } from '@folio/stripes/components';
-import { TitleManager } from '@folio/stripes/core';
+import {
+  IfPermission,
+  TitleManager
+} from '@folio/stripes/core';
 import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
@@ -140,7 +142,7 @@ class UsageDataProviderView extends React.Component {
         <PaneMenu>
           <IfPermission perm="usagedataproviders.item.delete">
             <IconButton
-              icon="trashBin"
+              icon="trash"
               id="clickable-delete-udp"
               style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
               onClick={() => this.deleteUDP(initialValues)}

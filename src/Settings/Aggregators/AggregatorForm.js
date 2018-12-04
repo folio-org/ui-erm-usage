@@ -12,7 +12,6 @@ import {
   ExpandAllButton,
   Icon,
   IconButton,
-  IfPermission,
   Pane,
   PaneMenu,
   Paneset,
@@ -21,9 +20,16 @@ import {
   TextField,
 
 } from '@folio/stripes/components';
+import {
+  IfPermission
+} from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
+import {
+  Required,
+  Mail
+} from '../../Utils/Validate';
 import css from './AggregatorForm.css';
 
 class AggregatorForm extends React.Component {
@@ -85,8 +91,7 @@ class AggregatorForm extends React.Component {
         <IconButton
           id="clickable-close-service-point"
           onClick={this.props.onCancel}
-          icon="closeX"
-          title="Cancel"
+          icon="times"
           aria-label="Cancel"
         />
       </PaneMenu>
@@ -228,6 +233,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                     <Field
                       label={
@@ -241,6 +247,7 @@ class AggregatorForm extends React.Component {
                       component={Select}
                       dataOptions={serviceTypes}
                       fullWidth
+                      validate={[Required]}
                     />
                     <Field
                       label={
@@ -253,6 +260,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                   </Col>
                 </Row>
@@ -277,6 +285,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                     <Field
                       label={
@@ -289,6 +298,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                     <Field
                       label={
@@ -301,6 +311,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                     <Field
                       label={
@@ -313,6 +324,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                   </Col>
                 </Row>
@@ -339,20 +351,20 @@ class AggregatorForm extends React.Component {
                       dataOptions={accountConfigTypes}
                       fullWidth
                       disabled={disabled}
+                      validate={[Required]}
                     />
                     <Field
                       label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
-                          {(msg) => msg + ' *'}
-                        </FormattedMessage>
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />
                       }
                       name="accountConfig.configMail"
                       id="input-aggregaor-service-url"
                       component={TextField}
                       fullWidth
                       disabled={disabled}
+                      validate={[Mail]}
                     />
-                    <DisplayContactsForm />
+                    <DisplayContactsForm {...this.props} />
                   </Col>
                 </Row>
               </Accordion>

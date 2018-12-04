@@ -120,13 +120,16 @@ class UsageDataProviderForm extends React.Component {
 
     return (
       <PaneMenu>
-        <IconButton
-          id="clickable-closeudpdialog"
-          onClick={onCancel}
-          title={<FormattedMessage id="ui-erm-usage.udp.form.close" />}
-          ariaLabel={<FormattedMessage id="ui-erm-usage.udp.form.close" />}
-          icon="closeX"
-        />
+        <FormattedMessage id="ui-erm-usage.udp.form.close">
+          { ariaLabel => (
+            <IconButton
+              id="clickable-closeudpdialog"
+              onClick={onCancel}
+              ariaLabel={ariaLabel}
+              icon="times"
+            />
+          )}
+        </FormattedMessage>
       </PaneMenu>
     );
   }

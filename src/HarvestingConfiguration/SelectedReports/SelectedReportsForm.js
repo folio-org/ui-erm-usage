@@ -107,7 +107,7 @@ class SelectedReportsForm extends React.Component {
           aria-label={item}
           title={title}
         >
-          <Icon icon="hollowX" />
+          <Icon icon="times-circle" />
         </Button>
       </li>
     );

@@ -1,27 +1,11 @@
 import React, { Fragment } from 'react';
 import {
-  Field,
   FieldArray
 } from 'redux-form';
-import {
-  TextField,
-  RepeatableField
-} from '@folio/stripes/components';
+import DisplayContact from './DisplayContact';
 import formCss from '../../sharedStyles/form.css';
 
 class DisplayContactsForm extends React.Component {
-  renderField = (identifier) => {
-    return (
-      <Fragment>
-        <Field
-          name={identifier}
-          id="input-display-contact"
-          component={TextField}
-        />
-      </Fragment>
-    );
-  }
-
   render() {
     return (
       <Fragment>
@@ -29,25 +13,15 @@ class DisplayContactsForm extends React.Component {
           Contacts
         </div>
         <FieldArray
-          addLabel="+ Add contact"
-          component={RepeatableField}
+          component={DisplayContact}
           name="accountConfig.displayContact"
-          renderField={this.renderField}
+          label="Displaycontact"
+          id="display_contacts"
+          {...this.props}
         />
       </Fragment>
     );
   }
 }
-
-// const DisplayContactsForm = () => (
-//   <RepeatableField
-//     name="accountConfig.displayContact"
-//     addLabel="Add Display Contact"
-//     addButtonId="clickable-add-language"
-//     template={[{
-//       component: TextField,
-//     }]}
-//   />
-// );
 
 export default DisplayContactsForm;

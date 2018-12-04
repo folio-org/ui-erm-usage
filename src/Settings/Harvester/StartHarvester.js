@@ -6,7 +6,7 @@ import {
   Pane
 } from '@folio/stripes/components';
 
-export default class GeneralSettings extends React.Component {
+export default class StartHarvester extends React.Component {
   static manifest = Object.freeze({
     harvesterStart: {
       type: 'okapi',
