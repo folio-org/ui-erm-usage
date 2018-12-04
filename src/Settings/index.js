@@ -1,7 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Settings } from '@folio/stripes/smart-components';
-import GeneralSettings from './general-settings';
+import Harvester from './harvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
 
 /*
@@ -13,9 +12,9 @@ import AggregatorManager from './Aggregators/AggregatorManager';
 export default class ErmUsageSettings extends React.Component {
   pages = [
     {
-      route: 'general',
-      label: <FormattedMessage id="ui-erm-usage.settings.general" />,
-      component: GeneralSettings,
+      route: 'harvester',
+      label: 'Harvester',
+      component: Harvester,
     },
     {
       route: 'aggregators',

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "eUsage Module",
   "main": "src/index.js",
-  "repository": "",
+  "repository": "folio-org/ui-erm-usage",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=6.0.0"
@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "@folio/eslint-config-stripes": "^3.2.1",
-    "@folio/stripes": "^1.0.0",
-    "@folio/stripes-cli": "^1.5.0",
+    "@folio/stripes": "^1.1.0",
+    "@folio/stripes-cli": "^1.7.0",
     "babel-eslint": "^9.0.0",
     "eslint": "^5.6.0"
   },
@@ -30,7 +30,7 @@
     "redux-form": "^7.4.2"
   },
   "peerDependencies": {
-    "@folio/stripes": "^1.0.0",
+    "@folio/stripes": "^1.1.0",
     "react": "*"
   },
   "stripes": {

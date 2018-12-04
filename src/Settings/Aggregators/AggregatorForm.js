@@ -12,7 +12,6 @@ import {
   ExpandAllButton,
   Icon,
   IconButton,
-  IfPermission,
   Pane,
   PaneMenu,
   Paneset,
@@ -21,6 +20,9 @@ import {
   TextField,
 
 } from '@folio/stripes/components';
+import {
+  IfPermission
+} from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
@@ -85,8 +87,7 @@ class AggregatorForm extends React.Component {
         <IconButton
           id="clickable-close-service-point"
           onClick={this.props.onCancel}
-          icon="closeX"
-          title="Cancel"
+          icon="times"
           aria-label="Cancel"
         />
       </PaneMenu>

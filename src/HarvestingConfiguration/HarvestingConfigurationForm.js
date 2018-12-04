@@ -45,7 +45,8 @@ class HarvestingConfigurationForm extends React.Component {
         { value: 4, label: 'Counter 4' },
         { value: 5, label: 'Counter 5' },
       ];
-    const selectedCounterVersion = this.props.stripes.store.getState().form['form-udProvider'].values.reportRelease;
+    const selectedCV = this.props.stripes.store.getState().form['form-udProvider'].values.reportRelease;
+    const selectedCounterVersion = parseInt(selectedCV, 10);
 
     return (
       <Accordion
