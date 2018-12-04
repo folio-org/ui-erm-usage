@@ -1,6 +1,6 @@
 import React from 'react';
 import { Settings } from '@folio/stripes/smart-components';
-import Harvester from './harvester';
+import Harvester from './Harvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
 
 /*
