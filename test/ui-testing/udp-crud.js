@@ -63,11 +63,14 @@ module.exports.test = function uiTest(uiTestCtx) {
       });
       it('should find new udp in list ', (done) => {
         nightmare
-          .wait('#list-erm-usage')
-          .check('#clickable-filter-harvestingStatus-Active')
+          // .wait('#list-erm-usage')
+          .wait(500)
+          .wait('#input-usageDataProvider-search', 1000)
           .insert('#input-usageDataProvider-search', label)
-          .click('[data-test-search-and-sort-submit]')
-          .wait(1000)
+          .wait('button[type=submit]')
+          .click('button[type=submit]')
+          .wait('#list-erm-usage[data-total-count="1"]')
+          .wait(500)
           .evaluate((name) => {
             const node = Array.from(
               document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
@@ -90,24 +93,6 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('#clickable-createnewudp')
           .wait('#clickable-newusageDataProvider')
           .then(() => { done(); })
-          .catch(done);
-      });
-      it('should find changed udp', (done) => {
-        nightmare
-          .wait('#udpInfo')
-          .insert('#input-usageDataProvider-search', '')
-          .insert('#input-usageDataProvider-search', changedLabel)
-          .click('[data-test-search-and-sort-submit]')
-          .wait(5000)
-          .evaluate((name) => {
-            const node = Array.from(
-              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
-            ).find(e => e.textContent === name);
-            if (!node) {
-              throw new Error(`Can't find newly created udp (${name}) at top of sorted list`);
-            }
-          }, changedLabel)
-          .then(done)
           .catch(done);
       });
       it('should delete udp', (done) => {
