@@ -1,12 +1,5 @@
 import { SubmissionError } from 'redux-form';
-
-function getContentType(format) {
-  if (format === 'json') {
-    return 'data:application/json';
-  } else {
-    return 'data:application/xml';
-  }
-}
+import saveAs from 'file-saver';
 
 function getFileType(format) {
   if (format === 'json') {
@@ -27,11 +20,10 @@ export default function downloadReport(id, okapiUrl, header) {
       }
     })
     .then((res) => {
-      const contentType = getContentType(res.format);
+      const data = res.report;
       const fileType = getFileType(res.format);
-      const anchor = document.createElement('a');
-      anchor.href = `${contentType},${res.report}`;
-      anchor.download = `${id}.${fileType}`;
-      anchor.click();
+      const blob = new Blob([data], { type: fileType });
+      const fileName = `${id}.${fileType}`;
+      saveAs(blob, fileName);
     });
 }
