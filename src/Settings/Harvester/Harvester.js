@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IfInterface } from '@folio/stripes/core';
+import { Pane } from '@folio/stripes/components';
 import StartHavester from './StartHarvester';
 
 class Harvester extends React.Component {
@@ -13,12 +13,22 @@ class Harvester extends React.Component {
     this.cStartHarvester = this.props.stripes.connect(StartHavester);
   }
 
-  render() {
+  renderNotPresent = () => {
     return (
-      <IfInterface name="usage-harvester">
-        <this.cStartHarvester {...this.props} />
-      </IfInterface>
+      <Pane defaultWidth="fill" fluidContentWidth paneTitle="Required interface not present">
+        <div>
+          The interface usage-harvester is needed to start the harvester, but it is not present.
+        </div>
+      </Pane>
     );
+  }
+
+  render() {
+    if (this.props.stripes.hasInterface('usage-harvester')) {
+      return <this.cStartHarvester {...this.props} />;
+    } else {
+      return this.renderNotPresent();
+    }
   }
 }
 
