@@ -6,6 +6,7 @@ import {
   intlShape
 } from 'react-intl';
 import {
+  InfoPopover,
   MultiColumnList
 } from '@folio/stripes/components';
 import ReportDownloadButton from './ReportDownloadButton';
@@ -135,9 +136,12 @@ class ReportOverview extends React.Component {
     const stats = !_.isEmpty(records) ? records[0].counterReports : [];
     const renderedStats = this.renderStats(stats);
     return (
-      <div>
-        { renderedStats }
-      </div>
+      <React.Fragment>
+        <InfoPopover content="Click a month with a green button to download corresponding report." />
+        <div>
+          { renderedStats }
+        </div>
+      </React.Fragment>
     );
   }
 }
