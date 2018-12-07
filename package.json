@@ -11,8 +11,9 @@
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
-    "test": "stripes test nightmare --run udp-crud",
-    "test-udp-crud": "stripes test nightmare --run udp-crud",
+    "test": "echo 'No unit tests implemented'",
+    "test-int": "stripes test nightmare --run udp-crud --show",
+    "test-udp-crud": "stripes test nightmare --run udp-crud --show",
     "lint": "eslint src"
   },
   "devDependencies": {
