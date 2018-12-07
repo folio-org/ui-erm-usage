@@ -1,6 +1,11 @@
 # Change history for ui-erm-usage
 
-## 0.2.0 (2018-11-30)
+## [1.0.0](https://github.com/folio-org/ui-erm-usage/tree/v1.0.0) (2018-12-07)
+* Fix report download for Firefox
+* Display start-harvester button only if needed interface is present
+* Start tests with `--show` option
+
+## [0.2.0](https://github.com/folio-org/ui-erm-usage/tree/v0.2.0) (2018-11-30)
 * Added i18n
 
 ## 0.1.0
