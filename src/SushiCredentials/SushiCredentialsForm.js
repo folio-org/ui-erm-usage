@@ -20,7 +20,7 @@ const SushiCredentialsForm = () => {
                 {(msg) => msg + ' *'}
               </FormattedMessage>
             }
-            name="customerId"
+            name="sushiCredentials.customerId"
             id="addudp_customerid"
             placeholder="Enter the SUSHI customer ID"
             component={TextField}
@@ -34,7 +34,7 @@ const SushiCredentialsForm = () => {
                 {(msg) => msg + ' *'}
               </FormattedMessage>
             }
-            name="requestorId"
+            name="sushiCredentials.requestorId"
             id="addudp_requestorid"
             placeholder="Enter the SUSHI requestor ID"
             component={TextField}
@@ -44,7 +44,7 @@ const SushiCredentialsForm = () => {
         <Col xs={4}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
-            name="apiKey"
+            name="sushiCredentials.apiKey"
             id="addudp_apikey"
             placeholder="Enter the SUSHI API key"
             component={TextField}
@@ -56,7 +56,7 @@ const SushiCredentialsForm = () => {
         <Col xs={4}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
-            name="requestorName"
+            name="sushiCredentials.requestorName"
             id="addudp_reqname"
             placeholder="Enter the SUSHI requestor name"
             component={TextField}
@@ -66,7 +66,7 @@ const SushiCredentialsForm = () => {
         <Col xs={8}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
-            name="requestorMail"
+            name="sushiCredentials.requestorMail"
             id="addudp_requestormail"
             placeholder="Enter the SUSHI requestor mail"
             component={TextField}

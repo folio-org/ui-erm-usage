@@ -12,9 +12,6 @@ import packageInfo from '../../package';
 
 import UsageDataProvidersView from '../UDPViews/UsageDataProviderView';
 import UsageDataProviderForm from '../UDPViews/UsageDataProviderForm';
-
-import VendorName from '../VendorName';
-import AggregatorName from '../AggregatorName';
 import LatestReportDate from '../LatestReportDate';
 
 const INITIAL_RESULT_COUNT = 30;
@@ -106,26 +103,10 @@ class UsageDataProviders extends React.Component {
       });
   }
 
-  renderVendorName = (udp) => {
-    return (
-      <VendorName
-        vendorId={udp.vendorId}
-        stripes={this.props.stripes}
-      />);
-  }
-
-  renderAggregatorName = (udp) => {
-    return (
-      <AggregatorName
-        aggregatorId={udp.aggregator.id}
-        stripes={this.props.stripes}
-      />);
-  }
-
-  renderLatestReportDate = (udp) => {
+  renderLatestReportDate = (vendorId) => {
     return (
       <LatestReportDate
-        vendorId={udp.vendorId}
+        vendorId={vendorId}
         stripes={this.props.stripes}
       />);
   }
@@ -135,11 +116,11 @@ class UsageDataProviders extends React.Component {
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => this.renderVendorName(udp),
-      platform: udp => udp.platformId,
-      harvestingStatus: udp => udp.harvestingStatus,
-      aggregator: udp => (udp.aggregator ? this.renderAggregatorName(udp) : 'None'),
-      latestStats: udp => this.renderLatestReportDate(udp),
+      vendor: udp => udp.vendor.name,
+      platform: udp => udp.platform.id,
+      harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
+      aggregator: udp => (udp.harvestingConfig.useAggregator ? udp.harvestingConfig.aggregator.name : 'None'),
+      latestStats: udp => this.renderLatestReportDate(udp.vendor.id),
     };
 
     return (<SearchAndSort

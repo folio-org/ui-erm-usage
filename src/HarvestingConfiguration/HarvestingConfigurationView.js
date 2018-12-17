@@ -25,7 +25,7 @@ class HarvestingConfigurationView extends React.Component {
   };
 
   createProvider = udp => {
-    const isAggregator = _.has(udp, 'aggregator');
+    const isAggregator = _.get(udp, 'harvestingConfig.useAggregator');
     if (isAggregator) {
       return (
         <AggregatorInfoView
@@ -47,16 +47,16 @@ class HarvestingConfigurationView extends React.Component {
 
     const provider = this.createProvider(usageDataProvider);
 
-    const reports = _.get(usageDataProvider, 'requestedReports', '');
+    const reports = _.get(usageDataProvider, 'harvestingConfig.requestedReports', '');
     let requestedReports = '';
     if (!_.isEmpty(reports)) {
       requestedReports = reports.join(', ');
     }
 
-    const counterVersion = _.get(usageDataProvider, 'reportRelease', '');
-    const reportRelease = counterVersion === 4 ? 'Counter 4' : 'Counter 5';
-    const harvestingStart = _.get(usageDataProvider, 'harvestingStart', '-');
-    const harvestingEnd = _.get(usageDataProvider, 'harvestingEnd', '-');
+    const counterVersion = _.get(usageDataProvider, 'harvestingConfig.reportRelease', '');
+    const reportRelease = `Counter ${counterVersion}`;
+    const harvestingStart = _.get(usageDataProvider, 'harvestingConfig.harvestingStart', '-');
+    const harvestingEnd = _.get(usageDataProvider, 'harvestingConfig.harvestingEnd', '-');
 
     return (
       <div>
@@ -64,7 +64,7 @@ class HarvestingConfigurationView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
-              value={_.get(usageDataProvider, 'harvestingStatus', '-')}
+              value={_.get(usageDataProvider, 'harvestingConfig.harvestingStatus', '-')}
             />
           </Col>
         </Row>

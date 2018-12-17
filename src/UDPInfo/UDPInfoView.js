@@ -9,7 +9,6 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
-import ContentVendorInfo from './ContentVendorInfo';
 
 class UDPInfoView extends React.Component {
   static propTypes = {
@@ -22,27 +21,8 @@ class UDPInfoView extends React.Component {
       .isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.cVendorInfo = this.props.stripes.connect(ContentVendorInfo);
-  }
-
-  renderVendorInfo = (udp) => {
-    if (udp.vendorId) {
-      return (
-        <div>
-          <this.cVendorInfo stripes={this.props.stripes} vendorId={udp.vendorId} />
-        </div>);
-    } else {
-      return (
-        <div>No Vendor</div>
-      );
-    }
-  }
-
   render() {
     const { usageDataProvider, id } = this.props;
-    const vendorInfo = usageDataProvider ? this.renderVendorInfo(usageDataProvider) : null;
 
     return (
       <React.Fragment>
@@ -51,13 +31,13 @@ class UDPInfoView extends React.Component {
             <Col xs={3}>
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.udpInfo.contentVendor" />}
-                value={vendorInfo}
+                value={_.get(usageDataProvider, 'vendor.name', '-')}
               />
             </Col>
             <Col xs={3}>
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.udpInfo.contentPlatform" />}
-                value={_.get(usageDataProvider, 'platformId', '-')}
+                value={_.get(usageDataProvider, 'platform.id', '-')}
               />
             </Col>
           </Row>

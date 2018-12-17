@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import {
+  Field,
+  getFormValues
+} from 'redux-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -22,17 +25,20 @@ class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleUseAggChange = this.handleUseAggChange.bind(this);
     this.cAggregatorForm = this.props.stripes.connect(AggregatorInfoForm);
   }
 
-  handleUseAggChange(e) {
-    this.props.changeUseAggregator(e.target.checked);
+  getCurrentValues() {
+    const { store } = this.props.stripes;
+    const state = store.getState();
+    return getFormValues('form-udProvider')(state) || {};
   }
 
   render() {
-    const { expanded, accordionId, useAggregator } = this.props;
+    const { expanded, accordionId } = this.props;
     const onToggleAccordion = this.props.onToggle;
+    const currentVals = this.getCurrentValues();
+    const useAgg = currentVals.harvestingConfig.useAggregator;
 
     const harvestingStatusOptions =
       [
@@ -45,7 +51,7 @@ class HarvestingConfigurationForm extends React.Component {
         { value: 4, label: 'Counter 4' },
         { value: 5, label: 'Counter 5' },
       ];
-    const selectedCV = this.props.stripes.store.getState().form['form-udProvider'].values.reportRelease;
+    const selectedCV = this.props.stripes.store.getState().form['form-udProvider'].values.harvestingConfig.reportRelease;
     const selectedCounterVersion = parseInt(selectedCV, 10);
 
     return (
@@ -66,7 +72,7 @@ class HarvestingConfigurationForm extends React.Component {
                         {(msg) => msg + ' *'}
                       </FormattedMessage>
                     }
-                    name="harvestingStatus"
+                    name="harvestingConfig.harvestingStatus"
                     id="addudp_harvestingstatus"
                     placeholder="Select a harvesting status"
                     component={Select}
@@ -79,20 +85,21 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <Checkbox
-                    name="useAggregator"
+                  <Field
                     label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator" />}
-                    onChange={this.handleUseAggChange}
-                    checked={useAggregator}
+                    name="harvestingConfig.useAggregator"
+                    id="useAggregator"
+                    component={Checkbox}
+                    checked={useAgg}
                   />
                 </Col>
-                <this.cAggregatorForm disabled={!useAggregator} />
+                <this.cAggregatorForm disabled={!useAgg} />
               </Row>
               <Row>
                 <Col xs={4}>
                   {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
-                <VendorInfoForm disabled={useAggregator} />
+                <VendorInfoForm disabled={useAgg} />
               </Row>
             </section>
             <section className={formCss.separator}>
@@ -104,7 +111,7 @@ class HarvestingConfigurationForm extends React.Component {
                         {(msg) => msg + ' *'}
                       </FormattedMessage>
                     }
-                    name="reportRelease"
+                    name="harvestingConfig.reportRelease"
                     id="addudp_reportrelease"
                     placeholder="Select the report release"
                     component={Select}
@@ -134,7 +141,7 @@ class HarvestingConfigurationForm extends React.Component {
                         {(msg) => msg + ' *'}
                       </FormattedMessage>
                     }
-                    name="harvestingStart"
+                    name="harvestingConfig.harvestingStart"
                     id="input-harvestingStart"
                     component={TextField}
                     placeholder="YYYY-MM"
@@ -144,7 +151,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   <Field
                     label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
-                    name="harvestingEnd"
+                    name="harvestingConfig.harvestingEnd"
                     id="input-harvestingEnd"
                     component={TextField}
                     placeholder="YYYY-MM"
@@ -176,8 +183,6 @@ HarvestingConfigurationForm.propTypes = {
       getState: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
-  useAggregator: PropTypes.bool.isRequired,
-  changeUseAggregator: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
 };
 

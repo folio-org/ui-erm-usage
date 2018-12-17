@@ -30,7 +30,7 @@ class VendorInfoForm extends React.Component {
               <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType">
                 {(msg) => msg + ' *'}
               </FormattedMessage>}
-            name="serviceType"
+            name="harvestingConfig.sushiConfig.serviceType"
             id="addudp_servicetype"
             placeholder="Select the vendor's API type"
             component={Select}
@@ -42,7 +42,7 @@ class VendorInfoForm extends React.Component {
         <Col xs={4}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
-            name="serviceUrl"
+            name="harvestingConfig.sushiConfig.serviceUrl"
             id="addudp_serviceurl"
             placeholder="Enter the vendor's serviceURL"
             component={TextField}

@@ -1,21 +1,15 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { SubmissionError } from 'redux-form';
 import {
   InfoPopover
 } from '@folio/stripes/components';
 
-class AggregatorName extends React.Component {
+class AggregatorContactInfo extends React.Component {
   static propTypes = {
     aggregatorId: PropTypes.string.isRequired,
     stripes: PropTypes.object,
-    asLink: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    asLink: false,
   }
 
   constructor(props) {
@@ -28,22 +22,21 @@ class AggregatorName extends React.Component {
     });
 
     this.state = {
-      aggregatorName: '-',
       contact: '-'
     };
   }
 
   componentDidMount() {
-    this.fechAggregatorName(this.props.aggregatorId);
+    this.fechAggregator(this.props.aggregatorId);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.aggregatorId !== prevProps.aggregatorId) {
-      this.fechAggregatorName(this.props.aggregatorId);
+      this.fechAggregator(this.props.aggregatorId);
     }
   }
 
-  fechAggregatorName = (aggregatorId) => {
+  fechAggregator = (aggregatorId) => {
     return fetch(`${this.okapiUrl}/aggregator-settings/${aggregatorId}`, { headers: this.httpHeaders })
       .then((response) => {
         if (response.status >= 400) {
@@ -54,26 +47,13 @@ class AggregatorName extends React.Component {
       })
       .then((json) => {
         this.setState({
-          aggregatorName: json.label,
           contact: json.accountConfig.displayContact
         });
       });
   }
 
-  renderAggregatorName = (aggregatorName, aggregatorId, asLink, stripes) => {
-    if (asLink && stripes.hasPerm('settings.erm-usage.enabled')) {
-      return (
-        <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
-          {aggregatorName}
-        </Link>
-      );
-    } else {
-      return aggregatorName;
-    }
-  }
-
-  renderContactInfo = (contactInfo, asLink) => {
-    if (asLink && !_.isEmpty(contactInfo) && !(contactInfo === '-')) {
+  renderContactInfo = (contactInfo) => {
+    if (!_.isEmpty(contactInfo) && !(contactInfo === '-')) {
       return (
         <InfoPopover content={contactInfo} />
       );
@@ -83,16 +63,13 @@ class AggregatorName extends React.Component {
   }
 
   render() {
-    const { stripes, asLink, aggregatorId } = this.props;
-    const aggName = this.renderAggregatorName(this.state.aggregatorName, aggregatorId, asLink, stripes);
-    const contact = this.renderContactInfo(this.state.contact, asLink);
+    const contact = this.renderContactInfo(this.state.contact);
     return (
       <div>
-        {aggName}
         {contact}
       </div>
     );
   }
 }
 
-export default AggregatorName;
+export default AggregatorContactInfo;

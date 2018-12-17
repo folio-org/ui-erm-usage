@@ -55,7 +55,7 @@ class AggregatorInfoForm extends React.Component {
                 {(msg) => msg + ' *'}
               </FormattedMessage>
             }
-            name="aggregator.id"
+            name="harvestingConfig.aggregator.id"
             id="addudp_aggid"
             placeholder="Select an aggregator"
             component={Select}
@@ -67,7 +67,7 @@ class AggregatorInfoForm extends React.Component {
         <Col xs={4}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.vendorCode" />}
-            name="aggregator.vendorCode"
+            name="harvestingConfig.aggregator.vendorCode"
             id="addudp_vendorcode"
             placeholder="Enter the aggregator's vendor code"
             component={TextField}
