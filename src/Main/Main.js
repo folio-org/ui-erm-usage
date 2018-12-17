@@ -21,7 +21,7 @@ const filterConfig = [
   {
     label: 'Harvesting Status',
     name: 'harvestingStatus',
-    cql: 'harvestingStatus',
+    cql: 'harvestingConfig.harvestingStatus',
     values: [
       { name: 'Active', cql: 'active' },
       { name: 'Inactive', cql: 'inactive' }
@@ -50,9 +50,13 @@ class UsageDataProviders extends React.Component {
         params: {
           query: makeQueryFunction(
             'cql.allRecords=1',
-            '(label="%{query.query}*")',
+            '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
-              'Provider Name': 'label'
+              'Provider Name': 'label',
+              'Vendor': 'vendor',
+              'Platform': 'platform',
+              'Harvesting Status': 'harvestingConfig.harvestingStatus',
+              'Aggregator': 'harvestingConfig.aggregator.name'
             },
             filterConfig,
             2,
