@@ -33,7 +33,10 @@
   },
   "peerDependencies": {
     "@folio/stripes": "^1.1.0",
-    "react": "*"
+    "react": "*",
+    "react-dom": "*",
+    "react-redux": "*",
+    "redux": "*"
   },
   "stripes": {
     "type": "app",
