@@ -15,8 +15,8 @@ const VendorInfoView = ({ usageDataProvider }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.isAggregator" />}
-          value="No"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />}
+          value="Sushi"
         />
       </Col>
       <Col xs={3}>

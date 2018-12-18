@@ -115,6 +115,10 @@ class UsageDataProviders extends React.Component {
       />);
   }
 
+  doHarvestViaAggregator = (udp) => {
+    return udp.harvestingConfig.harvestVia === 'aggregator';
+  }
+
   render() {
     const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes, intl } = this.props;
 
@@ -123,7 +127,7 @@ class UsageDataProviders extends React.Component {
       vendor: udp => udp.vendor.name,
       platform: udp => udp.platform.id,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
-      aggregator: udp => (udp.harvestingConfig.useAggregator ? udp.harvestingConfig.aggregator.name : 'None'),
+      aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
       latestStats: udp => this.renderLatestReportDate(udp.vendor.id),
     };
 

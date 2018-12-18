@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +10,6 @@ import {
 } from 'react-intl';
 import {
   Accordion,
-  Checkbox,
   Col,
   Row,
   Select,
@@ -34,11 +34,35 @@ class HarvestingConfigurationForm extends React.Component {
     return getFormValues('form-udProvider')(state) || {};
   }
 
+  hasHarvestingConfig(values) {
+    if (_.isEmpty(values) || _.isEmpty(values.harvestingConfig)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  getSelectedHarvestVia() {
+    const currentVals = this.getCurrentValues();
+    if (this.hasHarvestingConfig(currentVals)) {
+      return currentVals.harvestingConfig.harvestVia;
+    } else {
+      return null;
+    }
+  }
+
+  getSelectedCounterVersion() {
+    const currentVals = this.getCurrentValues();
+    if (this.hasHarvestingConfig(currentVals)) {
+      return currentVals.harvestingConfig.reportRelease;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { expanded, accordionId } = this.props;
     const onToggleAccordion = this.props.onToggle;
-    const currentVals = this.getCurrentValues();
-    const useAgg = currentVals.harvestingConfig.useAggregator;
 
     const harvestingStatusOptions =
       [
@@ -46,12 +70,20 @@ class HarvestingConfigurationForm extends React.Component {
         { value: 'inactive', label: 'Inactive' }
       ];
 
+    const harvestingViaOptions =
+      [
+        { value: 'aggregator', label: 'Aggregator' },
+        { value: 'sushi', label: 'Sushi' }
+      ];
+
     const reportReleaseOptions =
       [
         { value: 4, label: 'Counter 4' },
         { value: 5, label: 'Counter 5' },
       ];
-    const selectedCV = this.props.stripes.store.getState().form['form-udProvider'].values.harvestingConfig.reportRelease;
+
+    const selectedHarvestVia = this.getSelectedHarvestVia();
+    const selectedCV = this.getSelectedCounterVersion();
     const selectedCounterVersion = parseInt(selectedCV, 10);
 
     return (
@@ -86,20 +118,26 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <Field
-                    label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator" />}
-                    name="harvestingConfig.useAggregator"
-                    id="useAggregator"
-                    component={Checkbox}
-                    checked={useAgg}
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator">
+                        {(msg) => msg + ' *'}
+                      </FormattedMessage>
+                    }
+                    name="harvestingConfig.harvestVia"
+                    id="harvestingConfig.harvestVia"
+                    placeholder="Select how to harvest statistics"
+                    component={Select}
+                    dataOptions={harvestingViaOptions}
+                    fullWidth
                   />
                 </Col>
-                <this.cAggregatorForm disabled={!useAgg} />
+                <this.cAggregatorForm disabled={(selectedHarvestVia !== 'aggregator')} />
               </Row>
               <Row>
                 <Col xs={4}>
                   {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
-                <VendorInfoForm disabled={useAgg} />
+                <VendorInfoForm disabled={(selectedHarvestVia !== 'sushi')} />
               </Row>
             </section>
             <section className={formCss.separator}>

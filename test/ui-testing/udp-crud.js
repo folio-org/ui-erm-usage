@@ -9,6 +9,7 @@ module.exports.test = function uiTest(uiTestCtx) {
     const changedLabel = label + '_CHANGED';
     const platformId = '4a9c5aa2-2acc-46fc-9e0c-bc8598cff6b1';
     const harvestingStatus = 'active';
+    const harvestingVia = 'sushi';
     const serviceType = 'cs41';
     const serviceUrl = 'www.testService.com';
     const reportRelease = 4;
@@ -43,19 +44,19 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('div[role="listitem"] a')
           .wait(500)
 
-          .insert('input[name=platformId]', platformId)
-          .select('select[name=harvestingStatus]', harvestingStatus)
-          .uncheck('input[name=useAggregator]')
-          .select('select[name=serviceType]', serviceType)
-          .insert('input[name=serviceUrl]', serviceUrl)
-          .select('select[name=reportRelease]', reportRelease)
+          .insert('input[name="platform.id"]', platformId)
+          .select('select[name="harvestingConfig.harvestingStatus"]', harvestingStatus)
+          .select('select[name="harvestingConfig.harvestVia"]', harvestingVia)
+          .select('select[name="harvestingConfig.sushiConfig.serviceType"]', serviceType)
+          .insert('input[name="harvestingConfig.sushiConfig.serviceUrl"]', serviceUrl)
+          .select('select[name="harvestingConfig.reportRelease"]', reportRelease)
           .click('#clickable-add-report')
           .wait('div[name=add-report-list]')
           .click(`#add-report-${requestedReport0}`)
           .wait(55)
-          .insert('input[name=harvestingStart]', harvestingStart)
-          .insert('input[name=customerId]', customerId)
-          .insert('input[name=requestorId]', requestorId)
+          .insert('input[name="harvestingConfig.harvestingStart"]', harvestingStart)
+          .insert('input[name="sushiCredentials.customerId"]', customerId)
+          .insert('input[name="sushiCredentials.requestorId"]', requestorId)
           .click('#clickable-createnewudp')
           .wait('#clickable-newusageDataProvider')
           .then(() => { done(); })

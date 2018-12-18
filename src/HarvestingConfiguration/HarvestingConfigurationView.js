@@ -25,8 +25,8 @@ class HarvestingConfigurationView extends React.Component {
   };
 
   createProvider = udp => {
-    const isAggregator = _.get(udp, 'harvestingConfig.useAggregator');
-    if (isAggregator) {
+    const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
+    if (harvestVia === 'aggregator') {
       return (
         <AggregatorInfoView
           usageDataProvider={udp}

@@ -44,6 +44,11 @@ class AggregatorInfoForm extends React.Component {
       ? records[0].aggregatorSettings
       : {};
 
+    let requiredSign = ' *';
+    if (disabled) {
+      requiredSign = '';
+    }
+
     const aggOptions = this.extractAggregatorSelectOptions(aggregators);
 
     return (
@@ -52,7 +57,7 @@ class AggregatorInfoForm extends React.Component {
           <Field
             label={
               <FormattedMessage id="ui-erm-usage.information.aggregator">
-                {(msg) => msg + ' *'}
+                {(msg) => msg + requiredSign}
               </FormattedMessage>
             }
             name="harvestingConfig.aggregator.id"

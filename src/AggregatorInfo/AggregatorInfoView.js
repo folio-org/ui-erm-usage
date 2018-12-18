@@ -37,8 +37,8 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.isAggregator" />}
-          value="Yes"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />}
+          value="Aggregator"
         />
       </Col>
       <Col xs={3}>
