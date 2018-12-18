@@ -12,7 +12,7 @@ import {
 import css from './ReportList.css';
 
 const counterVersionInfo = cVersion => {
-  if (!_.isEmpty(cVersion)) {
+  if (!(undefined === cVersion)) {
     return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
   } else {
     return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportFirst" />;
