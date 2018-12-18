@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { change } from 'redux-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -101,15 +100,12 @@ class UsageDataProviderForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const useAgg = _.has(props.initialValues, 'aggregator');
-
     this.state = {
       sections: {
         editUDPInfo: true,
         editHarvestingConfig: true,
         editNotes: false
       },
-      useAggregator: useAgg
     };
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
@@ -171,24 +167,6 @@ class UsageDataProviderForm extends React.Component {
     });
   }
 
-  changeFormValue = (key, value) => {
-    this.props.stripes.store.dispatch(change('form-udProvider', key, value));
-  }
-
-  /**
-   * If we are using an aggregator the parameters for direct fetching of vendor (serviceUrl and serviceType) shall be null.
-   * If we want to fetch statistics from vendor directly, aggregator shall be null.
-   */
-  changeAggregatorVendor = (useAgg) => {
-    this.setState({ useAggregator: useAgg });
-    if (useAgg) {
-      this.changeFormValue('serviceUrl', null);
-      this.changeFormValue('serviceType', null);
-    } else {
-      this.changeFormValue('aggregator', null);
-    }
-  }
-
   render() {
     const { initialValues, handleSubmit } = this.props;
     const { sections } = this.state;
@@ -227,8 +205,6 @@ class UsageDataProviderForm extends React.Component {
                 accordionId="editHarvestingConfig"
                 expanded={sections.editHarvestingConfig}
                 onToggle={this.handleSectionToggle}
-                useAggregator={this.state.useAggregator}
-                changeUseAggregator={this.changeAggregatorVendor}
                 {...this.props}
               />
               <NotesForm

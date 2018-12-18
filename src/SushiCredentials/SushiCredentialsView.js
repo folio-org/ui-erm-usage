@@ -24,19 +24,19 @@ class SushiCredentialsView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />}
-              value={_.get(usageDataProvider, 'customerId', '-')}
+              value={_.get(usageDataProvider, 'sushiCredentials.customerId', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />}
-              value={_.get(usageDataProvider, 'requestorId', '-')}
+              value={_.get(usageDataProvider, 'sushiCredentials.requestorId', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
-              value={_.get(usageDataProvider, 'apiKey', '-')}
+              value={_.get(usageDataProvider, 'sushiCredentials.apiKey', '-')}
             />
           </Col>
         </Row>
@@ -44,13 +44,13 @@ class SushiCredentialsView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
-              value={_.get(usageDataProvider, 'requestorName', '-')}
+              value={_.get(usageDataProvider, 'sushiCredentials.requestorName', '-')}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
-              value={_.get(usageDataProvider, 'requestorMail', '-')}
+              value={_.get(usageDataProvider, 'sushiCredentials.requestorMail', '-')}
             />
           </Col>
         </Row>

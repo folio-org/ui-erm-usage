@@ -23,15 +23,15 @@ class UDPInfoForm extends React.Component {
     };
     this.selectVendor = this.selectVendor.bind(this);
 
-    const intialVendorId = props.initialValues.vendorId || '';
+    const intialVendor = props.initialValues.vendor || '';
     this.state = {
-      vendorId: intialVendorId,
+      vendor: intialVendor,
     };
   }
 
   selectVendor(v) {
-    this.props.change('vendorId', v.id);
-    this.setState({ vendorId: v.id });
+    this.props.change('vendor', v);
+    this.setState({ vendor: v });
   }
 
   render() {
@@ -62,7 +62,7 @@ class UDPInfoForm extends React.Component {
               </Col>
               <Col xs={4}>
                 <FindVendor
-                  intialVendorId={this.state.vendorId}
+                  intialVendor={this.state.vendor}
                   change={this.props.change}
                   stripes={this.props.stripes}
                 />
@@ -74,7 +74,7 @@ class UDPInfoForm extends React.Component {
                       {(msg) => msg + ' *'}
                     </FormattedMessage>
                   }
-                  name="platformId"
+                  name="platform.id"
                   id="addudp_platformid"
                   placeholder="Link the content platform"
                   component={TextField}

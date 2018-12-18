@@ -30,7 +30,7 @@
   "udpHarvestingConfig.harvestingEnd": "Harvesting end",
   "udpHarvestingConfig.sushiCredentials": "SUSHI credentials",
 
-  "aggregatorInfo.isAggregator": "Is aggregator?",
+  "aggregatorInfo.harvestVia": "Harvest via",
   "aggregatorInfo.aggregatorName": "Aggregator name",
   "aggregatorInfo.vendorCode": "Vendor code",
 
@@ -69,9 +69,9 @@
   "udp.form.findVendor.searchLabel": "Vendor look-up",
   "udp.form.findVendor.contenVendorId": "Content Vendor Id",
 
-  "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via an aggregator",
+  "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via",
   "udp.form.harvestingConfig.vendorCode": "Vendor code",
-  "udp.form.harvestingConfig.noAggInfoText": "If no aggregator is used please define the vendor's SUSHI endpoint",
+  "udp.form.harvestingConfig.noAggInfoText": "Specify 'aggregator' resp. 'service type' based on your 'harvest via' selection",
 
   "udp.form.selectedReports.addReportTitle": "Add Report Title",
   "udp.form.selectedReports.emptyListMessage": "No Report",

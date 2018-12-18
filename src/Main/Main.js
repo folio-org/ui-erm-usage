@@ -12,9 +12,6 @@ import packageInfo from '../../package';
 
 import UsageDataProvidersView from '../UDPViews/UsageDataProviderView';
 import UsageDataProviderForm from '../UDPViews/UsageDataProviderForm';
-
-import VendorName from '../VendorName';
-import AggregatorName from '../AggregatorName';
 import LatestReportDate from '../LatestReportDate';
 
 const INITIAL_RESULT_COUNT = 30;
@@ -24,7 +21,7 @@ const filterConfig = [
   {
     label: 'Harvesting Status',
     name: 'harvestingStatus',
-    cql: 'harvestingStatus',
+    cql: 'harvestingConfig.harvestingStatus',
     values: [
       { name: 'Active', cql: 'active' },
       { name: 'Inactive', cql: 'inactive' }
@@ -53,9 +50,13 @@ class UsageDataProviders extends React.Component {
         params: {
           query: makeQueryFunction(
             'cql.allRecords=1',
-            '(label="%{query.query}*")',
+            '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
-              'Provider Name': 'label'
+              'Provider Name': 'label',
+              'Vendor': 'vendor',
+              'Platform': 'platform',
+              'Harvesting Status': 'harvestingConfig.harvestingStatus',
+              'Aggregator': 'harvestingConfig.aggregator.name'
             },
             filterConfig,
             2,
@@ -106,28 +107,16 @@ class UsageDataProviders extends React.Component {
       });
   }
 
-  renderVendorName = (udp) => {
-    return (
-      <VendorName
-        vendorId={udp.vendorId}
-        stripes={this.props.stripes}
-      />);
-  }
-
-  renderAggregatorName = (udp) => {
-    return (
-      <AggregatorName
-        aggregatorId={udp.aggregator.id}
-        stripes={this.props.stripes}
-      />);
-  }
-
-  renderLatestReportDate = (udp) => {
+  renderLatestReportDate = (vendorId) => {
     return (
       <LatestReportDate
-        vendorId={udp.vendorId}
+        vendorId={vendorId}
         stripes={this.props.stripes}
       />);
+  }
+
+  doHarvestViaAggregator = (udp) => {
+    return udp.harvestingConfig.harvestVia === 'aggregator';
   }
 
   render() {
@@ -135,11 +124,11 @@ class UsageDataProviders extends React.Component {
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => this.renderVendorName(udp),
-      platform: udp => udp.platformId,
-      harvestingStatus: udp => udp.harvestingStatus,
-      aggregator: udp => (udp.aggregator ? this.renderAggregatorName(udp) : 'None'),
-      latestStats: udp => this.renderLatestReportDate(udp),
+      vendor: udp => udp.vendor.name,
+      platform: udp => udp.platform.id,
+      harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
+      aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
+      latestStats: udp => this.renderLatestReportDate(udp.vendor.id),
     };
 
     return (<SearchAndSort

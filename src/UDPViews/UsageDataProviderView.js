@@ -174,8 +174,8 @@ class UsageDataProviderView extends React.Component {
       );
 
       const label = _.get(initialValues, 'label', 'No LABEL');
-      const vendorId = _.get(initialValues, 'vendorId', '');
-      const platformId = _.get(initialValues, 'platformId', '');
+      const vendorId = _.get(initialValues, 'vendor.id', '');
+      const platformId = _.get(initialValues, 'platform.id', '');
 
       return (
         <Pane

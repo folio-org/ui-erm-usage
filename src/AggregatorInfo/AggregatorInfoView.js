@@ -5,40 +5,52 @@ import {
   FormattedMessage
 } from 'react-intl';
 import {
+  Link
+} from 'react-router-dom';
+import {
   Row,
   Col,
   KeyValue
 } from '@folio/stripes/components';
-import AggregatorName from '../AggregatorName';
+import AggregatorContactInfo from '../AggregatorContactInfo';
 
 const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
-  const aggregatorId = _.get(usageDataProvider, 'aggregator.id', '');
-  const aggregatorInfo = (
-    <AggregatorName
+  const aggregatorId = _.get(usageDataProvider, 'harvestingConfig.aggregator.id', '');
+  const aggregatorName = _.get(usageDataProvider, 'harvestingConfig.aggregator.name', '');
+
+  const aggregatorContact = (
+    <AggregatorContactInfo
       aggregatorId={aggregatorId}
       stripes={stripes}
-      asLink
     />
+  );
+  const aggregatorLink = (
+    <React.Fragment>
+      <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
+        {aggregatorName}
+      </Link>
+      {aggregatorContact}
+    </React.Fragment>
   );
 
   return (
     <Row>
       <Col xs={3}>
         <KeyValue
-          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.isAggregator" />}
-          value="Yes"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />}
+          value="Aggregator"
         />
       </Col>
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.aggregatorName" />}
-          value={aggregatorInfo}
+          value={aggregatorLink}
         />
       </Col>
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />}
-          value={_.get(usageDataProvider, 'aggregator.vendorCode', '-')}
+          value={_.get(usageDataProvider, 'harvestingConfig.aggregator.vendorCode', '-')}
         />
       </Col>
     </Row>);

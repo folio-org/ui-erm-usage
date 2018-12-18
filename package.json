@@ -33,7 +33,10 @@
   },
   "peerDependencies": {
     "@folio/stripes": "^1.1.0",
-    "react": "*"
+    "react": "*",
+    "react-dom": "*",
+    "react-redux": "*",
+    "redux": "*"
   },
   "stripes": {
     "type": "app",
@@ -43,7 +46,7 @@
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {
-      "usage-data-providers": "1.0",
+      "usage-data-providers": "2.0",
       "aggregator-settings": "1.0",
       "counter-reports": "1.0",
       "vendor": "1.0"

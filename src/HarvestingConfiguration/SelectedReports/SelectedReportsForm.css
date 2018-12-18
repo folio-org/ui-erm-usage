@@ -23,12 +23,3 @@
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
 }
-
- @media (--small) {
-  .reportListDropdown,
-  .reportListDropdown > div {
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-  }
-}

@@ -16,6 +16,11 @@ class VendorInfoForm extends React.Component {
   };
 
   render() {
+    let requiredSign = ' *';
+    if (this.props.disabled) {
+      requiredSign = '';
+    }
+
     const serviceTypeOptions =
       [
         { value: 'cs41', label: 'COUNTER-SUSHI 4' },
@@ -28,9 +33,9 @@ class VendorInfoForm extends React.Component {
           <Field
             label={
               <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType">
-                {(msg) => msg + ' *'}
+                {(msg) => msg + requiredSign}
               </FormattedMessage>}
-            name="serviceType"
+            name="harvestingConfig.sushiConfig.serviceType"
             id="addudp_servicetype"
             placeholder="Select the vendor's API type"
             component={Select}
@@ -42,7 +47,7 @@ class VendorInfoForm extends React.Component {
         <Col xs={4}>
           <Field
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
-            name="serviceUrl"
+            name="harvestingConfig.sushiConfig.serviceUrl"
             id="addudp_serviceurl"
             placeholder="Enter the vendor's serviceURL"
             component={TextField}

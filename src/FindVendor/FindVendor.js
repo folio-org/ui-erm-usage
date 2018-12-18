@@ -14,41 +14,61 @@ import {
 import {
   Pluggable
 } from '@folio/stripes/core';
+import VendorName from '../VendorName';
 
 import css from '../UDPInfo/VendorView.css';
-import VendorName from '../VendorName';
 
 class FindVendor extends React.Component {
   constructor(props) {
     super(props);
-    const id = props.intialVendorId || '';
+    const v = props.intialVendor || '';
     this.state = {
-      vendorId: id,
+      vendor: {
+        id: v.id,
+        name: v.name,
+      },
     };
-    this.inputVendorId = id;
-  }
-
-  changeVendorId = (id) => {
-    this.props.change('vendorId', id);
-    this.setState({ vendorId: id });
+    this.inputVendorId = v.id;
+    this.inputVendorName = v.name;
   }
 
   selectVendor = (v) => {
-    this.changeVendorId(v.id);
+    this.props.change('vendor.name', v.name);
+    this.props.change('vendor.id', v.id);
+
+    this.setState(() => {
+      return { vendor: {
+        id: v.id,
+        name: v.name
+      } };
+    });
   }
 
   updateVendorId = () => {
-    this.changeVendorId(this.inputVendorId);
+    this.props.change('vendor.id', this.inputVendorId);
+    this.setState(() => {
+      return { vendor: {
+        id: this.inputVendorId,
+        name: null
+      } };
+    });
   }
 
   changeInputVendorId = (e) => {
     this.inputVendorId = e.target.value;
   }
 
-  renderVendorName = (vendorId) => {
-    if (_.isEmpty(vendorId)) {
+  renderVendorName = (vendor) => {
+    if (_.isEmpty(vendor.id)) {
       return null;
     }
+
+    const name = _.isEmpty(vendor.name) ?
+      <VendorName
+        vendorId={vendor.id}
+        stripes={this.props.stripes}
+      /> :
+      <div>{vendor.name}</div>;
 
     return (
       <div
@@ -58,37 +78,13 @@ class FindVendor extends React.Component {
         <b>
           {<FormattedMessage id="ui-erm-usage.information.vendor" />}
         </b>
-        <VendorName
-          vendorId={vendorId}
-          stripes={this.props.stripes}
-        />
+        <div>{name}</div>
       </div>);
-  }
-
-  renderVendorIdField = (vendorId) => {
-    if (_.isEmpty(vendorId)) {
-      return (
-        <TextField
-          placeholder="Enter vendor-id"
-          onChange={this.changeInputVendorId}
-          name="vendorIdTMP"
-        />
-      );
-    } else {
-      return (
-        <TextField
-          value={vendorId}
-          onChange={this.changeInputVendorId}
-          name="vendorIdTMP"
-        />
-      );
-    }
   }
 
   render() {
     const disableRecordCreation = true;
-    const selectedVendorId = this.state.vendorId;
-    const vendorName = this.renderVendorName(selectedVendorId);
+    const vendorName = this.renderVendorName(this.state.vendor);
 
     const enterVendorIdButton =
       <Button
@@ -135,7 +131,7 @@ class FindVendor extends React.Component {
               }
               placeholder="Enter vendor-id"
               id="vendor-id"
-              name="vendorId"
+              name="vendor.id"
               component={TextField}
               onChange={this.changeInputVendorId}
               fullWidth

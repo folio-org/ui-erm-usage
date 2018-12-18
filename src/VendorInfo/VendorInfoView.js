@@ -15,20 +15,20 @@ const VendorInfoView = ({ usageDataProvider }) => {
     <Row>
       <Col xs={3}>
         <KeyValue
-          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.isAggregator" />}
-          value="No"
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />}
+          value="Sushi"
         />
       </Col>
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
-          value={_.get(usageDataProvider, 'serviceType', '-')}
+          value={_.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '-')}
         />
       </Col>
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
-          value={_.get(usageDataProvider, 'serviceUrl', '-')}
+          value={_.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceUrl', '-')}
         />
       </Col>
     </Row>);

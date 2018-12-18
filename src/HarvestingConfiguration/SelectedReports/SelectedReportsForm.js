@@ -174,7 +174,7 @@ class SelectedReportsForm extends React.Component {
         <div className={css.reportListDropdownWrap}>
           {reportsDropdownButton}
         </div>
-        <FieldArray name="requestedReports" component={this.renderList} />
+        <FieldArray name="harvestingConfig.requestedReports" component={this.renderList} />
 
         <ConfirmationModal
           id="clear-report-selection-confirmation"
