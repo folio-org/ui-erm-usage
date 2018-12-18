@@ -35,11 +35,7 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   hasHarvestingConfig(values) {
-    if (_.isEmpty(values) || _.isEmpty(values.harvestingConfig)) {
-      return false;
-    } else {
-      return true;
-    }
+    return (!_.isEmpty(values) && !_.isEmpty(values.harvestingConfig));
   }
 
   getSelectedHarvestVia() {

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -12,7 +11,7 @@ import {
 import css from './ReportList.css';
 
 const counterVersionInfo = cVersion => {
-  if (!(undefined === cVersion)) {
+  if (undefined !== cVersion) {
     return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportInfo" values={{ counterVersion: cVersion }} />;
   } else {
     return <FormattedMessage id="ui-erm-usage.udp.form.reportList.selectReportFirst" />;
