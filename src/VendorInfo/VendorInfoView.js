@@ -9,8 +9,13 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
+import serviceTypeOptions from '../Utils/Data/serviceTypeOptions';
 
 const VendorInfoView = ({ usageDataProvider }) => {
+  const currentSType = _.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');
+  const serviceType = serviceTypeOptions.find(e => e.value === currentSType);
+  const serviceTypeLabel = serviceType ? serviceType.label : '-';
+
   return (
     <Row>
       <Col xs={3}>
@@ -22,7 +27,7 @@ const VendorInfoView = ({ usageDataProvider }) => {
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
-          value={_.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '-')}
+          value={serviceTypeLabel}
         />
       </Col>
       <Col xs={3}>

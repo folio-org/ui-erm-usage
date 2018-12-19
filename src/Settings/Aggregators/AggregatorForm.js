@@ -31,6 +31,8 @@ import {
   Mail
 } from '../../Utils/Validate';
 import css from './AggregatorForm.css';
+import aggregatorServiceTypes from '../../Utils/Data/aggregatorServiceTypes';
+import aggregatorAccountConfigTypes from '../../Utils/Data/aggregatorAccountConfigTypes';
 
 class AggregatorForm extends React.Component {
   static propTypes = {
@@ -183,18 +185,6 @@ class AggregatorForm extends React.Component {
     const disabled = !stripes.hasPerm('settings.erm.enabled');
     const name = aggregator.label || '';
 
-    const serviceTypes =
-      [
-        { value: 'NSS', label: 'Nationaler Statistikserver (NSS)' },
-      ];
-
-    const accountConfigTypes =
-      [
-        { value: 'Mail', label: 'Mail' },
-        { value: 'API', label: 'API' },
-        { value: 'Manual', label: 'Manual' }
-      ];
-
     const confirmationMessage = (
       <FormattedMessage
         id="ui-erm-usage.aggregator.form.delete.confirm.message"
@@ -229,7 +219,7 @@ class AggregatorForm extends React.Component {
                         </FormattedMessage>
                       }
                       name="label"
-                      id="input-aggregaor-label"
+                      id="input-aggregator-label"
                       component={TextField}
                       fullWidth
                       disabled={disabled}
@@ -242,10 +232,10 @@ class AggregatorForm extends React.Component {
                         </FormattedMessage>
                       }
                       name="serviceType"
-                      id="input-aggregaor-service-type"
+                      id="input-aggregator-service-type"
                       placeholder="Select a service type"
                       component={Select}
-                      dataOptions={serviceTypes}
+                      dataOptions={aggregatorServiceTypes}
                       fullWidth
                       validate={[Required]}
                     />
@@ -256,7 +246,7 @@ class AggregatorForm extends React.Component {
                         </FormattedMessage>
                       }
                       name="serviceUrl"
-                      id="input-aggregaor-service-url"
+                      id="input-aggregator-service-url"
                       component={TextField}
                       fullWidth
                       disabled={disabled}
@@ -345,10 +335,10 @@ class AggregatorForm extends React.Component {
                         </FormattedMessage>
                       }
                       name="accountConfig.configType"
-                      id="input-aggregaor-account-type"
+                      id="input-aggregator-account-type"
                       placeholder="Select a config type"
                       component={Select}
-                      dataOptions={accountConfigTypes}
+                      dataOptions={aggregatorAccountConfigTypes}
                       fullWidth
                       disabled={disabled}
                       validate={[Required]}
@@ -358,7 +348,7 @@ class AggregatorForm extends React.Component {
                         <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />
                       }
                       name="accountConfig.configMail"
-                      id="input-aggregaor-service-url"
+                      id="input-aggregator-service-url"
                       component={TextField}
                       fullWidth
                       disabled={disabled}

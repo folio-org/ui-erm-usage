@@ -11,6 +11,8 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
+import aggregatorServiceTypes from '../../Utils/Data/aggregatorServiceTypes';
+import aggregatorAccountConfigTypes from '../../Utils/Data/aggregatorAccountConfigTypes';
 
 class AggregatorDetails extends React.Component {
   static propTypes = {
@@ -58,10 +60,19 @@ class AggregatorDetails extends React.Component {
   }
 
   render() {
-    const aggregator = this.props.initialValues;
+    const { initialValues } = this.props;
+    const aggregator = initialValues;
     const { sections } = this.state;
 
     const contacts = this.renderContact(aggregator);
+
+    const sType = _.get(aggregator, 'serviceType', '-');
+    const serviceType = aggregatorServiceTypes.find(e => e.value === sType);
+    const serviceTypeLabel = serviceType ? serviceType.label : '-';
+
+    const currentConfTypeValue = _.get(aggregator, 'accountConfig.configType', '');
+    const configType = aggregatorAccountConfigTypes.find(e => e.value === currentConfTypeValue);
+    const configTypeLabel = configType ? configType.label : '-';
 
     return (
       <div>
@@ -79,7 +90,7 @@ class AggregatorDetails extends React.Component {
           <Row>
             <Col xs={4}>
               <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.name" />} value={aggregator.label} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />} value={aggregator.serviceType} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />} value={serviceTypeLabel} />
               <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />} value={aggregator.serviceUrl} />
             </Col>
           </Row>
@@ -109,7 +120,7 @@ class AggregatorDetails extends React.Component {
         >
           <Row>
             <Col xs={4}>
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />} value={aggregator.accountConfig.configType} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />} value={configTypeLabel} />
               <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />} value={aggregator.accountConfig.configMail} />
               <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.contact" />} value={contacts} />
             </Col>

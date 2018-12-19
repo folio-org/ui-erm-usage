@@ -9,6 +9,7 @@ import {
   Select,
   TextField
 } from '@folio/stripes/components';
+import serviceTypeOptions from '../Utils/Data/serviceTypeOptions';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
@@ -20,12 +21,6 @@ class VendorInfoForm extends React.Component {
     if (this.props.disabled) {
       requiredSign = '';
     }
-
-    const serviceTypeOptions =
-      [
-        { value: 'cs41', label: 'COUNTER-SUSHI 4' },
-        // { value: 'cs5', label: 'COUNTER-SUSHI 5' },
-      ];
 
     return (
       <React.Fragment>

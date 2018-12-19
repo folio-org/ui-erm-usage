@@ -13,6 +13,8 @@ import {
 import { AggregatorInfoView } from '../AggregatorInfo';
 import { VendorInfoView } from '../VendorInfo';
 import { SushiCredentialsView } from '../SushiCredentials';
+import harvestingStatusOptions from '../Utils/Data/harvestingStatusOptions';
+import reportReleaseOptions from '../Utils/Data/reportReleaseOptions';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
@@ -53,8 +55,14 @@ class HarvestingConfigurationView extends React.Component {
       requestedReports = reports.join(', ');
     }
 
+    const hStatus = _.get(usageDataProvider, 'harvestingConfig.harvestingStatus', '');
+    const harvestingStatus = harvestingStatusOptions.find(e => e.value === hStatus);
+    const harvestingStatusLabel = harvestingStatus ? harvestingStatus.label : '-';
+
     const counterVersion = _.get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-    const reportRelease = `Counter ${counterVersion}`;
+    const reportRelease = reportReleaseOptions.find(e => e.value === counterVersion);
+    const reportReleaseLabel = reportRelease ? reportRelease.label : '-';
+
     const harvestingStart = _.get(usageDataProvider, 'harvestingConfig.harvestingStart', '-');
     const harvestingEnd = _.get(usageDataProvider, 'harvestingConfig.harvestingEnd', '-');
 
@@ -64,7 +72,7 @@ class HarvestingConfigurationView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
-              value={_.get(usageDataProvider, 'harvestingConfig.harvestingStatus', '-')}
+              value={harvestingStatusLabel}
             />
           </Col>
         </Row>
@@ -73,7 +81,7 @@ class HarvestingConfigurationView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
-              value={reportRelease}
+              value={reportReleaseLabel}
             />
           </Col>
           <Col xs={3}>

@@ -20,6 +20,9 @@ import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from '../AggregatorInfo';
 import { VendorInfoForm } from '../VendorInfo';
 import { SushiCredentialsForm } from '../SushiCredentials';
+import harvestingStatusOptions from '../Utils/Data/harvestingStatusOptions';
+import harvestingViaOptions from '../Utils/Data/harvestingViaOptions';
+import reportReleaseOptions from '../Utils/Data/reportReleaseOptions';
 
 class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
@@ -59,24 +62,6 @@ class HarvestingConfigurationForm extends React.Component {
   render() {
     const { expanded, accordionId } = this.props;
     const onToggleAccordion = this.props.onToggle;
-
-    const harvestingStatusOptions =
-      [
-        { value: 'active', label: 'Active' },
-        { value: 'inactive', label: 'Inactive' }
-      ];
-
-    const harvestingViaOptions =
-      [
-        { value: 'aggregator', label: 'Aggregator' },
-        { value: 'sushi', label: 'Sushi' }
-      ];
-
-    const reportReleaseOptions =
-      [
-        { value: 4, label: 'Counter 4' },
-        { value: 5, label: 'Counter 5' },
-      ];
 
     const selectedHarvestVia = this.getSelectedHarvestVia();
     const selectedCV = this.getSelectedCounterVersion();
@@ -127,7 +112,9 @@ class HarvestingConfigurationForm extends React.Component {
                     fullWidth
                   />
                 </Col>
-                <this.cAggregatorForm disabled={(selectedHarvestVia !== 'aggregator')} />
+                <this.cAggregatorForm
+                  disabled={(selectedHarvestVia !== 'aggregator')}
+                />
               </Row>
               <Row>
                 <Col xs={4}>
