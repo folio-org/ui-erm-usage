@@ -40,7 +40,7 @@ stripes serve --okapi http://my-okapi.example.com:9130 --tenant my-tenant-id
 
 ## Additional information
 
-Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes-core/blob/master/doc/dev-guide.md).
+Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes/blob/master/doc/dev-guide.md).
 
 Other [modules](https://dev.folio.org/source-code/#client-side).
 
