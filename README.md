@@ -38,7 +38,14 @@ To specify your own tenant ID or to use an Okapi instance other than http://loca
 stripes serve --okapi http://my-okapi.example.com:9130 --tenant my-tenant-id
 ```
 
-## More info
+## Additional information
 
 Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes-core/blob/master/doc/dev-guide.md).
+
+Other [modules](https://dev.folio.org/source-code/#client-side).
+
+See project [UIER](https://issues.folio.org/browse/UIER)
+at the [FOLIO issue tracker](https://dev.folio.org/guidelines/issue-tracker).
+
+Other FOLIO Developer documentation is at [dev.folio.org](https://dev.folio.org/)
 
