@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [1.0.2](https://github.com/folio-org/ui-erm-usage/tree/v1.0.2) (2019-01-09)
+* Fix incorrect names of settings permissions to enable editing of Aggregators on the settings page
+
 ## [1.0.1](https://github.com/folio-org/ui-erm-usage/tree/v1.0.1) (2019-01-07)
 * Fix incorrect names of settings permissions to enable editing of Aggregators on the settings page
 
