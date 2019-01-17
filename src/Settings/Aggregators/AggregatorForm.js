@@ -180,7 +180,7 @@ class AggregatorForm extends React.Component {
     const { stripes, handleSubmit, initialValues } = this.props;
     const aggregator = initialValues || {};
     const { confirmDelete, sections } = this.state;
-    const disabled = !stripes.hasPerm('settings.erm.enabled');
+    const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
     const name = aggregator.label || '';
 
     const serviceTypes =
