@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
