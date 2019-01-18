@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Field,
   getFormValues
 } from 'redux-form';
 import {
@@ -12,17 +11,19 @@ import {
   Accordion,
   Col,
   Row,
-  Select,
-  TextField
 } from '@folio/stripes/components';
-import formCss from '../sharedStyles/form.css';
+import formCss from '../../util/sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
-import { AggregatorInfoForm } from '../AggregatorInfo';
-import { VendorInfoForm } from '../VendorInfo';
-import { SushiCredentialsForm } from '../SushiCredentials';
-import harvestingStatusOptions from '../Utils/Data/harvestingStatusOptions';
-import harvestingViaOptions from '../Utils/Data/harvestingViaOptions';
-import reportReleaseOptions from '../Utils/Data/reportReleaseOptions';
+import { AggregatorInfoForm } from './AggregatorInfo';
+import { VendorInfoForm } from './VendorInfo';
+import { SushiCredentialsForm } from './SushiCredentials';
+import {
+  HarvestingEndField,
+  HarvestingStartField,
+  HarvestingStatusSelect,
+  HarvestingViaSelect,
+  ReportReleaseSelect
+} from './Fields';
 
 class HarvestingConfigurationForm extends React.Component {
   constructor(props) {
@@ -59,12 +60,22 @@ class HarvestingConfigurationForm extends React.Component {
     }
   }
 
+  isHarvestingActive() {
+    const currentVals = this.getCurrentValues();
+    if (this.hasHarvestingConfig(currentVals)) {
+      return currentVals.harvestingConfig.harvestingStatus === 'active';
+    } else {
+      return false;
+    }
+  }
+
   render() {
     const { expanded, accordionId } = this.props;
     const onToggleAccordion = this.props.onToggle;
 
     const selectedHarvestVia = this.getSelectedHarvestVia();
     const selectedCV = this.getSelectedCounterVersion();
+    const isHarvestingActive = this.isHarvestingActive();
     const selectedCounterVersion = parseInt(selectedCV, 10);
 
     return (
@@ -79,38 +90,14 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <Field
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus">
-                        {(msg) => msg + ' *'}
-                      </FormattedMessage>
-                    }
-                    name="harvestingConfig.harvestingStatus"
-                    id="addudp_harvestingstatus"
-                    placeholder="Select a harvesting status"
-                    component={Select}
-                    dataOptions={harvestingStatusOptions}
-                    fullWidth
-                  />
+                  <HarvestingStatusSelect />
                 </Col>
               </Row>
             </section>
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <Field
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator">
-                        {(msg) => msg + ' *'}
-                      </FormattedMessage>
-                    }
-                    name="harvestingConfig.harvestVia"
-                    id="harvestingConfig.harvestVia"
-                    placeholder="Select how to harvest statistics"
-                    component={Select}
-                    dataOptions={harvestingViaOptions}
-                    fullWidth
-                  />
+                  <HarvestingViaSelect />
                 </Col>
                 <this.cAggregatorForm
                   disabled={(selectedHarvestVia !== 'aggregator')}
@@ -120,33 +107,19 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
-                <VendorInfoForm disabled={(selectedHarvestVia !== 'sushi')} />
+                <VendorInfoForm
+                  disabled={(selectedHarvestVia !== 'sushi')}
+                  harvestingIsActive={isHarvestingActive}
+                />
               </Row>
             </section>
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <Field
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease">
-                        {(msg) => msg + ' *'}
-                      </FormattedMessage>
-                    }
-                    name="harvestingConfig.reportRelease"
-                    id="addudp_reportrelease"
-                    placeholder="Select the report release"
-                    component={Select}
-                    dataOptions={reportReleaseOptions}
-                    fullWidth
-                  />
+                  <ReportReleaseSelect />
                 </Col>
                 <Col xs={8}>
                   <SelectedReportsForm
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport">
-                        {(msg) => msg + ' *'}
-                      </FormattedMessage>
-                    }
                     initialValues={this.props.initialValues}
                     counterVersion={selectedCounterVersion}
                   />
@@ -156,28 +129,10 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <Field
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart">
-                        {(msg) => msg + ' *'}
-                      </FormattedMessage>
-                    }
-                    name="harvestingConfig.harvestingStart"
-                    id="input-harvestingStart"
-                    component={TextField}
-                    placeholder="YYYY-MM"
-                    fullWidth
-                  />
+                  <HarvestingStartField />
                 </Col>
                 <Col xs={4}>
-                  <Field
-                    label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
-                    name="harvestingConfig.harvestingEnd"
-                    id="input-harvestingEnd"
-                    component={TextField}
-                    placeholder="YYYY-MM"
-                    fullWidth
-                  />
+                  <HarvestingEndField />
                 </Col>
               </Row>
             </section>

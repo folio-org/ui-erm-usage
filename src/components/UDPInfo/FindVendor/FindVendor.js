@@ -14,9 +14,9 @@ import {
 import {
   Pluggable
 } from '@folio/stripes/core';
-import VendorName from '../VendorName';
+import VendorName from './VendorName';
 
-import css from '../UDPInfo/VendorView.css';
+import css from '../VendorView.css';
 
 class FindVendor extends React.Component {
   constructor(props) {

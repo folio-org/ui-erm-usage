@@ -29,10 +29,10 @@ import DisplayContactsForm from './DisplayContactsForm';
 import {
   Required,
   Mail
-} from '../../Utils/Validate';
+} from '../../util/Validate';
 import css from './AggregatorForm.css';
-import aggregatorServiceTypes from '../../Utils/Data/aggregatorServiceTypes';
-import aggregatorAccountConfigTypes from '../../Utils/Data/aggregatorAccountConfigTypes';
+import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
+import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 class AggregatorForm extends React.Component {
   static propTypes = {

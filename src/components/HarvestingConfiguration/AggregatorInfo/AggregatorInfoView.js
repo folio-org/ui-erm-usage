@@ -12,7 +12,7 @@ import {
   Col,
   KeyValue
 } from '@folio/stripes/components';
-import AggregatorContactInfo from '../AggregatorContactInfo';
+import AggregatorContactInfo from './AggregatorContactInfo';
 
 const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
   const aggregatorId = _.get(usageDataProvider, 'harvestingConfig.aggregator.id', '');

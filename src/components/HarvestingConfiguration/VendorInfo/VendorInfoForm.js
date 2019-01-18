@@ -9,17 +9,23 @@ import {
   Select,
   TextField
 } from '@folio/stripes/components';
-import serviceTypeOptions from '../Utils/Data/serviceTypeOptions';
+import serviceTypeOptions from '../../../util/data/serviceTypeOptions';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
+    harvestingIsActive: PropTypes.bool.isRequired,
   };
 
   render() {
     let requiredSign = ' *';
     if (this.props.disabled) {
       requiredSign = '';
+    }
+
+    let urlRequiredSign = ' *';
+    if (!this.props.harvestingIsActive) {
+      urlRequiredSign = '';
     }
 
     return (
@@ -41,7 +47,11 @@ class VendorInfoForm extends React.Component {
         </Col>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
+            label={
+              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl">
+                {(msg) => msg + urlRequiredSign}
+              </FormattedMessage>
+              }
             name="harvestingConfig.sushiConfig.serviceUrl"
             id="addudp_serviceurl"
             placeholder="Enter the vendor's serviceURL"

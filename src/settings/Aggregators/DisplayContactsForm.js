@@ -3,7 +3,7 @@ import {
   FieldArray
 } from 'redux-form';
 import DisplayContact from './DisplayContact';
-import formCss from '../../sharedStyles/form.css';
+import formCss from '../../util/sharedStyles/form.css';
 
 class DisplayContactsForm extends React.Component {
   render() {
