@@ -8,11 +8,11 @@ import {
   makeQueryFunction,
   SearchAndSort
 } from '@folio/stripes/smart-components';
-import packageInfo from '../../package';
+import packageInfo from '../package';
 
-import UsageDataProvidersView from '../UDPViews/UsageDataProviderView';
-import UsageDataProviderForm from '../UDPViews/UsageDataProviderForm';
-import LatestReportDate from '../LatestReportDate';
+import UsageDataProvidersView from './components/UsageDataProviders/UsageDataProviderView';
+import UsageDataProviderForm from './components/UsageDataProviders/UsageDataProviderForm';
+import LatestReportDate from './components/LatestReportDate';
 
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;

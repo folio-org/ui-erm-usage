@@ -10,7 +10,7 @@ import {
   Row,
   TextField
 } from '@folio/stripes/components';
-import FindVendor from '../FindVendor/FindVendor';
+import FindVendor from './FindVendor/FindVendor';
 
 class UDPInfoForm extends React.Component {
   constructor(props) {

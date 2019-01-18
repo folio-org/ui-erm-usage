@@ -13,7 +13,7 @@ import {
   List,
   ConfirmationModal
 } from '@folio/stripes/components';
-import formCss from '../../sharedStyles/form.css';
+import formCss from '../../../util/sharedStyles/form.css';
 import counterReports from './data/counterReports';
 import ReportList from '../ReportList';
 import css from './SelectedReportsForm.css';
@@ -22,7 +22,6 @@ class SelectedReportsForm extends React.Component {
   static propTypes = {
     initialValues: PropTypes.object,
     counterVersion: PropTypes.number,
-    label: PropTypes.object,
   };
 
   constructor(props) {
@@ -135,6 +134,12 @@ class SelectedReportsForm extends React.Component {
 
     const confirmationMessage = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />;
 
+    const label = (
+      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport">
+        {(msg) => msg + ' *'}
+      </FormattedMessage>
+    );
+
     const reports = (
       <ReportList
         items={availReportNames}
@@ -169,7 +174,7 @@ class SelectedReportsForm extends React.Component {
     return (
       <React.Fragment>
         <div className={formCss.label}>
-          {this.props.label}
+          { label }
         </div>
         <div className={css.reportListDropdownWrap}>
           {reportsDropdownButton}

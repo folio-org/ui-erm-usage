@@ -11,8 +11,8 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
-import aggregatorServiceTypes from '../../Utils/Data/aggregatorServiceTypes';
-import aggregatorAccountConfigTypes from '../../Utils/Data/aggregatorAccountConfigTypes';
+import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
+import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 class AggregatorDetails extends React.Component {
   static propTypes = {

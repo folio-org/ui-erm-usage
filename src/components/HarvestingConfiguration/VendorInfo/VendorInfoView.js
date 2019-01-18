@@ -9,7 +9,7 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
-import serviceTypeOptions from '../Utils/Data/serviceTypeOptions';
+import serviceTypeOptions from '../../../util/data/serviceTypeOptions';
 
 const VendorInfoView = ({ usageDataProvider }) => {
   const currentSType = _.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');

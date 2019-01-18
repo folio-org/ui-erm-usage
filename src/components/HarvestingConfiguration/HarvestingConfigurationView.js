@@ -10,11 +10,11 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
-import { AggregatorInfoView } from '../AggregatorInfo';
-import { VendorInfoView } from '../VendorInfo';
-import { SushiCredentialsView } from '../SushiCredentials';
-import harvestingStatusOptions from '../Utils/Data/harvestingStatusOptions';
-import reportReleaseOptions from '../Utils/Data/reportReleaseOptions';
+import { AggregatorInfoView } from './AggregatorInfo';
+import { VendorInfoView } from './VendorInfo';
+import { SushiCredentialsView } from './SushiCredentials';
+import harvestingStatusOptions from '../../util/data/harvestingStatusOptions';
+import reportReleaseOptions from '../../util/data/reportReleaseOptions';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
