@@ -119,6 +119,9 @@ class UsageDataProviders extends React.Component {
     browseOnly: false,
   }
 
+  // Index of aggregatorName filter in filterConfig
+  static aggImplsFilterIndex = 2;
+
   constructor(props) {
     super(props);
     this.okapiUrl = props.stripes.okapi.url;
@@ -127,9 +130,6 @@ class UsageDataProviders extends React.Component {
       'X-Okapi-Token': props.stripes.store.getState().okapi.token,
       'Content-Type': 'application/json',
     });
-
-    // Index of aggregatorName filter in filterConfig
-    this.aggImplsFilterIndex = 2;
 
     this.state = {};
   }
