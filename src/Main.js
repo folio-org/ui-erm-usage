@@ -26,11 +26,27 @@ const filterConfig = [
       { name: 'Active', cql: 'active' },
       { name: 'Inactive', cql: 'inactive' }
     ],
-  }
+  },
+  {
+    label: 'Harvest via',
+    name: 'harvestVia',
+    cql: 'harvestingConfig.harvestVia',
+    values: [
+      { name: 'Sushi', cql: 'sushi' },
+      { name: 'Aggregator', cql: 'aggregator' }
+    ],
+  },
+  {
+    label: 'Aggregators',
+    name: 'harvestingConfig',
+    cql: 'harvestingConfig.aggregator.name',
+    values: [],
+  },
 ];
 
 class UsageDataProviders extends React.Component {
   static manifest = Object.freeze({
+    numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
     query: {
       initialValue: {
@@ -64,6 +80,11 @@ class UsageDataProviders extends React.Component {
         },
         staticFallback: { params: {} },
       },
+    },
+    aggregatorImpls: {
+      type: 'okapi',
+      records: 'implementations',
+      path: 'harvester/impl?aggregator=true',
     }
   });
 
@@ -71,11 +92,15 @@ class UsageDataProviders extends React.Component {
     resources: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
+        numFiltersLoaded: PropTypes.number,
       }),
     }).isRequired,
     mutator: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
         POST: PropTypes.func.isRequired,
+      }),
+      numFiltersLoaded: PropTypes.shape({
+        replace: PropTypes.func.isRequired,
       }),
       query: PropTypes.shape({
         update: PropTypes.func,
@@ -92,6 +117,40 @@ class UsageDataProviders extends React.Component {
   static defaultProps = {
     showSingleResult: true,
     browseOnly: false,
+  }
+
+  constructor(props) {
+    super(props);
+    this.okapiUrl = props.stripes.okapi.url;
+    this.httpHeaders = Object.assign({}, {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'Content-Type': 'application/json',
+    });
+
+    // Index of aggregatorName filter in filterConfig
+    this.aggImplsFilterIndex = 2;
+
+    this.state = {};
+  }
+
+  /**
+   * fill in the filter values
+   */
+  static getDerivedStateFromProps(props) {
+    // aggregatorImpls
+    const ai = (props.resources.aggregatorImpls || {}).records || [];
+    if (ai.length) {
+      const oldValuesLength = filterConfig[UsageDataProviders.aggImplsFilterIndex].values.length;
+      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.type }));
+      // Always include the query clause: https://github.com/folio-org/stripes-components/tree/master/lib/FilterGroups#filter-configuration
+      filterConfig[UsageDataProviders.aggImplsFilterIndex].restrictWhenAllSelected = true;
+      if (oldValuesLength === 0) {
+        const numFiltersLoaded = props.resources.numFiltersLoaded;
+        props.mutator.numFiltersLoaded.replace(numFiltersLoaded + 1); // triggers refresh of records
+      }
+    }
+    return null;
   }
 
   closeNewInstance = (e) => {
