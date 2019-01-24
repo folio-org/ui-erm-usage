@@ -69,10 +69,9 @@ class UsageDataProviders extends React.Component {
             '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
               'Provider Name': 'label',
-              'Vendor': 'vendor',
-              'Platform': 'platform',
               'Harvesting Status': 'harvestingConfig.harvestingStatus',
-              'Aggregator': 'harvestingConfig.aggregator.name'
+              'Aggregator': 'harvestingConfig.aggregator.name',
+              'Latest Statistics': 'latestReport',
             },
             filterConfig,
             2,
@@ -183,11 +182,9 @@ class UsageDataProviders extends React.Component {
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => udp.vendor.name,
-      platform: udp => udp.platform.id,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
+      latestStats: udp => udp.latestReport, // this.renderLatestReportDate(udp.vendor.id),
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
-      latestStats: udp => this.renderLatestReportDate(udp.vendor.id),
     };
 
     return (<SearchAndSort
@@ -199,7 +196,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['name', 'vendor', 'platform', 'harvestingStatus', 'aggregator', 'latestStats']}
+      visibleColumns={['name', 'harvestingStatus', 'latestStats', 'aggregator']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -211,11 +208,9 @@ class UsageDataProviders extends React.Component {
       showSingleResult={showSingleResult}
       columnMapping={{
         name: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
-        vendor: intl.formatMessage({ id: 'ui-erm-usage.information.vendor' }),
-        platform: intl.formatMessage({ id: 'ui-erm-usage.information.platform' }),
         harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
-        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' }),
-        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' })
+        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
+        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })
       }}
       browseOnly={browseOnly}
       stripes={stripes}
