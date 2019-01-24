@@ -26,11 +26,27 @@ const filterConfig = [
       { name: 'Active', cql: 'active' },
       { name: 'Inactive', cql: 'inactive' }
     ],
-  }
+  },
+  {
+    label: 'Harvest via',
+    name: 'harvestVia',
+    cql: 'harvestingConfig.harvestVia',
+    values: [
+      { name: 'Sushi', cql: 'sushi' },
+      { name: 'Aggregator', cql: 'aggregator' }
+    ],
+  },
+  {
+    label: 'Aggregators',
+    name: 'harvestingConfig',
+    cql: 'harvestingConfig.aggregator.name',
+    values: [],
+  },
 ];
 
 class UsageDataProviders extends React.Component {
   static manifest = Object.freeze({
+    numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
     query: {
       initialValue: {
@@ -53,10 +69,9 @@ class UsageDataProviders extends React.Component {
             '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
               'Provider Name': 'label',
-              'Vendor': 'vendor',
-              'Platform': 'platform',
               'Harvesting Status': 'harvestingConfig.harvestingStatus',
-              'Aggregator': 'harvestingConfig.aggregator.name'
+              'Aggregator': 'harvestingConfig.aggregator.name',
+              'Latest Statistics': 'latestReport',
             },
             filterConfig,
             2,
@@ -64,6 +79,11 @@ class UsageDataProviders extends React.Component {
         },
         staticFallback: { params: {} },
       },
+    },
+    aggregatorImpls: {
+      type: 'okapi',
+      records: 'implementations',
+      path: 'harvester/impl?aggregator=true',
     }
   });
 
@@ -71,11 +91,15 @@ class UsageDataProviders extends React.Component {
     resources: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
+        numFiltersLoaded: PropTypes.number,
       }),
     }).isRequired,
     mutator: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
         POST: PropTypes.func.isRequired,
+      }),
+      numFiltersLoaded: PropTypes.shape({
+        replace: PropTypes.func.isRequired,
       }),
       query: PropTypes.shape({
         update: PropTypes.func,
@@ -92,6 +116,40 @@ class UsageDataProviders extends React.Component {
   static defaultProps = {
     showSingleResult: true,
     browseOnly: false,
+  }
+
+  // Index of aggregatorName filter in filterConfig
+  static aggImplsFilterIndex = 2;
+
+  constructor(props) {
+    super(props);
+    this.okapiUrl = props.stripes.okapi.url;
+    this.httpHeaders = Object.assign({}, {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'Content-Type': 'application/json',
+    });
+
+    this.state = {};
+  }
+
+  /**
+   * fill in the filter values
+   */
+  static getDerivedStateFromProps(props) {
+    // aggregatorImpls
+    const ai = (props.resources.aggregatorImpls || {}).records || [];
+    if (ai.length) {
+      const oldValuesLength = filterConfig[UsageDataProviders.aggImplsFilterIndex].values.length;
+      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.type }));
+      // Always include the query clause: https://github.com/folio-org/stripes-components/tree/master/lib/FilterGroups#filter-configuration
+      filterConfig[UsageDataProviders.aggImplsFilterIndex].restrictWhenAllSelected = true;
+      if (oldValuesLength === 0) {
+        const numFiltersLoaded = props.resources.numFiltersLoaded;
+        props.mutator.numFiltersLoaded.replace(numFiltersLoaded + 1); // triggers refresh of records
+      }
+    }
+    return null;
   }
 
   closeNewInstance = (e) => {
@@ -124,11 +182,9 @@ class UsageDataProviders extends React.Component {
 
     const resultsFormatter = {
       name: udp => udp.label,
-      vendor: udp => udp.vendor.name,
-      platform: udp => udp.platform.id,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
+      latestStats: udp => udp.latestReport, // this.renderLatestReportDate(udp.vendor.id),
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
-      latestStats: udp => this.renderLatestReportDate(udp.vendor.id),
     };
 
     return (<SearchAndSort
@@ -140,7 +196,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['name', 'vendor', 'platform', 'harvestingStatus', 'aggregator', 'latestStats']}
+      visibleColumns={['name', 'harvestingStatus', 'latestStats', 'aggregator']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -152,11 +208,9 @@ class UsageDataProviders extends React.Component {
       showSingleResult={showSingleResult}
       columnMapping={{
         name: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
-        vendor: intl.formatMessage({ id: 'ui-erm-usage.information.vendor' }),
-        platform: intl.formatMessage({ id: 'ui-erm-usage.information.platform' }),
         harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
-        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' }),
-        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' })
+        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
+        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })
       }}
       browseOnly={browseOnly}
       stripes={stripes}

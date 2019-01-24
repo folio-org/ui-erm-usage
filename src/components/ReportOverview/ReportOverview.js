@@ -16,10 +16,9 @@ class ReportOverview extends React.Component {
   static manifest = Object.freeze({
     counterReports: {
       type: 'okapi',
-      path: 'counter-reports?tiny=true&query=(vendorId==%{vendorId.id} and platformId=%{platformId.id})&limit=1000',
+      path: 'counter-reports?tiny=true&query=(providerId==%{providerId.id})&limit=1000',
     },
-    vendorId: { id: null },
-    platformId: { id: null },
+    providerId: { id: null },
   });
 
   static propTypes = {
@@ -37,27 +36,21 @@ class ReportOverview extends React.Component {
       counterReports: PropTypes.shape(),
     }),
     mutator: PropTypes.shape({
-      vendorId: PropTypes.object.isRequired,
-      platformId: PropTypes.object.isRequired,
+      providerId: PropTypes.object.isRequired,
     }),
-    vendorId: PropTypes.string.isRequired,
-    platformId: PropTypes.string.isRequired,
+    providerId: PropTypes.string.isRequired,
     intl: intlShape.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.props.mutator.vendorId.replace({ id: props.vendorId });
-    this.props.mutator.platformId.replace({ id: props.platformId });
+    this.props.mutator.providerId.replace({ id: props.providerId });
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.vendorId !== prevProps.vendorId) {
-      this.props.mutator.vendorId.replace({ id: this.props.vendorId });
-    }
-    if (this.props.platformId !== prevProps.platformId) {
-      this.props.mutator.platformId.replace({ id: this.props.platformId });
+    if (this.props.providerId !== prevProps.providerId) {
+      this.props.mutator.providerId.replace({ id: this.props.providerId });
     }
   }
 
