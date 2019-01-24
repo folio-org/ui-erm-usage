@@ -146,7 +146,7 @@ class UsageDataProviderView extends React.Component {
               id="clickable-delete-udp"
               style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
               onClick={() => this.deleteUDP(initialValues)}
-              title="Delete Usagedata Provider"
+              aria-label="Delete Usagedata Provider"
             />
           </IfPermission>
           <IconButton
@@ -167,15 +167,14 @@ class UsageDataProviderView extends React.Component {
               }}
               onClick={this.props.onEdit}
               href={this.props.editLink}
-              title="Edit Usagedata Provider"
+              aria-label="Edit Usagedata Provider"
             />
           </IfPermission>
         </PaneMenu>
       );
 
       const label = _.get(initialValues, 'label', 'No LABEL');
-      const vendorId = _.get(initialValues, 'vendor.id', '');
-      const platformId = _.get(initialValues, 'platform.id', '');
+      const providerId = _.get(initialValues, 'id', '');
 
       return (
         <Pane
@@ -229,8 +228,7 @@ class UsageDataProviderView extends React.Component {
           >
             <this.connectedReportOverview
               stripes={stripes}
-              vendorId={vendorId}
-              platformId={platformId}
+              providerId={providerId}
             />
           </Accordion>
           <Accordion
