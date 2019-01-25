@@ -9,7 +9,7 @@ import {
   InfoPopover,
   MultiColumnList
 } from '@folio/stripes/components';
-import ReportDownloadButton from './ReportDownloadButton';
+import ReportButton from './ReportButton';
 import groupByYearAndReport from './util';
 
 class ReportOverview extends React.Component {
@@ -44,6 +44,7 @@ class ReportOverview extends React.Component {
 
   constructor(props) {
     super(props);
+    this.connectedReportButton = props.stripes.connect(ReportButton);
 
     this.props.mutator.providerId.replace({ id: props.providerId });
   }
@@ -63,12 +64,12 @@ class ReportOverview extends React.Component {
       if (parseInt(month, 10) >= maxMonth) {
         maxMonth = parseInt(month, 10);
       }
-      o[month] = <ReportDownloadButton report={r} stripes={this.props.stripes} />;
+      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} />;
     });
     while (maxMonth < 12) {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
-      o[monthPadded] = <ReportDownloadButton stripes={this.props.stripes} />;
+      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} />;
       maxMonth = newMonth;
     }
     return o;
@@ -130,7 +131,7 @@ class ReportOverview extends React.Component {
     const renderedStats = this.renderStats(stats);
     return (
       <React.Fragment>
-        <InfoPopover content="Click a month with a green button to download corresponding report." />
+        <InfoPopover content="Click a colored button to download/delete report or get additional info." />
         <div>
           { renderedStats }
         </div>

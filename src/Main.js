@@ -91,8 +91,9 @@ class UsageDataProviders extends React.Component {
     resources: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
-        numFiltersLoaded: PropTypes.number,
       }),
+      aggregatorImpls: PropTypes.shape(),
+      numFiltersLoaded: PropTypes.number,
     }).isRequired,
     mutator: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
