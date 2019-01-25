@@ -158,7 +158,7 @@ class FindVendor extends React.Component {
 
 FindVendor.propTypes = {
   stripes: PropTypes.object,
-  intialVendorId: PropTypes.string,
+  intialVendor: PropTypes.shape(),
   change: PropTypes.func,
 };
 
