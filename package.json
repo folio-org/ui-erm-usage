@@ -66,7 +66,7 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.view ",
+        "permissionName": "ui-erm-usage.view",
         "displayName": "eUsage: Can view usage data providers and COUNTER reports",
         "description": "Can view usage data providers and COUNTER reports",
         "subPermissions": [
