@@ -35,6 +35,8 @@ class ReportButton extends React.Component {
       showDropDown: false,
       showConfirmDelete: false
     };
+
+    this.RETRY_THRESHOLD = 3;
   }
 
   getFileType = (format) => {
@@ -48,7 +50,7 @@ class ReportButton extends React.Component {
   getButtonStyle = (failedAttempts) => {
     if (!failedAttempts || failedAttempts === 0) {
       return 'success';
-    } else if (failedAttempts < 3) {
+    } else if (failedAttempts < this.RETRY_THRESHOLD) {
       return 'warning';
     } else {
       return 'danger';
@@ -60,7 +62,8 @@ class ReportButton extends React.Component {
     this.props.mutator.counterReports.GET()
       .then((report) => {
         const fileType = this.getFileType(report.format);
-        const blob = new Blob([report], { type: fileType });
+        const reportData = report.report;
+        const blob = new Blob([JSON.stringify(reportData)], { type: fileType });
         const fileName = `${report.id}.${fileType}`;
         saveAs(blob, fileName);
       })
@@ -137,6 +140,7 @@ class ReportButton extends React.Component {
               report={report}
               deleteReport={this.deleteReport}
               downloadReport={this.downloadReport}
+              retryThreshold={this.RETRY_THRESHOLD}
             />
           </DropdownMenu>
         </Dropdown>
@@ -145,7 +149,9 @@ class ReportButton extends React.Component {
           heading="Please confirm delete!"
           message={confirmMessage}
           onConfirm={this.doDelete}
+          confirmLabel="Yes"
           onCancel={this.hideConfirm}
+          cancelLabel="No"
         />
       </React.Fragment>
     );
