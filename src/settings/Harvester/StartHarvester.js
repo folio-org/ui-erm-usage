@@ -13,7 +13,7 @@ export default class StartHarvester extends React.Component {
       fetch: false,
       accumulate: 'true',
       GET: {
-        path: 'harvester/start',
+        path: 'erm-usage-harvester/start',
       },
     }
   });

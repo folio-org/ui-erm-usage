@@ -83,7 +83,7 @@ class UsageDataProviders extends React.Component {
     aggregatorImpls: {
       type: 'okapi',
       records: 'implementations',
-      path: 'harvester/impl?aggregator=true',
+      path: 'erm-usage-harvester/impl?aggregator=true',
     }
   });
 
