@@ -41,6 +41,7 @@ const filterConfig = [
     name: 'harvestingConfig',
     cql: 'harvestingConfig.aggregator.name',
     values: [],
+    restrictWhenAllSelected: true,
   },
 ];
 
@@ -83,7 +84,7 @@ class UsageDataProviders extends React.Component {
     aggregatorImpls: {
       type: 'okapi',
       records: 'implementations',
-      path: 'harvester/impl?aggregator=true',
+      path: 'erm-usage-harvester/impl?aggregator=true',
     }
   });
 
@@ -142,7 +143,7 @@ class UsageDataProviders extends React.Component {
     const ai = (props.resources.aggregatorImpls || {}).records || [];
     if (ai.length) {
       const oldValuesLength = filterConfig[UsageDataProviders.aggImplsFilterIndex].values.length;
-      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.type }));
+      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.name }));
       // Always include the query clause: https://github.com/folio-org/stripes-components/tree/master/lib/FilterGroups#filter-configuration
       filterConfig[UsageDataProviders.aggImplsFilterIndex].restrictWhenAllSelected = true;
       if (oldValuesLength === 0) {
