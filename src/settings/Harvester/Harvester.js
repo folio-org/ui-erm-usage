@@ -24,7 +24,7 @@ class Harvester extends React.Component {
   }
 
   render() {
-    if (this.props.stripes.hasInterface('usage-harvester')) {
+    if (this.props.stripes.hasInterface('erm-usage-harvester')) {
       return <this.cStartHarvester {...this.props} />;
     } else {
       return this.renderNotPresent();
