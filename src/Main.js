@@ -53,7 +53,7 @@ class UsageDataProviders extends React.Component {
       initialValue: {
         query: '',
         filters: '',
-        sort: 'title',
+        sort: 'label',
       },
     },
     resultCount: { initialValue: INITIAL_RESULT_COUNT },
@@ -69,10 +69,10 @@ class UsageDataProviders extends React.Component {
             'cql.allRecords=1',
             '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
-              'Provider Name': 'label',
-              'Harvesting Status': 'harvestingConfig.harvestingStatus',
-              'Aggregator': 'harvestingConfig.aggregator.name',
-              'Latest Statistics': 'latestReport',
+              'label': 'label',
+              'harvestingStatus': 'harvestingConfig.harvestingStatus',
+              'latestStats': 'latestReport',
+              'aggregator': 'harvestingConfig.aggregator.name',
             },
             filterConfig,
             2,
@@ -198,7 +198,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['name', 'harvestingStatus', 'latestStats', 'aggregator']}
+      visibleColumns={['label', 'harvestingStatus', 'latestStats', 'aggregator']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -209,7 +209,7 @@ class UsageDataProviders extends React.Component {
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}
       columnMapping={{
-        name: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
+        label: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
         harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
         latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
         aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })
