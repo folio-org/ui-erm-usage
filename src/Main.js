@@ -81,10 +81,10 @@ class UsageDataProviders extends React.Component {
         staticFallback: { params: {} },
       },
     },
-    aggregatorImpls: {
+    aggregatorSettings: {
       type: 'okapi',
-      records: 'implementations',
-      path: 'erm-usage-harvester/impl?aggregator=true',
+      records: 'aggregatorSettings',
+      path: 'aggregator-settings',
     }
   });
 
@@ -93,7 +93,7 @@ class UsageDataProviders extends React.Component {
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
-      aggregatorImpls: PropTypes.shape(),
+      aggregatorSettings: PropTypes.shape(),
       numFiltersLoaded: PropTypes.number,
     }).isRequired,
     mutator: PropTypes.shape({
@@ -121,7 +121,7 @@ class UsageDataProviders extends React.Component {
   }
 
   // Index of aggregatorName filter in filterConfig
-  static aggImplsFilterIndex = 2;
+  static aggFilterIndex = 2;
 
   constructor(props) {
     super(props);
@@ -139,13 +139,13 @@ class UsageDataProviders extends React.Component {
    * fill in the filter values
    */
   static getDerivedStateFromProps(props) {
-    // aggregatorImpls
-    const ai = (props.resources.aggregatorImpls || {}).records || [];
-    if (ai.length) {
-      const oldValuesLength = filterConfig[UsageDataProviders.aggImplsFilterIndex].values.length;
-      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.name }));
+    // aggregators
+    const aggSettings = (props.resources.aggregatorSettings || {}).records || [];
+    if (aggSettings.length) {
+      const oldValuesLength = filterConfig[UsageDataProviders.aggFilterIndex].values.length;
+      filterConfig[UsageDataProviders.aggFilterIndex].values = aggSettings.map(rec => ({ name: rec.label, cql: rec.label }));
       // Always include the query clause: https://github.com/folio-org/stripes-components/tree/master/lib/FilterGroups#filter-configuration
-      filterConfig[UsageDataProviders.aggImplsFilterIndex].restrictWhenAllSelected = true;
+      filterConfig[UsageDataProviders.aggFilterIndex].restrictWhenAllSelected = true;
       if (oldValuesLength === 0) {
         const numFiltersLoaded = props.resources.numFiltersLoaded;
         props.mutator.numFiltersLoaded.replace(numFiltersLoaded + 1); // triggers refresh of records
