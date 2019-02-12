@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
   injectIntl,
   intlShape
 } from 'react-intl';
@@ -19,7 +20,7 @@ const RESULT_COUNT_INCREMENT = 30;
 
 const filterConfig = [
   {
-    label: 'Harvesting Status',
+    label: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
     name: 'harvestingStatus',
     cql: 'harvestingConfig.harvestingStatus',
     values: [
@@ -28,7 +29,7 @@ const filterConfig = [
     ],
   },
   {
-    label: 'Harvest via',
+    label: <FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />,
     name: 'harvestVia',
     cql: 'harvestingConfig.harvestVia',
     values: [
@@ -37,7 +38,7 @@ const filterConfig = [
     ],
   },
   {
-    label: 'Aggregators',
+    label: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
     name: 'harvestingConfig',
     cql: 'harvestingConfig.aggregator.name',
     values: [],
@@ -53,7 +54,7 @@ class UsageDataProviders extends React.Component {
       initialValue: {
         query: '',
         filters: '',
-        sort: 'title',
+        sort: 'label',
       },
     },
     resultCount: { initialValue: INITIAL_RESULT_COUNT },
@@ -69,10 +70,10 @@ class UsageDataProviders extends React.Component {
             'cql.allRecords=1',
             '(label="%{query.query}*" or vendor="%{query.query}*" or platform="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
             {
-              'Provider Name': 'label',
-              'Harvesting Status': 'harvestingConfig.harvestingStatus',
-              'Aggregator': 'harvestingConfig.aggregator.name',
-              'Latest Statistics': 'latestReport',
+              'label': 'label',
+              'harvestingStatus': 'harvestingConfig.harvestingStatus',
+              'latestStats': 'latestReport',
+              'aggregator': 'harvestingConfig.aggregator.name',
             },
             filterConfig,
             2,
@@ -81,10 +82,10 @@ class UsageDataProviders extends React.Component {
         staticFallback: { params: {} },
       },
     },
-    aggregatorImpls: {
+    aggregatorSettings: {
       type: 'okapi',
-      records: 'implementations',
-      path: 'erm-usage-harvester/impl?aggregator=true',
+      records: 'aggregatorSettings',
+      path: 'aggregator-settings',
     }
   });
 
@@ -93,7 +94,7 @@ class UsageDataProviders extends React.Component {
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
-      aggregatorImpls: PropTypes.shape(),
+      aggregatorSettings: PropTypes.shape(),
       numFiltersLoaded: PropTypes.number,
     }).isRequired,
     mutator: PropTypes.shape({
@@ -121,7 +122,7 @@ class UsageDataProviders extends React.Component {
   }
 
   // Index of aggregatorName filter in filterConfig
-  static aggImplsFilterIndex = 2;
+  static aggFilterIndex = 2;
 
   constructor(props) {
     super(props);
@@ -139,13 +140,13 @@ class UsageDataProviders extends React.Component {
    * fill in the filter values
    */
   static getDerivedStateFromProps(props) {
-    // aggregatorImpls
-    const ai = (props.resources.aggregatorImpls || {}).records || [];
-    if (ai.length) {
-      const oldValuesLength = filterConfig[UsageDataProviders.aggImplsFilterIndex].values.length;
-      filterConfig[UsageDataProviders.aggImplsFilterIndex].values = ai.map(rec => ({ name: rec.name, cql: rec.name }));
+    // aggregators
+    const aggSettings = (props.resources.aggregatorSettings || {}).records || [];
+    if (aggSettings.length) {
+      const oldValuesLength = filterConfig[UsageDataProviders.aggFilterIndex].values.length;
+      filterConfig[UsageDataProviders.aggFilterIndex].values = aggSettings.map(rec => ({ name: rec.label, cql: rec.label }));
       // Always include the query clause: https://github.com/folio-org/stripes-components/tree/master/lib/FilterGroups#filter-configuration
-      filterConfig[UsageDataProviders.aggImplsFilterIndex].restrictWhenAllSelected = true;
+      filterConfig[UsageDataProviders.aggFilterIndex].restrictWhenAllSelected = true;
       if (oldValuesLength === 0) {
         const numFiltersLoaded = props.resources.numFiltersLoaded;
         props.mutator.numFiltersLoaded.replace(numFiltersLoaded + 1); // triggers refresh of records
@@ -198,7 +199,7 @@ class UsageDataProviders extends React.Component {
       viewRecordComponent={UsageDataProvidersView}
       editRecordComponent={UsageDataProviderForm}
       newRecordInitialValues={{}}
-      visibleColumns={['name', 'harvestingStatus', 'latestStats', 'aggregator']}
+      visibleColumns={['label', 'harvestingStatus', 'latestStats', 'aggregator']}
       resultsFormatter={resultsFormatter}
       onSelectRow={onSelectRow}
       onCreate={this.create}
@@ -209,7 +210,7 @@ class UsageDataProviders extends React.Component {
       parentMutator={this.props.mutator}
       showSingleResult={showSingleResult}
       columnMapping={{
-        name: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
+        label: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
         harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
         latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
         aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })

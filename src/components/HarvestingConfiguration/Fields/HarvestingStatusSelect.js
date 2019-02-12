@@ -8,6 +8,9 @@ import {
 import {
   Select
 } from '@folio/stripes/components';
+import {
+  required
+} from '../../../util/Validate';
 
 import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions';
 
@@ -23,6 +26,7 @@ const HarvestingStatusSelect = () => (
     placeholder="Select a harvesting status"
     component={Select}
     dataOptions={harvestingStatusOptions}
+    validate={[required]}
     fullWidth
   />
 );

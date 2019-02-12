@@ -14,6 +14,9 @@ import {
 import {
   Pluggable
 } from '@folio/stripes/core';
+import {
+  required
+} from '../../../util/Validate';
 import VendorName from './VendorName';
 
 import css from '../VendorView.css';
@@ -134,6 +137,7 @@ class FindVendor extends React.Component {
               name="vendor.id"
               component={TextField}
               onChange={this.changeInputVendorId}
+              validate={[required]}
               fullWidth
             />
             <div style={{ marginLeft: '10px', top: '2px', position: 'relative' }}>

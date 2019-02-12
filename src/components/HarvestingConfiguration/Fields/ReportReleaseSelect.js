@@ -8,6 +8,9 @@ import {
 import {
   Select
 } from '@folio/stripes/components';
+import {
+  required
+} from '../../../util/Validate';
 
 import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 
@@ -23,6 +26,7 @@ const ReportReleaseSelect = () => (
     placeholder="Select the report release"
     component={Select}
     dataOptions={reportReleaseOptions}
+    validate={[required]}
     fullWidth
   />
 );

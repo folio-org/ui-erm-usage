@@ -10,6 +10,9 @@ import {
   Row,
   TextField
 } from '@folio/stripes/components';
+import {
+  required
+} from '../../util/Validate';
 import FindVendor from './FindVendor/FindVendor';
 
 class UDPInfoForm extends React.Component {
@@ -57,6 +60,7 @@ class UDPInfoForm extends React.Component {
                   name="label"
                   id="addudp_providername"
                   component={TextField}
+                  validate={[required]}
                   fullWidth
                 />
               </Col>
@@ -79,6 +83,7 @@ class UDPInfoForm extends React.Component {
                   placeholder="Link the content platform"
                   component={TextField}
                   fullWidth
+                  validate={[required]}
                 />
               </Col>
             </Row>

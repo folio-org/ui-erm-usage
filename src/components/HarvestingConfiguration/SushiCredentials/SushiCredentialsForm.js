@@ -8,6 +8,9 @@ import {
   Row,
   TextField
 } from '@folio/stripes/components';
+import {
+  required
+} from '../../../util/Validate';
 
 const SushiCredentialsForm = () => {
   return (
@@ -24,6 +27,7 @@ const SushiCredentialsForm = () => {
             id="addudp_customerid"
             placeholder="Enter the SUSHI customer ID"
             component={TextField}
+            validate={[required]}
             fullWidth
           />
         </Col>
@@ -38,6 +42,7 @@ const SushiCredentialsForm = () => {
             id="addudp_requestorid"
             placeholder="Enter the SUSHI requestor ID"
             component={TextField}
+            validate={[required]}
             fullWidth
           />
         </Col>

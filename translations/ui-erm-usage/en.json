@@ -102,5 +102,10 @@
   "aggregator.form.delete": "Delete",
   "aggregator.form.delete.confirm.message": "Do you really want to delete {aggName}?",
   "aggregator.form.delete.confirm.title": "Delete Aggregator",
-  "aggregator.form.newAggregator": "New aggregator"
+  "aggregator.form.newAggregator": "New aggregator",
+
+  "errors.required": "Required",
+  "errors.emailInvalid": "Email address invalid",
+  "errors.dateInvalid": "Date invalid",
+  "errors.endDateMustBeGraterStartDate": "End date must be greater than start date"
 }

@@ -8,6 +8,10 @@ import {
 import {
   TextField
 } from '@folio/stripes/components';
+import {
+  endDate,
+  yearMonth
+} from '../../../util/Validate';
 
 const HarvestingEndField = () => (
   <Field
@@ -16,6 +20,7 @@ const HarvestingEndField = () => (
     id="input-harvestingEnd"
     component={TextField}
     placeholder="YYYY-MM"
+    validate={[yearMonth, endDate]}
     fullWidth
   />
 );
