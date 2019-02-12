@@ -84,7 +84,7 @@ ReportActionMenu.propTypes = {
   report: PropTypes.object,
   deleteReport: PropTypes.func,
   downloadReport: PropTypes.func,
-  retryThreshold: PropTypes.int,
+  retryThreshold: PropTypes.number,
 };
 
 export default ReportActionMenu;

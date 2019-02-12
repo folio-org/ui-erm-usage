@@ -21,68 +21,6 @@ import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 import { NotesForm } from '../Notes';
 import css from './UsageDataProviderForm.css';
 
-function validate(values) {
-  const errors = {};
-  errors.udp = {};
-
-  if (!values.label) {
-    errors.label = 'Please fill this in to continue';
-  }
-
-  if (!values.vendorId) {
-    errors.vendorId = 'Please fill this in to continue';
-  }
-
-  if (!values.platformId) {
-    errors.platformId = 'Please fill this in to continue';
-  }
-
-  if (!values.harvestingStatus) {
-    errors.harvestingStatus = 'Please select a harvesting status';
-  }
-
-  if (!values.serviceType && !values.aggregator) {
-    errors.aggregator = 'Please select an aggregator if harvesting via aggerator';
-  }
-
-  if (!values.aggregator && !values.serviceType) {
-    errors.serviceType = 'Please select a service type if not harvesting via aggerator';
-  }
-
-  if (!values.reportRelease) {
-    errors.reportRelease = 'Please select a report release';
-  }
-
-  if (!values.requestedReports || _.size(values.requestedReports) === 0) {
-    errors.requestedReports = 'Please select at least one report';
-  }
-
-  const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/;
-  if (!values.harvestingStart) {
-    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
-  } else if (!(yyyyMMRegex.test(values.harvestingStart))) {
-    errors.harvestingStart = 'Please fill this in the format YYYY-MM to continue';
-  }
-
-  if (values.harvestingEnd) {
-    if (!(yyyyMMRegex.test(values.harvestingEnd))) {
-      errors.harvestingEnd = 'Please fill this in the format YYYY-MM to continue';
-    } else if (new Date(values.harvestingEnd) < new Date(values.harvestingStart)) {
-      errors.harvestingEnd = 'End date must be greater than start date';
-    }
-  }
-
-  if (!values.customerId) {
-    errors.customerId = 'Please fill this in to continue';
-  }
-
-  if (!values.requestorId) {
-    errors.requestorId = 'Please fill this in to continue';
-  }
-
-  return errors;
-}
-
 class UsageDataProviderForm extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
@@ -224,6 +162,5 @@ class UsageDataProviderForm extends React.Component {
 export default stripesForm({
   form: 'form-udProvider',
   navigationCheck: true,
-  enableReinitialize: true,
-  validate
+  enableReinitialize: true
 })(UsageDataProviderForm);

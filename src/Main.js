@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
   injectIntl,
   intlShape
 } from 'react-intl';
@@ -19,7 +20,7 @@ const RESULT_COUNT_INCREMENT = 30;
 
 const filterConfig = [
   {
-    label: 'Harvesting Status',
+    label: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
     name: 'harvestingStatus',
     cql: 'harvestingConfig.harvestingStatus',
     values: [
@@ -28,7 +29,7 @@ const filterConfig = [
     ],
   },
   {
-    label: 'Harvest via',
+    label: <FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />,
     name: 'harvestVia',
     cql: 'harvestingConfig.harvestVia',
     values: [
@@ -37,7 +38,7 @@ const filterConfig = [
     ],
   },
   {
-    label: 'Aggregators',
+    label: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
     name: 'harvestingConfig',
     cql: 'harvestingConfig.aggregator.name',
     values: [],

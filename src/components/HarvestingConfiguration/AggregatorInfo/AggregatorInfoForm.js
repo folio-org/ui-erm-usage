@@ -10,6 +10,10 @@ import {
   Select,
   TextField
 } from '@folio/stripes/components';
+import {
+  notRequired,
+  required
+} from '../../../util/Validate';
 
 class AggregatorInfoForm extends React.Component {
   static manifest = Object.freeze({
@@ -25,6 +29,17 @@ class AggregatorInfoForm extends React.Component {
     }),
     disabled: PropTypes.bool,
   };
+
+  constructor(props) {
+    super(props);
+    this.isRequired = this.props.disabled ? notRequired : required;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.disabled !== prevProps.disabled) {
+      this.isRequired = this.props.disabled ? notRequired : required;
+    }
+  }
 
   extractAggregatorSelectOptions = (aggregators) => {
     if (_.isEmpty(aggregators)) {
@@ -43,12 +58,7 @@ class AggregatorInfoForm extends React.Component {
     const aggregators = records.length
       ? records[0].aggregatorSettings
       : {};
-
-    let requiredSign = ' *';
-    if (disabled) {
-      requiredSign = '';
-    }
-
+    const requiredSign = disabled ? '' : ' *';
     const aggOptions = this.extractAggregatorSelectOptions(aggregators);
 
     return (
@@ -66,6 +76,7 @@ class AggregatorInfoForm extends React.Component {
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
+            validate={[this.isRequired]}
             fullWidth
           />
         </Col>

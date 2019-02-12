@@ -27,8 +27,8 @@ import stripesForm from '@folio/stripes/form';
 import { Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
 import {
-  Required,
-  Mail
+  required,
+  mail
 } from '../../util/Validate';
 import css from './AggregatorForm.css';
 import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
@@ -223,7 +223,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -237,7 +237,7 @@ class AggregatorForm extends React.Component {
                       component={Select}
                       dataOptions={aggregatorServiceTypes}
                       fullWidth
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -250,7 +250,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                   </Col>
                 </Row>
@@ -275,7 +275,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -288,7 +288,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -301,7 +301,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -314,7 +314,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                   </Col>
                 </Row>
@@ -341,7 +341,7 @@ class AggregatorForm extends React.Component {
                       dataOptions={aggregatorAccountConfigTypes}
                       fullWidth
                       disabled={disabled}
-                      validate={[Required]}
+                      validate={[required]}
                     />
                     <Field
                       label={
@@ -352,7 +352,7 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[Mail]}
+                      validate={[mail]}
                     />
                     <DisplayContactsForm {...this.props} />
                   </Col>

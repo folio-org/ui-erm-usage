@@ -9,6 +9,10 @@ import {
   Select,
   TextField
 } from '@folio/stripes/components';
+import {
+  notRequired,
+  required
+} from '../../../util/Validate';
 import serviceTypeOptions from '../../../util/data/serviceTypeOptions';
 
 class VendorInfoForm extends React.Component {
@@ -17,16 +21,25 @@ class VendorInfoForm extends React.Component {
     harvestingIsActive: PropTypes.bool.isRequired,
   };
 
-  render() {
-    let requiredSign = ' *';
-    if (this.props.disabled) {
-      requiredSign = '';
-    }
+  constructor(props) {
+    super(props);
+    this.isRequired = this.props.disabled ? notRequired : required;
+    this.urlRequired = this.props.harvestingIsActive ? required : notRequired;
+  }
 
-    let urlRequiredSign = ' *';
-    if (!this.props.harvestingIsActive) {
-      urlRequiredSign = '';
+  componentDidUpdate(prevProps) {
+    if (this.props.disabled !== prevProps.disabled) {
+      this.isRequired = this.props.disabled ? notRequired : required;
     }
+    if (this.props.harvestingIsActive !== prevProps.harvestingIsActive) {
+      this.urlRequired = this.props.harvestingIsActive ? required : notRequired;
+    }
+  }
+
+  render() {
+    const { disabled, harvestingIsActive } = this.props;
+    const requiredSign = disabled ? '' : ' *';
+    const urlRequiredSign = harvestingIsActive ? ' *' : '';
 
     return (
       <React.Fragment>
@@ -42,6 +55,7 @@ class VendorInfoForm extends React.Component {
             component={Select}
             dataOptions={serviceTypeOptions}
             disabled={this.props.disabled}
+            validate={[this.isRequired]}
             fullWidth
           />
         </Col>
@@ -57,6 +71,7 @@ class VendorInfoForm extends React.Component {
             placeholder="Enter the vendor's serviceURL"
             component={TextField}
             disabled={this.props.disabled}
+            validate={[this.urlRequired]}
             fullWidth
           />
         </Col>
