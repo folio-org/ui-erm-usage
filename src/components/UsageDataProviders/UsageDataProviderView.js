@@ -17,6 +17,7 @@ import {
   Row
 } from '@folio/stripes/components';
 import {
+  IfInterface,
   IfPermission,
   TitleManager
 } from '@folio/stripes/core';
@@ -25,6 +26,7 @@ import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import ReportOverview from '../ReportOverview';
 import { NotesView } from '../Notes';
+import StartHarvesterButton from '../StartHarvesterButton';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -70,6 +72,7 @@ class UsageDataProviderView extends React.Component {
     this.log = logger.log.bind(logger);
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
     this.connectedReportOverview = this.props.stripes.connect(ReportOverview);
+    this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
 
     this.state = {
       accordions: {
@@ -132,6 +135,12 @@ class UsageDataProviderView extends React.Component {
     const { resources, stripes } = this.props;
     const query = resources.query;
     const initialValues = this.getData();
+
+    const displayWhenOpenHarvestingAcc = (
+      <IfInterface name="erm-usage-harvester">
+        <this.connectedStartHarvesterButton usageDataProvider={initialValues} />
+      </IfInterface>
+    );
 
     if (_.isEmpty(initialValues)) {
       return <div style={{ paddingTop: '1rem' }}><Icon icon="spinner-ellipsis" width="100px" /></div>;
@@ -203,6 +212,7 @@ class UsageDataProviderView extends React.Component {
             onToggle={this.handleAccordionToggle}
             label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
             id="harvestingAccordion"
+            displayWhenOpen={displayWhenOpenHarvestingAcc}
           >
             <HarvestingConfigurationView
               usageDataProvider={initialValues}
