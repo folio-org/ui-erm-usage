@@ -24,15 +24,23 @@ class VendorInfoForm extends React.Component {
   constructor(props) {
     super(props);
     this.isRequired = this.props.disabled ? notRequired : required;
-    this.urlRequired = this.props.harvestingIsActive ? required : notRequired;
+    this.urlRequired = this.isUrlRequired() ? required : notRequired;
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.disabled !== prevProps.disabled) {
       this.isRequired = this.props.disabled ? notRequired : required;
     }
-    if (this.props.harvestingIsActive !== prevProps.harvestingIsActive) {
-      this.urlRequired = this.props.harvestingIsActive ? required : notRequired;
+    if ((this.props.harvestingIsActive !== prevProps.harvestingIsActive) || (this.props.disabled !== prevProps.disabled)) {
+      this.urlRequired = this.isUrlRequired() ? required : notRequired;
+    }
+  }
+
+  isUrlRequired = () => {
+    if (!this.props.disabled && this.props.harvestingIsActive) {
+      return true;
+    } else {
+      return false;
     }
   }
 
