@@ -120,7 +120,7 @@ class AggregatorForm extends React.Component {
           <IfPermission perm="settings.erm.enabled">
             <Button
               id="clickable-delete-aggregator"
-              title={<FormattedMessage id="ui-erm-usage.aggregator.form.delete" />}
+              title={<FormattedMessage id="ui-erm-usage.general.delete" />}
               buttonStyle="danger"
               onClick={this.beginDelete}
               disabled={confirmDelete}

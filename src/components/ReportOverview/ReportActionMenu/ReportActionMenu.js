@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
   Icon,
   KeyValue,
@@ -8,66 +13,111 @@ import {
 } from '@folio/stripes/components';
 
 class ReportActionMenu extends React.Component {
-  getFailInfo = (report) => {
-    const failedReason = report.failedReason;
-    return failedReason;
+  onClickDownloadRawReport = () => {
+    this.props.downloadRawReport();
   }
 
-  getFailedAttempts = (report) => {
-    return report.getFailedAttempts;
-  }
-
-  onClickDownloadReport = () => {
-    this.props.downloadReport();
+  onClickDownloadCsvReport = () => {
+    this.props.downloadCsvReport();
   }
 
   onClickDeleteReport = () => {
     this.props.deleteReport();
   }
 
+  isCSVPossible = (report) => {
+    if (!report.failedReason && report.release === '4' && report.reportName === 'JR1') {
+      return true;
+    }
+    return false;
+  }
+
+  renderCSVDownloadButton = (report) => {
+    if (this.isCSVPossible(report)) {
+      return (
+        <Button
+          buttonStyle="dropdownItem"
+          onClick={() => this.onClickDownloadCsvReport()}
+        >
+          <Icon icon="arrow-down">
+            <FormattedMessage id="ui-erm-usage.report.action.download.csv" />
+          </Icon>
+        </Button>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { report, retryThreshold } = this.props;
-    const failingInfo = this.getFailInfo(report);
 
-    const failInfo = !failingInfo ? null : (
+    const failInfo = !report.failedReason ? null : (
       <KeyValue
-        label="Info"
-        value={failingInfo}
+        label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.info' })}
+        value={report.failedReason}
       />
     );
 
     const failedAttempts = !report.failedAttempts ? null : (
       <KeyValue
-        label="Failed Attempts"
+        label={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.action.failedAttempts' })}
         value={`${report.failedAttempts} (Max attempts: ${retryThreshold})`}
       />
     );
 
     const headerSection = (
-      <MenuSection id="menu-actions" label="Report" labelTag="h3">
-        <KeyValue label="Type" value={report.reportName} />
-        <KeyValue label="Date" value={report.yearMonth} />
+      <MenuSection
+        id="menu-actions"
+        label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.report' })}
+        labelTag="h3"
+      >
+        <KeyValue
+          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
+          value={report.reportName}
+        />
+        <KeyValue
+          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.date' })}
+          value={report.yearMonth}
+        />
         {failInfo}
         {failedAttempts}
       </MenuSection>
     );
 
     const deleteButton = (
-      <Button buttonStyle="dropdownItem" onClick={() => this.onClickDeleteReport()}>
-        <Icon icon="trash">Delete</Icon>
+      <Button
+        buttonStyle="dropdownItem"
+        onClick={() => this.onClickDeleteReport()}
+      >
+        <Icon icon="trash">
+          <FormattedMessage id="ui-erm-usage.general.delete" />
+        </Icon>
       </Button>
     );
 
-    const downloadButton = failInfo ? null : (
-      <Button buttonStyle="dropdownItem" onClick={() => this.onClickDownloadReport()}>
-        <Icon icon="arrow-down">Download</Icon>
+    const rawDownloadButton = failInfo ? null : (
+      <Button
+        buttonStyle="dropdownItem"
+        onClick={() => this.onClickDownloadRawReport()}
+      >
+        <Icon icon="arrow-down">
+          <FormattedMessage id="ui-erm-usage.report.action.download.jsonxml" />
+        </Icon>
       </Button>
     );
+
+    const csvDownloadButton = this.renderCSVDownloadButton(report);
 
     const actionSection = (
-      <MenuSection id="menu-actions" label="Actions" labelTag="h3">
+      <MenuSection
+        id="menu-actions"
+        label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.actions' })}
+        labelTag="h3"
+      >
         { deleteButton }
-        { downloadButton }
+        { rawDownloadButton }
+        { csvDownloadButton }
       </MenuSection>
     );
 
@@ -83,8 +133,10 @@ class ReportActionMenu extends React.Component {
 ReportActionMenu.propTypes = {
   report: PropTypes.object,
   deleteReport: PropTypes.func,
-  downloadReport: PropTypes.func,
+  downloadRawReport: PropTypes.func,
+  downloadCsvReport: PropTypes.func,
   retryThreshold: PropTypes.number,
+  intl: intlShape.isRequired,
 };
 
-export default ReportActionMenu;
+export default injectIntl(ReportActionMenu);
