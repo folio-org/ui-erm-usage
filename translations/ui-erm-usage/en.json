@@ -7,6 +7,15 @@
 
   "meta.title": "eUsage",
 
+  "general.delete": "Delete",
+  "general.info": "Info",
+  "general.report": "Report",
+  "general.type": "Type",
+  "general.date": "Date",
+  "general.actions": "Actions",
+  "general.yes": "Yes",
+  "general.no": "No",
+
   "information.providerName": "Provider Name",
   "information.vendor": "Vendor",
   "information.platform": "Platform",
@@ -57,6 +66,14 @@
   "reportOverview.month.12": "Dec",
   "reportOverview.report": "Report",
 
+  "reportOverview.confirmDelete": "Please confirm delete!",
+  "reportOverview.reportType": "Report type",
+  "reportOverview.reportDate": "Report date",
+
+  "report.action.download.csv": "Download as CSV",
+  "report.action.download.jsonxml": "Download as JSON/XML",
+  "report.action.failedAttempts": "Failed Attempts",
+
   "udp.form.close": "Close new UsageDataProvider Dialog",
   "udp.form.updateUDP": "Update UsageDataProvider",
   "udp.form.createUDP": "Create UsageDataProvider",
@@ -99,7 +116,6 @@
 
   "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
-  "aggregator.form.delete": "Delete",
   "aggregator.form.delete.confirm.message": "Do you really want to delete {aggName}?",
   "aggregator.form.delete.confirm.title": "Delete Aggregator",
   "aggregator.form.newAggregator": "New aggregator",

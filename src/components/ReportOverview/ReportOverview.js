@@ -127,11 +127,17 @@ class ReportOverview extends React.Component {
     const { resources } = this.props;
     const records = (resources.counterReports || {}).records || null;
 
+    const info = (
+      <React.Fragment>
+        <div>Click a colored button to download/delete report or get additional info.</div>
+        <div>Note: Currently CSV download is possible for Counter 4 JR1 reports only.</div>
+      </React.Fragment>);
+
     const stats = !_.isEmpty(records) ? records[0].counterReports : [];
     const renderedStats = this.renderStats(stats);
     return (
       <React.Fragment>
-        <InfoPopover content="Click a colored button to download/delete report or get additional info." />
+        <InfoPopover content={info} />
         <div>
           { renderedStats }
         </div>

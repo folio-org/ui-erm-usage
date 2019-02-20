@@ -2,10 +2,17 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+import { SubmissionError } from 'redux-form';
+import {
   Button,
   ConfirmationModal,
   Dropdown,
   DropdownMenu,
+  Icon,
 } from '@folio/stripes/components';
 import saveAs from 'file-saver';
 
@@ -30,6 +37,12 @@ class ReportButton extends React.Component {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
+    this.okapiUrl = props.stripes.okapi.url;
+    this.httpHeaders = Object.assign({}, {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'Content-Type': 'application/json',
+    });
 
     this.state = {
       showDropDown: false,
@@ -39,12 +52,14 @@ class ReportButton extends React.Component {
     this.RETRY_THRESHOLD = 3;
   }
 
-  getFileType = (format) => {
-    if (format === 'json') {
-      return 'json';
-    } else {
-      return 'xml';
-    }
+  getFileType = () => {
+    // TODO: Backend needs implementation to return xml reports. Currently, it returns json reports only
+    return 'json';
+    // if (format === 'json') {
+    //   return 'json';
+    // } else {
+    //   return 'xml';
+    // }
   }
 
   getButtonStyle = (failedAttempts) => {
@@ -57,19 +72,54 @@ class ReportButton extends React.Component {
     }
   }
 
-  downloadReport = () => {
+  getButtonIcon = (failedAttempts) => {
+    if (!failedAttempts || failedAttempts === 0) {
+      return <Icon icon="check-circle" />;
+    } else if (failedAttempts < this.RETRY_THRESHOLD) {
+      return <Icon icon="exclamation-circle" />;
+    } else {
+      return <Icon icon="times-circle" />;
+    }
+  }
+
+  saveReport = (id, reportData, fileType) => {
+    const blob = new Blob([reportData], { type: fileType });
+    const fileName = `${id}.${fileType}`;
+    saveAs(blob, fileName);
+  }
+
+  downloadRawReport = () => {
     this.setState(() => ({ showDropDown: false }));
     this.props.mutator.counterReports.GET()
       .then((report) => {
         const fileType = this.getFileType(report.format);
-        const reportData = report.report;
-        const blob = new Blob([JSON.stringify(reportData)], { type: fileType });
-        const fileName = `${report.id}.${fileType}`;
-        saveAs(blob, fileName);
+        const reportData = JSON.stringify(report.report);
+        this.saveReport(report.id, reportData, fileType);
       })
       .catch(err => {
         const infoText = this.failText + ' ' + err.message;
         this.log('Download of counter report failed: ' + infoText);
+      });
+  }
+
+  downloadCsvReport = () => {
+    this.setState(() => ({ showDropDown: false }));
+    const id = this.props.report.id;
+    return fetch(`${this.okapiUrl}/counter-reports/csv/${id}`, { headers: this.httpHeaders })
+      .then((response) => {
+        if (response.status >= 400) {
+          throw new SubmissionError({ identifier: `Error ${response.status} retrieving counter csv report by id`, _error: 'Fetch counter csv failed' });
+        } else {
+          return response.text();
+        }
+      })
+      .then((text) => {
+        const fileType = 'csv';
+        this.saveReport(id, text, fileType);
+      })
+      .catch(err => {
+        const infoText = this.failText + ' ' + err.message;
+        this.log('Download of counter csv report failed: ' + infoText);
       });
   }
 
@@ -102,14 +152,13 @@ class ReportButton extends React.Component {
       return null;
     }
 
-    const isFailed = (report.failedAttempts && report.failedAttempts > 0);
-    const label = isFailed ? 'N' : 'Y';
+    const icon = this.getButtonIcon(report.failedAttempts);
     const style = this.getButtonStyle(report.failedAttempts);
 
     const confirmMessage = (
       <div>
         <p>Do you really want to delete this report?</p>
-        <p>{`Report type: ${report.reportName} -- Report date: ${report.yearMonth}`}</p>
+        <p>{`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.yearMonth}`}</p>
       </div>
     );
 
@@ -131,7 +180,7 @@ class ReportButton extends React.Component {
             data-role="toggle"
             aria-haspopup="true"
           >
-            { label }
+            { icon }
           </Button>
           <DropdownMenu
             data-role="menu"
@@ -139,19 +188,20 @@ class ReportButton extends React.Component {
             <ReportActionMenu
               report={report}
               deleteReport={this.deleteReport}
-              downloadReport={this.downloadReport}
+              downloadRawReport={this.downloadRawReport}
+              downloadCsvReport={this.downloadCsvReport}
               retryThreshold={this.RETRY_THRESHOLD}
             />
           </DropdownMenu>
         </Dropdown>
         <ConfirmationModal
           open={this.state.showConfirmDelete}
-          heading="Please confirm delete!"
+          heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />}
           message={confirmMessage}
           onConfirm={this.doDelete}
-          confirmLabel="Yes"
+          confirmLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.yes' })}
           onCancel={this.hideConfirm}
-          cancelLabel="No"
+          cancelLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.no' })}
         />
       </React.Fragment>
     );
@@ -160,16 +210,13 @@ class ReportButton extends React.Component {
 
 ReportButton.propTypes = {
   stripes: PropTypes
-    .shape({
-      logger: PropTypes
-        .shape({ log: PropTypes.func.isRequired })
-        .isRequired,
-    })
-    .isRequired,
+    .shape().isRequired,
   report: PropTypes.object,
   mutator: PropTypes.shape({
     counterReports: PropTypes.object,
+    csvReports: PropTypes.object,
   }),
+  intl: intlShape.isRequired,
 };
 
-export default ReportButton;
+export default injectIntl(ReportButton);
