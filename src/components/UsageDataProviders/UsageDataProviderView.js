@@ -24,7 +24,7 @@ import {
 import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import ReportOverview from '../ReportOverview';
+import Statistics from '../Statistics';
 import { NotesView } from '../Notes';
 import StartHarvesterButton from '../StartHarvesterButton';
 
@@ -71,7 +71,7 @@ class UsageDataProviderView extends React.Component {
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
-    this.connectedReportOverview = this.props.stripes.connect(ReportOverview);
+    this.connectedStatistics = this.props.stripes.connect(Statistics);
     this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
 
     this.state = {
@@ -235,7 +235,7 @@ class UsageDataProviderView extends React.Component {
             label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
             id="statisticsAccordion"
           >
-            <this.connectedReportOverview
+            <this.connectedStatistics
               stripes={stripes}
               providerId={providerId}
             />

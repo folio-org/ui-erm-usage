@@ -6,21 +6,15 @@ import {
   intlShape
 } from 'react-intl';
 import {
-  InfoPopover,
-  MultiColumnList
+  Accordion,
+  Col,
+  ExpandAllButton,
+  MultiColumnList,
+  Row
 } from '@folio/stripes/components';
-import ReportButton from './ReportButton';
-import groupByYearAndReport from './util';
+import ReportButton from '../ReportButton';
 
-class ReportOverview extends React.Component {
-  static manifest = Object.freeze({
-    counterReports: {
-      type: 'okapi',
-      path: 'counter-reports?tiny=true&query=(providerId==%{providerId.id})&limit=1000',
-    },
-    providerId: { id: null },
-  });
-
+class StatisticsPerYear extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
@@ -32,27 +26,51 @@ class ReportOverview extends React.Component {
         getState: PropTypes.func
       })
     }).isRequired,
-    resources: PropTypes.shape({
-      counterReports: PropTypes.shape(),
-    }),
-    mutator: PropTypes.shape({
-      providerId: PropTypes.object.isRequired,
-    }),
-    providerId: PropTypes.string.isRequired,
     intl: intlShape.isRequired,
-  };
+    stats: PropTypes.object,
+  }
 
   constructor(props) {
     super(props);
     this.connectedReportButton = props.stripes.connect(ReportButton);
-
-    this.props.mutator.providerId.replace({ id: props.providerId });
+    this.state = {
+      accordions: {}
+    };
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.providerId !== prevProps.providerId) {
-      this.props.mutator.providerId.replace({ id: this.props.providerId });
+    if (!_.isEqual(this.props.stats, prevProps.stats)) {
+      const years = _.keys(this.props.stats);
+      years.forEach(y => {
+        const tmp = {};
+        tmp[y] = false;
+        this.setState((state) => {
+          return {
+            accordions: {
+              ...state.accordions,
+              ...tmp,
+            }
+          };
+        });
+      });
     }
+  }
+
+  handleExpandAll = (obj) => {
+    this.setState((curState) => {
+      const newState = _.cloneDeep(curState);
+      newState.accordions = obj;
+      return newState;
+    });
+  }
+
+  handleAccordionToggle = ({ id }) => {
+    this.setState((state) => {
+      const newState = _.cloneDeep(state);
+      if (!_.has(newState.accordions, id)) newState.accordions[id] = true;
+      newState.accordions[id] = !newState.accordions[id];
+      return newState;
+    });
   }
 
   renderReportPerYear = (reports) => {
@@ -89,8 +107,13 @@ class ReportOverview extends React.Component {
         return this.renderReportPerYear(reports);
       });
       return (
-        <React.Fragment key={y}>
-          <div><b>{y}</b></div>
+        <Accordion
+          open={this.state.accordions[y]}
+          onToggle={this.handleAccordionToggle}
+          label={y}
+          id={y}
+          key={y}
+        >
           <MultiColumnList
             contentData={reportsOfAYear}
             visibleColumns={visibleColumns}
@@ -112,38 +135,33 @@ class ReportOverview extends React.Component {
               '12': intl.formatMessage({ id: 'ui-erm-usage.reportOverview.month.12' }),
             }}
           />
-        </React.Fragment>
+        </Accordion>
       );
     });
   }
 
-  renderStats = (stats) => {
-    const groupedStatsByYearAndReports = groupByYearAndReport(stats);
-    const groupedStats = this.createReportOverviewPerYear(groupedStatsByYearAndReports);
-    return groupedStats;
-  }
-
   render() {
-    const { resources } = this.props;
-    const records = (resources.counterReports || {}).records || null;
+    if (_.isEmpty(this.props.stats)) {
+      return null;
+    }
 
-    const info = (
-      <React.Fragment>
-        <div>Click a colored button to download/delete report or get additional info.</div>
-        <div>Note: Currently CSV download is possible for Counter 4 JR1 reports only.</div>
-      </React.Fragment>);
-
-    const stats = !_.isEmpty(records) ? records[0].counterReports : [];
-    const renderedStats = this.renderStats(stats);
+    const reportAccordions = this.createReportOverviewPerYear(this.props.stats);
     return (
       <React.Fragment>
-        <InfoPopover content={info} />
-        <div>
-          { renderedStats }
-        </div>
+        <Row end="xs">
+          <Col xs>
+            <ExpandAllButton
+              accordionStatus={this.state.accordions}
+              onToggle={this.handleExpandAll}
+              expandLabel="Expand all years"
+              collapseLabel="Collapse all years"
+            />
+          </Col>
+        </Row>
+        { reportAccordions }
       </React.Fragment>
     );
   }
 }
 
-export default injectIntl(ReportOverview);
+export default injectIntl(StatisticsPerYear);
