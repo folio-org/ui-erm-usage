@@ -7,7 +7,7 @@ import {
   Row
 } from '@folio/stripes/components';
 import StatisticsPerYear from './StatisticsPerYear';
-import groupByYearAndReport from './util';
+import groupByYearAndReport from './groupByYearAndReport';
 import css from './Statistics.css';
 
 class Statistics extends React.Component {
