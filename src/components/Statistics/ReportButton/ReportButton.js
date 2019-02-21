@@ -63,7 +63,7 @@ class ReportButton extends React.Component {
   }
 
   getButtonStyle = (failedAttempts) => {
-    if (!failedAttempts || failedAttempts === 0) {
+    if (!failedAttempts) {
       return 'success';
     } else if (failedAttempts < this.RETRY_THRESHOLD) {
       return 'warning';
@@ -73,7 +73,7 @@ class ReportButton extends React.Component {
   }
 
   getButtonIcon = (failedAttempts) => {
-    if (!failedAttempts || failedAttempts === 0) {
+    if (!failedAttempts) {
       return <Icon icon="check-circle" />;
     } else if (failedAttempts < this.RETRY_THRESHOLD) {
       return <Icon icon="exclamation-circle" />;
