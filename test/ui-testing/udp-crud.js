@@ -41,7 +41,7 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('#clickable-plugin-find-vendor')
           .wait(3000)
           .wait('#list-vendors')
-          .click('div[role="listitem"] a')
+          .click('div[role="row"] a')
           .wait(500)
 
           .insert('input[name="platform.id"]', platformId)
@@ -64,7 +64,7 @@ module.exports.test = function uiTest(uiTestCtx) {
       });
       it('should find new udp in list ', (done) => {
         nightmare
-          // .wait('#list-erm-usage')
+          .wait('#list-erm-usage')
           .wait(500)
           .wait('#input-usageDataProvider-search', 1000)
           .insert('#input-usageDataProvider-search', label)
@@ -72,12 +72,13 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('button[type=submit]')
           .wait('#list-erm-usage[data-total-count="1"]')
           .wait(500)
+          // .wait('#list-erm-usage')
           .evaluate((name) => {
             const node = Array.from(
-              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+              document.querySelectorAll('#list-erm-usage div[role="row"][aria-rowindex="2"] > a > div')
             ).find(e => e.textContent === name);
             if (!node) {
-              throw new Error(`Can't find newly created udp (${name}) at top of sorted list`);
+              throw new Error(`Can't find newly created udp (${name}) at top of sorted list.`);
             }
           }, label)
           .then(() => { done(); })
@@ -103,10 +104,10 @@ module.exports.test = function uiTest(uiTestCtx) {
           .wait(1000)
           .evaluate((name) => {
             const node = Array.from(
-              document.querySelectorAll('#list-erm-usage div[role="listitem"]:nth-child(1) > a > div')
+              document.querySelectorAll('#list-erm-usage div[role="row"][aria-rowindex="2"] > a > div')
             ).find(e => e.textContent === name);
             if (node) {
-              throw new Error(`Can find udp ${name} at top of sorted list, thus delete was not successful`);
+              throw new Error(`Can find udp ${name} at top of sorted list, thus delete was not successful.`);
             }
           }, changedLabel)
           .then(() => { done(); })
