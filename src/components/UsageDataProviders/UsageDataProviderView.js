@@ -27,6 +27,7 @@ import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
 import { NotesView } from '../Notes';
 import StartHarvesterButton from '../StartHarvesterButton';
+import ReportUpload from '../ReportUpload';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -73,6 +74,7 @@ class UsageDataProviderView extends React.Component {
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
     this.connectedStatistics = this.props.stripes.connect(Statistics);
     this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
+    this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
 
     this.state = {
       accordions: {
@@ -246,16 +248,7 @@ class UsageDataProviderView extends React.Component {
             label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
             id="uploadAccordion"
           >
-            {
-              <Row>
-                <Col xs={3}>
-                  <KeyValue
-                    label="TODO"
-                    value="TODO"
-                  />
-                </Col>
-              </Row>
-            }
+            <this.connectedReportUpload udpId={providerId} stripes={stripes} />
           </Accordion>
 
           <Layer
