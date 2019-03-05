@@ -1,5 +1,10 @@
-import React from 'react';
 import _ from 'lodash';
+import React from 'react';
+import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import {
@@ -11,9 +16,10 @@ class FileUploader extends React.Component {
     onSelectFile: PropTypes.func.isRequired,
     onClickUpload: PropTypes.func.isRequired,
     selectedFile: PropTypes.object,
+    intl: intlShape.isRequired,
   }
 
-  onDrop = (acceptedFiles, rejectedFiles) => {
+  onDrop = (acceptedFiles) => {
     this.props.onSelectFile(acceptedFiles);
   }
 
@@ -21,12 +27,13 @@ class FileUploader extends React.Component {
     if (_.isEmpty(this.props.selectedFile)) {
       return null;
     } else {
+      const upload = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.upload' });
       return (
         <Button
           buttonStyle="primary"
           onClick={() => this.props.onClickUpload()}
         >
-          { `Upload ${this.props.selectedFile.name}` }
+          { `${upload} ${this.props.selectedFile.name}` }
         </Button>
       );
     }
@@ -55,12 +62,12 @@ class FileUploader extends React.Component {
           <div {...getRootProps({ onClick: evt => evt.preventDefault() })}>
             <div style={style}>
               <input {...getInputProps()} />
-              <p>Drop file here</p>
+              <FormattedMessage id="ui-erm-usage.report.upload.dropFile" />
               <Button
                 buttonStyle="primary"
                 onClick={() => open()}
               >
-                or select file
+                <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
               </Button>
               { this.renderDownloadButton() }
             </div>
@@ -71,4 +78,4 @@ class FileUploader extends React.Component {
   }
 }
 
-export default FileUploader;
+export default injectIntl(FileUploader);

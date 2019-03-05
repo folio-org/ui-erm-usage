@@ -15,6 +15,7 @@
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",
+  "general.ok": "OK",
 
   "information.providerName": "Provider Name",
   "information.vendor": "Vendor",
@@ -73,6 +74,14 @@
   "report.action.download.csv": "Download as CSV",
   "report.action.download.jsonxml": "Download as JSON/XML",
   "report.action.failedAttempts": "Failed Attempts",
+
+  "report.upload.failed": "Failed...",
+  "report.upload.success": "Upload successful!",
+  "report.upload.modal.label": "Counter Report Upload",
+  "report.upload.reportExists": "Report exists. Do you want to overwrite?",
+  "report.upload.upload": "Upload",
+  "report.upload.dropFile": "Drop file here",
+  "report.upload.selectFile": "or select file",
 
   "udp.form.close": "Close new UsageDataProvider Dialog",
   "udp.form.updateUDP": "Update UsageDataProvider",
