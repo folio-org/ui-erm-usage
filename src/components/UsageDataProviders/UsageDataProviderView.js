@@ -10,7 +10,6 @@ import {
   ExpandAllButton,
   Icon,
   IconButton,
-  KeyValue,
   Layer,
   Pane,
   PaneMenu,
