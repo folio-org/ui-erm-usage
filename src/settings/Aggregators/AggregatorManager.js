@@ -37,6 +37,7 @@ class AggregatorManager extends React.Component {
   constructor(props) {
     super(props);
     this.cAggregatorForm = props.stripes.connect(AggregatorForm);
+    this.cAggregatorDetails = props.stripes.connect(AggregatorDetails);
   }
 
   render() {
@@ -47,7 +48,7 @@ class AggregatorManager extends React.Component {
         {...this.props}
         parentMutator={this.props.mutator}
         entryList={entryList}
-        detailComponent={AggregatorDetails}
+        detailComponent={this.cAggregatorDetails}
         entryFormComponent={this.cAggregatorForm}
         paneTitle={this.props.label}
         entryLabel={this.props.label}

@@ -24,6 +24,7 @@ class HarvestingConfigurationView extends React.Component {
     }).isRequired,
     sushiCredsOpen: PropTypes.bool,
     onToggle: PropTypes.func,
+    settings: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   createProvider = udp => {
@@ -109,7 +110,10 @@ class HarvestingConfigurationView extends React.Component {
           label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />}
           id="sushiCredsAccordion"
         >
-          <SushiCredentialsView usageDataProvider={usageDataProvider} />
+          <SushiCredentialsView
+            usageDataProvider={usageDataProvider}
+            settings={this.props.settings}
+          />
         </Accordion>
       </div>
     );
