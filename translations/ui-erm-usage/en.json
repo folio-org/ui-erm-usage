@@ -1,6 +1,7 @@
 {
   "settings.general": "General",
   "settings.general.message": "These are your general app settings.",
+  "settings.hideCredentials": "Hide sushi credentials in detail views",
   "ui-erm-usage.resultCount": "ResultCount:",
   "resultCount": "{count, number} Records found",
   "erm-usage": "ERM Usage",

@@ -31,6 +31,11 @@ import ReportUpload from '../ReportUpload';
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
     query: {},
+    settings: {
+      type: 'okapi',
+      records: 'configs',
+      path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    },
   });
 
   static propTypes = {
@@ -48,6 +53,9 @@ class UsageDataProviderView extends React.Component {
     resources: PropTypes.shape({
       usageDataProvider: PropTypes.shape(),
       query: PropTypes.object,
+      settings: PropTypes.shape({
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
     }),
     mutator: PropTypes.shape({
       query: PropTypes.object.isRequired,
@@ -137,6 +145,8 @@ class UsageDataProviderView extends React.Component {
     const query = resources.query;
     const initialValues = this.getData();
 
+    const settings = (resources.settings || {}).records || [];
+
     const displayWhenOpenHarvestingAcc = (
       <IfInterface name="erm-usage-harvester">
         <this.connectedStartHarvesterButton usageDataProvider={initialValues} />
@@ -220,6 +230,7 @@ class UsageDataProviderView extends React.Component {
               stripes={this.props.stripes}
               sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
               onToggle={this.handleAccordionToggle}
+              settings={settings}
             />
           </Accordion>
           <Accordion
