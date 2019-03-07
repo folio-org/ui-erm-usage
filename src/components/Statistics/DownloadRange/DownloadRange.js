@@ -34,9 +34,9 @@ class DownloadRange extends React.Component {
     });
 
     this.state = {
-      start: null,
+      start: '',
       startError: null,
-      end: null,
+      end: '',
       endError: null
     };
   }
@@ -49,7 +49,7 @@ class DownloadRange extends React.Component {
           this.setState(
             {
               startError: 'Must be smaller than end',
-              start: null,
+              start: '',
             }
           );
           return;
@@ -65,7 +65,7 @@ class DownloadRange extends React.Component {
       this.setState(
         {
           startError: 'Must be YYYY-MM',
-          start: null,
+          start: '',
         }
       );
     }
@@ -79,7 +79,7 @@ class DownloadRange extends React.Component {
           this.setState(
             {
               endError: 'Must be greater than start',
-              end: null,
+              end: '',
             }
           );
           return;
@@ -95,7 +95,7 @@ class DownloadRange extends React.Component {
       this.setState(
         {
           endError: 'Must be YYYY-MM',
-          end: null,
+          end: '',
         }
       );
     }
@@ -104,7 +104,7 @@ class DownloadRange extends React.Component {
   clearStart = () => {
     this.setState(
       {
-        start: null,
+        start: '',
         startError: null
       }
     );
@@ -113,7 +113,7 @@ class DownloadRange extends React.Component {
   clearEnd = () => {
     this.setState(
       {
-        end: null,
+        end: '',
         endError: null
       }
     );

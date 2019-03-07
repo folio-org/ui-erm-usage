@@ -147,8 +147,8 @@ class ReportButton extends React.Component {
 
     const confirmMessage = (
       <div>
-        <p>Do you really want to delete this report?</p>
-        <p>{`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.yearMonth}`}</p>
+        <div>Do you really want to delete this report?</div>
+        <div>{`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.yearMonth}`}</div>
       </div>
     );
 
