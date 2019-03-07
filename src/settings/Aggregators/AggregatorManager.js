@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EntryManager } from '@folio/stripes/smart-components';
-import AggregatorDetails from './AggregatorDetail';
+import AggregatorDetails from './AggregatorDetails';
 import AggregatorForm from './AggregatorForm';
 
 class AggregatorManager extends React.Component {
