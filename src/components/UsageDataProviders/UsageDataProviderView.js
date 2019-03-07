@@ -97,7 +97,7 @@ class UsageDataProviderView extends React.Component {
   getData = () => {
     const { parentResources, match: { params: { id } } } = this.props;
     const udp = (parentResources.records || {}).records || [];
-    if (!udp || udp.length === 0 || !id) return null;
+    if (udp.length === 0 || !id) return null;
     return udp.find(u => u.id === id);
   }
 

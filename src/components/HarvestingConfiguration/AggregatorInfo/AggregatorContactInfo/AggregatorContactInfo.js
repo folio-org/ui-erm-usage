@@ -53,7 +53,7 @@ class AggregatorContactInfo extends React.Component {
   }
 
   renderContactInfo = (contactInfo) => {
-    if (!_.isEmpty(contactInfo) && !(contactInfo === '-')) {
+    if (!_.isEmpty(contactInfo) && contactInfo !== '-') {
       return (
         <InfoPopover content={contactInfo} />
       );
