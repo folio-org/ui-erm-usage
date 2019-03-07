@@ -2,6 +2,7 @@ import React from 'react';
 import { Settings } from '@folio/stripes/smart-components';
 import Harvester from './Harvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
+import DisplaySettings from './DisplaySettings';
 
 /*
   STRIPES-NEW-APP
@@ -20,6 +21,11 @@ export default class ErmUsageSettings extends React.Component {
       route: 'aggregators',
       label: 'Aggregators',
       component: AggregatorManager,
+    },
+    {
+      route: 'displaySettings',
+      label: 'Display Settings',
+      component: DisplaySettings,
     },
   ];
 

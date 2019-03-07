@@ -15,8 +15,21 @@ import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 class AggregatorDetails extends React.Component {
+  static manifest = Object.freeze({
+    settings: {
+      type: 'okapi',
+      records: 'configs',
+      path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    },
+  });
+
   static propTypes = {
     initialValues: PropTypes.object,
+    resources: PropTypes.shape({
+      settings: PropTypes.shape({
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
+    }).isRequired,
   }
 
   constructor(props) {
@@ -30,9 +43,6 @@ class AggregatorDetails extends React.Component {
         accountConfig: true,
       },
     };
-
-    // this.cViewMetaData = props.stripes.connect(ViewMetaData);
-    // this.cLocationList = props.stripes.connect(LocationList);
   }
 
   handleExpandAll(sections) {
@@ -74,6 +84,14 @@ class AggregatorDetails extends React.Component {
     const configType = aggregatorAccountConfigTypes.find(e => e.value === currentConfTypeValue);
     const configTypeLabel = configType ? configType.label : '-';
 
+    const settings = (this.props.resources.settings || {}).records || [];
+    const hideCredentials = (settings.length && settings[0].value === 'true');
+
+    const config = aggregator.aggregatorConfig;
+    const apiKey = hideCredentials ? '*'.repeat(config.apiKey.length) : config.apiKey;
+    const requestorId = hideCredentials ? '*'.repeat(config.requestorId.length) : config.requestorId;
+    const customerId = hideCredentials ? '*'.repeat(config.customerId.length) : config.customerId;
+
     return (
       <div>
         <Row end="xs">
@@ -104,9 +122,9 @@ class AggregatorDetails extends React.Component {
         >
           <Row>
             <Col xs={8}>
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.apiKey" />} value={aggregator.aggregatorConfig.apiKey} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.requestorId" />} value={aggregator.aggregatorConfig.requestorId} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.customerId" />} value={aggregator.aggregatorConfig.customerId} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.apiKey" />} value={apiKey} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.requestorId" />} value={requestorId} />
+              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.customerId" />} value={customerId} />
               <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.reportRelease" />} value={aggregator.aggregatorConfig.reportRelease} />
             </Col>
           </Row>
