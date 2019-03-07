@@ -45,4 +45,11 @@ const endDate = (value, allValues) => {
   return undefined;
 };
 
-export { endDate, mail, notRequired, required, yearMonth };
+const isYearMonth = (value) => {
+  if (value && yyyyMMRegex.test(value)) {
+    return true;
+  }
+  return false;
+};
+
+export { endDate, isYearMonth, mail, notRequired, required, yearMonth };

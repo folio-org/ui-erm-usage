@@ -7,6 +7,7 @@ import {
   Row
 } from '@folio/stripes/components';
 import StatisticsPerYear from './StatisticsPerYear';
+import DownloadRange from './DownloadRange';
 import groupByYearAndReport from './groupByYearAndReport';
 import css from './Statistics.css';
 
@@ -42,6 +43,7 @@ class Statistics extends React.Component {
   constructor(props) {
     super(props);
     this.props.mutator.providerId.replace({ id: props.providerId });
+    this.connectedDownloadRange = props.stripes.connect(DownloadRange);
   }
 
   componentDidUpdate(prevProps) {
@@ -58,17 +60,27 @@ class Statistics extends React.Component {
 
     return (
       <React.Fragment>
-        <Row>
-          <Col xs={8}>
-            <div>Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. </div>
-            <div>Note: Currently CSV download is possible for Counter 4 JR1 reports only.</div>
-          </Col>
-        </Row>
         <Row className={css.subAccordionSections}>
+          <Col xs={12}>
+            <hr />
+            <div className={css.sub2Headings}>Reports per Year</div>
+          </Col>
           <Col xs={12}>
             <AccordionSet>
               <StatisticsPerYear stats={stats} stripes={this.props.stripes} />
             </AccordionSet>
+          </Col>
+        </Row>
+        <Row className={css.subAccordionSections}>
+          <Col xs={12}>
+            <hr />
+            <div className={css.sub2Headings}>Download Reports Range</div>
+          </Col>
+          <Col xs={12}>
+            <this.connectedDownloadRange
+              stripes={this.props.stripes}
+              udpId={this.props.providerId}
+            />
           </Col>
         </Row>
       </React.Fragment>
