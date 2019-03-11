@@ -55,7 +55,7 @@
       "usage-data-providers": "2.0",
       "aggregator-settings": "1.0",
       "counter-reports": "1.0",
-      "vendor": "1.0"
+      "vendor-storage.vendors": "1.0"
     },
     "permissionSets": [
       {
