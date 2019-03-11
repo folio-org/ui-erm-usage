@@ -42,9 +42,9 @@ class FileUploader extends React.Component {
   render() {
     const baseStyle = {
       'display': 'flex',
-      'align-items': 'center',
-      'flex-direction': 'column',
-      'justify-content': 'center',
+      'alignItems': 'center',
+      'flexDirection': 'column',
+      'justifyContent': 'center',
       'height': '100%',
       'borderWidth': '2',
       'borderColor': '#666',
