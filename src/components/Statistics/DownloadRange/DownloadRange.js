@@ -41,64 +41,66 @@ class DownloadRange extends React.Component {
     };
   }
 
-  handleStartChange = (e) => {
-    const newStart = e.target.value;
-    if (_.isEmpty(newStart) || isYearMonth(newStart)) {
-      if (!_.isEmpty(this.state.end)) {
-        if (newStart > this.state.end) {
-          this.setState(
-            {
-              startError: 'Must be smaller than end',
-              start: '',
-            }
-          );
-          return;
-        }
-      }
-      this.setState(
-        {
-          start: newStart,
-          startError: null,
-        }
-      );
-    } else {
+  validate = (start, end) => {
+    if (!isYearMonth(start)) {
       this.setState(
         {
           startError: 'Must be YYYY-MM',
-          start: '',
         }
       );
     }
+    if (!isYearMonth(end)) {
+      this.setState(
+        {
+          endError: 'Must be YYYY-MM',
+        }
+      );
+    }
+
+    if (isYearMonth(start) && isYearMonth(end)) {
+      if (start > end) {
+        this.setState(
+          {
+            endError: 'Must be greater than start',
+            startError: null,
+          }
+        );
+      } else {
+        this.setState(
+          {
+            endError: null,
+            startError: null,
+          }
+        );
+      }
+    }
+  }
+
+  hasError = () => {
+    const result = (_.isEmpty(this.state.start) && _.isEmpty(this.state.end)) || (!_.isEmpty(this.state.startError) || !_.isEmpty(this.state.endError));
+    return result;
+  }
+
+  handleStartChange = (e) => {
+    const newStart = e.target.value;
+    this.setState(
+      {
+        start: newStart,
+        startError: null,
+      }
+    );
+    this.validate(newStart, this.state.end);
   }
 
   handleEndChange = (e) => {
     const newEnd = e.target.value;
-    if (_.isEmpty(newEnd) || isYearMonth(newEnd)) {
-      if (!_.isEmpty(this.state.start)) {
-        if (newEnd < this.state.start) {
-          this.setState(
-            {
-              endError: 'Must be greater than start',
-              end: '',
-            }
-          );
-          return;
-        }
+    this.setState(
+      {
+        end: newEnd,
+        endError: null,
       }
-      this.setState(
-        {
-          end: newEnd,
-          endError: null,
-        }
-      );
-    } else {
-      this.setState(
-        {
-          endError: 'Must be YYYY-MM',
-          end: '',
-        }
-      );
-    }
+    );
+    this.validate(this.state.start, newEnd);
   }
 
   clearStart = () => {
@@ -126,6 +128,7 @@ class DownloadRange extends React.Component {
   }
 
   render() {
+    const isDisabled = this.hasError();
     return (
       <Row>
         <Col xs={4}>
@@ -135,7 +138,6 @@ class DownloadRange extends React.Component {
             value={this.state.start}
             onChange={this.handleStartChange}
             onClearField={this.clearStart}
-            valid={_.isEmpty(this.state.startError)}
             error={this.state.startError}
           />
         </Col>
@@ -146,7 +148,6 @@ class DownloadRange extends React.Component {
             value={this.state.end}
             onChange={this.handleEndChange}
             onClearField={this.clearEnd}
-            valid={_.isEmpty(this.state.endError)}
             error={this.state.endError}
           />
         </Col>
@@ -154,6 +155,8 @@ class DownloadRange extends React.Component {
           <div className={css.startButton}>
             <Button
               onClick={this.doDownload}
+              buttonStyle="primary"
+              disabled={isDisabled}
             >
               { 'Download' }
             </Button>
