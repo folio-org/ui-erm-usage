@@ -2,6 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
   Col,
   Row,
@@ -20,6 +25,7 @@ class DownloadRange extends React.Component {
     stripes: PropTypes
       .shape().isRequired,
     udpId: PropTypes.string.isRequired,
+    intl: intlShape.isRequired,
   }
 
   constructor(props) {
@@ -45,14 +51,14 @@ class DownloadRange extends React.Component {
     if (!isYearMonth(start)) {
       this.setState(
         {
-          startError: 'Must be YYYY-MM',
+          startError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm' }),
         }
       );
     }
     if (!isYearMonth(end)) {
       this.setState(
         {
-          endError: 'Must be YYYY-MM',
+          endError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm' }),
         }
       );
     }
@@ -61,7 +67,7 @@ class DownloadRange extends React.Component {
       if (start > end) {
         this.setState(
           {
-            endError: 'Must be greater than start',
+            endError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' }),
             startError: null,
           }
         );
@@ -133,7 +139,7 @@ class DownloadRange extends React.Component {
       <Row>
         <Col xs={4}>
           <TextField
-            label="Start"
+            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />}
             placeholder="YYYY-MM"
             value={this.state.start}
             onChange={this.handleStartChange}
@@ -143,7 +149,7 @@ class DownloadRange extends React.Component {
         </Col>
         <Col xs={4}>
           <TextField
-            label="End"
+            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />}
             placeholder="YYYY-MM"
             value={this.state.end}
             onChange={this.handleEndChange}
@@ -158,7 +164,7 @@ class DownloadRange extends React.Component {
               buttonStyle="primary"
               disabled={isDisabled}
             >
-              { 'Download' }
+              <FormattedMessage id="ui-erm-usage.report.action.download.csv" />
             </Button>
           </div>
         </Col>
@@ -167,4 +173,4 @@ class DownloadRange extends React.Component {
   }
 }
 
-export default DownloadRange;
+export default injectIntl(DownloadRange);

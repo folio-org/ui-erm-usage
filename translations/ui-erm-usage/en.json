@@ -17,6 +17,8 @@
   "general.yes": "Yes",
   "general.no": "No",
   "general.ok": "OK",
+  "general.start": "Start",
+  "general.end": "End",
 
   "information.providerName": "Provider Name",
   "information.vendor": "Vendor",
@@ -71,6 +73,13 @@
   "reportOverview.confirmDelete": "Please confirm delete!",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
+  "reportOverview.reportsPerYear": "Reports grouped by year",
+  "reportOverview.noReports": "No reports available...",
+  "reportOverview.downloadMultiMonths": "Download reports for multiple months",
+  "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
+  "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
+  "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
+  "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
 
   "report.action.download.csv": "Download as CSV",
   "report.action.download.jsonxml": "Download as JSON/XML",
