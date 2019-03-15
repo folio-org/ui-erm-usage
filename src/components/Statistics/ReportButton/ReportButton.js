@@ -146,10 +146,13 @@ class ReportButton extends React.Component {
     const style = this.getButtonStyle(report.failedAttempts);
 
     const confirmMessage = (
-      <div>
-        <div>Do you really want to delete this report?</div>
-        <div>{`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.yearMonth}`}</div>
-      </div>
+      <React.Fragment>
+        <span>
+          Do you really want to delete this report?
+          <br />
+        </span>
+        <span>{ `${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}: ${report.yearMonth}` }</span>
+      </React.Fragment>
     );
 
     return (
