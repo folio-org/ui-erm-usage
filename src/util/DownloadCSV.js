@@ -18,7 +18,7 @@ const downloadCSVMultipleMonths = (udpId, reportName, version, start, end, okapi
     })
     .then((text) => {
       const fileType = 'csv';
-      saveReport(udpId + start + end, text, fileType);
+      saveReport(`${udpId}_${reportName}_${version}_${start}_${end}`, text, fileType);
     })
     .catch(err => {
       throw new Error('Error while downloading CSV report. ' + err.message);

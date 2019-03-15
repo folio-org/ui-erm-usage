@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import {
   AccordionSet,
   Col,
@@ -58,12 +59,17 @@ class Statistics extends React.Component {
     const counterReports = !_.isEmpty(records) ? records[0].counterReports : [];
     const stats = groupByYearAndReport(counterReports);
 
+    const info = _.isEmpty(stats) ? <FormattedMessage id="ui-erm-usage.reportOverview.noReports" /> : null;
+
     return (
       <React.Fragment>
+        { info }
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
             <hr />
-            <div className={css.sub2Headings}>Reports per Year</div>
+            <div className={css.sub2Headings}>
+              <FormattedMessage id="ui-erm-usage.reportOverview.reportsPerYear" />
+            </div>
           </Col>
           <Col xs={12}>
             <AccordionSet>
@@ -74,7 +80,9 @@ class Statistics extends React.Component {
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
             <hr />
-            <div className={css.sub2Headings}>Download Reports Range</div>
+            <div className={css.sub2Headings}>
+              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
+            </div>
           </Col>
           <Col xs={12}>
             <this.connectedDownloadRange
