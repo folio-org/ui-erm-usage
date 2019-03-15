@@ -53,40 +53,6 @@ class Statistics extends React.Component {
     }
   }
 
-  renderStatistics = (stats) => {
-    return (
-      <React.Fragment>
-        <Row className={css.subAccordionSections}>
-          <Col xs={12}>
-            <hr />
-            <div className={css.sub2Headings}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.reportsPerYear" />
-            </div>
-          </Col>
-          <Col xs={12}>
-            <AccordionSet>
-              <StatisticsPerYear stats={stats} stripes={this.props.stripes} />
-            </AccordionSet>
-          </Col>
-        </Row>
-        <Row className={css.subAccordionSections}>
-          <Col xs={12}>
-            <hr />
-            <div className={css.sub2Headings}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
-            </div>
-          </Col>
-          <Col xs={12}>
-            <this.connectedDownloadRange
-              stripes={this.props.stripes}
-              udpId={this.props.providerId}
-            />
-          </Col>
-        </Row>
-      </React.Fragment>
-    );
-  }
-
   render() {
     const { resources } = this.props;
     const records = (resources.counterReports || {}).records || null;
