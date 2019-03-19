@@ -19,8 +19,8 @@
   "devDependencies": {
     "@folio/eslint-config-stripes": "^3.2.1",
     "@folio/stripes": "^2.0.0",
-    "@folio/stripes-cli": "^1.8.0",
-    "@folio/stripes-core": "^3.0.1",
+    "@folio/stripes-cli": "^1.10.0",
+    "@folio/stripes-core": "^3.0.3",
     "babel-eslint": "^9.0.0",
     "eslint": "^5.5.0",
     "react": "~16.6.3",
@@ -53,9 +53,8 @@
     "queryResource": "query",
     "okapiInterfaces": {
       "usage-data-providers": "2.0",
-      "aggregator-settings": "1.0",
-      "counter-reports": "1.0",
-      "vendor-storage.vendors": "1.0"
+      "aggregator-settings": "1.1",
+      "counter-reports": "1.1"
     },
     "permissionSets": [
       {

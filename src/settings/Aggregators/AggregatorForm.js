@@ -117,7 +117,7 @@ class AggregatorForm extends React.Component {
     return (
       <PaneMenu>
         {edit &&
-          <IfPermission perm="settings.erm.enabled">
+          <IfPermission perm="settings.erm-usage.enabled">
             <Button
               id="clickable-delete-aggregator"
               title={<FormattedMessage id="ui-erm-usage.general.delete" />}
