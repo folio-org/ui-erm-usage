@@ -10,7 +10,6 @@ import {
   ExpandAllButton,
   Icon,
   IconButton,
-  KeyValue,
   Layer,
   Pane,
   PaneMenu,
@@ -27,10 +26,16 @@ import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
 import { NotesView } from '../Notes';
 import StartHarvesterButton from '../StartHarvesterButton';
+import ReportUpload from '../ReportUpload';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
     query: {},
+    settings: {
+      type: 'okapi',
+      records: 'configs',
+      path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    },
   });
 
   static propTypes = {
@@ -48,6 +53,9 @@ class UsageDataProviderView extends React.Component {
     resources: PropTypes.shape({
       usageDataProvider: PropTypes.shape(),
       query: PropTypes.object,
+      settings: PropTypes.shape({
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
     }),
     mutator: PropTypes.shape({
       query: PropTypes.object.isRequired,
@@ -73,6 +81,7 @@ class UsageDataProviderView extends React.Component {
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
     this.connectedStatistics = this.props.stripes.connect(Statistics);
     this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
+    this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
 
     this.state = {
       accordions: {
@@ -88,7 +97,7 @@ class UsageDataProviderView extends React.Component {
   getData = () => {
     const { parentResources, match: { params: { id } } } = this.props;
     const udp = (parentResources.records || {}).records || [];
-    if (!udp || udp.length === 0 || !id) return null;
+    if (udp.length === 0 || !id) return null;
     return udp.find(u => u.id === id);
   }
 
@@ -135,6 +144,8 @@ class UsageDataProviderView extends React.Component {
     const { resources, stripes } = this.props;
     const query = resources.query;
     const initialValues = this.getData();
+
+    const settings = (resources.settings || {}).records || [];
 
     const displayWhenOpenHarvestingAcc = (
       <IfInterface name="erm-usage-harvester">
@@ -219,6 +230,7 @@ class UsageDataProviderView extends React.Component {
               stripes={this.props.stripes}
               sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
               onToggle={this.handleAccordionToggle}
+              settings={settings}
             />
           </Accordion>
           <Accordion
@@ -246,16 +258,7 @@ class UsageDataProviderView extends React.Component {
             label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
             id="uploadAccordion"
           >
-            {
-              <Row>
-                <Col xs={3}>
-                  <KeyValue
-                    label="TODO"
-                    value="TODO"
-                  />
-                </Col>
-              </Row>
-            }
+            <this.connectedReportUpload udpId={providerId} stripes={stripes} />
           </Accordion>
 
           <Layer

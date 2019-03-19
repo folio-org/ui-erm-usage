@@ -6,7 +6,6 @@ import {
   injectIntl,
   FormattedMessage
 } from 'react-intl';
-import { SubmissionError } from 'redux-form';
 import {
   Button,
   ConfirmationModal,
@@ -17,6 +16,9 @@ import {
 import saveAs from 'file-saver';
 
 import ReportActionMenu from '../ReportActionMenu';
+import {
+  downloadCSVSingleMonth
+} from '../../../util/DownloadCSV';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
@@ -46,7 +48,7 @@ class ReportButton extends React.Component {
 
     this.state = {
       showDropDown: false,
-      showConfirmDelete: false
+      showConfirmDelete: false,
     };
 
     this.RETRY_THRESHOLD = 3;
@@ -105,21 +107,9 @@ class ReportButton extends React.Component {
   downloadCsvReport = () => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    return fetch(`${this.okapiUrl}/counter-reports/csv/${id}`, { headers: this.httpHeaders })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new SubmissionError({ identifier: `Error ${response.status} retrieving counter csv report by id`, _error: 'Fetch counter csv failed' });
-        } else {
-          return response.text();
-        }
-      })
-      .then((text) => {
-        const fileType = 'csv';
-        this.saveReport(id, text, fileType);
-      })
+    downloadCSVSingleMonth(id, this.okapiUrl, this.httpHeaders)
       .catch(err => {
-        const infoText = this.failText + ' ' + err.message;
-        this.log('Download of counter csv report failed: ' + infoText);
+        this.log(err.message);
       });
   }
 
@@ -156,10 +146,13 @@ class ReportButton extends React.Component {
     const style = this.getButtonStyle(report.failedAttempts);
 
     const confirmMessage = (
-      <div>
-        <p>Do you really want to delete this report?</p>
-        <p>{`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.yearMonth}`}</p>
-      </div>
+      <React.Fragment>
+        <span>
+          Do you really want to delete this report?
+          <br />
+        </span>
+        <span>{ `${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}: ${report.yearMonth}` }</span>
+      </React.Fragment>
     );
 
     return (

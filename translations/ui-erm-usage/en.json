@@ -1,6 +1,7 @@
 {
   "settings.general": "General",
   "settings.general.message": "These are your general app settings.",
+  "settings.hideCredentials": "Hide sushi credentials in detail views",
   "ui-erm-usage.resultCount": "ResultCount:",
   "resultCount": "{count, number} Records found",
   "erm-usage": "ERM Usage",
@@ -15,6 +16,9 @@
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",
+  "general.ok": "OK",
+  "general.start": "Start",
+  "general.end": "End",
 
   "information.providerName": "Provider Name",
   "information.vendor": "Vendor",
@@ -69,10 +73,25 @@
   "reportOverview.confirmDelete": "Please confirm delete!",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
+  "reportOverview.reportsPerYear": "Reports grouped by year",
+  "reportOverview.noReports": "No reports available...",
+  "reportOverview.downloadMultiMonths": "Download reports for multiple months",
+  "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
+  "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
+  "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
+  "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
 
   "report.action.download.csv": "Download as CSV",
   "report.action.download.jsonxml": "Download as JSON/XML",
   "report.action.failedAttempts": "Failed Attempts",
+
+  "report.upload.failed": "Failed...",
+  "report.upload.success": "Upload successful!",
+  "report.upload.modal.label": "Counter Report Upload",
+  "report.upload.reportExists": "Report exists. Do you want to overwrite?",
+  "report.upload.upload": "Upload",
+  "report.upload.dropFile": "Drop file here",
+  "report.upload.selectFile": "or select file",
 
   "udp.form.close": "Close new UsageDataProvider Dialog",
   "udp.form.updateUDP": "Update UsageDataProvider",

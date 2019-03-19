@@ -148,6 +148,12 @@ class StatisticsPerYear extends React.Component {
     const reportAccordions = this.createReportOverviewPerYear(this.props.stats);
     return (
       <React.Fragment>
+        <Row>
+          <Col xs={8}>
+            <div>Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. </div>
+            <div>Note: Currently CSV download is possible for Counter 4 JR1 reports only.</div>
+          </Col>
+        </Row>
         <Row end="xs">
           <Col xs>
             <ExpandAllButton

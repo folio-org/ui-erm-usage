@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EntryManager } from '@folio/stripes/smart-components';
-import AggregatorDetails from './AggregatorDetail';
+import AggregatorDetails from './AggregatorDetails';
 import AggregatorForm from './AggregatorForm';
 
 class AggregatorManager extends React.Component {
@@ -37,6 +37,7 @@ class AggregatorManager extends React.Component {
   constructor(props) {
     super(props);
     this.cAggregatorForm = props.stripes.connect(AggregatorForm);
+    this.cAggregatorDetails = props.stripes.connect(AggregatorDetails);
   }
 
   render() {
@@ -47,7 +48,7 @@ class AggregatorManager extends React.Component {
         {...this.props}
         parentMutator={this.props.mutator}
         entryList={entryList}
-        detailComponent={AggregatorDetails}
+        detailComponent={this.cAggregatorDetails}
         entryFormComponent={this.cAggregatorForm}
         paneTitle={this.props.label}
         entryLabel={this.props.label}

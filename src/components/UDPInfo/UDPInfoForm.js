@@ -26,7 +26,7 @@ class UDPInfoForm extends React.Component {
     };
     this.selectVendor = this.selectVendor.bind(this);
 
-    const intialVendor = props.initialValues.vendor || '';
+    const intialVendor = props.initialValues.vendor || {};
     this.state = {
       vendor: intialVendor,
     };

@@ -37,11 +37,7 @@ class VendorInfoForm extends React.Component {
   }
 
   isUrlRequired = () => {
-    if (!this.props.disabled && this.props.harvestingIsActive) {
-      return true;
-    } else {
-      return false;
-    }
+    return (!this.props.disabled && this.props.harvestingIsActive);
   }
 
   render() {
