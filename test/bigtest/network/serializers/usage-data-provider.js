@@ -7,12 +7,12 @@ export default ApplicationSerializer.extend({
 
   serialize(...args) {
     const json = ApplicationSerializer.prototype.serialize.apply(this, args);
-    if (isArray(json.aggregatorSettings)) {
+    if (isArray(json.usageDataProviders)) {
       return assign({}, json, {
-        totalRecords: json.aggregatorSettings.length
+        totalRecords: json.usageDataProviders.length
       });
     } else {
-      return json.aggregatorSettings;
+      return json.usageDataProviders;
     }
   }
 
