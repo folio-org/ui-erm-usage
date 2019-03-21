@@ -37,6 +37,9 @@ export default function config() {
   this.get('/usage-data-providers', ({ usageDataProviders }) => {
     return usageDataProviders.all(); // users in the second case
   });
+  this.get('/counter-reports', ({ counterReports }) => {
+    return counterReports.all(); // users in the second case
+  });
   // , {
   //   'aggregatorSettings': [
   //     {
