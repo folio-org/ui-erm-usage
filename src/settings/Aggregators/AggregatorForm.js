@@ -366,7 +366,6 @@ class AggregatorForm extends React.Component {
                 message={confirmationMessage}
                 onConfirm={() => { this.confirmDelete(true); }}
                 onCancel={() => { this.confirmDelete(false); }}
-                confirmLabel={<FormattedMessage id="aggregator.form.delete.confirm.title" />}
               />
             </div>
           </Pane>
