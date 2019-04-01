@@ -1,4 +1,4 @@
-import { 
+import {
   Model,
   belongsTo
 } from '@bigtest/mirage';

@@ -1,3 +1,5 @@
+import extractUUID from '../helpers/extract-uuid';
+
 // typical mirage config export
 // http://www.ember-cli-mirage.com/docs/v0.4.x/configuration/
 export default function config() {
@@ -13,7 +15,25 @@ export default function config() {
   this.get('/configurations/entries', {
     configs: []
   });
-  this.post('/bl-users/login', () => {
+  // this.post('/bl-users/login', () => {
+  //   return new Response(201, {
+  //     'X-Okapi-Token': `myOkapiToken:${Date.now()}`
+  //   }, {
+  //     user: {
+  //       id: 'test',
+  //       username: 'testuser',
+  //       personal: {
+  //         lastName: 'User',
+  //         firstName: 'Test',
+  //         email: 'user@folio.org',
+  //       }
+  //     },
+  //     permissions: {
+  //       permissions: []
+  //     }
+  //   });
+  // });
+  this.post('/bl-users/login?expandPermissions=true&fullPermissions=true', () => {
     return new Response(201, {
       'X-Okapi-Token': `myOkapiToken:${Date.now()}`
     }, {
@@ -32,34 +52,29 @@ export default function config() {
     });
   });
   this.get('/aggregator-settings', ({ aggregatorSettings }) => {
-    return aggregatorSettings.all(); // users in the second case
+    return aggregatorSettings.all();
+  });
+  this.get('/aggregator-settings/:id', (schema, request) => {
+    return schema.aggregatorSettings.find(request.params.id).attrs;
   });
   this.get('/usage-data-providers', ({ usageDataProviders }) => {
-    return usageDataProviders.all(); // users in the second case
+    return usageDataProviders.all();
   });
-  this.get('/counter-reports', ({ counterReports }) => {
-    return counterReports.all(); // users in the second case
+  this.get('/usage-data-providers/:id', (schema, request) => {
+    return schema.usageDataProviders.find(request.params.id).attrs;
   });
-  // , {
-  //   'aggregatorSettings': [
-  //     {
-  //       'id': '4c66b956-23a8-4418-aef6-1c35dcdaccc4',
-  //       'label': 'ACM Digital Library',
-  //       'serviceType': 'My Service',
-  //       'serviceUrl': 'www.myaggregator.com',
-  //       'aggregatorConfig': {
-  //         'apiKey': 'abc',
-  //         'requestorId': 'def',
-  //         'customerId': 'ghi',
-  //         'reportRelease': '4'
-  //       },
-  //       'accountConfig': {
-  //         'configType': 'Manual',
-  //         'configMail': 'ab@counter-stats.com',
-  //         'displayContact': ['Counter Aggregator Contact', 'Tel: +49 1234 - 9876']
-  //       }
-  //     }
-  //   ],
-  //   'totalRecords': '1'
-  // });
+  this.get('/counter-reports', (schema, request) => {
+    if (request.queryParams) {
+      /*
+      Pretender cuts off the query parameter. It just provides query: "(providerId" and not the actual id. Thus we need to look for the id in thr url.
+      */
+      const currentId = extractUUID(request.url);
+      return schema.counterReports.where({ providerId: currentId });
+    } else {
+      return schema.counterReports.all();
+    }
+  });
+  this.get('/counter-reports/:id', (schema, request) => {
+    return schema.counterReports.find(request.params.id).attrs;
+  });
 }

@@ -1,3 +1,5 @@
-import { Model } from '@bigtest/mirage';
+import { Model, belongsTo, hasMany } from '@bigtest/mirage';
 
-export default Model.extend();
+export default Model.extend({
+  aggregator : belongsTo('aggregator-setting'),
+});

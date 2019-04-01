@@ -2,7 +2,7 @@
 
 // default scenario is used during `yarn start --mirage`
 export default function defaultScenario(server) {
-  server.createList('aggregator-setting', 5);
-  server.createList('usage-data-provider', 5);
-  server.createList('counter-report', 5);
+  server.create('aggregator-setting', 'withUsageDataProviders');
+  server.create('usage-data-provider', 'withUsageReports');
+  // server.createList('counter-report', 5);
 }
