@@ -190,34 +190,38 @@ class UsageDataProviders extends React.Component {
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
     };
 
-    return (<SearchAndSort
-      packageInfo={packageInfo}
-      objectName="usageDataProvider"
-      filterConfig={filterConfig}
-      initialResultCount={INITIAL_RESULT_COUNT}
-      resultCountIncrement={RESULT_COUNT_INCREMENT}
-      viewRecordComponent={UsageDataProvidersView}
-      editRecordComponent={UsageDataProviderForm}
-      newRecordInitialValues={{}}
-      visibleColumns={['label', 'harvestingStatus', 'latestStats', 'aggregator']}
-      resultsFormatter={resultsFormatter}
-      onSelectRow={onSelectRow}
-      onCreate={this.create}
-      onComponentWillUnmount={onComponentWillUnmount}
-      viewRecordPerms="usagedataproviders.item.get"
-      newRecordPerms="usagedataproviders.item.post"
-      parentResources={this.props.resources}
-      parentMutator={this.props.mutator}
-      showSingleResult={showSingleResult}
-      columnMapping={{
-        label: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
-        harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
-        latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
-        aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })
-      }}
-      browseOnly={browseOnly}
-      stripes={stripes}
-    />);
+    return (
+      <div data-test-udp-instances>
+        <SearchAndSort
+          packageInfo={packageInfo}
+          objectName="usageDataProvider"
+          filterConfig={filterConfig}
+          initialResultCount={INITIAL_RESULT_COUNT}
+          resultCountIncrement={RESULT_COUNT_INCREMENT}
+          viewRecordComponent={UsageDataProvidersView}
+          editRecordComponent={UsageDataProviderForm}
+          newRecordInitialValues={{}}
+          visibleColumns={['label', 'harvestingStatus', 'latestStats', 'aggregator']}
+          resultsFormatter={resultsFormatter}
+          onSelectRow={onSelectRow}
+          onCreate={this.create}
+          onComponentWillUnmount={onComponentWillUnmount}
+          viewRecordPerms="usagedataproviders.item.get"
+          newRecordPerms="usagedataproviders.item.post"
+          parentResources={this.props.resources}
+          parentMutator={this.props.mutator}
+          showSingleResult={showSingleResult}
+          columnMapping={{
+            label: intl.formatMessage({ id: 'ui-erm-usage.information.providerName' }),
+            harvestingStatus: intl.formatMessage({ id: 'ui-erm-usage.information.harvestingStatus' }),
+            latestStats: intl.formatMessage({ id: 'ui-erm-usage.information.latestStatistics' }),
+            aggregator: intl.formatMessage({ id: 'ui-erm-usage.information.aggregator' })
+          }}
+          browseOnly={browseOnly}
+          stripes={stripes}
+        />
+      </div>
+    );
   }
 }
 

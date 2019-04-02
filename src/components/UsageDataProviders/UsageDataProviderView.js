@@ -197,6 +197,7 @@ class UsageDataProviderView extends React.Component {
 
       return (
         <Pane
+          data-test-udp-details
           id="pane-udpdetails"
           defaultWidth={this.props.paneWidth}
           paneTitle={label}
