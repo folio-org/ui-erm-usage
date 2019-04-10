@@ -43,4 +43,22 @@ const downloadCSVSingleMonth = (udpId, okapiUrl, httpHeaders) => {
     });
 };
 
-export { downloadCSVMultipleMonths, downloadCSVSingleMonth };
+const downloadCredentials = (aggregatorId, okapiUrl, httpHeaders) => {
+  return fetch(`${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials`, { headers: httpHeaders })
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new SubmissionError({ identifier: `Error ${response.status} retrieving credentials of aggregator`, _error: 'Fetch credentials failed' });
+      } else {
+        return response.text();
+      }
+    })
+    .then((text) => {
+      const fileType = 'csv';
+      saveReport(aggregatorId, text, fileType);
+    })
+    .catch(err => {
+      throw new Error('Error while downloading credentials. ' + err.message);
+    });
+};
+
+export { downloadCSVMultipleMonths, downloadCSVSingleMonth, downloadCredentials };
