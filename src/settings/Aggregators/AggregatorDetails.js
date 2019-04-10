@@ -11,6 +11,9 @@ import {
   KeyValue,
   Row
 } from '@folio/stripes/components';
+
+import DownloadCredentialsButton from './DownloadCredentialsButton';
+
 import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
@@ -30,6 +33,7 @@ class AggregatorDetails extends React.Component {
         records: PropTypes.arrayOf(PropTypes.object),
       }),
     }).isRequired,
+    stripes: PropTypes.shape().isRequired,
   }
 
   constructor(props) {
@@ -43,6 +47,8 @@ class AggregatorDetails extends React.Component {
         accountConfig: true,
       },
     };
+
+    this.connectedDownloadCredsButton = this.props.stripes.connect(DownloadCredentialsButton);
   }
 
   handleExpandAll(sections) {
@@ -92,6 +98,13 @@ class AggregatorDetails extends React.Component {
     const requestorId = hideCredentials ? '*'.repeat(config.requestorId.length) : config.requestorId;
     const customerId = hideCredentials ? '*'.repeat(config.customerId.length) : config.customerId;
 
+    const displayWhenOpenAccountConfAcc = (
+      <this.connectedDownloadCredsButton
+        aggregatorId={aggregator.id}
+        stripes={this.props.stripes}
+      />
+    );
+
     return (
       <div>
         <Row end="xs">
@@ -135,6 +148,7 @@ class AggregatorDetails extends React.Component {
           id="accountConfig"
           onToggle={this.handleSectionToggle}
           label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
+          displayWhenOpen={displayWhenOpenAccountConfAcc}
         >
           <Row>
             <Col xs={4}>
