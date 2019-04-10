@@ -194,13 +194,11 @@ class UsageDataProviderView extends React.Component {
 
       const label = _.get(initialValues, 'label', 'No LABEL');
       const providerId = _.get(initialValues, 'id', '');
-
       return (
         <Pane
-          data-test-udp-details
           id="pane-udpdetails"
           defaultWidth={this.props.paneWidth}
-          paneTitle={label}
+          paneTitle={<span data-test-header-title>{label}</span>}
           lastMenu={detailMenu}
           dismissible
           onClose={this.props.onClose}

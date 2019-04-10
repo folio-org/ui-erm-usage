@@ -12,5 +12,5 @@ export default @interactor class UDPInteractor {
 
   instances = collection('[role=row] a');
 
-  instance = scoped('[data-test-udp-details]');
+  instance = scoped('#pane-udpdetails');
 }
