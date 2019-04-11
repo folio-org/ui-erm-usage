@@ -13,7 +13,6 @@ import packageInfo from '../package';
 
 import UsageDataProvidersView from './components/UsageDataProviders/UsageDataProviderView';
 import UsageDataProviderForm from './components/UsageDataProviders/UsageDataProviderForm';
-import LatestReportDate from './components/LatestReportDate';
 
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;
@@ -168,14 +167,6 @@ class UsageDataProviders extends React.Component {
       });
   }
 
-  renderLatestReportDate = (vendorId) => {
-    return (
-      <LatestReportDate
-        vendorId={vendorId}
-        stripes={this.props.stripes}
-      />);
-  }
-
   doHarvestViaAggregator = (udp) => {
     return udp.harvestingConfig.harvestVia === 'aggregator';
   }
@@ -186,7 +177,7 @@ class UsageDataProviders extends React.Component {
     const resultsFormatter = {
       name: udp => udp.label,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
-      latestStats: udp => udp.latestReport, // this.renderLatestReportDate(udp.vendor.id),
+      latestStats: udp => udp.latestReport,
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
     };
 
