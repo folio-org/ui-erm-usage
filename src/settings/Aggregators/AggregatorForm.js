@@ -195,7 +195,7 @@ class AggregatorForm extends React.Component {
     );
 
     return (
-      <form id="form-service-point" className={css.AggregatorFormRoot} onSubmit={handleSubmit(this.save)}>
+      <form id="form-aggregator-setting" className={css.AggregatorFormRoot} onSubmit={handleSubmit(this.save)}>
         <Paneset isRoot>
           <Pane defaultWidth="100%" firstMenu={this.addFirstMenu()} lastMenu={this.saveLastMenu()} paneTitle={this.renderPaneTitle()}>
             <div className={css.AggregatorFormContent}>

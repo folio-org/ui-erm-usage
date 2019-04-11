@@ -106,7 +106,7 @@ class AggregatorDetails extends React.Component {
     );
 
     return (
-      <div>
+      <div data-test-aggregator-details>
         <Row end="xs">
           <Col xs>
             <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
