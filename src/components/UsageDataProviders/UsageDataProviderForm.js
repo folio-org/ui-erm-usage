@@ -115,7 +115,12 @@ class UsageDataProviderForm extends React.Component {
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
 
     return (
-      <form className={css.UDPFormRoot} id="form-udp" onSubmit={handleSubmit}>
+      <form
+        className={css.UDPFormRoot}
+        id="form-udp"
+        onSubmit={handleSubmit}
+        data-test-form-page
+      >
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
