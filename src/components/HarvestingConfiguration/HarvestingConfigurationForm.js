@@ -30,6 +30,7 @@ class HarvestingConfigurationForm extends React.Component {
     super(props);
 
     this.cAggregatorForm = this.props.stripes.connect(AggregatorInfoForm);
+    this.cVendorInfoForm = this.props.stripes.connect(VendorInfoForm);
   }
 
   getCurrentValues() {
@@ -107,7 +108,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
-                <VendorInfoForm
+                <this.cVendorInfoForm
                   disabled={(selectedHarvestVia !== 'sushi')}
                   harvestingIsActive={isHarvestingActive}
                 />

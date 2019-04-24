@@ -27,6 +27,12 @@ class HarvestingConfigurationView extends React.Component {
     settings: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.cVendorInfoView = this.props.stripes.connect(VendorInfoView);
+  }
+
   createProvider = udp => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
     if (harvestVia === 'aggregator') {
@@ -38,7 +44,7 @@ class HarvestingConfigurationView extends React.Component {
       );
     } else {
       return (
-        <VendorInfoView
+        <this.cVendorInfoView
           usageDataProvider={udp}
         />
       );
