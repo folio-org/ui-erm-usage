@@ -65,32 +65,18 @@ class SushiCredentialsForm extends React.Component {
         <Row>
           <Col xs={4}>
             {this.getCustomerIdDependingOnSelection(selectedHarvestVia)}
-            {/* <Field
-              label={
-                <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
-                  {(msg) => msg + ' *'}
-                </FormattedMessage>
-              }
-              name="sushiCredentials.customerId"
-              id="addudp_customerid"
-              placeholder="Enter the SUSHI customer ID"
-              component={TextField}
-              validate={[required]}
-              fullWidth
-            /> */}
           </Col>
           <Col xs={4}>
             <Field
               label={
                 <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId">
-                  {(msg) => msg + ' *'}
+                  {(msg) => msg}
                 </FormattedMessage>
               }
               name="sushiCredentials.requestorId"
               id="addudp_requestorid"
               placeholder="Enter the SUSHI requestor ID"
               component={TextField}
-              validate={[required]}
               fullWidth
             />
           </Col>
