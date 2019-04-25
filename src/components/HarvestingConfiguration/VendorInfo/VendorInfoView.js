@@ -11,23 +11,12 @@ import {
 } from '@folio/stripes/components';
 
 class VendorInfoView extends React.Component {
-  static manifest = Object.freeze({
-    harvesterImpls: {
-      type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=false'
-    }
-  });
-
   render() {
-    const { usageDataProvider, resources } = this.props;
-    const records = (resources.harvesterImpls || {}).records || [];
-    const implementations = records.length
-      ? records[0].implementations
-      : [];
+    const { usageDataProvider, harvesterImpls } = this.props;
 
     const currentSType = _.get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');
-    const serviceType = implementations.find(e => e.type === currentSType);
-    const serviceTypeLabel = serviceType ? serviceType.name : '-';
+    const serviceType = harvesterImpls ? harvesterImpls.find(e => e.value === currentSType) : [];
+    const serviceTypeLabel = serviceType ? serviceType.label : '-';
 
     return (
       <Row>
@@ -55,9 +44,7 @@ class VendorInfoView extends React.Component {
 
 VendorInfoView.propTypes = {
   usageDataProvider: PropTypes.object.isRequired,
-  resources: PropTypes.shape({
-    harvesterImpls: PropTypes.shape(),
-  }),
+  harvesterImpls: PropTypes.shape(),
 };
 
 export default VendorInfoView;

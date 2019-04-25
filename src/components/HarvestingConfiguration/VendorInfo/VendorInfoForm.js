@@ -15,19 +15,10 @@ import {
 } from '../../../util/Validate';
 
 class VendorInfoForm extends React.Component {
-  static manifest = Object.freeze({
-    harvesterImpls: {
-      type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=false'
-    }
-  });
-
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     harvestingIsActive: PropTypes.bool.isRequired,
-    resources: PropTypes.shape({
-      harvesterImpls: PropTypes.shape(),
-    }),
+    harvesterImpls: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -50,18 +41,9 @@ class VendorInfoForm extends React.Component {
   }
 
   render() {
-    const { disabled, harvestingIsActive, resources } = this.props;
+    const { disabled, harvestingIsActive, harvesterImpls } = this.props;
     const requiredSign = disabled ? '' : ' *';
     const urlRequiredSign = harvestingIsActive ? ' *' : '';
-
-    const records = (resources.harvesterImpls || {}).records || [];
-    const implementations = records.length
-      ? records[0].implementations
-      : [];
-    const serviceTypes = implementations.map(i => ({
-      value: i.type,
-      label: i.name
-    }));
 
     return (
       <React.Fragment>
@@ -75,7 +57,7 @@ class VendorInfoForm extends React.Component {
             id="addudp_servicetype"
             placeholder="Select the vendor's API type"
             component={Select}
-            dataOptions={serviceTypes}
+            dataOptions={harvesterImpls}
             disabled={this.props.disabled}
             validate={[this.isRequired]}
             fullWidth

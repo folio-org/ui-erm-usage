@@ -71,7 +71,7 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   render() {
-    const { expanded, accordionId } = this.props;
+    const { expanded, accordionId, harvesterImpls } = this.props;
     const onToggleAccordion = this.props.onToggle;
 
     const selectedHarvestVia = this.getSelectedHarvestVia();
@@ -111,6 +111,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <this.cVendorInfoForm
                   disabled={(selectedHarvestVia !== 'sushi')}
                   harvestingIsActive={isHarvestingActive}
+                  harvesterImpls={harvesterImpls}
                 />
               </Row>
             </section>
@@ -161,6 +162,7 @@ HarvestingConfigurationForm.propTypes = {
     }).isRequired,
   }).isRequired,
   initialValues: PropTypes.object,
+  harvesterImpls: PropTypes.shape(),
 };
 
 export default HarvestingConfigurationForm;
