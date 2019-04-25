@@ -10,6 +10,7 @@ import {
   TextField
 } from '@folio/stripes/components';
 import {
+  notRequired,
   required
 } from '../../../util/Validate';
 
@@ -18,53 +19,36 @@ class SushiCredentialsForm extends React.Component {
     selectedHarvestVia: PropTypes.string
   };
 
-  getCustomerIdDependingOnSelection = (selectedHarvestVia) => {
+  isCustomerIdRequired = (selectedHarvestVia) => {
     if (selectedHarvestVia === 'aggregator') {
-      return (
-        <React.Fragment>
-          <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
-                {(msg) => msg}
-              </FormattedMessage>
-            }
-            name="sushiCredentials.customerId"
-            id="addudp_customerid"
-            placeholder="Enter the SUSHI customer ID"
-            component={TextField}
-            fullWidth
-          />
-        </React.Fragment>
-      );
+      return false;
     } else {
-      return (
-        <React.Fragment>
-          <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
-                {(msg) => msg + ' *'}
-              </FormattedMessage>
-            }
-            name="sushiCredentials.customerId"
-            id="addudp_customerid"
-            placeholder="Enter the SUSHI customer ID"
-            component={TextField}
-            validate={[required]}
-            fullWidth
-          />
-        </React.Fragment>
-      );
+      return true;
     }
   };
 
   render() {
     const selectedHarvestVia = this.props.selectedHarvestVia;
+    const requiredSign = this.isCustomerIdRequired(selectedHarvestVia) ? ' *' : '';
+    const requiredValidate = this.isCustomerIdRequired(selectedHarvestVia) ? required : notRequired;
 
     return (
       <React.Fragment>
         <Row>
           <Col xs={4}>
-            {this.getCustomerIdDependingOnSelection(selectedHarvestVia)}
+            <Field
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
+                  {(msg) => msg + requiredSign}
+                </FormattedMessage>
+              }
+              name="sushiCredentials.customerId"
+              id="addudp_customerid"
+              placeholder="Enter the SUSHI customer ID"
+              component={TextField}
+              validate={[requiredValidate]}
+              fullWidth
+            />
           </Col>
           <Col xs={4}>
             <Field
