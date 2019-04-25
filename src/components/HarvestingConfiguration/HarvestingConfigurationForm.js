@@ -142,6 +142,7 @@ class HarvestingConfigurationForm extends React.Component {
               <SushiCredentialsForm
                 accordionId="editSushiCredentials"
                 onToggle={onToggleAccordion}
+                selectedHarvestVia={selectedHarvestVia}
               />
             </section>
           </Col>
