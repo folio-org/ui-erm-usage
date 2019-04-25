@@ -35,14 +35,13 @@ const SushiCredentialsForm = () => {
           <Field
             label={
               <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId">
-                {(msg) => msg + ' *'}
+                {(msg) => msg}
               </FormattedMessage>
             }
             name="sushiCredentials.requestorId"
             id="addudp_requestorid"
             placeholder="Enter the SUSHI requestor ID"
             component={TextField}
-            validate={[required]}
             fullWidth
           />
         </Col>

@@ -280,7 +280,7 @@ class AggregatorForm extends React.Component {
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.config.requestorId">
-                          {(msg) => msg + ' *'}
+                          {(msg) => msg}
                         </FormattedMessage>
                       }
                       name="aggregatorConfig.requestorId"
@@ -288,7 +288,6 @@ class AggregatorForm extends React.Component {
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[required]}
                     />
                     <Field
                       label={
