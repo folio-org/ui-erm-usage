@@ -25,7 +25,14 @@ class HarvestingConfigurationView extends React.Component {
     sushiCredsOpen: PropTypes.bool,
     onToggle: PropTypes.func,
     settings: PropTypes.arrayOf(PropTypes.object).isRequired,
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
+
+  constructor(props) {
+    super(props);
+
+    this.cVendorInfoView = this.props.stripes.connect(VendorInfoView);
+  }
 
   createProvider = udp => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
@@ -38,8 +45,9 @@ class HarvestingConfigurationView extends React.Component {
       );
     } else {
       return (
-        <VendorInfoView
+        <this.cVendorInfoView
           usageDataProvider={udp}
+          harvesterImpls={this.props.harvesterImpls}
         />
       );
     }

@@ -13,12 +13,12 @@ import {
   notRequired,
   required
 } from '../../../util/Validate';
-import serviceTypeOptions from '../../../util/data/serviceTypeOptions';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     harvestingIsActive: PropTypes.bool.isRequired,
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {
@@ -41,7 +41,7 @@ class VendorInfoForm extends React.Component {
   }
 
   render() {
-    const { disabled, harvestingIsActive } = this.props;
+    const { disabled, harvestingIsActive, harvesterImpls } = this.props;
     const requiredSign = disabled ? '' : ' *';
     const urlRequiredSign = harvestingIsActive ? ' *' : '';
 
@@ -57,7 +57,7 @@ class VendorInfoForm extends React.Component {
             id="addudp_servicetype"
             placeholder="Select the vendor's API type"
             component={Select}
-            dataOptions={serviceTypeOptions}
+            dataOptions={harvesterImpls}
             disabled={this.props.disabled}
             validate={[this.isRequired]}
             fullWidth

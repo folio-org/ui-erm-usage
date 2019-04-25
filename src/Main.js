@@ -85,16 +85,21 @@ class UsageDataProviders extends React.Component {
       type: 'okapi',
       records: 'aggregatorSettings',
       path: 'aggregator-settings',
+    },
+    harvesterImpls: {
+      type: 'okapi',
+      path: 'erm-usage-harvester/impl?aggregator=false'
     }
   });
 
   static propTypes = {
     resources: PropTypes.shape({
+      aggregatorSettings: PropTypes.shape(),
+      harvesterImpls: PropTypes.shape(),
+      numFiltersLoaded: PropTypes.number,
       usageDataProviders: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
-      aggregatorSettings: PropTypes.shape(),
-      numFiltersLoaded: PropTypes.number,
     }).isRequired,
     mutator: PropTypes.shape({
       usageDataProviders: PropTypes.shape({
@@ -171,14 +176,29 @@ class UsageDataProviders extends React.Component {
     return udp.harvestingConfig.harvestVia === 'aggregator';
   }
 
+  extractHarvesterImpls = (resources) => {
+    const records = (resources.harvesterImpls || {}).records || [];
+    const implementations = records.length
+      ? records[0].implementations
+      : [];
+    return implementations.map(i => ({
+      value: i.type,
+      label: i.name
+    }));
+  }
+
   render() {
-    const { onSelectRow, onComponentWillUnmount, showSingleResult, browseOnly, stripes, intl } = this.props;
+    const { browseOnly, intl, onComponentWillUnmount, onSelectRow, resources, showSingleResult, stripes } = this.props;
 
     const resultsFormatter = {
       name: udp => udp.label,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
       latestStats: udp => udp.latestReport,
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
+    };
+
+    const detailProps = {
+      harvesterImpls: this.extractHarvesterImpls(resources),
     };
 
     return (
@@ -210,6 +230,7 @@ class UsageDataProviders extends React.Component {
           }}
           browseOnly={browseOnly}
           stripes={stripes}
+          detailProps={detailProps}
         />
       </div>
     );

@@ -72,6 +72,7 @@ class UsageDataProviderView extends React.Component {
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
     notesToggle: PropTypes.func,
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {
@@ -141,7 +142,7 @@ class UsageDataProviderView extends React.Component {
   }
 
   render() {
-    const { resources, stripes } = this.props;
+    const { harvesterImpls, resources, stripes } = this.props;
     const query = resources.query;
     const initialValues = this.getData();
 
@@ -230,6 +231,7 @@ class UsageDataProviderView extends React.Component {
               sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
               onToggle={this.handleAccordionToggle}
               settings={settings}
+              harvesterImpls={harvesterImpls}
             />
           </Accordion>
           <Accordion

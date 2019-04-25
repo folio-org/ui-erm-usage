@@ -30,6 +30,7 @@ class HarvestingConfigurationForm extends React.Component {
     super(props);
 
     this.cAggregatorForm = this.props.stripes.connect(AggregatorInfoForm);
+    this.cVendorInfoForm = this.props.stripes.connect(VendorInfoForm);
   }
 
   getCurrentValues() {
@@ -70,7 +71,7 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   render() {
-    const { expanded, accordionId } = this.props;
+    const { expanded, accordionId, harvesterImpls } = this.props;
     const onToggleAccordion = this.props.onToggle;
 
     const selectedHarvestVia = this.getSelectedHarvestVia();
@@ -107,9 +108,10 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   {<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />}
                 </Col>
-                <VendorInfoForm
+                <this.cVendorInfoForm
                   disabled={(selectedHarvestVia !== 'sushi')}
                   harvestingIsActive={isHarvestingActive}
+                  harvesterImpls={harvesterImpls}
                 />
               </Row>
             </section>
@@ -161,6 +163,7 @@ HarvestingConfigurationForm.propTypes = {
     }).isRequired,
   }).isRequired,
   initialValues: PropTypes.object,
+  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default HarvestingConfigurationForm;
