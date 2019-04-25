@@ -31,7 +31,6 @@ import {
   mail
 } from '../../util/Validate';
 import css from './AggregatorForm.css';
-import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 class AggregatorForm extends React.Component {
@@ -47,6 +46,7 @@ class AggregatorForm extends React.Component {
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
+    aggregators: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -179,7 +179,7 @@ class AggregatorForm extends React.Component {
   }
 
   render() {
-    const { stripes, handleSubmit, initialValues } = this.props;
+    const { stripes, handleSubmit, initialValues, aggregators } = this.props;
     const aggregator = initialValues || {};
     const { confirmDelete, sections } = this.state;
     const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
@@ -235,7 +235,7 @@ class AggregatorForm extends React.Component {
                       id="input-aggregator-service-type"
                       placeholder="Select a service type"
                       component={Select}
-                      dataOptions={aggregatorServiceTypes}
+                      dataOptions={aggregators}
                       fullWidth
                       validate={[required]}
                     />

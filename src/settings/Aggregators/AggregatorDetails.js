@@ -14,7 +14,6 @@ import {
 
 import DownloadCredentialsButton from './DownloadCredentialsButton';
 
-import aggregatorServiceTypes from '../../util/data/aggregatorServiceTypes';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 class AggregatorDetails extends React.Component {
@@ -34,6 +33,7 @@ class AggregatorDetails extends React.Component {
       }),
     }).isRequired,
     stripes: PropTypes.shape().isRequired,
+    aggregators: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -76,14 +76,14 @@ class AggregatorDetails extends React.Component {
   }
 
   render() {
-    const { initialValues } = this.props;
+    const { initialValues, aggregators } = this.props;
     const aggregator = initialValues;
     const { sections } = this.state;
 
     const contacts = this.renderContact(aggregator);
 
     const sType = _.get(aggregator, 'serviceType', '-');
-    const serviceType = aggregatorServiceTypes.find(e => e.value === sType);
+    const serviceType = aggregators.find(e => e.value === sType);
     const serviceTypeLabel = serviceType ? serviceType.label : '-';
 
     const currentConfTypeValue = _.get(aggregator, 'accountConfig.configType', '');

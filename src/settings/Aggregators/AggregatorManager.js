@@ -12,6 +12,10 @@ class AggregatorManager extends React.Component {
       records: 'aggregatorSettings',
       path: 'aggregator-settings',
       resourceShouldRefresh: true,
+    },
+    aggregatorImpls: {
+      type: 'okapi',
+      path: 'erm-usage-harvester/impl?aggregator=true'
     }
   });
 
@@ -21,6 +25,7 @@ class AggregatorManager extends React.Component {
       entries: PropTypes.shape({
         records: PropTypes.arrayOf(PropTypes.object),
       }),
+      aggregatorImpls: PropTypes.shape(),
     }).isRequired,
     mutator: PropTypes.shape({
       entries: PropTypes.shape({
@@ -43,6 +48,16 @@ class AggregatorManager extends React.Component {
   render() {
     const entryList = _.sortBy((this.props.resources.entries || {}).records || [], ['label']);
 
+    const { resources } = this.props;
+    const records = (resources.aggregatorImpls || {}).records || [];
+    const implementations = records.length
+      ? records[0].implementations
+      : [];
+    const serviceTypes = implementations.map(i => ({
+      value: i.type,
+      label: i.name
+    }));
+
     return (
       <div data-test-aggregator-instances>
         <EntryManager
@@ -61,6 +76,7 @@ class AggregatorManager extends React.Component {
             post: 'settings.erm-usage.enabled',
             delete: 'settings.erm-usage.enabled',
           }}
+          aggregators={serviceTypes}
         />
       </div>
     );

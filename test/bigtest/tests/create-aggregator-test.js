@@ -23,10 +23,11 @@ describe('Create Aggregator', () => {
 
   describe('serviceType can be selected', () => {
     beforeEach(async () => {
-      await aggregatorEditPage.serviceTypeSelect.select('Nationaler Statistikserver (NSS)');
+      await aggregatorEditPage.serviceTypeSelect.select('Nationaler Statistikserver');
     });
 
     it('serviceType is changed to "NSS"', () => {
+      console.log('SERVICE TYPE IS: ' + aggregatorEditPage.serviceTypeSelect.value);
       expect(aggregatorEditPage.serviceTypeSelect.value).to.be.equal('NSS');
     });
   });

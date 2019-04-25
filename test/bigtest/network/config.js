@@ -15,24 +15,7 @@ export default function config() {
   this.get('/configurations/entries', {
     configs: []
   });
-  // this.post('/bl-users/login', () => {
-  //   return new Response(201, {
-  //     'X-Okapi-Token': `myOkapiToken:${Date.now()}`
-  //   }, {
-  //     user: {
-  //       id: 'test',
-  //       username: 'testuser',
-  //       personal: {
-  //         lastName: 'User',
-  //         firstName: 'Test',
-  //         email: 'user@folio.org',
-  //       }
-  //     },
-  //     permissions: {
-  //       permissions: []
-  //     }
-  //   });
-  // });
+
   this.post('/bl-users/login?expandPermissions=true&fullPermissions=true', () => {
     return new Response(201, {
       'X-Okapi-Token': `myOkapiToken:${Date.now()}`
@@ -51,6 +34,39 @@ export default function config() {
       }
     });
   });
+
+  this.get('/erm-usage-harvester/impl', (schema, request) => {
+    if (request.queryParams.aggregator === 'false') {
+      return {
+        implementations: [
+          {
+            name: 'Counter-Sushi 4.1',
+            description: 'SOAP-based implementation for CounterSushi 4.1',
+            type: 'cs41',
+            isAggregator: false
+          },
+          {
+            name: 'Counter-Sushi 5.0',
+            description: 'Implementation for Counter/Sushi 5',
+            type : 'cs50',
+            isAggregator : false
+          }
+        ]
+      };
+    } else {
+      return {
+        implementations: [
+          {
+            name: 'Nationaler Statistikserver',
+            description: 'Implementation for Germanys National Statistics Server (https://sushi.redi-bw.de).',
+            type: 'NSS',
+            isAggregator: true
+          }
+        ]
+      };
+    }
+  });
+
   this.get('/aggregator-settings', ({ aggregatorSettings }) => {
     return aggregatorSettings.all();
   });
