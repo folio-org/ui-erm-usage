@@ -25,7 +25,7 @@ class HarvestingConfigurationView extends React.Component {
     sushiCredsOpen: PropTypes.bool,
     onToggle: PropTypes.func,
     settings: PropTypes.arrayOf(PropTypes.object).isRequired,
-    harvesterImpls: PropTypes.shape(),
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {

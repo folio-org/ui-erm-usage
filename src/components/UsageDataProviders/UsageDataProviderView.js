@@ -72,7 +72,7 @@ class UsageDataProviderView extends React.Component {
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
     notesToggle: PropTypes.func,
-    harvesterImpls: PropTypes.shape(),
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {

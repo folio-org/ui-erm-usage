@@ -18,7 +18,7 @@ class VendorInfoForm extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     harvestingIsActive: PropTypes.bool.isRequired,
-    harvesterImpls: PropTypes.shape(),
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {

@@ -44,7 +44,7 @@ class VendorInfoView extends React.Component {
 
 VendorInfoView.propTypes = {
   usageDataProvider: PropTypes.object.isRequired,
-  harvesterImpls: PropTypes.shape(),
+  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default VendorInfoView;

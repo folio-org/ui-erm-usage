@@ -162,7 +162,7 @@ HarvestingConfigurationForm.propTypes = {
     }).isRequired,
   }).isRequired,
   initialValues: PropTypes.object,
-  harvesterImpls: PropTypes.shape(),
+  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default HarvestingConfigurationForm;

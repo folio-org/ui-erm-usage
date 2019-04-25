@@ -46,7 +46,7 @@ class AggregatorForm extends React.Component {
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
-    aggregators: PropTypes.object.isRequired,
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   constructor(props) {

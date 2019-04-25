@@ -33,7 +33,7 @@ class AggregatorDetails extends React.Component {
       }),
     }).isRequired,
     stripes: PropTypes.shape().isRequired,
-    aggregators: PropTypes.object.isRequired,
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   constructor(props) {
