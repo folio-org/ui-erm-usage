@@ -91,19 +91,19 @@ class FindVendor extends React.Component {
 
     const enterVendorIdButton =
       <Button
-        id="clickable-find-vendor-by-id"
+        id="clickable-find-organization-by-id"
         onClick={this.updateVendorId}
       >
-        {<FormattedMessage id="ui-erm-usage.udp.form.findVendor.findVendorByIdButton" />}
+        {<FormattedMessage id="ui-erm-usage.udp.form.findOrganization.findOrganizationByIdButton" />}
       </Button>;
 
     const pluggable =
       <Pluggable
         aria-haspopup="true"
-        type="find-vendor"
-        id="clickable-find-vendor"
+        type="find-organization"
+        id="clickable-find-organization"
         {...this.props}
-        searchLabel="Vendor look-up"
+        searchLabel="Organization look-up"
         marginTop0
         searchButtonStyle="default"
         dataKey="vendor"

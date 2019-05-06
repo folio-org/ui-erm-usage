@@ -100,10 +100,10 @@
   "udp.form.udpInfo.providerName": "Provider Name",
   "udp.form.udpInfo.contentPlatformId": "Content Platform Id",
 
-  "udp.form.findVendor.enterVendorId": "Enter vendor-id",
-  "udp.form.findVendor.findVendorByIdButton": "Enter",
-  "udp.form.findVendor.searchLabel": "Vendor look-up",
-  "udp.form.findVendor.contenVendorId": "Content Vendor Id",
+  "udp.form.findOrganization.enterOrganizationId": "Enter organization id",
+  "udp.form.findOrganization.findOrganizationByIdButton": "Enter",
+  "udp.form.findOrganization.searchLabel": "Organization look-up",
+  "udp.form.findOrganization.contenVendorId": "Content organization Id",
 
   "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via",
   "udp.form.harvestingConfig.vendorCode": "Vendor code",
