@@ -30,7 +30,7 @@ class UDPInfoView extends React.Component {
           <Row>
             <Col xs={3}>
               <KeyValue
-                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentVendor" />}
+                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentOrganization" />}
                 value={_.get(usageDataProvider, 'vendor.name', '-')}
               />
             </Col>

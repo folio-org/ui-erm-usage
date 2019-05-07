@@ -21,7 +21,7 @@
   "general.end": "End",
 
   "information.providerName": "Provider Name",
-  "information.vendor": "Vendor",
+  "information.organization": "Organization",
   "information.platform": "Platform",
   "information.harvestingStatus": "Harvesting Status",
   "information.aggregator": "Aggregator",
@@ -33,7 +33,7 @@
   "udp.counterUpload": "COUNTER file upload",
   "udp.editUDPDialog": "Edit Usage Data Provider Dialog",
 
-  "udpInfo.contentVendor": "Content Vendor",
+  "udpInfo.contentOrganization": "Content Organization",
   "udpInfo.contentPlatform": "Content Platform",
 
   "udpHarvestingConfig.harvestingStatus": "Harvesting status",
@@ -100,10 +100,10 @@
   "udp.form.udpInfo.providerName": "Provider Name",
   "udp.form.udpInfo.contentPlatformId": "Content Platform Id",
 
-  "udp.form.findVendor.enterVendorId": "Enter vendor-id",
-  "udp.form.findVendor.findVendorByIdButton": "Enter",
-  "udp.form.findVendor.searchLabel": "Vendor look-up",
-  "udp.form.findVendor.contenVendorId": "Content Vendor Id",
+  "udp.form.findOrganization.enterOrganizationId": "Enter organization id",
+  "udp.form.findOrganization.findOrganizationByIdButton": "Enter",
+  "udp.form.findOrganization.searchLabel": "Organization look-up",
+  "udp.form.findOrganization.contenVendorId": "Content Organization Id",
 
   "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via",
   "udp.form.harvestingConfig.vendorCode": "Vendor code",

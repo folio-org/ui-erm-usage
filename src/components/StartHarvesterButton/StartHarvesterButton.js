@@ -36,6 +36,13 @@ export default class StartHarvesterButton extends React.Component {
     this.failText = `Something went wrong while starting the harvester for usagedata provider ${usageDataProvider.label}...`;
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
+      this.successText = `Harvester successfully started for '${this.props.usageDataProvider.label}'!`;
+      this.failText = `Something went wrong while starting the harvester for usagedata provider ${this.props.usageDataProvider.label}...`;
+    }
+  }
+
   onClickStartHarvester = () => {
     this.props.mutator.harvesterStart.GET()
       .then(() => {
