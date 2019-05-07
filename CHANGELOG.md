@@ -1,5 +1,9 @@
 # Change history for ui-erm-usage
 
+## 2.1.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.1.0) (2019-05-07)
+* Use BigTest for testing
+* Fetch harvester implementations from backend on demand
+
 ## 2.0.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.0.0) (2019-03-22)
 * Upload XML encoded Counter 4 reports (UIEUS-39)
 * Ability to download counter reports as CSV for single and multiple months (for Counter 4 JR1 only) (UIEUS-36)
