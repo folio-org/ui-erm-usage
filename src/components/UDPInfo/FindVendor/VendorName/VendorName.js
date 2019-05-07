@@ -34,7 +34,7 @@ class VendorName extends React.Component {
 
   fechVendorName = (vendorId) => {
     this.setState({ vendorName: '-' });
-    return fetch(`${this.okapiUrl}/vendor/${vendorId}`, { headers: this.httpHeaders })
+    return fetch(`${this.okapiUrl}/organizations/${vendorId}`, { headers: this.httpHeaders })
       .then((response) => {
         if (response.status >= 400) {
           throw new SubmissionError({ identifier: `Error ${response.status} retrieving vendor name by id`, _error: 'Fetch vendor name failed' });
