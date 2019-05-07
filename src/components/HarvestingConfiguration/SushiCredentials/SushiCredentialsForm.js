@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import {
   FormattedMessage
@@ -10,27 +10,27 @@ import {
   TextField
 } from '@folio/stripes/components';
 import {
-  notRequired,
+  // notRequired,
   required
 } from '../../../util/Validate';
 
 class SushiCredentialsForm extends React.Component {
-  static propTypes = {
-    selectedHarvestVia: PropTypes.string
-  };
+  // static propTypes = {
+  //   selectedHarvestVia: PropTypes.string
+  // };
 
-  isCustomerIdRequired = (selectedHarvestVia) => {
-    if (selectedHarvestVia === 'aggregator') {
-      return false;
-    } else {
-      return true;
-    }
-  };
+  // isCustomerIdRequired = (selectedHarvestVia) => {
+  //   if (selectedHarvestVia === 'aggregator') {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // };
 
   render() {
-    const selectedHarvestVia = this.props.selectedHarvestVia;
-    const requiredSign = this.isCustomerIdRequired(selectedHarvestVia) ? ' *' : '';
-    const requiredValidate = this.isCustomerIdRequired(selectedHarvestVia) ? required : notRequired;
+    // const selectedHarvestVia = this.props.selectedHarvestVia;
+    // const requiredSign = this.isCustomerIdRequired(selectedHarvestVia) ? ' *' : '';
+    // const requiredValidate = this.isCustomerIdRequired(selectedHarvestVia) ? required : notRequired;
 
     return (
       <React.Fragment>
@@ -39,14 +39,14 @@ class SushiCredentialsForm extends React.Component {
             <Field
               label={
                 <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
-                  {(msg) => msg + requiredSign}
+                  {(msg) => msg + ' *'}
                 </FormattedMessage>
               }
               name="sushiCredentials.customerId"
               id="addudp_customerid"
               placeholder="Enter the SUSHI customer ID"
               component={TextField}
-              validate={[requiredValidate]}
+              validate={[required]}
               fullWidth
             />
           </Col>
