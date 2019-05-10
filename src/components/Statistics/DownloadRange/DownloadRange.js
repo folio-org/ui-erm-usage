@@ -172,6 +172,7 @@ class DownloadRange extends React.Component {
         <Col xs={3}>
           <Select
             label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />}
+            name="downloadMultiMonths.reportType"
             dataOptions={reportDownloadTypes}
             onChange={this.onSelectReportType}
           />

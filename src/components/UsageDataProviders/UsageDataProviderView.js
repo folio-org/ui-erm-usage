@@ -210,6 +210,7 @@ class UsageDataProviderView extends React.Component {
               <ExpandAllButton
                 accordionStatus={this.state.accordions}
                 onToggle={this.handleExpandAll}
+                id="clickable-expand-all-view"
               />
             </Col>
           </Row>
