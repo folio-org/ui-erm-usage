@@ -11,6 +11,7 @@ import {
   KeyValue,
   MenuSection
 } from '@folio/stripes/components';
+import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 
 class ReportActionMenu extends React.Component {
   onClickDownloadRawReport = () => {
@@ -25,8 +26,13 @@ class ReportActionMenu extends React.Component {
     this.props.deleteReport();
   }
 
+  isDownloadable = (reportName) => {
+    const result = reportDownloadTypes.find(e => e.value === reportName);
+    return result !== undefined;
+  }
+
   isCSVPossible = (report) => {
-    if (!report.failedReason && report.release === '4' && report.reportName === 'JR1') {
+    if (!report.failedReason && report.release === '4' && this.isDownloadable(report.reportName)) {
       return true;
     }
     return false;
