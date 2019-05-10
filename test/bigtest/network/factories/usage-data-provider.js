@@ -3,14 +3,7 @@ import Factory from './application';
 
 export default Factory.extend({
   label: (i) => 'UDP ' + i,
-  vendor: (i) => ({
-    id: 'vid_' + i,
-    name: 'vendor_' + i
-  }),
-  platform: (i) => ({
-    id: 'pid_' + i,
-    name: 'platform_' + i
-  }),
+  descriprion: (i) => 'Description ' + i,
   harvestingConfig: (i) => ({
     harvestingStatus: 'active',
     harvestVia: 'sushi',

@@ -1,9 +1,5 @@
 # UI ERM Usage - Getting started
 
-## General information
-
-The UI erm usage app uses a vendor finder plugin to link created usage data providers to vendors. Currently the [find vendor plugin](../plugins/ui-plugin-find-vendor/README.md "ui-plugin-find-vendor") is located in this project. It may be exported to its own project in the future. This is working similar to the [ui-plugin-find-user](https://github.com/folio-org/ui-plugin-find-user "User-finder plugin for Stripes").
-
 ## Run as dev environment
 
 ### Prerequisites
