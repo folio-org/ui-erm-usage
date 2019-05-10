@@ -10,41 +10,30 @@ import {
   Row
 } from '@folio/stripes/components';
 
-class UDPInfoView extends React.Component {
-  static propTypes = {
-    id: PropTypes.string,
-    usageDataProvider: PropTypes.object.isRequired,
-    stripes: PropTypes
-      .shape({
-        connect: PropTypes.func.isRequired,
-      })
-      .isRequired,
-  };
-
-  render() {
-    const { usageDataProvider, id } = this.props;
-
-    return (
-      <React.Fragment>
-        <div id={id}>
-          <Row>
-            <Col xs={3}>
-              <KeyValue
-                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentOrganization" />}
-                value={_.get(usageDataProvider, 'vendor.name', '-')}
-              />
-            </Col>
-            <Col xs={3}>
-              <KeyValue
-                label={<FormattedMessage id="ui-erm-usage.udpInfo.contentPlatform" />}
-                value={_.get(usageDataProvider, 'platform.id', '-')}
-              />
-            </Col>
-          </Row>
-        </div>
-      </React.Fragment>
-    );
-  }
+function UDPInfoView(props) {
+  const { usageDataProvider, id } = props;
+  return (
+    <div id={id}>
+      <Row>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.general.description" />}
+            value={_.get(usageDataProvider, 'description', '-')}
+          />
+        </Col>
+      </Row>
+    </div>
+  );
 }
+
+UDPInfoView.propTypes = {
+  id: PropTypes.string,
+  usageDataProvider: PropTypes.object.isRequired,
+  stripes: PropTypes
+    .shape({
+      connect: PropTypes.func.isRequired,
+    })
+    .isRequired,
+};
 
 export default UDPInfoView;
