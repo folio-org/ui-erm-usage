@@ -76,9 +76,10 @@
   "reportOverview.reportDate": "Report date",
   "reportOverview.reportsPerYear": "Reports grouped by year",
   "reportOverview.noReports": "No reports available...",
-  "reportOverview.downloadMultiMonths": "Download reports for multiple months",
+  "reportOverview.downloadMultiMonths": "Download reports for multiple months (Counter 4 only)",
   "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
   "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
+  "reportOverview.downloadMultiMonths.reportType": "Select report type",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
   "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
 

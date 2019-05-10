@@ -1,7 +1,8 @@
 
 import {
   interactor,
-  text
+  text,
+  value
 } from '@bigtest/interactor';
 
 @interactor class HarvestingAccordion {
@@ -24,6 +25,15 @@ import {
   static defaultScope = '#uploadAccordion';
 }
 
+@interactor class ReportTypeDownloadSelect {
+  static defaultScope = 'select[name="downloadMultiMonths.reportType"]';
+  value = value();
+}
+
+@interactor class ExpandAll {
+  static defaultScope = '#clickable-expand-all-view';
+}
+
 export default @interactor class UDPDetailsPage {
 
   static defaultScope = '#pane-udpdetails';
@@ -33,4 +43,6 @@ export default @interactor class UDPDetailsPage {
   notesAccordion = new NotesAccordion();
   statisticsAccordion = new StatisticsAccordion();
   uploadAccordion = new UploadAccordion();
+  reportTypeDownloadSelect = new ReportTypeDownloadSelect();
+  expandAll = new ExpandAll();
 }

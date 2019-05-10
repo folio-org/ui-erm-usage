@@ -46,5 +46,24 @@ describe('UDPDetailsPage', () => {
       expect(udpDetailsPage.statisticsAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.uploadAccordion.isPresent).to.equal(true);
     });
+
+    describe('can select report type for download multi months', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.statisticsAccordion.click();
+      });
+
+      it('report type select is available', () => {
+        expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('JR1');
+      });
+
+      describe('BR1 can be selected', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.reportTypeDownloadSelect.select('BR1');
+        });
+        it('reportType is changed to "BR1"', () => {
+          expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
+        });
+      });
+    });
   });
 });

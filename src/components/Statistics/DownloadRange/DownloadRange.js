@@ -10,6 +10,7 @@ import {
   Button,
   Col,
   Row,
+  Select,
   TextField
 } from '@folio/stripes/components';
 import {
@@ -19,6 +20,7 @@ import {
   downloadCSVMultipleMonths
 } from '../../../util/DownloadCSV';
 import css from './DownloadRange.css';
+import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 
 class DownloadRange extends React.Component {
   static propTypes = {
@@ -43,7 +45,8 @@ class DownloadRange extends React.Component {
       start: '',
       startError: null,
       end: '',
-      endError: null
+      endError: null,
+      reportType: ''
     };
   }
 
@@ -129,15 +132,24 @@ class DownloadRange extends React.Component {
 
   doDownload = () => {
     if (!_.isEmpty(this.state.start) && !_.isEmpty(this.state.end)) {
-      downloadCSVMultipleMonths(this.props.udpId, 'JR1', '4', this.state.start, this.state.end, this.okapiUrl, this.httpHeaders);
+      downloadCSVMultipleMonths(this.props.udpId, this.state.reportType, '4', this.state.start, this.state.end, this.okapiUrl, this.httpHeaders);
     }
+  }
+
+  onSelectReportType = (e) => {
+    this.setState(
+      {
+        reportType: e.target.value
+      }
+    );
   }
 
   render() {
     const isDisabled = this.hasError();
+
     return (
       <Row>
-        <Col xs={4}>
+        <Col xs={3}>
           <TextField
             label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />}
             placeholder="YYYY-MM"
@@ -147,7 +159,7 @@ class DownloadRange extends React.Component {
             error={this.state.startError}
           />
         </Col>
-        <Col xs={4}>
+        <Col xs={3}>
           <TextField
             label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />}
             placeholder="YYYY-MM"
@@ -157,7 +169,15 @@ class DownloadRange extends React.Component {
             error={this.state.endError}
           />
         </Col>
-        <Col xs={4}>
+        <Col xs={3}>
+          <Select
+            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />}
+            name="downloadMultiMonths.reportType"
+            dataOptions={reportDownloadTypes}
+            onChange={this.onSelectReportType}
+          />
+        </Col>
+        <Col xs={3}>
           <div className={css.startButton}>
             <Button
               onClick={this.doDownload}
