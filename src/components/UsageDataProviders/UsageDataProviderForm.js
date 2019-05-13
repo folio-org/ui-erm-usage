@@ -7,6 +7,7 @@ import {
 import {
   Button,
   Col,
+  ConfirmationModal,
   ExpandAllButton,
   IconButton,
   Pane,
@@ -14,6 +15,9 @@ import {
   Paneset,
   Row
 } from '@folio/stripes/components';
+import {
+  IfPermission
+} from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 
 import { UDPInfoForm } from '../UDPInfo';
@@ -39,6 +43,7 @@ class UsageDataProviderForm extends React.Component {
     super(props);
 
     this.state = {
+      confirmDelete: false,
       sections: {
         editUDPInfo: true,
         editHarvestingConfig: true,
@@ -49,9 +54,32 @@ class UsageDataProviderForm extends React.Component {
     this.handleExpandAll = this.handleExpandAll.bind(this);
   }
 
+  beginDelete = () => {
+    this.setState({
+      confirmDelete: true,
+    });
+  }
+
+  confirmDelete = (confirmation) => {
+    if (confirmation) {
+      this.deleteUDP();
+    } else {
+      this.setState({ confirmDelete: false });
+    }
+  }
+
+  deleteUDP = () => {
+    const { parentMutator, initialValues: { id } } = this.props;
+    parentMutator.records.DELETE({ id }).then(() => {
+      parentMutator.query.update({
+        _path: '/eusage',
+        layer: null
+      });
+    });
+  }
+
   getAddFirstMenu() {
     const { onCancel } = this.props;
-
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
@@ -69,10 +97,26 @@ class UsageDataProviderForm extends React.Component {
   }
 
   getLastMenu(id, label) {
-    const { pristine, submitting } = this.props;
+    const { initialValues, pristine, submitting } = this.props;
+    const { confirmDelete } = this.state;
+    const isEditing = initialValues && initialValues.id;
 
     return (
       <PaneMenu>
+        {isEditing &&
+          <IfPermission perm="usagedataproviders.item.delete">
+            <Button
+              id="clickable-delete-udp"
+              title={<FormattedMessage id="ui-erm-usage.general.delete" />}
+              buttonStyle="danger"
+              onClick={this.beginDelete}
+              disabled={confirmDelete}
+              marginBottom0
+            >
+              <FormattedMessage id="ui-erm-usage.general.delete" />
+            </Button>
+          </IfPermission>
+        }
         <Button
           id={id}
           type="submit"
@@ -105,11 +149,24 @@ class UsageDataProviderForm extends React.Component {
     });
   }
 
+  getConfirmationMessage = (udp) => {
+    const name = udp.label || '';
+    return (
+      <FormattedMessage
+        id="ui-erm-usage.form.delete.confirm.message"
+        values={{
+          name
+        }}
+      />
+    );
+  }
+
   render() {
     const { initialValues, handleSubmit } = this.props;
-    const { sections } = this.state;
-    const firstMenu = this.getAddFirstMenu();
+    const { confirmDelete, sections } = this.state;
+    const udp = initialValues || {};
     const paneTitle = initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />;
+
     const lastMenu = initialValues.id ?
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.updateUDP" />) :
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
@@ -124,7 +181,7 @@ class UsageDataProviderForm extends React.Component {
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
-            firstMenu={firstMenu}
+            firstMenu={this.getAddFirstMenu()}
             lastMenu={lastMenu}
             paneTitle={paneTitle}
           >
@@ -155,6 +212,14 @@ class UsageDataProviderForm extends React.Component {
                 expanded={sections.editNotes}
                 onToggle={this.handleSectionToggle}
                 {...this.props}
+              />
+              <ConfirmationModal
+                id="delete-udp-confirmation"
+                open={confirmDelete}
+                heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
+                message={this.getConfirmationMessage(udp)}
+                onConfirm={() => { this.confirmDelete(true); }}
+                onCancel={() => { this.confirmDelete(false); }}
               />
             </div>
           </Pane>

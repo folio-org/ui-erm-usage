@@ -131,9 +131,10 @@
 
   "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
-  "aggregator.form.delete.confirm.message": "Do you really want to delete {aggName}?",
   "aggregator.form.delete.confirm.title": "Delete Aggregator",
   "aggregator.form.newAggregator": "New aggregator",
+  "udp.form.delete.confirm.title": "Delete Usagedata Provider",
+  "form.delete.confirm.message": "Do you really want to delete {name}?",
 
   "errors.required": "Required",
   "errors.emailInvalid": "Email address invalid",

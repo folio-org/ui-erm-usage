@@ -1,5 +1,6 @@
 
 import {
+  clickable,
   interactor,
   text,
   value
@@ -38,6 +39,7 @@ export default @interactor class UDPDetailsPage {
 
   static defaultScope = '#pane-udpdetails';
   title = text('[data-test-header-title]');
+  clickEditUDP = clickable('#clickable-edit-udp');
   harvestingAccordion = new HarvestingAccordion();
   sushiCredentialsAccordion = new SushiCredentialsAccordion();
   notesAccordion = new NotesAccordion();

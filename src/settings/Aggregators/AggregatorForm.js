@@ -187,9 +187,9 @@ class AggregatorForm extends React.Component {
 
     const confirmationMessage = (
       <FormattedMessage
-        id="ui-erm-usage.aggregator.form.delete.confirm.message"
+        id="ui-erm-usage.form.delete.confirm.message"
         values={{
-          aggName: name
+          name
         }}
       />
     );
