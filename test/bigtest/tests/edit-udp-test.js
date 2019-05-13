@@ -23,7 +23,7 @@ describe('Edit UDP', () => {
     });
   });
 
-  describe('UDP edit form is displayed ', () => {
+  describe('UDP edit form is displayed', () => {
     beforeEach(async function () {
       await udpInteractor.clickActiveUDPsCheckbox();
       return this.visit(`/eusage/view/${udp.id}?filters=harvestingStatus.Inactive,harvestingStatus.Active&layer=edit`);
@@ -31,6 +31,15 @@ describe('Edit UDP', () => {
 
     it('displays Edit UDP form', () => {
       expect(udpEditPage.$root).to.exist;
+    });
+
+    describe('Confirm delete udp is displayed', () => {
+      beforeEach(async function () {
+        await udpEditPage.clickDeleteUDP();
+      });
+      it('displays confirm delete udp', () => {
+        expect(udpEditPage.deleteUDPConfirmation).to.exist;
+      });
     });
   });
 });

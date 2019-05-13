@@ -1,4 +1,5 @@
 import {
+  clickable,
   interactor,
   text,
   isPresent,
@@ -8,6 +9,10 @@ import {
 @interactor class HarvestingStatusSelect {
   static defaultScope = 'select[name="harvestingConfig.harvestingStatus"]';
   value = value();
+}
+
+@interactor class DeleteUDPConfirmation {
+  static defaultScope = '#delete-udp-confirmation';
 }
 
 export default @interactor class UDPEditPage {
@@ -20,4 +25,7 @@ export default @interactor class UDPEditPage {
 
   title = text('[class*=paneTitleLabel---]');
   harvestingStatusSelect = new HarvestingStatusSelect();
+  deleteUDPConfirmation = new DeleteUDPConfirmation();
+
+  clickDeleteUDP = clickable('#clickable-delete-udp');
 }

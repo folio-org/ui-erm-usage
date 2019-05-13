@@ -130,17 +130,6 @@ class UsageDataProviderView extends React.Component {
     return udpFormData;
   }
 
-  deleteUDP = (udp) => {
-    const { parentMutator } = this.props;
-    parentMutator.records.DELETE({ id: udp.id })
-      .then(() => {
-        parentMutator.query.update({
-          _path: '/eusage',
-          layer: null
-        });
-      });
-  }
-
   render() {
     const { harvesterImpls, resources, stripes } = this.props;
     const query = resources.query;
@@ -160,15 +149,6 @@ class UsageDataProviderView extends React.Component {
       const udpFormData = this.getUdpFormData(initialValues);
       const detailMenu = (
         <PaneMenu>
-          <IfPermission perm="usagedataproviders.item.delete">
-            <IconButton
-              icon="trash"
-              id="clickable-delete-udp"
-              style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
-              onClick={() => this.deleteUDP(initialValues)}
-              aria-label="Delete Usagedata Provider"
-            />
-          </IfPermission>
           <IconButton
             icon="comment"
             id="clickable-show-notes"
