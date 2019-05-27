@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
   Modal,
   Pane
@@ -19,7 +22,6 @@ export default class StartHarvester extends React.Component {
   });
 
   static propTypes = {
-    label: PropTypes.string.isRequired,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }),
@@ -33,8 +35,8 @@ export default class StartHarvester extends React.Component {
       modalText: ''
     };
 
-    this.successText = 'Harvester successfully started!';
-    this.failText = 'Something went wrong while starting the harvester...';
+    this.successText = <FormattedMessage id="ui-erm-usage.settings.harvester.start.success" />;
+    this.failText = <FormattedMessage id="ui-erm-usage.settings.harvester.start.fail" />;
   }
 
   onClickStartHarvester = () => {
@@ -72,15 +74,19 @@ export default class StartHarvester extends React.Component {
     );
 
     return (
-      <Pane defaultWidth="fill" fluidContentWidth paneTitle={this.props.label}>
+      <Pane
+        defaultWidth="fill"
+        fluidContentWidth
+        paneTitle={<FormattedMessage id="ui-erm-usage.settings.harvester.start" />}
+      >
         <div>
-          {'Start the harvester for the current tenant: '}
+          {<FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />}
           { startHarvesterButton }
         </div>
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
-          label="Harvester started"
+          label={<FormattedMessage id="ui-erm-usage.settings.harvester.start.started" />}
         >
           <div>
             { this.state.modalText }
