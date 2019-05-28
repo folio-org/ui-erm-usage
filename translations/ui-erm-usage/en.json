@@ -139,5 +139,13 @@
   "errors.required": "Required",
   "errors.emailInvalid": "Email address invalid",
   "errors.dateInvalid": "Date invalid",
-  "errors.endDateMustBeGraterStartDate": "End date must be greater than start date"
+  "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
+
+  "settings.harvester.start": "Start Harvester",
+  "settings.harvester.start.success": "Harvester successfully started!",
+  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
+  "settings.harvester.start.started": "Harvester started",
+  "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
+  "settings.harvester.config": "Harvester Configuration"
+
 }
