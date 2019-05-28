@@ -71,7 +71,6 @@ class UsageDataProviderView extends React.Component {
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
-    notesToggle: PropTypes.func,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
@@ -149,13 +148,6 @@ class UsageDataProviderView extends React.Component {
       const udpFormData = this.getUdpFormData(initialValues);
       const detailMenu = (
         <PaneMenu>
-          <IconButton
-            icon="comment"
-            id="clickable-show-notes"
-            style={{ visibility: !initialValues ? 'hidden' : 'visible' }}
-            onClick={this.props.notesToggle}
-            aria-label="Notes"
-          />
           <IfPermission perm="usagedataproviders.item.put">
             <IconButton
               icon="edit"
