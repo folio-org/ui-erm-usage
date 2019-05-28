@@ -12,6 +12,7 @@ import {
   IconButton,
   Layer,
   Pane,
+  PaneHeaderIconButton,
   PaneMenu,
   Row
 } from '@folio/stripes/components';
@@ -20,6 +21,8 @@ import {
   IfPermission,
   TitleManager
 } from '@folio/stripes/core';
+import { withTags } from '@folio/stripes/smart-components';
+
 import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
@@ -71,6 +74,8 @@ class UsageDataProviderView extends React.Component {
     onEdit: PropTypes.func,
     editLink: PropTypes.string,
     onCloseEdit: PropTypes.func,
+    tagsToggle: PropTypes.func,
+    tagsEnabled: PropTypes.bool,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
@@ -129,6 +134,50 @@ class UsageDataProviderView extends React.Component {
     return udpFormData;
   }
 
+  renderDetailMenu = (udp) => {
+    const {
+      tagsEnabled,
+      tagsToggle,
+      onEdit,
+      editLink
+    } = this.props;
+
+    const tags = ((udp && udp.tags) || {}).tagList || [];
+
+    return (
+      <PaneMenu>
+        {
+          tagsEnabled &&
+          <FormattedMessage id="ui-users.showTags">
+            {ariaLabel => (
+              <PaneHeaderIconButton
+                icon="tag"
+                id="clickable-show-tags"
+                onClick={tagsToggle}
+                badgeCount={tags.length}
+                ariaLabel={ariaLabel}
+              />
+            )}
+          </FormattedMessage>
+        }
+        <IfPermission perm="usagedataproviders.item.put">
+          <IconButton
+            icon="edit"
+            id="clickable-edit-udp"
+            style={{
+              visibility: !udp
+                ? 'hidden'
+                : 'visible'
+            }}
+            onClick={onEdit}
+            href={editLink}
+            aria-label="Edit Usagedata Provider"
+          />
+        </IfPermission>
+      </PaneMenu>
+    );
+  }
+
   render() {
     const { harvesterImpls, resources, stripes } = this.props;
     const query = resources.query;
@@ -146,24 +195,25 @@ class UsageDataProviderView extends React.Component {
       return <div style={{ paddingTop: '1rem' }}><Icon icon="spinner-ellipsis" width="100px" /></div>;
     } else {
       const udpFormData = this.getUdpFormData(initialValues);
-      const detailMenu = (
-        <PaneMenu>
-          <IfPermission perm="usagedataproviders.item.put">
-            <IconButton
-              icon="edit"
-              id="clickable-edit-udp"
-              style={{
-                visibility: !initialValues
-                  ? 'hidden'
-                  : 'visible'
-              }}
-              onClick={this.props.onEdit}
-              href={this.props.editLink}
-              aria-label="Edit Usagedata Provider"
-            />
-          </IfPermission>
-        </PaneMenu>
-      );
+      const detailMenu = this.renderDetailMenu(initialValues);
+      // (
+      //   <PaneMenu>
+      //     <IfPermission perm="usagedataproviders.item.put">
+      //       <IconButton
+      //         icon="edit"
+      //         id="clickable-edit-udp"
+      //         style={{
+      //           visibility: !initialValues
+      //             ? 'hidden'
+      //             : 'visible'
+      //         }}
+      //         onClick={this.props.onEdit}
+      //         href={this.props.editLink}
+      //         aria-label="Edit Usagedata Provider"
+      //       />
+      //     </IfPermission>
+      //   </PaneMenu>
+      // );
 
       const label = _.get(initialValues, 'label', 'No LABEL');
       const providerId = _.get(initialValues, 'id', '');
@@ -257,4 +307,4 @@ class UsageDataProviderView extends React.Component {
   }
 }
 
-export default UsageDataProviderView;
+export default withTags(UsageDataProviderView);
