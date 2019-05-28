@@ -44,29 +44,31 @@ class Harvester extends React.Component {
 
   render() {
     return (
-      <this.configManager
-        getInitialValues={this.getInitialValues}
-        label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
-        moduleName="ERM-USAGE-HARVESTER"
-        configName="maxFailedAttempts"
-      >
-        <Row>
-          <Col xs={12}>
-            <Field
-              component={TextField}
-              type="number"
-              id="maxFailedAttempts"
-              name="maxFailedAttempts"
-              label="Number failed attempts"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            { this.renderStartButton() }
-          </Col>
-        </Row>
-      </this.configManager>
+      <div data-test-settings-harvester-config>
+        <this.configManager
+          getInitialValues={this.getInitialValues}
+          label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
+          moduleName="ERM-USAGE-HARVESTER"
+          configName="maxFailedAttempts"
+        >
+          <Row>
+            <Col xs={12}>
+              <Field
+                component={TextField}
+                type="number"
+                id="maxFailedAttempts"
+                name="maxFailedAttempts"
+                label="Number failed attempts"
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              { this.renderStartButton() }
+            </Col>
+          </Row>
+        </this.configManager>
+      </div>
     );
   }
 }
