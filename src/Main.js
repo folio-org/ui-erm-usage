@@ -187,6 +187,8 @@ class UsageDataProviders extends React.Component {
     }));
   }
 
+  getHelperResourcePath = (helper, id) => `usage-data-providers/${id}`;
+
   render() {
     const { browseOnly, intl, onComponentWillUnmount, onSelectRow, resources, showSingleResult, stripes } = this.props;
 
@@ -231,6 +233,7 @@ class UsageDataProviders extends React.Component {
           browseOnly={browseOnly}
           stripes={stripes}
           detailProps={detailProps}
+          getHelperResourcePath={this.getHelperResourcePath}
         />
       </div>
     );
