@@ -176,31 +176,16 @@ class UsageDataProviders extends React.Component {
     return udp.harvestingConfig.harvestVia === 'aggregator';
   }
 
-  extractHarvesterImpls = (resources) => {
-    const records = (resources.harvesterImpls || {}).records || [];
-    const implementations = records.length
-      ? records[0].implementations
-      : [];
-    return implementations.map(i => ({
-      value: i.type,
-      label: i.name
-    }));
-  }
-
   getHelperResourcePath = (helper, id) => `usage-data-providers/${id}`;
 
   render() {
-    const { browseOnly, intl, onComponentWillUnmount, onSelectRow, resources, showSingleResult, stripes } = this.props;
+    const { browseOnly, intl, onComponentWillUnmount, onSelectRow, showSingleResult, stripes } = this.props;
 
     const resultsFormatter = {
       name: udp => udp.label,
       harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
       latestStats: udp => udp.latestReport,
       aggregator: udp => (this.doHarvestViaAggregator(udp) ? udp.harvestingConfig.aggregator.name : '-'),
-    };
-
-    const detailProps = {
-      harvesterImpls: this.extractHarvesterImpls(resources),
     };
 
     return (
@@ -232,7 +217,6 @@ class UsageDataProviders extends React.Component {
           }}
           browseOnly={browseOnly}
           stripes={stripes}
-          detailProps={detailProps}
           getHelperResourcePath={this.getHelperResourcePath}
         />
       </div>

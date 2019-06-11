@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## 2.2.1 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.1) (2019-06-11)
+* Bugfix: Use parentResource instead of detailsProps in UsagedataProviderForm.
+
 ## 2.2.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.0) (2019-06-11)
 * Fix typo database report DRx -> DBx (UIEUS-72)
 * Add tags functionality (UIEUS-62)
