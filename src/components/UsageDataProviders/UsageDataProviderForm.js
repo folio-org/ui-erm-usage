@@ -161,8 +161,19 @@ class UsageDataProviderForm extends React.Component {
     );
   }
 
+  extractHarvesterImpls = (resources) => {
+    const records = (resources.harvesterImpls || {}).records || [];
+    const implementations = records.length
+      ? records[0].implementations
+      : [];
+    return implementations.map(i => ({
+      value: i.type,
+      label: i.name
+    }));
+  }
+
   render() {
-    const { initialValues, handleSubmit } = this.props;
+    const { initialValues, handleSubmit, parentResources } = this.props;
     const { confirmDelete, sections } = this.state;
     const udp = initialValues || {};
     const paneTitle = initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />;
@@ -170,6 +181,9 @@ class UsageDataProviderForm extends React.Component {
     const lastMenu = initialValues.id ?
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.updateUDP" />) :
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
+
+    // const records = (parentResources.harvesterImpls || {}).records || [];
+    const harvesterImpls = this.extractHarvesterImpls(parentResources);
 
     return (
       <form
@@ -205,6 +219,7 @@ class UsageDataProviderForm extends React.Component {
                 accordionId="editHarvestingConfig"
                 expanded={sections.editHarvestingConfig}
                 onToggle={this.handleSectionToggle}
+                harvesterImplementations={harvesterImpls}
                 {...this.props}
               />
               <NotesForm
