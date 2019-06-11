@@ -60,9 +60,9 @@
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {
-      "usage-data-providers": "2.1",
+      "usage-data-providers": "2.2",
       "aggregator-settings": "1.1",
-      "counter-reports": "1.1"
+      "counter-reports": "1.2"
     },
     "permissionSets": [
       {
