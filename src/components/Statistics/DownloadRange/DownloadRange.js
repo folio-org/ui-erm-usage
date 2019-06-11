@@ -46,7 +46,7 @@ class DownloadRange extends React.Component {
       startError: null,
       end: '',
       endError: null,
-      reportType: ''
+      reportType: reportDownloadTypes[0].value
     };
   }
 
