@@ -15,6 +15,14 @@ import {
 import ReportButton from '../ReportButton';
 
 class StatisticsPerYear extends React.Component {
+  static manifest = Object.freeze({
+    failedAttemptsSettings: {
+      type: 'okapi',
+      records: 'configs',
+      path: 'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
+    },
+  });
+
   static propTypes = {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
@@ -26,6 +34,10 @@ class StatisticsPerYear extends React.Component {
         getState: PropTypes.func
       })
     }).isRequired,
+    mutator: PropTypes.shape({
+      failedAttemptsSettings: PropTypes.object
+    }),
+    resources: PropTypes.object.isRequired,
     intl: intlShape.isRequired,
     stats: PropTypes.object,
   }
@@ -73,7 +85,7 @@ class StatisticsPerYear extends React.Component {
     });
   }
 
-  renderReportPerYear = (reports) => {
+  renderReportPerYear = (reports, maxFailedAttempts) => {
     const o = Object.create({});
     let maxMonth = 0;
     reports.forEach(r => {
@@ -82,12 +94,12 @@ class StatisticsPerYear extends React.Component {
       if (parseInt(month, 10) >= maxMonth) {
         maxMonth = parseInt(month, 10);
       }
-      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} />;
+      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} maxFailedAttempts={maxFailedAttempts} />;
     });
     while (maxMonth < 12) {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
-      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} />;
+      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} maxFailedAttempts={maxFailedAttempts} />;
       maxMonth = newMonth;
     }
     return o;
@@ -99,12 +111,14 @@ class StatisticsPerYear extends React.Component {
     const visibleColumns = ['report', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const columnWidths = { 'report': '50px', '01': '50px', '02': '50px', '03': '50px', '04': '50px', '05': '50px', '06': '50px', '07': '50px', '08': '50px', '09': '50px', '10': '50px', '11': '50px', '12': '50px' };
 
+    const maxFailedAttempts = parseInt(this.extractMaxFailedAttempts(), 10);
+
     return years.map(y => {
       const currentYear = groupedStats[y];
       const reportNames = _.keys(currentYear);
       const reportsOfAYear = reportNames.map(rName => {
         const reports = currentYear[rName];
-        return this.renderReportPerYear(reports);
+        return this.renderReportPerYear(reports, maxFailedAttempts);
       });
       return (
         <Accordion
@@ -138,6 +152,13 @@ class StatisticsPerYear extends React.Component {
         </Accordion>
       );
     });
+  }
+
+  extractMaxFailedAttempts = () => {
+    const { resources } = this.props;
+    const settings = (resources.failedAttemptsSettings || {});
+    const settingObject = settings.records.length === 0 ? '' : settings.records[0];
+    return settingObject.value;
   }
 
   render() {

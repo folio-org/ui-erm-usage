@@ -50,8 +50,6 @@ class ReportButton extends React.Component {
       showDropDown: false,
       showConfirmDelete: false,
     };
-
-    this.RETRY_THRESHOLD = 3;
   }
 
   getFileType = () => {
@@ -67,7 +65,7 @@ class ReportButton extends React.Component {
   getButtonStyle = (failedAttempts) => {
     if (!failedAttempts) {
       return 'success';
-    } else if (failedAttempts < this.RETRY_THRESHOLD) {
+    } else if (failedAttempts < this.props.maxFailedAttempts) {
       return 'warning';
     } else {
       return 'danger';
@@ -77,7 +75,7 @@ class ReportButton extends React.Component {
   getButtonIcon = (failedAttempts) => {
     if (!failedAttempts) {
       return <Icon icon="check-circle" />;
-    } else if (failedAttempts < this.RETRY_THRESHOLD) {
+    } else if (failedAttempts < this.props.maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
     } else {
       return <Icon icon="times-circle" />;
@@ -183,7 +181,7 @@ class ReportButton extends React.Component {
               deleteReport={this.deleteReport}
               downloadRawReport={this.downloadRawReport}
               downloadCsvReport={this.downloadCsvReport}
-              retryThreshold={this.RETRY_THRESHOLD}
+              retryThreshold={this.props.maxFailedAttempts}
             />
           </DropdownMenu>
         </Dropdown>
@@ -210,6 +208,7 @@ ReportButton.propTypes = {
     csvReports: PropTypes.object,
   }),
   intl: intlShape.isRequired,
+  maxFailedAttempts: PropTypes.number.isRequired,
 };
 
 export default injectIntl(ReportButton);

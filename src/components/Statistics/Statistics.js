@@ -45,6 +45,7 @@ class Statistics extends React.Component {
     super(props);
     this.props.mutator.providerId.replace({ id: props.providerId });
     this.connectedDownloadRange = props.stripes.connect(DownloadRange);
+    this.connectedStatsPerYear = props.stripes.connect(StatisticsPerYear);
   }
 
   componentDidUpdate(prevProps) {
@@ -73,7 +74,7 @@ class Statistics extends React.Component {
           </Col>
           <Col xs={12}>
             <AccordionSet>
-              <StatisticsPerYear stats={stats} stripes={this.props.stripes} />
+              <this.connectedStatsPerYear stats={stats} stripes={this.props.stripes} />
             </AccordionSet>
           </Col>
         </Row>
