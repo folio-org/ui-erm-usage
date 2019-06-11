@@ -1,5 +1,13 @@
 # Change history for ui-erm-usage
 
+## 2.2.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.0) (2019-06-11)
+* Fix typo database report DRx -> DBx (UIEUS-72)
+* Add tags functionality (UIEUS-62)
+* Enable to configure number of harvesting tries (UIEUS-11, UIEUS-79)
+* Warn user before deleting UDP (UIEUS-60)
+* Support multiple report types for csv download (UIEUS-55)
+* Remove reference to platform and vendor (UIEUS-65)
+
 ## 2.1.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.1.0) (2019-05-07)
 * Use BigTest for testing
 * Fetch harvester implementations from backend on demand
