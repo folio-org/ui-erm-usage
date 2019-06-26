@@ -16,7 +16,7 @@ describe('Harvester settings', () => {
 
   describe('change max failed attempts', () => {
     beforeEach(async function () {
-      await harvesterSettingsInteractor.maxFailedAttempts.fill(5);
+      await harvesterSettingsInteractor.maxFailedAttempts.fill(4);
     });
 
     it('update button is enabled', () => {
