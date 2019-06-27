@@ -14,6 +14,12 @@ describe('Harvester settings', () => {
     await harvesterSettingsInteractor.clickSaveConfig();
   });
 
+  describe('maxFailedAttempts default is set', () => {
+    it('default is set', () => {
+      expect(harvesterSettingsInteractor.maxFailedAttempts.value).to.be.equal('5');
+    });
+  });
+
   describe('change max failed attempts', () => {
     beforeEach(async function () {
       await harvesterSettingsInteractor.maxFailedAttempts.fill(4);
