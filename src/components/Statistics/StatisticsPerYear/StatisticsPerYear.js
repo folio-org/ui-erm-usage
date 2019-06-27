@@ -13,6 +13,7 @@ import {
   Row
 } from '@folio/stripes/components';
 import ReportButton from '../ReportButton';
+import { MAX_FAILED_ATTEMPTS } from '../../../util/constants';
 
 class StatisticsPerYear extends React.Component {
   static manifest = Object.freeze({
@@ -85,7 +86,7 @@ class StatisticsPerYear extends React.Component {
     });
   }
 
-  renderReportPerYear = (reports, maxFailedAttempts) => {
+  renderReportPerYear = (reports, maxFailed) => {
     const o = Object.create({});
     let maxMonth = 0;
     reports.forEach(r => {
@@ -94,12 +95,12 @@ class StatisticsPerYear extends React.Component {
       if (parseInt(month, 10) >= maxMonth) {
         maxMonth = parseInt(month, 10);
       }
-      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} maxFailedAttempts={maxFailedAttempts} />;
+      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} maxFailedAttempts={maxFailed} />;
     });
     while (maxMonth < 12) {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
-      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} maxFailedAttempts={maxFailedAttempts} />;
+      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} maxFailedAttempts={maxFailed} />;
       maxMonth = newMonth;
     }
     return o;
@@ -111,14 +112,14 @@ class StatisticsPerYear extends React.Component {
     const visibleColumns = ['report', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const columnWidths = { 'report': '50px', '01': '50px', '02': '50px', '03': '50px', '04': '50px', '05': '50px', '06': '50px', '07': '50px', '08': '50px', '09': '50px', '10': '50px', '11': '50px', '12': '50px' };
 
-    const maxFailedAttempts = parseInt(this.extractMaxFailedAttempts(), 10);
+    const maxFailed = parseInt(this.extractMaxFailedAttempts(), 10);
 
     return years.map(y => {
       const currentYear = groupedStats[y];
       const reportNames = _.keys(currentYear);
       const reportsOfAYear = reportNames.map(rName => {
         const reports = currentYear[rName];
-        return this.renderReportPerYear(reports, maxFailedAttempts);
+        return this.renderReportPerYear(reports, maxFailed);
       });
       return (
         <Accordion
@@ -157,8 +158,11 @@ class StatisticsPerYear extends React.Component {
   extractMaxFailedAttempts = () => {
     const { resources } = this.props;
     const settings = (resources.failedAttemptsSettings || {});
-    const settingObject = settings.records.length === 0 ? '' : settings.records[0];
-    return settingObject.value;
+    if (settings.records.length === 0) {
+      return MAX_FAILED_ATTEMPTS;
+    } else {
+      return settings.records[0].value;
+    }
   }
 
   render() {

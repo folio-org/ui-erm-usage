@@ -12,6 +12,7 @@ import {
 import { Field } from 'redux-form';
 import { ConfigManager } from '@folio/stripes/smart-components';
 import StartHavester from './StartHarvester';
+import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
 class Harvester extends React.Component {
   static propTypes = {
@@ -40,6 +41,18 @@ class Harvester extends React.Component {
     } else {
       return this.renderNotPresent();
     }
+  }
+
+  getInitialValues = (settings) => {
+    let loadedValues = {};
+    let value;
+    try {
+      value = settings.length === 0 ? MAX_FAILED_ATTEMPTS : settings[0].value;
+      loadedValues = {
+        maxFailedAttempts: value
+      };
+    } catch (e) {} // eslint-disable-line no-empty
+    return loadedValues;
   }
 
   render() {
