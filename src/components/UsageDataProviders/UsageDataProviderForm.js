@@ -23,6 +23,9 @@ import stripesForm from '@folio/stripes/form';
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 import { NotesForm } from '../Notes';
+
+import extractHarvesterImpls from '../../util/HarvesterImpls';
+
 import css from './UsageDataProviderForm.css';
 
 class UsageDataProviderForm extends React.Component {
@@ -161,17 +164,6 @@ class UsageDataProviderForm extends React.Component {
     );
   }
 
-  extractHarvesterImpls = (resources) => {
-    const records = (resources.harvesterImpls || {}).records || [];
-    const implementations = records.length
-      ? records[0].implementations
-      : [];
-    return implementations.map(i => ({
-      value: i.type,
-      label: i.name
-    }));
-  }
-
   render() {
     const { initialValues, handleSubmit, parentResources } = this.props;
     const { confirmDelete, sections } = this.state;
@@ -183,7 +175,7 @@ class UsageDataProviderForm extends React.Component {
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
 
     // const records = (parentResources.harvesterImpls || {}).records || [];
-    const harvesterImpls = this.extractHarvesterImpls(parentResources);
+    const harvesterImpls = extractHarvesterImpls(parentResources);
 
     return (
       <form

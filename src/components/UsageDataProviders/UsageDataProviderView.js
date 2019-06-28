@@ -31,6 +31,8 @@ import { NotesView } from '../Notes';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
+import extractHarvesterImpls from '../../util/HarvesterImpls';
+
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
     query: {},
@@ -76,7 +78,7 @@ class UsageDataProviderView extends React.Component {
     onCloseEdit: PropTypes.func,
     tagsToggle: PropTypes.func,
     tagsEnabled: PropTypes.bool,
-    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+    // harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {
@@ -179,9 +181,11 @@ class UsageDataProviderView extends React.Component {
   }
 
   render() {
-    const { harvesterImpls, resources, stripes } = this.props;
+    const { resources, parentResources, stripes } = this.props;
     const query = resources.query;
     const initialValues = this.getData();
+
+    const harvesterImpls = extractHarvesterImpls(parentResources);
 
     const settings = (resources.settings || {}).records || [];
 
