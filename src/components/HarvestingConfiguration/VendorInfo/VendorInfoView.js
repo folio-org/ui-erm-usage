@@ -29,7 +29,7 @@ class VendorInfoView extends React.Component {
         <Col xs={3}>
           <KeyValue
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
-            value={serviceTypeLabel}
+            value={<div data-test-service-type>{serviceTypeLabel}</div>}
           />
         </Col>
         <Col xs={3}>

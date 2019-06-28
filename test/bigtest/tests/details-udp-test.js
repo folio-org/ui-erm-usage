@@ -47,6 +47,16 @@ describe('UDPDetailsPage', () => {
       expect(udpDetailsPage.uploadAccordion.isPresent).to.equal(true);
     });
 
+    describe('service type is set correctly', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.harvestingAccordion.click();
+      });
+
+      it('service type is set', () => {
+        expect(udpDetailsPage.harvesterImpls).to.be.equal('Counter-Sushi 4.1');
+      });
+    });
+
     describe('can select report type for download multi months', function () {
       beforeEach(async function () {
         await udpDetailsPage.statisticsAccordion.click();

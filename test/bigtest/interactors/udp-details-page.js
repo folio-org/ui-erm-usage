@@ -36,7 +36,6 @@ import {
 }
 
 export default @interactor class UDPDetailsPage {
-
   static defaultScope = '#pane-udpdetails';
   title = text('[data-test-header-title]');
   clickEditUDP = clickable('#clickable-edit-udp');
@@ -47,4 +46,5 @@ export default @interactor class UDPDetailsPage {
   uploadAccordion = new UploadAccordion();
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
   expandAll = new ExpandAll();
+  harvesterImpls = text('[data-test-service-type]');
 }
