@@ -1,5 +1,9 @@
 # Change history for ui-erm-usage
 
+## 2.2.2 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.2) (2019-06-28)
+* Bugfix: Display correct service type in harvesting configuration (UIEUS-88)
+* Bufgix: Use default value for maxFailedAttempts if not defined (UIEUS-80)
+
 ## 2.2.1 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.1) (2019-06-11)
 * Bugfix: Use parentResource instead of detailsProps in UsagedataProviderForm.
 
