@@ -82,6 +82,9 @@
   "reportOverview.downloadMultiMonths.reportType": "Select report type",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
   "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
+  "reportOverview.infoText" : "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",
+  "reportOverview.expandAllYears" : "Expand all years",
+  "reportOverview.collapseAllYears" : "Collapse all years",
 
   "report.action.download.csv": "Download as CSV",
   "report.action.download.jsonxml": "Download as JSON/XML",
