@@ -3,7 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   injectIntl,
-  intlShape
+  intlShape,
+  FormattedMessage
 } from 'react-intl';
 import {
   Accordion,
@@ -175,8 +176,7 @@ class StatisticsPerYear extends React.Component {
       <React.Fragment>
         <Row>
           <Col xs={8}>
-            <div>Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. </div>
-            <div>Note: Currently CSV download is possible for Counter 4 JR1 reports only.</div>
+            <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
           </Col>
         </Row>
         <Row end="xs">
@@ -184,8 +184,8 @@ class StatisticsPerYear extends React.Component {
             <ExpandAllButton
               accordionStatus={this.state.accordions}
               onToggle={this.handleExpandAll}
-              expandLabel="Expand all years"
-              collapseLabel="Collapse all years"
+              expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
+              collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
             />
           </Col>
         </Row>
