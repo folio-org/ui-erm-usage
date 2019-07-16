@@ -86,8 +86,10 @@
   "reportOverview.expandAllYears" : "Expand all years",
   "reportOverview.collapseAllYears" : "Collapse all years",
 
-  "report.action.download.csv": "Download as CSV",
-  "report.action.download.jsonxml": "Download as JSON/XML",
+  "report.action.download.csv": "Download report as CSV",
+  "report.action.download.jsonxml": "Download report as JSON/XML",
+  "report.action.general.delete.report": "Delete report",
+  "report.action.general.delete.entry": "Delete entry",
   "report.action.failedAttempts": "Failed Attempts",
 
   "report.upload.failed": "Failed...",
