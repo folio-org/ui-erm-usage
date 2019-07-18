@@ -174,7 +174,6 @@ class UsageDataProviderForm extends React.Component {
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.updateUDP" />) :
       this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
 
-    // const records = (parentResources.harvesterImpls || {}).records || [];
     const harvesterImpls = extractHarvesterImpls(parentResources);
 
     return (

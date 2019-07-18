@@ -41,6 +41,12 @@ class UsageDataProviderView extends React.Component {
       records: 'configs',
       path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
     },
+    selUDP: {
+      type: 'okapi',
+      path: 'usage-data-providers/:{id}',
+      clear: false,
+      shouldRefresh: () => false,
+    },
   });
 
   static propTypes = {
@@ -64,6 +70,7 @@ class UsageDataProviderView extends React.Component {
     }),
     mutator: PropTypes.shape({
       query: PropTypes.object.isRequired,
+      selUDP: PropTypes.object.isRequired,
     }),
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -78,7 +85,6 @@ class UsageDataProviderView extends React.Component {
     onCloseEdit: PropTypes.func,
     tagsToggle: PropTypes.func,
     tagsEnabled: PropTypes.bool,
-    // harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {
@@ -101,9 +107,10 @@ class UsageDataProviderView extends React.Component {
     };
   }
 
-  getData = () => {
-    const { parentResources, match: { params: { id } } } = this.props;
-    const udp = (parentResources.records || {}).records || [];
+  getUDP = () => {
+    const { resources, match: { params: { id } } } = this.props;
+    const udp = (resources.selUDP || {}).records || [];
+
     if (udp.length === 0 || !id) return null;
     return udp.find(u => u.id === id);
   }
@@ -183,7 +190,7 @@ class UsageDataProviderView extends React.Component {
   render() {
     const { resources, parentResources, stripes } = this.props;
     const query = resources.query;
-    const initialValues = this.getData();
+    const initialValues = this.getUDP();
 
     const harvesterImpls = extractHarvesterImpls(parentResources);
 
@@ -200,24 +207,6 @@ class UsageDataProviderView extends React.Component {
     } else {
       const udpFormData = this.getUdpFormData(initialValues);
       const detailMenu = this.renderDetailMenu(initialValues);
-      // (
-      //   <PaneMenu>
-      //     <IfPermission perm="usagedataproviders.item.put">
-      //       <IconButton
-      //         icon="edit"
-      //         id="clickable-edit-udp"
-      //         style={{
-      //           visibility: !initialValues
-      //             ? 'hidden'
-      //             : 'visible'
-      //         }}
-      //         onClick={this.props.onEdit}
-      //         href={this.props.editLink}
-      //         aria-label="Edit Usagedata Provider"
-      //       />
-      //     </IfPermission>
-      //   </PaneMenu>
-      // );
 
       const label = _.get(initialValues, 'label', 'No LABEL');
       const providerId = _.get(initialValues, 'id', '');

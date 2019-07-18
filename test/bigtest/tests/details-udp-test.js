@@ -105,3 +105,18 @@ describe('UDPDetailsPage', () => {
     });
   });
 });
+
+describe('UDPDetailsPage by ID', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withUsageReports');
+    this.visit(`/eusage/view/${udp.id}`);
+  });
+
+  it('displays udp label in the pane header', function () {
+    expect(udpDetailsPage.title).to.include(udp.label);
+  });
+});
