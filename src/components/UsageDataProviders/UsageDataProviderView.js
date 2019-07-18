@@ -45,10 +45,7 @@ class UsageDataProviderView extends React.Component {
       type: 'okapi',
       path: 'usage-data-providers/:{id}',
       clear: false,
-      shouldRefresh: (resource, action, refresh) => {
-        const { path } = action.meta;
-        return refresh || (path && path.match(/link/));
-      },
+      shouldRefresh: () => false,
     },
   });
 
@@ -88,7 +85,6 @@ class UsageDataProviderView extends React.Component {
     onCloseEdit: PropTypes.func,
     tagsToggle: PropTypes.func,
     tagsEnabled: PropTypes.bool,
-    // harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
   constructor(props) {

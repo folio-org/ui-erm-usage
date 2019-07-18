@@ -7,7 +7,7 @@ module.exports.test = function uiTest(uiTestCtx) {
 
     const label = '__000Test UDP 1' + Math.random();
     const changedLabel = label + '_CHANGED';
-    const platformId = '4a9c5aa2-2acc-46fc-9e0c-bc8598cff6b1';
+    const description = 'This is a description';
     const harvestingStatus = 'active';
     const harvestingVia = 'sushi';
     const serviceType = 'cs41';
@@ -36,15 +36,7 @@ module.exports.test = function uiTest(uiTestCtx) {
           .click('#clickable-newusageDataProvider')
           .wait(55)
           .insert('input[name=label]', label)
-
-          // Select the first vendor in plugin-find-vendor
-          .click('#clickable-plugin-find-vendor')
-          .wait(3000)
-          .wait('#list-vendors')
-          .click('div[role="row"] a')
-          .wait(500)
-
-          .insert('input[name="platform.id"]', platformId)
+          .insert('input[name="description"]', description)
           .select('select[name="harvestingConfig.harvestingStatus"]', harvestingStatus)
           .select('select[name="harvestingConfig.harvestVia"]', harvestingVia)
           .select('select[name="harvestingConfig.sushiConfig.serviceType"]', serviceType)
@@ -99,8 +91,12 @@ module.exports.test = function uiTest(uiTestCtx) {
       });
       it('should delete udp', (done) => {
         nightmare
+          .wait('#clickable-edit-udp')
+          .click('#clickable-edit-udp')
           .wait('#clickable-delete-udp')
           .click('#clickable-delete-udp')
+          .wait('#clickable-delete-udp-confirmation-confirm')
+          .click('#clickable-delete-udp-confirmation-confirm')
           .wait(1000)
           .evaluate((name) => {
             const node = Array.from(
