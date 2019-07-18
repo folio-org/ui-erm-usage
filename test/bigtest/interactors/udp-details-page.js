@@ -3,7 +3,8 @@ import {
   clickable,
   interactor,
   text,
-  value
+  value,
+  scoped
 } from '@bigtest/interactor';
 
 @interactor class HarvestingAccordion {
@@ -35,6 +36,18 @@ import {
   static defaultScope = '#clickable-expand-all-view';
 }
 
+@interactor class ReportActionMenuValid {
+  static defaultScope = '[class="report-action-menu-valid"]';
+  downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
+  deleteButton = scoped('button[id="delete-report-button"]');
+}
+
+@interactor class ReportActionMenuFailed {
+  static defaultScope = '[class="report-action-menu-failed"]';
+  downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
+  deleteButton = scoped('button[id="delete-report-button"]');
+}
+
 export default @interactor class UDPDetailsPage {
   static defaultScope = '#pane-udpdetails';
   title = text('[data-test-header-title]');
@@ -47,4 +60,8 @@ export default @interactor class UDPDetailsPage {
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
   expandAll = new ExpandAll();
   harvesterImpls = text('[data-test-service-type]');
+  validReport = clickable('#clickable-download-stats-by-id-2018-01');
+  failedReport = clickable('#clickable-download-stats-by-id-2018-02');
+  reportActionMenuValid = new ReportActionMenuValid();
+  reportActionMenuFailed = new ReportActionMenuFailed();
 }

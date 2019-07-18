@@ -16,7 +16,7 @@ describe('UDPDetailsPage', () => {
 
   let udp = null;
   beforeEach(async function () {
-    udp = this.server.create('usage-data-provider');
+    udp = this.server.create('usage-data-provider', 'withUsageReports');
     this.visit('/eusage?filters=harvestingStatus.Active');
 
     await udpInteractor.clickActiveUDPsCheckbox();
@@ -72,6 +72,34 @@ describe('UDPDetailsPage', () => {
         });
         it('reportType is changed to "BR1"', () => {
           expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
+        });
+      });
+    });
+
+    describe('can open report action menu', () => {
+      beforeEach(async function () {
+        await udpDetailsPage.statisticsAccordion.click();
+      });
+
+      describe('valid report has correct buttons', () => {
+        beforeEach(async function () {
+          await udpDetailsPage.validReport();
+        });
+
+        it('valid report has download json xml and delete button', () => {
+          expect(udpDetailsPage.reportActionMenuValid.downloadJsonXmlButton.isPresent).to.equal(true);
+          expect(udpDetailsPage.reportActionMenuValid.deleteButton.isPresent).to.equal(true);
+        });
+      });
+
+      describe('failed report has correct buttons', () => {
+        beforeEach(async function () {
+          await udpDetailsPage.failedReport();
+        });
+
+        it('failed report has delete button but not download json xml button', () => {
+          expect(udpDetailsPage.reportActionMenuFailed.downloadJsonXmlButton.isPresent).to.equal(false);
+          expect(udpDetailsPage.reportActionMenuFailed.deleteButton.isPresent).to.equal(true);
         });
       });
     });

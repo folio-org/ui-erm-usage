@@ -55,6 +55,24 @@ class ReportActionMenu extends React.Component {
     }
   }
 
+  renderDeleteButton = (failInfo) => {
+    let msg = <FormattedMessage id="ui-erm-usage.report.action.general.delete.report" />;
+    if (failInfo) {
+      msg = <FormattedMessage id="ui-erm-usage.report.action.general.delete.entry" />;
+    }
+    return (
+      <Button
+        id="delete-report-button"
+        buttonStyle="dropdownItem"
+        onClick={() => this.onClickDeleteReport()}
+      >
+        <Icon icon="trash">
+          { msg }
+        </Icon>
+      </Button>
+    );
+  }
+
   render() {
     const { report, retryThreshold } = this.props;
 
@@ -91,19 +109,9 @@ class ReportActionMenu extends React.Component {
       </MenuSection>
     );
 
-    const deleteButton = (
-      <Button
-        buttonStyle="dropdownItem"
-        onClick={() => this.onClickDeleteReport()}
-      >
-        <Icon icon="trash">
-          <FormattedMessage id="ui-erm-usage.general.delete" />
-        </Icon>
-      </Button>
-    );
-
     const rawDownloadButton = failInfo ? null : (
       <Button
+        id="download-json-xml-button"
         buttonStyle="dropdownItem"
         onClick={() => this.onClickDownloadRawReport()}
       >
@@ -121,7 +129,7 @@ class ReportActionMenu extends React.Component {
         label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.actions' })}
         labelTag="h3"
       >
-        { deleteButton }
+        { this.renderDeleteButton(failInfo) }
         { rawDownloadButton }
         { csvDownloadButton }
       </MenuSection>
