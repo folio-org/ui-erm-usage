@@ -62,6 +62,7 @@ class ReportActionMenu extends React.Component {
     }
     return (
       <Button
+        id="delete-report-button"
         buttonStyle="dropdownItem"
         onClick={() => this.onClickDeleteReport()}
       >
@@ -110,6 +111,7 @@ class ReportActionMenu extends React.Component {
 
     const rawDownloadButton = failInfo ? null : (
       <Button
+        id="download-json-xml-button"
         buttonStyle="dropdownItem"
         onClick={() => this.onClickDownloadRawReport()}
       >

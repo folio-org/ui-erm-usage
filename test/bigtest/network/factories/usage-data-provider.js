@@ -40,7 +40,7 @@ export default Factory.extend({
 
   withUsageReports: trait({
     afterCreate(provider, server) {
-      server.createList('counter-report', 5, { provider });
+      server.createList('counter-report', 9, { provider });
     }
   })
 });

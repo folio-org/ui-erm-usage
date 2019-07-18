@@ -153,10 +153,14 @@ class ReportButton extends React.Component {
       </React.Fragment>
     );
 
+    const buttonId = 'clickable-download-stats-by-id-' + report.yearMonth;
+    const dropdownId = 'report-action-dropdown-' + report.yearMonth;
+    const actionMenuClassName = report.failedAttempts ? 'report-action-menu-failed' : 'report-action-menu-valid';
+
     return (
       <React.Fragment>
         <Dropdown
-          id="report-action-dropdown"
+          id={dropdownId}
           onToggle={() => this.setState(state => ({ showDropDown: !state.showDropDown }))}
           tether={{
             attachment: 'top left',
@@ -166,7 +170,7 @@ class ReportButton extends React.Component {
           open={this.state.showDropDown}
         >
           <Button
-            id="clickable-download-stats-by-id"
+            id={buttonId}
             buttonStyle={style}
             data-role="toggle"
             aria-haspopup="true"
@@ -176,13 +180,18 @@ class ReportButton extends React.Component {
           <DropdownMenu
             data-role="menu"
           >
-            <ReportActionMenu
-              report={report}
-              deleteReport={this.deleteReport}
-              downloadRawReport={this.downloadRawReport}
-              downloadCsvReport={this.downloadCsvReport}
-              retryThreshold={this.props.maxFailedAttempts}
-            />
+            <div
+              id="report-action-menu"
+              className={actionMenuClassName}
+            >
+              <ReportActionMenu
+                report={report}
+                deleteReport={this.deleteReport}
+                downloadRawReport={this.downloadRawReport}
+                downloadCsvReport={this.downloadCsvReport}
+                retryThreshold={this.props.maxFailedAttempts}
+              />
+            </div>
           </DropdownMenu>
         </Dropdown>
         <ConfirmationModal
