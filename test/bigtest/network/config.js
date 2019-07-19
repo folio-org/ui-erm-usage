@@ -6,7 +6,17 @@ export default function config() {
   // okapi endpoints
   this.get('/_/version', () => '0.0.0');
 
-  this.get('_/proxy/tenants/:id/modules', []);
+  this.get('_/proxy/tenants/:id/modules', [
+    {
+      id : 'mod-erm-usage-harvester-1.4.0-SNAPSHOT',
+      name : 'erm-usage-harvester',
+      provides : [{
+        id : 'erm-usage-harvester',
+        version : '1.1'
+      },
+      ]
+    },
+  ]);
 
   this.get('/saml/check', {
     ssoEnabled: false

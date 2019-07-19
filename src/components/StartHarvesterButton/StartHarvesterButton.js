@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+import {
   Button,
+  InfoPopover,
   Modal,
 } from '@folio/stripes/components';
 
-export default class StartHarvesterButton extends React.Component {
+class StartHarvesterButton extends React.Component {
   static manifest = Object.freeze({
     harvesterStart: {
       type: 'okapi',
@@ -18,10 +24,11 @@ export default class StartHarvesterButton extends React.Component {
   });
 
   static propTypes = {
-    usageDataProvider: PropTypes.object.isRequired,
+    intl: intlShape.isRequired,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }),
+    usageDataProvider: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -32,14 +39,14 @@ export default class StartHarvesterButton extends React.Component {
       modalText: ''
     };
     const { usageDataProvider } = props;
-    this.successText = `Harvester successfully started for '${usageDataProvider.label}'!`;
-    this.failText = `Something went wrong while starting the harvester for usagedata provider ${usageDataProvider.label}...`;
+    this.successText = this.successText(usageDataProvider);
+    this.failText = this.failText(usageDataProvider);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
-      this.successText = `Harvester successfully started for '${this.props.usageDataProvider.label}'!`;
-      this.failText = `Something went wrong while starting the harvester for usagedata provider ${this.props.usageDataProvider.label}...`;
+      this.successText = this.successText(this.props.usageDataProvider);
+      this.failText = this.failText(this.props.usageDataProvider);
     }
   }
 
@@ -68,18 +75,47 @@ export default class StartHarvesterButton extends React.Component {
     this.setState({ showInfoModal: false });
   }
 
+  isInActive = (udp) => {
+    return udp.harvestingConfig.harvestingStatus === 'inactive';
+  }
+
+  successText = (udp) => {
+    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.success.single.udp' })} ${udp.label} !`;
+  }
+
+  failText = (udp) => {
+    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.fail.success.single.udp' })} ${udp.label}...`;
+  }
+
+  renderInfoPopover = (udp) => {
+    if (this.isInActive(udp)) {
+      return (
+        <InfoPopover
+          content={<FormattedMessage id="ui-erm-usage.harvester.start.inactiveInfo" />}
+        />
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
+    const { usageDataProvider } = this.props;
     return (
       <React.Fragment>
         <Button
+          id="start-harvester-button"
+          buttonStyle="primary"
+          disabled={this.isInActive(usageDataProvider)}
           onClick={() => this.onClickStartHarvester()}
         >
-          { 'Start harvester' }
+          { <FormattedMessage id="ui-erm-usage.harvester.start" /> }
         </Button>
+        { this.renderInfoPopover(usageDataProvider) }
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
-          label="Harvester started"
+          label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
         >
           <div>
             { this.state.modalText }
@@ -94,3 +130,5 @@ export default class StartHarvesterButton extends React.Component {
     );
   }
 }
+
+export default injectIntl(StartHarvesterButton);

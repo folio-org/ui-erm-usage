@@ -120,3 +120,55 @@ describe('UDPDetailsPage by ID', () => {
     expect(udpDetailsPage.title).to.include(udp.label);
   });
 });
+
+describe('Inactive UDP disabled start harvester', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withSetInactive');
+    this.visit(`/eusage/view/${udp.id}`);
+  });
+
+  it('harvesting config accordion is present', function () {
+    expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
+  });
+
+  describe('open harvesting accordion and check if start harvesting button is disabled', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.harvestingAccordionButton.click();
+    });
+
+    it('start harvesting button is present and disabled', () => {
+      expect(udpDetailsPage.startHarvesterButton.isPresent).to.equal(true);
+      expect(udpDetailsPage.startHarvesterButton.isDisabled).to.equal(true);
+    });
+  });
+});
+
+describe('Active UDP enabled start harvester', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider');
+    this.visit(`/eusage/view/${udp.id}`);
+  });
+
+  it('harvesting config accordion is present', function () {
+    expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
+  });
+
+  describe('open harvesting accordion and check if start harvesting button is enabled', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.harvestingAccordionButton.click();
+    });
+
+    it('start harvesting button is present and enabled', () => {
+      expect(udpDetailsPage.startHarvesterButton.isPresent).to.equal(true);
+      expect(udpDetailsPage.startHarvesterButton.isDisabled).to.equal(false);
+    });
+  });
+});
