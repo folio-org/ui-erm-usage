@@ -146,10 +146,14 @@
   "errors.dateInvalid": "Date invalid",
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
 
-  "settings.harvester.start": "Start Harvester",
+  "harvester.start": "Start Harvester",
+  "harvester.start.started": "Harvester started",
+  "harvester.start.success.single.udp": "Harvester successfully started for",
+  "harvester.start.fail.single.udp": "Something went wrong while starting the harvester for usagedata provider",
+  "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
+
   "settings.harvester.start.success": "Harvester successfully started!",
-  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
-  "settings.harvester.start.started": "Harvester started",
+  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",  
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
   "settings.harvester.config": "Harvester Configuration"
 

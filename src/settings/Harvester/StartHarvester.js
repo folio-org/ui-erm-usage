@@ -77,7 +77,7 @@ export default class StartHarvester extends React.Component {
       <Pane
         defaultWidth="fill"
         fluidContentWidth
-        paneTitle={<FormattedMessage id="ui-erm-usage.settings.harvester.start" />}
+        paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}
       >
         <div>
           {<FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />}
@@ -86,7 +86,7 @@ export default class StartHarvester extends React.Component {
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
-          label={<FormattedMessage id="ui-erm-usage.settings.harvester.start.started" />}
+          label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
         >
           <div>
             { this.state.modalText }

@@ -2,13 +2,22 @@
 import {
   clickable,
   interactor,
+  property,
+  scoped,
   text,
-  value,
-  scoped
+  value
 } from '@bigtest/interactor';
 
 @interactor class HarvestingAccordion {
   static defaultScope = '#harvestingAccordion';
+}
+
+@interactor class HarvestingAccordionButton {
+  static defaultScope = '#accordion-toggle-button-harvestingAccordion';
+}
+
+@interactor class StartHarvesterButton {
+  isDisabled = property('button[id="start-harvester-button"]', 'disabled');
 }
 
 @interactor class SushiCredentialsAccordion {
@@ -64,4 +73,6 @@ export default @interactor class UDPDetailsPage {
   failedReport = clickable('#clickable-download-stats-by-id-2018-02');
   reportActionMenuValid = new ReportActionMenuValid();
   reportActionMenuFailed = new ReportActionMenuFailed();
+  harvestingAccordionButton = new HarvestingAccordionButton();
+  startHarvesterButton = new StartHarvesterButton();
 }

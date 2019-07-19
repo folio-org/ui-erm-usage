@@ -42,5 +42,11 @@ export default Factory.extend({
     afterCreate(provider, server) {
       server.createList('counter-report', 9, { provider });
     }
+  }),
+
+  withSetInactive: trait({
+    afterCreate(provider, server) {
+      provider.harvestingConfig.harvestingStatus = 'inactive';
+    }
   })
 });
