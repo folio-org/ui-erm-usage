@@ -45,14 +45,14 @@ import {
   static defaultScope = '#clickable-expand-all-view';
 }
 
-@interactor class ReportActionMenuValid {
-  static defaultScope = '[class="report-action-menu-valid"]';
+@interactor class ReportInfoValid {
+  static defaultScope = '[class="report-info-valid"]';
   downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
   deleteButton = scoped('button[id="delete-report-button"]');
 }
 
-@interactor class ReportActionMenuFailed {
-  static defaultScope = '[class="report-action-menu-failed"]';
+@interactor class ReportInfoFailed {
+  static defaultScope = '[class="report-info-failed"]';
   downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
   deleteButton = scoped('button[id="delete-report-button"]');
 }
@@ -71,8 +71,8 @@ export default @interactor class UDPDetailsPage {
   harvesterImpls = text('[data-test-service-type]');
   validReport = clickable('#clickable-download-stats-by-id-2018-01');
   failedReport = clickable('#clickable-download-stats-by-id-2018-02');
-  reportActionMenuValid = new ReportActionMenuValid();
-  reportActionMenuFailed = new ReportActionMenuFailed();
+  reportInfoValid = new ReportInfoValid();
+  reportInfoFailed = new ReportInfoFailed();
   harvestingAccordionButton = new HarvestingAccordionButton();
   startHarvesterButton = new StartHarvesterButton();
 }

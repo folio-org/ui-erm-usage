@@ -9,13 +9,13 @@ import {
 import {
   Button,
   ConfirmationModal,
-  Dropdown,
-  DropdownMenu,
   Icon,
+  Modal,
+  ModalFooter
 } from '@folio/stripes/components';
 import saveAs from 'file-saver';
 
-import ReportActionMenu from '../ReportActionMenu';
+import ReportInfo from '../ReportInfo';
 import {
   downloadCSVSingleMonth
 } from '../../../util/DownloadCSV';
@@ -134,6 +134,10 @@ class ReportButton extends React.Component {
     this.setState({ showConfirmDelete: false });
   };
 
+  handleClose = () => {
+    this.setState({ showDropDown: false });
+  }
+
   render() {
     const { report } = this.props;
     if (_.isUndefined(report)) {
@@ -154,46 +158,48 @@ class ReportButton extends React.Component {
     );
 
     const buttonId = 'clickable-download-stats-by-id-' + report.yearMonth;
-    const dropdownId = 'report-action-dropdown-' + report.yearMonth;
-    const actionMenuClassName = report.failedAttempts ? 'report-action-menu-failed' : 'report-action-menu-valid';
+    const dropdownId = 'report-info-' + report.yearMonth;
+    const reportInfoClassName = report.failedAttempts ? 'report-info-failed' : 'report-info-valid';
 
     return (
       <React.Fragment>
-        <Dropdown
-          id={dropdownId}
-          onToggle={() => this.setState(state => ({ showDropDown: !state.showDropDown }))}
-          tether={{
-            attachment: 'top left',
-            targetAttachment: 'bottom left',
-            targetOffset: '15px 0',
-          }}
-          open={this.state.showDropDown}
+        <Button
+          id={buttonId}
+          buttonStyle={style}
+          data-role="toggle"
+          aria-haspopup="true"
+          onClick={() => this.setState(state => ({ showDropDown: !state.showDropDown }))}
         >
-          <Button
-            id={buttonId}
-            buttonStyle={style}
-            data-role="toggle"
-            aria-haspopup="true"
+          { icon }
+        </Button>
+        <Modal
+          id={dropdownId}
+          closeOnBackgroundClick
+          open={this.state.showDropDown}
+          label="Report info"
+        >
+          <div
+            id="report-info"
+            className={reportInfoClassName}
           >
-            { icon }
-          </Button>
-          <DropdownMenu
-            data-role="menu"
-          >
-            <div
-              id="report-action-menu"
-              className={actionMenuClassName}
+            <ReportInfo
+              report={report}
+              deleteReport={this.deleteReport}
+              downloadRawReport={this.downloadRawReport}
+              downloadCsvReport={this.downloadCsvReport}
+              retryThreshold={this.props.maxFailedAttempts}
+              udpLabel={this.props.udpLabel}
+            />
+          </div>
+          <ModalFooter>
+            <Button
+              id="close-report-info-button"
+              onClick={this.handleClose}
             >
-              <ReportActionMenu
-                report={report}
-                deleteReport={this.deleteReport}
-                downloadRawReport={this.downloadRawReport}
-                downloadCsvReport={this.downloadCsvReport}
-                retryThreshold={this.props.maxFailedAttempts}
-              />
-            </div>
-          </DropdownMenu>
-        </Dropdown>
+              Close
+            </Button>
+          </ModalFooter>
+        </Modal>
         <ConfirmationModal
           open={this.state.showConfirmDelete}
           heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />}
@@ -218,6 +224,7 @@ ReportButton.propTypes = {
   }),
   intl: intlShape.isRequired,
   maxFailedAttempts: PropTypes.number.isRequired,
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default injectIntl(ReportButton);

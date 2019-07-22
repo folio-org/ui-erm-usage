@@ -39,6 +39,7 @@ class Statistics extends React.Component {
       providerId: PropTypes.object.isRequired,
     }),
     providerId: PropTypes.string.isRequired,
+    udpLabel: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -74,7 +75,11 @@ class Statistics extends React.Component {
           </Col>
           <Col xs={12}>
             <AccordionSet>
-              <this.connectedStatsPerYear stats={stats} stripes={this.props.stripes} />
+              <this.connectedStatsPerYear
+                stats={stats}
+                stripes={this.props.stripes}
+                udpLabel={this.props.udpLabel}
+              />
             </AccordionSet>
           </Col>
         </Row>
