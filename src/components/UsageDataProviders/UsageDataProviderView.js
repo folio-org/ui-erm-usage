@@ -267,6 +267,7 @@ class UsageDataProviderView extends React.Component {
             <this.connectedStatistics
               stripes={stripes}
               providerId={providerId}
+              udpLabel={label}
             />
           </Accordion>
           <Accordion

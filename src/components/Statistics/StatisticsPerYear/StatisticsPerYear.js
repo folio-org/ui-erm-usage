@@ -42,6 +42,7 @@ class StatisticsPerYear extends React.Component {
     resources: PropTypes.object.isRequired,
     intl: intlShape.isRequired,
     stats: PropTypes.object,
+    udpLabel: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -96,12 +97,23 @@ class StatisticsPerYear extends React.Component {
       if (parseInt(month, 10) >= maxMonth) {
         maxMonth = parseInt(month, 10);
       }
-      o[month] = <this.connectedReportButton report={r} stripes={this.props.stripes} maxFailedAttempts={maxFailed} />;
+      o[month] = (
+        <this.connectedReportButton
+          report={r}
+          stripes={this.props.stripes}
+          maxFailedAttempts={maxFailed}
+          udpLabel={this.props.udpLabel}
+        />);
     });
     while (maxMonth < 12) {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
-      o[monthPadded] = <this.connectedReportButton stripes={this.props.stripes} maxFailedAttempts={maxFailed} />;
+      o[monthPadded] = (
+        <this.connectedReportButton
+          stripes={this.props.stripes}
+          maxFailedAttempts={maxFailed}
+          udpLabel={this.props.udpLabel}
+        />);
       maxMonth = newMonth;
     }
     return o;

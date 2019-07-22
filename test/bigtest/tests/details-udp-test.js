@@ -76,7 +76,7 @@ describe('UDPDetailsPage', () => {
       });
     });
 
-    describe('can open report action menu', () => {
+    describe('can open report info menu', () => {
       beforeEach(async function () {
         await udpDetailsPage.statisticsAccordion.click();
       });
@@ -87,8 +87,8 @@ describe('UDPDetailsPage', () => {
         });
 
         it('valid report has download json xml and delete button', () => {
-          expect(udpDetailsPage.reportActionMenuValid.downloadJsonXmlButton.isPresent).to.equal(true);
-          expect(udpDetailsPage.reportActionMenuValid.deleteButton.isPresent).to.equal(true);
+          expect(udpDetailsPage.reportInfoValid.downloadJsonXmlButton.isPresent).to.equal(true);
+          expect(udpDetailsPage.reportInfoValid.deleteButton.isPresent).to.equal(true);
         });
       });
 
@@ -98,8 +98,8 @@ describe('UDPDetailsPage', () => {
         });
 
         it('failed report has delete button but not download json xml button', () => {
-          expect(udpDetailsPage.reportActionMenuFailed.downloadJsonXmlButton.isPresent).to.equal(false);
-          expect(udpDetailsPage.reportActionMenuFailed.deleteButton.isPresent).to.equal(true);
+          expect(udpDetailsPage.reportInfoFailed.downloadJsonXmlButton.isPresent).to.equal(false);
+          expect(udpDetailsPage.reportInfoFailed.deleteButton.isPresent).to.equal(true);
         });
       });
     });

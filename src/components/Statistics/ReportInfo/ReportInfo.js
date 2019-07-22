@@ -13,7 +13,7 @@ import {
 } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 
-class ReportActionMenu extends React.Component {
+class ReportInfo extends React.Component {
   onClickDownloadRawReport = () => {
     this.props.downloadRawReport();
   }
@@ -97,6 +97,10 @@ class ReportActionMenu extends React.Component {
         labelTag="h3"
       >
         <KeyValue
+          label="Usage data provider"
+          value={this.props.udpLabel}
+        />
+        <KeyValue
           label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
           value={report.reportName}
         />
@@ -144,13 +148,14 @@ class ReportActionMenu extends React.Component {
   }
 }
 
-ReportActionMenu.propTypes = {
+ReportInfo.propTypes = {
   report: PropTypes.object,
   deleteReport: PropTypes.func,
   downloadRawReport: PropTypes.func,
   downloadCsvReport: PropTypes.func,
   retryThreshold: PropTypes.number,
   intl: intlShape.isRequired,
+  udpLabel: PropTypes.string.isRequired,
 };
 
-export default injectIntl(ReportActionMenu);
+export default injectIntl(ReportInfo);
