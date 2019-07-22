@@ -15,7 +15,8 @@ class AggregatorManager extends React.Component {
     },
     aggregatorImpls: {
       type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=true'
+      path: 'erm-usage-harvester/impl?aggregator=true',
+      throwErrors: false,
     }
   });
 
