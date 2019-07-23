@@ -1,13 +1,20 @@
 # Change history for ui-erm-usage
 
-## 2.2.2 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.2) (2019-06-28)
+## [2.3.0](https://github.com/folio-org/ui-erm-usage/tree/v2.2.2) (2019-07-23)
+* Avaiable reports for CSV download: update info text in ui (UIEUS-81)
+* Display single UDP (ERM-343)
+* "Start harvester" button for an inactive provider is inactive (UIEUS-78)
+* No error message, if harvester is not deployed (UIEUS-91)
+* Report info is displayed in modal (UIEUS-89)
+
+## [2.2.2](https://github.com/folio-org/ui-erm-usage/tree/v2.2.2) (2019-06-28)
 * Bugfix: Display correct service type in harvesting configuration (UIEUS-88)
 * Bufgix: Use default value for maxFailedAttempts if not defined (UIEUS-80)
 
-## 2.2.1 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.1) (2019-06-11)
+## [2.2.1](https://github.com/folio-org/ui-erm-usage/tree/v2.2.1) (2019-06-11)
 * Bugfix: Use parentResource instead of detailsProps in UsagedataProviderForm.
 
-## 2.2.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.2.0) (2019-06-11)
+## [2.2.0](https://github.com/folio-org/ui-erm-usage/tree/v2.2.0) (2019-06-11)
 * Fix typo database report DRx -> DBx (UIEUS-72)
 * Add tags functionality (UIEUS-62)
 * Enable to configure number of harvesting tries (UIEUS-11, UIEUS-79)
@@ -15,11 +22,11 @@
 * Support multiple report types for csv download (UIEUS-55)
 * Remove reference to platform and vendor (UIEUS-65)
 
-## 2.1.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.1.0) (2019-05-07)
+## [2.1.0](https://github.com/folio-org/ui-erm-usage/tree/v2.1.0) (2019-05-07)
 * Use BigTest for testing
 * Fetch harvester implementations from backend on demand
 
-## 2.0.0 (https://github.com/folio-org/ui-erm-usage/tree/v2.0.0) (2019-03-22)
+## [2.0.0](https://github.com/folio-org/ui-erm-usage/tree/v2.0.0) (2019-03-22)
 * Upload XML encoded Counter 4 reports (UIEUS-39)
 * Ability to download counter reports as CSV for single and multiple months (for Counter 4 JR1 only) (UIEUS-36)
 * Ability to start harvester for a single usagedata provider (UIEUS-2)
