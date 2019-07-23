@@ -84,7 +84,7 @@ class StartHarvesterButton extends React.Component {
   }
 
   failText = (udp) => {
-    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.fail.success.single.udp' })} ${udp.label}...`;
+    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.fail.single.udp' })} ${udp.label}...`;
   }
 
   renderInfoPopover = (udp) => {
