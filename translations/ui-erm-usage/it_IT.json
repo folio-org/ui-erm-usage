@@ -78,7 +78,7 @@
     "aggregator.config.customerId": "Customer ID",
     "aggregator.config.reportRelease": "Report release",
     "aggregator.config.accountConfig": "Account Configuration",
-    "aggregator.config.accountConfig.type": "Type",
+    "aggregator.config.accountConfig.type": "Tipologia",
     "aggregator.config.accountConfig.mail": "Mail",
     "aggregator.config.accountConfig.contact": "Contact",
     "aggregator.form.saveAndClose": "Salva e chiudi",
