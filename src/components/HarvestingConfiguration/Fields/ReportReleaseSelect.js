@@ -5,6 +5,7 @@ import {
 import {
   FormattedMessage
 } from 'react-intl';
+import PropTypes from 'prop-types';
 import {
   Select
 } from '@folio/stripes/components';
@@ -14,15 +15,20 @@ import {
 
 import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 
-const ReportReleaseSelect = () => (
+const propTypes = {
+  id: PropTypes.string,
+  name: PropTypes.string,
+};
+
+const ReportReleaseSelect = (props) => (
   <Field
     label={
       <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease">
         {(msg) => msg + ' *'}
       </FormattedMessage>
     }
-    name="harvestingConfig.reportRelease"
-    id="addudp_reportrelease"
+    name={props.name}
+    id={props.id}
     placeholder="Select the report release"
     component={Select}
     dataOptions={reportReleaseOptions}
@@ -30,5 +36,7 @@ const ReportReleaseSelect = () => (
     fullWidth
   />
 );
+
+ReportReleaseSelect.propTypes = propTypes;
 
 export default ReportReleaseSelect;
