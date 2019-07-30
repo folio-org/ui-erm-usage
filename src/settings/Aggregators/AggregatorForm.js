@@ -24,12 +24,16 @@ import {
   IfPermission
 } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
-import { Field } from 'redux-form';
+import {
+  getFormValues,
+  Field
+} from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
 import {
   required,
   mail
 } from '../../util/Validate';
+import { ReportReleaseSelect } from '../../components/HarvestingConfiguration/Fields';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
@@ -66,6 +70,25 @@ class AggregatorForm extends React.Component {
         aggregatorConfig: true
       },
     };
+  }
+
+  getCurrentValues() {
+    const { store } = this.props.stripes;
+    const state = store.getState();
+    return getFormValues('aggreagtorForm')(state) || {};
+  }
+
+  hasConfigType(values) {
+    return (!_.isEmpty(values) && !_.isEmpty(values.accountConfig) && !_.isEmpty(values.accountConfig.configType));
+  }
+
+  getSelectedConfigType() {
+    const currentVals = this.getCurrentValues();
+    if (this.hasConfigType(currentVals)) {
+      return currentVals.accountConfig.configType;
+    } else {
+      return null;
+    }
   }
 
   save(data) {
@@ -185,6 +208,12 @@ class AggregatorForm extends React.Component {
     const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
     const name = aggregator.label || '';
 
+    const configType = this.getSelectedConfigType();
+    const configTypeIsMail = configType === 'Mail';
+    const requiredSign = configTypeIsMail ? ' *' : '';
+
+    const configMailValidate = configTypeIsMail ? [mail, required] : [mail];
+
     const confirmationMessage = (
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
@@ -302,18 +331,9 @@ class AggregatorForm extends React.Component {
                       disabled={disabled}
                       validate={[required]}
                     />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.reportRelease">
-                          {(msg) => msg + ' *'}
-                        </FormattedMessage>
-                      }
+                    <ReportReleaseSelect
                       name="aggregatorConfig.reportRelease"
                       id="input-aggregator-config-reportRelease"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
                     />
                   </Col>
                 </Row>
@@ -344,14 +364,16 @@ class AggregatorForm extends React.Component {
                     />
                     <Field
                       label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />
+                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
+                          {(msg) => msg + requiredSign}
+                        </FormattedMessage>
                       }
                       name="accountConfig.configMail"
-                      id="input-aggregator-service-url"
+                      id="input-aggregator-config-mail"
                       component={TextField}
                       fullWidth
                       disabled={disabled}
-                      validate={[mail]}
+                      validate={configMailValidate}
                     />
                     <DisplayContactsForm {...this.props} />
                   </Col>

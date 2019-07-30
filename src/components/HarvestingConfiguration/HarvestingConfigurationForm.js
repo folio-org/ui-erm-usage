@@ -118,7 +118,10 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <ReportReleaseSelect />
+                  <ReportReleaseSelect
+                    name="harvestingConfig.reportRelease"
+                    id="addudp_reportrelease"
+                  />
                 </Col>
                 <Col xs={8}>
                   <SelectedReportsForm
