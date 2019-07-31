@@ -21,7 +21,10 @@ import {
   IfPermission,
   TitleManager
 } from '@folio/stripes/core';
-import { withTags } from '@folio/stripes/smart-components';
+import {
+  withTags,
+  NotesSmartAccordion
+} from '@folio/stripes/smart-components';
 
 import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
@@ -32,6 +35,7 @@ import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
 import extractHarvesterImpls from '../../util/HarvesterImpls';
+import urls from '../../util/urls';
 
 class UsageDataProviderView extends React.Component {
   static manifest = Object.freeze({
@@ -102,7 +106,8 @@ class UsageDataProviderView extends React.Component {
         sushiCredsAccordion: false,
         uploadAccordion: false,
         notesAccordion: false,
-        statisticsAccordion: false
+        statisticsAccordion: false,
+        notes: false,
       },
     };
   }
@@ -250,14 +255,14 @@ class UsageDataProviderView extends React.Component {
               harvesterImpls={harvesterImpls}
             />
           </Accordion>
-          <Accordion
+          {/* <Accordion
             open={this.state.accordions.notesAccordion}
             onToggle={this.handleAccordionToggle}
             label={<FormattedMessage id="ui-erm-usage.udp.notes" />}
             id="notesAccordion"
           >
             <NotesView usageDataProvider={initialValues} />
-          </Accordion>
+          </Accordion> */}
           <Accordion
             open={this.state.accordions.statisticsAccordion}
             onToggle={this.handleAccordionToggle}
@@ -278,6 +283,15 @@ class UsageDataProviderView extends React.Component {
           >
             <this.connectedReportUpload udpId={providerId} stripes={stripes} />
           </Accordion>
+          <NotesSmartAccordion
+            domainName="erm-usage"
+            entityId={initialValues.id}
+            entityName={initialValues.label}
+            entityType="erm-usage-data-provider"
+            pathToNoteCreate={urls.noteCreate()}
+            pathToNoteDetails={urls.notes()}
+            onToggle={this.handleAccordionToggle}
+          />
 
           <Layer
             isOpen={query.layer ? query.layer === 'edit' : false}

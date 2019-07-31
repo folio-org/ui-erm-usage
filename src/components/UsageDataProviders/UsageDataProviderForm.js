@@ -213,12 +213,12 @@ class UsageDataProviderForm extends React.Component {
                 harvesterImplementations={harvesterImpls}
                 {...this.props}
               />
-              <NotesForm
+              {/* <NotesForm
                 accordionId="editNotes"
                 expanded={sections.editNotes}
                 onToggle={this.handleSectionToggle}
                 {...this.props}
-              />
+              /> */}
               <ConfirmationModal
                 id="delete-udp-confirmation"
                 open={confirmDelete}
