@@ -103,4 +103,92 @@ export default function config() {
   this.get('/counter-reports/:id', (schema, request) => {
     return schema.counterReports.find(request.params.id).attrs;
   });
+
+  this.get('/note-types');
+
+  this.get('/note-links/domain/erm-usage/type/:type/id/:id', ({ notes }, { params, queryParams }) => {
+    if (queryParams.status === 'all') {
+      return notes.all();
+    }
+
+    return notes.where((note) => {
+      let matches = false;
+
+      for (let i = 0; i < note.links.length; i++) {
+        if (note.links[i].type === params.type && note.links[i].id === params.id) {
+          matches = true;
+          if (queryParams.status === 'assigned') {
+            return true;
+          }
+        }
+      }
+      if (!matches && queryParams.status === 'unassigned') {
+        return true;
+      }
+
+      return false;
+    });
+  });
+
+  this.put('/note-links/type/:type/id/:id', ({ notes }, { params, requestBody }) => {
+    const body = JSON.parse(requestBody);
+
+    body.notes.forEach((note) => {
+      const dbNote = notes.find(note.id);
+      const links = [...dbNote.links];
+
+      if (note.status === 'ASSIGNED') {
+        links.push({
+          id: params.id,
+          type: params.type,
+        });
+      } else {
+        for (let i = 0; i < links.length; i++) {
+          if (links[i].type === params.type && links[i].id === params.id) {
+            links.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      dbNote.update({ links });
+    });
+  });
+
+  this.post('/notes', (_, { requestBody }) => {
+    const noteData = JSON.parse(requestBody);
+
+    return this.create('note', noteData);
+  });
+
+  this.get('/notes/:id', ({ notes }, { params }) => {
+    if (notes.find(params.id) !== undefined) {
+      return notes.find(params.id).attrs;
+    } else {
+      return {};
+    }
+  });
+
+  this.put('/notes/:id', ({ notes, noteTypes }, { params, requestBody }) => {
+    const noteData = JSON.parse(requestBody);
+    const noteTypeName = noteTypes.find(noteData.typeId).attrs.name;
+
+    return notes.find(params.id).update({
+      ...noteData,
+      type: noteTypeName,
+    });
+  });
+
+  this.delete('/notes/:id', ({ notes, noteTypes }, { params }) => {
+    const note = notes.find(params.id);
+    const noteType = noteTypes.find(note.attrs.typeId);
+
+    noteType.update({
+      usage: {
+        noteTotal: --noteType.attrs.usage.noteTotal,
+      },
+    });
+
+    return notes.find(params.id).destroy();
+  });
 }

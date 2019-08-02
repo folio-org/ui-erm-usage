@@ -73,9 +73,6 @@ class ErmUsage extends React.Component {
           path={`${this.props.match.path}`}
           render={() => <this.connectedApp {...this.props} />}
         />
-        
-        {/* <Route path={`${path}/notes/:id/edit`} component={NoteEditRoute} />
-        <Route path={`${path}/notes/:id`} component={NoteViewRoute} /> */}
       </Switch>
     );
   }

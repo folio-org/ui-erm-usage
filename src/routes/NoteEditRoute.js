@@ -41,7 +41,7 @@ export default class NoteEditRoute extends Component {
         }}
         paneHeaderAppIcon="erm-usage"
         domain="erm-usage"
-        navigateBack={this.goToNoteView}  
+        navigateBack={this.goToNoteView}
         noteId={match.params.id}
       />
     );

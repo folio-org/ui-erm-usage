@@ -27,7 +27,6 @@ describe('Create Aggregator', () => {
     });
 
     it('serviceType is changed to "NSS"', () => {
-      console.log('SERVICE TYPE IS: ' + aggregatorEditPage.serviceTypeSelect.value);
       expect(aggregatorEditPage.serviceTypeSelect.value).to.be.equal('NSS');
     });
   });

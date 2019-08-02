@@ -30,7 +30,6 @@ import UsageDataProviderForm from './UsageDataProviderForm';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
-import { NotesView } from '../Notes';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
@@ -255,14 +254,6 @@ class UsageDataProviderView extends React.Component {
               harvesterImpls={harvesterImpls}
             />
           </Accordion>
-          {/* <Accordion
-            open={this.state.accordions.notesAccordion}
-            onToggle={this.handleAccordionToggle}
-            label={<FormattedMessage id="ui-erm-usage.udp.notes" />}
-            id="notesAccordion"
-          >
-            <NotesView usageDataProvider={initialValues} />
-          </Accordion> */}
           <Accordion
             open={this.state.accordions.statisticsAccordion}
             onToggle={this.handleAccordionToggle}
@@ -284,6 +275,7 @@ class UsageDataProviderView extends React.Component {
             <this.connectedReportUpload udpId={providerId} stripes={stripes} />
           </Accordion>
           <NotesSmartAccordion
+            id="udpShowNotes"
             domainName="erm-usage"
             entityId={initialValues.id}
             entityName={initialValues.label}
