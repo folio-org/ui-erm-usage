@@ -22,7 +22,6 @@ import stripesForm from '@folio/stripes/form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
-import { NotesForm } from '../Notes';
 
 import extractHarvesterImpls from '../../util/HarvesterImpls';
 
@@ -211,12 +210,6 @@ class UsageDataProviderForm extends React.Component {
                 expanded={sections.editHarvestingConfig}
                 onToggle={this.handleSectionToggle}
                 harvesterImplementations={harvesterImpls}
-                {...this.props}
-              />
-              <NotesForm
-                accordionId="editNotes"
-                expanded={sections.editNotes}
-                onToggle={this.handleSectionToggle}
                 {...this.props}
               />
               <ConfirmationModal

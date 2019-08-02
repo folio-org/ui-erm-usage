@@ -23,11 +23,6 @@ import {
 @interactor class SushiCredentialsAccordion {
   static defaultScope = '#sushiCredsAccordion';
 }
-
-@interactor class NotesAccordion {
-  static defaultScope = '#notesAccordion';
-}
-
 @interactor class StatisticsAccordion {
   static defaultScope = '#statisticsAccordion';
 }
@@ -63,7 +58,6 @@ export default @interactor class UDPDetailsPage {
   clickEditUDP = clickable('#clickable-edit-udp');
   harvestingAccordion = new HarvestingAccordion();
   sushiCredentialsAccordion = new SushiCredentialsAccordion();
-  notesAccordion = new NotesAccordion();
   statisticsAccordion = new StatisticsAccordion();
   uploadAccordion = new UploadAccordion();
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();

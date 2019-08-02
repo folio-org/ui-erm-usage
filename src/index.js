@@ -4,6 +4,9 @@ import Switch from 'react-router-dom/Switch';
 import Route from 'react-router-dom/Route';
 import Settings from './settings';
 import UsageDataProviders from './Main';
+import NoteCreateRoute from './routes/NoteCreateRoute';
+import NoteEditRoute from './routes/NoteEditRoute';
+import NoteViewRoute from './routes/NoteViewRoute';
 
 /*
   STRIPES-NEW-APP
@@ -46,8 +49,26 @@ class ErmUsage extends React.Component {
     if (this.props.showSettings) {
       return <Settings {...this.props} />;
     }
+
+    const { match: { path } } = this.props;
+
     return (
       <Switch>
+        <Route
+          path={`${path}/notes/create`}
+          component={NoteCreateRoute}
+          exact
+        />
+        <Route
+          path={`${path}/notes/:id/edit`}
+          component={NoteEditRoute}
+          exact
+        />
+        <Route
+          path={`${path}/notes/:id`}
+          component={NoteViewRoute}
+          exact
+        />
         <Route
           path={`${this.props.match.path}`}
           render={() => <this.connectedApp {...this.props} />}

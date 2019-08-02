@@ -42,7 +42,6 @@ describe('UDPDetailsPage', () => {
     it('all accordions are present', function () {
       expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.sushiCredentialsAccordion.isPresent).to.equal(true);
-      expect(udpDetailsPage.notesAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.statisticsAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.uploadAccordion.isPresent).to.equal(true);
     });

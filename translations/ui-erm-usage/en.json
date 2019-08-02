@@ -5,6 +5,9 @@
   "ui-erm-usage.resultCount": "ResultCount:",
   "resultCount": "{count, number} Records found",
   "erm-usage": "ERM Usage",
+  "usage-data-provider": "Usage data provider",
+  "usage-data-providers": "Usage data providers",
+  "usage-data-provider-pluralizable": "{count} {count, plural, one {usage-data-provider} other {usage-data-providers}}",
 
   "meta.title": "eUsage",
 
