@@ -92,7 +92,7 @@ export default function config() {
   this.get('/counter-reports', (schema, request) => {
     if (request.queryParams) {
       /*
-      Pretender cuts off the query parameter. It just provides query: "(providerId" and not the actual id. Thus we need to look for the id in thr url.
+      Pretender cuts off the query parameter. It just provides query: "(udpId" and not the actual id. Thus we need to look for the id in thr url.
       */
       const currentId = extractUUID(request.url);
       return schema.counterReports.where({ providerId: currentId });
@@ -162,7 +162,7 @@ export default function config() {
   });
 
   this.get('/notes/:id', ({ notes }, { params }) => {
-    if (notes.find(params.id) !== undefined) {
+    if (notes.find(params.id) !== null) {
       return notes.find(params.id).attrs;
     } else {
       return {};

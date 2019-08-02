@@ -14,7 +14,10 @@ const notesModal = new NotesModal();
 const noteForm = new NoteForm();
 const noteView = new NoteView();
 
-describe('Package view', function () {
+/**
+ * Thanks to https://github.com/folio-org/ui-eholdings/blob/master/test/bigtest/tests/resource-notes-flow-test.js for inspiration
+*/
+describe('UDP notes test', function () {
   setupApplication();
 
   let udp;
