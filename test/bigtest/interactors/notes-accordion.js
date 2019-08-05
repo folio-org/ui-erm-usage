@@ -13,7 +13,7 @@ import {
 }
 
 @interactor class NotesAccordion {
-  udpNotesAccordionIsDisplayed = isPresent('#udpShowNotes');
+  udpNotesAccordionIsDisplayed = isPresent('#notesAccordion');
 
   assignButtonDisplayed = isPresent('[data-test-notes-accordion-assign-button]');
   newButtonDisplayed = isPresent('[data-test-notes-accordion-new-button]');
