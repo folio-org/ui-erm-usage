@@ -16,6 +16,10 @@ import {
   static defaultScope = '#accordion-toggle-button-harvestingAccordion';
 }
 
+@interactor class NotesAccordionButton {
+  static defaultScope = '#accordion-toggle-button-notesAccordion';
+}
+
 @interactor class StartHarvesterButton {
   isDisabled = property('button[id="start-harvester-button"]', 'disabled');
 }
@@ -68,5 +72,6 @@ export default @interactor class UDPDetailsPage {
   reportInfoValid = new ReportInfoValid();
   reportInfoFailed = new ReportInfoFailed();
   harvestingAccordionButton = new HarvestingAccordionButton();
+  notesAccordionButton = new NotesAccordionButton();
   startHarvesterButton = new StartHarvesterButton();
 }

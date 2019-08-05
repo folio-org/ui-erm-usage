@@ -8,6 +8,7 @@ import {
   Col,
   Accordion,
   ExpandAllButton,
+  Headline,
   Icon,
   IconButton,
   Layer,
@@ -106,7 +107,7 @@ class UsageDataProviderView extends React.Component {
         uploadAccordion: false,
         notesAccordion: false,
         statisticsAccordion: false,
-        notes: false,
+        // notes: false,
       },
     };
   }
@@ -146,6 +147,14 @@ class UsageDataProviderView extends React.Component {
     const udpFormData = udp ? _.cloneDeep(udp) : udp;
     return udpFormData;
   }
+
+  renderAccordionHeader = (label) => {
+    return (
+      <Headline size="large" tag="h3">
+        {label}
+      </Headline>
+    );
+  };
 
   renderDetailMenu = (udp) => {
     const {
@@ -241,7 +250,7 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.harvestingAccordion}
             onToggle={this.handleAccordionToggle}
-            label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
+            label={this.renderAccordionHeader(<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />)}
             id="harvestingAccordion"
             displayWhenOpen={displayWhenOpenHarvestingAcc}
           >
@@ -257,7 +266,7 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.statisticsAccordion}
             onToggle={this.handleAccordionToggle}
-            label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
+            label={this.renderAccordionHeader(<FormattedMessage id="ui-erm-usage.udp.statistics" />)}
             id="statisticsAccordion"
           >
             <this.connectedStatistics
@@ -269,13 +278,13 @@ class UsageDataProviderView extends React.Component {
           <Accordion
             open={this.state.accordions.uploadAccordion}
             onToggle={this.handleAccordionToggle}
-            label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
+            label={this.renderAccordionHeader(<FormattedMessage id="ui-erm-usage.udp.counterUpload" />)}
             id="uploadAccordion"
           >
             <this.connectedReportUpload udpId={providerId} stripes={stripes} />
           </Accordion>
           <NotesSmartAccordion
-            id="udpShowNotes"
+            id="notesAccordion"
             domainName="erm-usage"
             entityId={initialValues.id}
             entityName={initialValues.label}
@@ -283,6 +292,7 @@ class UsageDataProviderView extends React.Component {
             pathToNoteCreate={urls.noteCreate()}
             pathToNoteDetails={urls.notes()}
             onToggle={this.handleAccordionToggle}
+            open={this.state.accordions.notesAccordion}
           />
 
           <Layer

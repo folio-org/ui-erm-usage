@@ -7,12 +7,14 @@ import NotesAccordion from '../interactors/notes-accordion';
 import NotesModal from '../interactors/notes-modal';
 import NoteForm from '../interactors/note-form';
 import NoteView from '../interactors/note-view';
+import UDPDetailsPage from '../interactors/udp-details-page';
 import wait from '../helpers/wait';
 
 const notesAccordion = new NotesAccordion();
 const notesModal = new NotesModal();
 const noteForm = new NoteForm();
 const noteView = new NoteView();
+const udpDetailsPage = new UDPDetailsPage();
 
 /**
  * Thanks to https://github.com/folio-org/ui-eholdings/blob/master/test/bigtest/tests/resource-notes-flow-test.js for inspiration
@@ -52,7 +54,8 @@ describe('UDP notes test', function () {
 
   describe('when the udp details page is visited', () => {
     beforeEach(async function () {
-      this.visit(`/eusage/view/${udp.id}`);
+      await this.visit(`/eusage/view/${udp.id}`);
+      await await udpDetailsPage.notesAccordionButton.click();
     });
 
     it('should display notes accordion', () => {
