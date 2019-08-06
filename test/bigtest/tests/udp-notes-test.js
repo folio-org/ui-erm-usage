@@ -1,5 +1,4 @@
 import { beforeEach, describe, it } from '@bigtest/mocha';
-import { faker } from '@bigtest/mirage';
 import { expect } from 'chai';
 
 import setupApplication from '../helpers/setup-application';

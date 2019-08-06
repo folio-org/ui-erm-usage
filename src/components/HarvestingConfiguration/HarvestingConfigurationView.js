@@ -58,7 +58,7 @@ class HarvestingConfigurationView extends React.Component {
 
     const provider = this.createProvider(usageDataProvider);
 
-    const reports = _.get(usageDataProvider, 'harvestingConfig.requestedReports', '');
+    const reports = _.get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
     let requestedReports = '';
     if (!_.isEmpty(reports)) {
       requestedReports = reports.join(', ');
