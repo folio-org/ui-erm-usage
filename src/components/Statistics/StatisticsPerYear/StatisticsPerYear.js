@@ -119,6 +119,16 @@ class StatisticsPerYear extends React.Component {
     return o;
   };
 
+  sortReports = (a, b) => {
+    if (a.report > b.report) {
+      return 1;
+    }
+    if (a.report < b.report) {
+      return -1;
+    }
+    return 0;
+  };
+
   createReportOverviewPerYear = (groupedStats) => {
     const { intl } = this.props;
     const years = _.keys(groupedStats);
@@ -133,7 +143,7 @@ class StatisticsPerYear extends React.Component {
       const reportsOfAYear = reportNames.map(rName => {
         const reports = currentYear[rName];
         return this.renderReportPerYear(reports, maxFailed);
-      });
+      }).sort(this.sortReports);
       return (
         <Accordion
           open={this.state.accordions[y]}
