@@ -138,6 +138,16 @@ export const data = [
   }
 ];
 
+const sortReports = (a, b) => {
+  if (a.label > b.label) {
+    return 1;
+  }
+  if (a.label < b.label) {
+    return -1;
+  }
+  return 0;
+};
+
 const counterReports = {
 
   selectedOptions: selected => data.map(
@@ -146,7 +156,7 @@ const counterReports = {
       value: r.name,
       selected: r.name === selected
     })
-  ),
+  ).sort(sortReports),
 
   getOptions: () => data.map(
     r => ({
@@ -154,7 +164,7 @@ const counterReports = {
       value: r.name,
       counterVersion: r.counterVersion,
     })
-  ),
+  ).sort(sortReports),
 
 };
 
