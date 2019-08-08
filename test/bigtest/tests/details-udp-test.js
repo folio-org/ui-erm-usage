@@ -62,15 +62,15 @@ describe('UDPDetailsPage', () => {
       });
 
       it('report type select is available', () => {
-        expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('JR1');
+        expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
       });
 
-      describe('BR1 can be selected', () => {
+      describe('JR1 can be selected', () => {
         beforeEach(async () => {
-          await udpDetailsPage.reportTypeDownloadSelect.select('BR1');
+          await udpDetailsPage.reportTypeDownloadSelect.select('JR1');
         });
-        it('reportType is changed to "BR1"', () => {
-          expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
+        it('reportType is changed to "JR1"', () => {
+          expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('JR1');
         });
       });
     });

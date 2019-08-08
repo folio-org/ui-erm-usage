@@ -9,7 +9,13 @@ export default Factory.extend({
   id: () => faker.random.uuid(),
   downloadTime: () => faker.date.past(),
   release: () => 4,
-  reportName: () => 'JR1',
+  reportName: (i) => {
+    if (i % 4 === 0) {
+      return 'JR1';
+    } else {
+      return 'BR1';
+    }
+  },
   yearMonth: (i) => {
     // let month = getRandomInt(12);
     let month = i;

@@ -10,6 +10,7 @@ import {
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
 import groupByYearAndReport from './groupByYearAndReport';
+import reportDownloadTypes from '../../util/data/reportDownloadTypes';
 import css from './Statistics.css';
 
 class Statistics extends React.Component {
@@ -55,11 +56,21 @@ class Statistics extends React.Component {
     }
   }
 
+  calcDownloadableReportTypes = (counterReports) => {
+    const reportNames = counterReports.filter(cr => !(cr.failedAttempts) || cr.failedAttempts === 0).map(cr => cr.reportName);
+    const available = new Set(reportNames);
+    const intersection = new Set(
+      reportDownloadTypes.filter(y => available.has(y.value))
+    );
+    return _.sortBy([...intersection], ['label']);
+  }
+
   render() {
     const { resources } = this.props;
     const records = (resources.counterReports || {}).records || null;
     const counterReports = !_.isEmpty(records) ? records[0].counterReports : [];
     const stats = groupByYearAndReport(counterReports);
+    const uniqueReports = this.calcDownloadableReportTypes(counterReports);
 
     const info = _.isEmpty(stats) ? <FormattedMessage id="ui-erm-usage.reportOverview.noReports" /> : null;
 
@@ -94,6 +105,7 @@ class Statistics extends React.Component {
             <this.connectedDownloadRange
               stripes={this.props.stripes}
               udpId={this.props.providerId}
+              donwloadableReports={uniqueReports}
             />
           </Col>
         </Row>
