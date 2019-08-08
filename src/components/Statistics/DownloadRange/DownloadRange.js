@@ -24,6 +24,9 @@ import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 
 class DownloadRange extends React.Component {
   static propTypes = {
+    donwloadableReports: PropTypes
+      .arrayOf(PropTypes.object)
+      .isRequired,
     stripes: PropTypes
       .shape().isRequired,
     udpId: PropTypes.string.isRequired,
@@ -173,7 +176,7 @@ class DownloadRange extends React.Component {
           <Select
             label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />}
             name="downloadMultiMonths.reportType"
-            dataOptions={reportDownloadTypes}
+            dataOptions={this.props.donwloadableReports}
             onChange={this.onSelectReportType}
           />
         </Col>
