@@ -49,7 +49,7 @@ class UsageDataProviderView extends React.Component {
       type: 'okapi',
       path: 'usage-data-providers/:{id}',
       clear: false,
-      shouldRefresh: () => false,
+      shouldRefresh: () => true,
     },
   });
 
