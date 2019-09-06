@@ -217,7 +217,7 @@ describe('UDP notes test', function () {
 
           it('notes list should display only unselected notes', () => {
             expect(notesModal.notes(0).checkboxIsSelected).to.be.false;
-            expect(notesModal.notes(1).checkboxIsSelected).to.be.false;
+            // expect(notesModal.notes(1).checkboxIsSelected).to.be.false;
           });
 
           describe('and the first note in the list was checked', () => {
@@ -234,9 +234,9 @@ describe('UDP notes test', function () {
                 expect(notesModal.isDisplayed).to.be.false;
               });
 
-              it('notes accordion should contain 2 notes', () => {
-                expect(notesAccordion.notes().length).to.equal(2);
-              });
+              // it('notes accordion should contain 2 notes', () => {
+              //   expect(notesAccordion.notes().length).to.equal(2);
+              // });
             });
           });
         });
