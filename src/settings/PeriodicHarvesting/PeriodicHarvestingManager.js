@@ -1,0 +1,268 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { SubmissionError } from 'redux-form';
+import {
+  intlShape,
+  injectIntl,
+  FormattedMessage
+} from 'react-intl';
+import {
+  Callout,
+  ConfirmationModal,
+  IconButton,
+  Pane,
+  PaneMenu
+} from '@folio/stripes/components';
+import moment from 'moment';
+import PeriodicHarvestingForm from './PeriodicHarvestingForm';
+import PeriodicHarvestingView from './PeriodicHarvestingView';
+
+class PeriodicHarvestingManager extends React.Component {
+  static propTypes = {
+    intl: intlShape.isRequired,
+    stripes: PropTypes.object,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      config: {},
+      confirming: false,
+      isEditing: false
+    };
+
+    this.endpoint = '/erm-usage-harvester/periodic';
+    this.okapiUrl = props.stripes.okapi.url;
+    this.httpHeaders = Object.assign({}, {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+    });
+
+    this.dateFormat = moment.localeData()._longDateFormat.L;
+    this.timeFormat = moment.localeData()._longDateFormat.LT;
+  }
+
+  componentDidMount() {
+    this.fetchPeriodicHarvestingConf();
+  }
+
+  combineDateTime = (date, time) => {
+    const d = moment(date);
+    const t = moment(time, this.timeFormat);
+
+    d.set('hour', t.hour());
+    d.set('minute', t.minute());
+    d.set('second', t.second());
+    return d;
+  }
+
+  splitDateTime = (dateTime) => {
+    const dT = moment(dateTime);
+    const splitted = dT.format('YYYY-MM-DD HH:mm:ss.SSSZZ').split(' ');
+    const date = moment(splitted[0], 'YYYY-MM-DD');
+    const time = moment(splitted[1], 'HH:mm:ss.SSSZZ');
+    return ({
+      date: date.format(this.dateFormat),
+      time: time.format()
+    });
+  }
+
+  fetchPeriodicHarvestingConf = () => {
+    fetch(this.okapiUrl + this.endpoint,
+      {
+        headers: this.httpHeaders,
+        method: 'GET',
+      })
+      .then((response) => {
+        if (response.status < 400) {
+          return response.json();
+        } else if (response.status === 404) {
+          return {};
+        } else {
+          throw new SubmissionError({ identifier: `Error ${response.status} while fetching periodic harvesting configuration`, _error: 'Fetch periodic harvesting configuration failed' });
+        }
+      })
+      .then((json) => {
+        this.setState({
+          config: json
+        });
+      })
+      .catch(err => {
+        this.showErrorInfo(`Error: ${err.message}`);
+      });
+  }
+
+  savePeriodicHarvestingConf = (data) => {
+    const headers = {
+      ...this.httpHeaders,
+      'content-type': 'application/json'
+    };
+
+    const dateTime = this.combineDateTime(data.startDate, data.startTime);
+    data.startDate = dateTime.format();
+    data.startTime = {};
+
+    const { startDate, startTime, ...partialConfig } = data;
+    partialConfig.startAt = startDate;
+    this.setState({ config: partialConfig });
+
+    fetch(this.okapiUrl + this.endpoint,
+      {
+        headers,
+        method: 'POST',
+        body: JSON.stringify(partialConfig)
+      })
+      .then((response) => {
+        if (response.status >= 400) {
+          this.showErrorInfo(response);
+        } else {
+          this.onCloseEdit();
+          this.callout.sendCallout({
+            message: this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.saved' })
+          });
+        }
+      })
+      .catch(err => {
+        this.showErrorInfo(err.message);
+      });
+  }
+
+  deletePeriodicHarvestingConf = () => {
+    fetch(this.okapiUrl + this.endpoint,
+      {
+        headers: this.httpHeaders,
+        method: 'DELETE',
+      })
+      .then((response) => {
+        if (response.status < 400 || response.status === 404) {
+          this.onCloseEdit();
+          this.setState({ config: {} });
+          this.callout.sendCallout({
+            message: this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.deleted' })
+          });
+        } else {
+          this.showErrorInfo(response);
+        }
+      })
+      .catch(err => {
+        this.showErrorInfo(err.message);
+      });
+  };
+
+  showErrorInfo = (response) => {
+    response.then((text) => {
+      const msg = `Error: ${text}`;
+      if (this.callout) {
+        this.callout.sendCallout({
+          type: 'error',
+          message: msg
+        });
+      }
+    });
+  };
+
+  onCloseEdit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    this.setState({ isEditing: false });
+  };
+
+  onEdit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    this.setState({ isEditing: true });
+  };
+
+  showConfirm = () => {
+    this.setState({
+      confirming: true,
+    });
+  }
+
+  cancelEditing = () => {
+    this.setState({
+      isEditing: false,
+      confirming: false
+    });
+  }
+
+  hideConfirm = () => {
+    this.setState({
+      confirming: false
+    });
+  }
+
+  getEditIcon = () => {
+    return this.state.config.periodicInterval ? 'edit' : 'plus-sign';
+  }
+
+  getLastMenu() {
+    const isEditing = this.state.isEditing;
+    return (
+      <PaneMenu>
+        {isEditing ?
+          <IconButton
+            icon="times"
+            id="clickable-close-edit-config"
+            onClick={this.showConfirm}
+            aria-label="End Edit Config"
+          /> :
+          <IconButton
+            icon={this.getEditIcon(isEditing)}
+            id="clickable-open-edit-config"
+            onClick={this.onEdit}
+            aria-label="Start Edit Config"
+          />
+        }
+      </PaneMenu>
+    );
+  }
+
+  render() {
+    const { stripes } = this.props;
+    const initialVals = this.state.config;
+
+    const dateTime = this.splitDateTime(initialVals.startAt);
+    initialVals.startDate = dateTime.date;
+    initialVals.startTime = dateTime.time;
+
+    const periodicHarvesting = this.state.isEditing ?
+      <PeriodicHarvestingForm
+        initialValues={initialVals}
+        onDelete={this.deletePeriodicHarvestingConf}
+        onSubmit={(record) => { this.savePeriodicHarvestingConf(record); }}
+        stripes={stripes}
+      /> :
+      <PeriodicHarvestingView
+        initialValues={initialVals}
+        timeFormat={this.timeFormat}
+      />;
+
+    return (
+      <React.Fragment>
+        <Pane
+          defaultWidth="fill"
+          lastMenu={this.getLastMenu()}
+          paneTitle={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}
+        >
+          {periodicHarvesting}
+        </Pane>
+        <Callout ref={(ref) => { this.callout = ref; }} />
+        <ConfirmationModal
+          open={this.state.confirming}
+          heading={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.pleaseConfirm' })}
+          message={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel' })}
+          confirmLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.edit.keep' })}
+          onConfirm={this.hideConfirm}
+          cancelLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.edit.closeWithoutSave' })}
+          onCancel={this.cancelEditing}
+        />
+      </React.Fragment>
+    );
+  }
+}
+
+export default injectIntl(PeriodicHarvestingManager);

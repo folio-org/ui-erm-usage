@@ -1,8 +1,10 @@
 import React from 'react';
 import { Settings } from '@folio/stripes/smart-components';
-import Harvester from './Harvester';
+import MaxFailedAttempts from './MaxFailedAttempts';
+import StartHarvester from './StartHarvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
 import DisplaySettings from './DisplaySettings';
+import PeriodicHarvestingManager from './PeriodicHarvesting';
 
 /*
   STRIPES-NEW-APP
@@ -11,27 +13,57 @@ import DisplaySettings from './DisplaySettings';
 */
 
 export default class ErmUsageSettings extends React.Component {
-  pages = [
-    {
-      route: 'harvester',
-      label: 'Harvester',
-      component: Harvester,
-    },
-    {
-      route: 'aggregators',
-      label: 'Aggregators',
-      component: AggregatorManager,
-    },
-    {
-      route: 'displaySettings',
-      label: 'Display Settings',
-      component: DisplaySettings,
-    },
-  ];
+
+  constructor(props) {
+    super(props);
+
+    this.cPeriodicHarvesting = this.props.stripes.connect(PeriodicHarvestingManager);
+    this.sections = [
+      {
+        label: 'General',
+        pages: [
+          {
+            route: 'aggregators',
+            label: 'Aggregators',
+            component: AggregatorManager,
+          },
+          {
+            route: 'displaySettings',
+            label: 'Display Settings',
+            component: DisplaySettings,
+          },
+        ],
+      },
+      {
+        label: 'Harvester',
+        pages: [
+          {
+            route: 'failed-attempts',
+            label: 'Number of failed attempts',
+            component: MaxFailedAttempts,
+          },
+          {
+            route: 'start-harvester',
+            label: 'Start harvester',
+            component: StartHarvester,
+          },
+          {
+            route: 'periodic-harvesting',
+            label: 'Periodic harvesting',
+            component: this.cPeriodicHarvesting,
+          },
+        ]
+      }
+    ];
+  }
 
   render() {
     return (
-      <Settings {...this.props} pages={this.pages} paneTitle="erm-usage" />
+      <Settings
+        {...this.props}
+        sections={this.sections}
+        paneTitle="erm-usage"
+      />
     );
   }
 }
