@@ -47,26 +47,28 @@ class MaxFailedAttempts extends React.Component {
 
   render() {
     return (
-      <this.configManager
-        getInitialValues={this.getInitialValues}
-        label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
-        moduleName="ERM-USAGE-HARVESTER"
-        configName="maxFailedAttempts"
-      >
-        <div data-test-settings-harvester-config>
-          <Row>
-            <Col xs={6}>
-              <Field
-                component={TextField}
-                type="number"
-                id="maxFailedAttempts"
-                name="maxFailedAttempts"
-                label="Number failed attempts"
-              />
-            </Col>
-          </Row>
-        </div>
-      </this.configManager>
+      <div data-test-settings-harvester-max-failed-attempts>
+        <this.configManager
+          getInitialValues={this.getInitialValues}
+          label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
+          moduleName="ERM-USAGE-HARVESTER"
+          configName="maxFailedAttempts"
+        >
+          <div data-test-settings-harvester-config>
+            <Row>
+              <Col xs={6}>
+                <Field
+                  component={TextField}
+                  type="number"
+                  id="maxFailedAttempts"
+                  name="maxFailedAttempts"
+                  label="Number failed attempts"
+                />
+              </Col>
+            </Row>
+          </div>
+        </this.configManager>
+      </div>
     );
   }
 }

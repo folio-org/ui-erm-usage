@@ -10,7 +10,7 @@ import {
 }
 
 export default @interactor class HarvesterSettingsInteractor {
-  static defaultScope = '[data-test-settings-harvester-config]';
+  static defaultScope = '[data-test-settings-harvester-max-failed-attempts]';
 
   hasMaxFailedAttempts = isPresent('#maxFailedAttempts');
 
