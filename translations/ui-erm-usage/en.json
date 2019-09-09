@@ -12,6 +12,7 @@
   "meta.title": "eUsage",
 
   "general.delete": "Delete",
+  "general.save": "Save",
   "general.info": "Info",
   "general.report": "Report",
   "general.type": "Type",
@@ -23,6 +24,7 @@
   "general.start": "Start",
   "general.end": "End",
   "general.description": "Description",
+  "general.pleaseConfirm": "Please confirm!",
 
   "information.providerName": "Provider Name",
   "information.organization": "Organization",
@@ -158,6 +160,19 @@
   "settings.harvester.start.success": "Harvester successfully started!",
   "settings.harvester.start.fail": "Something went wrong while starting the harvester...",  
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
-  "settings.harvester.config": "Harvester Configuration"
+  "settings.harvester.config": "Harvester Configuration",
+
+  "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
+  "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
+  "settings.harvester.config.periodic.title": "Periodic harvesting",
+  "settings.harvester.config.periodic.edit.cancel": "Are you sure to cancel editing?",
+  "settings.harvester.config.periodic.edit.keep": "Keep editing",
+  "settings.harvester.config.periodic.edit.closeWithoutSave": "Close without saving",
+  "settings.harvester.config.periodic.start.date": "Start date",
+  "settings.harvester.config.periodic.start.time": "Start time",
+  "settings.harvester.config.periodic.periodicInterval": "Periodic interval",
+  "settings.harvester.config.periodic.lastTriggered": "Last triggered at",
+  "settings.harvester.config.periodic.notDefined": "Periodic harvesting is not defined and thus not enabled. Click + to define periodic harvesting.",
+  "settings.harvester.config.periodic.deleteQuestion": "Do you really want to delete the periodic harvesting config?"
 
 }

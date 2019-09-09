@@ -2,14 +2,14 @@ import { beforeEach, describe, it } from '@bigtest/mocha';
 import { expect } from 'chai';
 
 import setupApplication from '../../helpers/setup-application';
-import HarvesterSettingsInteractor from '../../interactors/settings/harvester';
+import HarvesterSettingsInteractor from '../../interactors/settings/max-failed-attempts';
 
-describe('Harvester settings', () => {
+describe('Harvester max failed attempts settings', () => {
   setupApplication();
   const harvesterSettingsInteractor = new HarvesterSettingsInteractor();
 
   beforeEach(async function () {
-    this.visit('/settings/eusage/harvester');
+    this.visit('/settings/eusage/failed-attempts');
 
     await harvesterSettingsInteractor.clickSaveConfig();
   });
