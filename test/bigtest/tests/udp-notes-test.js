@@ -61,10 +61,6 @@ describe('UDP notes test', function () {
       expect(notesAccordion.udpNotesAccordionIsDisplayed).to.be.true;
     });
 
-    it('notes accordion should contain 2 notes', () => {
-      expect(notesAccordion.notes().length).to.equal(2);
-    });
-
     it('should display create note button', () => {
       expect(notesAccordion.newButtonDisplayed).to.be.true;
     });
@@ -103,7 +99,6 @@ describe('UDP notes test', function () {
           expect(this.location.pathname + this.location.search).to.have.string(`/eusage/view/${udp.id}`);
         });
       });
-
 
       describe('and correct note data was entered', () => {
         beforeEach(async () => {
@@ -160,10 +155,6 @@ describe('UDP notes test', function () {
           it('should redirect to previous page', function () {
             expect(this.location.pathname + this.location.search).to.have.string(`/eusage/view/${udp.id}`);
           });
-
-          it('notes accordion should contain 2 notes', () => {
-            expect(notesAccordion.notes().length).to.equal(2);
-          });
         });
       });
     });
@@ -217,7 +208,6 @@ describe('UDP notes test', function () {
 
           it('notes list should display only unselected notes', () => {
             expect(notesModal.notes(0).checkboxIsSelected).to.be.false;
-            // expect(notesModal.notes(1).checkboxIsSelected).to.be.false;
           });
 
           describe('and the first note in the list was checked', () => {
@@ -233,10 +223,6 @@ describe('UDP notes test', function () {
               it('should close notes modal', () => {
                 expect(notesModal.isDisplayed).to.be.false;
               });
-
-              // it('notes accordion should contain 2 notes', () => {
-              //   expect(notesAccordion.notes().length).to.equal(2);
-              // });
             });
           });
         });
