@@ -59,7 +59,7 @@
     "udp.form.findVendor.contenVendorId": "内容供应商ID",
     "udp.form.harvestingConfig.harvestViaAggregator": "收割统计数据通过",
     "udp.form.harvestingConfig.vendorCode": "供应商代码",
-    "udp.form.harvestingConfig.noAggInfoText": "根据您的 \"收割方式\" 选择, 指定 \"聚合器\" \"服务类型\"",
+    "udp.form.harvestingConfig.noAggInfoText": "根据您的 \"收割方式\" 选择, 指定 \"聚合器\" 相应 \"服务类型\"",
     "udp.form.selectedReports.addReportTitle": "添加报告标题",
     "udp.form.selectedReports.emptyListMessage": "没有报告",
     "udp.form.selectedReports.clearModalHeading": "清除报告选择",
