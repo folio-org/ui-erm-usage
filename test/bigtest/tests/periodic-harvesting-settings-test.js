@@ -58,17 +58,7 @@ describe('Periodic harvesting config', () => {
             expect(periodicHarvestingConfig.clickDeleteConfig).to.be.true;
           });
         });
-
-        // it('shows the detail view', () => {
-        //   expect(periodicHarvestingConfig.detailView.isVisible).to.equal(true);
-        // });
       });
     });
   });
-
-  // describe('View page is displayed', () => {
-  //   it('shows the detail view', () => {
-  //     expect(periodicHarvestingConfig.detailView.isVisible).to.equal(true);
-  //   });
-  // });
 });

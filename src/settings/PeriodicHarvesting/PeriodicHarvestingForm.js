@@ -41,7 +41,6 @@ class PeriodicHarvestingForm extends React.Component {
 
     this.state = {
       confirmDelete: false,
-      isEditing: false,
     };
   }
 
@@ -58,42 +57,14 @@ class PeriodicHarvestingForm extends React.Component {
     this.setState({ confirmDelete: false });
   }
 
-  renderPaneTitle = () => {
-    return 'RenderPaneTitle';
-  }
-
-  isEditing = () => {
-    this.setState({ isEditing: true });
-  }
-
-  onStartEdit = () => {
-    this.setState({ isEditing: true });
-  }
-
-  onEndEdit = () => {
-    this.setState({ isEditing: false });
-  }
-
   getLastMenu() {
-    const isEditing = this.state.isEditing;
-
     return (
-      <PaneMenu>
-        {isEditing ?
-          <IconButton
-            icon="times-circle"
-            id="clickable-edit-config"
-            onClick={this.onEndEdit}
-            aria-label="End edit periodic harvesting config"
-          /> :
-          <IconButton
-            icon="edit"
-            id="clickable-edit-config"
-            onClick={this.onStartEdit}
-            aria-label="Start edit periodic harvesting config"
-          />
-        }
-      </PaneMenu>
+      <IconButton
+        icon="times-circle"
+        id="clickable-edit-config"
+        onClick={this.onEndEdit}
+        aria-label="End edit periodic harvesting config"
+      />
     );
   }
 

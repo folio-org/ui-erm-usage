@@ -4,7 +4,6 @@ import { SubmissionError } from 'redux-form';
 import {
   intlShape,
   injectIntl,
-  FormattedMessage
 } from 'react-intl';
 import {
   Callout,
