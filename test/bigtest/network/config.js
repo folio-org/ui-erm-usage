@@ -191,4 +191,17 @@ export default function config() {
 
     return notes.find(params.id).destroy();
   });
+
+  this.get('/erm-usage-harvester/periodic', ({ periodicHarvestingConfig }) => {
+    if (periodicHarvestingConfig === undefined) {
+      return null;
+    }
+    return periodicHarvestingConfig.all();
+  });
+
+  this.post('/erm-usage-harvester/periodic', (_, { requestBody }) => {
+    const perdiodicConfigData = JSON.parse(requestBody);
+
+    return this.create('periodic-harvesting-config', perdiodicConfigData);
+  });
 }

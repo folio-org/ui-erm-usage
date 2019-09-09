@@ -5,14 +5,12 @@ import setupApplication from '../helpers/setup-application';
 import NotesAccordion from '../interactors/notes-accordion';
 import NotesModal from '../interactors/notes-modal';
 import NoteForm from '../interactors/note-form';
-import NoteView from '../interactors/note-view';
 import UDPDetailsPage from '../interactors/udp-details-page';
 import wait from '../helpers/wait';
 
 const notesAccordion = new NotesAccordion();
 const notesModal = new NotesModal();
 const noteForm = new NoteForm();
-const noteView = new NoteView();
 const udpDetailsPage = new UDPDetailsPage();
 
 /**
@@ -23,7 +21,6 @@ describe('UDP notes test', function () {
 
   let udp;
   let noteType;
-  let udpNote;
 
   beforeEach(function () {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
@@ -33,7 +30,7 @@ describe('UDP notes test', function () {
       name: 'Test note type',
     });
 
-    udpNote = this.server.create('note', {
+    this.server.create('note', {
       type: noteType.name,
       typeId: noteType.id,
       links: [{ type: 'erm-usage-data-provider', id: udp.id }],
@@ -226,238 +223,6 @@ describe('UDP notes test', function () {
           });
         });
       });
-
-      // describe('and a note in the notes list was clicked', () => {
-      //   beforeEach(async () => {
-      //     await notesAccordion.notes(0).click();
-      //   });
-
-      //   it('should redirect to note view page', function () {
-      //     expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}`);
-      //   });
-
-      //   it('should display general information accordion', () => {
-      //     expect(noteView.generalInfoAccordionIsDisplayed).to.be.true;
-      //   });
-
-      //   it('should display correct note type', () => {
-      //     expect(noteView.noteType).to.equal(udpNote.type);
-      //   });
-
-      //   it('should display correct note title', () => {
-      //     expect(noteView.noteTitle).to.equal(udpNote.title);
-      //   });
-
-      //   it('should display correct note details', () => {
-      //     expect(noteView.noteDetails).to.equal(udpNote.content);
-      //   });
-
-      //   it('should display assignments information accordion', () => {
-      //     expect(noteView.assignmentInformationAccordionIsDisplayed).to.be.true;
-      //   });
-
-      //   it('displays assignment accordion as closed', () => {
-      //     expect(noteView.assignmentAccordion.isOpen).to.equal(false);
-      //   });
-
-      //   it('should display correct referred entity type', () => {
-      //     expect(noteView.referredEntityType.toLowerCase()).to.equal('usage data provider');
-      //   });
-
-      //   it('should display correct referred entity label', () => {
-      //     expect(noteView.referredEntityName).to.equal(udp.label);
-      //   });
-
-      //   describe('and close button is clicked', () => {
-      //     beforeEach(async () => {
-      //       await noteView.clickCancelButton();
-      //     });
-
-      //     it('should redirect to previous location', function () {
-      //       expect(this.location.pathname + this.location.search).to.have.string(`/eusage/view/${udp.id}`);
-      //     });
-      //   });
-
-      //   describe('and delete button was clicked', async () => {
-      //     beforeEach(async () => {
-      //       await noteView.performDeleteNoteAction();
-      //     });
-
-      //     it('should open confirmation modal', () => {
-      //       expect(noteView.deleteConfirmationModalIsDisplayed).to.be.true;
-      //     });
-
-      //     describe('and cancel button was clicked', () => {
-      //       beforeEach(async () => {
-      //         await noteView.deleteConfirmationModal.clickCancelButton();
-      //       });
-
-      //       it('should close confirmation modal', () => {
-      //         expect(noteView.deleteConfirmationModalIsDisplayed).to.be.false;
-      //       });
-      //     });
-
-      //     describe('and confirm button was clicked', () => {
-      //       beforeEach(async () => {
-      //         await noteView.deleteConfirmationModal.clickConfirmButton();
-      //       });
-
-      //       it('should redirect to eusage view page', function () {
-      //         expect(this.location.pathname + this.location.search).to.have.string(`/eusage/view/${udp.id}`);
-      //       });
-      //     });
-      //   });
-
-      //   describe('and edit button is clicked', () => {
-      //     beforeEach(async () => {
-      //       await noteView.clickEditButton();
-      //     });
-
-      //     it('should redirect to note edit page', function () {
-      //       expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}/edit`);
-      //     });
-
-      //     it('should display general information accordion', () => {
-      //       expect(noteForm.formFieldsAccordionIsDisplayed).to.be.true;
-      //     });
-
-      //     it('should display correct note title', () => {
-      //       expect(noteForm.noteTitleField.value).to.equal(udpNote.title);
-      //     });
-
-      //     it('should display correct note type', () => {
-      //       expect(noteForm.noteTypesSelect.value).to.equal(noteType.id);
-      //     });
-
-      //     it('should display correct note details', () => {
-      //       expect(noteForm.noteDetailsField.value).to.equal(udpNote.content);
-      //     });
-
-      //     it('should display assignments information accordion', () => {
-      //       expect(noteForm.assignmentInformationAccordionIsDisplayed).to.be.true;
-      //     });
-
-      //     it('should display correct referred entity type', () => {
-      //       expect(noteForm.referredEntityType.toLowerCase()).to.equal('usage data provider');
-      //     });
-
-      //     it('should display correct referred entity label', () => {
-      //       expect(noteForm.referredEntityName).to.equal(udp.label);
-      //     });
-
-      //     it('should disable save button', () => {
-      //       expect(noteForm.saveButton.isDisabled).to.be.true;
-      //     });
-
-      //     describe('and dropdown close button is clicked', () => {
-      //       beforeEach(async () => {
-      //         await noteForm.openDropdownAndClickCloseButton();
-      //       });
-
-      //       it('should redirect to previous page', function () {
-      //         expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}`);
-      //       });
-      //     });
-
-      //     describe('and the form is touched', () => {
-      //       describe('and note data was entered', () => {
-      //         beforeEach(async () => {
-      //           await noteForm.enterNoteData(noteType.name, 'some note title');
-      //         });
-
-      //         it('should enable save button', () => {
-      //           expect(noteForm.saveButton.isDisabled).to.be.false;
-      //         });
-
-      //         describe('and close button was clicked', () => {
-      //           beforeEach(async () => {
-      //             await noteForm.closeButton.click();
-      //           });
-
-      //           it('should display navigation modal', function () {
-      //             expect(noteForm.navigationModalIsOpened).to.be.true;
-      //           });
-
-      //           describe('and cancel navigation button was clicked', () => {
-      //             beforeEach(async () => {
-      //               await noteForm.clickCancelNavigationButton();
-      //             });
-
-      //             it('should close navigation modal', () => {
-      //               expect(noteForm.navigationModalIsOpened).to.be.false;
-      //             });
-
-      //             it('should keep the user on the same page', function () {
-      //               expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}/edit`);
-      //             });
-      //           });
-
-      //           describe('and continue navigation button was clicked', () => {
-      //             beforeEach(async () => {
-      //               await noteForm.clickContinueNavigationButton();
-      //             });
-
-      //             it('should close navigation modal', () => {
-      //               expect(noteForm.navigationModalIsOpened).to.be.false;
-      //             });
-
-      //             it('should redirect to previous page', function () {
-      //               expect(this.location.pathname + this.location.search).to.have.string(`/eusage/notes/${udpNote.id}`);
-      //             });
-      //           });
-      //         });
-
-      //         describe('and dropdown close button was clicked', () => {
-      //           beforeEach(async () => {
-      //             await noteForm.openDropdownAndClickCloseButton();
-      //           });
-
-      //           it('should display navigation modal', function () {
-      //             expect(noteForm.navigationModalIsOpened).to.be.true;
-      //           });
-
-      //           describe('and cancel navigation button was clicked', () => {
-      //             beforeEach(async () => {
-      //               await noteForm.clickCancelNavigationButton();
-      //             });
-
-      //             it('should close navigation modal', () => {
-      //               expect(noteForm.navigationModalIsOpened).to.be.false;
-      //             });
-
-      //             it('should keep the user on the same page', function () {
-      //               expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}/edit`);
-      //             });
-      //           });
-
-      //           describe('and continue navigation button was clicked', () => {
-      //             beforeEach(async () => {
-      //               await noteForm.clickContinueNavigationButton();
-      //             });
-
-      //             it('should close navigation modal', () => {
-      //               expect(noteForm.navigationModalIsOpened).to.be.false;
-      //             });
-
-      //             it('should redirect to previous page', function () {
-      //               expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}`);
-      //             });
-      //           });
-      //         });
-
-      //         describe('and save button was clicked', () => {
-      //           beforeEach(async () => {
-      //             await noteForm.saveButton.click();
-      //           });
-
-      //           it('should redirect to previous page', function () {
-      //             expect(this.location.pathname + this.location.search).to.equal(`/eusage/notes/${udpNote.id}/edit`);
-      //           });
-      //         });
-      //       });
-      //     });
-      //   });
-      // });
     });
   });
 });

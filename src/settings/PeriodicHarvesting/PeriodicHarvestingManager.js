@@ -48,7 +48,7 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   combineDateTime = (date, time) => {
-    const d = moment(date);
+    const d = moment(date, this.dateFormat);
     const t = moment(time, this.timeFormat);
 
     d.set('hour', t.hour());
@@ -244,6 +244,7 @@ class PeriodicHarvestingManager extends React.Component {
     return (
       <React.Fragment>
         <Pane
+          id="periodic-harvesting-pane"
           defaultWidth="fill"
           lastMenu={this.getLastMenu()}
           paneTitle={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}

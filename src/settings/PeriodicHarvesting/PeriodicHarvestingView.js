@@ -16,7 +16,7 @@ class PeriodicHarvestingView extends React.Component {
   static propTypes = {
     initialValues: PropTypes.shape(),
     intl: intlShape.isRequired,
-    timeFormat: PropTypes.shape(),
+    timeFormat: PropTypes.string,
   };
 
   renderDetailView = values => {
@@ -25,45 +25,51 @@ class PeriodicHarvestingView extends React.Component {
     const lastTriggeredAt = values.lastTriggeredAt ? moment(values.lastTriggeredAt).format('LLL') : '--';
     return (
       <React.Fragment>
-        <Row>
-          <Col xs={8}>
-            <KeyValue
-              label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
-              value={values.startDate}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={8}>
-            <KeyValue
-              label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
-              value={time}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={8}>
-            <KeyValue
-              label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-              value={values.periodicInterval}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={8}>
-            <KeyValue
-              label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
-              value={lastTriggeredAt}
-            />
-          </Col>
-        </Row>
+        <div id="periodic-harvesting-detail-view">
+          <Row>
+            <Col xs={8}>
+              <KeyValue
+                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+                value={values.startDate}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={8}>
+              <KeyValue
+                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+                value={time}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={8}>
+              <KeyValue
+                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
+                value={values.periodicInterval}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={8}>
+              <KeyValue
+                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
+                value={lastTriggeredAt}
+              />
+            </Col>
+          </Row>
+        </div>
       </React.Fragment>
     );
   }
 
   renderNotDefined = () => {
     return (
-      <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.notDefined" />
+      <div id="periodic-harvesting-config-not-defined">
+        <FormattedMessage
+          id="ui-erm-usage.settings.harvester.config.periodic.notDefined"
+        />
+      </div>
     );
   }
 
