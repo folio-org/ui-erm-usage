@@ -11,17 +11,15 @@ import {
 } from '@folio/stripes/components';
 import { Field } from 'redux-form';
 import { ConfigManager } from '@folio/stripes/smart-components';
-import StartHavester from './StartHarvester';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
-class Harvester extends React.Component {
+class MaxFailedAttempts extends React.Component {
   static propTypes = {
     stripes: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
-    this.cStartHarvester = this.props.stripes.connect(StartHavester);
     this.configManager = props.stripes.connect(ConfigManager);
   }
 
@@ -33,14 +31,6 @@ class Harvester extends React.Component {
         </div>
       </Pane>
     );
-  }
-
-  renderStartButton() {
-    if (this.props.stripes.hasInterface('erm-usage-harvester')) {
-      return <this.cStartHarvester {...this.props} />;
-    } else {
-      return this.renderNotPresent();
-    }
   }
 
   getInitialValues = (settings) => {
@@ -57,33 +47,30 @@ class Harvester extends React.Component {
 
   render() {
     return (
-      <div data-test-settings-harvester-config>
+      <div data-test-settings-harvester-max-failed-attempts>
         <this.configManager
           getInitialValues={this.getInitialValues}
           label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
           moduleName="ERM-USAGE-HARVESTER"
           configName="maxFailedAttempts"
         >
-          <Row>
-            <Col xs={12}>
-              <Field
-                component={TextField}
-                type="number"
-                id="maxFailedAttempts"
-                name="maxFailedAttempts"
-                label="Number failed attempts"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              { this.renderStartButton() }
-            </Col>
-          </Row>
+          <div data-test-settings-harvester-config>
+            <Row>
+              <Col xs={6}>
+                <Field
+                  component={TextField}
+                  type="number"
+                  id="maxFailedAttempts"
+                  name="maxFailedAttempts"
+                  label="Number failed attempts"
+                />
+              </Col>
+            </Row>
+          </div>
         </this.configManager>
       </div>
     );
   }
 }
 
-export default Harvester;
+export default MaxFailedAttempts;

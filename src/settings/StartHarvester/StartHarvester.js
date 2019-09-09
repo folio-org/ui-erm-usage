@@ -67,6 +67,7 @@ export default class StartHarvester extends React.Component {
   render() {
     const startHarvesterButton = (
       <Button
+        id="start-harvester"
         onClick={() => this.onClickStartHarvester()}
       >
         { 'Start harvesting' }
@@ -75,6 +76,7 @@ export default class StartHarvester extends React.Component {
 
     return (
       <Pane
+        id="start-harvester-pane"
         defaultWidth="fill"
         fluidContentWidth
         paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}

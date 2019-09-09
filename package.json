@@ -22,16 +22,17 @@
     "@bigtest/mocha": "^0.5.2",
     "@bigtest/react": "^0.1.2",
     "@folio/eslint-config-stripes": "^3.2.1",
-    "@folio/stripes": "^2.7.0",
+    "@folio/stripes": "^2.9.0",
     "@folio/stripes-cli": "^1.12.0",
-    "@folio/stripes-core": "^3.6.0",
+    "@folio/stripes-components": "^5.6.0",
+    "@folio/stripes-core": "^3.8.0",
     "babel-eslint": "^9.0.0",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "eslint": "^5.5.0",
     "mocha": "^5.2.0",
-    "react": "~16.6.3",
-    "react-dom": "~16.6.3",
+    "react": "~16.8.6",
+    "react-dom": "~16.8.6",
     "react-redux": "~5.1.1",
     "redux": "^4.0.0",
     "sinon": "^7.2.4"
@@ -39,6 +40,7 @@
   "dependencies": {
     "file-saver": "^2.0.0",
     "lodash": "^4.17.4",
+    "moment": "^2.24.0",
     "prop-types": "^15.6.0",
     "react-dropzone": "^9.0.0",
     "react-intl": "^2.5.0",
@@ -47,7 +49,7 @@
     "redux-form": "^7.0.3"
   },
   "peerDependencies": {
-    "@folio/stripes": "^2.7.0",
+    "@folio/stripes": "^2.9.0",
     "react": "*",
     "react-dom": "*",
     "react-redux": "*",
