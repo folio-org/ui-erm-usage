@@ -47,7 +47,7 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   combineDateTime = (date, time) => {
-    const d = moment(date, this.dateFormat);
+    const d = moment(date, [this.dateFormat, 'YYYY-MM-DDTHH:mm:ss.SSSZ']);
     const t = moment(time, this.timeFormat);
 
     d.set('hour', t.hour());

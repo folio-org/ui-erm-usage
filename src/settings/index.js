@@ -13,7 +13,6 @@ import PeriodicHarvestingManager from './PeriodicHarvesting';
 */
 
 export default class ErmUsageSettings extends React.Component {
-
   constructor(props) {
     super(props);
 
