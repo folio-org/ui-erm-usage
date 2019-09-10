@@ -1,6 +1,15 @@
 # Change history for ui-erm-usage
 
-## [2.3.0](https://github.com/folio-org/ui-erm-usage/tree/v2.2.2) (2019-07-23)
+## [2.4.0](https://github.com/folio-org/ui-erm-usage/tree/v2.4.0) (2019-09-10)
+* enable and configure regular harvesting (UIEUS-99)
+* Update detail view after edit (UIEUS-100)
+* Only avaliable reports in dropdown box for download (UIEUS-94)
+* Correct ordering of report types (UIEUS-96)
+* Correct ordering of requested reports (UIEUS-95)
+* Add notes app (UIEUS-61)
+* Bugfix: Aggregator config mail only mandatory if configType is "Mail" (UIEUS-70)
+
+## [2.3.0](https://github.com/folio-org/ui-erm-usage/tree/v2.3.0) (2019-07-23)
 * Avaiable reports for CSV download: update info text in ui (UIEUS-81)
 * Display single UDP (ERM-343)
 * "Start harvester" button for an inactive provider is inactive (UIEUS-78)
