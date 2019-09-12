@@ -13,6 +13,7 @@ import {
 } from '@folio/stripes/components';
 
 import DownloadCredentialsButton from './DownloadCredentialsButton';
+import { AggregatorConfigView } from './AggregatorConfig';
 
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
@@ -91,12 +92,9 @@ class AggregatorDetails extends React.Component {
     const configTypeLabel = configType ? configType.label : '-';
 
     const settings = (this.props.resources.settings || {}).records || [];
-    const hideCredentials = (settings.length && settings[0].value === 'true');
+    const hideValues = (!_.isEmpty(settings) && settings[0].value === 'true');
 
     const config = aggregator.aggregatorConfig;
-    const apiKey = hideCredentials ? '*'.repeat(config.apiKey.length) : config.apiKey;
-    const requestorId = hideCredentials ? '*'.repeat(config.requestorId.length) : config.requestorId;
-    const customerId = hideCredentials ? '*'.repeat(config.customerId.length) : config.customerId;
 
     const displayWhenOpenAccountConfAcc = (
       <this.connectedDownloadCredsButton
@@ -135,10 +133,10 @@ class AggregatorDetails extends React.Component {
         >
           <Row>
             <Col xs={8}>
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.apiKey" />} value={apiKey} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.requestorId" />} value={requestorId} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.customerId" />} value={customerId} />
-              <KeyValue label={<FormattedMessage id="ui-erm-usage.aggregator.config.reportRelease" />} value={aggregator.aggregatorConfig.reportRelease} />
+              <AggregatorConfigView
+                aggregatorConfig={config}
+                hideValues={hideValues}
+              />
             </Col>
           </Row>
         </Accordion>

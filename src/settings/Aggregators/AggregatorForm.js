@@ -18,13 +18,14 @@ import {
   Row,
   Select,
   TextField,
-
 } from '@folio/stripes/components';
 import {
   IfPermission
 } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 import {
+  autofill,
+  change,
   getFormValues,
   Field
 } from 'redux-form';
@@ -33,7 +34,7 @@ import {
   required,
   mail
 } from '../../util/Validate';
-import { ReportReleaseSelect } from '../../components/HarvestingConfiguration/Fields';
+import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
@@ -62,7 +63,12 @@ class AggregatorForm extends React.Component {
     this.handleExpandAll = this.handleExpandAll.bind(this);
     this.handleSectionToggle = this.handleSectionToggle.bind(this);
 
+    const { initialValues } = this.props;
+    const aggregator = initialValues || {};
+    const initialAggConfig = this.parseInitialAggConfig(aggregator);
+
     this.state = {
+      aggregatorConfigFields: initialAggConfig,
       confirmDelete: false,
       sections: {
         generalSection: true,
@@ -89,6 +95,22 @@ class AggregatorForm extends React.Component {
     } else {
       return null;
     }
+  }
+
+  parseInitialAggConfig = (initialValues) => {
+    const { aggregatorConfig } = initialValues;
+    if (_.isNil(aggregatorConfig)) {
+      return [];
+    }
+
+    return Object.keys(aggregatorConfig).map(key => {
+      const value = aggregatorConfig[key];
+      return {
+        key,
+        value,
+        isInitial: true
+      };
+    });
   }
 
   save(data) {
@@ -183,6 +205,49 @@ class AggregatorForm extends React.Component {
     });
   }
 
+  handleAddConfigField = () => {
+    this.setState(({ aggregatorConfigFields }) => ({
+      aggregatorConfigFields: aggregatorConfigFields.concat({})
+    }));
+  }
+
+  handleRemoveConfigField = (index) => {
+    const currentConf = this.state.aggregatorConfigFields[index];
+    this.setState(({ aggregatorConfigFields }) => ({
+      aggregatorConfigFields: [...aggregatorConfigFields.slice(0, index), ...aggregatorConfigFields.slice(index + 1)]
+    }), () => {
+      this.props.stripes.store.dispatch(autofill('aggreagtorForm', `aggregatorConfig.${currentConf.key}`, undefined));
+    });
+  }
+
+  handleConfigFieldChange = (fieldName, index, value, fields) => {
+    fields[index][fieldName] = value;
+    return fields;
+  }
+
+  handleConfigChange = (field, index, e) => {
+    const val = e === undefined ? 'e' : e.target.value;
+    this.setState(
+      prevState => ({
+        aggregatorConfigFields: this.handleConfigFieldChange(field, index, val, prevState.aggregatorConfigFields)
+      }), () => {
+        this.updateForm();
+      }
+    );
+  }
+
+  updateForm = () => {
+    const { aggregatorConfigFields } = this.state;
+    aggregatorConfigFields.forEach(entry => {
+      const k = `aggregatorConfig.${entry.key}`;
+      this.changeFormValue(k, entry.value);
+    });
+  }
+
+  changeFormValue = (key, value) => {
+    this.props.stripes.store.dispatch(change('aggreagtorForm', key, value));
+  }
+
   renderPaneTitle() {
     const { initialValues } = this.props;
     const aggregator = initialValues || {};
@@ -204,7 +269,7 @@ class AggregatorForm extends React.Component {
   render() {
     const { stripes, handleSubmit, initialValues, aggregators } = this.props;
     const aggregator = initialValues || {};
-    const { confirmDelete, sections } = this.state;
+    const { aggregatorConfigFields, confirmDelete, sections } = this.state;
     const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
     const name = aggregator.label || '';
 
@@ -291,52 +356,13 @@ class AggregatorForm extends React.Component {
                 onToggle={this.handleSectionToggle}
                 label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
               >
-                <Row>
-                  <Col xs={8}>
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.apiKey">
-                          {(msg) => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="aggregatorConfig.apiKey"
-                      id="input-aggregator-config-api-key"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
-                    />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.requestorId">
-                          {(msg) => msg}
-                        </FormattedMessage>
-                      }
-                      name="aggregatorConfig.requestorId"
-                      id="input-aggregator-config-requestor-id"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                    />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.customerId">
-                          {(msg) => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="aggregatorConfig.customerId"
-                      id="input-aggregator-config-customer-id"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
-                    />
-                    <ReportReleaseSelect
-                      name="aggregatorConfig.reportRelease"
-                      id="input-aggregator-config-reportRelease"
-                    />
-                  </Col>
-                </Row>
+                <AggregatorConfigForm
+                  fields={aggregatorConfigFields}
+                  onAddField={this.handleAddConfigField}
+                  onChange={this.handleConfigChange}
+                  onRemoveField={this.handleRemoveConfigField}
+                  stripes={stripes}
+                />
               </Accordion>
 
               <Accordion
