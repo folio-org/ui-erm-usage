@@ -69,7 +69,7 @@
     "udp.form.reportList.selectReportInfo": "Select Counter {counterVersion} report",
     "udp.form.reportList.selectReportFirst": "Select Counter report release first!",
     "aggregator.generalInformation": "Informazioni generali",
-    "aggregator.name": "Name",
+    "aggregator.name": "Nome",
     "aggregator.serviceType": "Service Type",
     "aggregator.serviceUrl": "Service URL",
     "aggregator.aggregatorConfig.title": "Aggregator Configuration",
