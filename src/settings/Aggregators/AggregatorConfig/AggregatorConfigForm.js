@@ -25,6 +25,7 @@ class AggregatorConfigForm extends React.Component {
           content="For German National Statistic Server specify the keys: apiKey, requestorId, customerId, reportRelease"
         />
         <RepeatableField
+          id="add-agg-config-param"
           addLabel="Add config parameter"
           fields={fields}
           onAdd={onAddField}

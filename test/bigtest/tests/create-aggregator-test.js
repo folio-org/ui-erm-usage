@@ -40,4 +40,40 @@ describe('Create Aggregator', () => {
       expect(aggregatorEditPage.accountConfigTypeSelect.value).to.be.equal('API');
     });
   });
+
+  describe('add aggregator config', () => {
+    beforeEach(async () => {
+      await aggregatorEditPage.clickAddConfigParam();
+    });
+
+    it('should add config param', () => {
+      expect(aggregatorEditPage.configParams().length).to.be.equal(1);
+    });
+
+    describe('fill key and value', () => {
+      beforeEach(async () => {
+        await aggregatorEditPage.aggConfigFirstKey.fill('key1');
+        await aggregatorEditPage.aggConfigFirstVal.fill('val1');
+      });
+      it('key1 is changed to "key1"', () => {
+        expect(aggregatorEditPage.aggConfigFirstKey.value).to.be.equal('key1');
+      });
+
+
+      describe('remove aggregator config', () => {
+        beforeEach(async () => {
+          await aggregatorEditPage.clickAddConfigParam();
+        });
+        describe('delete second config param', () => {
+          beforeEach(async () => {
+            await await aggregatorEditPage.clickRemoveConfigParam();
+          });
+          it('should deleted second config param', () => {
+            expect(aggregatorEditPage.configParams().length).to.be.equal(1);
+          });
+        });
+      });
+
+    });
+  });
 });
