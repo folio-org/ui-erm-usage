@@ -8,7 +8,10 @@ import {
 import PropTypes from 'prop-types';
 import {
   Button,
-  Modal
+  Col,
+  KeyValue,
+  Modal,
+  Row
 } from '@folio/stripes/components';
 import FileUploader from './FileUploader';
 
@@ -140,11 +143,23 @@ class ReportUpload extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <FileUploader
-          onSelectFile={this.selectFile}
-          selectedFile={this.state.selectedFile}
-          onClickUpload={this.uploadFile}
-        />
+        <Row>
+          <Col xs={8}>
+            <KeyValue
+              label={<FormattedMessage id="ui-erm-usage.general.info" />}
+              value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={8}>
+            <FileUploader
+              onSelectFile={this.selectFile}
+              selectedFile={this.state.selectedFile}
+              onClickUpload={this.uploadFile}
+            />
+          </Col>
+        </Row>
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
