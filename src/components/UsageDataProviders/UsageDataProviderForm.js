@@ -16,6 +16,9 @@ import {
   Row
 } from '@folio/stripes/components';
 import {
+  ViewMetaData
+} from '@folio/stripes/smart-components';
+import {
   IfPermission
 } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
@@ -52,6 +55,8 @@ class UsageDataProviderForm extends React.Component {
         editNotes: false
       },
     };
+
+    this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
   }
@@ -199,6 +204,9 @@ class UsageDataProviderForm extends React.Component {
                   />
                 </Col>
               </Row>
+              {(initialValues.metadata && initialValues.metadata.createdDate) &&
+                <this.connectedViewMetaData metadata={initialValues.metadata} />
+              }
               <UDPInfoForm
                 accordionId="editUDPInfo"
                 expanded={sections.editUDPInfo}
