@@ -24,7 +24,8 @@ import {
 } from '@folio/stripes/core';
 import {
   withTags,
-  NotesSmartAccordion
+  NotesSmartAccordion,
+  ViewMetaData
 } from '@folio/stripes/smart-components';
 
 import UsageDataProviderForm from './UsageDataProviderForm';
@@ -99,6 +100,7 @@ class UsageDataProviderView extends React.Component {
     this.connectedStatistics = this.props.stripes.connect(Statistics);
     this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
     this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
+    this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
 
     this.state = {
       accordions: {
@@ -242,6 +244,7 @@ class UsageDataProviderView extends React.Component {
               />
             </Col>
           </Row>
+          <this.connectedViewMetaData metadata={initialValues.metadata} />
           <UDPInfoView
             id="udpInfo"
             usageDataProvider={initialValues}
