@@ -10,6 +10,7 @@ import {
 import {
   Accordion,
   Col,
+  ConfirmationModal,
   Row,
 } from '@folio/stripes/components';
 import formCss from '../../util/sharedStyles/form.css';
@@ -26,17 +27,38 @@ import {
 } from './Fields';
 
 class HarvestingConfigurationForm extends React.Component {
+  static contextTypes = {
+    _reduxForm: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
 
     this.cAggregatorForm = this.props.stripes.connect(AggregatorInfoForm);
     this.cVendorInfoForm = this.props.stripes.connect(VendorInfoForm);
+
+    this.state = {
+      confirmClear: false,
+    };
+  }
+
+  getFormName() {
+    return 'form-udProvider';
+  }
+
+  getSelectedReportReleaseFieldName() {
+    return 'harvestingConfig.reportRelease';
+  }
+
+  getSelectedReportTypesFieldName() {
+    return 'harvestingConfig.requestedReports';
   }
 
   getCurrentValues() {
     const { store } = this.props.stripes;
     const state = store.getState();
-    return getFormValues('form-udProvider')(state) || {};
+    const formName = this.getFormName();
+    return getFormValues(formName)(state) || {};
   }
 
   hasHarvestingConfig(values) {
@@ -55,9 +77,18 @@ class HarvestingConfigurationForm extends React.Component {
   getSelectedCounterVersion() {
     const currentVals = this.getCurrentValues();
     if (this.hasHarvestingConfig(currentVals)) {
-      return currentVals.harvestingConfig.reportRelease;
+      return currentVals.harvestingConfig.reportRelease || 0;
     } else {
-      return null;
+      return 0;
+    }
+  }
+
+  getSelectedCounterReportTypes = () => {
+    const currentVals = this.getCurrentValues();
+    if (this.hasHarvestingConfig(currentVals)) {
+      return currentVals.harvestingConfig.requestedReports || [];
+    } else {
+      return 0;
     }
   }
 
@@ -70,14 +101,44 @@ class HarvestingConfigurationForm extends React.Component {
     }
   }
 
+  updateSelectedCounterVersion = (event, newValue, previousValue) => {
+    event.preventDefault();
+
+    if (newValue !== previousValue) {
+      this.newCounterVersion = newValue;
+      const selectedReports = this.getSelectedCounterReportTypes();
+      if (!_.isEmpty(selectedReports)) {
+        this.setState({ confirmClear: true });
+      } else {
+        const { dispatch, change } = this.context._reduxForm;
+        dispatch(change(this.getSelectedReportReleaseFieldName(), newValue));
+      }
+    }
+  }
+
+  confirmClearReports = (confirmation) => {
+    const { dispatch, change } = this.context._reduxForm;
+    if (confirmation) {
+      dispatch(change(this.getSelectedReportTypesFieldName(), null));
+      dispatch(change(this.getSelectedReportReleaseFieldName(), this.newCounterVersion));
+      setTimeout(() => {
+        this.forceUpdate();
+      });
+    }
+    this.setState({ confirmClear: false });
+  }
+
   render() {
     const { expanded, accordionId, harvesterImplementations } = this.props;
+    const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
 
     const selectedHarvestVia = this.getSelectedHarvestVia();
     const selectedCV = this.getSelectedCounterVersion();
     const isHarvestingActive = this.isHarvestingActive();
     const selectedCounterVersion = parseInt(selectedCV, 10);
+
+    const confirmationMessage = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />;
 
     return (
       <Accordion
@@ -119,8 +180,9 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <ReportReleaseSelect
-                    name="harvestingConfig.reportRelease"
+                    name={this.getSelectedReportReleaseFieldName()}
                     id="addudp_reportrelease"
+                    onChange={this.updateSelectedCounterVersion}
                   />
                 </Col>
                 <Col xs={8}>
@@ -150,6 +212,17 @@ class HarvestingConfigurationForm extends React.Component {
             </section>
           </Col>
         </Row>
+
+        <ConfirmationModal
+          id="clear-report-selection-confirmation"
+          open={confirmClear}
+          heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
+          message={confirmationMessage}
+          onConfirm={() => { this.confirmClearReports(true); }}
+          onCancel={() => { this.confirmClearReports(false); }}
+          confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />}
+        />
+
       </Accordion>
     );
   }
