@@ -1,8 +1,8 @@
 import {
   clickable,
   interactor,
-  text,
   isPresent,
+  text,
   value,
 } from '@bigtest/interactor';
 
@@ -11,8 +11,23 @@ import {
   value = value();
 }
 
+@interactor class ReportReleaseSelect {
+  static defaultScope = 'select[id="addudp_reportrelease"]';
+  value = value();
+}
+
+@interactor class ReportTypeSelect {
+  static defaultScope = 'select[id=""]';
+}
+
 @interactor class DeleteUDPConfirmation {
   static defaultScope = '#delete-udp-confirmation';
+}
+
+@interactor class ConfirmationModal {
+  static defaultScope = '#clear-report-selection-confirmation';
+  clickConfirmClearReportsButton = clickable('[data-test-confirmation-modal-confirm-button]');
+  clickCancelClearReportsButton = clickable('[data-test-confirmation-modal-cancel-button]');
 }
 
 export default @interactor class UDPEditPage {
@@ -28,4 +43,9 @@ export default @interactor class UDPEditPage {
   deleteUDPConfirmation = new DeleteUDPConfirmation();
 
   clickDeleteUDP = clickable('#clickable-delete-udp');
+
+  reportReleaseSelect = new ReportReleaseSelect();
+  reportTypeSelect = new ReportTypeSelect();
+  clickAddReportButton = clickable('[data-test-repeatable-field-add-item-button]');
+  confirmationModal = new ConfirmationModal();
 }

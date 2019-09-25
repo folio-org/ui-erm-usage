@@ -18,6 +18,7 @@ import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 const propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
+  onChange: PropTypes.func.isRequired
 };
 
 const ReportReleaseSelect = (props) => (
@@ -34,6 +35,7 @@ const ReportReleaseSelect = (props) => (
     dataOptions={reportReleaseOptions}
     validate={[required]}
     fullWidth
+    onChange={props.onChange}
   />
 );
 

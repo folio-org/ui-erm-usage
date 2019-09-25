@@ -4,135 +4,75 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage
 } from 'react-intl';
-import { FieldArray } from 'redux-form';
+import { FieldArray, Field } from 'redux-form';
 import {
   Icon,
-  Button,
-  Dropdown,
-  DropdownMenu,
-  List,
-  ConfirmationModal
+  RepeatableField,
+  Selection
 } from '@folio/stripes/components';
 import formCss from '../../../util/sharedStyles/form.css';
 import counterReports from './data/counterReports';
-import ReportList from '../ReportList';
 import css from './SelectedReportsForm.css';
+
+const omitUsedOptions = (list, usedValues, id) => {
+  const unUsedValues = _.cloneDeep(list);
+  if (usedValues) {
+    usedValues.forEach((item, index) => {
+      if (id !== index) {
+        const usedValueIndex = _.findIndex(unUsedValues, v => {
+          return v.label === item;
+        });
+        if (usedValueIndex !== -1) {
+          unUsedValues.splice(usedValueIndex, 1);
+        }
+      }
+    });
+  }
+  return unUsedValues;
+};
+
+const getCounterReportsForVersion = (counterVersion) => {
+  return _.filter(counterReports.getOptions(), ['counterVersion', '' + counterVersion]);
+};
 
 class SelectedReportsForm extends React.Component {
   static propTypes = {
-    initialValues: PropTypes.object,
     counterVersion: PropTypes.number,
   };
 
+  static contextTypes = {
+    _reduxForm: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      addReportOpen: false,
-      searchTerm: '',
-      confirmClear: false,
-    };
-    this.fields = null;
     this.counterReports = counterReports.getOptions();
+    this.counterReportsForVersion = getCounterReportsForVersion(props.counterVersion);
+    this.counterReportsCurrentVersion = this.counterReportsForVersion;
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.counterVersion !== prevProps.counterVersion) {
-      if (!_.isEmpty(this.fields)) {
-        this.beginClearReports();
-      }
+      const counterReportsForVersion = _.isNaN(this.props.counterVersion) ? [] : getCounterReportsForVersion(this.props.counterVersion);
+      this.counterReportsCurrentVersion = counterReportsForVersion;
     }
   }
 
-  beginClearReports = () => {
-    this.setState({
-      confirmClear: true,
-    });
-  }
-
-  confirmClearReports = (confirmation) => {
-    if (confirmation) {
-      this.fields.removeAll();
-      setTimeout(() => {
-        this.forceUpdate();
-      });
-    }
-    this.setState({ confirmClear: false });
-  }
-
-  onChangeSearch = (e) => {
-    const searchTerm = e.target.value;
-    this.setState({ searchTerm });
-  }
-
-  onToggleAddReport = () => {
-    const isOpen = this.state.addReportOpen;
-    this.setState({
-      addReportOpen: !isOpen,
-      searchTerm: ''
-    });
-  }
-
-  addReportHandler = (report) => {
-    if (_.isEmpty(this.fields.getAll())) {
-      this.fields.unshift(report);
-    } else if (this.fields.getAll().indexOf(report) < 0) {
-      this.fields.unshift(report);
-    }
-    setTimeout(() => this.onToggleAddReport());
-  }
-
-  isReportAvailable = (report) => {
-    return _.includes(report.value.toLowerCase(),
-      this.state.searchTerm.toLowerCase());
-  }
-
-  removeReport = (index) => {
-    this.fields.remove(index);
-    setTimeout(() => this.forceUpdate());
-  }
-
-  renderItem = (item, index) => {
-    const title = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportTitle" />;
+  renderFields(field, index, values) {
+    const selectedReports = _.get(values, ['harvestingConfig', 'requestedReports'], {});
+    const list = omitUsedOptions(this.counterReportsCurrentVersion, selectedReports, index);
     return (
-      <li key={item}>
-        {item}
-        <Button
-          buttonStyle="fieldControl"
-          align="end"
-          type="button"
-          id="clickable-remove-report"
-          onClick={() => this.removeReport(index)}
-          aria-label={item}
-          title={title}
-        >
-          <Icon icon="times-circle" />
-        </Button>
-      </li>
-    );
-  }
-
-  renderList = ({ fields }) => {
-    this.fields = fields;
-    const listFormatter = (fieldName, index) => (this.renderItem(fields.get(index), index));
-
-    return (
-      <List
-        items={fields}
-        itemFormatter={listFormatter}
-        isEmptyMessage={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.emptyListMessage" />}
+      <Field
+        component={Selection}
+        dataOptions={list}
+        label="Report type"
+        name={field}
       />
     );
   }
 
   render() {
-    const { confirmClear } = this.state;
-
-    const counterVersion = this.props.counterVersion || this.props.initialValues.reportRelease;
-    const counterReportsCurrentVersion = _.filter(this.counterReports, ['counterVersion', '' + counterVersion]);
-    const availReportNames = _.filter(counterReportsCurrentVersion, this.isReportAvailable).map(f => f.value);
-
-    const confirmationMessage = <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />;
+    const { values } = this.context._reduxForm;
 
     const label = (
       <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport">
@@ -140,35 +80,18 @@ class SelectedReportsForm extends React.Component {
       </FormattedMessage>
     );
 
-    const reports = (
-      <ReportList
-        items={availReportNames}
-        onClickItem={this.addReportHandler}
-        onChangeSearch={this.onChangeSearch}
-        counterVersion={counterVersion}
+    const reportsSelect = (
+      <FieldArray
+        addLabel={
+          <Icon icon="plus-sign">
+            {'Add report type'}
+          </Icon>
+        }
+        component={RepeatableField}
+        name="harvestingConfig.requestedReports"
+        onAdd={fields => fields.push('')}
+        renderField={(field, index) => this.renderFields(field, index, values)}
       />
-    );
-
-    const reportsDropdownButton = (
-      <Dropdown
-        id="section-add-report"
-        style={{ float: 'right' }}
-        pullRight
-        open={this.state ? this.state.addReportOpen : false}
-        onToggle={this.onToggleAddReport}
-      >
-        <Button align="end" bottomMargin0 data-role="toggle" aria-haspopup="true" id="clickable-add-report">
-          &#43;
-          {' '}
-          {<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportButton" />}
-        </Button>
-        <DropdownMenu
-          data-role="menu"
-          onToggle={this.onToggleAddReport}
-        >
-          {reports}
-        </DropdownMenu>
-      </Dropdown>
     );
 
     return (
@@ -177,22 +100,8 @@ class SelectedReportsForm extends React.Component {
           { label }
         </div>
         <div className={css.reportListDropdownWrap}>
-          {reportsDropdownButton}
+          {reportsSelect}
         </div>
-        <FieldArray
-          name="harvestingConfig.requestedReports"
-          component={this.renderList}
-        />
-
-        <ConfirmationModal
-          id="clear-report-selection-confirmation"
-          open={confirmClear}
-          heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
-          message={confirmationMessage}
-          onConfirm={() => { this.confirmClearReports(true); }}
-          onCancel={() => { this.confirmClearReports(false); }}
-          confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />}
-        />
       </React.Fragment>
     );
   }
