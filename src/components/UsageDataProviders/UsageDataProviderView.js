@@ -52,6 +52,10 @@ class UsageDataProviderView extends React.Component {
       clear: false,
       shouldRefresh: () => true,
     },
+    counterReports: {
+      type: 'okapi',
+      path: 'counter-reports?tiny=true&query=(providerId==:{id})&limit=1000',
+    },
   });
 
   static propTypes = {
@@ -67,6 +71,7 @@ class UsageDataProviderView extends React.Component {
       .isRequired,
     paneWidth: PropTypes.string,
     resources: PropTypes.shape({
+      counterReports: PropTypes.shape(),
       usageDataProvider: PropTypes.shape(),
       query: PropTypes.object,
       settings: PropTypes.shape({
@@ -97,7 +102,6 @@ class UsageDataProviderView extends React.Component {
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.connectedUsageDataProviderForm = this.props.stripes.connect(UsageDataProviderForm);
-    this.connectedStatistics = this.props.stripes.connect(Statistics);
     this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
     this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
     this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
@@ -120,6 +124,17 @@ class UsageDataProviderView extends React.Component {
 
     if (udp.length === 0 || !id) return null;
     return udp.find(u => u.id === id);
+  }
+
+  getCounterReports = () => {
+    const { resources, match: { params: { id } } } = this.props;
+    const records = (resources.counterReports || {}).records || null;
+    const counterReports = !_.isEmpty(records) ? records[0].counterReports : [];
+    if (!_.isEmpty(counterReports) && counterReports[0].providerId === id) {
+      return counterReports;
+    } else {
+      return [];
+    }
   }
 
   handleExpandAll = (obj) => {
@@ -206,6 +221,7 @@ class UsageDataProviderView extends React.Component {
     const { resources, parentResources, stripes } = this.props;
     const query = resources.query;
     const initialValues = this.getUDP();
+    const counterReports = this.getCounterReports();
 
     const harvesterImpls = extractHarvesterImpls(parentResources);
 
@@ -272,10 +288,11 @@ class UsageDataProviderView extends React.Component {
             label={this.renderAccordionHeader(<FormattedMessage id="ui-erm-usage.udp.statistics" />)}
             id="statisticsAccordion"
           >
-            <this.connectedStatistics
+            <Statistics
               stripes={stripes}
               providerId={providerId}
               udpLabel={label}
+              counterReports={counterReports}
             />
           </Accordion>
           <Accordion
