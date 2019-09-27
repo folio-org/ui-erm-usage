@@ -2,7 +2,7 @@
     "settings.general": "一般",
     "settings.general.message": "这是您的常规应用设置。",
     "ui-erm-usage.resultCount": "结果计数:",
-    "resultCount": "{count, number}找到的记录",
+    "resultCount": "{count, number}记录找到",
     "erm-usage": "ERM使用",
     "meta.title": "电子使用",
     "information.providerName": "提供者名称",
