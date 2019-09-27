@@ -70,7 +70,7 @@ class ErmUsage extends React.Component {
           exact
         />
         <Route
-          path={`${this.props.match.path}`}
+          path={`${path}`}
           render={() => <this.connectedApp {...this.props} />}
         />
       </Switch>
