@@ -14,6 +14,7 @@ import {
   Row
 } from '@folio/stripes/components';
 import ReportButton from '../ReportButton';
+import { calcStateExpandAllAccordions, calcStateToggleAccordion } from '../../../util/stateUtils';
 import { MAX_FAILED_ATTEMPTS } from '../../../util/constants';
 
 class StatisticsPerYear extends React.Component {
@@ -73,18 +74,13 @@ class StatisticsPerYear extends React.Component {
 
   handleExpandAll = (obj) => {
     this.setState((curState) => {
-      const newState = _.cloneDeep(curState);
-      newState.accordions = obj;
-      return newState;
+      return calcStateExpandAllAccordions(curState, obj);
     });
   }
 
   handleAccordionToggle = ({ id }) => {
     this.setState((state) => {
-      const newState = _.cloneDeep(state);
-      if (!_.has(newState.accordions, id)) newState.accordions[id] = true;
-      newState.accordions[id] = !newState.accordions[id];
-      return newState;
+      return calcStateToggleAccordion(state, id);
     });
   }
 

@@ -36,6 +36,7 @@ import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
 import extractHarvesterImpls from '../../util/HarvesterImpls';
+import { calcStateExpandAllAccordions, calcStateToggleAccordion } from '../../util/stateUtils';
 import urls from '../../util/urls';
 
 class UsageDataProviderView extends React.Component {
@@ -139,18 +140,13 @@ class UsageDataProviderView extends React.Component {
 
   handleExpandAll = (obj) => {
     this.setState((curState) => {
-      const newState = _.cloneDeep(curState);
-      newState.accordions = obj;
-      return newState;
+      return calcStateExpandAllAccordions(curState, obj);
     });
   }
 
   handleAccordionToggle = ({ id }) => {
     this.setState((state) => {
-      const newState = _.cloneDeep(state);
-      if (!_.has(newState.accordions, id)) newState.accordions[id] = true;
-      newState.accordions[id] = !newState.accordions[id];
-      return newState;
+      return calcStateToggleAccordion(state, id);
     });
   }
 
