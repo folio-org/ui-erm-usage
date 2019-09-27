@@ -14,14 +14,6 @@ import reportDownloadTypes from '../../util/data/reportDownloadTypes';
 import css from './Statistics.css';
 
 class Statistics extends React.Component {
-  static manifest = Object.freeze({
-    counterReports: {
-      type: 'okapi',
-      path: 'counter-reports?tiny=true&query=(providerId==%{providerId.id})&limit=1000',
-    },
-    providerId: { id: null },
-  });
-
   static propTypes = {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
@@ -33,27 +25,15 @@ class Statistics extends React.Component {
         getState: PropTypes.func
       })
     }).isRequired,
-    resources: PropTypes.shape({
-      counterReports: PropTypes.shape(),
-    }),
-    mutator: PropTypes.shape({
-      providerId: PropTypes.object.isRequired,
-    }),
     providerId: PropTypes.string.isRequired,
     udpLabel: PropTypes.string.isRequired,
+    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.props.mutator.providerId.replace({ id: props.providerId });
     this.connectedDownloadRange = props.stripes.connect(DownloadRange);
     this.connectedStatsPerYear = props.stripes.connect(StatisticsPerYear);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.providerId !== prevProps.providerId) {
-      this.props.mutator.providerId.replace({ id: this.props.providerId });
-    }
   }
 
   calcDownloadableReportTypes = (counterReports) => {
@@ -66,17 +46,12 @@ class Statistics extends React.Component {
   }
 
   render() {
-    const { resources } = this.props;
-    const records = (resources.counterReports || {}).records || null;
-    const counterReports = !_.isEmpty(records) ? records[0].counterReports : [];
+    const { counterReports } = this.props;
     const stats = groupByYearAndReport(counterReports);
     const uniqueReports = this.calcDownloadableReportTypes(counterReports);
 
-    const info = _.isEmpty(stats) ? <FormattedMessage id="ui-erm-usage.reportOverview.noReports" /> : null;
-
     return (
       <React.Fragment>
-        { info }
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
             <hr />

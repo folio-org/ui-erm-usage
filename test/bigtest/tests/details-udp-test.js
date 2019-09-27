@@ -46,6 +46,26 @@ describe('UDPDetailsPage', () => {
       expect(udpDetailsPage.uploadAccordion.isPresent).to.equal(true);
     });
 
+    describe('all accordions can be expanded', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.expandAll.click();
+      });
+
+      it('harvesting configuration is expanded and harvesting status is displayed', () => {
+        expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal('true');
+      });
+
+      describe('all accordions can be collapsed', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.expandAll.click();
+        });
+
+        it('harvesting configuration is collapsed and harvesting status is not displayed', () => {
+          expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal('false');
+        });
+      });
+    });
+
     describe('service type is set correctly', function () {
       beforeEach(async function () {
         await udpDetailsPage.harvestingAccordion.click();

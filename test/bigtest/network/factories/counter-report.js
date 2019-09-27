@@ -57,7 +57,6 @@ export default Factory.extend({
       report.update({
         provider: report.provider,
       });
-      report.save();
     }
   }
 });
