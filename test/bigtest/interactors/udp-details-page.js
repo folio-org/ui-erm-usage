@@ -1,5 +1,6 @@
 
 import {
+  attribute,
   clickable,
   interactor,
   property,
@@ -14,6 +15,7 @@ import {
 
 @interactor class HarvestingAccordionButton {
   static defaultScope = '#accordion-toggle-button-harvestingAccordion';
+  expanded = attribute('aria-expanded');
 }
 
 @interactor class NotesAccordionButton {
