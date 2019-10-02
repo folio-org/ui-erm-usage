@@ -32,6 +32,7 @@
   "information.harvestingStatus": "Harvesting Status",
   "information.aggregator": "Aggregator",
   "information.latestStatistics": "Latest Statistics",
+  "information.hasFailedReports" : "Has failed reports",
 
   "udp.harvestingConfiguration": "Harvesting configuration",
   "udp.notes": "Notes",

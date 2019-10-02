@@ -43,6 +43,15 @@ const filterConfig = [
     values: [],
     restrictWhenAllSelected: true,
   },
+  {
+    label: <FormattedMessage id="ui-erm-usage.information.hasFailedReports" />,
+    name: 'hasFailedReport',
+    cql: 'hasFailedReport',
+    values: [
+      { name: 'Yes', cql: 'yes' },
+      { name: 'No', cql: 'no' }
+    ],
+  },
 ];
 
 class UsageDataProviders extends React.Component {
