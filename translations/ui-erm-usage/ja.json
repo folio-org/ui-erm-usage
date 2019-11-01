@@ -81,7 +81,7 @@
     "aggregator.config.accountConfig.type": "Type",
     "aggregator.config.accountConfig.mail": "Mail",
     "aggregator.config.accountConfig.contact": "Contact",
-    "aggregator.form.saveAndClose": "Save and close",
+    "aggregator.form.saveAndClose": "保存して閉じる",
     "aggregator.form.create": "Create aggregator",
     "aggregator.form.delete": "Delete",
     "aggregator.form.delete.confirm.message": "Do you really want to delete {aggName}?",
