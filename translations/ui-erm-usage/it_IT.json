@@ -80,7 +80,7 @@
     "aggregator.config.accountConfig": "Account Configuration",
     "aggregator.config.accountConfig.type": "Tipologia",
     "aggregator.config.accountConfig.mail": "Mail",
-    "aggregator.config.accountConfig.contact": "Contact",
+    "aggregator.config.accountConfig.contact": "Contatto",
     "aggregator.form.saveAndClose": "Salva e chiudi",
     "aggregator.form.create": "Crea aggregatore",
     "aggregator.form.delete": "Elimina",
