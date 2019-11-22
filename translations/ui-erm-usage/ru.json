@@ -1,5 +1,5 @@
 {
-    "settings.general": "General",
+    "settings.general": "Общие",
     "settings.general.message": "These are your general app settings.",
     "ui-erm-usage.resultCount": "ResultCount:",
     "resultCount": "{count, number} Records found",
