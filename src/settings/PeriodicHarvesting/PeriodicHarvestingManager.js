@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
@@ -105,7 +106,8 @@ class PeriodicHarvestingManager extends React.Component {
     data.startDate = dateTime.format();
     data.startTime = {};
 
-    const { startDate, startTime, ...partialConfig } = data;
+    const { startDate, ...config } = data;
+    const partialConfig = _.omit(config, 'startTime');
     partialConfig.startAt = startDate;
     this.setState({ config: partialConfig });
 

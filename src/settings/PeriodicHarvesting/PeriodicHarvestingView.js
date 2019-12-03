@@ -23,7 +23,7 @@ class PeriodicHarvestingView extends React.Component {
   renderDetailView = values => {
     const { timeFormat, timeZone } = this.props;
     const time = moment.tz(values.startAt, timeZone).format(timeFormat);
-    
+
     const lastTriggeredAt = values.lastTriggeredAt ? moment(values.lastTriggeredAt).format('LLL') : '--';
     return (
       <React.Fragment>
