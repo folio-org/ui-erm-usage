@@ -40,6 +40,8 @@ class PeriodicHarvestingManager extends React.Component {
 
     this.dateFormat = moment.localeData()._longDateFormat.L;
     this.timeFormat = moment.localeData()._longDateFormat.LT;
+
+    this.timeZone = props.intl.timeZone;
   }
 
   componentDidMount() {
@@ -47,12 +49,13 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   combineDateTime = (date, time) => {
-    const d = moment(date, [this.dateFormat, 'YYYY-MM-DDTHH:mm:ss.SSSZ']);
-    const t = moment(time, this.timeFormat);
+    const d = moment(date, [this.dateFormat, 'YYYY-MM-DDTHH:mm:ss.SSSZ']).tz(this.timeZone);
+    const t = moment(time, 'HH:mm:ss.SSSZ').tz(this.timeZone);
 
     d.set('hour', t.hour());
     d.set('minute', t.minute());
     d.set('second', t.second());
+
     return d;
   }
 
@@ -225,8 +228,10 @@ class PeriodicHarvestingManager extends React.Component {
     const initialVals = this.state.config;
 
     const dateTime = this.splitDateTime(initialVals.startAt);
+
     initialVals.startDate = dateTime.date;
-    initialVals.startTime = dateTime.time;
+    const time = moment.tz(dateTime.time, this.timeZone).format('HH:mm:ss.SSSZZ');
+    initialVals.startTime = time;
 
     const periodicHarvesting = this.state.isEditing ?
       <PeriodicHarvestingForm
@@ -234,10 +239,12 @@ class PeriodicHarvestingManager extends React.Component {
         onDelete={this.deletePeriodicHarvestingConf}
         onSubmit={(record) => { this.savePeriodicHarvestingConf(record); }}
         stripes={stripes}
+        timeZone={this.timeZone}
       /> :
       <PeriodicHarvestingView
         initialValues={initialVals}
         timeFormat={this.timeFormat}
+        timeZone={this.timeZone}
       />;
 
     return (

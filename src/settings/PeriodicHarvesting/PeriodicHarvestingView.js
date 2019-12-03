@@ -17,11 +17,13 @@ class PeriodicHarvestingView extends React.Component {
     initialValues: PropTypes.shape(),
     intl: intlShape.isRequired,
     timeFormat: PropTypes.string,
+    timeZone: PropTypes.string.isRequired
   };
 
   renderDetailView = values => {
-    const { timeFormat } = this.props;
-    const time = moment(values.startTime).format(timeFormat);
+    const { timeFormat, timeZone } = this.props;
+    const time = moment.tz(values.startAt, timeZone).format(timeFormat);
+    
     const lastTriggeredAt = values.lastTriggeredAt ? moment(values.lastTriggeredAt).format('LLL') : '--';
     return (
       <React.Fragment>
@@ -29,7 +31,7 @@ class PeriodicHarvestingView extends React.Component {
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
                 value={values.startDate}
               />
             </Col>
