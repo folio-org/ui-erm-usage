@@ -34,6 +34,7 @@ class PeriodicHarvestingForm extends React.Component {
     initialValues: PropTypes.shape(),
     intl: intlShape.isRequired,
     onDelete: PropTypes.func.isRequired,
+    timeZone: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -72,6 +73,7 @@ class PeriodicHarvestingForm extends React.Component {
     const { handleSubmit, initialValues } = this.props;
     const isConfigEmpty = _.isEmpty(initialValues);
     const lastTriggeredAt = initialValues.lastTriggeredAt ? moment(initialValues.lastTriggeredAt).format('LLL') : '--';
+
     return (
       <React.Fragment>
         <form
@@ -97,7 +99,7 @@ class PeriodicHarvestingForm extends React.Component {
                 label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
                 component={Timepicker}
                 autoComplete="off"
-                timeZone="UTC"
+                timeZone={this.props.timeZone}
               />
             </Col>
           </Row>
