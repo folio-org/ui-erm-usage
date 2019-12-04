@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [2.5.1](https://github.com/folio-org/ui-erm-usage/tree/v2.5.1) (2019-12-04)
+* Bugfix: Use correct version if okapiInterface usage-data-providers (v2.3)
+
 ## [2.5.0](https://github.com/folio-org/ui-erm-usage/tree/v2.5.0) (2019-12-04)
 * Bugfix: Correct handling of time zone in Timepicker in PeriodicHarvesting (UIEUS-124)
 * Manage harvesting errors: filter providers by error occurance (UIEUS-103)
