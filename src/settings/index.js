@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Settings } from '@folio/stripes/smart-components';
 import MaxFailedAttempts from './MaxFailedAttempts';
 import StartHarvester from './StartHarvester';
@@ -13,6 +14,12 @@ import PeriodicHarvestingManager from './PeriodicHarvesting';
 */
 
 export default class ErmUsageSettings extends React.Component {
+  static propTypes = {
+    stripes: PropTypes.shape({
+      connect: PropTypes.func.isRequired,
+    }).isRequired
+  };
+
   constructor(props) {
     super(props);
 

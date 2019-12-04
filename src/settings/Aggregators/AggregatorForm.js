@@ -43,6 +43,9 @@ class AggregatorForm extends React.Component {
     stripes: PropTypes.shape({
       hasPerm: PropTypes.func.isRequired,
       connect: PropTypes.func.isRequired,
+      store: PropTypes.shape({
+        dispatch: PropTypes.func.isRequired,
+      }),
     }).isRequired,
     initialValues: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired,
