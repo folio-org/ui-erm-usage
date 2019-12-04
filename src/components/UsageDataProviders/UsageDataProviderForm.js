@@ -1,9 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import {
   Button,
   Col,
@@ -11,16 +9,13 @@ import {
   ExpandAllButton,
   IconButton,
   Pane,
+  PaneFooter,
   PaneMenu,
   Paneset,
   Row
 } from '@folio/stripes/components';
-import {
-  ViewMetaData
-} from '@folio/stripes/smart-components';
-import {
-  IfPermission
-} from '@folio/stripes/core';
+import { ViewMetaData } from '@folio/stripes/smart-components';
+import { IfPermission } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 
 import { UDPInfoForm } from '../UDPInfo';
@@ -33,7 +28,7 @@ import css from './UsageDataProviderForm.css';
 class UsageDataProviderForm extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
-      connect: PropTypes.func,
+      connect: PropTypes.func
     }).isRequired,
     handleSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
@@ -41,7 +36,7 @@ class UsageDataProviderForm extends React.Component {
     submitting: PropTypes.bool,
     initialValues: PropTypes.object,
     parentResources: PropTypes.shape().isRequired,
-    parentMutator: PropTypes.object.isRequired,
+    parentMutator: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -53,7 +48,7 @@ class UsageDataProviderForm extends React.Component {
         editUDPInfo: true,
         editHarvestingConfig: true,
         editNotes: false
-      },
+      }
     };
 
     this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
@@ -63,34 +58,37 @@ class UsageDataProviderForm extends React.Component {
 
   beginDelete = () => {
     this.setState({
-      confirmDelete: true,
+      confirmDelete: true
     });
-  }
+  };
 
-  confirmDelete = (confirmation) => {
+  confirmDelete = confirmation => {
     if (confirmation) {
       this.deleteUDP();
     } else {
       this.setState({ confirmDelete: false });
     }
-  }
+  };
 
   deleteUDP = () => {
-    const { parentMutator, initialValues: { id } } = this.props;
+    const {
+      parentMutator,
+      initialValues: { id }
+    } = this.props;
     parentMutator.records.DELETE({ id }).then(() => {
       parentMutator.query.update({
         _path: '/eusage',
         layer: null
       });
     });
-  }
+  };
 
-  getAddFirstMenu() {
+  getFirstMenu() {
     const { onCancel } = this.props;
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
-          { ariaLabel => (
+          {ariaLabel => (
             <IconButton
               id="clickable-closeudpdialog"
               onClick={onCancel}
@@ -103,14 +101,14 @@ class UsageDataProviderForm extends React.Component {
     );
   }
 
-  getLastMenu(id, label) {
-    const { initialValues, pristine, submitting } = this.props;
+  getLastMenu() {
+    const { initialValues } = this.props;
     const { confirmDelete } = this.state;
     const isEditing = initialValues && initialValues.id;
 
     return (
       <PaneMenu>
-        {isEditing &&
+        {isEditing && (
           <IfPermission perm="usagedataproviders.item.delete">
             <Button
               id="clickable-delete-udp"
@@ -123,19 +121,42 @@ class UsageDataProviderForm extends React.Component {
               <FormattedMessage id="ui-erm-usage.general.delete" />
             </Button>
           </IfPermission>
-        }
-        <Button
-          id={id}
-          type="submit"
-          title={label}
-          disabled={pristine || submitting}
-          buttonStyle="primary paneHeaderNewButton"
-          marginBottom0
-        >
-          {label}
-        </Button>
+        )}
       </PaneMenu>
     );
+  }
+
+  getPaneFooter() {
+    const { pristine, submitting, invalid, onCancel } = this.props;
+
+    const disabled = pristine || submitting || invalid;
+
+    const startButton = (
+      <Button
+        data-test-udp-form-cancel-button
+        marginBottom0
+        id="clickable-closeudpdialog"
+        buttonStyle="default mega"
+        onClick={onCancel}
+      >
+        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+      </Button>
+    );
+
+    const endButton = (
+      <Button
+        data-test-udp-form-submit-button
+        marginBottom0
+        id="clickable-createnewudp"
+        buttonStyle="primary mega"
+        type="submit"
+        disabled={disabled}
+      >
+        <FormattedMessage id="ui-erm-usage.udp.form.saveAndClose" />
+      </Button>
+    );
+
+    return <PaneFooter renderStart={startButton} renderEnd={endButton} />;
   }
 
   handleExpandAll(sections) {
@@ -149,14 +170,14 @@ class UsageDataProviderForm extends React.Component {
   }
 
   handleSectionToggle = ({ id }) => {
-    this.setState((state) => {
+    this.setState(state => {
       const newState = _.cloneDeep(state);
       newState.sections[id] = !newState.sections[id];
       return newState;
     });
-  }
+  };
 
-  getConfirmationMessage = (udp) => {
+  getConfirmationMessage = udp => {
     const name = udp.label || '';
     return (
       <FormattedMessage
@@ -166,17 +187,21 @@ class UsageDataProviderForm extends React.Component {
         }}
       />
     );
-  }
+  };
 
   render() {
     const { initialValues, handleSubmit, parentResources } = this.props;
     const { confirmDelete, sections } = this.state;
     const udp = initialValues || {};
-    const paneTitle = initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />;
+    const paneTitle = initialValues.id ? (
+      initialValues.label
+    ) : (
+      <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />
+    );
 
-    const lastMenu = initialValues.id ?
-      this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.updateUDP" />) :
-      this.getLastMenu('clickable-createnewudp', <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />);
+    const firstMenu = this.getFirstMenu();
+    const lastMenu = this.getLastMenu();
+    const footer = this.getPaneFooter();
 
     const harvesterImpls = extractHarvesterImpls(parentResources);
 
@@ -190,7 +215,8 @@ class UsageDataProviderForm extends React.Component {
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
-            firstMenu={this.getAddFirstMenu()}
+            firstMenu={firstMenu}
+            footer={footer}
             lastMenu={lastMenu}
             paneTitle={paneTitle}
           >
@@ -204,9 +230,9 @@ class UsageDataProviderForm extends React.Component {
                   />
                 </Col>
               </Row>
-              {(initialValues.metadata && initialValues.metadata.createdDate) &&
+              {initialValues.metadata && initialValues.metadata.createdDate && (
                 <this.connectedViewMetaData metadata={initialValues.metadata} />
-              }
+              )}
               <UDPInfoForm
                 accordionId="editUDPInfo"
                 expanded={sections.editUDPInfo}
@@ -223,10 +249,16 @@ class UsageDataProviderForm extends React.Component {
               <ConfirmationModal
                 id="delete-udp-confirmation"
                 open={confirmDelete}
-                heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
+                heading={
+                  <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
+                }
                 message={this.getConfirmationMessage(udp)}
-                onConfirm={() => { this.confirmDelete(true); }}
-                onCancel={() => { this.confirmDelete(false); }}
+                onConfirm={() => {
+                  this.confirmDelete(true);
+                }}
+                onCancel={() => {
+                  this.confirmDelete(false);
+                }}
               />
             </div>
           </Pane>
