@@ -1,5 +1,14 @@
 # Change history for ui-erm-usage
 
+## [2.5.0](https://github.com/folio-org/ui-erm-usage/tree/v2.5.0) (2019-12-04)
+* Bugfix: Correct handling of time zone in Timepicker in PeriodicHarvesting (UIEUS-124)
+* Manage harvesting errors: filter providers by error occurance (UIEUS-103)
+* Bugfix: Statistics table behaviour when changing providers (flashing of old data) (UIEUS-110)
+* Improve accessibility (UIEUS-107)
+* Integration of "record created/last updated" data for usage data providers (UIEUS-102)
+* Add description to counter file upload (UIEUS-101)
+* More general settings for aggregators (UIEUS-108)
+
 ## [2.4.0](https://github.com/folio-org/ui-erm-usage/tree/v2.4.0) (2019-09-10)
 * enable and configure regular harvesting (UIEUS-99)
 * Update detail view after edit (UIEUS-100)
