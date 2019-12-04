@@ -31,6 +31,7 @@ class UsageDataProviderForm extends React.Component {
       connect: PropTypes.func
     }).isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    invalid: PropTypes.bool,
     onCancel: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,

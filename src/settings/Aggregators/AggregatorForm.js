@@ -37,6 +37,7 @@ class AggregatorForm extends React.Component {
       })
     }).isRequired,
     initialValues: PropTypes.object,
+    invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
