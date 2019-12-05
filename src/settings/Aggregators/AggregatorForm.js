@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import {
   Accordion,
   Button,
@@ -13,27 +11,18 @@ import {
   Icon,
   IconButton,
   Pane,
+  PaneFooter,
   PaneMenu,
   Paneset,
   Row,
   Select,
-  TextField,
+  TextField
 } from '@folio/stripes/components';
-import {
-  IfPermission
-} from '@folio/stripes/core';
+import { IfPermission } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
-import {
-  autofill,
-  change,
-  getFormValues,
-  Field
-} from 'redux-form';
+import { autofill, change, getFormValues, Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
-import {
-  required,
-  mail
-} from '../../util/Validate';
+import { required, mail } from '../../util/Validate';
 import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
@@ -44,17 +33,18 @@ class AggregatorForm extends React.Component {
       hasPerm: PropTypes.func.isRequired,
       connect: PropTypes.func.isRequired,
       store: PropTypes.shape({
-        dispatch: PropTypes.func.isRequired,
-      }),
+        dispatch: PropTypes.func.isRequired
+      })
     }).isRequired,
     initialValues: PropTypes.object,
+    invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
-    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   constructor(props) {
@@ -77,7 +67,7 @@ class AggregatorForm extends React.Component {
         generalSection: true,
         accountConfig: true,
         aggregatorConfig: true
-      },
+      }
     };
   }
 
@@ -88,7 +78,11 @@ class AggregatorForm extends React.Component {
   }
 
   hasConfigType(values) {
-    return (!_.isEmpty(values) && !_.isEmpty(values.accountConfig) && !_.isEmpty(values.accountConfig.configType));
+    return (
+      !_.isEmpty(values) &&
+      !_.isEmpty(values.accountConfig) &&
+      !_.isEmpty(values.accountConfig.configType)
+    );
   }
 
   getSelectedConfigType() {
@@ -100,7 +94,7 @@ class AggregatorForm extends React.Component {
     }
   }
 
-  parseInitialAggConfig = (initialValues) => {
+  parseInitialAggConfig = initialValues => {
     const { aggregatorConfig } = initialValues;
     if (_.isNil(aggregatorConfig)) {
       return [];
@@ -114,7 +108,7 @@ class AggregatorForm extends React.Component {
         isInitial: true
       };
     });
-  }
+  };
 
   save(data) {
     this.props.onSave(data);
@@ -122,7 +116,7 @@ class AggregatorForm extends React.Component {
 
   beginDelete() {
     this.setState({
-      confirmDelete: true,
+      confirmDelete: true
     });
   }
 
@@ -135,7 +129,7 @@ class AggregatorForm extends React.Component {
     }
   }
 
-  addFirstMenu() {
+  getFirstMenu() {
     return (
       <PaneMenu>
         <IconButton
@@ -148,23 +142,14 @@ class AggregatorForm extends React.Component {
     );
   }
 
-  createSaveLabel = edit => {
-    if (!_.isEmpty(edit)) {
-      return <FormattedMessage id="ui-erm-usage.aggregator.form.saveAndClose" />;
-    } else {
-      return <FormattedMessage id="ui-erm-usage.aggregator.form.create" />;
-    }
-  }
-
-  saveLastMenu() {
-    const { pristine, submitting, initialValues } = this.props;
+  getLastMenu() {
+    const { initialValues } = this.props;
     const { confirmDelete } = this.state;
     const edit = initialValues && initialValues.id;
-    const saveLabel = this.createSaveLabel(edit);
 
     return (
       <PaneMenu>
-        {edit &&
+        {edit && (
           <IfPermission perm="settings.erm-usage.enabled">
             <Button
               id="clickable-delete-aggregator"
@@ -174,26 +159,49 @@ class AggregatorForm extends React.Component {
               disabled={confirmDelete}
               marginBottom0
             >
-              delete
+              <FormattedMessage id="ui-erm-usage.general.delete" />
             </Button>
           </IfPermission>
-        }
-        <Button
-          id="clickable-save-service-point"
-          type="submit"
-          title={<FormattedMessage id="ui-erm-usage.aggregator.form.saveAndClose" />}
-          buttonStyle="primary paneHeaderNewButton"
-          marginBottom0
-          disabled={(pristine || submitting)}
-        >
-          {saveLabel}
-        </Button>
+        )}
       </PaneMenu>
     );
   }
 
+  getPaneFooter() {
+    const { pristine, submitting, invalid, onCancel } = this.props;
+
+    const disabled = pristine || submitting || invalid;
+
+    const startButton = (
+      <Button
+        data-test-aggregator-form-cancel-button
+        marginBottom0
+        id="clickable-close-aggregator"
+        buttonStyle="default mega"
+        onClick={onCancel}
+      >
+        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+      </Button>
+    );
+
+    const endButton = (
+      <Button
+        data-test-aggregator-form-submit-button
+        marginBottom0
+        id="clickable-save-aggregator"
+        buttonStyle="primary mega"
+        type="submit"
+        disabled={disabled}
+      >
+        <FormattedMessage id="ui-erm-usage.udp.form.saveAndClose" />
+      </Button>
+    );
+
+    return <PaneFooter renderStart={startButton} renderEnd={endButton} />;
+  }
+
   handleSectionToggle({ id }) {
-    this.setState((curState) => {
+    this.setState(curState => {
       const newState = _.cloneDeep(curState);
       newState.sections[id] = !newState.sections[id];
       return newState;
@@ -201,7 +209,7 @@ class AggregatorForm extends React.Component {
   }
 
   handleExpandAll(sections) {
-    this.setState((curState) => {
+    this.setState(curState => {
       const newState = _.cloneDeep(curState);
       newState.sections = sections;
       return newState;
@@ -212,32 +220,50 @@ class AggregatorForm extends React.Component {
     this.setState(({ aggregatorConfigFields }) => ({
       aggregatorConfigFields: aggregatorConfigFields.concat({})
     }));
-  }
+  };
 
-  handleRemoveConfigField = (index) => {
+  handleRemoveConfigField = index => {
     const currentConf = this.state.aggregatorConfigFields[index];
-    this.setState(({ aggregatorConfigFields }) => ({
-      aggregatorConfigFields: [...aggregatorConfigFields.slice(0, index), ...aggregatorConfigFields.slice(index + 1)]
-    }), () => {
-      this.props.stripes.store.dispatch(autofill('aggreagtorForm', `aggregatorConfig.${currentConf.key}`, undefined));
-    });
-  }
+    this.setState(
+      ({ aggregatorConfigFields }) => ({
+        aggregatorConfigFields: [
+          ...aggregatorConfigFields.slice(0, index),
+          ...aggregatorConfigFields.slice(index + 1)
+        ]
+      }),
+      () => {
+        this.props.stripes.store.dispatch(
+          autofill(
+            'aggreagtorForm',
+            `aggregatorConfig.${currentConf.key}`,
+            undefined
+          )
+        );
+      }
+    );
+  };
 
   handleConfigFieldChange = (fieldName, index, value, fields) => {
     fields[index][fieldName] = value;
     return fields;
-  }
+  };
 
   handleConfigChange = (field, index, e) => {
     const val = e === undefined ? 'e' : e.target.value;
     this.setState(
       prevState => ({
-        aggregatorConfigFields: this.handleConfigFieldChange(field, index, val, prevState.aggregatorConfigFields)
-      }), () => {
+        aggregatorConfigFields: this.handleConfigFieldChange(
+          field,
+          index,
+          val,
+          prevState.aggregatorConfigFields
+        )
+      }),
+      () => {
         this.updateForm();
       }
     );
-  }
+  };
 
   updateForm = () => {
     const { aggregatorConfigFields } = this.state;
@@ -245,11 +271,11 @@ class AggregatorForm extends React.Component {
       const k = `aggregatorConfig.${entry.key}`;
       this.changeFormValue(k, entry.value);
     });
-  }
+  };
 
   changeFormValue = (key, value) => {
     this.props.stripes.store.dispatch(change('aggreagtorForm', key, value));
-  }
+  };
 
   renderPaneTitle() {
     const { initialValues } = this.props;
@@ -259,9 +285,7 @@ class AggregatorForm extends React.Component {
       return (
         <div>
           <Icon size="small" icon="edit" />
-          <span>
-            {`Edit: ${aggregator.label}`}
-          </span>
+          <span>{`Edit: ${aggregator.label}`}</span>
         </div>
       );
     }
@@ -292,27 +316,42 @@ class AggregatorForm extends React.Component {
     );
 
     return (
-      <form id="form-aggregator-setting" className={css.AggregatorFormRoot} onSubmit={handleSubmit(this.save)}>
+      <form
+        id="form-aggregator-setting"
+        className={css.AggregatorFormRoot}
+        onSubmit={handleSubmit(this.save)}
+      >
         <Paneset isRoot>
-          <Pane defaultWidth="100%" firstMenu={this.addFirstMenu()} lastMenu={this.saveLastMenu()} paneTitle={this.renderPaneTitle()}>
+          <Pane
+            defaultWidth="100%"
+            firstMenu={this.getFirstMenu()}
+            footer={this.getPaneFooter()}
+            lastMenu={this.getLastMenu()}
+            paneTitle={this.renderPaneTitle()}
+          >
             <div className={css.AggregatorFormContent}>
               <Row end="xs">
                 <Col xs>
-                  <ExpandAllButton accordionStatus={sections} onToggle={this.handleExpandAll} />
+                  <ExpandAllButton
+                    accordionStatus={sections}
+                    onToggle={this.handleExpandAll}
+                  />
                 </Col>
               </Row>
               <Accordion
                 open={sections.generalSection}
                 id="generalSection"
                 onToggle={this.handleSectionToggle}
-                label={<FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />}
+                label={
+                  <FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />
+                }
               >
                 <Row>
                   <Col xs={8}>
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.name">
-                          {(msg) => msg + ' *'}
+                          {msg => msg + ' *'}
                         </FormattedMessage>
                       }
                       name="label"
@@ -325,7 +364,7 @@ class AggregatorForm extends React.Component {
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.serviceType">
-                          {(msg) => msg + ' *'}
+                          {msg => msg + ' *'}
                         </FormattedMessage>
                       }
                       name="serviceType"
@@ -339,7 +378,7 @@ class AggregatorForm extends React.Component {
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl">
-                          {(msg) => msg + ' *'}
+                          {msg => msg + ' *'}
                         </FormattedMessage>
                       }
                       name="serviceUrl"
@@ -357,7 +396,9 @@ class AggregatorForm extends React.Component {
                 open={sections.aggregatorConfig}
                 id="aggregatorConfig"
                 onToggle={this.handleSectionToggle}
-                label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
+                label={
+                  <FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />
+                }
               >
                 <AggregatorConfigForm
                   fields={aggregatorConfigFields}
@@ -372,14 +413,16 @@ class AggregatorForm extends React.Component {
                 open={sections.accountConfig}
                 id="accountConfig"
                 onToggle={this.handleSectionToggle}
-                label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
+                label={
+                  <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />
+                }
               >
                 <Row>
                   <Col xs={8}>
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type">
-                          {(msg) => msg + ' *'}
+                          {msg => msg + ' *'}
                         </FormattedMessage>
                       }
                       name="accountConfig.configType"
@@ -394,7 +437,7 @@ class AggregatorForm extends React.Component {
                     <Field
                       label={
                         <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
-                          {(msg) => msg + requiredSign}
+                          {msg => msg + requiredSign}
                         </FormattedMessage>
                       }
                       name="accountConfig.configMail"
@@ -412,10 +455,16 @@ class AggregatorForm extends React.Component {
               <ConfirmationModal
                 id="deleteaggregator-confirmation"
                 open={confirmDelete}
-                heading={<FormattedMessage id="aggregator.form.delete.confirm.title" />}
+                heading={
+                  <FormattedMessage id="aggregator.form.delete.confirm.title" />
+                }
                 message={confirmationMessage}
-                onConfirm={() => { this.confirmDelete(true); }}
-                onCancel={() => { this.confirmDelete(false); }}
+                onConfirm={() => {
+                  this.confirmDelete(true);
+                }}
+                onCancel={() => {
+                  this.confirmDelete(false);
+                }}
               />
             </div>
           </Pane>
@@ -428,5 +477,5 @@ class AggregatorForm extends React.Component {
 export default stripesForm({
   form: 'aggreagtorForm',
   navigationCheck: true,
-  enableReinitialize: true,
+  enableReinitialize: true
 })(AggregatorForm);
