@@ -71,14 +71,39 @@
     "permissionSets": [
       {
         "permissionName": "module.erm-usage.enabled",
-        "displayName": "UI: erm-usage module is enabled",
+        "displayName": "UI: eUsage module is enabled",
+        "subPermissions": [
+          "configuration.entries.collection.get",
+          "configuration.entries.item.get",
+          "tags.collection.get",
+          "note.types.collection.get"
+        ],
         "visible": true
       },
       {
         "permissionName": "settings.erm-usage.enabled",
-        "displayName": "Settings (erm-usage): display list of settings pages",
+        "displayName": "Settings (eUsage): Can view and edit settings",
         "subPermissions": [
-          "settings.enabled"
+          "module.erm-usage.enabled",
+          "settings.enabled",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get",
+          "aggregatorsettings.item.post",
+          "aggregatorsettings.item.put",
+          "aggregatorsettings.item.delete",
+          "configuration.entries.collection.get",
+          "configuration.entries.item.get",
+          "configuration.entries.item.post"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.all",
+        "displayName": "eUsage: All permissions",
+        "description": "All permissions of eUsage module",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "ermusage.all"
         ],
         "visible": true
       },
@@ -88,7 +113,86 @@
         "description": "Can view usage data providers and COUNTER reports",
         "subPermissions": [
           "module.erm-usage.enabled",
-          "ermusage.view"
+          "usagedataproviders.collection.get",
+          "usagedataproviders.item.get",
+          "counterreports.collection.get",
+          "counterreports.item.get",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.view-create",
+        "displayName": "eUsage: Can view and create usage data providers and COUNTER reports",
+        "description": "Can view and create usage data providers and COUNTER reports",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "usagedataproviders.collection.get",
+          "usagedataproviders.item.get",
+          "usagedataproviders.item.post",
+          "counterreports.collection.get",
+          "counterreports.item.get",
+          "counterreports.item.post",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.view-edit",
+        "displayName": "eUsage: Can view and edit usage data providers and COUNTER reports",
+        "description": "Can view and edit usage data providers and COUNTER reports",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "usagedataproviders.collection.get",
+          "usagedataproviders.item.get",
+          "usagedataproviders.item.put",
+          "counterreports.collection.get",
+          "counterreports.item.get",
+          "counterreports.item.put",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.view-create-edit",
+        "displayName": "eUsage: Can view, create and edit usage data providers and COUNTER reports",
+        "description": "Can view, create and edit usage data providers and COUNTER reports",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "usagedataproviders.collection.get",
+          "usagedataproviders.item.get",
+          "usagedataproviders.item.post",
+          "usagedataproviders.item.put",
+          "counterreports.collection.get",
+          "counterreports.item.get",
+          "counterreports.item.post",
+          "counterreports.item.put",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.view-create-edit-delete",
+        "displayName": "eUsage: Can view, create, edit and delete usage data providers and COUNTER reports",
+        "description": "Can view, create, edit and delete usage data providers and COUNTER reports",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "usagedataproviders.collection.get",
+          "usagedataproviders.item.get",
+          "usagedataproviders.item.post",
+          "usagedataproviders.item.put",
+          "usagedataproviders.item.delete",
+          "counterreports.collection.get",
+          "counterreports.item.get",
+          "counterreports.item.post",
+          "counterreports.item.put",
+          "counterreports.item.delete",
+          "aggregatorsettings.collection.get",
+          "aggregatorsettings.item.get"
         ],
         "visible": true
       }
