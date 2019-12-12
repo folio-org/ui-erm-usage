@@ -22,7 +22,7 @@
     "@bigtest/mocha": "^0.5.2",
     "@bigtest/react": "^0.1.2",
     "@folio/eslint-config-stripes": "^4.2.0",
-    "@folio/stripes": "^2.11.0",
+    "@folio/stripes": "^2.12.0",
     "@folio/stripes-cli": "^1.14.0",
     "@folio/stripes-components": "^5.8.0",
     "@folio/stripes-core": "^3.10.0",
@@ -50,18 +50,20 @@
     "redux-form": "^7.0.3"
   },
   "peerDependencies": {
-    "@folio/stripes": "^2.11.0",
+    "@folio/stripes": "^2.12.0",
     "react": "*",
     "react-dom": "*",
     "react-redux": "*",
     "redux": "*"
   },
   "stripes": {
-    "type": "app",
+    "actsAs": [
+      "app",
+      "settings"
+    ],
     "displayName": "ui-erm-usage.meta.title",
     "route": "/eusage",
-    "home": "/eusage?filters=harvestingStatus.Active",
-    "hasSettings": true,
+    "home": "/eusage",
     "queryResource": "query",
     "okapiInterfaces": {
       "usage-data-providers": "2.3",

@@ -1,24 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  intlShape,
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import {
   Button,
   ConfirmationModal,
   Icon,
-  Modal,
-  ModalFooter
+  Modal
 } from '@folio/stripes/components';
 import saveAs from 'file-saver';
 
 import ReportInfo from '../ReportInfo';
-import {
-  downloadCSVSingleMonth
-} from '../../../util/DownloadCSV';
+import { downloadCSVSingleMonth } from '../../../util/DownloadCSV';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
@@ -27,11 +20,11 @@ class ReportButton extends React.Component {
       fetch: false,
       accumulate: 'true',
       GET: {
-        path: 'counter-reports/!{report.id}',
+        path: 'counter-reports/!{report.id}'
       },
       DELETE: {
-        path: 'counter-reports',
-      },
+        path: 'counter-reports'
+      }
     }
   });
 
@@ -40,15 +33,18 @@ class ReportButton extends React.Component {
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign({}, {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json',
-    });
+    this.httpHeaders = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': props.stripes.okapi.tenant,
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        'Content-Type': 'application/json'
+      }
+    );
 
     this.state = {
       showDropDown: false,
-      showConfirmDelete: false,
+      showConfirmDelete: false
     };
   }
 
@@ -60,9 +56,9 @@ class ReportButton extends React.Component {
     // } else {
     //   return 'xml';
     // }
-  }
+  };
 
-  getButtonStyle = (failedAttempts) => {
+  getButtonStyle = failedAttempts => {
     if (!failedAttempts) {
       return 'success';
     } else if (failedAttempts < this.props.maxFailedAttempts) {
@@ -70,9 +66,9 @@ class ReportButton extends React.Component {
     } else {
       return 'danger';
     }
-  }
+  };
 
-  getButtonIcon = (failedAttempts) => {
+  getButtonIcon = failedAttempts => {
     if (!failedAttempts) {
       return <Icon icon="check-circle" />;
     } else if (failedAttempts < this.props.maxFailedAttempts) {
@@ -80,18 +76,19 @@ class ReportButton extends React.Component {
     } else {
       return <Icon icon="times-circle" />;
     }
-  }
+  };
 
   saveReport = (id, reportData, fileType) => {
     const blob = new Blob([reportData], { type: fileType });
     const fileName = `${id}.${fileType}`;
     saveAs(blob, fileName);
-  }
+  };
 
   downloadRawReport = () => {
     this.setState(() => ({ showDropDown: false }));
-    this.props.mutator.counterReports.GET()
-      .then((report) => {
+    this.props.mutator.counterReports
+      .GET()
+      .then(report => {
         const fileType = this.getFileType(report.format);
         const reportData = JSON.stringify(report.report);
         this.saveReport(report.id, reportData, fileType);
@@ -100,16 +97,15 @@ class ReportButton extends React.Component {
         const infoText = this.failText + ' ' + err.message;
         this.log('Download of counter report failed: ' + infoText);
       });
-  }
+  };
 
   downloadCsvReport = () => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    downloadCSVSingleMonth(id, this.okapiUrl, this.httpHeaders)
-      .catch(err => {
-        this.log(err.message);
-      });
-  }
+    downloadCSVSingleMonth(id, this.okapiUrl, this.httpHeaders).catch(err => {
+      this.log(err.message);
+    });
+  };
 
   deleteReport = () => {
     this.setState({
@@ -120,9 +116,9 @@ class ReportButton extends React.Component {
 
   doDelete = () => {
     const { report } = this.props;
-    this.props.mutator.counterReports.DELETE({ id: report.id })
-      .then(() => {
-      })
+    this.props.mutator.counterReports
+      .DELETE({ id: report.id })
+      .then(() => {})
       .catch(err => {
         const infoText = this.failText + ' ' + err.message;
         this.log('Delete of counter report failed: ' + infoText);
@@ -136,7 +132,7 @@ class ReportButton extends React.Component {
 
   handleClose = () => {
     this.setState({ showDropDown: false });
-  }
+  };
 
   render() {
     const { report } = this.props;
@@ -153,13 +149,26 @@ class ReportButton extends React.Component {
           Do you really want to delete this report?
           <br />
         </span>
-        <span>{ `${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}: ${report.reportName} -- ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}: ${report.yearMonth}` }</span>
+        <span>
+          {`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}:
+           ${report.reportName} --
+           ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
+           ${report.yearMonth}`}
+        </span>
       </React.Fragment>
     );
 
     const buttonId = 'clickable-download-stats-by-id-' + report.yearMonth;
     const dropdownId = 'report-info-' + report.yearMonth;
-    const reportInfoClassName = report.failedAttempts ? 'report-info-failed' : 'report-info-valid';
+    const reportInfoClassName = report.failedAttempts
+      ? 'report-info-failed'
+      : 'report-info-valid';
+
+    const footer = (
+      <Button id="close-report-info-button" onClick={this.handleClose}>
+        Close
+      </Button>
+    );
 
     return (
       <React.Fragment>
@@ -170,18 +179,16 @@ class ReportButton extends React.Component {
           aria-haspopup="true"
           onClick={() => this.setState(state => ({ showDropDown: !state.showDropDown }))}
         >
-          { icon }
+          {icon}
         </Button>
         <Modal
           id={dropdownId}
           closeOnBackgroundClick
           open={this.state.showDropDown}
           label="Report info"
+          footer={footer}
         >
-          <div
-            id="report-info"
-            className={reportInfoClassName}
-          >
+          <div id="report-info" className={reportInfoClassName}>
             <ReportInfo
               report={report}
               deleteReport={this.deleteReport}
@@ -191,23 +198,21 @@ class ReportButton extends React.Component {
               udpLabel={this.props.udpLabel}
             />
           </div>
-          <ModalFooter>
-            <Button
-              id="close-report-info-button"
-              onClick={this.handleClose}
-            >
-              Close
-            </Button>
-          </ModalFooter>
         </Modal>
         <ConfirmationModal
           open={this.state.showConfirmDelete}
-          heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />}
+          heading={
+            <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
+          }
           message={confirmMessage}
           onConfirm={this.doDelete}
-          confirmLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.yes' })}
+          confirmLabel={this.props.intl.formatMessage({
+            id: 'ui-erm-usage.general.yes'
+          })}
           onCancel={this.hideConfirm}
-          cancelLabel={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.no' })}
+          cancelLabel={this.props.intl.formatMessage({
+            id: 'ui-erm-usage.general.no'
+          })}
         />
       </React.Fragment>
     );
@@ -215,16 +220,15 @@ class ReportButton extends React.Component {
 }
 
 ReportButton.propTypes = {
-  stripes: PropTypes
-    .shape().isRequired,
+  stripes: PropTypes.shape().isRequired,
   report: PropTypes.object,
   mutator: PropTypes.shape({
     counterReports: PropTypes.object,
-    csvReports: PropTypes.object,
+    csvReports: PropTypes.object
   }),
   intl: intlShape.isRequired,
   maxFailedAttempts: PropTypes.number.isRequired,
-  udpLabel: PropTypes.string.isRequired,
+  udpLabel: PropTypes.string.isRequired
 };
 
 export default injectIntl(ReportButton);
