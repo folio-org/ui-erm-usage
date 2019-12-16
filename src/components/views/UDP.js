@@ -36,8 +36,8 @@ export default class UDP extends React.Component {
     canEdit: PropTypes.bool,
     data: PropTypes.shape({
       counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-      harvesterImpls: PropTypes.object,
-      settings: PropTypes.object.isRequired,
+      harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
+      settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
       usageDataProvider: PropTypes.object.isRequired
     }).isRequired,
     handlers: PropTypes.shape({

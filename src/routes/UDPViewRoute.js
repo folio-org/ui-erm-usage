@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-import { stripesConnect } from '@folio/stripes-core';
+import { stripesConnect } from '@folio/stripes/core';
 
 import UDP from '../components/views/UDP';
 
@@ -143,7 +143,7 @@ class UDPViewRoute extends React.Component {
       />
     );
   }
-
 }
 
 export default stripesConnect(UDPViewRoute);
+// export default UDPViewRoute;

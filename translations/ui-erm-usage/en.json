@@ -39,6 +39,7 @@
   "udp.statistics": "Statistics",
   "udp.counterUpload": "COUNTER file upload",
   "udp.editUDPDialog": "Edit Usage Data Provider Dialog",
+  "udp.searchInputLabel": "Search Usage data providers",
 
   "udpInfo.contentOrganization": "Content Organization",
   "udpInfo.contentPlatform": "Content Platform",

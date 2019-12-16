@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-import { stripesConnect } from '@folio/stripes-core';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   makeQueryFunction,
   StripesConnectedSource
@@ -12,45 +12,10 @@ import { FormattedMessage } from 'react-intl';
 import UDPs from '../components/views/UDPs';
 import { urls } from '../components/utilities';
 
+import filterGroups from '../util/data/filterGroups';
+
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;
-
-const filterConfig = [
-  {
-    label: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
-    name: 'harvestingStatus',
-    cql: 'harvestingConfig.harvestingStatus',
-    values: [
-      { name: 'Active', cql: 'active' },
-      { name: 'Inactive', cql: 'inactive' }
-    ]
-  },
-  {
-    label: <FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />,
-    name: 'harvestVia',
-    cql: 'harvestingConfig.harvestVia',
-    values: [
-      { name: 'Sushi', cql: 'sushi' },
-      { name: 'Aggregator', cql: 'aggregator' }
-    ]
-  },
-  {
-    label: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
-    name: 'harvestingConfig',
-    cql: 'harvestingConfig.aggregator.name',
-    values: [],
-    restrictWhenAllSelected: true
-  },
-  {
-    label: <FormattedMessage id="ui-erm-usage.information.hasFailedReports" />,
-    name: 'hasFailedReport',
-    cql: 'hasFailedReport',
-    values: [
-      { name: 'Yes', cql: 'yes' },
-      { name: 'No', cql: 'no' }
-    ]
-  }
-];
 
 class UDPsRoute extends React.Component {
   static manifest = Object.freeze({
@@ -71,14 +36,14 @@ class UDPsRoute extends React.Component {
               latestStats: 'latestReport',
               aggregator: 'harvestingConfig.aggregator.name'
             },
-            filterConfig,
+            filterGroups,
             2
           )
         },
         staticFallback: { params: {} }
       }
     },
-    aggregatorSettings: {
+    aggregators: {
       type: 'okapi',
       path: 'aggregator-settings',
       records: 'aggregatorSettings'
@@ -135,7 +100,7 @@ class UDPsRoute extends React.Component {
     }).isRequired,
     stripes: PropTypes.shape({
       logger: PropTypes.object
-    })
+    }).isRequired
     // onSelectRow: PropTypes.func,
     // onComponentWillUnmount: PropTypes.func,
     // showSingleResult: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
@@ -180,7 +145,7 @@ class UDPsRoute extends React.Component {
       const prevSource = new StripesConnectedSource(
         prevProps,
         this.logger,
-        'udps'
+        'usageDataProviders'
       );
       const oldCount = prevSource.totalCount();
       const oldRecords = prevSource.records();
@@ -220,6 +185,7 @@ class UDPsRoute extends React.Component {
       <UDPs
         data={{
           udps: get(resources, 'usageDataProviders.records', []),
+          aggregators: get(resources, 'aggregators.records', []),
         }}
         selectedRecordId={match.params.id}
         onNeedMoreData={this.handleNeedMoreData}

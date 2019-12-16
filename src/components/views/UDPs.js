@@ -14,10 +14,13 @@ import {
   MultiColumnList,
   Pane,
   Button,
+  Icon,
   PaneMenu,
-  Paneset
+  Paneset,
+  SearchField
 } from '@folio/stripes/components';
 
+import UDPFilters from '../UDPFilters/UDPFilters';
 import { urls } from '../utilities';
 
 class UDPs extends React.Component {
@@ -114,9 +117,9 @@ class UDPs extends React.Component {
     }));
   };
 
-  doHarvestViaAggregator = (udp) => {
+  doHarvestViaAggregator = udp => {
     return udp.harvestingConfig.harvestVia === 'aggregator';
-  }
+  };
 
   renderIsEmptyMessage = (query, source) => {
     if (!source) {
@@ -233,7 +236,7 @@ class UDPs extends React.Component {
       <div data-test-udps ref={contentRef}>
         <SearchAndSortQuery
           initialFilterState={{
-            harvestingStatus: ['Active']
+            harvestingStatus: ['active']
           }}
           initialSearchState={{ query: '' }}
           initialSortState={{ sort: 'label' }}
@@ -264,7 +267,59 @@ class UDPs extends React.Component {
                       <FormattedMessage id="stripes-smart-components.searchAndFilter" />
                     }
                   >
+                    <form onSubmit={onSubmitSearch}>
+                      <div>
+                        <FormattedMessage id="ui-erm-usage.udp.searchInputLabel">
+                          {ariaLabel => (
+                            <SearchField
+                              aria-label={ariaLabel}
+                              autoFocus
+                              data-test-udp-search-input
+                              id="input-udp-search"
+                              inputRef={this.searchField}
+                              name="query"
+                              onChange={getSearchHandlers().query}
+                              onClear={getSearchHandlers().reset}
+                              value={searchValue.query}
+                            />
+                          )}
+                        </FormattedMessage>
+                        <Button
+                          buttonStyle="primary"
+                          disabled={
+                            !searchValue.query || searchValue.query === ''
+                          }
+                          fullWidth
+                          id="clickable-search-agreements"
+                          type="submit"
+                        >
+                          <FormattedMessage id="stripes-smart-components.search" />
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          buttonStyle="none"
+                          id="clickable-reset-all"
+                          disabled={disableReset()}
+                          onClick={resetAll}
+                        >
+                          <Icon icon="times-circle-solid">
+                            <FormattedMessage id="stripes-smart-components.resetAll" />
+                          </Icon>
+                        </Button>
+                      </div>
+                      {/* <AgreementFilters
+                        activeFilters={activeFilters.state}
+                        data={data}
+                        filterHandlers={getFilterHandlers()}
+                      /> */}
+                    </form>
                     <div>FILTER</div>
+                    <UDPFilters
+                      activeFilters={activeFilters.state}
+                      data={data}
+                      filterHandlers={getFilterHandlers()}
+                    />
                   </Pane>
                 )}
                 <Pane
