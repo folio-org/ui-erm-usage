@@ -4,7 +4,7 @@ import Link from 'react-router-dom/Link';
 import { noop } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
-import { AppIcon, IfPermission } from '@folio/stripes-core';
+import { AppIcon, IfPermission } from '@folio/stripes/core';
 import {
   SearchAndSortQuery,
   SearchAndSortNoResultsMessage as NoResultsMessage,
@@ -24,35 +24,12 @@ import UDPFilters from '../UDPFilters/UDPFilters';
 import { urls } from '../utilities';
 
 class UDPs extends React.Component {
-  static propTypes = Object.freeze({
-    children: PropTypes.object,
-    contentRef: PropTypes.object,
-    data: PropTypes.shape(),
-    disableRecordCreation: PropTypes.bool,
-    onNeedMoreData: PropTypes.func,
-    onSelectRow: PropTypes.func,
-    queryGetter: PropTypes.func.isRequired,
-    querySetter: PropTypes.func.isRequired,
-    searchString: PropTypes.string,
-    selectedRecordId: PropTypes.string,
-    source: PropTypes.shape({
-      loaded: PropTypes.func,
-      totalCount: PropTypes.func
-    }),
-    syncToLocationSearch: PropTypes.bool,
-    visibleColumns: PropTypes.arrayOf(PropTypes.string)
-  });
-
-  static defaultProps = {
-    data: {},
-    searchString: '',
-    syncToLocationSearch: true,
-    visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator']
-  };
-
-  state = {
-    filterPaneIsVisible: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterPaneIsVisible: true
+    };
+  }
 
   columnMapping = {
     label: <FormattedMessage id="ui-erm-usage.information.providerName" />,
@@ -308,13 +285,7 @@ class UDPs extends React.Component {
                           </Icon>
                         </Button>
                       </div>
-                      {/* <AgreementFilters
-                        activeFilters={activeFilters.state}
-                        data={data}
-                        filterHandlers={getFilterHandlers()}
-                      /> */}
                     </form>
-                    <div>FILTER</div>
                     <UDPFilters
                       activeFilters={activeFilters.state}
                       data={data}
@@ -362,5 +333,31 @@ class UDPs extends React.Component {
     );
   }
 }
+
+UDPs.propTypes = Object.freeze({
+  children: PropTypes.object,
+  contentRef: PropTypes.object,
+  data: PropTypes.shape(),
+  disableRecordCreation: PropTypes.bool,
+  onNeedMoreData: PropTypes.func,
+  onSelectRow: PropTypes.func,
+  queryGetter: PropTypes.func.isRequired,
+  querySetter: PropTypes.func.isRequired,
+  searchString: PropTypes.string,
+  selectedRecordId: PropTypes.string,
+  source: PropTypes.shape({
+    loaded: PropTypes.func,
+    totalCount: PropTypes.func
+  }),
+  syncToLocationSearch: PropTypes.bool,
+  visibleColumns: PropTypes.arrayOf(PropTypes.string)
+});
+
+UDPs.defaultProps = {
+  data: {},
+  searchString: '',
+  syncToLocationSearch: true,
+  visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator']
+};
 
 export default UDPs;

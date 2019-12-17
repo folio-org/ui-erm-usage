@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
+import { compose } from 'redux';
 
 import { stripesConnect } from '@folio/stripes/core';
+import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
 
-import urls from '../components/utilities';
+import { urls } from '../components/utilities';
 import extractHarvesterImpls from '../util/HarvesterImpls';
-
 
 class UDPViewRoute extends React.Component {
   static manifest = Object.freeze({
     usageDataProvider: {
       type: 'okapi',
-      path: 'usage-data-providers/:{id}',
+      path: 'usage-data-providers/:{id}'
     },
     harvesterImpls: {
       type: 'okapi',
@@ -24,83 +25,55 @@ class UDPViewRoute extends React.Component {
     settings: {
       type: 'okapi',
       records: 'configs',
-      path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+      path:
+        'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)'
     },
     counterReports: {
       type: 'okapi',
-      path: 'counter-reports?tiny=true&query=(providerId==:{id})&limit=1000',
+      path: 'counter-reports?tiny=true&query=(providerId==:{id})&limit=1000'
     },
     query: {}
   });
 
-  static propTypes = {
-    handlers: PropTypes.object,
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
-    location: PropTypes.shape({
-      search: PropTypes.string.isRequired,
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-      }).isRequired
-    }).isRequired,
-    mutator: PropTypes.shape({
-      query: PropTypes.shape({
-        update: PropTypes.func.isRequired,
-      }).isRequired,
-      usageDataProvider: PropTypes.object.isRequired,
-    }).isRequired,
-    resources: PropTypes.shape({
-      counterReports: PropTypes.shape(),
-      harvesterImpls: PropTypes.shape(),
-      query: PropTypes.object,
-      settings: PropTypes.shape({
-        records: PropTypes.arrayOf(PropTypes.object),
-      }),
-      usageDataProvider: PropTypes.shape(),
-    }).isRequired,
-    stripes: PropTypes.shape({
-      hasInterface: PropTypes.func.isRequired,
-      hasPerm: PropTypes.func.isRequired,
-      okapi: PropTypes.shape({
-        tenant: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-    tagsEnabled: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    handlers: {}
-  }
-
   handleClose = () => {
     this.props.history.push(`${urls.udps()}${this.props.location.search}`);
-  }
+  };
 
   handleEdit = () => {
     const { location, match } = this.props;
-    this.props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
-  }
+    this.props.history.push(
+      `${urls.udpEdit(match.params.id)}${location.search}`
+    );
+  };
 
-  getRecord = (id) => {
-    return get(this.props.resources, 'usageDataProvider.records', [])
-      .find(i => i.id === id);
-  }
+  getRecord = id => {
+    return get(this.props.resources, 'usageDataProvider.records', []).find(
+      i => i.id === id
+    );
+  };
 
-  getCounterReports = (udpId) => {
+  getCounterReports = udpId => {
     const { resources } = this.props;
     const records = (resources.counterReports || {}).records || null;
-    const counterReports = !_.isEmpty(records) ? records[0].counterReports : [];
-    if (!_.isEmpty(counterReports) && counterReports[0].providerId === udpId) {
+    const counterReports = !isEmpty(records) ? records[0].counterReports : [];
+    if (!isEmpty(counterReports) && counterReports[0].providerId === udpId) {
       return counterReports;
     } else {
       return [];
     }
-  }
+  };
+
+  handleToggleHelper = helper => {
+    const { mutator, resources } = this.props;
+    const currentHelper = resources.query.helper;
+    const nextHelper = currentHelper !== helper ? helper : null;
+
+    mutator.query.update({ helper: nextHelper });
+  };
+
+  handleToggleTags = () => {
+    this.handleToggleHelper('tags');
+  };
 
   isLoading = () => {
     const { match, resources } = this.props;
@@ -109,14 +82,22 @@ class UDPViewRoute extends React.Component {
       match.params.id !== get(resources, 'usageDataProvider.records[0].id') &&
       get(resources, 'usageDataProvider.isPending', true)
     );
-  }
+  };
 
   isHarvesterExistent = () => {
     return this.props.stripes.hasInterface('erm-usage-harvester');
-  }
+  };
 
   render() {
-    const { handlers, resources, stripes, match: { params: { id } } } = this.props;
+    const {
+      handlers,
+      resources,
+      stripes,
+      tagsEnabled,
+      match: {
+        params: { id }
+      }
+    } = this.props;
     const selectedRecord = this.getRecord(id);
     const counterReports = this.getCounterReports(id);
     const settings = get(resources, 'settings.records', []);
@@ -129,21 +110,66 @@ class UDPViewRoute extends React.Component {
           counterReports,
           harvesterImpls,
           settings,
-          usageDataProvider: selectedRecord,
+          usageDataProvider: selectedRecord
         }}
         handlers={{
           ...handlers,
           onClose: this.handleClose,
           onEdit: this.handleEdit,
-          // onToggleTags: tagsEnabled ? this.handleToggleTags : undefined,
+          onToggleTags: tagsEnabled ? this.handleToggleTags : undefined
         }}
         isHarvesterExistent={this.isHarvesterExistent()}
         isLoading={this.isLoading()}
         stripes={stripes}
+        tagsEnabled={tagsEnabled}
       />
     );
   }
 }
 
-export default stripesConnect(UDPViewRoute);
+UDPViewRoute.propTypes = {
+  handlers: PropTypes.object,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  mutator: PropTypes.shape({
+    query: PropTypes.shape({
+      update: PropTypes.func.isRequired
+    }).isRequired,
+    usageDataProvider: PropTypes.object.isRequired
+  }).isRequired,
+  resources: PropTypes.shape({
+    counterReports: PropTypes.shape(),
+    harvesterImpls: PropTypes.shape(),
+    query: PropTypes.object,
+    settings: PropTypes.shape({
+      records: PropTypes.arrayOf(PropTypes.object)
+    }),
+    usageDataProvider: PropTypes.shape()
+  }).isRequired,
+  stripes: PropTypes.shape({
+    hasInterface: PropTypes.func.isRequired,
+    hasPerm: PropTypes.func.isRequired,
+    okapi: PropTypes.shape({
+      tenant: PropTypes.string.isRequired,
+      token: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  tagsEnabled: PropTypes.bool
+};
+
+UDPViewRoute.defaultProps = {
+  handlers: {}
+};
+
+export default stripesConnect(withTags(UDPViewRoute));
 // export default UDPViewRoute;

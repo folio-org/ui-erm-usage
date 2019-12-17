@@ -17,7 +17,8 @@ import {
   Row
 } from '@folio/stripes/components';
 import {
-  ViewMetaData
+  NotesSmartAccordion,
+  ViewMetaData,
 } from '@folio/stripes/smart-components';
 
 import { UDPInfoView } from '../UDPInfo';
@@ -31,30 +32,15 @@ import {
   calcStateToggleAccordion
 } from '../../util/stateUtils';
 
-export default class UDP extends React.Component {
-  static propTypes = {
-    canEdit: PropTypes.bool,
-    data: PropTypes.shape({
-      counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-      harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
-      settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-      usageDataProvider: PropTypes.object.isRequired
-    }).isRequired,
-    handlers: PropTypes.shape({
-      onClose: PropTypes.func.isRequired,
-      onEdit: PropTypes.func
-    }).isRequired,
-    isHarvesterExistent: PropTypes.bool,
-    isLoading: PropTypes.bool.isRequired,
-    stripes: PropTypes.object.isRequired,
-    tagsEnabled: PropTypes.bool,
-    tagsToggle: PropTypes.func
-  };
+import { urls } from '../utilities';
 
+class UDP extends React.Component {
   constructor(props) {
     super(props);
     this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
-    this.connectedStartHarvesterButton = this.props.stripes.connect(StartHarvesterButton);
+    this.connectedStartHarvesterButton = this.props.stripes.connect(
+      StartHarvesterButton
+    );
     this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
 
     this.state = {
@@ -82,7 +68,7 @@ export default class UDP extends React.Component {
   };
 
   renderDetailMenu = udp => {
-    const { canEdit, tagsEnabled, tagsToggle, handlers } = this.props;
+    const { canEdit, tagsEnabled, handlers } = this.props;
 
     const tags = ((udp && udp.tags) || {}).tagList || [];
 
@@ -94,7 +80,7 @@ export default class UDP extends React.Component {
               <PaneHeaderIconButton
                 icon="tag"
                 id="clickable-show-tags"
-                onClick={tagsToggle}
+                onClick={handlers.onToggleTags}
                 badgeCount={tags.length}
                 ariaLabel={ariaLabel}
               />
@@ -141,7 +127,7 @@ export default class UDP extends React.Component {
       isHarvesterExistent,
       stripes
     } = this.props;
-    const usageDataProvider = get(data, 'usageDataProvider', {});// data.usageDataProvider;
+    const usageDataProvider = get(data, 'usageDataProvider', {}); // data.usageDataProvider;
     if (isLoading) return this.renderLoadingPane();
 
     // const query = resources.query;
@@ -166,7 +152,7 @@ export default class UDP extends React.Component {
     const detailMenu = this.renderDetailMenu(usageDataProvider);
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
-    const providerId = _.get(usageDataProvider, 'id', '');
+    const providerId = get(usageDataProvider, 'id', '');
     return (
       <Pane
         id="pane-udpdetails"
@@ -186,7 +172,10 @@ export default class UDP extends React.Component {
             />
           </Col>
         </Row>
-        <this.connectedViewMetaData metadata={get(usageDataProvider, 'metadata', {})} stripes={stripes} />
+        <this.connectedViewMetaData
+          metadata={get(usageDataProvider, 'metadata', {})}
+          stripes={stripes}
+        />
         <UDPInfoView
           id="udpInfo"
           usageDataProvider={usageDataProvider}
@@ -231,7 +220,7 @@ export default class UDP extends React.Component {
         >
           <this.connectedReportUpload udpId={providerId} stripes={stripes} />
         </Accordion>
-        {/* <NotesSmartAccordion
+        <NotesSmartAccordion
           id="notesAccordion"
           domainName="erm-usage"
           entityId={usageDataProvider.id}
@@ -242,8 +231,29 @@ export default class UDP extends React.Component {
           onToggle={this.handleAccordionToggle}
           open={this.state.accordions.notesAccordion}
           stripes={stripes}
-        /> */}
+        />
       </Pane>
     );
   }
 }
+
+UDP.propTypes = {
+  canEdit: PropTypes.bool,
+  data: PropTypes.shape({
+    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
+    settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    usageDataProvider: PropTypes.object.isRequired
+  }).isRequired,
+  handlers: PropTypes.shape({
+    onClose: PropTypes.func.isRequired,
+    onEdit: PropTypes.func,
+    onToggleTags: PropTypes.func
+  }).isRequired,
+  isHarvesterExistent: PropTypes.bool,
+  isLoading: PropTypes.bool.isRequired,
+  stripes: PropTypes.object.isRequired,
+  tagsEnabled: PropTypes.bool,
+};
+
+export default UDP;
