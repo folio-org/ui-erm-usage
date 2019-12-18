@@ -103,7 +103,7 @@
         "description": "All permissions of eUsage module",
         "subPermissions": [
           "module.erm-usage.enabled",
-          "ermusage.all"
+          "eusage.all"
         ],
         "visible": true
       },
