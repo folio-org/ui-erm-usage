@@ -7,6 +7,7 @@ import { Route } from '@folio/stripes/core';
 import UDPsRoute from './routes/UDPsRoute';
 import UDPViewRoute from './routes/UDPViewRoute';
 import UDPCreateRoute from './routes/UDPCreateRoute';
+import UDPEditRoute from './routes/UDPEditRoute';
 import Settings from './settings';
 
 class ErmUsage extends React.Component {
@@ -29,7 +30,7 @@ class ErmUsage extends React.Component {
     return (
       <Switch>
         <Route path={`${path}/create`} component={UDPCreateRoute} />
-        {/* <Route path={`${path}/eusage/:id/edit`} component={UDPEditRoute} /> */}
+        <Route path={`${path}/:id/edit`} component={UDPEditRoute} />
         <Route path={`${path}/:id?`} component={UDPsRoute}>
           <Route path={`${path}/:id`} component={UDPViewRoute} />
         </Route>

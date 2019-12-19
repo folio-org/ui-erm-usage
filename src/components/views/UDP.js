@@ -156,7 +156,7 @@ class UDP extends React.Component {
     return (
       <Pane
         id="pane-udpdetails"
-        defaultWidth="60%"
+        defaultWidth="40%"
         paneTitle={<span data-test-header-title>{label}</span>}
         lastMenu={detailMenu}
         dismissible

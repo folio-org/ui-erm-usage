@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { get } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -82,6 +82,7 @@ class HarvestingConfigurationForm extends React.Component {
       harvesterImplementations,
       harvestingStatus,
       harvestVia,
+      initialValues,
       reportRelease,
       selectedReports
     } = this.props;

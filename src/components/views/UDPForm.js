@@ -23,11 +23,7 @@ import stripesForm from '@folio/stripes/form';
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 
-import extractHarvesterImpls from '../../util/HarvesterImpls';
-
 import css from './UDPForm.css';
-
-// import css from './UsageDataProviderForm.css';
 
 class UDPForm extends React.Component {
   static propTypes = {
@@ -39,7 +35,9 @@ class UDPForm extends React.Component {
       onClose: PropTypes.func.isRequired,
       onDelete: PropTypes.func
     }),
-    initialValues: PropTypes.object,
+    initialValues: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }),
     invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
@@ -89,7 +87,7 @@ class UDPForm extends React.Component {
 
   confirmDelete = confirmation => {
     if (confirmation) {
-      this.props.handlers.onDelete();
+      this.props.handlers.onDelete(this.props.initialValues.id);
     } else {
       this.setState({ confirmDelete: false });
     }
