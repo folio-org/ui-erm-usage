@@ -42,10 +42,6 @@ class HarvestingConfigurationForm extends React.Component {
     return 'harvestingConfig.requestedReports';
   }
 
-  hasHarvestingConfig(values) {
-    return !isEmpty(values) && !isEmpty(values.harvestingConfig);
-  }
-
   updateSelectedCounterVersion = (event, newValue, previousValue) => {
     event.preventDefault();
 

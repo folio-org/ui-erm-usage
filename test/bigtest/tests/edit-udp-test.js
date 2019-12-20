@@ -39,6 +39,16 @@ describe('Edit UDP', () => {
       it('displays confirm delete udp', () => {
         expect(udpEditPage.deleteUDPConfirmation).to.exist;
       });
+
+      describe('and cancel was clicked', () => {
+        beforeEach(async function () {
+          await udpEditPage.deleteUDPConfirmation.clickCancelDeleteUDP();
+        });
+        it('displays Edit UDP form after click on cancel', () => {
+          expect(udpEditPage.deleteUDPConfirmation).to.be.empty;
+          expect(udpEditPage.$root).to.exist;
+        });
+      });
     });
   });
 });

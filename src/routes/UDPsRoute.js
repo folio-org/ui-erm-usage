@@ -9,7 +9,7 @@ import {
 } from '@folio/stripes/smart-components';
 
 import UDPs from '../components/views/UDPs';
-import { urls } from '../components/utilities';
+import urls from '../components/utilities';
 
 import filterGroups from '../util/data/filterGroups';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { formValueSelector, getFormValues } from 'redux-form';
+import { formValueSelector } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import {
   Button,
@@ -71,13 +71,6 @@ class UDPForm extends React.Component {
   getFormName() {
     return 'form-udProvider';
   }
-
-  getCurrentFormValues = () => {
-    const { store } = this.props;
-    const state = store.getState();
-    const formName = this.getFormName();
-    return getFormValues(formName)(state) || {};
-  };
 
   beginDelete = () => {
     this.setState({
@@ -276,7 +269,6 @@ class UDPForm extends React.Component {
               <HarvestingConfigurationForm
                 accordionId="editHarvestingConfig"
                 aggregators={aggregators}
-                getFormValues={this.getCurrentFormValues}
                 expanded={sections.editHarvestingConfig}
                 onToggle={this.handleSectionToggle}
                 harvesterImplementations={harvesterImpls}

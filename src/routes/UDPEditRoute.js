@@ -7,7 +7,7 @@ import { LoadingPane } from '@folio/stripes-erm-components';
 import UDPForm from '../components/views/UDPForm';
 import extractHarvesterImpls from '../util/HarvesterImpls';
 
-import { urls } from '../components/utilities';
+import urls from '../components/utilities';
 
 class UDPEditRoute extends React.Component {
   static manifest = Object.freeze({

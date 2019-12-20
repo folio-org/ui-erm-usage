@@ -22,6 +22,7 @@ import {
 
 @interactor class DeleteUDPConfirmation {
   static defaultScope = '#delete-udp-confirmation';
+  clickCancelDeleteUDP = clickable('#clickable-delete-udp-confirmation-cancel');
 }
 
 @interactor class ConfirmationModal {

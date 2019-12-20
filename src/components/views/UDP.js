@@ -32,7 +32,7 @@ import {
   calcStateToggleAccordion
 } from '../../util/stateUtils';
 
-import { urls } from '../utilities';
+import urls from '../utilities';
 
 class UDP extends React.Component {
   constructor(props) {

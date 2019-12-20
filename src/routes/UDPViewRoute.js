@@ -7,7 +7,7 @@ import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
 
-import { urls } from '../components/utilities';
+import urls from '../components/utilities';
 import extractHarvesterImpls from '../util/HarvesterImpls';
 
 class UDPViewRoute extends React.Component {

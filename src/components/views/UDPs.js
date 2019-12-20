@@ -21,7 +21,7 @@ import {
 } from '@folio/stripes/components';
 
 import UDPFilters from '../UDPFilters/UDPFilters';
-import { urls } from '../utilities';
+import urls from '../utilities';
 
 class UDPs extends React.Component {
   constructor(props) {
