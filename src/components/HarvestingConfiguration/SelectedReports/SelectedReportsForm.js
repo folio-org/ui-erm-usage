@@ -82,7 +82,7 @@ class SelectedReportsForm extends React.Component {
 
     const reportsSelect = (
       <FieldArray
-        addLabel={<Icon icon="plus-sign">{'Add report type'}</Icon>}
+        addLabel={<Icon icon="plus-sign">Add report type</Icon>}
         component={RepeatableField}
         name="harvestingConfig.requestedReports"
         onAdd={fields => fields.push('')}

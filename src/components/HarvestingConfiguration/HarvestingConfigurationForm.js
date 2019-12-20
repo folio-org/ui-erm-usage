@@ -1,4 +1,4 @@
-import _, { get } from 'lodash';
+import { isEmpty } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -30,7 +30,7 @@ class HarvestingConfigurationForm extends React.Component {
     super(props);
 
     this.state = {
-      confirmClear: false,
+      confirmClear: false
     };
   }
 
@@ -43,7 +43,7 @@ class HarvestingConfigurationForm extends React.Component {
   }
 
   hasHarvestingConfig(values) {
-    return !_.isEmpty(values) && !_.isEmpty(values.harvestingConfig);
+    return !isEmpty(values) && !isEmpty(values.harvestingConfig);
   }
 
   updateSelectedCounterVersion = (event, newValue, previousValue) => {
@@ -51,7 +51,7 @@ class HarvestingConfigurationForm extends React.Component {
 
     if (newValue !== previousValue) {
       this.newCounterVersion = newValue;
-      if (!_.isEmpty(this.props.selectedReports)) {
+      if (!isEmpty(this.props.selectedReports)) {
         this.setState({ confirmClear: true });
       } else {
         const { dispatch, change } = this.context._reduxForm;
@@ -144,7 +144,7 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <Col xs={8}>
                   <SelectedReportsForm
-                    initialValues={this.props.initialValues}
+                    initialValues={initialValues}
                     counterVersion={selectedCounterVersion}
                     selectedReports={selectedReports}
                   />
@@ -202,7 +202,7 @@ HarvestingConfigurationForm.propTypes = {
   initialValues: PropTypes.object,
   onToggle: PropTypes.func,
   reportRelease: PropTypes.string,
-  selectedReports: PropTypes.arrayOf(PropTypes.string),
+  selectedReports: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default HarvestingConfigurationForm;

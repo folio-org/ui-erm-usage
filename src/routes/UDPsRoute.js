@@ -7,7 +7,6 @@ import {
   makeQueryFunction,
   StripesConnectedSource
 } from '@folio/stripes/smart-components';
-import { FormattedMessage } from 'react-intl';
 
 import UDPs from '../components/views/UDPs';
 import { urls } from '../components/utilities';
@@ -43,7 +42,7 @@ class UDPsRoute extends React.Component {
         staticFallback: { params: {} }
       }
     },
-    aggregators: {
+    aggregatorSettings: {
       type: 'okapi',
       path: 'aggregator-settings',
       records: 'aggregatorSettings'
@@ -185,7 +184,7 @@ class UDPsRoute extends React.Component {
       <UDPs
         data={{
           udps: get(resources, 'usageDataProviders.records', []),
-          aggregators: get(resources, 'aggregators.records', []),
+          aggregators: get(resources, 'aggregatorSettings.records', []),
         }}
         selectedRecordId={match.params.id}
         onNeedMoreData={this.handleNeedMoreData}

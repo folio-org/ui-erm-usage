@@ -11,7 +11,6 @@ import UDPEditRoute from './routes/UDPEditRoute';
 import Settings from './settings';
 
 class ErmUsage extends React.Component {
-
   static propTypes = {
     match: ReactRouterPropTypes.match.isRequired,
     showSettings: PropTypes.bool

@@ -53,10 +53,7 @@ class UDPs extends React.Component {
     label: udp => udp.label,
     harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
     latestStats: udp => udp.latestReport,
-    aggregator: udp =>
-      this.doHarvestViaAggregator(udp)
-        ? udp.harvestingConfig.aggregator.name
-        : '-'
+    aggregator: udp => this.getAggregatorName(udp)
   };
 
   rowFormatter = row => {
@@ -94,8 +91,10 @@ class UDPs extends React.Component {
     }));
   };
 
-  doHarvestViaAggregator = udp => {
-    return udp.harvestingConfig.harvestVia === 'aggregator';
+  getAggregatorName = udp => {
+    return udp.harvestingConfig.harvestVia === 'aggregator'
+      ? udp.harvestingConfig.aggregator.name
+      : '-';
   };
 
   renderIsEmptyMessage = (query, source) => {

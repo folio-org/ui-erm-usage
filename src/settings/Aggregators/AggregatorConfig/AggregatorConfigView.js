@@ -1,21 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  KeyValue
-} from '@folio/stripes-components';
+import { KeyValue } from '@folio/stripes/components';
 
 class AggregatorConfigView extends React.Component {
   renderKeyValue = (key, value, hideValue) => {
     const val = hideValue ? '*'.repeat(value.length) : value;
-    return (
-      <KeyValue
-        key={key}
-        label={key}
-        value={val}
-      />
-    );
-  }
+    return <KeyValue key={key} label={key} value={val} />;
+  };
 
   render() {
     const { aggregatorConfig, hideValues } = this.props;
