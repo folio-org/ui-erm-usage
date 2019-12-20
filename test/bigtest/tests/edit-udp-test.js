@@ -18,15 +18,14 @@ describe('Edit UDP', () => {
 
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider');
-    return this.visit('/eusage?filters=harvestingStatus.Active', () => {
+    return this.visit('/eusage?filters=harvestingStatus.active', () => {
       expect(udpInteractor.$root).to.exist;
     });
   });
 
   describe('UDP edit form is displayed', () => {
     beforeEach(async function () {
-      await udpInteractor.clickActiveUDPsCheckbox();
-      return this.visit(`/eusage/view/${udp.id}?filters=harvestingStatus.Inactive,harvestingStatus.Active&layer=edit`);
+      return this.visit(`/eusage/${udp.id}/edit?filters=harvestingStatus.Inactive,harvestingStatus.active`);
     });
 
     it('displays Edit UDP form', () => {

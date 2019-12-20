@@ -209,7 +209,7 @@ class UDPs extends React.Component {
     const sortOrder = query.sort || '';
 
     return (
-      <div data-test-udps ref={contentRef}>
+      <div data-test-udp-instances ref={contentRef}>
         <SearchAndSortQuery
           initialFilterState={{
             harvestingStatus: ['active']
