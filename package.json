@@ -62,7 +62,7 @@
     ],
     "displayName": "ui-erm-usage.meta.title",
     "route": "/eusage",
-    "home": "/eusage",
+    "home": "/eusage/udps",
     "queryResource": "query",
     "okapiInterfaces": {
       "usage-data-providers": "2.3",

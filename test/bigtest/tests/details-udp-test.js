@@ -17,7 +17,7 @@ describe('UDPDetailsPage', () => {
   let udp = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
-    await this.visit('/eusage?filters=harvestingStatus.active');
+    await this.visit('/eusage/udps/?filters=harvestingStatus.active');
   });
 
   it('shows the list of udp items', () => {
@@ -130,7 +130,7 @@ describe('UDPDetailsPage by ID', () => {
   let udp = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
-    this.visit(`/eusage/${udp.id}`);
+    this.visit(`/eusage/udps/${udp.id}`);
   });
 
   it('displays udp label in the pane header', function () {
@@ -145,7 +145,7 @@ describe('Inactive UDP disabled start harvester', () => {
   let udp = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider', 'withSetInactive');
-    this.visit(`/eusage/${udp.id}`);
+    this.visit(`/eusage/udps/${udp.id}`);
   });
 
   it('harvesting config accordion is present', function () {
@@ -171,7 +171,7 @@ describe('Active UDP enabled start harvester', () => {
   let udp = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider');
-    this.visit(`/eusage/${udp.id}`);
+    this.visit(`/eusage/udps/${udp.id}`);
   });
 
   it('harvesting config accordion is present', function () {

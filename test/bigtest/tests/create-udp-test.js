@@ -14,7 +14,7 @@ describe('Create UDP', () => {
   const udpEditPage = new UDPEditPage();
 
   beforeEach(function () {
-    return this.visit('/eusage/create?filters=harvestingStatus.active&sort=label', () => {
+    return this.visit('/eusage/udps/create?filters=harvestingStatus.active&sort=label', () => {
       expect(udpInteractor.$root).to.exist;
     });
   });

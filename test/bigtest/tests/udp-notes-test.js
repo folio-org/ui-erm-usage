@@ -48,7 +48,7 @@ describe('UDP notes test', function () {
 
   describe('when the udp details page is visited', () => {
     beforeEach(async function () {
-      await this.visit(`/eusage/${udp.id}`);
+      await this.visit(`/eusage/udps/${udp.id}`);
       await udpDetailsPage.notesAccordionButton.click();
     });
 
