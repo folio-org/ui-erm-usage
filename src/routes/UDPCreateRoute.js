@@ -4,9 +4,9 @@ import { stripesConnect } from '@folio/stripes/core';
 import { LoadingPane } from '@folio/stripes-erm-components';
 
 import UDPForm from '../components/views/UDPForm';
-import extractHarvesterImpls from '../util/HarvesterImpls';
+import extractHarvesterImpls from '../util/harvesterImpls';
 
-import urls from '../components/utilities';
+import urls from '../util/urls';
 
 class UDPCreateRoute extends React.Component {
   static manifest = Object.freeze({

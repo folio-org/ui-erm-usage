@@ -32,7 +32,7 @@ import {
   calcStateToggleAccordion
 } from '../../util/stateUtils';
 
-import urls from '../utilities';
+import urls from '../../util/urls';
 
 class UDP extends React.Component {
   constructor(props) {
@@ -50,7 +50,6 @@ class UDP extends React.Component {
         uploadAccordion: false,
         notesAccordion: false,
         statisticsAccordion: false
-        // notes: false,
       }
     };
   }
@@ -95,7 +94,6 @@ class UDP extends React.Component {
               visibility: !udp ? 'hidden' : 'visible'
             }}
             onClick={handlers.onEdit}
-            // href={editLink}
             aria-label="Edit Usagedata Provider"
           />
         )}
@@ -127,20 +125,8 @@ class UDP extends React.Component {
       isHarvesterExistent,
       stripes
     } = this.props;
-    const usageDataProvider = get(data, 'usageDataProvider', {}); // data.usageDataProvider;
+    const usageDataProvider = get(data, 'usageDataProvider', {});
     if (isLoading) return this.renderLoadingPane();
-
-    // const query = resources.query;
-    // const initialValues = this.getUDP();
-    // const counterReports = this.getCounterReports();
-    // const harvesterImpls = extractHarvesterImpls(parentResources);
-    // const settings = (resources.settings || {}).records || [];
-
-    // const displayWhenOpenHarvestingAcc = (
-    //   <IfInterface name="erm-usage-harvester">
-    //     <this.connectedStartHarvesterButton usageDataProvider={initialValues} />
-    //   </IfInterface>
-    // );
 
     const displayWhenOpenHarvestingAcc = isHarvesterExistent ? (
       <this.connectedStartHarvesterButton
@@ -148,7 +134,6 @@ class UDP extends React.Component {
       />
     ) : null;
 
-    // const udpFormData = this.getUdpFormData(initialValues);
     const detailMenu = this.renderDetailMenu(usageDataProvider);
 
     const label = get(usageDataProvider, 'label', 'No LABEL');

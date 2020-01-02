@@ -13,7 +13,7 @@ import {
 import {
   notRequired,
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 class AggregatorInfoForm extends React.Component {
   static propTypes = {

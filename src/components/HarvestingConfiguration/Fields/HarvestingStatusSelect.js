@@ -10,7 +10,7 @@ import {
 } from '@folio/stripes/components';
 import {
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions';
 

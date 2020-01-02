@@ -11,7 +11,7 @@ import {
 import {
   required,
   yearMonth
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 const HarvestingStartField = () => (
   <Field

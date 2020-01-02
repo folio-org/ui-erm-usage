@@ -11,7 +11,7 @@ import {
 import {
   endDate,
   yearMonth
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 const HarvestingEndField = () => (
   <Field

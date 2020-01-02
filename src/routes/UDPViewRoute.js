@@ -7,8 +7,8 @@ import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
 
-import urls from '../components/utilities';
-import extractHarvesterImpls from '../util/HarvesterImpls';
+import urls from '../util/urls';
+import extractHarvesterImpls from '../util/harvesterImpls';
 
 class UDPViewRoute extends React.Component {
   static manifest = Object.freeze({
@@ -171,4 +171,3 @@ UDPViewRoute.defaultProps = {
 };
 
 export default stripesConnect(withTags(UDPViewRoute));
-// export default UDPViewRoute;

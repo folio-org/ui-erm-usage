@@ -9,7 +9,7 @@ import {
 } from '@folio/stripes/smart-components';
 
 import UDPs from '../components/views/UDPs';
-import urls from '../components/utilities';
+import urls from '../util/urls';
 
 import filterGroups from '../util/data/filterGroups';
 
@@ -100,11 +100,6 @@ class UDPsRoute extends React.Component {
     stripes: PropTypes.shape({
       logger: PropTypes.object
     }).isRequired
-    // onSelectRow: PropTypes.func,
-    // onComponentWillUnmount: PropTypes.func,
-    // showSingleResult: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-    // browseOnly: PropTypes.bool,
-    // intl: intlShape.isRequired,
   };
 
   constructor(props) {
@@ -112,18 +107,6 @@ class UDPsRoute extends React.Component {
 
     this.logger = props.stripes.logger;
     this.searchField = React.createRef();
-
-    // this.okapiUrl = props.stripes.okapi.url;
-    // this.httpHeaders = Object.assign(
-    //   {},
-    //   {
-    //     'X-Okapi-Tenant': props.stripes.okapi.tenant,
-    //     'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-    //     'Content-Type': 'application/json'
-    //   }
-    // );
-
-    this.state = {};
   }
 
   componentDidMount() {

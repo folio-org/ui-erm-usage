@@ -15,10 +15,10 @@ import {
 } from '@folio/stripes/components';
 import {
   isYearMonth
-} from '../../../util/Validate';
+} from '../../../util/validate';
 import {
   downloadCSVMultipleMonths
-} from '../../../util/DownloadCSV';
+} from '../../../util/downloadCSV';
 import css from './DownloadRange.css';
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 

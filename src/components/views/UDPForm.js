@@ -63,8 +63,6 @@ class UDPForm extends React.Component {
       }
     };
 
-    // this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
-
     this.handleExpandAll = this.handleExpandAll.bind(this);
   }
 
@@ -85,19 +83,6 @@ class UDPForm extends React.Component {
       this.setState({ confirmDelete: false });
     }
   };
-
-  // deleteUDP = () => {
-  //   const {
-  //     parentMutator,
-  //     initialValues: { id }
-  //   } = this.props;
-  //   parentMutator.records.DELETE({ id }).then(() => {
-  //     parentMutator.query.update({
-  //       _path: '/eusage',
-  //       layer: null
-  //     });
-  //   });
-  // };
 
   renderFirstMenu() {
     const {

@@ -12,7 +12,7 @@ import {
 } from '@folio/stripes/components';
 import {
   required
-} from '../../util/Validate';
+} from '../../util/validate';
 
 function UDPInfoForm(props) {
   const { expanded, onToggle, accordionId } = props;

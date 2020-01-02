@@ -11,7 +11,7 @@ import {
 import saveAs from 'file-saver';
 
 import ReportInfo from '../ReportInfo';
-import { downloadCSVSingleMonth } from '../../../util/DownloadCSV';
+import { downloadCSVSingleMonth } from '../../../util/downloadCSV';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
