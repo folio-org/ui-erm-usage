@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import {
   intlShape,
   injectIntl,
@@ -39,14 +40,14 @@ class StartHarvesterButton extends React.Component {
       modalText: ''
     };
     const { usageDataProvider } = props;
-    this.successText = this.successText(usageDataProvider);
-    this.failText = this.failText(usageDataProvider);
+    this.successText = this.createSuccessText(usageDataProvider);
+    this.failText = this.createFailText(usageDataProvider);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
-      this.successText = this.successText(this.props.usageDataProvider);
-      this.failText = this.failText(this.props.usageDataProvider);
+      this.successText = this.createSuccessText(this.props.usageDataProvider);
+      this.failText = this.createFailText(this.props.usageDataProvider);
     }
   }
 
@@ -76,14 +77,15 @@ class StartHarvesterButton extends React.Component {
   }
 
   isInActive = (udp) => {
-    return udp.harvestingConfig.harvestingStatus === 'inactive';
+    const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
+    return status === 'inactive';
   }
 
-  successText = (udp) => {
+  createSuccessText = (udp) => {
     return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.success.single.udp' })} ${udp.label} !`;
   }
 
-  failText = (udp) => {
+  createFailText = (udp) => {
     return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.fail.single.udp' })} ${udp.label}...`;
   }
 
