@@ -240,10 +240,10 @@ class UDP extends React.Component {
 UDP.propTypes = {
   canEdit: PropTypes.bool,
   data: PropTypes.shape({
-    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    counterReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    usageDataProvider: PropTypes.object.isRequired
+    usageDataProvider: PropTypes.object
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,

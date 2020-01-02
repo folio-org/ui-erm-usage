@@ -36,7 +36,7 @@ class UDPForm extends React.Component {
       onDelete: PropTypes.func
     }),
     initialValues: PropTypes.shape({
-      id: PropTypes.string.isRequired
+      id: PropTypes.string
     }),
     invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
@@ -108,7 +108,7 @@ class UDPForm extends React.Component {
         <FormattedMessage id="ui-erm-usage.udp.form.close">
           {ariaLabel => (
             <IconButton
-              id="clickable-closeudpdialog"
+              id="clickable-close-udp-form-x"
               onClick={onClose}
               ariaLabel={ariaLabel}
               icon="times"
@@ -159,7 +159,7 @@ class UDPForm extends React.Component {
       <Button
         data-test-udp-form-cancel-button
         marginBottom0
-        id="clickable-closeudpdialog"
+        id="clickable-close-udp-form"
         buttonStyle="default mega"
         onClick={onClose}
       >
@@ -308,7 +308,7 @@ export default stripesForm({
       'harvestingConfig.harvestingStatus'
     );
     const harvestVia = selector(state, 'harvestingConfig.harvestVia');
-    const reportRelease = selector(state, 'harvestingConfig.reportRelease');
+    const reportRelease = parseInt(selector(state, 'harvestingConfig.reportRelease'), 10);
     const selectedReports = selector(
       state,
       'harvestingConfig.requestedReports'

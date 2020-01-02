@@ -84,7 +84,6 @@ class HarvestingConfigurationForm extends React.Component {
     } = this.props;
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
-    const selectedCounterVersion = parseInt(reportRelease, 10);
 
     const confirmationMessage = (
       <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
@@ -141,7 +140,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={8}>
                   <SelectedReportsForm
                     initialValues={initialValues}
-                    counterVersion={selectedCounterVersion}
+                    counterVersion={reportRelease}
                     selectedReports={selectedReports}
                   />
                 </Col>
@@ -197,7 +196,7 @@ HarvestingConfigurationForm.propTypes = {
   harvestVia: PropTypes.string,
   initialValues: PropTypes.object,
   onToggle: PropTypes.func,
-  reportRelease: PropTypes.string,
+  reportRelease: PropTypes.number,
   selectedReports: PropTypes.arrayOf(PropTypes.string)
 };
 
