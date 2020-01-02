@@ -31,8 +31,10 @@
   "information.platform": "Platform",
   "information.harvestingStatus": "Harvesting Status",
   "information.aggregator": "Aggregator",
+  "information.aggregators": "Aggregators",
   "information.latestStatistics": "Latest Statistics",
-  "information.hasFailedReports" : "Has failed reports",
+  "information.hasFailedReport" : "Has failed report(s)",
+  "information.harvestVia": "Harvest via",
 
   "udp.harvestingConfiguration": "Harvesting configuration",
   "udp.notes": "Notes",
@@ -51,7 +53,6 @@
   "udpHarvestingConfig.harvestingEnd": "Harvesting end",
   "udpHarvestingConfig.sushiCredentials": "SUSHI credentials",
 
-  "aggregatorInfo.harvestVia": "Harvest via",
   "aggregatorInfo.aggregatorName": "Aggregator name",
   "aggregatorInfo.vendorCode": "Vendor code",
 

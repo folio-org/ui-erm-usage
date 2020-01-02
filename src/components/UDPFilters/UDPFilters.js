@@ -85,7 +85,7 @@ export default class UDPFilters extends React.Component {
         displayClearButton={groupFilters.length > 0}
         header={FilterAccordionHeader}
         id={`filter-accordion-${key}`}
-        label={<FormattedMessage id={`${name}`} />}
+        label={<FormattedMessage id={`ui-erm-usage.information.${key}`} />}
         onClearFilter={() => {
           this.props.filterHandlers.clearGroup(key);
         }}
