@@ -1,8 +1,8 @@
 const urls = {
-  udps : () => '/eusage/udps',
-  udpView: id => `/eusage/udps/${id}`,
-  udpEdit: id => `/eusage/udps/${id}/edit`,
-  udpCreate: () => '/eusage/udps/create',
+  udps : () => '/eusage',
+  udpView: id => `/eusage/view/${id}`,
+  udpEdit: id => `/eusage/${id}/edit`,
+  udpCreate: () => '/eusage/create',
 
   notes: () => '/eusage/notes',
   noteView: id => `/eusage/notes/${id}`,

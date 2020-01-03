@@ -31,15 +31,14 @@ class ErmUsage extends React.Component {
 
     return (
       <Switch>
-        <Route path={`${path}/udps/create`} component={UDPCreateRoute} />
-        <Route path={`${path}/udps/:id/edit`} component={UDPEditRoute} />
-        <Route path={`${path}/udps/:id?`} component={UDPsRoute}>
-          <Route path={`${path}/udps/:id`} component={UDPViewRoute} />
-        </Route>
-
         <Route path={`${path}/notes/create`} component={NoteCreateRoute} />
         <Route path={`${path}/notes/:id/edit`} component={NoteEditRoute} />
         <Route path={`${path}/notes/:id`} component={NoteViewRoute} />
+        <Route path={`${path}/create`} component={UDPCreateRoute} />
+        <Route path={`${path}/:id/edit`} component={UDPEditRoute} />
+        <Route path={`${path}`} component={UDPsRoute}>
+          <Route path={`${path}/view/:id`} component={UDPViewRoute} />
+        </Route>
       </Switch>
     );
   }
