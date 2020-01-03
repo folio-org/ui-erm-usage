@@ -12,7 +12,7 @@ describe('Usage Data Provider', () => {
 
   beforeEach(async function () {
     this.server.createList('usage-data-provider', 25);
-    await this.visit('/eusage/udps?filters=harvestingStatus.active');
+    await this.visit('/eusage?filters=harvestingStatus.active');
   });
 
   it('shows the list of udp items', () => {
