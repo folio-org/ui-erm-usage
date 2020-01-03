@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import {
   FormattedMessage
@@ -10,28 +9,11 @@ import {
   TextField
 } from '@folio/stripes/components';
 import {
-  // notRequired,
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 class SushiCredentialsForm extends React.Component {
-  // static propTypes = {
-  //   selectedHarvestVia: PropTypes.string
-  // };
-
-  // isCustomerIdRequired = (selectedHarvestVia) => {
-  //   if (selectedHarvestVia === 'aggregator') {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // };
-
   render() {
-    // const selectedHarvestVia = this.props.selectedHarvestVia;
-    // const requiredSign = this.isCustomerIdRequired(selectedHarvestVia) ? ' *' : '';
-    // const requiredValidate = this.isCustomerIdRequired(selectedHarvestVia) ? required : notRequired;
-
     return (
       <React.Fragment>
         <Row>

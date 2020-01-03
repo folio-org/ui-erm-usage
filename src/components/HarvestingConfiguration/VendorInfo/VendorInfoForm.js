@@ -12,7 +12,7 @@ import {
 import {
   notRequired,
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {

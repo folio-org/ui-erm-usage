@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@folio/stripes/components';
 
-import { downloadCredentials } from '../../../util/DownloadCSV';
+import { downloadCredentials } from '../../../util/downloadCSV';
 
 export default class DownloadCredentialsButton extends React.Component {
   static propTypes = {

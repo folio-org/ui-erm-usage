@@ -25,7 +25,7 @@ import moment from 'moment';
 import stripesForm from '@folio/stripes/form';
 import {
   required
-} from '../../util/Validate';
+} from '../../util/validate';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 
 class PeriodicHarvestingForm extends React.Component {

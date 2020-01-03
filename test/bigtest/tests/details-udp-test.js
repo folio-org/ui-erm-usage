@@ -17,9 +17,7 @@ describe('UDPDetailsPage', () => {
   let udp = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
-    this.visit('/eusage?filters=harvestingStatus.Active');
-
-    await udpInteractor.clickActiveUDPsCheckbox();
+    await this.visit('/eusage/?filters=harvestingStatus.active');
   });
 
   it('shows the list of udp items', () => {

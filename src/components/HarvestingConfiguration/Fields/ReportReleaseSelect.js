@@ -11,7 +11,7 @@ import {
 } from '@folio/stripes/components';
 import {
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 

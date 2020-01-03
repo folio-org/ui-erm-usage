@@ -13,20 +13,11 @@ import {
 import {
   notRequired,
   required
-} from '../../../util/Validate';
+} from '../../../util/validate';
 
 class AggregatorInfoForm extends React.Component {
-  static manifest = Object.freeze({
-    aggregators: {
-      type: 'okapi',
-      path: 'aggregator-settings'
-    }
-  });
-
   static propTypes = {
-    resources: PropTypes.shape({
-      aggregators: PropTypes.shape(),
-    }),
+    aggregators: PropTypes.arrayOf(PropTypes.shape()),
     disabled: PropTypes.bool,
   };
 
@@ -53,13 +44,13 @@ class AggregatorInfoForm extends React.Component {
   }
 
   render() {
-    const { resources, disabled } = this.props;
-    const records = (resources.aggregators || {}).records || [];
-    const aggregators = records.length
+    const { disabled, aggregators } = this.props;
+    const records = aggregators;
+    const aggs = records && records.length
       ? records[0].aggregatorSettings
       : {};
     const requiredSign = disabled ? '' : ' *';
-    const aggOptions = this.extractAggregatorSelectOptions(aggregators);
+    const aggOptions = this.extractAggregatorSelectOptions(aggs);
 
     return (
       <React.Fragment>

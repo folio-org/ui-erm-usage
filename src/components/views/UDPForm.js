@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import {
   Button,
@@ -21,23 +23,32 @@ import stripesForm from '@folio/stripes/form';
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 
-import extractHarvesterImpls from '../../util/HarvesterImpls';
+import css from './UDPForm.css';
 
-import css from './UsageDataProviderForm.css';
-
-class UsageDataProviderForm extends React.Component {
+class UDPForm extends React.Component {
   static propTypes = {
-    stripes: PropTypes.shape({
-      connect: PropTypes.func
+    data: PropTypes.shape({
+      aggregators: PropTypes.array.isRequired,
+      harvesterImpls: PropTypes.array.isRequired
     }).isRequired,
-    handleSubmit: PropTypes.func.isRequired,
+    handlers: PropTypes.shape({
+      onClose: PropTypes.func.isRequired,
+      onDelete: PropTypes.func
+    }),
+    initialValues: PropTypes.shape({
+      id: PropTypes.string
+    }),
     invalid: PropTypes.bool,
-    onCancel: PropTypes.func,
+    handleSubmit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired,
     pristine: PropTypes.bool,
-    submitting: PropTypes.bool,
-    initialValues: PropTypes.object,
-    parentResources: PropTypes.shape().isRequired,
-    parentMutator: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
+    submitting: PropTypes.bool
+  };
+
+  static defaultProps = {
+    initialValues: {}
   };
 
   constructor(props) {
@@ -52,9 +63,11 @@ class UsageDataProviderForm extends React.Component {
       }
     };
 
-    this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
-
     this.handleExpandAll = this.handleExpandAll.bind(this);
+  }
+
+  getFormName() {
+    return 'form-udProvider';
   }
 
   beginDelete = () => {
@@ -65,34 +78,23 @@ class UsageDataProviderForm extends React.Component {
 
   confirmDelete = confirmation => {
     if (confirmation) {
-      this.deleteUDP();
+      this.props.handlers.onDelete(this.props.initialValues.id);
     } else {
       this.setState({ confirmDelete: false });
     }
   };
 
-  deleteUDP = () => {
+  renderFirstMenu() {
     const {
-      parentMutator,
-      initialValues: { id }
+      handlers: { onClose }
     } = this.props;
-    parentMutator.records.DELETE({ id }).then(() => {
-      parentMutator.query.update({
-        _path: '/eusage',
-        layer: null
-      });
-    });
-  };
-
-  getFirstMenu() {
-    const { onCancel } = this.props;
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
           {ariaLabel => (
             <IconButton
-              id="clickable-closeudpdialog"
-              onClick={onCancel}
+              id="clickable-close-udp-form-x"
+              onClick={onClose}
               ariaLabel={ariaLabel}
               icon="times"
             />
@@ -102,7 +104,7 @@ class UsageDataProviderForm extends React.Component {
     );
   }
 
-  getLastMenu() {
+  renderLastMenu() {
     const { initialValues } = this.props;
     const { confirmDelete } = this.state;
     const isEditing = initialValues && initialValues.id;
@@ -127,8 +129,14 @@ class UsageDataProviderForm extends React.Component {
     );
   }
 
-  getPaneFooter() {
-    const { pristine, submitting, invalid, onCancel } = this.props;
+  renderPaneFooter() {
+    const {
+      handlers: { onClose },
+      handleSubmit,
+      invalid,
+      pristine,
+      submitting
+    } = this.props;
 
     const disabled = pristine || submitting || invalid;
 
@@ -136,9 +144,9 @@ class UsageDataProviderForm extends React.Component {
       <Button
         data-test-udp-form-cancel-button
         marginBottom0
-        id="clickable-closeudpdialog"
+        id="clickable-close-udp-form"
         buttonStyle="default mega"
-        onClick={onCancel}
+        onClick={onClose}
       >
         <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
       </Button>
@@ -151,6 +159,7 @@ class UsageDataProviderForm extends React.Component {
         id="clickable-createnewudp"
         buttonStyle="primary mega"
         type="submit"
+        onClick={handleSubmit}
         disabled={disabled}
       >
         <FormattedMessage id="ui-erm-usage.udp.form.saveAndClose" />
@@ -191,7 +200,11 @@ class UsageDataProviderForm extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, parentResources } = this.props;
+    const {
+      initialValues,
+      handleSubmit,
+      data: { aggregators, harvesterImpls }
+    } = this.props;
     const { confirmDelete, sections } = this.state;
     const udp = initialValues || {};
     const paneTitle = initialValues.id ? (
@@ -200,11 +213,9 @@ class UsageDataProviderForm extends React.Component {
       <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />
     );
 
-    const firstMenu = this.getFirstMenu();
-    const lastMenu = this.getLastMenu();
-    const footer = this.getPaneFooter();
-
-    const harvesterImpls = extractHarvesterImpls(parentResources);
+    const firstMenu = this.renderFirstMenu();
+    const lastMenu = this.renderLastMenu();
+    const footer = this.renderPaneFooter();
 
     return (
       <form
@@ -232,7 +243,7 @@ class UsageDataProviderForm extends React.Component {
                 </Col>
               </Row>
               {initialValues.metadata && initialValues.metadata.createdDate && (
-                <this.connectedViewMetaData metadata={initialValues.metadata} />
+                <ViewMetaData metadata={initialValues.metadata} />
               )}
               <UDPInfoForm
                 accordionId="editUDPInfo"
@@ -242,6 +253,7 @@ class UsageDataProviderForm extends React.Component {
               />
               <HarvestingConfigurationForm
                 accordionId="editHarvestingConfig"
+                aggregators={aggregators}
                 expanded={sections.editHarvestingConfig}
                 onToggle={this.handleSectionToggle}
                 harvesterImplementations={harvesterImpls}
@@ -269,8 +281,28 @@ class UsageDataProviderForm extends React.Component {
   }
 }
 
+const selector = formValueSelector('form-udProvider');
 export default stripesForm({
   form: 'form-udProvider',
   navigationCheck: true,
   enableReinitialize: true
-})(UsageDataProviderForm);
+})(
+  connect(state => {
+    const harvestingStatus = selector(
+      state,
+      'harvestingConfig.harvestingStatus'
+    );
+    const harvestVia = selector(state, 'harvestingConfig.harvestVia');
+    const reportRelease = parseInt(selector(state, 'harvestingConfig.reportRelease'), 10);
+    const selectedReports = selector(
+      state,
+      'harvestingConfig.requestedReports'
+    );
+    return {
+      harvestingStatus,
+      harvestVia,
+      reportRelease,
+      selectedReports
+    };
+  })(UDPForm)
+);

@@ -1,78 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import Switch from 'react-router-dom/Switch';
-import Route from 'react-router-dom/Route';
-import Settings from './settings';
-import UsageDataProviders from './Main';
+import { Route } from '@folio/stripes/core';
+
+import UDPsRoute from './routes/UDPsRoute';
+import UDPViewRoute from './routes/UDPViewRoute';
+import UDPCreateRoute from './routes/UDPCreateRoute';
+import UDPEditRoute from './routes/UDPEditRoute';
 import NoteCreateRoute from './routes/NoteCreateRoute';
 import NoteEditRoute from './routes/NoteEditRoute';
 import NoteViewRoute from './routes/NoteViewRoute';
-
-/*
-  STRIPES-NEW-APP
-  This is the main entry point into your new app.
-*/
+import Settings from './settings';
 
 class ErmUsage extends React.Component {
   static propTypes = {
-    stripes: PropTypes
-      .shape({ connect: PropTypes.func.isRequired })
-      .isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
+    match: ReactRouterPropTypes.match.isRequired,
     showSettings: PropTypes.bool
-  }
-
-  constructor(props, context) {
-    super(props, context);
-    this.connectedApp = props
-      .stripes
-      .connect(UsageDataProviders);
-  }
-
-  NoMatch() {
-    return (
-      <div>
-        <h2>Uh-oh!</h2>
-        <p>
-          How did you get to
-          <tt>
-            {this.props.location.pathname}
-          </tt>
-          ?
-        </p>
-      </div>
-    );
-  }
+  };
 
   render() {
-    if (this.props.showSettings) {
+    const {
+      showSettings,
+      match: { path }
+    } = this.props;
+
+    if (showSettings) {
       return <Settings {...this.props} />;
     }
 
-    const { match: { path } } = this.props;
-
     return (
       <Switch>
-        <Route
-          path={`${path}/notes/create`}
-          component={NoteCreateRoute}
-          exact
-        />
-        <Route
-          path={`${path}/notes/:id/edit`}
-          component={NoteEditRoute}
-          exact
-        />
-        <Route
-          path={`${path}/notes/:id`}
-          component={NoteViewRoute}
-          exact
-        />
-        <Route
-          path={`${path}`}
-          render={() => <this.connectedApp {...this.props} />}
-        />
+        <Route path={`${path}/notes/create`} component={NoteCreateRoute} />
+        <Route path={`${path}/notes/:id/edit`} component={NoteEditRoute} />
+        <Route path={`${path}/notes/:id`} component={NoteViewRoute} />
+        <Route path={`${path}/create`} component={UDPCreateRoute} />
+        <Route path={`${path}/:id/edit`} component={UDPEditRoute} />
+        <Route path={`${path}`} component={UDPsRoute}>
+          <Route path={`${path}/view/:id`} component={UDPViewRoute} />
+        </Route>
       </Switch>
     );
   }

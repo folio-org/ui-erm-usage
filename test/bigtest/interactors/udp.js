@@ -7,9 +7,9 @@ import {
 
 export default @interactor class UDPInteractor {
   static defaultScope = '[data-test-udp-instances]';
-  clickActiveUDPsCheckbox = clickable('#clickable-filter-harvesting-status-active');
 
-  instances = collection('[role=row] a');
+  instances = collection('[role=row]');
+  clickFirstRow = clickable('[aria-rowindex="2"]');
 
   instance = scoped('#pane-udpdetails');
 }

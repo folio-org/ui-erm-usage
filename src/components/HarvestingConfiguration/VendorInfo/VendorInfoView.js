@@ -22,7 +22,7 @@ class VendorInfoView extends React.Component {
       <Row>
         <Col xs={3}>
           <KeyValue
-            label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.harvestVia" />}
+            label={<FormattedMessage id="ui-erm-usage.information.harvestVia" />}
             value="Sushi"
           />
         </Col>

@@ -22,7 +22,7 @@ import { IfPermission } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
 import { autofill, change, getFormValues, Field } from 'redux-form';
 import DisplayContactsForm from './DisplayContactsForm';
-import { required, mail } from '../../util/Validate';
+import { required, mail } from '../../util/validate';
 import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
