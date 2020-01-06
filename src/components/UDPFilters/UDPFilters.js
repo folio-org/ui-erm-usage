@@ -15,14 +15,6 @@ import {
 
 import filterGroups from '../../util/data/filterGroups';
 
-const FILTERS = [
-  'harvestingStatus',
-  'harvestVia',
-  'aggregators',
-  'hasFailedReport',
-  'tags'
-];
-
 export default class UDPFilters extends React.Component {
   static propTypes = Object.freeze({
     activeFilters: PropTypes.object,
@@ -46,7 +38,8 @@ export default class UDPFilters extends React.Component {
     const newState = {};
     const arr = [];
 
-    FILTERS.forEach(filterName => {
+    filterGroups.forEach(filter => {
+      const filterName = filter.name;
       const current = find(filterGroups, { name: filterName });
       let newValues = {};
       if (current && !isEmpty(current.values)) {
@@ -133,7 +126,8 @@ export default class UDPFilters extends React.Component {
           onChange={e => this.props.filterHandlers.state({
             ...activeFilters,
             tags: e.values
-          })}
+          })
+          }
           selectedValues={tagFilters}
         />
       </Accordion>
