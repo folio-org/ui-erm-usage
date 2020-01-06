@@ -32,6 +32,12 @@ const filterGroups = [
       { name: 'Yes', cql: 'yes' },
       { name: 'No', cql: 'no' }
     ]
+  },
+  {
+    label: 'Tags',
+    name: 'tags',
+    cql: 'tags.tagList',
+    values: [],
   }
 ];
 

@@ -61,6 +61,15 @@ class UDPsRoute extends React.Component {
         sort: 'label'
       }
     },
+    tags: {
+      type: 'okapi',
+      path: 'tags',
+      params: {
+        limit: '1000',
+        query: 'cql.allRecords=1 sortby label'
+      },
+      records: 'tags'
+    },
     resultCount: { initialValue: INITIAL_RESULT_COUNT }
   });
 
@@ -110,7 +119,11 @@ class UDPsRoute extends React.Component {
   }
 
   componentDidMount() {
-    this.source = new StripesConnectedSource(this.props, this.logger, 'usageDataProviders');
+    this.source = new StripesConnectedSource(
+      this.props,
+      this.logger,
+      'usageDataProviders'
+    );
 
     if (this.searchField.current) {
       this.searchField.current.focus();
@@ -168,6 +181,7 @@ class UDPsRoute extends React.Component {
         data={{
           udps: get(resources, 'usageDataProviders.records', []),
           aggregators: get(resources, 'aggregatorSettings.records', []),
+          tags: get(resources, 'tags.records', [])
         }}
         selectedRecordId={match.params.id}
         onNeedMoreData={this.handleNeedMoreData}
