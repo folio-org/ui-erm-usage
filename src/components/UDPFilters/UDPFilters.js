@@ -72,7 +72,7 @@ export default class UDPFilters extends React.Component {
     return null;
   }
 
-  renderCheckboxFilter = (key, name, props) => {
+  renderCheckboxFilter = (key) => {
     const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
@@ -86,7 +86,6 @@ export default class UDPFilters extends React.Component {
           this.props.filterHandlers.clearGroup(key);
         }}
         separator={false}
-        {...props}
       >
         <CheckboxFilter
           dataOptions={this.state[key]}
@@ -113,7 +112,7 @@ export default class UDPFilters extends React.Component {
         id="clickable-tags-filter"
         displayClearButton={tagFilters.length > 0}
         header={FilterAccordionHeader}
-        label="TAGS"
+        label={<FormattedMessage id="ui-erm-usage.general.tags" />}
         onClearFilter={() => {
           this.props.filterHandlers.clearGroup('tags');
         }}
@@ -137,10 +136,10 @@ export default class UDPFilters extends React.Component {
   render() {
     return (
       <AccordionSet>
-        {this.renderCheckboxFilter('harvestingStatus', 'Harvesting status')}
-        {this.renderCheckboxFilter('harvestVia', 'Harvest via')}
-        {this.renderCheckboxFilter('aggregators', 'Aggregators')}
-        {this.renderCheckboxFilter('hasFailedReport', 'Has failed report(s)')}
+        {this.renderCheckboxFilter('harvestingStatus')}
+        {this.renderCheckboxFilter('harvestVia')}
+        {this.renderCheckboxFilter('aggregators')}
+        {this.renderCheckboxFilter('hasFailedReport')}
         {this.renderTagsFilter()}
       </AccordionSet>
     );

@@ -298,7 +298,7 @@ class UDPs extends React.Component {
                   firstMenu={this.renderResultsFirstMenu(activeFilters)}
                   lastMenu={this.renderResultsLastMenu()}
                   padContent={false}
-                  paneTitle="USAGE DATA PROVIDERS"
+                  paneTitle={<FormattedMessage id="ui-erm-usage.usage-data-providers" />}
                   paneSub={this.renderResultsPaneSubtitle(source)}
                 >
                   <MultiColumnList
