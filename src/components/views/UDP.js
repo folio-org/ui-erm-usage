@@ -18,8 +18,10 @@ import {
 } from '@folio/stripes/components';
 import {
   NotesSmartAccordion,
-  ViewMetaData,
+  ViewMetaData
 } from '@folio/stripes/smart-components';
+
+import HelperApp from '../HelperApp';
 
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
@@ -50,7 +52,8 @@ class UDP extends React.Component {
         uploadAccordion: false,
         notesAccordion: false,
         statisticsAccordion: false
-      }
+      },
+      helperApp: null
     };
   }
 
@@ -66,8 +69,20 @@ class UDP extends React.Component {
     });
   };
 
+  showHelperApp = helperName => {
+    this.setState({
+      helperApp: helperName
+    });
+  };
+
+  closeHelperApp = () => {
+    this.setState({
+      helperApp: null
+    });
+  };
+
   renderDetailMenu = udp => {
-    const { canEdit, tagsEnabled, handlers } = this.props;
+    const { canEdit, handlers, tagsEnabled } = this.props;
 
     const tags = ((udp && udp.tags) || {}).tagList || [];
 
@@ -79,7 +94,9 @@ class UDP extends React.Component {
               <PaneHeaderIconButton
                 icon="tag"
                 id="clickable-show-tags"
-                onClick={handlers.onToggleTags}
+                onClick={() => {
+                  this.showHelperApp('tags');
+                }}
                 badgeCount={tags.length}
                 ariaLabel={ariaLabel}
               />
@@ -125,6 +142,9 @@ class UDP extends React.Component {
       isHarvesterExistent,
       stripes
     } = this.props;
+
+    const { helperApp } = this.state;
+
     const usageDataProvider = get(data, 'usageDataProvider', {});
     if (isLoading) return this.renderLoadingPane();
 
@@ -139,85 +159,90 @@ class UDP extends React.Component {
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
     return (
-      <Pane
-        id="pane-udpdetails"
-        defaultWidth="40%"
-        paneTitle={<span data-test-header-title>{label}</span>}
-        lastMenu={detailMenu}
-        dismissible
-        onClose={handlers.onClose}
-      >
-        <TitleManager record={label} stripes={stripes} />
-        <Row end="xs">
-          <Col xs>
-            <ExpandAllButton
-              accordionStatus={this.state.accordions}
-              onToggle={this.handleExpandAll}
-              id="clickable-expand-all-view"
-            />
-          </Col>
-        </Row>
-        <this.connectedViewMetaData
-          metadata={get(usageDataProvider, 'metadata', {})}
-          stripes={stripes}
-        />
-        <UDPInfoView
-          id="udpInfo"
-          usageDataProvider={usageDataProvider}
-          stripes={stripes}
-        />
-        <Accordion
-          open={this.state.accordions.harvestingAccordion}
-          onToggle={this.handleAccordionToggle}
-          label={
-            <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-          }
-          id="harvestingAccordion"
-          displayWhenOpen={displayWhenOpenHarvestingAcc}
+      <React.Fragment>
+        <Pane
+          id="pane-udpdetails"
+          defaultWidth="40%"
+          paneTitle={<span data-test-header-title>{label}</span>}
+          lastMenu={detailMenu}
+          dismissible
+          onClose={handlers.onClose}
         >
-          <HarvestingConfigurationView
+          <TitleManager record={label} stripes={stripes} />
+          <Row end="xs">
+            <Col xs>
+              <ExpandAllButton
+                accordionStatus={this.state.accordions}
+                onToggle={this.handleExpandAll}
+                id="clickable-expand-all-view"
+              />
+            </Col>
+          </Row>
+          <this.connectedViewMetaData
+            metadata={get(usageDataProvider, 'metadata', {})}
+            stripes={stripes}
+          />
+          <UDPInfoView
+            id="udpInfo"
             usageDataProvider={usageDataProvider}
             stripes={stripes}
-            sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+          />
+          <Accordion
+            open={this.state.accordions.harvestingAccordion}
             onToggle={this.handleAccordionToggle}
-            settings={data.settings}
-            harvesterImpls={data.harvesterImpls}
-          />
-        </Accordion>
-        <Accordion
-          open={this.state.accordions.statisticsAccordion}
-          onToggle={this.handleAccordionToggle}
-          label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-          id="statisticsAccordion"
-        >
-          <Statistics
+            label={
+              <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+            }
+            id="harvestingAccordion"
+            displayWhenOpen={displayWhenOpenHarvestingAcc}
+          >
+            <HarvestingConfigurationView
+              usageDataProvider={usageDataProvider}
+              stripes={stripes}
+              sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+              onToggle={this.handleAccordionToggle}
+              settings={data.settings}
+              harvesterImpls={data.harvesterImpls}
+            />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.statisticsAccordion}
+            onToggle={this.handleAccordionToggle}
+            label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
+            id="statisticsAccordion"
+          >
+            <Statistics
+              stripes={stripes}
+              providerId={providerId}
+              udpLabel={label}
+              counterReports={data.counterReports}
+            />
+          </Accordion>
+          <Accordion
+            open={this.state.accordions.uploadAccordion}
+            onToggle={this.handleAccordionToggle}
+            label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
+            id="uploadAccordion"
+          >
+            <this.connectedReportUpload udpId={providerId} stripes={stripes} />
+          </Accordion>
+          <NotesSmartAccordion
+            id="notesAccordion"
+            domainName="erm-usage"
+            entityId={usageDataProvider.id}
+            entityName={usageDataProvider.label}
+            entityType="erm-usage-data-provider"
+            pathToNoteCreate={urls.noteCreate()}
+            pathToNoteDetails={urls.notes()}
+            onToggle={this.handleAccordionToggle}
+            open={this.state.accordions.notesAccordion}
             stripes={stripes}
-            providerId={providerId}
-            udpLabel={label}
-            counterReports={data.counterReports}
           />
-        </Accordion>
-        <Accordion
-          open={this.state.accordions.uploadAccordion}
-          onToggle={this.handleAccordionToggle}
-          label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
-          id="uploadAccordion"
-        >
-          <this.connectedReportUpload udpId={providerId} stripes={stripes} />
-        </Accordion>
-        <NotesSmartAccordion
-          id="notesAccordion"
-          domainName="erm-usage"
-          entityId={usageDataProvider.id}
-          entityName={usageDataProvider.label}
-          entityType="erm-usage-data-provider"
-          pathToNoteCreate={urls.noteCreate()}
-          pathToNoteDetails={urls.notes()}
-          onToggle={this.handleAccordionToggle}
-          open={this.state.accordions.notesAccordion}
-          stripes={stripes}
-        />
-      </Pane>
+        </Pane>
+        {helperApp && (
+          <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -232,13 +257,12 @@ UDP.propTypes = {
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
-    onEdit: PropTypes.func,
-    onToggleTags: PropTypes.func
+    onEdit: PropTypes.func
   }).isRequired,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   stripes: PropTypes.object.isRequired,
-  tagsEnabled: PropTypes.bool,
+  tagsEnabled: PropTypes.bool
 };
 
 export default UDP;
