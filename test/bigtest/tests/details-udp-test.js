@@ -119,6 +119,17 @@ describe('UDPDetailsPage', () => {
           expect(udpDetailsPage.reportInfoFailed.deleteButton.isPresent).to.equal(true);
         });
       });
+
+      describe('can open tags helper app', () => {
+        beforeEach(async function () {
+          await udpDetailsPage.clickShowTags();
+          await udpDetailsPage.tagsSelect.clickable();
+        });
+
+        it('tags helper app shown', () => {
+          expect(udpDetailsPage.tagsSelect.tagSelection.isPresent).to.be.true;
+        });
+      });
     });
   });
 });
