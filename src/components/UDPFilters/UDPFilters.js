@@ -10,16 +10,10 @@ import {
 } from '@folio/stripes/components';
 import {
   CheckboxFilter,
+  MultiSelectionFilter
 } from '@folio/stripes/smart-components';
 
 import filterGroups from '../../util/data/filterGroups';
-
-const FILTERS = [
-  'harvestingStatus',
-  'harvestVia',
-  'aggregators',
-  'hasFailedReport'
-];
 
 export default class UDPFilters extends React.Component {
   static propTypes = Object.freeze({
@@ -36,17 +30,19 @@ export default class UDPFilters extends React.Component {
     harvestingStatus: [],
     harvestVia: [],
     aggregators: [],
-    hasFailedReport: []
+    hasFailedReport: [],
+    tags: []
   };
 
   static getDerivedStateFromProps(props, state) {
     const newState = {};
     const arr = [];
 
-    FILTERS.forEach(filterName => {
+    filterGroups.forEach(filter => {
+      const filterName = filter.name;
       const current = find(filterGroups, { name: filterName });
       let newValues = {};
-      if (!isEmpty(current.values)) {
+      if (current && !isEmpty(current.values)) {
         newValues = current.values.map(key => {
           return {
             value: key.cql,
@@ -76,7 +72,7 @@ export default class UDPFilters extends React.Component {
     return null;
   }
 
-  renderCheckboxFilter = (key, name, props) => {
+  renderCheckboxFilter = (key) => {
     const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
@@ -90,7 +86,6 @@ export default class UDPFilters extends React.Component {
           this.props.filterHandlers.clearGroup(key);
         }}
         separator={false}
-        {...props}
       >
         <CheckboxFilter
           dataOptions={this.state[key]}
@@ -107,13 +102,45 @@ export default class UDPFilters extends React.Component {
     );
   };
 
+  renderTagsFilter = () => {
+    const { activeFilters } = this.props;
+    const tagFilters = activeFilters.tags || [];
+
+    return (
+      <Accordion
+        closedByDefault
+        id="clickable-tags-filter"
+        displayClearButton={tagFilters.length > 0}
+        header={FilterAccordionHeader}
+        label={<FormattedMessage id="ui-erm-usage.general.tags" />}
+        onClearFilter={() => {
+          this.props.filterHandlers.clearGroup('tags');
+        }}
+        separator={false}
+      >
+        <MultiSelectionFilter
+          dataOptions={this.state.tags}
+          id="tags-filter"
+          name="tags"
+          onChange={e => this.props.filterHandlers.state({
+            ...activeFilters,
+            tags: e.values
+          })
+          }
+          selectedValues={tagFilters}
+        />
+      </Accordion>
+    );
+  };
+
   render() {
     return (
       <AccordionSet>
-        {this.renderCheckboxFilter('harvestingStatus', 'Harvesting status')}
-        {this.renderCheckboxFilter('harvestVia', 'Harvest via')}
-        {this.renderCheckboxFilter('aggregators', 'Aggregators')}
-        {this.renderCheckboxFilter('hasFailedReport', 'Has failed report(s)')}
+        {this.renderCheckboxFilter('harvestingStatus')}
+        {this.renderCheckboxFilter('harvestVia')}
+        {this.renderCheckboxFilter('aggregators')}
+        {this.renderCheckboxFilter('hasFailedReport')}
+        {this.renderTagsFilter()}
       </AccordionSet>
     );
   }

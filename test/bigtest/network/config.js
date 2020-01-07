@@ -8,14 +8,15 @@ export default function config() {
 
   this.get('_/proxy/tenants/:id/modules', [
     {
-      id : 'mod-erm-usage-harvester-1.4.0-SNAPSHOT',
-      name : 'erm-usage-harvester',
-      provides : [{
-        id : 'erm-usage-harvester',
-        version : '1.1'
-      },
+      id: 'mod-erm-usage-harvester-1.4.0-SNAPSHOT',
+      name: 'erm-usage-harvester',
+      provides: [
+        {
+          id: 'erm-usage-harvester',
+          version: '1.1'
+        }
       ]
-    },
+    }
   ]);
 
   this.get('/saml/check', {
@@ -26,24 +27,54 @@ export default function config() {
     configs: []
   });
 
-  this.post('/bl-users/login?expandPermissions=true&fullPermissions=true', () => {
-    return new Response(201, {
-      'X-Okapi-Token': `myOkapiToken:${Date.now()}`
-    }, {
-      user: {
-        id: 'test',
-        username: 'testuser',
-        personal: {
-          lastName: 'User',
-          firstName: 'Test',
-          email: 'user@folio.org',
+  this.get('tags', {
+    tags: [
+      {
+        id: 'c3799dc5-500b-44dd-8e17-2f2354cc43e3',
+        label: 'urgent',
+        description: 'Requires urgent attention',
+        metadata: {
+          createdDate: '2019-12-17T10:59:11.769+0000',
+          updatedDate: '2019-12-17T10:59:11.769+0000'
         }
       },
-      permissions: {
-        permissions: []
+      {
+        id: 'd3c8b511-41e7-422e-a483-18778d0596e5',
+        label: 'important',
+        metadata: {
+          createdDate: '2019-12-17T10:59:11.804+0000',
+          updatedDate: '2019-12-17T10:59:11.804+0000'
+        }
       }
-    });
+    ],
+    totalRecords: 2
   });
+
+  this.post(
+    '/bl-users/login?expandPermissions=true&fullPermissions=true',
+    () => {
+      return new Response(
+        201,
+        {
+          'X-Okapi-Token': `myOkapiToken:${Date.now()}`
+        },
+        {
+          user: {
+            id: 'test',
+            username: 'testuser',
+            personal: {
+              lastName: 'User',
+              firstName: 'Test',
+              email: 'user@folio.org'
+            }
+          },
+          permissions: {
+            permissions: []
+          }
+        }
+      );
+    }
+  );
 
   this.get('/erm-usage-harvester/impl', (schema, request) => {
     if (request.queryParams.aggregator === 'false') {
@@ -58,8 +89,8 @@ export default function config() {
           {
             name: 'Counter-Sushi 5.0',
             description: 'Implementation for Counter/Sushi 5',
-            type : 'cs50',
-            isAggregator : false
+            type: 'cs50',
+            isAggregator: false
           }
         ]
       };
@@ -68,7 +99,8 @@ export default function config() {
         implementations: [
           {
             name: 'Nationaler Statistikserver',
-            description: 'Implementation for Germanys National Statistics Server (https://sushi.redi-bw.de).',
+            description:
+              'Implementation for Germanys National Statistics Server (https://sushi.redi-bw.de).',
             type: 'NSS',
             isAggregator: true
           }
@@ -106,54 +138,63 @@ export default function config() {
 
   this.get('/note-types');
 
-  this.get('/note-links/domain/erm-usage/type/:type/id/:id', ({ notes }, { params, queryParams }) => {
-    if (queryParams.status === 'all') {
-      return notes.all();
+  this.get(
+    '/note-links/domain/erm-usage/type/:type/id/:id',
+    ({ notes }, { params, queryParams }) => {
+      if (queryParams.status === 'all') {
+        return notes.all();
+      }
+
+      return notes.where(note => {
+        let matches = false;
+
+        for (let i = 0; i < note.links.length; i++) {
+          if (
+            note.links[i].type === params.type &&
+            note.links[i].id === params.id
+          ) {
+            matches = true;
+            if (queryParams.status === 'assigned') {
+              return true;
+            }
+          }
+        }
+        if (!matches && queryParams.status === 'unassigned') {
+          return true;
+        }
+
+        return false;
+      });
     }
+  );
 
-    return notes.where((note) => {
-      let matches = false;
+  this.put(
+    '/note-links/type/:type/id/:id',
+    ({ notes }, { params, requestBody }) => {
+      const body = JSON.parse(requestBody);
 
-      for (let i = 0; i < note.links.length; i++) {
-        if (note.links[i].type === params.type && note.links[i].id === params.id) {
-          matches = true;
-          if (queryParams.status === 'assigned') {
-            return true;
+      body.notes.forEach(note => {
+        const dbNote = notes.find(note.id);
+        const links = [...dbNote.links];
+
+        if (note.status === 'ASSIGNED') {
+          links.push({
+            id: params.id,
+            type: params.type
+          });
+        } else {
+          for (let i = 0; i < links.length; i++) {
+            if (links[i].type === params.type && links[i].id === params.id) {
+              links.splice(i, 1);
+              break;
+            }
           }
         }
-      }
-      if (!matches && queryParams.status === 'unassigned') {
-        return true;
-      }
 
-      return false;
-    });
-  });
-
-  this.put('/note-links/type/:type/id/:id', ({ notes }, { params, requestBody }) => {
-    const body = JSON.parse(requestBody);
-
-    body.notes.forEach((note) => {
-      const dbNote = notes.find(note.id);
-      const links = [...dbNote.links];
-
-      if (note.status === 'ASSIGNED') {
-        links.push({
-          id: params.id,
-          type: params.type,
-        });
-      } else {
-        for (let i = 0; i < links.length; i++) {
-          if (links[i].type === params.type && links[i].id === params.id) {
-            links.splice(i, 1);
-            break;
-          }
-        }
-      }
-
-      dbNote.update({ links });
-    });
-  });
+        dbNote.update({ links });
+      });
+    }
+  );
 
   this.post('/notes', (_, { requestBody }) => {
     const noteData = JSON.parse(requestBody);
@@ -175,7 +216,7 @@ export default function config() {
 
     return notes.find(params.id).update({
       ...noteData,
-      type: noteTypeName,
+      type: noteTypeName
     });
   });
 
@@ -185,8 +226,8 @@ export default function config() {
 
     noteType.update({
       usage: {
-        noteTotal: --noteType.attrs.usage.noteTotal,
-      },
+        noteTotal: --noteType.attrs.usage.noteTotal
+      }
     });
 
     return notes.find(params.id).destroy();

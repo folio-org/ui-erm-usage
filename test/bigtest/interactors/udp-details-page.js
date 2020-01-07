@@ -58,6 +58,12 @@ import {
   deleteButton = scoped('button[id="delete-report-button"]');
 }
 
+@interactor class TagsSelect {
+  static defaulScope = ('#udps-paneset');
+  clickable = clickable('#input-tag-input');
+  tagSelection = scoped('#input-tag-input');
+}
+
 export default @interactor class UDPDetailsPage {
   static defaultScope = '#pane-udpdetails';
   title = text('[data-test-header-title]');
@@ -76,4 +82,7 @@ export default @interactor class UDPDetailsPage {
   harvestingAccordionButton = new HarvestingAccordionButton();
   notesAccordionButton = new NotesAccordionButton();
   startHarvesterButton = new StartHarvesterButton();
+
+  clickShowTags = clickable('#clickable-show-tags');
+  tagsSelect = new TagsSelect();
 }

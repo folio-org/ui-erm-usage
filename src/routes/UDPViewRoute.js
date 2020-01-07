@@ -62,18 +62,6 @@ class UDPViewRoute extends React.Component {
     }
   };
 
-  handleToggleHelper = helper => {
-    const { mutator, resources } = this.props;
-    const currentHelper = resources.query.helper;
-    const nextHelper = currentHelper !== helper ? helper : null;
-
-    mutator.query.update({ helper: nextHelper });
-  };
-
-  handleToggleTags = () => {
-    this.handleToggleHelper('tags');
-  };
-
   isLoading = () => {
     const { match, resources } = this.props;
 
@@ -115,7 +103,6 @@ class UDPViewRoute extends React.Component {
           ...handlers,
           onClose: this.handleClose,
           onEdit: this.handleEdit,
-          onToggleTags: tagsEnabled ? this.handleToggleTags : undefined
         }}
         isHarvesterExistent={this.isHarvesterExistent()}
         isLoading={this.isLoading()}
