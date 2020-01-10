@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import { find, isEmpty } from 'lodash';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { find, get, isEmpty } from 'lodash';
 
 import {
   Accordion,
@@ -15,23 +15,16 @@ import {
 
 import filterGroups from '../../util/data/filterGroups';
 
-export default class UDPFilters extends React.Component {
+class UDPFilters extends React.Component {
   static propTypes = Object.freeze({
     activeFilters: PropTypes.object,
     data: PropTypes.object.isRequired,
-    filterHandlers: PropTypes.object
+    filterHandlers: PropTypes.object,
+    intl: intlShape.isRequired
   });
 
   static defaultProps = {
     activeFilters: {}
-  };
-
-  state = {
-    harvestingStatus: [],
-    harvestVia: [],
-    aggregators: [],
-    hasFailedReport: [],
-    tags: []
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -40,21 +33,17 @@ export default class UDPFilters extends React.Component {
 
     filterGroups.forEach(filter => {
       const filterName = filter.name;
-      const current = find(filterGroups, { name: filterName });
+      const currentFilter = find(filterGroups, { name: filterName });
       let newValues = {};
-      if (current && !isEmpty(current.values)) {
-        newValues = current.values.map(key => {
+      if (UDPFilters.isFilterDefinedLocally(currentFilter)) {
+        newValues = currentFilter.values.map(key => {
           return {
             value: key.cql,
             label: key.name
           };
         });
       } else {
-        const inputVals = props.data[`${filterName}`] || [];
-        newValues = inputVals.map(entry => ({
-          label: entry.label,
-          value: entry.label
-        }));
+        newValues = UDPFilters.getRemoteDefinedFilterVals(props.data, props.intl, filterName);
       }
 
       arr[filterName] = newValues;
@@ -72,7 +61,61 @@ export default class UDPFilters extends React.Component {
     return null;
   }
 
-  renderCheckboxFilter = (key) => {
+  static isFilterDefinedLocally = filter => {
+    return filter && !isEmpty(filter.values);
+  };
+
+  static getRemoteDefinedFilterVals = (data, intl, filterName) => {
+    const inputVals = data[`${filterName}`] || [];
+    if (filterName === 'errorCodes') {
+      // we need to translate numeric error codes to human readable text...
+      return inputVals.map(entry => {
+        return UDPFilters.translateErrorCodesFilterValues(entry, intl);
+      });
+    } else {
+      return inputVals.map(entry => {
+        const val = get(entry, 'label', entry);
+        return {
+          label: val,
+          value: val
+        };
+      });
+    }
+  };
+
+  static isWarningCode = code => {
+    const val = parseInt(code, 10);
+    return val >= 1 && val <= 999;
+  };
+
+  static translateErrorCodesFilterValues = (entry, intl) => {
+    const val = get(entry, 'label', entry);
+    let label;
+    if (UDPFilters.isWarningCode(val)) {
+      label = `${intl.formatMessage({
+        id: 'ui-erm-usage.report.error.1'
+      })} (${val})`;
+    } else {
+      label = `${intl.formatMessage({
+        id: `ui-erm-usage.report.error.${val}`
+      })} (${val})`;
+    }
+    return {
+      label,
+      value: val
+    };
+  };
+
+  state = {
+    harvestingStatus: [],
+    harvestVia: [],
+    aggregators: [],
+    hasFailedReport: [],
+    tags: [],
+    errorCodes: []
+  };
+
+  renderCheckboxFilter = key => {
     const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
@@ -122,12 +165,35 @@ export default class UDPFilters extends React.Component {
           dataOptions={this.state.tags}
           id="tags-filter"
           name="tags"
-          onChange={e => this.props.filterHandlers.state({
-            ...activeFilters,
-            tags: e.values
-          })
-          }
+          onChange={e => this.props.filterHandlers.state({ ...activeFilters, tags: e.values })}
           selectedValues={tagFilters}
+        />
+      </Accordion>
+    );
+  };
+
+  renderErrorCodesFilter = () => {
+    const { activeFilters } = this.props;
+    const errorCodesFilters = activeFilters.errorCodes || [];
+
+    return (
+      <Accordion
+        closedByDefault
+        id="clickable-error-codes-filter"
+        displayClearButton={errorCodesFilters.length > 0}
+        header={FilterAccordionHeader}
+        label="ERROR CODES"
+        onClearFilter={() => {
+          this.props.filterHandlers.clearGroup('errorCodes');
+        }}
+        separator={false}
+      >
+        <MultiSelectionFilter
+          dataOptions={this.state.errorCodes}
+          id="error-codes-filter"
+          name="errorCodes"
+          onChange={e => this.props.filterHandlers.state({ ...activeFilters, errorCodes: e.values })}
+          selectedValues={errorCodesFilters}
         />
       </Accordion>
     );
@@ -141,7 +207,10 @@ export default class UDPFilters extends React.Component {
         {this.renderCheckboxFilter('aggregators')}
         {this.renderCheckboxFilter('hasFailedReport')}
         {this.renderTagsFilter()}
+        {this.renderErrorCodesFilter()}
       </AccordionSet>
     );
   }
 }
+
+export default injectIntl(UDPFilters);
