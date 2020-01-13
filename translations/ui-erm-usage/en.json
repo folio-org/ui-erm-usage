@@ -26,6 +26,7 @@
   "general.description": "Description",
   "general.pleaseConfirm": "Please confirm!",
   "general.tags": "Tags",
+  "general.errorCodes": "Error codes",
 
   "information.providerName": "Provider Name",
   "information.organization": "Organization",

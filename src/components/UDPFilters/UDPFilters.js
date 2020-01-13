@@ -182,7 +182,7 @@ class UDPFilters extends React.Component {
         id="clickable-error-codes-filter"
         displayClearButton={errorCodesFilters.length > 0}
         header={FilterAccordionHeader}
-        label="ERROR CODES"
+        label={<FormattedMessage id="ui-erm-usage.general.errorCodes" />}
         onClearFilter={() => {
           this.props.filterHandlers.clearGroup('errorCodes');
         }}
