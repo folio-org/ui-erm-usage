@@ -52,6 +52,11 @@ class UDPsRoute extends React.Component {
       path: 'erm-usage-harvester/impl?aggregator=false',
       throwErrors: false
     },
+    errorCodes: {
+      type: 'okapi',
+      path: 'counter-reports/errors/codes',
+      records: 'errorCodes'
+    },
     numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
     query: {
@@ -181,7 +186,8 @@ class UDPsRoute extends React.Component {
         data={{
           udps: get(resources, 'usageDataProviders.records', []),
           aggregators: get(resources, 'aggregatorSettings.records', []),
-          tags: get(resources, 'tags.records', [])
+          tags: get(resources, 'tags.records', []),
+          errorCodes: get(resources, 'errorCodes.records', [])
         }}
         selectedRecordId={match.params.id}
         onNeedMoreData={this.handleNeedMoreData}

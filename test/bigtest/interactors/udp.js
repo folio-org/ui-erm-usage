@@ -5,6 +5,8 @@ import {
   clickable
 } from '@bigtest/interactor';
 
+import MultiSelectFilterInteractor from './filters';
+
 export default @interactor class UDPInteractor {
   static defaultScope = '[data-test-udp-instances]';
 
@@ -12,4 +14,5 @@ export default @interactor class UDPInteractor {
   clickFirstRow = clickable('[aria-rowindex="2"]');
 
   instance = scoped('#pane-udpdetails');
+  errorCodesFilter = scoped('#clickable-error-codes-filter', MultiSelectFilterInteractor)
 }

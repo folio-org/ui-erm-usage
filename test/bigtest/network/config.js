@@ -136,6 +136,10 @@ export default function config() {
     return schema.counterReports.find(request.params.id).attrs;
   });
 
+  this.get('/counter-reports/errors/codes', {
+    errorCodes : ['other', '3000', '3031']
+  });
+
   this.get('/note-types');
 
   this.get(
