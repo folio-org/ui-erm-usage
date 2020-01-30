@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage,
-} from 'react-intl';
-import {
-  Col,
-  Pane,
-  Row,
-  TextField
-} from '@folio/stripes/components';
+import { FormattedMessage } from 'react-intl';
+import { Col, Pane, Row, TextField } from '@folio/stripes/components';
 import { Field } from 'redux-form';
 import { ConfigManager } from '@folio/stripes/smart-components';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
 class MaxFailedAttempts extends React.Component {
   static propTypes = {
-    stripes: PropTypes.object,
-  }
+    stripes: PropTypes.object
+  };
 
   constructor(props) {
     super(props);
@@ -25,15 +18,20 @@ class MaxFailedAttempts extends React.Component {
 
   renderNotPresent = () => {
     return (
-      <Pane defaultWidth="fill" fluidContentWidth paneTitle="Required interface not present">
+      <Pane
+        defaultWidth="fill"
+        fluidContentWidth
+        paneTitle="Required interface not present"
+      >
         <div>
-          The interface usage-harvester is needed to start the harvester, but it is not present.
+          The interface usage-harvester is needed to start the harvester, but it
+          is not present.
         </div>
       </Pane>
     );
-  }
+  };
 
-  getInitialValues = (settings) => {
+  getInitialValues = settings => {
     let loadedValues = {};
     let value;
     try {
@@ -43,14 +41,19 @@ class MaxFailedAttempts extends React.Component {
       };
     } catch (e) {} // eslint-disable-line no-empty
     return loadedValues;
-  }
+  };
 
   render() {
     return (
-      <div data-test-settings-harvester-max-failed-attempts>
+      <div
+        data-test-settings-harvester-max-failed-attempts
+        style={{ flex: '0 0 50%', left: '0px' }}
+      >
         <this.configManager
           getInitialValues={this.getInitialValues}
-          label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
+          label={
+            <FormattedMessage id="ui-erm-usage.settings.harvester.config" />
+          }
           moduleName="ERM-USAGE-HARVESTER"
           configName="maxFailedAttempts"
         >
