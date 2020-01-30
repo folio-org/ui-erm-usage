@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { EntryManager } from '@folio/stripes/smart-components';
 import AggregatorDetails from './AggregatorDetails';
+import AggregatorForm from './AggregatorForm';
 
 class AggregatorManager extends React.Component {
   static manifest = Object.freeze({
@@ -47,6 +48,7 @@ class AggregatorManager extends React.Component {
   constructor(props) {
     super(props);
     this.cAggregatorDetails = props.stripes.connect(AggregatorDetails);
+    this.cAggregatorForm = props.stripes.connect(AggregatorForm);
   }
 
   render() {
