@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { EntryManager } from '@folio/stripes/smart-components';
 import AggregatorDetails from './AggregatorDetails';
-import AggregatorForm from './AggregatorForm';
 
 class AggregatorManager extends React.Component {
   static manifest = Object.freeze({
@@ -12,11 +11,16 @@ class AggregatorManager extends React.Component {
       records: 'aggregatorSettings',
       path: 'aggregator-settings',
       resourceShouldRefresh: true,
+      perRequest: 100,
+      params: {
+        query: 'cql.allRecords=1',
+        limit: '1000'
+      }
     },
     aggregatorImpls: {
       type: 'okapi',
       path: 'erm-usage-harvester/impl?aggregator=true',
-      throwErrors: false,
+      throwErrors: false
     }
   });
 
@@ -24,43 +28,46 @@ class AggregatorManager extends React.Component {
     label: PropTypes.string.isRequired,
     resources: PropTypes.shape({
       entries: PropTypes.shape({
-        records: PropTypes.arrayOf(PropTypes.object),
+        records: PropTypes.arrayOf(PropTypes.object)
       }),
-      aggregatorImpls: PropTypes.shape(),
+      aggregatorImpls: PropTypes.shape()
     }).isRequired,
     mutator: PropTypes.shape({
       entries: PropTypes.shape({
         POST: PropTypes.func,
         PUT: PropTypes.func,
-        DELETE: PropTypes.func,
-      }),
+        DELETE: PropTypes.func
+      })
     }).isRequired,
     stripes: PropTypes.shape({
-      connect: PropTypes.func.isRequired,
-    }),
+      connect: PropTypes.func.isRequired
+    })
   };
 
   constructor(props) {
     super(props);
-    this.cAggregatorForm = props.stripes.connect(AggregatorForm);
     this.cAggregatorDetails = props.stripes.connect(AggregatorDetails);
   }
 
   render() {
-    const entryList = _.sortBy((this.props.resources.entries || {}).records || [], ['label']);
+    const entryList = _.sortBy(
+      (this.props.resources.entries || {}).records || [],
+      ['label']
+    );
 
     const { resources } = this.props;
     const records = (resources.aggregatorImpls || {}).records || [];
-    const implementations = records.length
-      ? records[0].implementations
-      : [];
+    const implementations = records.length ? records[0].implementations : [];
     const serviceTypes = implementations.map(i => ({
       value: i.type,
       label: i.name
     }));
 
     return (
-      <div data-test-aggregator-instances>
+      <div
+        data-test-aggregator-instances
+        style={{ flex: '0 0 50%', left: '0px' }}
+      >
         <EntryManager
           {...this.props}
           parentMutator={this.props.mutator}
@@ -75,7 +82,7 @@ class AggregatorManager extends React.Component {
           permissions={{
             put: 'settings.erm-usage.enabled',
             post: 'settings.erm-usage.enabled',
-            delete: 'settings.erm-usage.enabled',
+            delete: 'settings.erm-usage.enabled'
           }}
           aggregators={serviceTypes}
         />
