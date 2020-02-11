@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage
 } from 'react-intl';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import {
   Col,
   Select,
@@ -67,7 +67,7 @@ class AggregatorInfoForm extends React.Component {
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
-            validate={[this.isRequired]}
+            validate={this.isRequired}
             fullWidth
           />
         </Col>

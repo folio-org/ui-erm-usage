@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Field,
-} from 'redux-form';
+} from 'react-final-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -17,7 +17,6 @@ import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 
 const propTypes = {
   id: PropTypes.string,
-  name: PropTypes.string,
   onChange: PropTypes.func.isRequired
 };
 
@@ -28,12 +27,12 @@ const ReportReleaseSelect = (props) => (
         {(msg) => msg + ' *'}
       </FormattedMessage>
     }
-    name={props.name}
+    name="harvestingConfig.reportRelease"
     id={props.id}
     placeholder="Select the report release"
     component={Select}
     dataOptions={reportReleaseOptions}
-    validate={[required]}
+    validate={required}
     fullWidth
     onChange={props.onChange}
   />

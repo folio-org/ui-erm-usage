@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -28,7 +28,7 @@ class SushiCredentialsForm extends React.Component {
               id="addudp_customerid"
               placeholder="Enter the SUSHI customer ID"
               component={TextField}
-              validate={[required]}
+              validate={required}
               fullWidth
             />
           </Col>

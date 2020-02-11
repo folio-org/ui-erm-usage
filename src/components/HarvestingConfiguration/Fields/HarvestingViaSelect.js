@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Field,
-} from 'redux-form';
+} from 'react-final-form';
 import {
   FormattedMessage
 } from 'react-intl';
