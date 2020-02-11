@@ -5,6 +5,7 @@ import { EntryManager } from '@folio/stripes/smart-components';
 import AggregatorDetails from './AggregatorDetails';
 import AggregatorForm from './AggregatorForm';
 
+// Still using redux-form here since EntryManager depends on it...
 class AggregatorManager extends React.Component {
   static manifest = Object.freeze({
     entries: {

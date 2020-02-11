@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Field,
-} from 'redux-form';
+} from 'react-final-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -9,7 +9,6 @@ import {
   TextField
 } from '@folio/stripes/components';
 import {
-  endDate,
   yearMonth
 } from '../../../util/validate';
 
@@ -20,7 +19,7 @@ const HarvestingEndField = () => (
     id="input-harvestingEnd"
     component={TextField}
     placeholder="YYYY-MM"
-    validate={[yearMonth, endDate]}
+    validate={yearMonth}
     fullWidth
   />
 );

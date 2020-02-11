@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import {
   FormattedMessage
 } from 'react-intl';
@@ -37,7 +37,7 @@ function UDPInfoForm(props) {
                 name="label"
                 id="addudp_providername"
                 component={TextField}
-                validate={[required]}
+                validate={required}
                 fullWidth
               />
             </Col>
@@ -61,7 +61,7 @@ function UDPInfoForm(props) {
 UDPInfoForm.propTypes = {
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,
-  accordionId: PropTypes.string.isRequired,
+  accordionId: PropTypes.string.isRequired
 };
 
 export default UDPInfoForm;

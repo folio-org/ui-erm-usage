@@ -22,47 +22,32 @@ import {
 } from './Fields';
 
 class HarvestingConfigurationForm extends React.Component {
-  static contextTypes = {
-    _reduxForm: PropTypes.object
-  };
-
   constructor(props) {
     super(props);
 
     this.state = {
-      confirmClear: false
+      confirmClear: false,
+      selectedReportRelease: '',
     };
   }
 
-  getSelectedReportReleaseFieldName() {
-    return 'harvestingConfig.reportRelease';
-  }
-
-  getSelectedReportTypesFieldName() {
-    return 'harvestingConfig.requestedReports';
-  }
-
-  updateSelectedCounterVersion = (event, newValue, previousValue) => {
+  changeSelectedCounterVersion = event => {
     event.preventDefault();
 
-    if (newValue !== previousValue) {
-      this.newCounterVersion = newValue;
-      if (!isEmpty(this.props.selectedReports)) {
-        this.setState({ confirmClear: true });
+    const val = event.target.value;
+    if (this.props.values.harvestingConfig?.reportRelease !== val) {
+      if (!isEmpty(this.props.values.harvestingConfig?.requestedReports)) {
+        this.setState({ confirmClear: true, selectedReportRelease: val });
       } else {
-        const { dispatch, change } = this.context._reduxForm;
-        dispatch(change(this.getSelectedReportReleaseFieldName(), newValue));
+        this.props.form.mutators.setReportRelease({}, val);
       }
     }
-  };
+  }
 
   confirmClearReports = confirmation => {
-    const { dispatch, change } = this.context._reduxForm;
     if (confirmation) {
-      dispatch(change(this.getSelectedReportTypesFieldName(), null));
-      dispatch(
-        change(this.getSelectedReportReleaseFieldName(), this.newCounterVersion)
-      );
+      this.props.form.mutators.clearSelectedReports({}, this.props.values);
+      this.props.form.mutators.setReportRelease({}, this.state.selectedReportRelease);
       setTimeout(() => {
         this.forceUpdate();
       });
@@ -76,11 +61,8 @@ class HarvestingConfigurationForm extends React.Component {
       expanded,
       accordionId,
       harvesterImplementations,
-      harvestingStatus,
-      harvestVia,
       initialValues,
-      reportRelease,
-      selectedReports
+      values
     } = this.props;
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
@@ -112,7 +94,7 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <AggregatorInfoForm
                   aggregators={aggregators}
-                  disabled={harvestVia !== 'aggregator'}
+                  disabled={values.harvestingConfig?.harvestVia !== 'aggregator'}
                 />
               </Row>
               <Row>
@@ -122,8 +104,8 @@ class HarvestingConfigurationForm extends React.Component {
                   }
                 </Col>
                 <VendorInfoForm
-                  disabled={harvestVia !== 'sushi'}
-                  harvestingIsActive={harvestingStatus === 'active'}
+                  disabled={values.harvestingConfig?.harvestVia !== 'sushi'}
+                  harvestingIsActive={values.harvestingConfig?.harvestingStatus === 'active'}
                   harvesterImpls={harvesterImplementations}
                 />
               </Row>
@@ -132,16 +114,15 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <Col xs={4}>
                   <ReportReleaseSelect
-                    name={this.getSelectedReportReleaseFieldName()}
                     id="addudp_reportrelease"
-                    onChange={this.updateSelectedCounterVersion}
+                    onChange={this.changeSelectedCounterVersion}
                   />
                 </Col>
                 <Col xs={8}>
                   <SelectedReportsForm
                     initialValues={initialValues}
-                    counterVersion={reportRelease}
-                    selectedReports={selectedReports}
+                    counterVersion={parseInt(values.harvestingConfig?.reportRelease, 10)}
+                    selectedReports={values.harvestingConfig?.requestedReports}
                   />
                 </Col>
               </Row>
@@ -192,12 +173,16 @@ HarvestingConfigurationForm.propTypes = {
   aggregators: PropTypes.arrayOf(PropTypes.shape()),
   expanded: PropTypes.bool,
   harvesterImplementations: PropTypes.arrayOf(PropTypes.object),
-  harvestingStatus: PropTypes.string,
-  harvestVia: PropTypes.string,
   initialValues: PropTypes.object,
+  form: PropTypes.shape({
+    mutators: PropTypes.shape({
+      clearSelectedReports: PropTypes.func,
+      setReportRelease: PropTypes.func,
+    }),
+  }),
   onToggle: PropTypes.func,
   reportRelease: PropTypes.number,
-  selectedReports: PropTypes.arrayOf(PropTypes.string)
+  values: PropTypes.shape()
 };
 
 export default HarvestingConfigurationForm;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage
 } from 'react-intl';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import {
   Col,
   Select,
@@ -59,7 +59,7 @@ class VendorInfoForm extends React.Component {
             component={Select}
             dataOptions={harvesterImpls}
             disabled={this.props.disabled}
-            validate={[this.isRequired]}
+            validate={this.isRequired}
             fullWidth
           />
         </Col>
@@ -75,7 +75,7 @@ class VendorInfoForm extends React.Component {
             placeholder="Enter the vendor's serviceURL"
             component={TextField}
             disabled={this.props.disabled}
-            validate={[this.urlRequired]}
+            validate={this.urlRequired}
             fullWidth
           />
         </Col>

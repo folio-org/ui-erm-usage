@@ -1,8 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 import {
   Button,
@@ -18,10 +16,13 @@ import {
 } from '@folio/stripes/components';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 import { IfPermission } from '@folio/stripes/core';
-import stripesForm from '@folio/stripes/form';
+import stripesFinalForm from '@folio/stripes/final-form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
+import {
+  endDate
+} from '../../util/validate';
 
 import css from './UDPForm.css';
 
@@ -281,28 +282,19 @@ class UDPForm extends React.Component {
   }
 }
 
-const selector = formValueSelector('form-udProvider');
-export default stripesForm({
-  form: 'form-udProvider',
+export default stripesFinalForm({
   navigationCheck: true,
-  enableReinitialize: true
-})(
-  connect(state => {
-    const harvestingStatus = selector(
-      state,
-      'harvestingConfig.harvestingStatus'
-    );
-    const harvestVia = selector(state, 'harvestingConfig.harvestVia');
-    const reportRelease = parseInt(selector(state, 'harvestingConfig.reportRelease'), 10);
-    const selectedReports = selector(
-      state,
-      'harvestingConfig.requestedReports'
-    );
-    return {
-      harvestingStatus,
-      harvestVia,
-      reportRelease,
-      selectedReports
-    };
-  })(UDPForm)
-);
+  enableReinitialize: true,
+  mutators: {
+    clearSelectedReports: (_args, state, tools) => {
+      tools.changeValue(state, 'harvestingConfig.requestedReports', () => []);
+    },
+    setReportRelease: (args, state, tools) => {
+      tools.changeValue(state, 'harvestingConfig.reportRelease', () => args[1]);
+    }
+  },
+  subscription: {
+    values: true,
+  },
+  validate: (values => endDate(values))
+})(UDPForm);
