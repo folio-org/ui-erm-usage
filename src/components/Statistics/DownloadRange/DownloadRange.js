@@ -1,48 +1,41 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  intlShape,
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import {
   Button,
   Col,
+  InfoPopover,
   Row,
   Select,
   TextField
 } from '@folio/stripes/components';
-import {
-  isYearMonth
-} from '../../../util/validate';
-import {
-  downloadCSVMultipleMonths
-} from '../../../util/downloadCSV';
+import { isYearMonth } from '../../../util/validate';
+import { downloadCSVMultipleMonths } from '../../../util/downloadCSV';
 import css from './DownloadRange.css';
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 
 class DownloadRange extends React.Component {
   static propTypes = {
-    donwloadableReports: PropTypes
-      .arrayOf(PropTypes.object)
-      .isRequired,
-    stripes: PropTypes
-      .shape().isRequired,
+    donwloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
+    stripes: PropTypes.shape().isRequired,
     udpId: PropTypes.string.isRequired,
-    intl: intlShape.isRequired,
-  }
+    intl: intlShape.isRequired
+  };
 
   constructor(props) {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign({}, {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json',
-    });
+    this.httpHeaders = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': props.stripes.okapi.tenant,
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        'Content-Type': 'application/json'
+      }
+    );
 
     this.state = {
       start: '',
@@ -55,97 +48,117 @@ class DownloadRange extends React.Component {
 
   validate = (start, end) => {
     if (!isYearMonth(start)) {
-      this.setState(
-        {
-          startError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm' }),
-        }
-      );
+      this.setState({
+        startError: this.props.intl.formatMessage({
+          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm'
+        })
+      });
     }
     if (!isYearMonth(end)) {
-      this.setState(
-        {
-          endError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm' }),
-        }
-      );
+      this.setState({
+        endError: this.props.intl.formatMessage({
+          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm'
+        })
+      });
     }
 
     if (isYearMonth(start) && isYearMonth(end)) {
       if (start > end) {
-        this.setState(
-          {
-            endError: this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' }),
-            startError: null,
-          }
-        );
+        this.setState({
+          endError: this.props.intl.formatMessage({
+            id:
+              'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart'
+          }),
+          startError: null
+        });
       } else {
-        this.setState(
-          {
-            endError: null,
-            startError: null,
-          }
-        );
+        this.setState({
+          endError: null,
+          startError: null
+        });
       }
     }
-  }
+  };
 
   hasError = () => {
-    const result = (_.isEmpty(this.state.start) && _.isEmpty(this.state.end)) || (!_.isEmpty(this.state.startError) || !_.isEmpty(this.state.endError));
+    const result =
+      (_.isEmpty(this.state.start) && _.isEmpty(this.state.end)) ||
+      !_.isEmpty(this.state.startError) ||
+      !_.isEmpty(this.state.endError);
     return result;
-  }
+  };
 
-  handleStartChange = (e) => {
+  handleStartChange = e => {
     const newStart = e.target.value;
-    this.setState(
-      {
-        start: newStart,
-        startError: null,
-      }
-    );
+    this.setState({
+      start: newStart,
+      startError: null
+    });
     this.validate(newStart, this.state.end);
-  }
+  };
 
-  handleEndChange = (e) => {
+  handleEndChange = e => {
     const newEnd = e.target.value;
-    this.setState(
-      {
-        end: newEnd,
-        endError: null,
-      }
-    );
+    this.setState({
+      end: newEnd,
+      endError: null
+    });
     this.validate(this.state.start, newEnd);
-  }
+  };
 
   clearStart = () => {
-    this.setState(
-      {
-        start: '',
-        startError: null
-      }
-    );
-  }
+    this.setState({
+      start: '',
+      startError: null
+    });
+  };
 
   clearEnd = () => {
-    this.setState(
-      {
-        end: '',
-        endError: null
-      }
-    );
-  }
+    this.setState({
+      end: '',
+      endError: null
+    });
+  };
 
   doDownload = () => {
     if (!_.isEmpty(this.state.start) && !_.isEmpty(this.state.end)) {
-      downloadCSVMultipleMonths(this.props.udpId, this.state.reportType, '4', this.state.start, this.state.end, this.okapiUrl, this.httpHeaders);
+      downloadCSVMultipleMonths(
+        this.props.udpId,
+        this.state.reportType,
+        '4',
+        this.state.start,
+        this.state.end,
+        this.okapiUrl,
+        this.httpHeaders
+      );
     }
-  }
+  };
 
-  onSelectReportType = (e) => {
-    this.setState(
-      {
-        reportType: e.target.value
-      }
+  onSelectReportType = e => {
+    this.setState({
+      reportType: e.target.value
+    });
+  };
+
+  renderReportTypeHeaderWithInfo = () => {
+    const reportTypes = reportDownloadTypes.map(r => r.label).join(', ');
+
+    const infoText = (
+      <FormattedMessage
+        id="ui-erm-usage.reportOverview.downloadMultiMonths.info"
+        values={{
+          reportTypes
+        }}
+      />
     );
-  }
+
+    return (
+      <React.Fragment>
+        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />
+        <InfoPopover content={infoText} />
+      </React.Fragment>
+    );
+  };
 
   render() {
     const isDisabled = this.hasError();
@@ -154,7 +167,9 @@ class DownloadRange extends React.Component {
       <Row>
         <Col xs={3}>
           <TextField
-            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />}
+            label={
+              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />
+            }
             placeholder="YYYY-MM"
             value={this.state.start}
             onChange={this.handleStartChange}
@@ -164,7 +179,9 @@ class DownloadRange extends React.Component {
         </Col>
         <Col xs={3}>
           <TextField
-            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />}
+            label={
+              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />
+            }
             placeholder="YYYY-MM"
             value={this.state.end}
             onChange={this.handleEndChange}
@@ -174,7 +191,7 @@ class DownloadRange extends React.Component {
         </Col>
         <Col xs={3}>
           <Select
-            label={<FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />}
+            label={this.renderReportTypeHeaderWithInfo()}
             name="downloadMultiMonths.reportType"
             dataOptions={this.props.donwloadableReports}
             onChange={this.onSelectReportType}

@@ -35,7 +35,7 @@
   "information.aggregator": "Aggregator",
   "information.aggregators": "Aggregators",
   "information.latestStatistics": "Latest Statistics",
-  "information.hasFailedReport" : "Has failed report(s)",
+  "information.hasFailedReport": "Has failed report(s)",
   "information.harvestVia": "Harvest via",
 
   "udp.harvestingConfiguration": "Harvesting configuration",
@@ -90,11 +90,12 @@
   "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
   "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
   "reportOverview.downloadMultiMonths.reportType": "Select report type",
+  "reportOverview.downloadMultiMonths.info": "Currently download of reports for multiple months is possible only for the following Counter 4 reports (if available): {reportTypes}. Contact the RM SIG to discuss requirements for adding further types.",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
   "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
-  "reportOverview.infoText" : "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",
-  "reportOverview.expandAllYears" : "Expand all years",
-  "reportOverview.collapseAllYears" : "Collapse all years",
+  "reportOverview.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",
+  "reportOverview.expandAllYears": "Expand all years",
+  "reportOverview.collapseAllYears": "Collapse all years",
 
   "report.action.download.csv": "Download report as CSV",
   "report.action.download.jsonxml": "Download report as JSON/XML",
@@ -191,7 +192,7 @@
   "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
 
   "settings.harvester.start.success": "Harvester successfully started!",
-  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",  
+  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
   "settings.harvester.config": "Harvester Configuration",
 
@@ -207,5 +208,4 @@
   "settings.harvester.config.periodic.lastTriggered": "Last triggered at",
   "settings.harvester.config.periodic.notDefined": "Periodic harvesting is not defined and thus not enabled. Click + to define periodic harvesting.",
   "settings.harvester.config.periodic.deleteQuestion": "Do you really want to delete the periodic harvesting config?"
-
 }
