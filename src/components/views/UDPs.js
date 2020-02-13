@@ -248,7 +248,7 @@ class UDPs extends React.Component {
                         <FormattedMessage id="ui-erm-usage.udp.searchInputLabel">
                           {ariaLabel => (
                             <SearchField
-                              aria-label={ariaLabel}
+                              ariaLabel={ariaLabel}
                               autoFocus
                               data-test-udp-search-input
                               id="input-udp-search"
