@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -35,8 +35,10 @@ class HarvestingConfigurationForm extends React.Component {
     event.preventDefault();
 
     const val = event.target.value;
-    if (this.props.values.harvestingConfig?.reportRelease !== val) {
-      if (!isEmpty(this.props.values.harvestingConfig?.requestedReports)) {
+    const selectedReportRelease = get(this.props.values, 'harvestingConfig.reportRelease', '');
+    if (selectedReportRelease !== val) {
+      const requestedReports = get(this.props.values, 'harvestingConfig.requestedReports', []);
+      if (!isEmpty(requestedReports)) {
         this.setState({ confirmClear: true, selectedReportRelease: val });
       } else {
         this.props.form.mutators.setReportRelease({}, val);
@@ -66,6 +68,10 @@ class HarvestingConfigurationForm extends React.Component {
     } = this.props;
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
+    const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
+    const harvestingStatus = get(values, 'harvestingConfig.harvestinStatus', '');
+    const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
+    const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
     const confirmationMessage = (
       <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
@@ -94,7 +100,7 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <AggregatorInfoForm
                   aggregators={aggregators}
-                  disabled={values.harvestingConfig?.harvestVia !== 'aggregator'}
+                  disabled={harvestVia !== 'aggregator'}
                 />
               </Row>
               <Row>
@@ -104,8 +110,8 @@ class HarvestingConfigurationForm extends React.Component {
                   }
                 </Col>
                 <VendorInfoForm
-                  disabled={values.harvestingConfig?.harvestVia !== 'sushi'}
-                  harvestingIsActive={values.harvestingConfig?.harvestingStatus === 'active'}
+                  disabled={harvestVia !== 'sushi'}
+                  harvestingIsActive={harvestingStatus === 'active'}
                   harvesterImpls={harvesterImplementations}
                 />
               </Row>
@@ -121,8 +127,8 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={8}>
                   <SelectedReportsForm
                     initialValues={initialValues}
-                    counterVersion={parseInt(values.harvestingConfig?.reportRelease, 10)}
-                    selectedReports={values.harvestingConfig?.requestedReports}
+                    counterVersion={parseInt(reportRelease, 10)}
+                    selectedReports={requestedReports}
                   />
                 </Col>
               </Row>
@@ -181,7 +187,6 @@ HarvestingConfigurationForm.propTypes = {
     }),
   }),
   onToggle: PropTypes.func,
-  reportRelease: PropTypes.number,
   values: PropTypes.shape()
 };
 
