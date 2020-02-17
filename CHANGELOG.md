@@ -1,5 +1,14 @@
 # Change history for ui-erm-usage
 
+## [2.6.0](https://github.com/folio-org/ui-erm-usage/tree/v2.6.0) (2020-02-17)
+* Move Save/Delete/Cancel buttons to the footer (UIEUS-120)
+* Use SearchAndSortQuery component instead of SearchAndSort (UIEUS-123)
+* Filter usage data providers by tag (UIEUS-118)
+* Filter usage data providers by counter reports' error type (UIEUS-117)
+* Bugfix: Aggregator settings displays more than 10 aggregators (UIEUS-131)
+* Use react final form in main components (UIEUS-133)
+* Add info box on available report types for CSV download (UIEUS-135)
+
 ## [2.5.1](https://github.com/folio-org/ui-erm-usage/tree/v2.5.1) (2019-12-04)
 * Bugfix: Use correct version if okapiInterface usage-data-providers (v2.3)
 
