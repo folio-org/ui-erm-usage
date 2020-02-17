@@ -1,8 +1,5 @@
 # Change history for ui-erm-usage
 
-## [2.6.1](https://github.com/folio-org/ui-erm-usage/tree/v2.6.1) (2020-02-17)
-* Remove JavaScript optional chaining syntax (https://github.com/tc39/proposal-optional-chaining). Jenkins cannot build release with optional chaining.
-
 ## [2.6.0](https://github.com/folio-org/ui-erm-usage/tree/v2.6.0) (2020-02-17)
 * Move Save/Delete/Cancel buttons to the footer (UIEUS-120)
 * Use SearchAndSortQuery component instead of SearchAndSort (UIEUS-123)
