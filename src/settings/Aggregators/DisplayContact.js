@@ -29,13 +29,14 @@ class DisplayContact extends React.Component {
       <Row key={elem}>
         <Col xs={8}>
           <Field
+            label={`Contact #${parseInt(index + 1, 10)}`}
             name={elem}
             id={elem}
             component={TextField}
             fullWidth
           />
         </Col>
-        <Col xs={4} style={{ textAlign: 'right' }}>
+        <Col xs={4} style={{ 'textAlign': 'right', 'margin-top': '25px' }}>
           <Button onClick={() => fields.remove(index)} buttonStyle="danger">
             Remove
           </Button>
