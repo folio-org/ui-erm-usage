@@ -32,7 +32,7 @@ class ReportInfo extends React.Component {
   }
 
   isCSVPossible = (report) => {
-    if (!report.failedReason && report.release === '4' && this.isDownloadable(report.reportName)) {
+    if (!report.failedReason && this.isDownloadable(report.reportName)) {
       return true;
     }
     return false;

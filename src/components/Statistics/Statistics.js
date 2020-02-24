@@ -2,11 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import {
-  AccordionSet,
-  Col,
-  Row
-} from '@folio/stripes/components';
+import { AccordionSet, Col, Row } from '@folio/stripes/components';
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
 import groupByYearAndReport from './groupByYearAndReport';
@@ -27,7 +23,7 @@ class Statistics extends React.Component {
     }).isRequired,
     providerId: PropTypes.string.isRequired,
     udpLabel: PropTypes.string.isRequired,
-    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired
   };
 
   constructor(props) {
@@ -36,14 +32,16 @@ class Statistics extends React.Component {
     this.connectedStatsPerYear = props.stripes.connect(StatisticsPerYear);
   }
 
-  calcDownloadableReportTypes = (counterReports) => {
-    const reportNames = counterReports.filter(cr => !(cr.failedAttempts) || cr.failedAttempts === 0).map(cr => cr.reportName);
+  calcDownloadableReportTypes = counterReports => {
+    const reportNames = counterReports
+      .filter(cr => ((!cr.failedAttempts || cr.failedAttempts === 0) && cr.release === 4))
+      .map(cr => cr.reportName);
     const available = new Set(reportNames);
     const intersection = new Set(
       reportDownloadTypes.filter(y => available.has(y.value))
     );
     return _.sortBy([...intersection], ['label']);
-  }
+  };
 
   render() {
     const { counterReports } = this.props;
