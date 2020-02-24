@@ -3,5 +3,9 @@ export default [
   { value: 'DB1', label: 'DB1' },
   { value: 'BR1', label: 'BR1' },
   { value: 'BR2', label: 'BR2' },
-  { value: 'PR1', label: 'PR1' }
+  { value: 'PR1', label: 'PR1' },
+  { value: 'DR', label: 'DR' },
+  { value: 'IR', label: 'IR' },
+  { value: 'PR', label: 'PR' },
+  { value: 'TR', label: 'TR' }
 ];
