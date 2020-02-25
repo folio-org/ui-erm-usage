@@ -43,7 +43,11 @@ class UDPFilters extends React.Component {
           };
         });
       } else {
-        newValues = UDPFilters.getRemoteDefinedFilterVals(props.data, props.intl, filterName);
+        newValues = UDPFilters.getRemoteDefinedFilterVals(
+          props.data,
+          props.intl,
+          filterName
+        );
       }
 
       arr[filterName] = newValues;
@@ -162,10 +166,15 @@ class UDPFilters extends React.Component {
         separator={false}
       >
         <MultiSelectionFilter
+          ariaLabelledBy="clickable-tags-filter"
           dataOptions={this.state.tags}
           id="tags-filter"
           name="tags"
-          onChange={e => this.props.filterHandlers.state({ ...activeFilters, tags: e.values })}
+          onChange={e => this.props.filterHandlers.state({
+            ...activeFilters,
+            tags: e.values
+          })
+          }
           selectedValues={tagFilters}
         />
       </Accordion>
@@ -189,10 +198,15 @@ class UDPFilters extends React.Component {
         separator={false}
       >
         <MultiSelectionFilter
+          ariaLabelledBy="clickable-error-codes-filter"
           dataOptions={this.state.errorCodes}
           id="error-codes-filter"
           name="errorCodes"
-          onChange={e => this.props.filterHandlers.state({ ...activeFilters, errorCodes: e.values })}
+          onChange={e => this.props.filterHandlers.state({
+            ...activeFilters,
+            errorCodes: e.values
+          })
+          }
           selectedValues={errorCodesFilters}
         />
       </Accordion>
