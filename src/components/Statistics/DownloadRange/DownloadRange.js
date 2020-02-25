@@ -167,6 +167,9 @@ class DownloadRange extends React.Component {
       <Row>
         <Col xs={3}>
           <TextField
+            ariaLabel={
+              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />
+            }
             label={
               <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />
             }
@@ -179,6 +182,9 @@ class DownloadRange extends React.Component {
         </Col>
         <Col xs={3}>
           <TextField
+            ariaLabel={
+              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />
+            }
             label={
               <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />
             }
