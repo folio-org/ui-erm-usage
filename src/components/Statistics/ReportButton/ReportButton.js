@@ -160,6 +160,7 @@ class ReportButton extends React.Component {
 
     const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
     const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
+    const label = `Open report info for repor ${report.reportName} - ${report.yearMonth}`;
     const reportInfoClassName = report.failedAttempts
       ? 'report-info-failed'
       : 'report-info-valid';
@@ -173,6 +174,7 @@ class ReportButton extends React.Component {
     return (
       <React.Fragment>
         <Button
+          aria-label={label}
           id={buttonId}
           buttonStyle={style}
           data-role="toggle"
