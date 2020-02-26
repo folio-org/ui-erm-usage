@@ -158,8 +158,8 @@ class ReportButton extends React.Component {
       </React.Fragment>
     );
 
-    const buttonId = 'clickable-download-stats-by-id-' + report.yearMonth;
-    const dropdownId = 'report-info-' + report.yearMonth;
+    const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
+    const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
     const reportInfoClassName = report.failedAttempts
       ? 'report-info-failed'
       : 'report-info-valid';

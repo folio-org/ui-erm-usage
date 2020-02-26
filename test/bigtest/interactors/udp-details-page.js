@@ -75,8 +75,8 @@ export default @interactor class UDPDetailsPage {
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
   expandAll = new ExpandAll();
   harvesterImpls = text('[data-test-service-type]');
-  validReport = clickable('#clickable-download-stats-by-id-2018-01');
-  failedReport = clickable('#clickable-download-stats-by-id-2018-02');
+  validReport = clickable('#clickable-download-stats-by-id-BR1-2018-01');
+  failedReport = clickable('#clickable-download-stats-by-id-BR1-2018-02');
   reportInfoValid = new ReportInfoValid();
   reportInfoFailed = new ReportInfoFailed();
   harvestingAccordionButton = new HarvestingAccordionButton();
