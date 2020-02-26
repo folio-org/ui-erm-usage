@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
+  AccordionSet,
   Button,
   Col,
   ConfirmationModal,
@@ -20,9 +21,7 @@ import stripesFinalForm from '@folio/stripes/final-form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
-import {
-  endDate
-} from '../../util/validate';
+import { endDate } from '../../util/validate';
 
 import css from './UDPForm.css';
 
@@ -234,32 +233,35 @@ class UDPForm extends React.Component {
             paneTitle={paneTitle}
           >
             <div className={css.UDPFormContent}>
-              <Row end="xs">
-                <Col xs>
-                  <ExpandAllButton
-                    id="clickable-expand-all"
-                    accordionStatus={sections}
-                    onToggle={this.handleExpandAll}
-                  />
-                </Col>
-              </Row>
-              {initialValues.metadata && initialValues.metadata.createdDate && (
-                <ViewMetaData metadata={initialValues.metadata} />
-              )}
-              <UDPInfoForm
-                accordionId="editUDPInfo"
-                expanded={sections.editUDPInfo}
-                onToggle={this.handleSectionToggle}
-                {...this.props}
-              />
-              <HarvestingConfigurationForm
-                accordionId="editHarvestingConfig"
-                aggregators={aggregators}
-                expanded={sections.editHarvestingConfig}
-                onToggle={this.handleSectionToggle}
-                harvesterImplementations={harvesterImpls}
-                {...this.props}
-              />
+              <AccordionSet>
+                <Row end="xs">
+                  <Col xs>
+                    <ExpandAllButton
+                      id="clickable-expand-all"
+                      accordionStatus={sections}
+                      onToggle={this.handleExpandAll}
+                    />
+                  </Col>
+                </Row>
+                {initialValues.metadata &&
+                  initialValues.metadata.createdDate && (
+                    <ViewMetaData metadata={initialValues.metadata} />
+                )}
+                <UDPInfoForm
+                  accordionId="editUDPInfo"
+                  expanded={sections.editUDPInfo}
+                  onToggle={this.handleSectionToggle}
+                  {...this.props}
+                />
+                <HarvestingConfigurationForm
+                  accordionId="editHarvestingConfig"
+                  aggregators={aggregators}
+                  expanded={sections.editHarvestingConfig}
+                  onToggle={this.handleSectionToggle}
+                  harvesterImplementations={harvesterImpls}
+                  {...this.props}
+                />
+              </AccordionSet>
               <ConfirmationModal
                 id="delete-udp-confirmation"
                 open={confirmDelete}
@@ -294,7 +296,7 @@ export default stripesFinalForm({
     }
   },
   subscription: {
-    values: true,
+    values: true
   },
-  validate: (values => endDate(values))
+  validate: values => endDate(values)
 })(UDPForm);
