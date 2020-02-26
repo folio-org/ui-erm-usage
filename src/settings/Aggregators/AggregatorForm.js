@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import {
   Accordion,
+  AccordionSet,
   Button,
   Col,
   ConfirmationModal,
@@ -330,127 +331,129 @@ class AggregatorForm extends React.Component {
             paneTitle={this.renderPaneTitle()}
           >
             <div className={css.AggregatorFormContent}>
-              <Row end="xs">
-                <Col xs>
-                  <ExpandAllButton
-                    accordionStatus={sections}
-                    onToggle={this.handleExpandAll}
+              <AccordionSet>
+                <Row end="xs">
+                  <Col xs>
+                    <ExpandAllButton
+                      accordionStatus={sections}
+                      onToggle={this.handleExpandAll}
+                    />
+                  </Col>
+                </Row>
+                <Accordion
+                  open={sections.generalSection}
+                  id="generalSection"
+                  onToggle={this.handleSectionToggle}
+                  label={
+                    <FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />
+                  }
+                >
+                  <Row>
+                    <Col xs={8}>
+                      <Field
+                        label={
+                          <FormattedMessage id="ui-erm-usage.aggregator.name">
+                            {msg => msg + ' *'}
+                          </FormattedMessage>
+                        }
+                        name="label"
+                        id="input-aggregator-label"
+                        component={TextField}
+                        fullWidth
+                        disabled={disabled}
+                        validate={[required]}
+                      />
+                      <Field
+                        label={
+                          <FormattedMessage id="ui-erm-usage.aggregator.serviceType">
+                            {msg => msg + ' *'}
+                          </FormattedMessage>
+                        }
+                        name="serviceType"
+                        id="input-aggregator-service-type"
+                        placeholder="Select a service type"
+                        component={Select}
+                        dataOptions={aggregators}
+                        fullWidth
+                        validate={[required]}
+                      />
+                      <Field
+                        label={
+                          <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl">
+                            {msg => msg + ' *'}
+                          </FormattedMessage>
+                        }
+                        name="serviceUrl"
+                        id="input-aggregator-service-url"
+                        component={TextField}
+                        fullWidth
+                        disabled={disabled}
+                        validate={[required]}
+                      />
+                    </Col>
+                  </Row>
+                </Accordion>
+
+                <Accordion
+                  open={sections.aggregatorConfig}
+                  id="aggregatorConfig"
+                  onToggle={this.handleSectionToggle}
+                  label={
+                    <FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />
+                  }
+                >
+                  <AggregatorConfigForm
+                    fields={aggregatorConfigFields}
+                    onAddField={this.handleAddConfigField}
+                    onChange={this.handleConfigChange}
+                    onRemoveField={this.handleRemoveConfigField}
+                    stripes={stripes}
                   />
-                </Col>
-              </Row>
-              <Accordion
-                open={sections.generalSection}
-                id="generalSection"
-                onToggle={this.handleSectionToggle}
-                label={
-                  <FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />
-                }
-              >
-                <Row>
-                  <Col xs={8}>
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.name">
-                          {msg => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="label"
-                      id="input-aggregator-label"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
-                    />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.serviceType">
-                          {msg => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="serviceType"
-                      id="input-aggregator-service-type"
-                      placeholder="Select a service type"
-                      component={Select}
-                      dataOptions={aggregators}
-                      fullWidth
-                      validate={[required]}
-                    />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl">
-                          {msg => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="serviceUrl"
-                      id="input-aggregator-service-url"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
-                    />
-                  </Col>
-                </Row>
-              </Accordion>
+                </Accordion>
 
-              <Accordion
-                open={sections.aggregatorConfig}
-                id="aggregatorConfig"
-                onToggle={this.handleSectionToggle}
-                label={
-                  <FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />
-                }
-              >
-                <AggregatorConfigForm
-                  fields={aggregatorConfigFields}
-                  onAddField={this.handleAddConfigField}
-                  onChange={this.handleConfigChange}
-                  onRemoveField={this.handleRemoveConfigField}
-                  stripes={stripes}
-                />
-              </Accordion>
-
-              <Accordion
-                open={sections.accountConfig}
-                id="accountConfig"
-                onToggle={this.handleSectionToggle}
-                label={
-                  <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />
-                }
-              >
-                <Row>
-                  <Col xs={8}>
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type">
-                          {msg => msg + ' *'}
-                        </FormattedMessage>
-                      }
-                      name="accountConfig.configType"
-                      id="input-aggregator-account-type"
-                      placeholder="Select a config type"
-                      component={Select}
-                      dataOptions={aggregatorAccountConfigTypes}
-                      fullWidth
-                      disabled={disabled}
-                      validate={[required]}
-                    />
-                    <Field
-                      label={
-                        <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
-                          {msg => msg + requiredSign}
-                        </FormattedMessage>
-                      }
-                      name="accountConfig.configMail"
-                      id="input-aggregator-config-mail"
-                      component={TextField}
-                      fullWidth
-                      disabled={disabled}
-                      validate={configMailValidate}
-                    />
-                    <DisplayContactsForm {...this.props} />
-                  </Col>
-                </Row>
-              </Accordion>
+                <Accordion
+                  open={sections.accountConfig}
+                  id="accountConfig"
+                  onToggle={this.handleSectionToggle}
+                  label={
+                    <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />
+                  }
+                >
+                  <Row>
+                    <Col xs={8}>
+                      <Field
+                        label={
+                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type">
+                            {msg => msg + ' *'}
+                          </FormattedMessage>
+                        }
+                        name="accountConfig.configType"
+                        id="input-aggregator-account-type"
+                        placeholder="Select a config type"
+                        component={Select}
+                        dataOptions={aggregatorAccountConfigTypes}
+                        fullWidth
+                        disabled={disabled}
+                        validate={[required]}
+                      />
+                      <Field
+                        label={
+                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
+                            {msg => msg + requiredSign}
+                          </FormattedMessage>
+                        }
+                        name="accountConfig.configMail"
+                        id="input-aggregator-config-mail"
+                        component={TextField}
+                        fullWidth
+                        disabled={disabled}
+                        validate={configMailValidate}
+                      />
+                      <DisplayContactsForm {...this.props} />
+                    </Col>
+                  </Row>
+                </Accordion>
+              </AccordionSet>
 
               <ConfirmationModal
                 id="deleteaggregator-confirmation"
