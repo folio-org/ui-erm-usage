@@ -331,7 +331,9 @@ class AggregatorForm extends React.Component {
             paneTitle={this.renderPaneTitle()}
           >
             <div className={css.AggregatorFormContent}>
-              <AccordionSet>
+              <AccordionSet
+                id="aggregator-form-accordion-set"
+              >
                 <Row end="xs">
                   <Col xs>
                     <ExpandAllButton
@@ -396,7 +398,7 @@ class AggregatorForm extends React.Component {
 
                 <Accordion
                   open={sections.aggregatorConfig}
-                  id="aggregatorConfig"
+                  id="aggregatorConfig-form"
                   onToggle={this.handleSectionToggle}
                   label={
                     <FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />
@@ -413,7 +415,7 @@ class AggregatorForm extends React.Component {
 
                 <Accordion
                   open={sections.accountConfig}
-                  id="accountConfig"
+                  id="accountConfig-form"
                   onToggle={this.handleSectionToggle}
                   label={
                     <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />
