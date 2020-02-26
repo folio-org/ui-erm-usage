@@ -331,7 +331,9 @@ class AggregatorForm extends React.Component {
             paneTitle={this.renderPaneTitle()}
           >
             <div className={css.AggregatorFormContent}>
-              <AccordionSet>
+              <AccordionSet
+                id="aggregator-form-accordion-set"
+              >
                 <Row end="xs">
                   <Col xs>
                     <ExpandAllButton
