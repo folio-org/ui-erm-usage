@@ -1,6 +1,6 @@
 {
     "settings.general": "Général",
-    "settings.general.message": "These are your general app settings.",
+    "settings.general.message": "Ceci correspond aux paramètres généraux de votre application.",
     "ui-erm-usage.resultCount": "Nombre de résultats :",
     "resultCount": "{count, number} Enregistrements trouvés",
     "erm-usage": "Utilisation ERM",
