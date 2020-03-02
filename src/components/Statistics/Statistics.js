@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl';
 import { AccordionSet, Col, Row } from '@folio/stripes/components';
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import groupByYearAndReport from './groupByYearAndReport';
 import reportDownloadTypes from '../../util/data/reportDownloadTypes';
 import css from './Statistics.css';
 
@@ -30,11 +29,25 @@ class Statistics extends React.Component {
     super(props);
     this.connectedDownloadRange = props.stripes.connect(DownloadRange);
     this.connectedStatsPerYear = props.stripes.connect(StatisticsPerYear);
+
+    this.donwloadableReports = this.calcDownloadableReportTypes(props.counterReports);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { counterReports } = this.props;
+    if (!_.isEqual(counterReports, prevProps.counterReports)) {
+      this.donwloadableReports = this.calcDownloadableReportTypes(counterReports);
+    }
   }
 
   calcDownloadableReportTypes = counterReports => {
     const reportNames = counterReports
-      .filter(cr => ((!cr.failedAttempts || cr.failedAttempts === 0) && cr.release === 4))
+      .flatMap(c => c.reportsPerType)
+      .flatMap(r => r.counterReports)
+      .filter(
+        // eslint-disable-next-line eqeqeq
+        cr => (!cr.failedAttempts || cr.failedAttempts === 0) && cr.release == 4
+      )
       .map(cr => cr.reportName);
     const available = new Set(reportNames);
     const intersection = new Set(
@@ -45,8 +58,6 @@ class Statistics extends React.Component {
 
   render() {
     const { counterReports } = this.props;
-    const stats = groupByYearAndReport(counterReports);
-    const uniqueReports = this.calcDownloadableReportTypes(counterReports);
 
     return (
       <React.Fragment>
@@ -60,7 +71,7 @@ class Statistics extends React.Component {
           <Col xs={12}>
             <AccordionSet>
               <this.connectedStatsPerYear
-                stats={stats}
+                stats={counterReports}
                 stripes={this.props.stripes}
                 udpLabel={this.props.udpLabel}
               />
@@ -78,7 +89,7 @@ class Statistics extends React.Component {
             <this.connectedDownloadRange
               stripes={this.props.stripes}
               udpId={this.props.providerId}
-              donwloadableReports={uniqueReports}
+              donwloadableReports={this.donwloadableReports}
             />
           </Col>
         </Row>
