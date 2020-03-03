@@ -170,16 +170,16 @@ class UDP extends React.Component {
           onClose={handlers.onClose}
         >
           <TitleManager record={label} stripes={stripes} />
+          <Row end="xs">
+            <Col xs>
+              <ExpandAllButton
+                accordionStatus={this.state.accordions}
+                onToggle={this.handleExpandAll}
+                id="clickable-expand-all-view"
+              />
+            </Col>
+          </Row>
           <AccordionSet>
-            <Row end="xs">
-              <Col xs>
-                <ExpandAllButton
-                  accordionStatus={this.state.accordions}
-                  onToggle={this.handleExpandAll}
-                  id="clickable-expand-all-view"
-                />
-              </Col>
-            </Row>
             <this.connectedViewMetaData
               metadata={get(usageDataProvider, 'metadata', {})}
               stripes={stripes}

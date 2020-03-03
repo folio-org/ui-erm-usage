@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import extractUUID from '../helpers/extract-uuid';
+import sortByYearAndType from '../helpers/sort-by-year-type';
 
 // typical mirage config export
 // http://www.ember-cli-mirage.com/docs/v0.4.x/configuration/
@@ -132,12 +134,45 @@ export default function config() {
       return schema.counterReports.all();
     }
   });
+  this.get('/counter-reports/sorted/:udpId', (schema, request) => {
+    if (request.queryParams) {
+      /*
+      Pretender cuts off the query parameter. It just provides query: "(udpId" and not the actual id. Thus we need to look for the id in thr url.
+      */
+      const currentId = extractUUID(request.url);
+      const reports = schema.counterReports.where({ providerId: currentId });
+
+      const sorted = sortByYearAndType(reports);
+
+      const result = Object.create({});
+      result.counterReportsPerYear = [];
+      _.keys(sorted).forEach(year => {
+        const byYear = sorted[year];
+        const reportsPerYear = Object.create({});
+        reportsPerYear.year = year;
+        reportsPerYear.reportsPerType = [];
+        _.keys(byYear).forEach(type => {
+          const singleReportPerType = Object.create({});
+          const byType = byYear[type];
+          const rep = byType.map(r => r.attrs);
+          singleReportPerType.reportType = type;
+          singleReportPerType.counterReports = rep;
+          reportsPerYear.reportsPerType.push(singleReportPerType);
+        });
+        result.counterReportsPerYear.push(reportsPerYear);
+      });
+
+      return result;
+    } else {
+      return null;
+    }
+  });
   this.get('/counter-reports/:id', (schema, request) => {
     return schema.counterReports.find(request.params.id).attrs;
   });
 
   this.get('/counter-reports/errors/codes', {
-    errorCodes : ['other', '3000', '3031']
+    errorCodes: ['other', '3000', '3031']
   });
 
   this.get('/note-types');

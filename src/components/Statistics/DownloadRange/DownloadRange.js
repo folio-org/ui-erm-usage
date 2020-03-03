@@ -166,34 +166,34 @@ class DownloadRange extends React.Component {
     return (
       <Row>
         <Col xs={3}>
-          <TextField
-            ariaLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />
-            }
-            label={
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start" />
-            }
-            placeholder="YYYY-MM"
-            value={this.state.start}
-            onChange={this.handleStartChange}
-            onClearField={this.clearStart}
-            error={this.state.startError}
-          />
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
+            {startMessage => (
+              <TextField
+                ariaLabel={startMessage}
+                label={startMessage}
+                placeholder="YYYY-MM"
+                value={this.state.start}
+                onChange={this.handleStartChange}
+                onClearField={this.clearStart}
+                error={this.state.startError}
+              />
+            )}
+          </FormattedMessage>
         </Col>
         <Col xs={3}>
-          <TextField
-            ariaLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />
-            }
-            label={
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end" />
-            }
-            placeholder="YYYY-MM"
-            value={this.state.end}
-            onChange={this.handleEndChange}
-            onClearField={this.clearEnd}
-            error={this.state.endError}
-          />
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
+            {endMessage => (
+              <TextField
+                ariaLabel={endMessage}
+                label={endMessage}
+                placeholder="YYYY-MM"
+                value={this.state.end}
+                onChange={this.handleEndChange}
+                onClearField={this.clearEnd}
+                error={this.state.endError}
+              />
+            )}
+          </FormattedMessage>
         </Col>
         <Col xs={3}>
           <Select

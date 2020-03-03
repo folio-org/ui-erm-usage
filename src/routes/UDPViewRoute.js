@@ -29,7 +29,7 @@ class UDPViewRoute extends React.Component {
     },
     counterReports: {
       type: 'okapi',
-      path: 'counter-reports?tiny=true&query=(providerId==:{id})&limit=1000'
+      path: 'counter-reports/sorted/:{id}?limit=1000'
     },
     query: {}
   });
@@ -54,8 +54,8 @@ class UDPViewRoute extends React.Component {
   getCounterReports = udpId => {
     const { resources } = this.props;
     const records = (resources.counterReports || {}).records || null;
-    const counterReports = !isEmpty(records) ? records[0].counterReports : [];
-    if (!isEmpty(counterReports) && counterReports[0].providerId === udpId) {
+    const counterReports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
+    if (!isEmpty(counterReports) && counterReports[0].reportsPerType[0].counterReports[0].providerId === udpId) {
       return counterReports;
     } else {
       return [];
