@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import {
   Accordion,
+  AccordionSet,
   Col,
   ExpandAllButton,
   MultiColumnList,
@@ -42,7 +43,7 @@ class StatisticsPerYear extends React.Component {
     }),
     resources: PropTypes.object.isRequired,
     intl: intlShape.isRequired,
-    stats: PropTypes.object,
+    stats: PropTypes.arrayOf(PropTypes.shape()),
     udpLabel: PropTypes.string.isRequired
   };
 
@@ -56,8 +57,9 @@ class StatisticsPerYear extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (!_.isEqual(this.props.stats, prevProps.stats)) {
-      const years = _.keys(this.props.stats);
-      years.forEach(y => {
+      const keys = _.keys(this.props.stats);
+      keys.forEach(k => {
+        const y = this.props.stats[k].year;
         const tmp = {};
         tmp[y] = false;
         this.setState(state => {
@@ -163,16 +165,17 @@ class StatisticsPerYear extends React.Component {
     const maxFailed = parseInt(this.extractMaxFailedAttempts(), 10);
     return groupedStats.map(statsPerYear => {
       const y = statsPerYear.year;
+      const year = y.toString();
       const reportsOfAYear = statsPerYear.reportsPerType.map(reportsTyped => {
         return this.renderReportPerYear(reportsTyped.counterReports, maxFailed);
       });
       return (
         <Accordion
+          id={year}
+          key={year}
+          label={year}
           open={this.state.accordions[y]}
           onToggle={this.handleAccordionToggle}
-          label={y}
-          id={y}
-          key={y}
         >
           <MultiColumnList
             contentData={reportsOfAYear}
@@ -254,6 +257,7 @@ class StatisticsPerYear extends React.Component {
             <ExpandAllButton
               accordionStatus={this.state.accordions}
               onToggle={this.handleExpandAll}
+              setStatus={null}
               expandLabel={
                 <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
               }
@@ -263,7 +267,9 @@ class StatisticsPerYear extends React.Component {
             />
           </Col>
         </Row>
-        {reportAccordions}
+        <AccordionSet>
+          {reportAccordions}
+        </AccordionSet>
       </React.Fragment>
     );
   }
