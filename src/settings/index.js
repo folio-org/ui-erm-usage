@@ -84,4 +84,3 @@ class ErmUsageSettings extends React.Component {
 }
 
 export default injectIntl(ErmUsageSettings);
-
