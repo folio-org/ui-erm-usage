@@ -36,7 +36,7 @@ class DisplayContact extends React.Component {
             fullWidth
           />
         </Col>
-        <Col xs={4} style={{ 'textAlign': 'right', 'margin-top': '25px' }}>
+        <Col xs={4} style={{ 'textAlign': 'right', 'marginTop': '25px' }}>
           <Button onClick={() => fields.remove(index)} buttonStyle="danger">
             Remove
           </Button>
