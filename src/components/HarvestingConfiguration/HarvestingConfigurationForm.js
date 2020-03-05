@@ -27,7 +27,7 @@ class HarvestingConfigurationForm extends React.Component {
 
     this.state = {
       confirmClear: false,
-      selectedReportRelease: '',
+      selectedReportRelease: ''
     };
   }
 
@@ -35,21 +35,32 @@ class HarvestingConfigurationForm extends React.Component {
     event.preventDefault();
 
     const val = event.target.value;
-    const selectedReportRelease = get(this.props.values, 'harvestingConfig.reportRelease', '');
+    const selectedReportRelease = get(
+      this.props.values,
+      'harvestingConfig.reportRelease',
+      ''
+    );
     if (selectedReportRelease !== val) {
-      const requestedReports = get(this.props.values, 'harvestingConfig.requestedReports', []);
+      const requestedReports = get(
+        this.props.values,
+        'harvestingConfig.requestedReports',
+        []
+      );
       if (!isEmpty(requestedReports)) {
         this.setState({ confirmClear: true, selectedReportRelease: val });
       } else {
         this.props.form.mutators.setReportRelease({}, val);
       }
     }
-  }
+  };
 
   confirmClearReports = confirmation => {
     if (confirmation) {
       this.props.form.mutators.clearSelectedReports({}, this.props.values);
-      this.props.form.mutators.setReportRelease({}, this.state.selectedReportRelease);
+      this.props.form.mutators.setReportRelease(
+        {},
+        this.state.selectedReportRelease
+      );
       setTimeout(() => {
         this.forceUpdate();
       });
@@ -69,9 +80,12 @@ class HarvestingConfigurationForm extends React.Component {
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
     const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
-    const harvestingStatus = get(values, 'harvestingConfig.harvestinStatus', '');
     const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
-    const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
+    const requestedReports = get(
+      values,
+      'harvestingConfig.requestedReports',
+      []
+    );
 
     const confirmationMessage = (
       <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
@@ -111,7 +125,6 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <VendorInfoForm
                   disabled={harvestVia !== 'sushi'}
-                  harvestingIsActive={harvestingStatus === 'active'}
                   harvesterImpls={harvesterImplementations}
                 />
               </Row>
@@ -183,8 +196,8 @@ HarvestingConfigurationForm.propTypes = {
   form: PropTypes.shape({
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
-      setReportRelease: PropTypes.func,
-    }),
+      setReportRelease: PropTypes.func
+    })
   }),
   onToggle: PropTypes.func,
   values: PropTypes.shape()
