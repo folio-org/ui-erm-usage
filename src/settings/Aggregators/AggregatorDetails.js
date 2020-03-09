@@ -45,6 +45,7 @@ class AggregatorDetails extends React.Component {
     this.state = {
       sections: {
         generalInformation: true,
+        aggregatorConfig: true,
         accountConfig: true
       }
     };
