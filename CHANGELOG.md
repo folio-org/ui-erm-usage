@@ -1,5 +1,11 @@
 # Change history for ui-erm-usage
 
+## [2.7.0](https://github.com/folio-org/ui-erm-usage/tree/v2.7.0) (2020-03-12)
+* Ability to download COP5 CSV reports for single month (UIEUS-106)
+* Fix accessibility issues (UIEUS-146, UIEUS-158, UIEUS-138, UIEUS-160, UIEUS-164, UIEUS-165)
+* Performance improvement: Fetch sorted counter-reports from backend instead of sorting in frontend (UIEUS-134)
+* Upgrade to Stripes 3.0
+
 ## [2.6.0](https://github.com/folio-org/ui-erm-usage/tree/v2.6.0) (2020-02-17)
 * Move Save/Delete/Cancel buttons to the footer (UIEUS-120)
 * Use SearchAndSortQuery component instead of SearchAndSort (UIEUS-123)
