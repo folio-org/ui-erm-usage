@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -82,7 +82,7 @@
     "okapiInterfaces": {
       "usage-data-providers": "2.4",
       "aggregator-settings": "1.1",
-      "counter-reports": "1.3"
+      "counter-reports": "1.4"
     },
     "permissionSets": [
       {
