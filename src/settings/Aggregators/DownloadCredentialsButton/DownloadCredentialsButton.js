@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { stripesConnect } from '@folio/stripes/core';
 import { Button } from '@folio/stripes/components';
 
 import { downloadCredentials } from '../../../util/downloadCSV';
 
-export default class DownloadCredentialsButton extends React.Component {
+class DownloadCredentialsButton extends React.Component {
   static propTypes = {
     aggregatorId: PropTypes.string.isRequired,
     stripes: PropTypes
@@ -38,3 +39,5 @@ export default class DownloadCredentialsButton extends React.Component {
     );
   }
 }
+
+export default stripesConnect(DownloadCredentialsButton);

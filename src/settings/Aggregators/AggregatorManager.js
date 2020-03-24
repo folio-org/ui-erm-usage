@@ -46,12 +46,6 @@ class AggregatorManager extends React.Component {
     })
   };
 
-  constructor(props) {
-    super(props);
-    this.cAggregatorDetails = props.stripes.connect(AggregatorDetails);
-    this.cAggregatorForm = props.stripes.connect(AggregatorForm);
-  }
-
   render() {
     const entryList = _.sortBy(
       (this.props.resources.entries || {}).records || [],
@@ -75,8 +69,8 @@ class AggregatorManager extends React.Component {
           {...this.props}
           parentMutator={this.props.mutator}
           entryList={entryList}
-          detailComponent={this.cAggregatorDetails}
-          entryFormComponent={this.cAggregatorForm}
+          detailComponent={AggregatorDetails}
+          entryFormComponent={AggregatorForm}
           paneTitle={this.props.label}
           entryLabel={this.props.label}
           onSelect={this.onSelect}

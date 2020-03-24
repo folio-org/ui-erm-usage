@@ -41,10 +41,6 @@ class UDP extends React.Component {
   constructor(props) {
     super(props);
     this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
-    this.connectedStartHarvesterButton = this.props.stripes.connect(
-      StartHarvesterButton
-    );
-    this.connectedReportUpload = this.props.stripes.connect(ReportUpload);
 
     this.state = {
       accordions: {
@@ -150,7 +146,7 @@ class UDP extends React.Component {
     if (isLoading) return this.renderLoadingPane();
 
     const displayWhenOpenHarvestingAcc = isHarvesterExistent ? (
-      <this.connectedStartHarvesterButton
+      <StartHarvesterButton
         usageDataProvider={usageDataProvider}
       />
     ) : null;
@@ -226,7 +222,7 @@ class UDP extends React.Component {
               label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
               id="uploadAccordion"
             >
-              <this.connectedReportUpload
+              <ReportUpload
                 udpId={providerId}
                 stripes={stripes}
               />

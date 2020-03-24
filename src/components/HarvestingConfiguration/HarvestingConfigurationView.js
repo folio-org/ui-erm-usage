@@ -28,12 +28,6 @@ class HarvestingConfigurationView extends React.Component {
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
 
-  constructor(props) {
-    super(props);
-
-    this.cVendorInfoView = this.props.stripes.connect(VendorInfoView);
-  }
-
   createProvider = udp => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
     if (harvestVia === 'aggregator') {
@@ -45,7 +39,7 @@ class HarvestingConfigurationView extends React.Component {
       );
     } else {
       return (
-        <this.cVendorInfoView
+        <VendorInfoView
           usageDataProvider={udp}
           harvesterImpls={this.props.harvesterImpls}
         />
@@ -85,7 +79,7 @@ class HarvestingConfigurationView extends React.Component {
             />
           </Col>
         </Row>
-        { provider }
+        {provider}
         <Row>
           <Col xs={3}>
             <KeyValue

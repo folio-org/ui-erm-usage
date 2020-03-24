@@ -6,6 +6,7 @@ import {
   intlShape,
   injectIntl,
 } from 'react-intl';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Callout,
   ConfirmationModal,
@@ -274,4 +275,4 @@ class PeriodicHarvestingManager extends React.Component {
   }
 }
 
-export default injectIntl(PeriodicHarvestingManager);
+export default stripesConnect(injectIntl(PeriodicHarvestingManager));

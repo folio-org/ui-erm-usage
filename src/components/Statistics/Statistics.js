@@ -27,9 +27,6 @@ class Statistics extends React.Component {
 
   constructor(props) {
     super(props);
-    this.connectedDownloadRange = props.stripes.connect(DownloadRange);
-    this.connectedStatsPerYear = props.stripes.connect(StatisticsPerYear);
-
     this.donwloadableReports = this.calcDownloadableReportTypes(props.counterReports);
   }
 
@@ -70,7 +67,7 @@ class Statistics extends React.Component {
           </Col>
           <Col xs={12}>
             <AccordionSet>
-              <this.connectedStatsPerYear
+              <StatisticsPerYear
                 stats={counterReports}
                 stripes={this.props.stripes}
                 udpLabel={this.props.udpLabel}
@@ -86,7 +83,7 @@ class Statistics extends React.Component {
             </div>
           </Col>
           <Col xs={12}>
-            <this.connectedDownloadRange
+            <DownloadRange
               stripes={this.props.stripes}
               udpId={this.props.providerId}
               donwloadableReports={this.donwloadableReports}

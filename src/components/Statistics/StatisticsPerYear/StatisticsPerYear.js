@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -49,7 +50,6 @@ class StatisticsPerYear extends React.Component {
 
   constructor(props) {
     super(props);
-    this.connectedReportButton = props.stripes.connect(ReportButton);
     this.state = {
       accordions: {}
     };
@@ -96,7 +96,7 @@ class StatisticsPerYear extends React.Component {
         maxMonth = parseInt(month, 10);
       }
       o[month] = (
-        <this.connectedReportButton
+        <ReportButton
           report={r}
           stripes={this.props.stripes}
           maxFailedAttempts={maxFailed}
@@ -108,7 +108,7 @@ class StatisticsPerYear extends React.Component {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
       o[monthPadded] = (
-        <this.connectedReportButton
+        <ReportButton
           stripes={this.props.stripes}
           maxFailedAttempts={maxFailed}
           udpLabel={this.props.udpLabel}
@@ -275,4 +275,4 @@ class StatisticsPerYear extends React.Component {
   }
 }
 
-export default injectIntl(StatisticsPerYear);
+export default stripesConnect(injectIntl(StatisticsPerYear));

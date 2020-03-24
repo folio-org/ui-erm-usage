@@ -6,6 +6,7 @@ import {
   FormattedMessage
 } from 'react-intl';
 import PropTypes from 'prop-types';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   Col,
@@ -198,4 +199,4 @@ class ReportUpload extends React.Component {
   }
 }
 
-export default injectIntl(ReportUpload);
+export default stripesConnect(injectIntl(ReportUpload));

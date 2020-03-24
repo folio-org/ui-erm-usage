@@ -24,10 +24,6 @@ class ErmUsageSettings extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.cPeriodicHarvesting = this.props.stripes.connect(
-      PeriodicHarvestingManager
-    );
     const {
       intl: {
         formatMessage,
@@ -65,7 +61,7 @@ class ErmUsageSettings extends React.Component {
           {
             route: 'periodic-harvesting',
             label: formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' }),
-            component: this.cPeriodicHarvesting
+            component: PeriodicHarvestingManager
           }
         ]
       }

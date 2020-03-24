@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   intlShape,
   injectIntl,
@@ -133,4 +134,4 @@ class StartHarvesterButton extends React.Component {
   }
 }
 
-export default injectIntl(StartHarvesterButton);
+export default stripesConnect(injectIntl(StartHarvesterButton));

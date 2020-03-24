@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -49,10 +50,6 @@ class AggregatorDetails extends React.Component {
         accountConfig: true
       }
     };
-
-    this.connectedDownloadCredsButton = this.props.stripes.connect(
-      DownloadCredentialsButton
-    );
   }
 
   handleExpandAll(sections) {
@@ -108,7 +105,7 @@ class AggregatorDetails extends React.Component {
     const config = aggregator.aggregatorConfig;
 
     const displayWhenOpenAccountConfAcc = (
-      <this.connectedDownloadCredsButton
+      <DownloadCredentialsButton
         aggregatorId={aggregator.id}
         stripes={this.props.stripes}
       />
@@ -211,4 +208,4 @@ class AggregatorDetails extends React.Component {
   }
 }
 
-export default AggregatorDetails;
+export default stripesConnect(AggregatorDetails);

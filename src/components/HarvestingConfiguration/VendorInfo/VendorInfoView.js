@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   FormattedMessage
 } from 'react-intl';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Col,
   KeyValue,
@@ -47,4 +48,4 @@ VendorInfoView.propTypes = {
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default VendorInfoView;
+export default stripesConnect(VendorInfoView);
