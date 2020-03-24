@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   Col,
@@ -219,4 +220,4 @@ class DownloadRange extends React.Component {
   }
 }
 
-export default injectIntl(DownloadRange);
+export default stripesConnect(injectIntl(DownloadRange));
