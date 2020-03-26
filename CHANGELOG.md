@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [2.7.1](https://github.com/folio-org/ui-erm-usage/tree/v2.7.1) (2020-03-26)
+* Bugfix: Error when opening detail view of a usage data provider (UIEUS-167)
+
 ## [2.7.0](https://github.com/folio-org/ui-erm-usage/tree/v2.7.0) (2020-03-12)
 * Ability to download COP5 CSV reports for single month (UIEUS-106)
 * Fix accessibility issues (UIEUS-146, UIEUS-158, UIEUS-138, UIEUS-160, UIEUS-164, UIEUS-165)
