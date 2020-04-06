@@ -27,13 +27,13 @@ class Statistics extends React.Component {
 
   constructor(props) {
     super(props);
-    this.donwloadableReports = this.calcDownloadableReportTypes(props.counterReports);
+    this.downloadableReports = this.calcDownloadableReportTypes(props.counterReports);
   }
 
   componentDidUpdate(prevProps) {
     const { counterReports } = this.props;
     if (!_.isEqual(counterReports, prevProps.counterReports)) {
-      this.donwloadableReports = this.calcDownloadableReportTypes(counterReports);
+      this.downloadableReports = this.calcDownloadableReportTypes(counterReports);
     }
   }
 
@@ -43,7 +43,7 @@ class Statistics extends React.Component {
       .flatMap(r => r.counterReports)
       .filter(
         // eslint-disable-next-line eqeqeq
-        cr => (!cr.failedAttempts || cr.failedAttempts === 0) && cr.release == 4
+        cr => (!cr.failedAttempts || cr.failedAttempts === 0)
       )
       .map(cr => cr.reportName);
     const available = new Set(reportNames);
@@ -86,7 +86,7 @@ class Statistics extends React.Component {
             <DownloadRange
               stripes={this.props.stripes}
               udpId={this.props.providerId}
-              donwloadableReports={this.donwloadableReports}
+              downloadableReports={this.downloadableReports}
             />
           </Col>
         </Row>
