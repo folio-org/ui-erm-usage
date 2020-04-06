@@ -147,6 +147,7 @@ function DownloadRange(props) {
             <TextField
               ariaLabel={startMessage}
               label={startMessage}
+              name="downloadMultiMonths.startDate"
               placeholder="YYYY-MM"
               value={start}
               onChange={handleStartChange}
@@ -162,6 +163,7 @@ function DownloadRange(props) {
             <TextField
               ariaLabel={endMessage}
               label={endMessage}
+              name="downloadMultiMonths.endDate"
               placeholder="YYYY-MM"
               value={end}
               onChange={handleEndChange}

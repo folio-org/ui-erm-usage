@@ -2,12 +2,28 @@
 import {
   attribute,
   clickable,
+  fillable,
   interactor,
+  isPresent,
   property,
   scoped,
   text,
   value
 } from '@bigtest/interactor';
+
+
+@interactor class InputFieldInteractor {
+  clickInput = clickable();
+  fillInput = fillable();
+
+  fill(val) {
+    return this
+      .clickInput()
+      .timeout(5000)
+      .fillInput(val)
+      .timeout(5000);
+  }
+}
 
 @interactor class HarvestingAccordion {
   static defaultScope = '#harvestingAccordion';
@@ -42,6 +58,22 @@ import {
   value = value();
 }
 
+@interactor class StartDateDownloadInput {
+  static defaultScope = 'input[name="downloadMultiMonths.startDate"]';
+  value = value();
+}
+
+@interactor class EndDateDownloadInput {
+  static defaultScope = 'input[name="downloadMultiMonths.endDate"]';
+  value = value();
+}
+
+@interactor class DateInputError {
+  static defaultScope = '[class^="feedbackError---"]';
+  feedbackError = text();
+  exist = isPresent();
+}
+
 @interactor class ExpandAll {
   static defaultScope = '#clickable-expand-all-view';
 }
@@ -72,6 +104,9 @@ export default @interactor class UDPDetailsPage {
   sushiCredentialsAccordion = new SushiCredentialsAccordion();
   statisticsAccordion = new StatisticsAccordion();
   uploadAccordion = new UploadAccordion();
+  startDateDownloadInput = new InputFieldInteractor('[name="downloadMultiMonths.startDate"]');
+  endDateDownloadInput = new InputFieldInteractor('[name="downloadMultiMonths.startDate"]');
+  dateInputError = new DateInputError();
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
   expandAll = new ExpandAll();
   harvesterImpls = text('[data-test-service-type]');

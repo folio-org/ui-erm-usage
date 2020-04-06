@@ -83,6 +83,34 @@ describe('UDPDetailsPage', () => {
         expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
       });
 
+      describe('enter invalid startDate', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.startDateDownloadInput.fill('2019-111');
+        });
+        it('should display validation error', () => {
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('Must be YYYY-MM');
+        });
+      });
+
+      describe('enter invalid endDate', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.endDateDownloadInput.fill('2019-111');
+        });
+        it('should display validation error', () => {
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('Must be YYYY-MM');
+        });
+      });
+
+      describe('enter valid startDate & endDate', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.startDateDownloadInput.fill('2019-01');
+          await udpDetailsPage.endDateDownloadInput.fill('2019-04');
+        });
+        it('should not display validation error', () => {
+          expect(udpDetailsPage.dateInputError.exist).to.equal(false);
+        });
+      });
+
       describe('JR1 can be selected', () => {
         beforeEach(async () => {
           await udpDetailsPage.reportTypeDownloadSelect.select('JR1');
