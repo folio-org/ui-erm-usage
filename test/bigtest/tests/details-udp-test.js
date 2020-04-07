@@ -83,6 +83,16 @@ describe('UDPDetailsPage', () => {
         expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
       });
 
+      describe('enter valid startDate & endDate, but startDate > endDate', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.startDateDownloadInput.fill('2019-04');
+          await udpDetailsPage.endDateDownloadInput.fill('2019-02');
+        });
+        it('should display validation error: end must be greater start', () => {
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('End must be greater than start');
+        });
+      });
+
       describe('enter invalid startDate', () => {
         beforeEach(async () => {
           await udpDetailsPage.startDateDownloadInput.fill('2019-111');

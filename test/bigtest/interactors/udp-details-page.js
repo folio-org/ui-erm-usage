@@ -60,11 +60,34 @@ import {
 
 @interactor class StartDateDownloadInput {
   static defaultScope = 'input[name="downloadMultiMonths.startDate"]';
+  clickInput = clickable();
+  fillInput = fillable();
+
+  fill(val) {
+    return this
+      .clickInput()
+      .timeout(5000)
+      .fillInput(val)
+      .timeout(5000);
+  }
+
   value = value();
 }
 
 @interactor class EndDateDownloadInput {
   static defaultScope = 'input[name="downloadMultiMonths.endDate"]';
+
+  clickInput = clickable();
+  fillInput = fillable();
+
+  fill(val) {
+    return this
+      .clickInput()
+      .timeout(5000)
+      .fillInput(val)
+      .timeout(5000);
+  }
+
   value = value();
 }
 
@@ -104,8 +127,10 @@ export default @interactor class UDPDetailsPage {
   sushiCredentialsAccordion = new SushiCredentialsAccordion();
   statisticsAccordion = new StatisticsAccordion();
   uploadAccordion = new UploadAccordion();
-  startDateDownloadInput = new InputFieldInteractor('[name="downloadMultiMonths.startDate"]');
-  endDateDownloadInput = new InputFieldInteractor('[name="downloadMultiMonths.startDate"]');
+  // startDateDownloadInput = new InputFieldInteractor('input[name="downloadMultiMonths.startDate"]');
+  // endDateDownloadInput = new InputFieldInteractor('input[name="downloadMultiMonths.startDate"]');
+  startDateDownloadInput = new StartDateDownloadInput();
+  endDateDownloadInput = new EndDateDownloadInput();
   dateInputError = new DateInputError();
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
   expandAll = new ExpandAll();
