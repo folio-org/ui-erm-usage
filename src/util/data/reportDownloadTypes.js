@@ -1,11 +1,10 @@
 export default [
-  { value: 'JR1', label: 'JR1' },
-  { value: 'DB1', label: 'DB1' },
-  { value: 'BR1', label: 'BR1' },
-  { value: 'BR2', label: 'BR2' },
-  { value: 'PR1', label: 'PR1' },
-  { value: 'DR', label: 'DR' },
-  { value: 'IR', label: 'IR' },
-  { value: 'PR', label: 'PR' },
-  { value: 'TR', label: 'TR' }
+  { value: 'JR1', label: 'JR1', version: 4 },
+  { value: 'DB1', label: 'DB1', version: 4 },
+  { value: 'BR1', label: 'BR1', version: 4 },
+  { value: 'BR2', label: 'BR2', version: 4 },
+  { value: 'PR1', label: 'PR1', version: 4 },
+  { value: 'IR', label: 'IR', version: 5 },
+  { value: 'PR', label: 'PR', version: 5 },
+  { value: 'TR', label: 'TR', version: 5 }
 ];
