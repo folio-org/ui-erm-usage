@@ -90,7 +90,6 @@
   "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
   "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
   "reportOverview.downloadMultiMonths.reportType": "Select report type",
-  "reportOverview.downloadMultiMonths.info": "Currently download of reports for multiple months is possible Counter 4 & Counter 5 master reports (except COP5 DR).",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
   "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
   "reportOverview.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",

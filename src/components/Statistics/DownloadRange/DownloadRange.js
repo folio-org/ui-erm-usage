@@ -6,7 +6,6 @@ import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   Col,
-  InfoPopover,
   Row,
   Select,
   TextField
@@ -122,21 +121,6 @@ function DownloadRange(props) {
     setReportType(e.target);
   };
 
-  const renderReportTypeHeaderWithInfo = () => {
-    const infoText = (
-      <FormattedMessage
-        id="ui-erm-usage.reportOverview.downloadMultiMonths.info"
-      />
-    );
-
-    return (
-      <React.Fragment>
-        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType" />
-        <InfoPopover content={infoText} />
-      </React.Fragment>
-    );
-  };
-
   const isDisabled = hasError();
 
   return (
@@ -174,12 +158,16 @@ function DownloadRange(props) {
         </FormattedMessage>
       </Col>
       <Col xs={3}>
-        <Select
-          label={renderReportTypeHeaderWithInfo()}
-          name="downloadMultiMonths.reportType"
-          dataOptions={props.downloadableReports}
-          onChange={onSelectReportType}
-        />
+        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
+          {label => (
+            <Select
+              label={label}
+              name="downloadMultiMonths.reportType"
+              dataOptions={props.downloadableReports}
+              onChange={onSelectReportType}
+            />
+          )}
+        </FormattedMessage>
       </Col>
       <Col xs={3}>
         <div className={css.startButton}>
