@@ -4,7 +4,7 @@
     "ui-erm-usage.resultCount": "ResultCount:",
     "resultCount": "{count, number} Records found",
     "erm-usage": "ERM Usage",
-    "meta.title": "eUsage",
+    "meta.title": "利用統計",
     "information.providerName": "Provider Name",
     "information.vendor": "Vendor",
     "information.platform": "Platform",
