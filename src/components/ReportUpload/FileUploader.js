@@ -30,10 +30,11 @@ class FileUploader extends React.Component {
       const upload = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.upload' });
       return (
         <Button
+          aria-label={`Upload counter report file ${this.props.selectedFile.name}`}
           buttonStyle="primary"
           onClick={() => this.props.onClickUpload()}
         >
-          { `${upload} ${this.props.selectedFile.name}` }
+          {`${upload} ${this.props.selectedFile.name}`}
         </Button>
       );
     }
@@ -62,14 +63,15 @@ class FileUploader extends React.Component {
           <div {...getRootProps({ onClick: evt => evt.preventDefault() })}>
             <div style={style}>
               <input {...getInputProps()} />
-              <FormattedMessage id="ui-erm-usage.report.upload.dropFile" />
+              <FormattedMessage aria-label="Drop file for counter report upload" id="ui-erm-usage.report.upload.dropFile" />
               <Button
+                aria-label="Or select file for counter report upload"
                 buttonStyle="primary"
                 onClick={() => open()}
               >
                 <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
               </Button>
-              { this.renderDownloadButton() }
+              {this.renderDownloadButton()}
             </div>
           </div>
         )}
