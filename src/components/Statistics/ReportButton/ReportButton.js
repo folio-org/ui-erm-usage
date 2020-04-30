@@ -161,7 +161,8 @@ class ReportButton extends React.Component {
 
     const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
     const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
-    const label = `Open report info for repor ${report.reportName} - ${report.yearMonth}`;
+    const failedInfo = report.failedAttempts ? 'There are harvesting errors for this report.' : 'Harvesting was successfull.';
+    const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
     const reportInfoClassName = report.failedAttempts
       ? 'report-info-failed'
       : 'report-info-valid';
