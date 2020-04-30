@@ -129,7 +129,7 @@ function DownloadRange(props) {
         <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
           {startMessage => (
             <TextField
-              ariaLabel={startMessage}
+              ariaLabel="Startdate for downloading multi month report. Format YYYY-MM."
               label={startMessage}
               name="downloadMultiMonths.startDate"
               placeholder="YYYY-MM"
@@ -145,7 +145,7 @@ function DownloadRange(props) {
         <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
           {endMessage => (
             <TextField
-              ariaLabel={endMessage}
+              ariaLabel="Enddate for downloading multi month report. Format YYYY-MM."
               label={endMessage}
               name="downloadMultiMonths.endDate"
               placeholder="YYYY-MM"
