@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -15,7 +14,7 @@ import {
 class PeriodicHarvestingView extends React.Component {
   static propTypes = {
     initialValues: PropTypes.shape(),
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     timeFormat: PropTypes.string,
     timeZone: PropTypes.string.isRequired
   };

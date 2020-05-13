@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Settings } from '@folio/stripes/smart-components';
 import MaxFailedAttempts from './MaxFailedAttempts';
 import StartHarvester from './StartHarvester';
@@ -16,7 +16,7 @@ import PeriodicHarvestingManager from './PeriodicHarvesting';
 
 class ErmUsageSettings extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     stripes: PropTypes.shape({
       connect: PropTypes.func.isRequired
     }).isRequired

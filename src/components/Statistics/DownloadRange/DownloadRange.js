@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -188,7 +188,7 @@ DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string.isRequired,
-  intl: intlShape.isRequired
+  intl: PropTypes.object
 };
 
 export default stripesConnect(injectIntl(DownloadRange));
