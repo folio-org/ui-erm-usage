@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { stripesConnect } from '@folio/stripes/core';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -26,7 +25,7 @@ class StartHarvesterButton extends React.Component {
   });
 
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }),

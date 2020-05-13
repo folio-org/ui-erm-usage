@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { find, get, isEmpty } from 'lodash';
 
 import {
@@ -20,7 +20,7 @@ class UDPFilters extends React.Component {
     activeFilters: PropTypes.object,
     data: PropTypes.object.isRequired,
     filterHandlers: PropTypes.object,
-    intl: intlShape.isRequired
+    intl: PropTypes.object
   });
 
   static defaultProps = {

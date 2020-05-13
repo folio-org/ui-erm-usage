@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -16,7 +15,7 @@ class FileUploader extends React.Component {
     onSelectFile: PropTypes.func.isRequired,
     onClickUpload: PropTypes.func.isRequired,
     selectedFile: PropTypes.object,
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
   }
 
   onDrop = (acceptedFiles) => {

@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
 import {
-  intlShape,
   injectIntl,
 } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
@@ -20,7 +19,7 @@ import PeriodicHarvestingView from './PeriodicHarvestingView';
 
 class PeriodicHarvestingManager extends React.Component {
   static propTypes = {
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     stripes: PropTypes.object,
   };
 

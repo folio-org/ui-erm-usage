@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -154,7 +153,7 @@ ReportInfo.propTypes = {
   downloadRawReport: PropTypes.func,
   downloadCsvReport: PropTypes.func,
   retryThreshold: PropTypes.number,
-  intl: intlShape.isRequired,
+  intl: PropTypes.object,
   udpLabel: PropTypes.string.isRequired,
 };
 

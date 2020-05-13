@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -230,7 +230,7 @@ ReportButton.propTypes = {
     counterReports: PropTypes.object,
     csvReports: PropTypes.object
   }),
-  intl: intlShape.isRequired,
+  intl: PropTypes.object,
   maxFailedAttempts: PropTypes.number.isRequired,
   udpLabel: PropTypes.string.isRequired
 };

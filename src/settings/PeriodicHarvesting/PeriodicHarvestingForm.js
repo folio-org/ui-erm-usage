@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -32,7 +31,7 @@ class PeriodicHarvestingForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: PropTypes.shape(),
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     onDelete: PropTypes.func.isRequired,
     timeZone: PropTypes.string.isRequired
   };

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import {
-  intlShape,
   injectIntl,
   FormattedMessage
 } from 'react-intl';
@@ -34,7 +33,7 @@ class ReportUpload extends React.Component {
     mutator: PropTypes.shape({
       counterReports: PropTypes.object,
     }),
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
   }
 
   constructor(props) {

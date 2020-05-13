@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Accordion,
@@ -43,7 +43,7 @@ class StatisticsPerYear extends React.Component {
       failedAttemptsSettings: PropTypes.object
     }),
     resources: PropTypes.object.isRequired,
-    intl: intlShape.isRequired,
+    intl: PropTypes.object,
     stats: PropTypes.arrayOf(PropTypes.shape()),
     udpLabel: PropTypes.string.isRequired
   };
