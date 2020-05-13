@@ -68,7 +68,7 @@
     "udp.form.selectedReports.addReportButton": "添加报告",
     "udp.form.reportList.selectReportInfo": "计数器 {counterVersion}报告",
     "udp.form.reportList.selectReportFirst": "首先选择计数器报告发布！",
-    "aggregator.generalInformation": "一般信息",
+    "aggregator.generalInformation": "一般資訊",
     "aggregator.name": "名稱",
     "aggregator.serviceType": "服務類型",
     "aggregator.serviceUrl": "服务网址",
