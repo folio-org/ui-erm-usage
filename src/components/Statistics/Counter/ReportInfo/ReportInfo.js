@@ -10,7 +10,7 @@ import {
   KeyValue,
   MenuSection
 } from '@folio/stripes/components';
-import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
+import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 
 class ReportInfo extends React.Component {
   onClickDownloadRawReport = () => {

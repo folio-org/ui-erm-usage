@@ -10,8 +10,8 @@ import {
   Select,
   TextField
 } from '@folio/stripes/components';
-import { isYearMonth } from '../../../util/validate';
-import { downloadCSVMultipleMonths } from '../../../util/downloadCSV';
+import { isYearMonth } from '../../../../util/validate';
+import { downloadCSVMultipleMonths } from '../../../../util/downloadCSV';
 import css from './DownloadRange.css';
 
 function DownloadRange(props) {

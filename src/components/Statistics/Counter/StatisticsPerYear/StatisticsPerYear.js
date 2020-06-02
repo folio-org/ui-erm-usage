@@ -15,8 +15,8 @@ import ReportButton from '../ReportButton';
 import {
   calcStateExpandAllAccordions,
   calcStateToggleAccordion
-} from '../../../util/stateUtils';
-import { MAX_FAILED_ATTEMPTS } from '../../../util/constants';
+} from '../../../../util/stateUtils';
+import { MAX_FAILED_ATTEMPTS } from '../../../../util/constants';
 
 class StatisticsPerYear extends React.Component {
   static manifest = Object.freeze({

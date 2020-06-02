@@ -31,6 +31,10 @@ class UDPViewRoute extends React.Component {
       type: 'okapi',
       path: 'counter-reports/sorted/:{id}?limit=1000'
     },
+    customReports: {
+      type: 'okapi',
+      path: 'custom-reports?query=(providerId=:{id})&limit=1000'
+    },
     query: {}
   });
 
@@ -62,6 +66,16 @@ class UDPViewRoute extends React.Component {
     }
   };
 
+  getCustomReports = udpId => {
+    const { resources } = this.props;
+    const reports = get(resources, 'customReports.records[0].customReports', []);
+    if (!isEmpty(reports) && reports[0].providerId === udpId) {
+      return reports;
+    } else {
+      return [];
+    }
+  }
+
   isLoading = () => {
     const { match, resources } = this.props;
 
@@ -87,6 +101,7 @@ class UDPViewRoute extends React.Component {
     } = this.props;
     const selectedRecord = this.getRecord(id);
     const counterReports = this.getCounterReports(id);
+    const customReports = this.getCustomReports(id);
     const settings = get(resources, 'settings.records', []);
     const harvesterImpls = extractHarvesterImpls(resources);
 
@@ -95,6 +110,7 @@ class UDPViewRoute extends React.Component {
         canEdit={stripes.hasPerm('usagedataproviders.item.put')}
         data={{
           counterReports,
+          customReports,
           harvesterImpls,
           settings,
           usageDataProvider: selectedRecord

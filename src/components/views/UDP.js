@@ -214,6 +214,7 @@ class UDP extends React.Component {
                 providerId={providerId}
                 udpLabel={label}
                 counterReports={data.counterReports}
+                customReports={data.customReports}
               />
             </Accordion>
             <Accordion
@@ -253,6 +254,7 @@ UDP.propTypes = {
   canEdit: PropTypes.bool,
   data: PropTypes.shape({
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
+    customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object
