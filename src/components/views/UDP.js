@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import _, { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 import { TitleManager } from '@folio/stripes/core';
@@ -15,11 +15,11 @@ import {
   Pane,
   PaneHeaderIconButton,
   PaneMenu,
-  Row
+  Row,
 } from '@folio/stripes/components';
 import {
   NotesSmartAccordion,
-  ViewMetaData
+  ViewMetaData,
 } from '@folio/stripes/smart-components';
 
 import HelperApp from '../HelperApp';
@@ -32,7 +32,7 @@ import ReportUpload from '../ReportUpload';
 
 import {
   calcStateExpandAllAccordions,
-  calcStateToggleAccordion
+  calcStateToggleAccordion,
 } from '../../util/stateUtils';
 
 import urls from '../../util/urls';
@@ -48,37 +48,37 @@ class UDP extends React.Component {
         sushiCredsAccordion: false,
         uploadAccordion: false,
         notesAccordion: false,
-        statisticsAccordion: false
+        statisticsAccordion: false,
       },
-      helperApp: null
+      helperApp: null,
     };
   }
 
-  handleExpandAll = obj => {
-    this.setState(curState => {
+  handleExpandAll = (obj) => {
+    this.setState((curState) => {
       return calcStateExpandAllAccordions(curState, obj);
     });
   };
 
   handleAccordionToggle = ({ id }) => {
-    this.setState(state => {
+    this.setState((state) => {
       return calcStateToggleAccordion(state, id);
     });
   };
 
-  showHelperApp = helperName => {
+  showHelperApp = (helperName) => {
     this.setState({
-      helperApp: helperName
+      helperApp: helperName,
     });
   };
 
   closeHelperApp = () => {
     this.setState({
-      helperApp: null
+      helperApp: null,
     });
   };
 
-  renderDetailMenu = udp => {
+  renderDetailMenu = (udp) => {
     const { canEdit, handlers, tagsEnabled } = this.props;
 
     const tags = ((udp && udp.tags) || {}).tagList || [];
@@ -87,7 +87,7 @@ class UDP extends React.Component {
       <PaneMenu>
         {tagsEnabled && (
           <FormattedMessage id="ui-users.showTags">
-            {ariaLabel => (
+            {(ariaLabel) => (
               <PaneHeaderIconButton
                 icon="tag"
                 id="clickable-show-tags"
@@ -105,7 +105,7 @@ class UDP extends React.Component {
             icon="edit"
             id="clickable-edit-udp"
             style={{
-              visibility: !udp ? 'hidden' : 'visible'
+              visibility: !udp ? 'hidden' : 'visible',
             }}
             onClick={handlers.onEdit}
             aria-label="Edit Usagedata Provider"
@@ -137,7 +137,7 @@ class UDP extends React.Component {
       isLoading,
       handlers,
       isHarvesterExistent,
-      stripes
+      stripes,
     } = this.props;
 
     const { helperApp } = this.state;
@@ -146,106 +146,105 @@ class UDP extends React.Component {
     if (isLoading) return this.renderLoadingPane();
 
     const displayWhenOpenHarvestingAcc = isHarvesterExistent ? (
-      <StartHarvesterButton
-        usageDataProvider={usageDataProvider}
-      />
+      <StartHarvesterButton usageDataProvider={usageDataProvider} />
     ) : null;
 
     const detailMenu = this.renderDetailMenu(usageDataProvider);
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
-    return (
-      <React.Fragment>
-        <Pane
-          id="pane-udpdetails"
-          defaultWidth="40%"
-          paneTitle={<span data-test-header-title>{label}</span>}
-          lastMenu={detailMenu}
-          dismissible
-          onClose={handlers.onClose}
-        >
-          <TitleManager record={label} stripes={stripes} />
-          <Row end="xs">
-            <Col xs>
-              <ExpandAllButton
-                accordionStatus={this.state.accordions}
-                onToggle={this.handleExpandAll}
-                id="clickable-expand-all-view"
+    if (_.isEmpty(usageDataProvider)) {
+      return <div id="pane-udpdetails">Loading...</div>;
+    } else {
+      return (
+        <React.Fragment>
+          <Pane
+            id="pane-udpdetails"
+            defaultWidth="40%"
+            paneTitle={<span data-test-header-title>{label}</span>}
+            lastMenu={detailMenu}
+            dismissible
+            onClose={handlers.onClose}
+          >
+            <TitleManager record={label} stripes={stripes} />
+            <Row end="xs">
+              <Col xs>
+                <ExpandAllButton
+                  accordionStatus={this.state.accordions}
+                  onToggle={this.handleExpandAll}
+                  id="clickable-expand-all-view"
+                />
+              </Col>
+            </Row>
+            <AccordionSet>
+              <this.connectedViewMetaData
+                metadata={get(usageDataProvider, 'metadata', {})}
+                stripes={stripes}
               />
-            </Col>
-          </Row>
-          <AccordionSet>
-            <this.connectedViewMetaData
-              metadata={get(usageDataProvider, 'metadata', {})}
-              stripes={stripes}
-            />
-            <UDPInfoView
-              id="udpInfo"
-              usageDataProvider={usageDataProvider}
-              stripes={stripes}
-            />
-            <Accordion
-              open={this.state.accordions.harvestingAccordion}
-              onToggle={this.handleAccordionToggle}
-              label={
-                <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-              }
-              id="harvestingAccordion"
-              displayWhenOpen={displayWhenOpenHarvestingAcc}
-            >
-              <HarvestingConfigurationView
+              <UDPInfoView
+                id="udpInfo"
                 usageDataProvider={usageDataProvider}
                 stripes={stripes}
-                sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+              />
+              <Accordion
+                open={this.state.accordions.harvestingAccordion}
                 onToggle={this.handleAccordionToggle}
-                settings={data.settings}
-                harvesterImpls={data.harvesterImpls}
-              />
-            </Accordion>
-            <Accordion
-              open={this.state.accordions.statisticsAccordion}
-              onToggle={this.handleAccordionToggle}
-              label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-              id="statisticsAccordion"
-            >
-              <Statistics
+                label={
+                  <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+                }
+                id="harvestingAccordion"
+                displayWhenOpen={displayWhenOpenHarvestingAcc}
+              >
+                <HarvestingConfigurationView
+                  usageDataProvider={usageDataProvider}
+                  stripes={stripes}
+                  sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+                  onToggle={this.handleAccordionToggle}
+                  settings={data.settings}
+                  harvesterImpls={data.harvesterImpls}
+                />
+              </Accordion>
+              <Accordion
+                open={this.state.accordions.statisticsAccordion}
+                onToggle={this.handleAccordionToggle}
+                label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
+                id="statisticsAccordion"
+              >
+                <Statistics
+                  stripes={stripes}
+                  providerId={providerId}
+                  udpLabel={label}
+                  counterReports={data.counterReports}
+                />
+              </Accordion>
+              <Accordion
+                open={this.state.accordions.uploadAccordion}
+                onToggle={this.handleAccordionToggle}
+                label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
+                id="uploadAccordion"
+              >
+                <ReportUpload udpId={providerId} stripes={stripes} />
+              </Accordion>
+              <NotesSmartAccordion
+                id="notesAccordion"
+                domainName="erm-usage"
+                entityId={usageDataProvider.id}
+                entityName={usageDataProvider.label}
+                entityType="erm-usage-data-provider"
+                pathToNoteCreate={urls.noteCreate()}
+                pathToNoteDetails={urls.notes()}
+                onToggle={this.handleAccordionToggle}
+                open={this.state.accordions.notesAccordion}
                 stripes={stripes}
-                providerId={providerId}
-                udpLabel={label}
-                counterReports={data.counterReports}
               />
-            </Accordion>
-            <Accordion
-              open={this.state.accordions.uploadAccordion}
-              onToggle={this.handleAccordionToggle}
-              label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
-              id="uploadAccordion"
-            >
-              <ReportUpload
-                udpId={providerId}
-                stripes={stripes}
-              />
-            </Accordion>
-            <NotesSmartAccordion
-              id="notesAccordion"
-              domainName="erm-usage"
-              entityId={usageDataProvider.id}
-              entityName={usageDataProvider.label}
-              entityType="erm-usage-data-provider"
-              pathToNoteCreate={urls.noteCreate()}
-              pathToNoteDetails={urls.notes()}
-              onToggle={this.handleAccordionToggle}
-              open={this.state.accordions.notesAccordion}
-              stripes={stripes}
-            />
-          </AccordionSet>
-        </Pane>
-        {helperApp && (
-          <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
-        )}
-      </React.Fragment>
-    );
+            </AccordionSet>
+          </Pane>
+          {helperApp && (
+            <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
+          )}
+        </React.Fragment>
+      );
+    }
   }
 }
 
@@ -255,16 +254,16 @@ UDP.propTypes = {
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    usageDataProvider: PropTypes.object
+    usageDataProvider: PropTypes.object,
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
-    onEdit: PropTypes.func
+    onEdit: PropTypes.func,
   }).isRequired,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   stripes: PropTypes.object.isRequired,
-  tagsEnabled: PropTypes.bool
+  tagsEnabled: PropTypes.bool,
 };
 
 export default UDP;
