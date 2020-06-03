@@ -154,7 +154,7 @@ class UDP extends React.Component {
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
     if (_.isEmpty(usageDataProvider)) {
-      return <div>Loading...</div>;
+      return <div id="pane-udpdetails">Loading...</div>;
     } else {
       return (
         <React.Fragment>
