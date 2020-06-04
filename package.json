@@ -61,7 +61,6 @@
   },
   "peerDependencies": {
     "@folio/stripes": "^4.0.0",
-    "@folio/stripes-erm-components": "*",
     "react": "*",
     "react-dom": "*",
     "react-intl": "^4.5.3",
