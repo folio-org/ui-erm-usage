@@ -27,7 +27,6 @@
     "@folio/stripes-components": "^7.0.0",
     "@folio/stripes-connect": "^5.6.0",
     "@folio/stripes-core": "^5.0.0",
-    "@folio/stripes-erm-components": "^3.0.0",
     "@folio/stripes-form": "^4.0.0",
     "@folio/stripes-final-form": "^3.0.0",
     "@folio/stripes-logger": "^1.0.0",
@@ -62,6 +61,7 @@
   },
   "peerDependencies": {
     "@folio/stripes": "^4.0.0",
+    "@folio/stripes-erm-components": "*",
     "react": "*",
     "react-dom": "*",
     "react-intl": "^4.5.3",
