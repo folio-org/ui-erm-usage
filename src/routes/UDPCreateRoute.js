@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
-import { LoadingPane } from '@folio/stripes-erm-components';
+import { LoadingPane } from '@folio/stripes-components';
 
 import UDPForm from '../components/views/UDPForm';
 import extractHarvesterImpls from '../util/harvesterImpls';
@@ -67,7 +67,7 @@ class UDPCreateRoute extends React.Component {
     const aggregators = (resources.aggregators || {}).records || [];
 
     if (!this.state.hasPerms) return <div>No Permission</div>;
-    if (this.fetchIsPending()) return <LoadingPane onClose={this.handleClose} renderPaneset />;
+    if (this.fetchIsPending()) return <LoadingPane onClose={this.handleClose} />;
 
     return (
       <UDPForm

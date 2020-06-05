@@ -1,8 +1,9 @@
 # Change history for ui-erm-usage
 
-## 3.0.0 (IN PROGRESS)
-
-* Update to `stripes` `v4.0`, `react-intl` `v4.5.3`. STRIPES-672.
+## [3.0.0](https://github.com/folio-org/ui-erm-usage/tree/v3.0.0) (2020-06-04)
+* Improve screenreading (UIEUS-170, UIEUS-171, UIEUS-172)
+* Download COP5 reports for a range of several month as csv (UIEUS-162, MODEUS-55)
+* Update to `stripes` `v4.0`, `react-intl` `v4.5.3` (STRIPES-672)
 
 ## [2.7.1](https://github.com/folio-org/ui-erm-usage/tree/v2.7.1) (2020-03-26)
 * Bugfix: Error when opening detail view of a usage data provider (UIEUS-167)

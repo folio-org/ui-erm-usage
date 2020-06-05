@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "2.7.1",
+  "version": "3.0.0",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -27,7 +27,6 @@
     "@folio/stripes-components": "^7.0.0",
     "@folio/stripes-connect": "^5.6.0",
     "@folio/stripes-core": "^5.0.0",
-    "@folio/stripes-erm-components": "^3.0.0",
     "@folio/stripes-form": "^4.0.0",
     "@folio/stripes-final-form": "^3.0.0",
     "@folio/stripes-logger": "^1.0.0",
@@ -81,8 +80,8 @@
     "queryResource": "query",
     "okapiInterfaces": {
       "usage-data-providers": "2.4",
-      "aggregator-settings": "1.1",
-      "counter-reports": "1.4"
+      "aggregator-settings": "1.2",
+      "counter-reports": "1.5"
     },
     "permissionSets": [
       {
