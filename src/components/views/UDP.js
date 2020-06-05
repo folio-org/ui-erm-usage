@@ -215,7 +215,7 @@ class UDP extends React.Component {
                   providerId={providerId}
                   udpLabel={label}
                   counterReports={data.counterReports}
-		  customReports={data.customReports}
+                  customReports={data.customReports}
                 />
               </Accordion>
               <Accordion
@@ -256,16 +256,16 @@ UDP.propTypes = {
     customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    usageDataProvider: PropTypes.object
+    usageDataProvider: PropTypes.object,
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
-    onEdit: PropTypes.func
+    onEdit: PropTypes.func,
   }).isRequired,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   stripes: PropTypes.object.isRequired,
-  tagsEnabled: PropTypes.bool
+  tagsEnabled: PropTypes.bool,
 };
 
 export default UDP;
