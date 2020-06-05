@@ -7,10 +7,10 @@ import {
   AccordionSet,
   Col,
   ExpandAllButton,
-  IconButton,
   MultiColumnList,
   Row,
 } from '@folio/stripes-components';
+import InfoButton from './InfoButton';
 
 import css from '../Statistics.css';
 
@@ -32,16 +32,15 @@ function CustomStatistics(props) {
     };
   }, [props.customReports]);
 
+  const { stripes, udpLabel } = props;
+
   const groupReportsByYear = (reports) => _.groupBy(reports, (r) => r.year);
 
   const perYear = groupReportsByYear(props.customReports);
   const dataPerYear = _.keys(perYear)
     .sort()
     .map((y) => {
-      const data = perYear[y].map((cr) => ({
-        note: cr.note,
-        fileId: cr.fileId,
-      }));
+      const data = perYear[y];
       return {
         year: y,
         data,
@@ -56,7 +55,6 @@ function CustomStatistics(props) {
   };
 
   const accordions = dataPerYear.map((entry) => (
-    // <Card id={entry.year} headerStart={<strong>{entry.year}</strong>}>
     <Accordion
       id={entry.year}
       key={entry.year}
@@ -69,9 +67,10 @@ function CustomStatistics(props) {
         formatter={{
           note: (line) => line.note,
           fileId: (line) => (
-            <IconButton
-              icon="document"
-              onClick={() => console.log(line.fileId)}
+            <InfoButton
+              stripes={stripes}
+              customReport={line}
+              udpLabel={udpLabel}
             />
           ),
         }}
@@ -79,7 +78,6 @@ function CustomStatistics(props) {
         visibleColumns={['note', 'fileId']}
       />
     </Accordion>
-    // </Card>
   ));
   return (
     <>
@@ -122,6 +120,7 @@ CustomStatistics.propTypes = {
     }),
   }).isRequired,
   customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default CustomStatistics;
