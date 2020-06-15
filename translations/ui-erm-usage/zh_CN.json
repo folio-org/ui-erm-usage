@@ -75,7 +75,7 @@
     "aggregator.aggregatorConfig.title": "聚合器配置",
     "aggregator.config.apiKey": "API密钥",
     "aggregator.config.requestorId": "请求者ID",
-    "aggregator.config.customerId": "顾客ID",
+    "aggregator.config.customerId": "客户ID",
     "aggregator.config.reportRelease": "报告发布",
     "aggregator.config.accountConfig": "帐户配置",
     "aggregator.config.accountConfig.type": "类型",
