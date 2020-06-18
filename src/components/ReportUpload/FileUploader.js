@@ -13,7 +13,7 @@ import {
 class FileUploader extends React.Component {
   static propTypes = {
     onSelectFile: PropTypes.func.isRequired,
-    onClickUpload: PropTypes.func.isRequired,
+    onClickUpload: PropTypes.func,
     selectedFile: PropTypes.object,
     intl: PropTypes.object,
   }
@@ -22,8 +22,8 @@ class FileUploader extends React.Component {
     this.props.onSelectFile(acceptedFiles);
   }
 
-  renderDownloadButton = () => {
-    if (_.isEmpty(this.props.selectedFile)) {
+  renderUploadButton = () => {
+    if (_.isEmpty(this.props.selectedFile) || _.isNil(this.props.onClickUpload)) {
       return null;
     } else {
       const upload = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.upload' });
@@ -70,7 +70,7 @@ class FileUploader extends React.Component {
               >
                 <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
               </Button>
-              {this.renderDownloadButton()}
+              {this.renderUploadButton()}
             </div>
           </div>
         )}
