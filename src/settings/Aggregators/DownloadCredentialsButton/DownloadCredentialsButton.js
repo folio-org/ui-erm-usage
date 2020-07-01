@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
 import { Button } from '@folio/stripes/components';
 
-import { downloadCredentials } from '../../../util/downloadCSV';
+import { downloadCredentials } from '../../../util/downloadReport';
 
 class DownloadCredentialsButton extends React.Component {
   static propTypes = {

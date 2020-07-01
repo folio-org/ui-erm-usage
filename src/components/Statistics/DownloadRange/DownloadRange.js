@@ -11,7 +11,8 @@ import {
   TextField
 } from '@folio/stripes/components';
 import { isYearMonth } from '../../../util/validate';
-import { downloadCSVMultipleMonths } from '../../../util/downloadCSV';
+import { downloadReportMultipleMonths } from '../../../util/downloadReport';
+import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
 
 function DownloadRange(props) {
@@ -30,6 +31,7 @@ function DownloadRange(props) {
   const [end, setEnd] = useState('');
   const [endError, setEndError] = useState(null);
   const [reportType, setReportType] = useState('');
+  const [exportFormat, setExportFormat] = useState(exportFormats[0].value);
 
   useEffect(() => {
     setReportType(_.get(props.downloadableReports, '[0]', ''));
@@ -105,12 +107,13 @@ function DownloadRange(props) {
 
   const doDownload = () => {
     if (!_.isEmpty(start) && !_.isEmpty(end)) {
-      downloadCSVMultipleMonths(
+      downloadReportMultipleMonths(
         props.udpId,
         reportType.value,
         getCounterVersion(reportType),
         start,
         end,
+        exportFormat,
         okapiUrl,
         httpHeaders
       );
@@ -119,6 +122,10 @@ function DownloadRange(props) {
 
   const onSelectReportType = e => {
     setReportType(e.target);
+  };
+
+  const onSelectExportFormat = e => {
+    setExportFormat(e.target.value);
   };
 
   const isDisabled = hasError();
@@ -157,7 +164,7 @@ function DownloadRange(props) {
           )}
         </FormattedMessage>
       </Col>
-      <Col xs={3}>
+      <Col xs={2}>
         <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
           {label => (
             <Select
@@ -169,14 +176,26 @@ function DownloadRange(props) {
           )}
         </FormattedMessage>
       </Col>
-      <Col xs={3}>
+      <Col xs={2}>
+        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
+          {label => (
+            <Select
+              label={label}
+              name="downloadMultiMonths.formats"
+              dataOptions={exportFormats}
+              onChange={onSelectExportFormat}
+            />
+          )}
+        </FormattedMessage>
+      </Col>
+      <Col xs={2}>
         <div className={css.startButton}>
           <Button
             onClick={doDownload}
             buttonStyle="primary"
             disabled={isDisabled}
           >
-            <FormattedMessage id="ui-erm-usage.report.action.download.csv" />
+            <FormattedMessage id="ui-erm-usage.report.action.download" />
           </Button>
         </div>
       </Col>

@@ -58,6 +58,11 @@ import {
   value = value();
 }
 
+@interactor class DataTypeDownloadSelect {
+  static defaultScope = 'select[name="downloadMultiMonths.formats"]';
+  value = value();
+}
+
 @interactor class StartDateDownloadInput {
   static defaultScope = 'input[name="downloadMultiMonths.startDate"]';
   clickInput = clickable();
@@ -133,6 +138,7 @@ export default @interactor class UDPDetailsPage {
   endDateDownloadInput = new EndDateDownloadInput();
   dateInputError = new DateInputError();
   reportTypeDownloadSelect = new ReportTypeDownloadSelect();
+  dataTypeDownloadSelect = new DataTypeDownloadSelect();
   expandAll = new ExpandAll();
   harvesterImpls = text('[data-test-service-type]');
   validReport = clickable('#clickable-download-stats-by-id-BR1-2018-01');
