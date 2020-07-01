@@ -201,6 +201,10 @@
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
   "settings.harvester.config": "Harvester Configuration",
 
+  "settings.credentials.download": "Download credentials",
+  "settings.credentials.download.csv": "Download as CSV",
+  "settings.credentials.download.xlsx": "Download as XLSX",
+
   "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
   "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
   "settings.harvester.config.periodic.title": "Periodic harvesting",

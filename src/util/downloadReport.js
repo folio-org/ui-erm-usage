@@ -71,9 +71,9 @@ const downloadReportSingleMonth = (udpId, format, okapiUrl, httpHeaders) => {
     });
 };
 
-const downloadCredentials = (aggregatorId, okapiUrl, httpHeaders) => {
+const downloadCredentials = (aggregatorId, format, okapiUrl, httpHeaders) => {
   return fetch(
-    `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials`,
+    `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials?format=${format}`,
     { headers: httpHeaders }
   )
     .then((response) => {
@@ -83,12 +83,14 @@ const downloadCredentials = (aggregatorId, okapiUrl, httpHeaders) => {
           _error: 'Fetch credentials failed',
         });
       } else {
-        return response.text();
+        if (format === 'csv') {
+          return response.text();
+        }
+        return response.blob();
       }
     })
     .then((text) => {
-      const fileType = 'csv';
-      saveReport(aggregatorId, text, fileType);
+      saveReport(aggregatorId, text, format);
     })
     .catch((err) => {
       throw new Error('Error while downloading credentials. ' + err.message);
