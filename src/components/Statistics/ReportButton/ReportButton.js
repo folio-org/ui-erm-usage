@@ -12,7 +12,7 @@ import {
 import saveAs from 'file-saver';
 
 import ReportInfo from '../ReportInfo';
-import { downloadCSVSingleMonth } from '../../../util/downloadCSV';
+import { downloadReportSingleMonth } from '../../../util/downloadReport';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
@@ -100,10 +100,10 @@ class ReportButton extends React.Component {
       });
   };
 
-  downloadCsvReport = () => {
+  downloadReport = (format) => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    downloadCSVSingleMonth(id, this.okapiUrl, this.httpHeaders).catch(err => {
+    downloadReportSingleMonth(id, format, this.okapiUrl, this.httpHeaders).catch(err => {
       this.log(err.message);
     });
   };
@@ -197,7 +197,7 @@ class ReportButton extends React.Component {
               report={report}
               deleteReport={this.deleteReport}
               downloadRawReport={this.downloadRawReport}
-              downloadCsvReport={this.downloadCsvReport}
+              downloadReport={this.downloadReport}
               retryThreshold={this.props.maxFailedAttempts}
               udpLabel={this.props.udpLabel}
             />
