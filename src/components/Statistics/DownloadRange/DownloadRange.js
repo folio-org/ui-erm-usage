@@ -131,75 +131,82 @@ function DownloadRange(props) {
   const isDisabled = hasError();
 
   return (
-    <Row>
-      <Col xs={3}>
-        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
-          {startMessage => (
-            <TextField
-              ariaLabel="Startdate for downloading multi month report. Format YYYY-MM."
-              label={startMessage}
-              name="downloadMultiMonths.startDate"
-              placeholder="YYYY-MM"
-              value={start}
-              onChange={handleStartChange}
-              onClearField={clearStart}
-              error={startError}
-            />
-          )}
-        </FormattedMessage>
-      </Col>
-      <Col xs={3}>
-        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
-          {endMessage => (
-            <TextField
-              ariaLabel="Enddate for downloading multi month report. Format YYYY-MM."
-              label={endMessage}
-              name="downloadMultiMonths.endDate"
-              placeholder="YYYY-MM"
-              value={end}
-              onChange={handleEndChange}
-              onClearField={clearEnd}
-              error={endError}
-            />
-          )}
-        </FormattedMessage>
-      </Col>
-      <Col xs={2}>
-        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
-          {label => (
-            <Select
-              label={label}
-              name="downloadMultiMonths.reportType"
-              dataOptions={props.downloadableReports}
-              onChange={onSelectReportType}
-            />
-          )}
-        </FormattedMessage>
-      </Col>
-      <Col xs={2}>
-        <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
-          {label => (
-            <Select
-              label={label}
-              name="downloadMultiMonths.formats"
-              dataOptions={exportFormats}
-              onChange={onSelectExportFormat}
-            />
-          )}
-        </FormattedMessage>
-      </Col>
-      <Col xs={2}>
-        <div className={css.startButton}>
-          <Button
-            onClick={doDownload}
-            buttonStyle="primary"
-            disabled={isDisabled}
-          >
-            <FormattedMessage id="ui-erm-usage.report.action.download" />
-          </Button>
-        </div>
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col xs={4}>
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
+            {startMessage => (
+              <TextField
+                ariaLabel="Startdate for downloading multi month report. Format YYYY-MM."
+                label={startMessage}
+                name="downloadMultiMonths.startDate"
+                placeholder="YYYY-MM"
+                value={start}
+                onChange={handleStartChange}
+                onClearField={clearStart}
+                error={startError}
+              />
+            )}
+          </FormattedMessage>
+        </Col>
+        <Col xs={4}>
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
+            {endMessage => (
+              <TextField
+                ariaLabel="Enddate for downloading multi month report. Format YYYY-MM."
+                label={endMessage}
+                name="downloadMultiMonths.endDate"
+                placeholder="YYYY-MM"
+                value={end}
+                onChange={handleEndChange}
+                onClearField={clearEnd}
+                error={endError}
+              />
+            )}
+          </FormattedMessage>
+        </Col>
+        <Col xs={4}>
+          <></>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={4}>
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
+            {label => (
+              <Select
+                label={label}
+                name="downloadMultiMonths.reportType"
+                dataOptions={props.downloadableReports}
+                onChange={onSelectReportType}
+              />
+            )}
+          </FormattedMessage>
+        </Col>
+        <Col xs={4}>
+          <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
+            {label => (
+              <Select
+                label={label}
+                name="downloadMultiMonths.formats"
+                dataOptions={exportFormats}
+                onChange={onSelectExportFormat}
+              />
+            )}
+          </FormattedMessage>
+        </Col>
+        <Col xs={4}>
+          <div className={css.startButton}>
+            <Button
+              onClick={doDownload}
+              buttonStyle="primary"
+              disabled={isDisabled}
+            >
+              <FormattedMessage id="ui-erm-usage.report.action.download" />
+            </Button>
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 }
 
