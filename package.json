@@ -79,7 +79,7 @@
     "home": "/eusage",
     "queryResource": "query",
     "okapiInterfaces": {
-      "usage-data-providers": "2.4",
+      "usage-data-providers": "2.5",
       "aggregator-settings": "1.2",
       "counter-reports": "1.5"
     },

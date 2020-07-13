@@ -15,6 +15,7 @@ export default Factory.extend({
       serviceUrl: 'www.sushiUrl-' + i + '.de'
     }
   }),
+  harvestingDate: () => '2020-01-22T13:26:40.687+0000',
   sushiCredentials: (i) => ({
     customerId: 'customer_' + i,
     requestorId: 'requestor_' + i

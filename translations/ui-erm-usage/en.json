@@ -49,6 +49,7 @@
   "udpInfo.contentPlatform": "Content Platform",
 
   "udpHarvestingConfig.harvestingStatus": "Harvesting status",
+  "udpHarvestingConfig.lastHarvesting": "Last harvesting",
   "udpHarvestingConfig.reportRelease": "Report release",
   "udpHarvestingConfig.requestedReport": "Requested report",
   "udpHarvestingConfig.harvestingStart": "Harvesting start",
