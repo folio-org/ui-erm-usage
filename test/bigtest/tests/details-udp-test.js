@@ -72,6 +72,10 @@ describe('UDPDetailsPage', () => {
       it('service type is set', () => {
         expect(udpDetailsPage.harvesterImpls).to.be.equal('Counter-Sushi 4.1');
       });
+
+      it('last harvesting is set and parsed', () => {
+        expect(udpDetailsPage.lastHarvesting).to.have.string('Jan 22 2020');
+      });
     });
 
     describe('can select report type for download multi months', function () {

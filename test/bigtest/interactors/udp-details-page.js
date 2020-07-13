@@ -141,6 +141,7 @@ export default @interactor class UDPDetailsPage {
   dataTypeDownloadSelect = new DataTypeDownloadSelect();
   expandAll = new ExpandAll();
   harvesterImpls = text('[data-test-service-type]');
+  lastHarvesting = text('[data-test-last-harvesting]');
   validReport = clickable('#clickable-download-stats-by-id-BR1-2018-01');
   failedReport = clickable('#clickable-download-stats-by-id-BR1-2018-02');
   reportInfoValid = new ReportInfoValid();

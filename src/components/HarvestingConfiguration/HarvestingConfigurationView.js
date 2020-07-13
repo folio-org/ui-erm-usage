@@ -2,8 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  injectIntl,
   FormattedMessage
 } from 'react-intl';
+import moment from 'moment';
 import {
   Accordion,
   Col,
@@ -18,6 +20,7 @@ import reportReleaseOptions from '../../util/data/reportReleaseOptions';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
+    intl: PropTypes.object,
     usageDataProvider: PropTypes.object.isRequired,
     stripes: PropTypes.shape({
       connect: PropTypes.func.isRequired,
@@ -27,6 +30,11 @@ class HarvestingConfigurationView extends React.Component {
     settings: PropTypes.arrayOf(PropTypes.object).isRequired,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
+
+  constructor(props) {
+    super(props);
+    this.timeZone = props.intl.timeZone;
+  }
 
   createProvider = udp => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
@@ -45,6 +53,15 @@ class HarvestingConfigurationView extends React.Component {
         />
       );
     }
+  }
+
+  renderLastHarvestingDate = udp => {
+    const dateRaw = _.get(udp, 'harvestingDate', '-');
+    if (dateRaw === '-') {
+      return dateRaw;
+    }
+    const date = moment(dateRaw).local();
+    return date.format('MMM DD YYYY, HH:mm:ss');
   }
 
   render() {
@@ -69,6 +86,8 @@ class HarvestingConfigurationView extends React.Component {
     const harvestingStart = _.get(usageDataProvider, 'harvestingConfig.harvestingStart', '-');
     const harvestingEnd = _.get(usageDataProvider, 'harvestingConfig.harvestingEnd', '-');
 
+    const lastHarvesting = this.renderLastHarvestingDate(usageDataProvider);
+
     return (
       <div>
         <Row>
@@ -76,6 +95,18 @@ class HarvestingConfigurationView extends React.Component {
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
               value={harvestingStatusLabel}
+            />
+          </Col>
+          <Col xs={3}>
+            <></>
+          </Col>
+          <Col xs={3}>
+            <></>
+          </Col>
+          <Col xs={3}>
+            <KeyValue
+              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.lastHarvesting" />}
+              value={<div data-test-last-harvesting>{lastHarvesting}</div>}
             />
           </Col>
         </Row>
@@ -122,4 +153,4 @@ class HarvestingConfigurationView extends React.Component {
   }
 }
 
-export default HarvestingConfigurationView;
+export default injectIntl(HarvestingConfigurationView);
