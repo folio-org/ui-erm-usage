@@ -1,7 +1,7 @@
 import {
   Model,
   belongsTo
-} from '@bigtest/mirage';
+} from 'miragejs';
 
 export default Model.extend({
   provider: belongsTo('usage-data-provider'),
