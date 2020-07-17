@@ -1,4 +1,4 @@
-import { association, faker } from '@bigtest/mirage';
+import { faker } from 'miragejs';
 import Factory from './application';
 
 function getRandomInt(max) {
@@ -17,12 +17,10 @@ export default Factory.extend({
     }
   },
   yearMonth: (i) => {
-    // let month = getRandomInt(12);
     let month = i;
     month = month === 0 ? 1 : month;
     month = month < 10 ? '0' + month : month;
     let year = getRandomInt(19);
-    // year = year < 10 ? '0' + year : year;
     year = 18;
     return '20' + year + '-' + month;
   },
@@ -52,7 +50,7 @@ export default Factory.extend({
     }
   },
 
-  afterCreate(report, server) {
+  afterCreate(report, _) {
     if (report.provider) {
       report.update({
         provider: report.provider,

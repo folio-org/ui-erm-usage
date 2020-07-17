@@ -1,4 +1,4 @@
-import { Factory } from '@bigtest/mirage';
+import { Factory } from 'miragejs';
 
 export default Factory.extend({
   startAt: () => '2019-01-01T08:00:00.000+0000',
