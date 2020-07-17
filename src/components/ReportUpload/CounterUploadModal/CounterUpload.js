@@ -1,18 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
-import {
-  Button,
-  Col,
-  KeyValue,
-  Modal,
-  Row
-} from '@folio/stripes/components';
+import { Button, Col, KeyValue, Modal, Row } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
 class CounterUpload extends React.Component {
@@ -22,9 +13,9 @@ class CounterUpload extends React.Component {
       fetch: false,
       accumulate: 'true',
       POST: {
-        path: 'counter-reports/upload/provider/!{udpId}'
-      }
-    }
+        path: 'counter-reports/upload/provider/!{udpId}',
+      },
+    },
   });
 
   static propTypes = {
@@ -37,92 +28,80 @@ class CounterUpload extends React.Component {
       counterReports: PropTypes.object,
     }),
     intl: PropTypes.object,
-  }
+  };
 
   constructor(props) {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
     this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign({}, {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/octet-stream'
-    });
+    this.httpHeaders = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': props.stripes.okapi.tenant,
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        'Content-Type': 'application/octet-stream',
+      }
+    );
     this.state = {
       selectedFile: {},
-      // showInfoModal: false,
-      // modalInfoText: '',
-      showOverwriteModal: false
+      showOverwriteModal: false,
     };
   }
 
   showErrorInfo = (response) => {
     response.text().then((text) => {
       if (text.includes('Report already existing')) {
-        this.setState(
-          {
-            showOverwriteModal: true,
-            // showInfoModal: false,
-          }
-        );
+        this.setState({
+          showOverwriteModal: true,
+        });
       } else {
-        this.setState(
-          {
-            showOverwriteModal: false,
-            // showInfoModal: true,
-            // modalInfoText: text,
-          }
-        );
+        this.setState({
+          showOverwriteModal: false,
+        });
         this.props.onFail();
       }
     });
-  }
+  };
 
   doUpload = (data, doOverwrite) => {
-    fetch(`${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
+    fetch(
+      `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
       {
         headers: this.httpHeaders,
         method: 'POST',
-        body: data
-      })
+        body: data,
+      }
+    )
       .then((response) => {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
-          const info = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.success' });
-          this.setState(
-            {
-              // showInfoModal: true,
-              showOverwriteModal: false,
-              // modalInfoText: info,
-              selectedFile: {}
-            }
-          );
+          const info = this.props.intl.formatMessage({
+            id: 'ui-erm-usage.report.upload.success',
+          });
+          this.setState({
+            showOverwriteModal: false,
+            selectedFile: {},
+          });
           this.props.onSuccess();
         }
       })
-      .catch(err => {
-        const failText = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
+      .catch((err) => {
+        const failText = this.props.intl.formatMessage({
+          id: 'ui-erm-usage.report.upload.failed',
+        });
         const infoText = failText + ' ' + err.message;
-        this.setState(
-          {
-            // showInfoModal: true,
-            showOverwriteModal: false,
-            // modalInfoText: infoText
-          }
-        );
+        this.setState({
+          showOverwriteModal: false,
+        });
         this.props.onFail();
       });
-  }
-
-  // handleCloseInfoModal = () => {
-  //   this.setState({ showInfoModal: false });
-  // }
+  };
 
   handleCloseOverwriteModal = () => {
     this.setState({ showOverwriteModal: false });
-  }
+  };
 
   uploadFile = (doOverwrite = false) => {
     const selectedFile = this.state.selectedFile;
@@ -133,18 +112,18 @@ class CounterUpload extends React.Component {
       };
       fileReader.readAsText(selectedFile);
     }
-  }
+  };
 
   uploadFileForceOverwrite = () => {
     this.uploadFile(true);
-  }
+  };
 
   selectFile = (acceptedFiles) => {
     const currentFile = acceptedFiles[0];
     this.setState({
       selectedFile: currentFile,
     });
-  }
+  };
 
   render() {
     return (
@@ -166,36 +145,20 @@ class CounterUpload extends React.Component {
             />
           </Col>
         </Row>
-        {/* <Modal
-          closeOnBackgroundClick
-          open={this.state.showInfoModal}
-          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label' })}
-        >
-          <div>
-            { this.state.modalInfoText }
-          </div>
-          <Button
-            onClick={this.handleCloseInfoModal}
-          >
-            <FormattedMessage id="ui-erm-usage.general.ok" />
-          </Button>
-        </Modal> */}
         <Modal
           closeOnBackgroundClick
           open={this.state.showOverwriteModal}
-          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label' })}
+          label={this.props.intl.formatMessage({
+            id: 'ui-erm-usage.report.upload.modal.label',
+          })}
         >
           <div>
             <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
           </div>
-          <Button
-            onClick={this.uploadFileForceOverwrite}
-          >
+          <Button onClick={this.uploadFileForceOverwrite}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button
-            onClick={this.handleCloseOverwriteModal}
-          >
+          <Button onClick={this.handleCloseOverwriteModal}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </Modal>
