@@ -86,7 +86,7 @@ class UDP extends React.Component {
     return (
       <PaneMenu>
         {tagsEnabled && (
-          <FormattedMessage id="ui-users.showTags">
+          <FormattedMessage id="ui-erm-usage.showTags">
             {(ariaLabel) => (
               <PaneHeaderIconButton
                 icon="tag"

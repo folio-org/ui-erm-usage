@@ -7,68 +7,73 @@ const saveReport = (id, reportData, fileType) => {
   saveAs(blob, fileName);
 };
 
-const downloadCSVMultipleMonths = (
+const downloadReportMultipleMonths = (
   udpId,
   reportName,
   version,
   start,
   end,
+  format,
   okapiUrl,
   httpHeaders
 ) => {
   return fetch(
-    `${okapiUrl}/counter-reports/csv/provider/${udpId}/report/${reportName}/version/${version}/from/${start}/to/${end}`,
+    `${okapiUrl}/counter-reports/export/provider/${udpId}/report/${reportName}/version/${version}/from/${start}/to/${end}?format=${format}`,
     { headers: httpHeaders }
   )
     .then((response) => {
       if (response.status >= 400) {
         throw new SubmissionError({
-          identifier: `Error ${response.status} retrieving counter csv report for multiple mpnths`,
-          _error: 'Fetch counter csv failed',
+          identifier: `Error ${response.status} retrieving counter report for multiple mpnths`,
+          _error: 'Fetch counter report failed',
         });
       } else {
-        return response.text();
+        if (format === 'csv') {
+          return response.text();
+        }
+        return response.blob();
       }
     })
     .then((text) => {
-      const fileType = 'csv';
       saveReport(
         `${udpId}_${reportName}_${version}_${start}_${end}`,
         text,
-        fileType
+        format
       );
     })
     .catch((err) => {
-      throw new Error('Error while downloading CSV report. ' + err.message);
+      throw new Error('Error while downloading CSV/xslx report. ' + err.message);
     });
 };
 
-const downloadCSVSingleMonth = (udpId, okapiUrl, httpHeaders) => {
-  return fetch(`${okapiUrl}/counter-reports/csv/${udpId}`, {
+const downloadReportSingleMonth = (udpId, format, okapiUrl, httpHeaders) => {
+  return fetch(`${okapiUrl}/counter-reports/export/${udpId}?format=${format}`, {
     headers: httpHeaders,
   })
     .then((response) => {
       if (response.status >= 400) {
         throw new SubmissionError({
-          identifier: `Error ${response.status} retrieving counter csv report by id`,
+          identifier: `Error ${response.status} retrieving counter report by id`,
           _error: 'Fetch counter csv failed',
         });
       } else {
-        return response.text();
+        if (format === 'csv') {
+          return response.text();
+        }
+        return response.blob();
       }
     })
     .then((text) => {
-      const fileType = 'csv';
-      saveReport(udpId, text, fileType);
+      saveReport(udpId, text, format);
     })
     .catch((err) => {
-      throw new Error('Error while downloading CSV report. ' + err.message);
+      throw new Error('Error while downloading CSV/xslx report. ' + err.message);
     });
 };
 
-const downloadCredentials = (aggregatorId, okapiUrl, httpHeaders) => {
+const downloadCredentials = (aggregatorId, format, okapiUrl, httpHeaders) => {
   return fetch(
-    `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials`,
+    `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials?format=${format}`,
     { headers: httpHeaders }
   )
     .then((response) => {
@@ -78,12 +83,14 @@ const downloadCredentials = (aggregatorId, okapiUrl, httpHeaders) => {
           _error: 'Fetch credentials failed',
         });
       } else {
-        return response.text();
+        if (format === 'csv') {
+          return response.text();
+        }
+        return response.blob();
       }
     })
     .then((text) => {
-      const fileType = 'csv';
-      saveReport(aggregatorId, text, fileType);
+      saveReport(aggregatorId, text, format);
     })
     .catch((err) => {
       throw new Error('Error while downloading credentials. ' + err.message);
@@ -113,10 +120,9 @@ const downloadErmUsageFile = (fileId, fileName, okapiUrl, httpHeaders) => {
     });
 };
 
-
 export {
-  downloadCSVMultipleMonths,
-  downloadCSVSingleMonth,
-  downloadCredentials,
   downloadErmUsageFile,
+  downloadReportMultipleMonths,
+  downloadCredentials,
+  downloadReportSingleMonth,
 };

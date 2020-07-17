@@ -72,6 +72,10 @@ describe('UDPDetailsPage', () => {
       it('service type is set', () => {
         expect(udpDetailsPage.harvesterImpls).to.be.equal('Counter-Sushi 4.1');
       });
+
+      it('last harvesting is set and parsed', () => {
+        expect(udpDetailsPage.lastHarvesting).to.have.string('Jan 22 2020');
+      });
     });
 
     describe('can select report type for download multi months', function () {
@@ -81,6 +85,10 @@ describe('UDPDetailsPage', () => {
 
       it('report type select is available', () => {
         expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
+      });
+
+      it('data type select is available', () => {
+        expect(udpDetailsPage.dataTypeDownloadSelect.value).to.be.equal('csv');
       });
 
       describe('enter valid startDate & endDate, but startDate > endDate', () => {
@@ -127,6 +135,15 @@ describe('UDPDetailsPage', () => {
         });
         it('reportType is changed to "JR1"', () => {
           expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('JR1');
+        });
+      });
+
+      describe('XLSX can be selected', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.dataTypeDownloadSelect.select('XLSX');
+        });
+        it('dataType is changed to "xlsx"', () => {
+          expect(udpDetailsPage.dataTypeDownloadSelect.value).to.be.equal('xlsx');
         });
       });
     });

@@ -49,6 +49,7 @@
   "udpInfo.contentPlatform": "Content Platform",
 
   "udpHarvestingConfig.harvestingStatus": "Harvesting status",
+  "udpHarvestingConfig.lastHarvesting": "Last harvesting",
   "udpHarvestingConfig.reportRelease": "Report release",
   "udpHarvestingConfig.requestedReport": "Requested report",
   "udpHarvestingConfig.harvestingStart": "Harvesting start",
@@ -89,14 +90,17 @@
   "reportOverview.downloadMultiMonths": "Download reports for multiple months",
   "reportOverview.downloadMultiMonths.start": "Start (Year-Month)",
   "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
-  "reportOverview.downloadMultiMonths.reportType": "Select report type",
+  "reportOverview.downloadMultiMonths.reportType": "Report type",
+  "reportOverview.downloadMultiMonths.dataType": "Data type",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
   "reportOverview.downloadMultiMonths.error.yyyymm": "Must be YYYY-MM",
   "reportOverview.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",
   "reportOverview.expandAllYears": "Expand all years",
   "reportOverview.collapseAllYears": "Collapse all years",
 
+  "report.action.download": "Download",
   "report.action.download.csv": "Download report as CSV",
+  "report.action.download.xlsx": "Download report as XLSX",
   "report.action.download.jsonxml": "Download report as JSON/XML",
   "report.action.general.delete.report": "Delete report",
   "report.action.general.delete.entry": "Delete entry",
@@ -198,6 +202,10 @@
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
   "settings.harvester.config": "Harvester Configuration",
 
+  "settings.credentials.download": "Download credentials",
+  "settings.credentials.download.csv": "Download as CSV",
+  "settings.credentials.download.xlsx": "Download as XLSX",
+
   "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
   "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
   "settings.harvester.config.periodic.title": "Periodic harvesting",
@@ -209,5 +217,7 @@
   "settings.harvester.config.periodic.periodicInterval": "Periodic interval",
   "settings.harvester.config.periodic.lastTriggered": "Last triggered at",
   "settings.harvester.config.periodic.notDefined": "Periodic harvesting is not defined and thus not enabled. Click + to define periodic harvesting.",
-  "settings.harvester.config.periodic.deleteQuestion": "Do you really want to delete the periodic harvesting config?"
+  "settings.harvester.config.periodic.deleteQuestion": "Do you really want to delete the periodic harvesting config?",
+
+  "showTags": "Show tags"
 }

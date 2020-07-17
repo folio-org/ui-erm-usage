@@ -1,5 +1,10 @@
 # Change history for ui-erm-usage
 
+## 4.0.0 (IN PROGRESS)
+
+* Increment `@folio/stripes` to `v5.0` and `react-router` to `v5.2` (and, bugfix, move it to peer)
+* Replace deprecated `babel-polyfill` with `core-js` and `regenerator-runtime`
+
 ## [3.0.0](https://github.com/folio-org/ui-erm-usage/tree/v3.0.0) (2020-06-04)
 * Improve screenreading (UIEUS-170, UIEUS-171, UIEUS-172)
 * Download COP5 reports for a range of several month as csv (UIEUS-162, MODEUS-55)

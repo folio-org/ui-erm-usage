@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes-components';
 import { ViewMetaData } from '@folio/stripes-smart-components';
-import { downloadErmUsageFile } from '../../../../util/downloadCSV';
+import { downloadErmUsageFile } from '../../../../util/downloadReport';
 
 function CustomReportInfo(props) {
   const { customReport } = props;
