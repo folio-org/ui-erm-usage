@@ -1,4 +1,4 @@
-import { faker } from 'miragejs';
+import faker from 'faker';
 import Factory from './application';
 
 function getRandomInt(max) {
