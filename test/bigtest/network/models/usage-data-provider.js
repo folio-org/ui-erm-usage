@@ -1,4 +1,4 @@
-import { Model, belongsTo, hasMany } from 'miragejs';
+import { Model, belongsTo } from 'miragejs';
 
 export default Model.extend({
   aggregator : belongsTo('aggregator-setting'),
