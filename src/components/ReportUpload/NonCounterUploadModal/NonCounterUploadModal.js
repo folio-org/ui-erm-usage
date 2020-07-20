@@ -5,12 +5,13 @@ import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 import NonCounterUpload from './NonCounterUpload';
 
 function NonCounterUploadModal(props) {
+  const { onClose } = props;
   const renderFooter = (onSubmit) => (
     <ModalFooter>
       <Button buttonStyle="primary" onClick={onSubmit}>
         Save
       </Button>
-      <Button onClick={props.onClose}>Cancel</Button>
+      <Button onClick={onClose}>Cancel</Button>
     </ModalFooter>
   );
 

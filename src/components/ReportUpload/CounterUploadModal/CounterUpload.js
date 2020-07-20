@@ -19,7 +19,6 @@ class CounterUpload extends React.Component {
   });
 
   static propTypes = {
-    // onDone: PropTypes.func,
     onSuccess: PropTypes.func,
     onFail: PropTypes.func,
     stripes: PropTypes.shape().isRequired,
@@ -77,9 +76,6 @@ class CounterUpload extends React.Component {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
-          const info = this.props.intl.formatMessage({
-            id: 'ui-erm-usage.report.upload.success',
-          });
           this.setState({
             showOverwriteModal: false,
             selectedFile: {},
@@ -88,14 +84,10 @@ class CounterUpload extends React.Component {
         }
       })
       .catch((err) => {
-        const failText = this.props.intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
-        });
-        const infoText = failText + ' ' + err.message;
         this.setState({
           showOverwriteModal: false,
         });
-        this.props.onFail();
+        this.props.onFail(err.message);
       });
   };
 

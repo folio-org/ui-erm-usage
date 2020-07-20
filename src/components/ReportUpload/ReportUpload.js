@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Callout,
-} from '@folio/stripes-components';
+import { injectIntl } from 'react-intl';
+import { Button, Callout } from '@folio/stripes-components';
 
 import CounterUploadModal from './CounterUploadModal';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 function ReportUpload(props) {
+  const { intl } = props;
   const [showCounterUpload, setShowCounterUpload] = useState(false);
   const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
   let callout = React.createRef();
 
   const handleSuccess = () => {
+    const info = intl.formatMessage({
+      id: 'ui-erm-usage.report.upload.success',
+    });
     callout.sendCallout({
-      message: 'SUCCESS UPLOAD REPORT',
+      message: info,
     });
     setShowCounterUpload(false);
     setShowNonCounterUpload(false);
   };
 
-  const handleFail = () => {
+  const handleFail = (msg) => {
+    const failText = intl.formatMessage({
+      id: 'ui-erm-usage.report.upload.failed',
+    });
     callout.sendCallout({
       type: 'error',
-      message: 'FAIL UPLOAD REPORT',
+      message: `${failText} ${msg}`,
       timeout: 0,
     });
     setShowCounterUpload(false);
@@ -56,11 +61,7 @@ function ReportUpload(props) {
         }
       })
       .catch((err) => {
-        const failText = this.props.intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
-        });
-        const infoText = failText + ' ' + err.message;
-        handleFail();
+        handleFail(err.message);
       });
   };
   return (
@@ -98,8 +99,9 @@ function ReportUpload(props) {
 }
 
 ReportUpload.propTypes = {
+  intl: PropTypes.object,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
 };
 
-export default ReportUpload;
+export default injectIntl(ReportUpload);
