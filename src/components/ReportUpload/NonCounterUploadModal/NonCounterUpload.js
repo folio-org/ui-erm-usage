@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import _ from 'lodash';
+import { CalloutContext } from '@folio/stripes/core';
 import {
   Button,
   Col,
@@ -28,6 +29,17 @@ function FileUploadCard(props) {
     }
   );
 
+  const callout = useContext(CalloutContext);
+
+  const handleFail = (msg) => {
+    props.stripes.logger.log('action', msg);
+    callout.sendCallout({
+      type: 'error',
+      message: msg,
+      timeout: 0,
+    });
+  };
+
   const doUploadRawFile = (file) => {
     const okapiUrl = stripes.okapi.url;
     fetch(`${okapiUrl}/erm-usage/files`, {
@@ -36,10 +48,7 @@ function FileUploadCard(props) {
       body: file,
     })
       .then((response) => {
-        if (response.status >= 400) {
-          // props.onFail();
-        } else {
-          // props.onSuccess();
+        if (response.ok) {
           response.json().then((json) => {
             props.mutators.setFileId({}, json.id);
             props.mutators.setFileName({}, file.name);
@@ -47,14 +56,13 @@ function FileUploadCard(props) {
             props.mutators.setProviderId({}, props.udpId);
             setFileId(json.id);
           });
+        } else {
+          handleFail('FAIL UPLOAD REPORT');
         }
       })
       .catch((err) => {
-        const failText = this.props.intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
-        });
-        const infoText = failText + ' ' + err.message;
-        // props.onFail();
+        const infoText = 'FAIL UPLOAD REPORT: ' + err.message;
+        handleFail(infoText);
       });
   };
 
