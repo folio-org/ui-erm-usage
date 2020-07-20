@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
-import { Col, Row, TextField } from '@folio/stripes/components';
+import _ from 'lodash';
+import {
+  Button,
+  Col,
+  Icon,
+  KeyValue,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
 
 import FileUploader from '../FileUploader';
+import { downloadErmUsageFile } from '../../../util/downloadReport';
 
 function FileUploadCard(props) {
   const [selectedFile, setSelectedFile] = useState();
+  const [fileId, setFileId] = useState();
 
   const { stripes } = props;
+  const httpHeaders = Object.assign(
+    {},
+    {
+      'X-Okapi-Tenant': stripes.okapi.tenant,
+      'X-Okapi-Token': stripes.store.getState().okapi.token,
+      'Content-Type': 'application/octet-stream',
+    }
+  );
 
   const doUploadRawFile = (file) => {
     const okapiUrl = stripes.okapi.url;
-    const httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': stripes.okapi.tenant,
-        'X-Okapi-Token': stripes.store.getState().okapi.token,
-        'Content-Type': 'application/octet-stream',
-      }
-    );
     fetch(`${okapiUrl}/erm-usage/files`, {
       headers: httpHeaders,
       method: 'POST',
@@ -35,6 +45,7 @@ function FileUploadCard(props) {
             props.mutators.setFileName({}, file.name);
             props.mutators.setFileSize({}, file.size);
             props.mutators.setProviderId({}, props.udpId);
+            setFileId(json.id);
           });
         }
       })
@@ -53,12 +64,35 @@ function FileUploadCard(props) {
     doUploadRawFile(currentFile);
   };
 
+  const renderSelectedFile = () => {
+    let downloadButton = '';
+    if (_.isNil(selectedFile) || _.isNil(fileId)) {
+      downloadButton = 'Select file first';
+    } else {
+      downloadButton = (
+        <Button
+          data-test-doc-file
+          buttonStyle="link"
+          onClick={() => downloadErmUsageFile(
+            fileId,
+            selectedFile.name,
+            props.stripes.okapi.url,
+            httpHeaders
+          )}
+        >
+          <Icon icon="external-link">{selectedFile.name}</Icon>
+        </Button>
+      );
+    }
+    return <KeyValue label="Selected file" value={downloadButton} />;
+  };
+
   return (
     <>
       <Row>
-        <Col xs={12} md={6}>
+        <Col xs={6} md={6}>
           <Row>
-            <Col xs={12}>
+            <Col xs={10}>
               <Field
                 autoFocus
                 component={TextField}
@@ -71,7 +105,7 @@ function FileUploadCard(props) {
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
+            <Col xs={10}>
               <Field
                 component={TextField}
                 data-test-custom-report-note
@@ -82,12 +116,20 @@ function FileUploadCard(props) {
             </Col>
           </Row>
         </Col>
-        <Col xs={12}>
+        <Col xs={6} md={6}>
           <Row>
-            <FileUploader
-              onSelectFile={handleSelectFile}
-              selectedFile={selectedFile}
-            />
+            <Col xs={10}>
+              <FileUploader
+                onSelectFile={handleSelectFile}
+                selectedFile={selectedFile}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <></>
+          </Row>
+          <Row>
+            <Col xs={10}>{renderSelectedFile()}</Col>
           </Row>
         </Col>
       </Row>
