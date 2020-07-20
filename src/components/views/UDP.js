@@ -135,6 +135,7 @@ class UDP extends React.Component {
     const {
       data,
       isLoading,
+      isStatsLoading,
       handlers,
       isHarvesterExistent,
       stripes,
@@ -216,6 +217,7 @@ class UDP extends React.Component {
                   udpLabel={label}
                   counterReports={data.counterReports}
                   customReports={data.customReports}
+                  isStatsLoading={isStatsLoading}
                 />
               </Accordion>
               <Accordion
@@ -264,6 +266,7 @@ UDP.propTypes = {
   }).isRequired,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
+  isStatsLoading: PropTypes.bool.isRequired,
   stripes: PropTypes.object.isRequired,
   tagsEnabled: PropTypes.bool,
 };
