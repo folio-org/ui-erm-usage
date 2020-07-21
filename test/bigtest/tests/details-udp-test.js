@@ -1,9 +1,4 @@
-
-import {
-  beforeEach,
-  describe,
-  it,
-} from '@bigtest/mocha';
+import { beforeEach, describe, it } from '@bigtest/mocha';
 import { expect } from 'chai';
 import setupApplication from '../helpers/setup-application';
 import UDPDetailsPage from '../interactors/udp-details-page';
@@ -50,7 +45,9 @@ describe('UDPDetailsPage', () => {
       });
 
       it('harvesting configuration is expanded and harvesting status is displayed', () => {
-        expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal('true');
+        expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal(
+          'true'
+        );
       });
 
       describe('all accordions can be collapsed', function () {
@@ -59,7 +56,9 @@ describe('UDPDetailsPage', () => {
         });
 
         it('harvesting configuration is collapsed and harvesting status is not displayed', () => {
-          expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal('false');
+          expect(udpDetailsPage.harvestingAccordionButton.expanded).to.be.equal(
+            'false'
+          );
         });
       });
     });
@@ -84,7 +83,9 @@ describe('UDPDetailsPage', () => {
       });
 
       it('report type select is available', () => {
-        expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('BR1');
+        expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal(
+          'BR1'
+        );
       });
 
       it('data type select is available', () => {
@@ -97,7 +98,9 @@ describe('UDPDetailsPage', () => {
           await udpDetailsPage.endDateDownloadInput.fill('2019-02');
         });
         it('should display validation error: end must be greater start', () => {
-          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('End must be greater than start');
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal(
+            'End must be greater than start'
+          );
         });
       });
 
@@ -106,7 +109,9 @@ describe('UDPDetailsPage', () => {
           await udpDetailsPage.startDateDownloadInput.fill('2019-111');
         });
         it('should display validation error', () => {
-          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('Must be YYYY-MM');
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal(
+            'Must be YYYY-MM'
+          );
         });
       });
 
@@ -115,7 +120,9 @@ describe('UDPDetailsPage', () => {
           await udpDetailsPage.endDateDownloadInput.fill('2019-111');
         });
         it('should display validation error', () => {
-          expect(udpDetailsPage.dateInputError.feedbackError).to.equal('Must be YYYY-MM');
+          expect(udpDetailsPage.dateInputError.feedbackError).to.equal(
+            'Must be YYYY-MM'
+          );
         });
       });
 
@@ -134,7 +141,9 @@ describe('UDPDetailsPage', () => {
           await udpDetailsPage.reportTypeDownloadSelect.select('JR1');
         });
         it('reportType is changed to "JR1"', () => {
-          expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal('JR1');
+          expect(udpDetailsPage.reportTypeDownloadSelect.value).to.be.equal(
+            'JR1'
+          );
         });
       });
 
@@ -143,7 +152,9 @@ describe('UDPDetailsPage', () => {
           await udpDetailsPage.dataTypeDownloadSelect.select('XLSX');
         });
         it('dataType is changed to "xlsx"', () => {
-          expect(udpDetailsPage.dataTypeDownloadSelect.value).to.be.equal('xlsx');
+          expect(udpDetailsPage.dataTypeDownloadSelect.value).to.be.equal(
+            'xlsx'
+          );
         });
       });
     });
@@ -159,8 +170,12 @@ describe('UDPDetailsPage', () => {
         });
 
         it('valid report has download json xml and delete button', () => {
-          expect(udpDetailsPage.reportInfoValid.downloadJsonXmlButton.isPresent).to.equal(true);
-          expect(udpDetailsPage.reportInfoValid.deleteButton.isPresent).to.equal(true);
+          expect(
+            udpDetailsPage.reportInfoValid.downloadJsonXmlButton.isPresent
+          ).to.equal(true);
+          expect(
+            udpDetailsPage.reportInfoValid.deleteButton.isPresent
+          ).to.equal(true);
         });
       });
 
@@ -170,8 +185,12 @@ describe('UDPDetailsPage', () => {
         });
 
         it('failed report has delete button but not download json xml button', () => {
-          expect(udpDetailsPage.reportInfoFailed.downloadJsonXmlButton.isPresent).to.equal(false);
-          expect(udpDetailsPage.reportInfoFailed.deleteButton.isPresent).to.equal(true);
+          expect(
+            udpDetailsPage.reportInfoFailed.downloadJsonXmlButton.isPresent
+          ).to.equal(false);
+          expect(
+            udpDetailsPage.reportInfoFailed.deleteButton.isPresent
+          ).to.equal(true);
         });
       });
 
@@ -185,6 +204,36 @@ describe('UDPDetailsPage', () => {
           expect(udpDetailsPage.tagsSelect.tagSelection.isPresent).to.be.true;
         });
       });
+    });
+  });
+
+  describe('custom reports are listed', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.statisticsAccordion.click();
+      await udpDetailsPage.clickCustomReportAccordion();
+      await udpDetailsPage.clickExpandAllCustomReportYears();
+    });
+
+    it('renders custom reports', () => {
+      expect(udpDetailsPage.customReports.instances().length).to.be.gte(1);
+    });
+  });
+
+  describe('custom reports can be selected', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.statisticsAccordion.click();
+      await udpDetailsPage.clickCustomReportAccordion();
+      await udpDetailsPage.clickExpandAllCustomReportYears();
+      await udpDetailsPage.customReports.clickFirstRow();
+    });
+
+    it('renders custom report details', () => {
+      expect(
+        udpDetailsPage.customReportInfo.downloadCustomReportButton.isPresent
+      ).to.equal(true);
+      expect(
+        udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
+      ).to.equal(true);
     });
   });
 });

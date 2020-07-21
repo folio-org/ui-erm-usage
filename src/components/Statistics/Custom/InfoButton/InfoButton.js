@@ -64,22 +64,24 @@ function InfoButton(props) {
       <IconButton
         aria-label={ariaLabel}
         icon="info"
-        id={customReport.id}
+        id={`custom-report-button-${customReport.id}`}
         onClick={() => setShowModal(!showModal)}
       />
       <Modal
-        id={`customreport-info-${customReport.id}`}
+        id={`custom-report-info-${customReport.id}`}
         closeOnBackgroundClick
         open={showModal}
         label="Customreport info"
         footer={footer}
       >
-        <CustomReportInfo
-          stripes={props.stripes}
-          customReport={customReport}
-          onDelete={handleDelete}
-          udpLabel={props.udpLabel}
-        />
+        <div id="custom-report-info" className="custom-report-info">
+          <CustomReportInfo
+            stripes={props.stripes}
+            customReport={customReport}
+            onDelete={handleDelete}
+            udpLabel={props.udpLabel}
+          />
+        </div>
       </Modal>
       <ConfirmationModal
         open={showConfirmDelete}

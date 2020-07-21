@@ -34,7 +34,7 @@ function Statistics(props) {
       counterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
-            <Accordion label="COUNTER">
+            <Accordion id="counter-reports-accordion" label="COUNTER">
               <CounterStatistics
                 stripes={stripes}
                 providerId={providerId}
@@ -51,7 +51,7 @@ function Statistics(props) {
       nonCounterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
-            <Accordion label="Non-COUNTER">
+            <Accordion id="custom-reports-accordion" label="Non-COUNTER">
               <CustomStatistics
                 stripes={stripes}
                 providerId={providerId}

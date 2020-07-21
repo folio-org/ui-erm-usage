@@ -84,8 +84,9 @@ function CustomStatistics(props) {
       <Row end="xs">
         <Col xs>
           <ExpandAllButton
+            id="expand-all-custom-report-years"
             accordionStatus={yearAccordions}
-            onToggle={obj => setYearAccordions(obj)}
+            onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
             expandLabel={
               <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
@@ -98,14 +99,13 @@ function CustomStatistics(props) {
       </Row>
       <Row className={css.subAccordionSections}>
         <Col xs={12}>
-          <AccordionSet>{accordions}</AccordionSet>
+          <AccordionSet id="data-test-custom-reports">
+            {accordions}
+          </AccordionSet>
         </Col>
       </Row>
     </>
   );
-  //   return props.customReports.map((cr) => (
-  //     <IconButton icon="document" onClick={console.log(cr.note)} />
-  //   ));
 }
 
 CustomStatistics.propTypes = {
