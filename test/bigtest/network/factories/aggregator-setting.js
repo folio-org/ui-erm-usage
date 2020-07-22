@@ -1,4 +1,4 @@
-import { trait } from '@bigtest/mirage';
+import { trait } from 'miragejs';
 import Factory from './application';
 
 export default Factory.extend({

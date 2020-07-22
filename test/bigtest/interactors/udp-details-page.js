@@ -132,8 +132,6 @@ export default @interactor class UDPDetailsPage {
   sushiCredentialsAccordion = new SushiCredentialsAccordion();
   statisticsAccordion = new StatisticsAccordion();
   uploadAccordion = new UploadAccordion();
-  // startDateDownloadInput = new InputFieldInteractor('input[name="downloadMultiMonths.startDate"]');
-  // endDateDownloadInput = new InputFieldInteractor('input[name="downloadMultiMonths.startDate"]');
   startDateDownloadInput = new StartDateDownloadInput();
   endDateDownloadInput = new EndDateDownloadInput();
   dateInputError = new DateInputError();
