@@ -11,9 +11,6 @@ const notesAccordion = new NotesAccordion();
 const notesModal = new NotesModal();
 const udpDetailsPage = new UDPDetailsPage();
 
-/**
- * Thanks to https://github.com/folio-org/ui-eholdings/blob/master/test/bigtest/tests/resource-notes-flow-test.js for inspiration
-*/
 describe('UDP notes test', function () {
   setupApplication();
 

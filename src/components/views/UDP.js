@@ -7,10 +7,10 @@ import { TitleManager } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
+  Button,
   Col,
   ExpandAllButton,
   Icon,
-  IconButton,
   Layout,
   Pane,
   PaneHeaderIconButton,
@@ -101,15 +101,15 @@ class UDP extends React.Component {
           </FormattedMessage>
         )}
         {canEdit && (
-          <IconButton
-            icon="edit"
+          <Button
             id="clickable-edit-udp"
-            style={{
-              visibility: !udp ? 'hidden' : 'visible',
-            }}
+            buttonStyle="primary"
             onClick={handlers.onEdit}
-            aria-label="Edit Usagedata Provider"
-          />
+            aria-label="Edit usage data provider"
+            marginBottom0
+          >
+            <FormattedMessage id="ui-erm-usage.general.edit" />
+          </Button>
         )}
       </PaneMenu>
     );
