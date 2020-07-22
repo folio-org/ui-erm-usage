@@ -15,7 +15,7 @@ describe('UDPDetailsPage', () => {
     await this.visit('/eusage/?filters=harvestingStatus.active');
   });
 
-  it('shows the list of udp items', () => {
+  it('shows the list of udp items - details udp', () => {
     expect(udpInteractor.isVisible).to.equal(true);
   });
 

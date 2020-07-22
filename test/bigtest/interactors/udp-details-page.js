@@ -47,8 +47,8 @@ import {
   static defaultScope = '#sushiCredsAccordion';
 }
 @interactor class StatisticsAccordion {
-  // static defaultScope = '#statisticsAccordion';
-  static defaultScope = '#accordion-toggle-button-statisticsAccordion';
+  static defaultScope = '#statisticsAccordion';
+  // static defaultScope = '#accordion-toggle-button-statisticsAccordion';
 }
 
 @interactor class UploadAccordion {

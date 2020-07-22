@@ -47,7 +47,7 @@ export default Factory.extend({
   }),
 
   withSetInactive: trait({
-    afterCreate(provider, server) {
+    afterCreate(provider, _) {
       provider.harvestingConfig.harvestingStatus = 'inactive';
     }
   })

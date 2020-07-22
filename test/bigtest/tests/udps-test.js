@@ -15,7 +15,7 @@ describe('Usage Data Provider', () => {
     await this.visit('/eusage?filters=harvestingStatus.active');
   });
 
-  it('shows the list of udp items', () => {
+  it('shows the list of udp items - udps', () => {
     expect(udp.isVisible).to.equal(true);
   });
 
