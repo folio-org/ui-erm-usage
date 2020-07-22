@@ -250,7 +250,7 @@ describe('UDPDetailsPage by ID', () => {
 
   it('displays udp label in the pane header', function () {
     expect(udpDetailsPage.title).to.include(udp.label);
-  });
+  }).timeout(6000);
 });
 
 describe('Inactive UDP disabled start harvester', () => {
