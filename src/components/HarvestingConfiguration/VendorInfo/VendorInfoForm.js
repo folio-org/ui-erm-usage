@@ -1,18 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-import {
-  Col,
-  Select,
-  TextField
-} from '@folio/stripes/components';
-import {
-  notRequired,
-  required
-} from '../../../util/validate';
+import { Col, Select, TextField } from '@folio/stripes/components';
+import { notRequired, required } from '../../../util/validate';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
@@ -33,43 +24,40 @@ class VendorInfoForm extends React.Component {
 
   render() {
     const { disabled, harvesterImpls } = this.props;
-    const requiredSign = disabled ? '' : ' *';
 
     return (
       <React.Fragment>
         <Col xs={4}>
           <Field
             label={
-              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType">
-                {(msg) => msg + requiredSign}
-              </FormattedMessage>}
+              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />
+            }
             name="harvestingConfig.sushiConfig.serviceType"
             id="addudp_servicetype"
             placeholder="Select the vendor's API type"
             component={Select}
             dataOptions={harvesterImpls}
-            disabled={this.props.disabled}
+            disabled={disabled}
+            required={!disabled}
             validate={this.isRequired}
             fullWidth
           />
         </Col>
         <Col xs={4}>
           <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl">
-                {(msg) => msg + requiredSign}
-              </FormattedMessage>
-              }
+            label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="harvestingConfig.sushiConfig.serviceUrl"
             id="addudp_serviceurl"
             placeholder="Enter the vendor's serviceURL"
             component={TextField}
-            disabled={this.props.disabled}
+            disabled={disabled}
+            required={!disabled}
             validate={this.isRequired}
             fullWidth
           />
         </Col>
-      </React.Fragment>);
+      </React.Fragment>
+    );
   }
 }
 

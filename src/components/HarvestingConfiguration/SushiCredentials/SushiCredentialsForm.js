@@ -1,16 +1,8 @@
 import React from 'react';
 import { Field } from 'react-final-form';
-import {
-  FormattedMessage
-} from 'react-intl';
-import {
-  Col,
-  Row,
-  TextField
-} from '@folio/stripes/components';
-import {
-  required
-} from '../../../util/validate';
+import { FormattedMessage } from 'react-intl';
+import { Col, Row, TextField } from '@folio/stripes/components';
+import { required } from '../../../util/validate';
 
 class SushiCredentialsForm extends React.Component {
   render() {
@@ -20,14 +12,13 @@ class SushiCredentialsForm extends React.Component {
           <Col xs={4}>
             <Field
               label={
-                <FormattedMessage id="ui-erm-usage.sushiCreds.customerId">
-                  {(msg) => msg + ' *'}
-                </FormattedMessage>
+                <FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />
               }
               name="sushiCredentials.customerId"
               id="addudp_customerid"
               placeholder="Enter the SUSHI customer ID"
               component={TextField}
+              required
               validate={required}
               fullWidth
             />
@@ -60,7 +51,9 @@ class SushiCredentialsForm extends React.Component {
         <Row>
           <Col xs={4}>
             <Field
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
+              }
               name="sushiCredentials.requestorName"
               id="addudp_reqname"
               placeholder="Enter the SUSHI requestor name"
@@ -70,7 +63,9 @@ class SushiCredentialsForm extends React.Component {
           </Col>
           <Col xs={8}>
             <Field
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />
+              }
               name="sushiCredentials.requestorMail"
               id="addudp_requestormail"
               placeholder="Enter the SUSHI requestor mail"
