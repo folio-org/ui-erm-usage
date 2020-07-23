@@ -5,10 +5,11 @@ import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 import NonCounterUpload from './NonCounterUpload';
 
 function NonCounterUploadModal(props) {
-  const { onClose } = props;
+  const { invalid, onClose } = props;
+
   const renderFooter = (onSubmit) => (
     <ModalFooter>
-      <Button buttonStyle="primary" onClick={onSubmit}>
+      <Button buttonStyle="primary" disabled={invalid} onClick={onSubmit}>
         Save
       </Button>
       <Button onClick={onClose}>Cancel</Button>
@@ -48,6 +49,7 @@ NonCounterUploadModal.propTypes = {
       setProviderId: PropTypes.func,
     }),
   }),
+  invalid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -70,5 +72,22 @@ export default stripesFinalForm({
     setProviderId: (args, state, tools) => {
       tools.changeValue(state, 'providerId', () => args[1]);
     },
+  },
+  subscription: {
+    values: true,
+    invalid: true
+  },
+  validate: (values) => {
+    const errors = {};
+    const yyyyRegex = /^[12]\d{3}$/;
+    if (!values.fileId) {
+      errors.fileId = 'Required';
+    }
+    if (!values.year) {
+      errors.year = 'Required';
+    } else if (!yyyyRegex.test(values.year)) {
+      errors.year = 'Invalid format';
+    }
+    return errors;
   },
 })(NonCounterUploadModal);

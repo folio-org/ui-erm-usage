@@ -8,6 +8,7 @@ import {
   Col,
   Icon,
   KeyValue,
+  Label,
   Row,
   TextField,
 } from '@folio/stripes/components';
@@ -92,7 +93,12 @@ function FileUploadCard(props) {
         </Button>
       );
     }
-    return <KeyValue label="Selected file" value={downloadButton} />;
+    return (
+      <KeyValue
+        label={<Label required>Selected file</Label>}
+        value={downloadButton}
+      />
+    );
   };
 
   return (
