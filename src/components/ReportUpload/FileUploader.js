@@ -66,6 +66,7 @@ class FileUploader extends React.Component {
               <Button
                 aria-label="Or select file for counter report upload"
                 buttonStyle="primary"
+                id="upload-file-button"
                 onClick={() => open()}
               >
                 <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />

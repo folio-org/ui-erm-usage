@@ -17,12 +17,14 @@ function CounterUploadModal(props) {
       open={props.open}
       label="UPLOAD REPORT"
     >
-      <CounterUpload
-        onFail={props.onFail}
-        onSuccess={props.onSuccess}
-        udpId={props.udpId}
-        stripes={props.stripes}
-      />
+      <div className="upload-counter-modal">
+        <CounterUpload
+          onFail={props.onFail}
+          onSuccess={props.onSuccess}
+          udpId={props.udpId}
+          stripes={props.stripes}
+        />
+      </div>
     </Modal>
   );
 }

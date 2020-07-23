@@ -66,10 +66,16 @@ function ReportUpload(props) {
   };
   return (
     <>
-      <Button onClick={() => setShowCounterUpload(true)}>
+      <Button
+        id="upload-counter-button"
+        onClick={() => setShowCounterUpload(true)}
+      >
         Upload COUNTER FILE
       </Button>
-      <Button onClick={() => setShowNonCounterUpload(true)}>
+      <Button
+        id="upload-non-counter-button"
+        onClick={() => setShowNonCounterUpload(true)}
+      >
         Upload Non-COUNTER FILE
       </Button>
       <CounterUploadModal

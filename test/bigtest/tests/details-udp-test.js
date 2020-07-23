@@ -236,6 +236,54 @@ describe('UDPDetailsPage', () => {
       ).to.equal(true);
     });
   });
+
+  describe('can open upload counter report', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.uploadAccordion.click();
+      await udpDetailsPage.clickUploadCounterButton();
+    });
+
+    it('renders upload counter report modal', () => {
+      expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
+    });
+
+    it('does not render upload non-counter report modal', () => {
+      expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
+    });
+
+    it('does render upload file button', () => {
+      expect(
+        udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent
+      ).to.equal(true);
+    });
+  });
+
+  describe('can open upload non-counter report', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.uploadAccordion.click();
+      await udpDetailsPage.clickUploadNonCounterButton();
+    });
+
+    it('does not render upload counter report modal', () => {
+      expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+    });
+
+    it('renders upload non-counter report modal', () => {
+      expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(true);
+    });
+
+    it('does render upload file button', () => {
+      expect(
+        udpDetailsPage.uploadNonCounterModal.uploadFileButton.isPresent
+      ).to.equal(true);
+    });
+
+    it('does render year input', () => {
+      expect(udpDetailsPage.uploadNonCounterModal.yearInput.isPresent).to.equal(
+        true
+      );
+    });
+  });
 });
 
 describe('UDPDetailsPage by ID', () => {

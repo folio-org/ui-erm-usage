@@ -133,6 +133,17 @@ import {
   deleteCustomReportButton = scoped('button[id="delete-custom-report-button"]');
 }
 
+@interactor class UploadCounterModal {
+  static defaultScope = '[class="upload-counter-modal"]';
+  uploadFileButton = scoped('button[id="upload-file-button"]');
+}
+
+@interactor class UploadNonCounterModal {
+  static defaultScope = '[class="upload-non-counter-modal"]';
+  uploadFileButton = scoped('button[id="upload-file-button"]');
+  yearInput = scoped('input[id="custom-report-year"]');
+}
+
 @interactor class TagsSelect {
   static defaulScope = ('#udps-paneset');
   clickable = clickable('#input-tag-input');
@@ -166,6 +177,11 @@ export default @interactor class UDPDetailsPage {
   clickExpandAllCustomReportYears = clickable('#expand-all-custom-report-years');
   customReports = new CustomReports();
   customReportInfo = new CustomReportInfo();
+
+  uploadCounterModal = new UploadCounterModal();
+  uploadNonCounterModal = new UploadNonCounterModal();
+  clickUploadCounterButton = clickable('#upload-counter-button');
+  clickUploadNonCounterButton = clickable('#upload-non-counter-button');
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();

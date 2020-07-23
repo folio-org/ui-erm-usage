@@ -27,11 +27,13 @@ function NonCounterUploadModal(props) {
         open={props.open}
         label="UPLOAD REPORT"
       >
-        <NonCounterUpload
-          mutators={props.form.mutators}
-          udpId={props.udpId}
-          stripes={props.stripes}
-        />
+        <div className="upload-non-counter-modal">
+          <NonCounterUpload
+            mutators={props.form.mutators}
+            udpId={props.udpId}
+            stripes={props.stripes}
+          />
+        </div>
       </Modal>
     </form>
   );
