@@ -6,9 +6,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { AppIcon, IfPermission } from '@folio/stripes/core';
 import {
+  CollapseFilterPaneButton,
+  ExpandFilterPaneButton,
   SearchAndSortQuery,
   SearchAndSortNoResultsMessage as NoResultsMessage,
-  SearchAndSortSearchButton as FilterPaneToggle
 } from '@folio/stripes/smart-components';
 import {
   MultiColumnList,
@@ -17,7 +18,7 @@ import {
   Icon,
   PaneMenu,
   Paneset,
-  SearchField
+  SearchField,
 } from '@folio/stripes/components';
 
 import UDPFilters from '../UDPFilters/UDPFilters';
@@ -27,7 +28,7 @@ class UDPs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterPaneIsVisible: true
+      filterPaneIsVisible: true,
     };
   }
 
@@ -39,24 +40,24 @@ class UDPs extends React.Component {
     latestStats: (
       <FormattedMessage id="ui-erm-usage.information.latestStatistics" />
     ),
-    aggregator: <FormattedMessage id="ui-erm-usage.information.aggregator" />
+    aggregator: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
   };
 
   columnWidths = {
     label: 300,
     harvestingStatus: 150,
     latestStats: 150,
-    aggregator: 200
+    aggregator: 200,
   };
 
   formatter = {
-    label: udp => udp.label,
-    harvestingStatus: udp => udp.harvestingConfig.harvestingStatus,
-    latestStats: udp => udp.latestReport,
-    aggregator: udp => this.getAggregatorName(udp)
+    label: (udp) => udp.label,
+    harvestingStatus: (udp) => udp.harvestingConfig.harvestingStatus,
+    latestStats: (udp) => udp.latestReport,
+    aggregator: (udp) => this.getAggregatorName(udp),
   };
 
-  rowFormatter = row => {
+  rowFormatter = (row) => {
     const { rowClass, rowData, rowIndex, rowProps = {}, cells } = row;
     let RowComponent;
 
@@ -81,17 +82,17 @@ class UDPs extends React.Component {
     );
   };
 
-  rowURL = id => {
+  rowURL = (id) => {
     return `${urls.udpView(id)}${this.props.searchString}`;
   };
 
   toggleFilterPane = () => {
-    this.setState(curState => ({
-      filterPaneIsVisible: !curState.filterPaneIsVisible
+    this.setState((curState) => ({
+      filterPaneIsVisible: !curState.filterPaneIsVisible,
     }));
   };
 
-  getAggregatorName = udp => {
+  getAggregatorName = (udp) => {
     return udp.harvestingConfig.harvestVia === 'aggregator'
       ? udp.harvestingConfig.aggregator.name
       : '-';
@@ -114,42 +115,25 @@ class UDPs extends React.Component {
     );
   };
 
-  renderResultsFirstMenu = filters => {
+  renderResultsFirstMenu = (filters) => {
     const { filterPaneIsVisible } = this.state;
     const filterCount =
       filters.string !== '' ? filters.string.split(',').length : 0;
-    const hideOrShowMessageId = filterPaneIsVisible
-      ? 'stripes-smart-components.hideSearchPane'
-      : 'stripes-smart-components.showSearchPane';
+    if (filterPaneIsVisible) {
+      return null;
+    }
 
     return (
       <PaneMenu>
-        <FormattedMessage
-          id="stripes-smart-components.numberOfFilters"
-          values={{ count: filterCount }}
-        >
-          {appliedFiltersMessage => (
-            <FormattedMessage id={hideOrShowMessageId}>
-              {hideOrShowMessage => (
-                <FilterPaneToggle
-                  visible={filterPaneIsVisible}
-                  aria-label={`${hideOrShowMessage}...${appliedFiltersMessage}`}
-                  onClick={this.toggleFilterPane}
-                  badge={
-                    !filterPaneIsVisible && filterCount
-                      ? filterCount
-                      : undefined
-                  }
-                />
-              )}
-            </FormattedMessage>
-          )}
-        </FormattedMessage>
+        <ExpandFilterPaneButton
+          filterCount={filterCount}
+          onClick={this.toggleFilterPane}
+        />
       </PaneMenu>
     );
   };
 
-  renderResultsPaneSubtitle = source => {
+  renderResultsPaneSubtitle = (source) => {
     if (source && source.loaded()) {
       const count = source.totalCount();
       return (
@@ -172,7 +156,7 @@ class UDPs extends React.Component {
       <IfPermission perm="usagedataproviders.item.post">
         <PaneMenu>
           <FormattedMessage id="ui-erm-usage.udp.form.createUDP">
-            {ariaLabel => (
+            {(ariaLabel) => (
               <Button
                 aria-label={ariaLabel}
                 buttonStyle="primary"
@@ -201,7 +185,7 @@ class UDPs extends React.Component {
       selectedRecordId,
       source,
       syncToLocationSearch,
-      visibleColumns
+      visibleColumns,
     } = this.props;
 
     const query = queryGetter() || {};
@@ -212,7 +196,7 @@ class UDPs extends React.Component {
       <div data-test-udp-instances ref={contentRef}>
         <SearchAndSortQuery
           initialFilterState={{
-            harvestingStatus: ['active']
+            harvestingStatus: ['active'],
           }}
           initialSearchState={{ query: '' }}
           initialSortState={{ sort: 'label' }}
@@ -229,7 +213,7 @@ class UDPs extends React.Component {
             activeFilters,
             filterChanged,
             searchChanged,
-            resetAll
+            resetAll,
           }) => {
             const disableReset = () => !filterChanged && !searchChanged;
 
@@ -238,7 +222,14 @@ class UDPs extends React.Component {
                 {this.state.filterPaneIsVisible && (
                   <Pane
                     defaultWidth="20%"
-                    onClose={this.toggleFilterPane}
+                    lastMenu={
+                      <PaneMenu>
+                        <CollapseFilterPaneButton
+                          onClick={this.toggleFilterPane}
+                        />
+                      </PaneMenu>
+                    }
+                    // onClose={this.toggleFilterPane}
                     paneTitle={
                       <FormattedMessage id="stripes-smart-components.searchAndFilter" />
                     }
@@ -246,7 +237,7 @@ class UDPs extends React.Component {
                     <form onSubmit={onSubmitSearch}>
                       <div>
                         <FormattedMessage id="ui-erm-usage.udp.searchInputLabel">
-                          {ariaLabel => (
+                          {(ariaLabel) => (
                             <SearchField
                               ariaLabel={ariaLabel}
                               autoFocus
@@ -298,7 +289,9 @@ class UDPs extends React.Component {
                   firstMenu={this.renderResultsFirstMenu(activeFilters)}
                   lastMenu={this.renderResultsLastMenu()}
                   padContent={false}
-                  paneTitle={<FormattedMessage id="ui-erm-usage.usage-data-providers" />}
+                  paneTitle={
+                    <FormattedMessage id="ui-erm-usage.usage-data-providers" />
+                  }
                   paneSub={this.renderResultsPaneSubtitle(source)}
                 >
                   <MultiColumnList
@@ -346,17 +339,17 @@ UDPs.propTypes = Object.freeze({
   selectedRecordId: PropTypes.string,
   source: PropTypes.shape({
     loaded: PropTypes.func,
-    totalCount: PropTypes.func
+    totalCount: PropTypes.func,
   }),
   syncToLocationSearch: PropTypes.bool,
-  visibleColumns: PropTypes.arrayOf(PropTypes.string)
+  visibleColumns: PropTypes.arrayOf(PropTypes.string),
 });
 
 UDPs.defaultProps = {
   data: {},
   searchString: '',
   syncToLocationSearch: true,
-  visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator']
+  visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator'],
 };
 
 export default UDPs;
