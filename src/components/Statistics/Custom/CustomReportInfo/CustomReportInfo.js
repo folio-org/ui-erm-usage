@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes-components';
 import { ViewMetaData } from '@folio/stripes-smart-components';
 import { downloadErmUsageFile } from '../../../../util/downloadReport';
@@ -17,10 +18,13 @@ function CustomReportInfo(props) {
   const headerSection = (
     <MenuSection id="menu-actions" label="Custom Report Info" labelTag="h3">
       <ViewMetaData metadata={customReport.metadata} />
-      <KeyValue label="Usage data provider" value={props.udpLabel} />
-      <KeyValue label="Note" value={customReport.note} />
-      <KeyValue label="Year" value={customReport.year} />
-      <KeyValue label="Filesize in kB" value={customReport.fileSize} />
+      <KeyValue
+        label={<FormattedMessage id="ui-erm-usage.usage-data-provider" />}
+        value={props.udpLabel}
+      />
+      <KeyValue label={<FormattedMessage id="ui-erm-usage.general.note" />} value={customReport.note} />
+      <KeyValue label={<FormattedMessage id="ui-erm-usage.general.year" />} value={customReport.year} />
+      <KeyValue label={<FormattedMessage id="ui-erm-usage.general.fileSize.kb" />} value={customReport.fileSize} />
     </MenuSection>
   );
   const actionSection = (
@@ -28,12 +32,14 @@ function CustomReportInfo(props) {
       <Button
         id="download-custom-report-button"
         buttonStyle="dropdownItem"
-        onClick={() => downloadErmUsageFile(
-          customReport.fileId,
-          customReport.fileName,
-          props.stripes.okapi.url,
-          httpHeaders
-        )}
+        onClick={() =>
+          downloadErmUsageFile(
+            customReport.fileId,
+            customReport.fileName,
+            props.stripes.okapi.url,
+            httpHeaders
+          )
+        }
       >
         <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
       </Button>

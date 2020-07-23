@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 import CounterUpload from './CounterUpload';
 
@@ -15,7 +16,9 @@ function CounterUploadModal(props) {
       closeOnBackgroundClick
       footer={footer}
       open={props.open}
-      label="UPLOAD REPORT"
+      label={
+        <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
+      }
     >
       <div className="upload-counter-modal">
         <CounterUpload

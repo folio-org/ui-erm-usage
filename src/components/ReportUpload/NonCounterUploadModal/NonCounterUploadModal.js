@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import stripesFinalForm from '@folio/stripes/final-form';
 import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 import NonCounterUpload from './NonCounterUpload';
@@ -26,7 +27,7 @@ function NonCounterUploadModal(props) {
         closeOnBackgroundClick
         footer={renderFooter(props.handleSubmit)}
         open={props.open}
-        label="UPLOAD REPORT"
+        label={<FormattedMessage id="ui-erm-usage.statistics.custom.upload" />}
       >
         <div className="upload-non-counter-modal">
           <NonCounterUpload
@@ -75,7 +76,7 @@ export default stripesFinalForm({
   },
   subscription: {
     values: true,
-    invalid: true
+    invalid: true,
   },
   validate: (values) => {
     const errors = {};

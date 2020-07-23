@@ -28,6 +28,9 @@
   "general.tags": "Tags",
   "general.errorCodes": "Error codes",
   "general.edit": "Edit",
+  "general.note": "Note",
+  "general.year": "Year",
+  "general.fileSize.kb": "Filesize in kB",
 
   "information.providerName": "Provider Name",
   "information.organization": "Organization",
@@ -219,6 +222,12 @@
   "settings.harvester.config.periodic.lastTriggered": "Last triggered at",
   "settings.harvester.config.periodic.notDefined": "Periodic harvesting is not defined and thus not enabled. Click + to define periodic harvesting.",
   "settings.harvester.config.periodic.deleteQuestion": "Do you really want to delete the periodic harvesting config?",
+
+  "statistics.noStats": "No statistics available",
+  "statistics.counter.upload": "Upload counter report",
+  "statistics.custom.upload": "Upload non-counter report",
+  "statistics.custom.info": "Customreport info",
+  "statistics.custom.selectFileFirst": "Select file first",
 
   "showTags": "Show tags"
 }

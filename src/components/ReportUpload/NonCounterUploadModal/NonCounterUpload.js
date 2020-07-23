@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 import _ from 'lodash';
 import { CalloutContext } from '@folio/stripes/core';
@@ -76,18 +77,22 @@ function FileUploadCard(props) {
   const renderSelectedFile = () => {
     let downloadButton = '';
     if (_.isNil(selectedFile) || _.isNil(fileId)) {
-      downloadButton = 'Select file first';
+      downloadButton = (
+        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
+      );
     } else {
       downloadButton = (
         <Button
           data-test-doc-file
           buttonStyle="link"
-          onClick={() => downloadErmUsageFile(
-            fileId,
-            selectedFile.name,
-            props.stripes.okapi.url,
-            httpHeaders
-          )}
+          onClick={() =>
+            downloadErmUsageFile(
+              fileId,
+              selectedFile.name,
+              props.stripes.okapi.url,
+              httpHeaders
+            )
+          }
         >
           <Icon icon="external-link">{selectedFile.name}</Icon>
         </Button>
@@ -95,7 +100,11 @@ function FileUploadCard(props) {
     }
     return (
       <KeyValue
-        label={<Label required>Selected file</Label>}
+        label={
+          <Label required>
+            <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
+          </Label>
+        }
         value={downloadButton}
       />
     );
@@ -112,8 +121,9 @@ function FileUploadCard(props) {
                 component={TextField}
                 data-test-custom-report-year
                 id="custom-report-year"
-                label="YEAR (YYYY)"
+                label={<FormattedMessage id="ui-erm-usage.general.year" />}
                 name="year"
+                placeholder="YYYY"
                 required
               />
             </Col>
@@ -124,7 +134,7 @@ function FileUploadCard(props) {
                 component={TextField}
                 data-test-custom-report-note
                 id="custom-report-note"
-                label="NOTE"
+                label={<FormattedMessage id="ui-erm-usage.general.note" />}
                 name="note"
               />
             </Col>

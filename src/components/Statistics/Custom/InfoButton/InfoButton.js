@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
+import { FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes-core';
 import {
   Button,
@@ -71,7 +72,7 @@ function InfoButton(props) {
         id={`custom-report-info-${customReport.id}`}
         closeOnBackgroundClick
         open={showModal}
-        label="Customreport info"
+        label={<FormattedMessage id="ui-erm-usage.statistics.custom.info" />}
         footer={footer}
       >
         <div id="custom-report-info" className="custom-report-info">
@@ -85,12 +86,16 @@ function InfoButton(props) {
       </Modal>
       <ConfirmationModal
         open={showConfirmDelete}
-        heading="CONFIRM DELETE"
-        message="Do you really want to delete this report?"
+        heading={
+          <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
+        }
+        message={
+          <FormattedMessage id="ui-erm-usage.freportOverview.confirmDelete" />
+        }
         onConfirm={doDelete}
-        confirmLabel="YES"
+        confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}
         onCancel={() => setShowConfirmDelete(false)}
-        cancelLabel="NO"
+        cancelLabel={<FormattedMessage id="ui-erm-usage.general.no" />}
       />
     </>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 import {
   Accordion,
@@ -65,7 +66,7 @@ function Statistics(props) {
     }
 
     if (_.isNil(counterStats) && _.isNil(nonCounterStats)) {
-      return 'NO STATISTICS AVAILABLE';
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
     }
 
     return (
