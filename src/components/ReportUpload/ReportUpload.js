@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Callout } from '@folio/stripes-components';
 
 import CounterUploadModal from './CounterUploadModal';
@@ -70,13 +70,13 @@ function ReportUpload(props) {
         id="upload-counter-button"
         onClick={() => setShowCounterUpload(true)}
       >
-        Upload COUNTER FILE
+        <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
       </Button>
       <Button
         id="upload-non-counter-button"
         onClick={() => setShowNonCounterUpload(true)}
       >
-        Upload Non-COUNTER FILE
+        <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
       </Button>
       <CounterUploadModal
         open={showCounterUpload}
