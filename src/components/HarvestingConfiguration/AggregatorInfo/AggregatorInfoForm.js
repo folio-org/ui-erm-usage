@@ -1,19 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-import {
-  Col,
-  Select,
-  TextField
-} from '@folio/stripes/components';
-import {
-  notRequired,
-  required
-} from '../../../util/validate';
+import { Col, Select, TextField } from '@folio/stripes/components';
+import { notRequired, required } from '../../../util/validate';
 
 class AggregatorInfoForm extends React.Component {
   static propTypes = {
@@ -37,19 +28,16 @@ class AggregatorInfoForm extends React.Component {
       return [];
     }
 
-    const aggs = aggregators.map(a => {
+    const aggs = aggregators.map((a) => {
       return { value: a.id, label: a.label };
     });
     return _.sortBy(aggs, ['label', 'value']);
-  }
+  };
 
   render() {
     const { disabled, aggregators } = this.props;
     const records = aggregators;
-    const aggs = records && records.length
-      ? records[0].aggregatorSettings
-      : {};
-    const requiredSign = disabled ? '' : ' *';
+    const aggs = records && records.length ? records[0].aggregatorSettings : {};
     const aggOptions = this.extractAggregatorSelectOptions(aggs);
 
     return (
@@ -57,9 +45,7 @@ class AggregatorInfoForm extends React.Component {
         <Col xs={4}>
           <Field
             label={
-              <FormattedMessage id="ui-erm-usage.information.aggregator">
-                {(msg) => msg + requiredSign}
-              </FormattedMessage>
+              <FormattedMessage id="ui-erm-usage.information.aggregator" />
             }
             name="harvestingConfig.aggregator.id"
             id="addudp_aggid"
@@ -67,13 +53,16 @@ class AggregatorInfoForm extends React.Component {
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
+            required={!disabled}
             validate={this.isRequired}
             fullWidth
           />
         </Col>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.vendorCode" />}
+            label={
+              <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.vendorCode" />
+            }
             name="harvestingConfig.aggregator.vendorCode"
             id="addudp_vendorcode"
             placeholder="Enter the aggregator's vendor code"

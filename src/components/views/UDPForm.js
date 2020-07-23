@@ -296,7 +296,8 @@ export default stripesFinalForm({
     }
   },
   subscription: {
-    values: true
+    values: true,
+    invalid: true
   },
   validate: values => endDate(values)
 })(UDPForm);

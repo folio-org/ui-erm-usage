@@ -17,7 +17,7 @@ import {
   Paneset,
   Row,
   Select,
-  TextField
+  TextField,
 } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
@@ -34,8 +34,8 @@ class AggregatorForm extends React.Component {
       hasPerm: PropTypes.func.isRequired,
       connect: PropTypes.func.isRequired,
       store: PropTypes.shape({
-        dispatch: PropTypes.func.isRequired
-      })
+        dispatch: PropTypes.func.isRequired,
+      }),
     }).isRequired,
     initialValues: PropTypes.object,
     invalid: PropTypes.bool,
@@ -45,7 +45,7 @@ class AggregatorForm extends React.Component {
     onRemove: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
-    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   constructor(props) {
@@ -67,8 +67,8 @@ class AggregatorForm extends React.Component {
       sections: {
         generalSection: true,
         accountConfig: true,
-        aggregatorConfig: true
-      }
+        aggregatorConfig: true,
+      },
     };
   }
 
@@ -95,18 +95,18 @@ class AggregatorForm extends React.Component {
     }
   }
 
-  parseInitialAggConfig = initialValues => {
+  parseInitialAggConfig = (initialValues) => {
     const { aggregatorConfig } = initialValues;
     if (_.isNil(aggregatorConfig)) {
       return [];
     }
 
-    return Object.keys(aggregatorConfig).map(key => {
+    return Object.keys(aggregatorConfig).map((key) => {
       const value = aggregatorConfig[key];
       return {
         key,
         value,
-        isInitial: true
+        isInitial: true,
       };
     });
   };
@@ -117,7 +117,7 @@ class AggregatorForm extends React.Component {
 
   beginDelete() {
     this.setState({
-      confirmDelete: true
+      confirmDelete: true,
     });
   }
 
@@ -202,7 +202,7 @@ class AggregatorForm extends React.Component {
   }
 
   handleSectionToggle({ id }) {
-    this.setState(curState => {
+    this.setState((curState) => {
       const newState = _.cloneDeep(curState);
       newState.sections[id] = !newState.sections[id];
       return newState;
@@ -210,7 +210,7 @@ class AggregatorForm extends React.Component {
   }
 
   handleExpandAll(sections) {
-    this.setState(curState => {
+    this.setState((curState) => {
       const newState = _.cloneDeep(curState);
       newState.sections = sections;
       return newState;
@@ -219,18 +219,18 @@ class AggregatorForm extends React.Component {
 
   handleAddConfigField = () => {
     this.setState(({ aggregatorConfigFields }) => ({
-      aggregatorConfigFields: aggregatorConfigFields.concat({})
+      aggregatorConfigFields: aggregatorConfigFields.concat({}),
     }));
   };
 
-  handleRemoveConfigField = index => {
+  handleRemoveConfigField = (index) => {
     const currentConf = this.state.aggregatorConfigFields[index];
     this.setState(
       ({ aggregatorConfigFields }) => ({
         aggregatorConfigFields: [
           ...aggregatorConfigFields.slice(0, index),
-          ...aggregatorConfigFields.slice(index + 1)
-        ]
+          ...aggregatorConfigFields.slice(index + 1),
+        ],
       }),
       () => {
         this.props.stripes.store.dispatch(
@@ -252,13 +252,13 @@ class AggregatorForm extends React.Component {
   handleConfigChange = (field, index, e) => {
     const val = e === undefined ? 'e' : e.target.value;
     this.setState(
-      prevState => ({
+      (prevState) => ({
         aggregatorConfigFields: this.handleConfigFieldChange(
           field,
           index,
           val,
           prevState.aggregatorConfigFields
-        )
+        ),
       }),
       () => {
         this.updateForm();
@@ -268,7 +268,7 @@ class AggregatorForm extends React.Component {
 
   updateForm = () => {
     const { aggregatorConfigFields } = this.state;
-    aggregatorConfigFields.forEach(entry => {
+    aggregatorConfigFields.forEach((entry) => {
       const k = `aggregatorConfig.${entry.key}`;
       this.changeFormValue(k, entry.value);
     });
@@ -303,7 +303,6 @@ class AggregatorForm extends React.Component {
 
     const configType = this.getSelectedConfigType();
     const configTypeIsMail = configType === 'Mail';
-    const requiredSign = configTypeIsMail ? ' *' : '';
 
     const configMailValidate = configTypeIsMail ? [mail, required] : [mail];
 
@@ -311,7 +310,7 @@ class AggregatorForm extends React.Component {
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
         values={{
-          name
+          name,
         }}
       />
     );
@@ -331,9 +330,7 @@ class AggregatorForm extends React.Component {
             paneTitle={this.renderPaneTitle()}
           >
             <div className={css.AggregatorFormContent}>
-              <AccordionSet
-                id="aggregator-form-accordion-set"
-              >
+              <AccordionSet id="aggregator-form-accordion-set">
                 <Row end="xs">
                   <Col xs>
                     <ExpandAllButton
@@ -354,22 +351,19 @@ class AggregatorForm extends React.Component {
                     <Col xs={8}>
                       <Field
                         label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.name">
-                            {msg => msg + ' *'}
-                          </FormattedMessage>
+                          <FormattedMessage id="ui-erm-usage.aggregator.name" />
                         }
                         name="label"
                         id="input-aggregator-label"
                         component={TextField}
                         fullWidth
                         disabled={disabled}
+                        required
                         validate={[required]}
                       />
                       <Field
                         label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.serviceType">
-                            {msg => msg + ' *'}
-                          </FormattedMessage>
+                          <FormattedMessage id="ui-erm-usage.aggregator.serviceType" />
                         }
                         name="serviceType"
                         id="input-aggregator-service-type"
@@ -377,19 +371,19 @@ class AggregatorForm extends React.Component {
                         component={Select}
                         dataOptions={aggregators}
                         fullWidth
+                        required
                         validate={[required]}
                       />
                       <Field
                         label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl">
-                            {msg => msg + ' *'}
-                          </FormattedMessage>
+                          <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />
                         }
                         name="serviceUrl"
                         id="input-aggregator-service-url"
                         component={TextField}
                         fullWidth
                         disabled={disabled}
+                        required
                         validate={[required]}
                       />
                     </Col>
@@ -425,9 +419,7 @@ class AggregatorForm extends React.Component {
                     <Col xs={8}>
                       <Field
                         label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type">
-                            {msg => msg + ' *'}
-                          </FormattedMessage>
+                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />
                         }
                         name="accountConfig.configType"
                         id="input-aggregator-account-type"
@@ -436,19 +428,19 @@ class AggregatorForm extends React.Component {
                         dataOptions={aggregatorAccountConfigTypes}
                         fullWidth
                         disabled={disabled}
+                        required
                         validate={[required]}
                       />
                       <Field
                         label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail">
-                            {msg => msg + requiredSign}
-                          </FormattedMessage>
+                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />
                         }
                         name="accountConfig.configMail"
                         id="input-aggregator-config-mail"
                         component={TextField}
                         fullWidth
                         disabled={disabled}
+                        required={configTypeIsMail}
                         validate={configMailValidate}
                       />
                       <DisplayContactsForm {...this.props} />
@@ -482,5 +474,5 @@ class AggregatorForm extends React.Component {
 export default stripesForm({
   form: 'aggreagtorForm',
   navigationCheck: true,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(AggregatorForm);
