@@ -17,7 +17,7 @@ function Statistics(props) {
   const {
     stripes,
     providerId,
-    label,
+    udpLabel,
     counterReports,
     customReports,
     isStatsLoading,
@@ -39,7 +39,7 @@ function Statistics(props) {
               <CounterStatistics
                 stripes={stripes}
                 providerId={providerId}
-                udpLabel={label}
+                udpLabel={udpLabel}
                 counterReports={counterReports}
               />
             </Accordion>
@@ -56,7 +56,7 @@ function Statistics(props) {
               <CustomStatistics
                 stripes={stripes}
                 providerId={providerId}
-                udpLabel={label}
+                udpLabel={udpLabel}
                 customReports={customReports}
               />
             </Accordion>
@@ -92,7 +92,7 @@ Statistics.propTypes = {
     }),
   }).isRequired,
   providerId: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  udpLabel: PropTypes.string.isRequired,
   counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   customReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   isStatsLoading: PropTypes.bool.isRequired,

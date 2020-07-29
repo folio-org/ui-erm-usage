@@ -90,7 +90,7 @@ function InfoButton(props) {
           <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
         }
         message={
-          <FormattedMessage id="ui-erm-usage.freportOverview.confirmDelete" />
+          <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
         }
         onConfirm={doDelete}
         confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}
