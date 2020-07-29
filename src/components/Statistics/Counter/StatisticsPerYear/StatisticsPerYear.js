@@ -9,12 +9,12 @@ import {
   Col,
   ExpandAllButton,
   MultiColumnList,
-  Row
+  Row,
 } from '@folio/stripes/components';
 import ReportButton from '../ReportButton';
 import {
   calcStateExpandAllAccordions,
-  calcStateToggleAccordion
+  calcStateToggleAccordion,
 } from '../../../../util/stateUtils';
 import { MAX_FAILED_ATTEMPTS } from '../../../../util/constants';
 
@@ -24,8 +24,8 @@ class StatisticsPerYear extends React.Component {
       type: 'okapi',
       records: 'configs',
       path:
-        'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)'
-    }
+        'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
+    },
   });
 
   static propTypes = {
@@ -33,55 +33,55 @@ class StatisticsPerYear extends React.Component {
       connect: PropTypes.func,
       okapi: PropTypes.shape({
         url: PropTypes.string.isRequired,
-        tenant: PropTypes.string.isRequired
+        tenant: PropTypes.string.isRequired,
       }).isRequired,
       store: PropTypes.shape({
-        getState: PropTypes.func
-      })
+        getState: PropTypes.func,
+      }),
     }).isRequired,
     mutator: PropTypes.shape({
-      failedAttemptsSettings: PropTypes.object
+      failedAttemptsSettings: PropTypes.object,
     }),
     resources: PropTypes.object.isRequired,
     intl: PropTypes.object,
     stats: PropTypes.arrayOf(PropTypes.shape()),
-    udpLabel: PropTypes.string.isRequired
+    udpLabel: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      accordions: {}
+      accordions: {},
     };
   }
 
   componentDidUpdate(prevProps) {
     if (!_.isEqual(this.props.stats, prevProps.stats)) {
       const keys = _.keys(this.props.stats);
-      keys.forEach(k => {
+      keys.forEach((k) => {
         const y = this.props.stats[k].year;
         const tmp = {};
         tmp[y] = false;
-        this.setState(state => {
+        this.setState((state) => {
           return {
             accordions: {
               ...state.accordions,
-              ...tmp
-            }
+              ...tmp,
+            },
           };
         });
       });
     }
   }
 
-  handleExpandAll = obj => {
-    this.setState(curState => {
+  handleExpandAll = (obj) => {
+    this.setState((curState) => {
       return calcStateExpandAllAccordions(curState, obj);
     });
   };
 
   handleAccordionToggle = ({ id }) => {
-    this.setState(state => {
+    this.setState((state) => {
       return calcStateToggleAccordion(state, id);
     });
   };
@@ -89,7 +89,7 @@ class StatisticsPerYear extends React.Component {
   renderReportPerYear = (reports, maxFailed) => {
     const o = Object.create({});
     let maxMonth = 0;
-    reports.forEach(r => {
+    reports.forEach((r) => {
       o.report = r.reportName;
       const month = r.yearMonth.substring(5, 7);
       if (parseInt(month, 10) >= maxMonth) {
@@ -129,7 +129,7 @@ class StatisticsPerYear extends React.Component {
     return 0;
   };
 
-  createReportOverviewPerYear = groupedStats => {
+  createReportOverviewPerYear = (groupedStats) => {
     const { intl } = this.props;
     const visibleColumns = [
       'report',
@@ -144,10 +144,10 @@ class StatisticsPerYear extends React.Component {
       '09',
       '10',
       '11',
-      '12'
+      '12',
     ];
     const columnWidths = {
-      'report': '50px',
+      report: '50px',
       '01': '50px',
       '02': '50px',
       '03': '50px',
@@ -159,14 +159,14 @@ class StatisticsPerYear extends React.Component {
       '09': '50px',
       '10': '50px',
       '11': '50px',
-      '12': '50px'
+      '12': '50px',
     };
 
     const maxFailed = parseInt(this.extractMaxFailedAttempts(), 10);
-    return groupedStats.map(statsPerYear => {
+    return groupedStats.map((statsPerYear) => {
       const y = statsPerYear.year;
       const year = y.toString();
-      const reportsOfAYear = statsPerYear.reportsPerType.map(reportsTyped => {
+      const reportsOfAYear = statsPerYear.reportsPerType.map((reportsTyped) => {
         return this.renderReportPerYear(reportsTyped.counterReports, maxFailed);
       });
       return (
@@ -183,45 +183,45 @@ class StatisticsPerYear extends React.Component {
             columnWidths={columnWidths}
             interactive={false}
             columnMapping={{
-              'report': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.report'
+              report: intl.formatMessage({
+                id: 'ui-erm-usage.reportOverview.report',
               }),
               '01': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.01'
+                id: 'ui-erm-usage.reportOverview.month.01',
               }),
               '02': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.02'
+                id: 'ui-erm-usage.reportOverview.month.02',
               }),
               '03': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.03'
+                id: 'ui-erm-usage.reportOverview.month.03',
               }),
               '04': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.04'
+                id: 'ui-erm-usage.reportOverview.month.04',
               }),
               '05': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.05'
+                id: 'ui-erm-usage.reportOverview.month.05',
               }),
               '06': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.06'
+                id: 'ui-erm-usage.reportOverview.month.06',
               }),
               '07': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.07'
+                id: 'ui-erm-usage.reportOverview.month.07',
               }),
               '08': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.08'
+                id: 'ui-erm-usage.reportOverview.month.08',
               }),
               '09': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.09'
+                id: 'ui-erm-usage.reportOverview.month.09',
               }),
               '10': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.10'
+                id: 'ui-erm-usage.reportOverview.month.10',
               }),
               '11': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.11'
+                id: 'ui-erm-usage.reportOverview.month.11',
               }),
               '12': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.12'
-              })
+                id: 'ui-erm-usage.reportOverview.month.12',
+              }),
             }}
           />
         </Accordion>
@@ -232,7 +232,7 @@ class StatisticsPerYear extends React.Component {
   extractMaxFailedAttempts = () => {
     const { resources } = this.props;
     const settings = resources.failedAttemptsSettings || {};
-    if (settings.records.length === 0) {
+    if (_.isEmpty(settings) || settings.records.length === 0) {
       return MAX_FAILED_ATTEMPTS;
     } else {
       return settings.records[0].value;
@@ -267,9 +267,7 @@ class StatisticsPerYear extends React.Component {
             />
           </Col>
         </Row>
-        <AccordionSet>
-          {reportAccordions}
-        </AccordionSet>
+        <AccordionSet>{reportAccordions}</AccordionSet>
       </React.Fragment>
     );
   }
