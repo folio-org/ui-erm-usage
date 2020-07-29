@@ -92,14 +92,12 @@ function FileUploadCard(props) {
         <Button
           data-test-doc-file
           buttonStyle="link"
-          onClick={() =>
-            downloadErmUsageFile(
-              fileId,
-              selectedFile.name,
-              props.stripes.okapi.url,
-              httpHeaders
-            )
-          }
+          onClick={() => downloadErmUsageFile(
+            fileId,
+            selectedFile.name,
+            props.stripes.okapi.url,
+            httpHeaders
+          )}
         >
           <Icon icon="external-link">{selectedFile.name}</Icon>
         </Button>

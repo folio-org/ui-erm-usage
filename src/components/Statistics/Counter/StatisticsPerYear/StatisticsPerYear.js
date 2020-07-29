@@ -147,7 +147,7 @@ class StatisticsPerYear extends React.Component {
       '12',
     ];
     const columnWidths = {
-      report: '50px',
+      'report': '50px',
       '01': '50px',
       '02': '50px',
       '03': '50px',
@@ -183,7 +183,7 @@ class StatisticsPerYear extends React.Component {
             columnWidths={columnWidths}
             interactive={false}
             columnMapping={{
-              report: intl.formatMessage({
+              'report': intl.formatMessage({
                 id: 'ui-erm-usage.reportOverview.report',
               }),
               '01': intl.formatMessage({

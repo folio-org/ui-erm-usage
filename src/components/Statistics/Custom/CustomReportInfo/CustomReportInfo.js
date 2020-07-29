@@ -32,14 +32,12 @@ function CustomReportInfo(props) {
       <Button
         id="download-custom-report-button"
         buttonStyle="dropdownItem"
-        onClick={() =>
-          downloadErmUsageFile(
-            customReport.fileId,
-            customReport.fileName,
-            props.stripes.okapi.url,
-            httpHeaders
-          )
-        }
+        onClick={() => downloadErmUsageFile(
+          customReport.fileId,
+          customReport.fileName,
+          props.stripes.okapi.url,
+          httpHeaders
+        )}
       >
         <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
       </Button>
