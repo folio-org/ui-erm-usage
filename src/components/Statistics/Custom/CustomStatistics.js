@@ -63,6 +63,12 @@ function CustomStatistics(props) {
       onToggle={handleAccordionToggle}
     >
       <MultiColumnList
+        columnMapping={{
+          note: <FormattedMessage id="ui-erm-usage.general.note" />,
+          fileId: (
+            <FormattedMessage id="ui-erm-usage.statistics.custom.info.detail" />
+          ),
+        }}
         contentData={entry.data}
         formatter={{
           note: (line) => line.note,

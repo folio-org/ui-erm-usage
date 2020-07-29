@@ -227,6 +227,7 @@
   "statistics.counter.upload": "Upload counter report",
   "statistics.custom.upload": "Upload non-counter report",
   "statistics.custom.info": "Customreport info",
+  "statistics.custom.info.detail": "Detail info",
   "statistics.custom.selectFileFirst": "Select file first",
 
   "showTags": "Show tags"
