@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 import _ from 'lodash';
 import { CalloutContext } from '@folio/stripes/core';
@@ -21,7 +21,7 @@ function FileUploadCard(props) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
 
-  const { stripes } = props;
+  const { intl, stripes } = props;
   const httpHeaders = Object.assign(
     {},
     {
@@ -59,11 +59,18 @@ function FileUploadCard(props) {
             setFileId(json.id);
           });
         } else {
-          handleFail('FAIL UPLOAD REPORT');
+          handleFail(
+            intl.formatMessage({
+              id: 'ui-erm-usage.report.upload.failed',
+            })
+          );
         }
       })
       .catch((err) => {
-        const infoText = 'FAIL UPLOAD REPORT: ' + err.message;
+        const failText = intl.formatMessage({
+          id: 'ui-erm-usage.report.upload.failed',
+        });
+        const infoText = `${failText} ${err.message}`;
         handleFail(infoText);
       });
   };
@@ -162,6 +169,7 @@ function FileUploadCard(props) {
 }
 
 FileUploadCard.propTypes = {
+  intl: PropTypes.object,
   mutators: PropTypes.shape({
     setFileId: PropTypes.func,
     setFileName: PropTypes.func,
@@ -172,4 +180,4 @@ FileUploadCard.propTypes = {
   udpId: PropTypes.string,
 };
 
-export default FileUploadCard;
+export default injectIntl(FileUploadCard);
