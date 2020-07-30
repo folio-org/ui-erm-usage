@@ -107,7 +107,7 @@ function FileUploadCard(props) {
       <KeyValue
         label={
           <Label required>
-            <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
+            <FormattedMessage id="ui-erm-usage.statistics.custom.selectedFile" />
           </Label>
         }
         value={downloadButton}
