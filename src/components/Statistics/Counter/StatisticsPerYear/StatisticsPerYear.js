@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
@@ -12,81 +12,34 @@ import {
   Row,
 } from '@folio/stripes/components';
 import ReportButton from '../ReportButton';
-import {
-  calcStateExpandAllAccordions,
-  calcStateToggleAccordion,
-} from '../../../../util/stateUtils';
 import { MAX_FAILED_ATTEMPTS } from '../../../../util/constants';
 
-class StatisticsPerYear extends React.Component {
-  static manifest = Object.freeze({
-    failedAttemptsSettings: {
-      type: 'okapi',
-      records: 'configs',
-      path:
-        'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
-    },
-  });
+function StatisticsPerYear(props) {
+  const [yearAccordions, setYearAccordions] = useState({});
 
-  static propTypes = {
-    stripes: PropTypes.shape({
-      connect: PropTypes.func,
-      okapi: PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        tenant: PropTypes.string.isRequired,
-      }).isRequired,
-      store: PropTypes.shape({
-        getState: PropTypes.func,
-      }),
-    }).isRequired,
-    mutator: PropTypes.shape({
-      failedAttemptsSettings: PropTypes.object,
-    }),
-    resources: PropTypes.object.isRequired,
-    intl: PropTypes.object,
-    stats: PropTypes.arrayOf(PropTypes.shape()),
-    udpLabel: PropTypes.string.isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      accordions: {},
+  useEffect(() => {
+    const keys = _.keys(props.stats);
+    const yearAccs = {};
+    keys.forEach((y) => {
+      const year = props.stats[y].year;
+      const tmp = {};
+      tmp[year] = false;
+      yearAccs[year] = false;
+    });
+    setYearAccordions(yearAccs);
+    return function cleanup() {
+      setYearAccordions({});
     };
-  }
+  }, [props.stats]);
 
-  componentDidUpdate(prevProps) {
-    if (!_.isEqual(this.props.stats, prevProps.stats)) {
-      const keys = _.keys(this.props.stats);
-      keys.forEach((k) => {
-        const y = this.props.stats[k].year;
-        const tmp = {};
-        tmp[y] = false;
-        this.setState((state) => {
-          return {
-            accordions: {
-              ...state.accordions,
-              ...tmp,
-            },
-          };
-        });
-      });
-    }
-  }
-
-  handleExpandAll = (obj) => {
-    this.setState((curState) => {
-      return calcStateExpandAllAccordions(curState, obj);
-    });
+  const handleAccordionToggle = ({ id }) => {
+    const tmpAccs = _.cloneDeep(yearAccordions);
+    if (!_.has(tmpAccs, id)) tmpAccs[id] = true;
+    tmpAccs[id] = !tmpAccs[id];
+    setYearAccordions(tmpAccs);
   };
 
-  handleAccordionToggle = ({ id }) => {
-    this.setState((state) => {
-      return calcStateToggleAccordion(state, id);
-    });
-  };
-
-  renderReportPerYear = (reports, maxFailed) => {
+  const renderReportPerYear = (reports, maxFailed) => {
     const o = Object.create({});
     let maxMonth = 0;
     reports.forEach((r) => {
@@ -98,9 +51,9 @@ class StatisticsPerYear extends React.Component {
       o[month] = (
         <ReportButton
           report={r}
-          stripes={this.props.stripes}
+          stripes={props.stripes}
           maxFailedAttempts={maxFailed}
-          udpLabel={this.props.udpLabel}
+          udpLabel={props.udpLabel}
         />
       );
     });
@@ -109,9 +62,9 @@ class StatisticsPerYear extends React.Component {
       const monthPadded = newMonth.toString().padStart(2, '0');
       o[monthPadded] = (
         <ReportButton
-          stripes={this.props.stripes}
+          stripes={props.stripes}
           maxFailedAttempts={maxFailed}
-          udpLabel={this.props.udpLabel}
+          udpLabel={props.udpLabel}
         />
       );
       maxMonth = newMonth;
@@ -119,18 +72,18 @@ class StatisticsPerYear extends React.Component {
     return o;
   };
 
-  sortReports = (a, b) => {
-    if (a.report > b.report) {
-      return 1;
+  const extractMaxFailedAttempts = () => {
+    const { resources } = props;
+    const settings = resources.failedAttemptsSettings || {};
+    if (_.isEmpty(settings) || settings.records.length === 0) {
+      return MAX_FAILED_ATTEMPTS;
+    } else {
+      return settings.records[0].value;
     }
-    if (a.report < b.report) {
-      return -1;
-    }
-    return 0;
   };
 
-  createReportOverviewPerYear = (groupedStats) => {
-    const { intl } = this.props;
+  const createReportOverviewPerYear = (groupedStats) => {
+    const { intl } = props;
     const visibleColumns = [
       'report',
       '01',
@@ -162,20 +115,20 @@ class StatisticsPerYear extends React.Component {
       '12': '50px',
     };
 
-    const maxFailed = parseInt(this.extractMaxFailedAttempts(), 10);
+    const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
     return groupedStats.map((statsPerYear) => {
       const y = statsPerYear.year;
       const year = y.toString();
       const reportsOfAYear = statsPerYear.reportsPerType.map((reportsTyped) => {
-        return this.renderReportPerYear(reportsTyped.counterReports, maxFailed);
+        return renderReportPerYear(reportsTyped.counterReports, maxFailed);
       });
       return (
         <Accordion
           id={year}
           key={year}
           label={year}
-          open={this.state.accordions[y]}
-          onToggle={this.handleAccordionToggle}
+          open={yearAccordions[y]}
+          onToggle={handleAccordionToggle}
         >
           <MultiColumnList
             contentData={reportsOfAYear}
@@ -229,48 +182,65 @@ class StatisticsPerYear extends React.Component {
     });
   };
 
-  extractMaxFailedAttempts = () => {
-    const { resources } = this.props;
-    const settings = resources.failedAttemptsSettings || {};
-    if (_.isEmpty(settings) || settings.records.length === 0) {
-      return MAX_FAILED_ATTEMPTS;
-    } else {
-      return settings.records[0].value;
-    }
-  };
-
-  render() {
-    if (_.isEmpty(this.props.stats)) {
-      return null;
-    }
-
-    const reportAccordions = this.createReportOverviewPerYear(this.props.stats);
-    return (
-      <React.Fragment>
-        <Row>
-          <Col xs={8}>
-            <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
-          </Col>
-        </Row>
-        <Row end="xs">
-          <Col xs>
-            <ExpandAllButton
-              accordionStatus={this.state.accordions}
-              onToggle={this.handleExpandAll}
-              setStatus={null}
-              expandLabel={
-                <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
-              }
-              collapseLabel={
-                <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
-              }
-            />
-          </Col>
-        </Row>
-        <AccordionSet>{reportAccordions}</AccordionSet>
-      </React.Fragment>
-    );
+  if (_.isEmpty(props.stats)) {
+    return null;
   }
+
+  const reportAccordions = createReportOverviewPerYear(props.stats);
+  return (
+    <React.Fragment>
+      <Row>
+        <Col xs={8}>
+          <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
+        </Col>
+      </Row>
+      <Row end="xs">
+        <Col xs>
+          <ExpandAllButton
+            accordionStatus={yearAccordions}
+            onToggle={(obj) => setYearAccordions(obj)}
+            setStatus={null}
+            expandLabel={
+              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
+            }
+            collapseLabel={
+              <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
+            }
+          />
+        </Col>
+      </Row>
+      <AccordionSet>{reportAccordions}</AccordionSet>
+    </React.Fragment>
+  );
 }
+
+StatisticsPerYear.manifest = Object.freeze({
+  failedAttemptsSettings: {
+    type: 'okapi',
+    records: 'configs',
+    path:
+      'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
+  },
+});
+
+StatisticsPerYear.propTypes = {
+  stripes: PropTypes.shape({
+    connect: PropTypes.func,
+    okapi: PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      tenant: PropTypes.string.isRequired,
+    }).isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func,
+    }),
+  }).isRequired,
+  mutator: PropTypes.shape({
+    failedAttemptsSettings: PropTypes.object,
+  }),
+  resources: PropTypes.object.isRequired,
+  intl: PropTypes.object,
+  stats: PropTypes.arrayOf(PropTypes.shape()),
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default stripesConnect(injectIntl(StatisticsPerYear));
