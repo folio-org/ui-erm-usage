@@ -8,7 +8,7 @@ import DownloadRange from './DownloadRange';
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 import css from './CounterStatistics.css';
 
-class Statistics extends React.Component {
+class CounterStatistics extends React.Component {
   static propTypes = {
     stripes: PropTypes.shape({
       connect: PropTypes.func,
@@ -95,4 +95,4 @@ class Statistics extends React.Component {
   }
 }
 
-export default Statistics;
+export default CounterStatistics;
