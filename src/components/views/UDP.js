@@ -223,7 +223,7 @@ class UDP extends React.Component {
               <Accordion
                 open={this.state.accordions.uploadAccordion}
                 onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
+                label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                 id="uploadAccordion"
               >
                 <ReportUpload udpId={providerId} stripes={stripes} />

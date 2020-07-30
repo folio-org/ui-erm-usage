@@ -45,7 +45,7 @@
   "udp.harvestingConfiguration": "Harvesting configuration",
   "udp.notes": "Notes",
   "udp.statistics": "Statistics",
-  "udp.counterUpload": "COUNTER file upload",
+  "udp.statsUpload": "Statistics upload",
   "udp.editUDPDialog": "Edit Usage Data Provider Dialog",
   "udp.searchInputLabel": "Search Usage data providers",
 
