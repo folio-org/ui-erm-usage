@@ -97,7 +97,31 @@ const downloadCredentials = (aggregatorId, format, okapiUrl, httpHeaders) => {
     });
 };
 
+const downloadErmUsageFile = (fileId, fileName, okapiUrl, httpHeaders) => {
+  return fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
+    headers: httpHeaders,
+  })
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new SubmissionError({
+          identifier: `Error ${response.status} retrieving file`,
+          _error: 'Fetch file failed',
+        });
+      } else {
+        return response.text();
+      }
+    })
+    .then((text) => {
+      const blob = new Blob([text]);
+      saveAs(blob, fileName);
+    })
+    .catch((err) => {
+      throw new Error('Error while downloading file. ' + err.message);
+    });
+};
+
 export {
+  downloadErmUsageFile,
   downloadReportMultipleMonths,
   downloadCredentials,
   downloadReportSingleMonth,

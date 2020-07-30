@@ -135,6 +135,7 @@ class UDP extends React.Component {
     const {
       data,
       isLoading,
+      isStatsLoading,
       handlers,
       isHarvesterExistent,
       stripes,
@@ -215,12 +216,14 @@ class UDP extends React.Component {
                   providerId={providerId}
                   udpLabel={label}
                   counterReports={data.counterReports}
+                  customReports={data.customReports}
+                  isStatsLoading={isStatsLoading}
                 />
               </Accordion>
               <Accordion
                 open={this.state.accordions.uploadAccordion}
                 onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.counterUpload" />}
+                label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                 id="uploadAccordion"
               >
                 <ReportUpload udpId={providerId} stripes={stripes} />
@@ -252,6 +255,7 @@ UDP.propTypes = {
   canEdit: PropTypes.bool,
   data: PropTypes.shape({
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
+    customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object,
@@ -262,6 +266,7 @@ UDP.propTypes = {
   }).isRequired,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
+  isStatsLoading: PropTypes.bool.isRequired,
   stripes: PropTypes.object.isRequired,
   tagsEnabled: PropTypes.bool,
 };

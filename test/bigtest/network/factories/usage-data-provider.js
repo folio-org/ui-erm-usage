@@ -20,7 +20,7 @@ export default Factory.extend({
     customerId: 'customer_' + i,
     requestorId: 'requestor_' + i
   }),
-  afterCreate(udp, server) {
+  afterCreate(udp, _) {
     if (udp.aggregator) {
       udp.update({
         harvestingConfig: {
@@ -42,11 +42,12 @@ export default Factory.extend({
   withUsageReports: trait({
     afterCreate(provider, server) {
       server.createList('counter-report', 9, { provider });
+      server.createList('custom-report', 2, { provider });
     }
   }),
 
   withSetInactive: trait({
-    afterCreate(provider, server) {
+    afterCreate(provider, _) {
       provider.harvestingConfig.harvestingStatus = 'inactive';
     }
   })

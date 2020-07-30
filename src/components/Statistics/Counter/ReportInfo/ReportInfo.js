@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
-import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
+import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 
 class ReportInfo extends React.Component {
   onClickDownloadRawReport = () => {

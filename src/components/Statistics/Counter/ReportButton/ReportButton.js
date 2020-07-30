@@ -12,7 +12,7 @@ import {
 import saveAs from 'file-saver';
 
 import ReportInfo from '../ReportInfo';
-import { downloadReportSingleMonth } from '../../../util/downloadReport';
+import { downloadReportSingleMonth } from '../../../../util/downloadReport';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({

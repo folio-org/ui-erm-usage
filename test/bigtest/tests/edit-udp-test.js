@@ -45,7 +45,6 @@ describe('Edit UDP', () => {
           await udpEditPage.deleteUDPConfirmation.clickCancelDeleteUDP();
         });
         it('displays Edit UDP form after click on cancel', () => {
-          expect(udpEditPage.deleteUDPConfirmation).to.be.empty;
           expect(udpEditPage.$root).to.exist;
         });
       });

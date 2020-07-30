@@ -1,98 +1,101 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { AccordionSet, Col, Row } from '@folio/stripes/components';
-import StatisticsPerYear from './StatisticsPerYear';
-import DownloadRange from './DownloadRange';
-import reportDownloadTypes from '../../util/data/reportDownloadTypes';
+import _ from 'lodash';
+import {
+  Accordion,
+  AccordionSet,
+  Col,
+  Icon,
+  Row,
+} from '@folio/stripes/components';
+import CounterStatistics from './Counter';
+import CustomStatistics from './Custom';
 import css from './Statistics.css';
 
-class Statistics extends React.Component {
-  static propTypes = {
-    stripes: PropTypes.shape({
-      connect: PropTypes.func,
-      okapi: PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        tenant: PropTypes.string.isRequired
-      }).isRequired,
-      store: PropTypes.shape({
-        getState: PropTypes.func
-      })
-    }).isRequired,
-    providerId: PropTypes.string.isRequired,
-    udpLabel: PropTypes.string.isRequired,
-    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired
-  };
+function Statistics(props) {
+  const {
+    stripes,
+    providerId,
+    udpLabel,
+    counterReports,
+    customReports,
+    isStatsLoading,
+  } = props;
 
-  constructor(props) {
-    super(props);
-    this.downloadableReports = this.calcDownloadableReportTypes(props.counterReports);
-  }
+  const renderStatsAccordions = () => {
+    let counterStats = null;
+    let nonCounterStats = null;
 
-  componentDidUpdate(prevProps) {
-    const { counterReports } = this.props;
-    if (!_.isEqual(counterReports, prevProps.counterReports)) {
-      this.downloadableReports = this.calcDownloadableReportTypes(counterReports);
+    if (isStatsLoading) {
+      return <Icon icon="spinner-ellipsis" width="10px" />;
     }
-  }
 
-  calcDownloadableReportTypes = counterReports => {
-    const reportNames = counterReports
-      .flatMap(c => c.reportsPerType)
-      .flatMap(r => r.counterReports)
-      .filter(
-        // eslint-disable-next-line eqeqeq
-        cr => (!cr.failedAttempts || cr.failedAttempts === 0)
-      )
-      .map(cr => cr.reportName);
-    const available = new Set(reportNames);
-    const intersection = new Set(
-      reportDownloadTypes.filter(y => available.has(y.value))
-    );
-    return _.sortBy([...intersection], ['label']);
-  };
+    if (counterReports.length > 0) {
+      counterStats = (
+        <Row className={css.subAccordionSections}>
+          <Col xs={12}>
+            <Accordion id="counter-reports-accordion" label="COUNTER">
+              <CounterStatistics
+                stripes={stripes}
+                providerId={providerId}
+                udpLabel={udpLabel}
+                counterReports={counterReports}
+              />
+            </Accordion>
+          </Col>
+        </Row>
+      );
+    }
 
-  render() {
-    const { counterReports } = this.props;
+    if (customReports.length > 0) {
+      nonCounterStats = (
+        <Row className={css.subAccordionSections}>
+          <Col xs={12}>
+            <Accordion id="custom-reports-accordion" label="Non-COUNTER">
+              <CustomStatistics
+                stripes={stripes}
+                providerId={providerId}
+                udpLabel={udpLabel}
+                customReports={customReports}
+              />
+            </Accordion>
+          </Col>
+        </Row>
+      );
+    }
+
+    if (_.isNil(counterStats) && _.isNil(nonCounterStats)) {
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
+    }
 
     return (
-      <React.Fragment>
-        <Row className={css.subAccordionSections}>
-          <Col xs={12}>
-            <hr />
-            <div className={css.sub2Headings}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.reportsPerYear" />
-            </div>
-          </Col>
-          <Col xs={12}>
-            <AccordionSet>
-              <StatisticsPerYear
-                stats={counterReports}
-                stripes={this.props.stripes}
-                udpLabel={this.props.udpLabel}
-              />
-            </AccordionSet>
-          </Col>
-        </Row>
-        <Row className={css.subAccordionSections}>
-          <Col xs={12}>
-            <hr />
-            <div className={css.sub2Headings}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
-            </div>
-          </Col>
-          <Col xs={12}>
-            <DownloadRange
-              stripes={this.props.stripes}
-              udpId={this.props.providerId}
-              downloadableReports={this.downloadableReports}
-            />
-          </Col>
-        </Row>
-      </React.Fragment>
+      <AccordionSet>
+        {counterStats}
+        {nonCounterStats}
+      </AccordionSet>
     );
-  }
+  };
+
+  return renderStatsAccordions();
 }
+
+Statistics.propTypes = {
+  stripes: PropTypes.shape({
+    connect: PropTypes.func,
+    okapi: PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      tenant: PropTypes.string.isRequired,
+    }).isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func,
+    }),
+  }).isRequired,
+  providerId: PropTypes.string.isRequired,
+  udpLabel: PropTypes.string.isRequired,
+  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  customReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  isStatsLoading: PropTypes.bool.isRequired,
+};
 
 export default Statistics;

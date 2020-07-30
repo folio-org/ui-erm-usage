@@ -175,6 +175,33 @@ export default function config() {
     errorCodes: ['other', '3000', '3031']
   });
 
+  this.get('/custom-reports', (schema, request) => {
+    if (request.queryParams) {
+      /*
+      Pretender cuts off the query parameter. It just provides query: "(udpId" and not the actual id. Thus we need to look for the id in thr url.
+      */
+      const currentId = extractUUID(request.url);
+      const reports = schema.customReports.where({ providerId: currentId });
+
+      const customReports = reports.models.map(rep => {
+        const r = Object.create({});
+        r.id = rep.attrs.id;
+        r.fileId = rep.attrs.fileId;
+        r.fileName = rep.attrs.fileName;
+        r.fileSize = rep.attrs.fileSize;
+        r.providerId = rep.attrs.providerId;
+        r.year = rep.attrs.year;
+        r.note = rep.attrs.note;
+        return r;
+      });
+      const result = Object.create({});
+      result.customReports = customReports;
+      return result;
+    } else {
+      return schema.customReports.all();
+    }
+  });
+
   this.get('/note-types');
 
   this.get(
