@@ -212,6 +212,26 @@
           "aggregatorsettings.item.get"
         ],
         "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage-harvester.all",
+        "displayName": "eUsage harvester: All permissions for eUsage harvester module",
+        "description": "All permissions for eUsage harvester module",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "ermusageharvester.all"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage-harvester.view",
+        "displayName": "eUsage harvester: Read-only permissions for eUsage harvester module",
+        "description": "Read-only permissions for eUsage harvester module",
+        "subPermissions": [
+          "module.erm-usage.enabled",
+          "ermusageharvester.readonly"
+        ],
+        "visible": true
       }
     ],
     "icons": [
