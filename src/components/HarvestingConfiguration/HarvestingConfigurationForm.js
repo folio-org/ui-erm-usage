@@ -158,8 +158,7 @@ class HarvestingConfigurationForm extends React.Component {
             </section>
             <section className={formCss.separator}>
               <SushiCredentialsForm
-                accordionId="editSushiCredentials"
-                onToggle={onToggleAccordion}
+                useAggregator={harvestVia === 'aggregator'}
               />
             </section>
           </Col>
