@@ -5,7 +5,7 @@ import {
   injectIntl,
   FormattedMessage
 } from 'react-intl';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import {
   Accordion,
   Col,

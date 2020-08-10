@@ -20,7 +20,7 @@ import {
 import {
   Field
 } from 'redux-form';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import stripesForm from '@folio/stripes/form';
 import {
   required
