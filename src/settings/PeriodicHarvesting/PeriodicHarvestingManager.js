@@ -13,7 +13,7 @@ import {
   Pane,
   PaneMenu
 } from '@folio/stripes/components';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 
