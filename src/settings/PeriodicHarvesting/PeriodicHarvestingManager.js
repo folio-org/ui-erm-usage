@@ -51,16 +51,14 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   combineDateTime = (date, time) => {
-    const d = moment(date, [this.dateFormat, 'YYYY-MM-DDTHH:mm:ss.SSSZ']).tz(
-      this.timeZone
-    );
+    // dont transform date to different timezone
+    const d = moment(date + ' 00:00:00 +0000', ['YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ss.SSSZ']);
     const t = moment(time, 'HH:mm:ss.SSSZ').tz(this.timeZone);
 
-    d.set('hour', t.hour());
-    d.set('minute', t.minute());
-    d.set('second', t.second());
-
-    return d;
+    t.set('year', d.year());
+    t.set('month', d.month());
+    t.set('date', d.date());
+    return t;
   };
 
   splitDateTime = (dateTime) => {
@@ -69,7 +67,7 @@ class PeriodicHarvestingManager extends React.Component {
     const date = moment(splitted[0], 'YYYY-MM-DD');
     const time = moment(splitted[1], 'HH:mm:ss.SSSZZ');
     return {
-      date: date.format(this.dateFormat),
+      date: date.format('YYYY-MM-DD'),
       time: time.format(),
     };
   };
@@ -243,7 +241,7 @@ class PeriodicHarvestingManager extends React.Component {
 
     const initialVals = _.get(this.state, 'config', {}) || {};
     let dateTime = {
-      date: '01/01/1970',
+      date: '1999-01-01',
       time: '1970-01-01T07:00:00+00:00',
     };
     if (!_.isNil(initialVals) && initialVals.startAt !== '') {
