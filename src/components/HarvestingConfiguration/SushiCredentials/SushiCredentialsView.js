@@ -1,14 +1,7 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
-import {
-  Col,
-  KeyValue,
-  Row
-} from '@folio/stripes/components';
+import { FormattedMessage } from 'react-intl';
+import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
 
 class SushiCredentialsView extends React.Component {
   static propTypes = {
@@ -19,15 +12,15 @@ class SushiCredentialsView extends React.Component {
   render() {
     const { usageDataProvider, settings } = this.props;
 
-    const hideCredentials = (settings.length && settings[0].value === 'true');
+    const hideCredentials = settings.length && settings[0].value === 'true';
 
-    const cId = _.get(usageDataProvider, 'sushiCredentials.customerId', '-');
+    const cId = usageDataProvider.sushiCredentials?.customerId ?? <NoValue />;
     const customerId = hideCredentials ? '*'.repeat(cId.length) : cId;
 
-    const rId = _.get(usageDataProvider, 'sushiCredentials.requestorId', '-');
+    const rId = usageDataProvider.sushiCredentials?.requestorId ?? <NoValue />;
     const requestorId = hideCredentials ? '*'.repeat(rId.length) : rId;
 
-    const key = _.get(usageDataProvider, 'sushiCredentials.apiKey', '-');
+    const key = usageDataProvider.sushiCredentials?.apiKey ?? <NoValue />;
     const apiKey = hideCredentials ? '*'.repeat(key.length) : key;
 
     return (
@@ -35,13 +28,17 @@ class SushiCredentialsView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />
+              }
               value={customerId}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />
+              }
               value={requestorId}
             />
           </Col>
@@ -55,14 +52,22 @@ class SushiCredentialsView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />}
-              value={_.get(usageDataProvider, 'sushiCredentials.requestorName', '-')}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
+              }
+              value={
+                usageDataProvider.sushiCredentials?.requestorName ?? <NoValue />
+              }
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />}
-              value={_.get(usageDataProvider, 'sushiCredentials.requestorMail', '-')}
+              label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />
+              }
+              value={
+                usageDataProvider.sushiCredentials?.requestorMail ?? <NoValue />
+              }
             />
           </Col>
         </Row>
