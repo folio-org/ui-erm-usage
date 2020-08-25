@@ -48,7 +48,6 @@ import {
 }
 @interactor class StatisticsAccordion {
   static defaultScope = '#statisticsAccordion';
-  // static defaultScope = '#accordion-toggle-button-statisticsAccordion';
 }
 
 @interactor class UploadAccordion {

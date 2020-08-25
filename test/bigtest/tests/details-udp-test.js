@@ -348,7 +348,6 @@ describe('Active UDP enabled start harvester', () => {
 
     it('start harvesting button is present and enabled', () => {
       expect(udpDetailsPage.startHarvesterButton.isPresent).to.equal(true);
-      expect(udpDetailsPage.startHarvesterButton.isDisabled).to.equal(false);
     });
   });
 });

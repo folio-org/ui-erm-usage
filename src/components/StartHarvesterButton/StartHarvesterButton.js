@@ -26,6 +26,7 @@ class StartHarvesterButton extends React.Component {
 
   static propTypes = {
     intl: PropTypes.object,
+    isHarvesterExistent: PropTypes.bool,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }),
@@ -78,7 +79,7 @@ class StartHarvesterButton extends React.Component {
 
   isInActive = (udp) => {
     const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
-    return status === 'inactive';
+    return !this.props.isHarvesterExistent || status === 'inactive';
   }
 
   createSuccessText = (udp) => {
