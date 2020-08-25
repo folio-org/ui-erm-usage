@@ -7,12 +7,14 @@ import {
   Button,
   ConfirmationModal,
   Icon,
-  Modal
+  Modal,
 } from '@folio/stripes/components';
-import saveAs from 'file-saver';
 
 import ReportInfo from '../ReportInfo';
-import { downloadReportSingleMonth } from '../../../../util/downloadReport';
+import {
+  downloadReportSingleMonth,
+  downloadReportSingleMonthRaw,
+} from '../../../../util/downloadReport';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
@@ -20,13 +22,10 @@ class ReportButton extends React.Component {
       type: 'okapi',
       fetch: false,
       accumulate: 'true',
-      GET: {
-        path: 'counter-reports/!{report.id}'
-      },
       DELETE: {
-        path: 'counter-reports'
-      }
-    }
+        path: 'counter-reports',
+      },
+    },
   });
 
   constructor(props) {
@@ -39,27 +38,17 @@ class ReportButton extends React.Component {
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
         'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
     );
 
     this.state = {
       showDropDown: false,
-      showConfirmDelete: false
+      showConfirmDelete: false,
     };
   }
 
-  getFileType = () => {
-    // TODO: Backend needs implementation to return xml reports. Currently, it returns json reports only
-    return 'json';
-    // if (format === 'json') {
-    //   return 'json';
-    // } else {
-    //   return 'xml';
-    // }
-  };
-
-  getButtonStyle = failedAttempts => {
+  getButtonStyle = (failedAttempts) => {
     if (!failedAttempts) {
       return 'success';
     } else if (failedAttempts < this.props.maxFailedAttempts) {
@@ -69,7 +58,7 @@ class ReportButton extends React.Component {
     }
   };
 
-  getButtonIcon = failedAttempts => {
+  getButtonIcon = (failedAttempts) => {
     if (!failedAttempts) {
       return <Icon icon="check-circle" />;
     } else if (failedAttempts < this.props.maxFailedAttempts) {
@@ -79,31 +68,28 @@ class ReportButton extends React.Component {
     }
   };
 
-  saveReport = (id, reportData, fileType) => {
-    const blob = new Blob([reportData], { type: fileType });
-    const fileName = `${id}.${fileType}`;
-    saveAs(blob, fileName);
-  };
-
-  downloadRawReport = () => {
+  downloadRawReport = (fileType) => {
     this.setState(() => ({ showDropDown: false }));
-    this.props.mutator.counterReports
-      .GET()
-      .then(report => {
-        const fileType = this.getFileType(report.format);
-        const reportData = JSON.stringify(report.report);
-        this.saveReport(report.id, reportData, fileType);
-      })
-      .catch(err => {
-        const infoText = this.failText + ' ' + err.message;
-        this.log('Download of counter report failed: ' + infoText);
-      });
+    const id = this.props.report.id;
+    downloadReportSingleMonthRaw(
+      id,
+      fileType,
+      this.okapiUrl,
+      this.httpHeaders
+    ).catch((err) => {
+      this.log(err.message);
+    });
   };
 
   downloadReport = (format) => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    downloadReportSingleMonth(id, format, this.okapiUrl, this.httpHeaders).catch(err => {
+    downloadReportSingleMonth(
+      id,
+      format,
+      this.okapiUrl,
+      this.httpHeaders
+    ).catch((err) => {
       this.log(err.message);
     });
   };
@@ -111,7 +97,7 @@ class ReportButton extends React.Component {
   deleteReport = () => {
     this.setState({
       showConfirmDelete: true,
-      showDropDown: false
+      showDropDown: false,
     });
   };
 
@@ -120,7 +106,7 @@ class ReportButton extends React.Component {
     this.props.mutator.counterReports
       .DELETE({ id: report.id })
       .then(() => {})
-      .catch(err => {
+      .catch((err) => {
         const infoText = this.failText + ' ' + err.message;
         this.log('Delete of counter report failed: ' + infoText);
       });
@@ -151,7 +137,9 @@ class ReportButton extends React.Component {
           <br />
         </span>
         <span>
-          {`${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}:
+          {`${this.props.intl.formatMessage({
+            id: 'ui-erm-usage.reportOverview.reportType',
+          })}:
            ${report.reportName} --
            ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
            ${report.yearMonth}`}
@@ -161,7 +149,9 @@ class ReportButton extends React.Component {
 
     const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
     const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
-    const failedInfo = report.failedAttempts ? 'There are harvesting errors for this report.' : 'Harvesting was successfull.';
+    const failedInfo = report.failedAttempts
+      ? 'There are harvesting errors for this report.'
+      : 'Harvesting was successfull.';
     const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
     const reportInfoClassName = report.failedAttempts
       ? 'report-info-failed'
@@ -181,7 +171,9 @@ class ReportButton extends React.Component {
           buttonStyle={style}
           data-role="toggle"
           aria-haspopup="true"
-          onClick={() => this.setState(state => ({ showDropDown: !state.showDropDown }))}
+          onClick={() =>
+            this.setState((state) => ({ showDropDown: !state.showDropDown }))
+          }
         >
           {icon}
         </Button>
@@ -211,11 +203,11 @@ class ReportButton extends React.Component {
           message={confirmMessage}
           onConfirm={this.doDelete}
           confirmLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.yes'
+            id: 'ui-erm-usage.general.yes',
           })}
           onCancel={this.hideConfirm}
           cancelLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.no'
+            id: 'ui-erm-usage.general.no',
           })}
         />
       </React.Fragment>
@@ -228,11 +220,11 @@ ReportButton.propTypes = {
   report: PropTypes.object,
   mutator: PropTypes.shape({
     counterReports: PropTypes.object,
-    csvReports: PropTypes.object
+    csvReports: PropTypes.object,
   }),
   intl: PropTypes.object,
   maxFailedAttempts: PropTypes.number.isRequired,
-  udpLabel: PropTypes.string.isRequired
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default stripesConnect(injectIntl(ReportButton));

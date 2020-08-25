@@ -5,8 +5,9 @@ import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 
 class ReportInfo extends React.Component {
-  onClickDownloadRawReport = () => {
-    this.props.downloadRawReport();
+  onClickDownloadRawReport = (release) => {
+    const fileType = this.getFileType(release);
+    this.props.downloadRawReport(fileType);
   };
 
   onClickDownloadReport = (format) => {
@@ -27,6 +28,16 @@ class ReportInfo extends React.Component {
       return true;
     }
     return false;
+  };
+
+  getFileType = (release) => {
+    if (release === '4') {
+      return 'xml';
+    } else if (release === '5') {
+      return 'json';
+    } else {
+      return 'unknown';
+    }
   };
 
   renderCSVDownloadButton = (report) => {
@@ -83,6 +94,29 @@ class ReportInfo extends React.Component {
     );
   };
 
+  renderRawDownloadButton = (report) => {
+    if (report.failedReason) {
+      return null;
+    }
+    const filetype = this.getFileType(report.release).toUpperCase();
+    return (
+      <Button
+        id="download-json-xml-button"
+        buttonStyle="dropdownItem"
+        onClick={() => this.onClickDownloadRawReport(report.release)}
+      >
+        <Icon icon="arrow-down">
+          <FormattedMessage
+            id="ui-erm-usage.report.action.download.jsonxml"
+            values={{
+              filetype,
+            }}
+          />
+        </Icon>
+      </Button>
+    );
+  };
+
   render() {
     const { report, retryThreshold } = this.props;
 
@@ -130,17 +164,7 @@ class ReportInfo extends React.Component {
       </MenuSection>
     );
 
-    const rawDownloadButton = failInfo ? null : (
-      <Button
-        id="download-json-xml-button"
-        buttonStyle="dropdownItem"
-        onClick={() => this.onClickDownloadRawReport()}
-      >
-        <Icon icon="arrow-down">
-          <FormattedMessage id="ui-erm-usage.report.action.download.jsonxml" />
-        </Icon>
-      </Button>
-    );
+    const rawDownloadButton = this.renderRawDownloadButton(report);
 
     const csvDownloadButton = this.renderCSVDownloadButton(report);
     const xslxDownloadButton = this.renderXLSXDownloadButton(report);
