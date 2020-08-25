@@ -1,16 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import moment from 'moment-timezone';
 import {
   Accordion,
   Col,
   KeyValue,
-  Row
+  NoValue,
+  Row,
 } from '@folio/stripes/components';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { VendorInfoView } from './VendorInfo';
@@ -36,7 +34,7 @@ class HarvestingConfigurationView extends React.Component {
     this.timeZone = props.intl.timeZone;
   }
 
-  createProvider = udp => {
+  createProvider = (udp) => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
     if (harvestVia === 'aggregator') {
       return (
@@ -53,38 +51,56 @@ class HarvestingConfigurationView extends React.Component {
         />
       );
     }
-  }
+  };
 
-  renderLastHarvestingDate = udp => {
-    const dateRaw = _.get(udp, 'harvestingDate', '-');
-    if (dateRaw === '-') {
-      return dateRaw;
+  renderLastHarvestingDate = (udp) => {
+    if (_.isNil(udp.harvestingDate)) {
+      return <NoValue />;
     }
-    const date = moment(dateRaw).local();
+    const date = moment(udp.harvestingDate).local();
     return date.format('MMM DD YYYY, HH:mm:ss');
-  }
+  };
 
   render() {
     const { usageDataProvider, onToggle, sushiCredsOpen } = this.props;
 
     const provider = this.createProvider(usageDataProvider);
 
-    const reports = _.get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
+    const reports = _.get(
+      usageDataProvider,
+      'harvestingConfig.requestedReports',
+      []
+    ).sort();
     let requestedReports = '';
     if (!_.isEmpty(reports)) {
       requestedReports = reports.join(', ');
     }
 
-    const hStatus = _.get(usageDataProvider, 'harvestingConfig.harvestingStatus', '');
-    const harvestingStatus = harvestingStatusOptions.find(e => e.value === hStatus);
-    const harvestingStatusLabel = harvestingStatus ? harvestingStatus.label : '-';
+    const hStatus = _.get(
+      usageDataProvider,
+      'harvestingConfig.harvestingStatus',
+      ''
+    );
+    const harvestingStatus = harvestingStatusOptions.find(
+      (e) => e.value === hStatus
+    );
+    const harvestingStatusLabel = harvestingStatus.label ?? <NoValue />;
 
-    const counterVersion = _.get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-    const reportRelease = reportReleaseOptions.find(e => e.value === counterVersion);
-    const reportReleaseLabel = reportRelease ? reportRelease.label : '-';
+    const counterVersion = _.get(
+      usageDataProvider,
+      'harvestingConfig.reportRelease',
+      ''
+    );
+    const reportRelease = reportReleaseOptions.find(
+      (e) => e.value === counterVersion
+    );
+    const reportReleaseLabel = reportRelease.label ?? <NoValue />;
 
-    const harvestingStart = _.get(usageDataProvider, 'harvestingConfig.harvestingStart', '-');
-    const harvestingEnd = _.get(usageDataProvider, 'harvestingConfig.harvestingEnd', '-');
+    const harvestingStart = usageDataProvider.harvestingConfig
+      ?.harvestingStart ?? <NoValue />;
+    const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? (
+      <NoValue />
+    );
 
     const lastHarvesting = this.renderLastHarvestingDate(usageDataProvider);
 
@@ -93,7 +109,9 @@ class HarvestingConfigurationView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />
+              }
               value={harvestingStatusLabel}
             />
           </Col>
@@ -105,7 +123,9 @@ class HarvestingConfigurationView extends React.Component {
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.lastHarvesting" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.lastHarvesting" />
+              }
               value={<div data-test-last-harvesting>{lastHarvesting}</div>}
             />
           </Col>
@@ -114,25 +134,33 @@ class HarvestingConfigurationView extends React.Component {
         <Row>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />
+              }
               value={reportReleaseLabel}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />
+              }
               value={requestedReports}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />
+              }
               value={harvestingStart}
             />
           </Col>
           <Col xs={3}>
             <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
+              label={
+                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />
+              }
               value={harvestingEnd}
             />
           </Col>
@@ -140,7 +168,9 @@ class HarvestingConfigurationView extends React.Component {
         <Accordion
           open={sushiCredsOpen}
           onToggle={onToggle}
-          label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />}
+          label={
+            <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />
+          }
           id="sushiCredsAccordion"
         >
           <SushiCredentialsView

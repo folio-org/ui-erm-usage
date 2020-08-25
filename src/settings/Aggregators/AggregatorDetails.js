@@ -9,7 +9,8 @@ import {
   Col,
   ExpandAllButton,
   KeyValue,
-  Row
+  NoValue,
+  Row,
 } from '@folio/stripes/components';
 
 import DownloadCredentialsButton from './DownloadCredentialsButton';
@@ -23,19 +24,19 @@ class AggregatorDetails extends React.Component {
       type: 'okapi',
       records: 'configs',
       path:
-        'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)'
-    }
+        'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    },
   });
 
   static propTypes = {
     initialValues: PropTypes.object,
     resources: PropTypes.shape({
       settings: PropTypes.shape({
-        records: PropTypes.arrayOf(PropTypes.object)
-      })
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
     }).isRequired,
     stripes: PropTypes.shape().isRequired,
-    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   };
 
   constructor(props) {
@@ -47,13 +48,13 @@ class AggregatorDetails extends React.Component {
       sections: {
         generalInformation: true,
         aggregatorConfig: true,
-        accountConfig: true
-      }
+        accountConfig: true,
+      },
     };
   }
 
   handleExpandAll(sections) {
-    this.setState(curState => {
+    this.setState((curState) => {
       const newState = _.cloneDeep(curState);
       newState.sections = sections;
       return newState;
@@ -61,14 +62,14 @@ class AggregatorDetails extends React.Component {
   }
 
   handleSectionToggle({ id }) {
-    this.setState(curState => {
+    this.setState((curState) => {
       const newState = _.cloneDeep(curState);
       newState.sections[id] = !newState.sections[id];
       return newState;
     });
   }
 
-  renderContact = aggregator => {
+  renderContact = (aggregator) => {
     if (aggregator.accountConfig && aggregator.accountConfig.displayContact) {
       return aggregator.accountConfig.displayContact.map((item, i) => (
         <p key={i}>{item}</p>
@@ -85,9 +86,9 @@ class AggregatorDetails extends React.Component {
 
     const contacts = this.renderContact(aggregator);
 
-    const sType = _.get(aggregator, 'serviceType', '-');
-    const serviceType = aggregators.find(e => e.value === sType);
-    const serviceTypeLabel = serviceType ? serviceType.label : '-';
+    const sType = aggregator.serviceType;
+    const serviceType = aggregators.find((e) => e.value === sType);
+    const serviceTypeLabel = serviceType?.label ?? <NoValue />;
 
     const currentConfTypeValue = _.get(
       aggregator,
@@ -95,9 +96,9 @@ class AggregatorDetails extends React.Component {
       ''
     );
     const configType = aggregatorAccountConfigTypes.find(
-      e => e.value === currentConfTypeValue
+      (e) => e.value === currentConfTypeValue
     );
-    const configTypeLabel = configType ? configType.label : '-';
+    const configTypeLabel = configType.label ?? <NoValue />;
 
     const settings = (this.props.resources.settings || {}).records || [];
     const hideValues = !_.isEmpty(settings) && settings[0].value === 'true';

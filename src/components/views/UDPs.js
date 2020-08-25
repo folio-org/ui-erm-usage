@@ -16,6 +16,7 @@ import {
   Pane,
   Button,
   Icon,
+  NoValue,
   PaneMenu,
   Paneset,
   SearchField,
@@ -93,9 +94,11 @@ class UDPs extends React.Component {
   };
 
   getAggregatorName = (udp) => {
-    return udp.harvestingConfig.harvestVia === 'aggregator'
-      ? udp.harvestingConfig.aggregator.name
-      : '-';
+    return udp.harvestingConfig.harvestVia === 'aggregator' ? (
+      udp.harvestingConfig.aggregator.name
+    ) : (
+      <NoValue />
+    );
   };
 
   renderIsEmptyMessage = (query, source) => {
