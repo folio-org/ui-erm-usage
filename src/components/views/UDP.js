@@ -146,10 +146,6 @@ class UDP extends React.Component {
     const usageDataProvider = get(data, 'usageDataProvider', {});
     if (isLoading) return this.renderLoadingPane();
 
-    const displayWhenOpenHarvestingAcc = isHarvesterExistent ? (
-      <StartHarvesterButton usageDataProvider={usageDataProvider} />
-    ) : null;
-
     const detailMenu = this.renderDetailMenu(usageDataProvider);
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
@@ -194,7 +190,7 @@ class UDP extends React.Component {
                   <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
                 }
                 id="harvestingAccordion"
-                displayWhenOpen={displayWhenOpenHarvestingAcc}
+                displayWhenOpen={<StartHarvesterButton usageDataProvider={usageDataProvider} isHarvesterExistent={isHarvesterExistent} />}
               >
                 <HarvestingConfigurationView
                   usageDataProvider={usageDataProvider}

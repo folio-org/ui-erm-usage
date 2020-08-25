@@ -1,10 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import {
   Button,
   Col,
@@ -15,25 +12,20 @@ import {
   PaneMenu,
   Row,
   Select,
-  Timepicker
+  Timepicker,
 } from '@folio/stripes/components';
-import {
-  Field
-} from 'redux-form';
+import { Field } from 'react-final-form';
 import moment from 'moment-timezone';
-import stripesForm from '@folio/stripes/form';
-import {
-  required
-} from '../../util/validate';
+import stripesFinalForm from '@folio/stripes/final-form';
+import { required } from '../../util/validate';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 
 class PeriodicHarvestingForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: PropTypes.shape(),
-    intl: PropTypes.object,
     onDelete: PropTypes.func.isRequired,
-    timeZone: PropTypes.string.isRequired
+    timeZone: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -48,14 +40,14 @@ class PeriodicHarvestingForm extends React.Component {
     this.setState({
       confirmDelete: true,
     });
-  }
+  };
 
   confirmDelete = (confirmation) => {
     if (confirmation) {
       this.props.onDelete();
     }
     this.setState({ confirmDelete: false });
-  }
+  };
 
   getLastMenu() {
     return (
@@ -71,23 +63,28 @@ class PeriodicHarvestingForm extends React.Component {
   render() {
     const { handleSubmit, initialValues } = this.props;
     const isConfigEmpty = _.isEmpty(initialValues);
-    const lastTriggeredAt = initialValues.lastTriggeredAt ? moment(initialValues.lastTriggeredAt).format('LLL') : '--';
+    const lastTriggeredAt = initialValues.lastTriggeredAt
+      ? moment(initialValues.lastTriggeredAt).format('LLL')
+      : '--';
 
     return (
       <React.Fragment>
-        <form
-          id="form-periodic-harvesting"
-          onSubmit={handleSubmit}
-        >
+        <form id="form-periodic-harvesting" onSubmit={handleSubmit}>
           <Row>
             <Col xs={8}>
               <Field
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
+                label={
+                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />
+                }
+                aria-label={
+                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />
+                }
                 name="startDate"
                 id="periodic-harvesting-start"
                 component={Datepicker}
-                fullWidth
-                validate={[required]}
+                dateFormat="YYYY-MM-DD"
+                backendDateStandard="YYYY-MM-DD"
+                validate={required}
               />
             </Col>
           </Row>
@@ -95,7 +92,9 @@ class PeriodicHarvestingForm extends React.Component {
             <Col xs={8}>
               <Field
                 name="startTime"
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+                label={
+                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.time" />
+                }
                 component={Timepicker}
                 autoComplete="off"
                 timeZone={this.props.timeZone}
@@ -105,20 +104,24 @@ class PeriodicHarvestingForm extends React.Component {
           <Row>
             <Col xs={8}>
               <Field
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
+                label={
+                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.periodicInterval" />
+                }
                 name="periodicInterval"
                 id="periodic-harvesting-interval"
                 component={Select}
                 dataOptions={periodicHarvestingIntervals}
                 fullWidth
-                validate={[required]}
+                validate={required}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
+                label={
+                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.lastTriggered" />
+                }
                 value={lastTriggeredAt}
               />
             </Col>
@@ -148,18 +151,29 @@ class PeriodicHarvestingForm extends React.Component {
         <ConfirmationModal
           id="delete-config-confirmation"
           open={this.state.confirmDelete}
-          heading={this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.confirmDelete' })}
-          message={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.deleteQuestion' })}
-          onConfirm={() => { this.confirmDelete(true); }}
-          onCancel={() => { this.confirmDelete(false); }}
+          heading={
+            <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
+          }
+          message={
+            <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.deleteQuestion" />
+          }
+          onConfirm={() => {
+            this.confirmDelete(true);
+          }}
+          onCancel={() => {
+            this.confirmDelete(false);
+          }}
         />
       </React.Fragment>
     );
   }
 }
 
-export default stripesForm({
-  form: 'periodicHarvestingForm',
+export default stripesFinalForm({
   navigationCheck: true,
   enableReinitialize: true,
-})(injectIntl(PeriodicHarvestingForm));
+  subscription: {
+    values: true,
+    invalid: true,
+  },
+})(PeriodicHarvestingForm);
