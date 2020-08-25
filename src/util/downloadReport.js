@@ -42,7 +42,9 @@ const downloadReportMultipleMonths = (
       );
     })
     .catch((err) => {
-      throw new Error('Error while downloading CSV/xslx report. ' + err.message);
+      throw new Error(
+        'Error while downloading CSV/xslx report. ' + err.message
+      );
     });
 };
 
@@ -67,7 +69,38 @@ const downloadReportSingleMonth = (udpId, format, okapiUrl, httpHeaders) => {
       saveReport(udpId, text, format);
     })
     .catch((err) => {
-      throw new Error('Error while downloading CSV/xslx report. ' + err.message);
+      throw new Error(
+        'Error while downloading CSV/xslx report. ' + err.message
+      );
+    });
+};
+
+const downloadReportSingleMonthRaw = (
+  reportId,
+  fileType,
+  okapiUrl,
+  httpHeaders
+) => {
+  return fetch(`${okapiUrl}/counter-reports/${reportId}/download`, {
+    headers: httpHeaders,
+  })
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new SubmissionError({
+          identifier: `Error ${response.status} downloading counter report by id`,
+          _error: 'Fetch counter csv failed',
+        });
+      } else {
+        return response.text();
+      }
+    })
+    .then((text) => {
+      saveReport(reportId, text, fileType);
+    })
+    .catch((err) => {
+      throw new Error(
+        'Error while downloading xml/json report. ' + err.message
+      );
     });
 };
 
@@ -125,4 +158,5 @@ export {
   downloadReportMultipleMonths,
   downloadCredentials,
   downloadReportSingleMonth,
+  downloadReportSingleMonthRaw,
 };

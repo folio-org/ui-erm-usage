@@ -105,7 +105,7 @@
   "report.action.download": "Download",
   "report.action.download.csv": "Download report as CSV",
   "report.action.download.xlsx": "Download report as XLSX",
-  "report.action.download.jsonxml": "Download report as JSON/XML",
+  "report.action.download.jsonxml": "Download report as {filetype}",
   "report.action.general.delete.report": "Delete report",
   "report.action.general.delete.entry": "Delete entry",
   "report.action.failedAttempts": "Failed Attempts",
