@@ -171,9 +171,7 @@ class ReportButton extends React.Component {
           buttonStyle={style}
           data-role="toggle"
           aria-haspopup="true"
-          onClick={() =>
-            this.setState((state) => ({ showDropDown: !state.showDropDown }))
-          }
+          onClick={() => this.setState((state) => ({ showDropDown: !state.showDropDown }))}
         >
           {icon}
         </Button>
