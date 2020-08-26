@@ -80,7 +80,9 @@
     "okapiInterfaces": {
       "usage-data-providers": "2.5",
       "aggregator-settings": "1.2",
-      "counter-reports": "1.5"
+      "counter-reports": "1.6",
+      "custom-reports": "1.0",
+      "erm-usage/files": "1.0"
     },
     "permissionSets": [
       {
@@ -132,7 +134,10 @@
           "counterreports.collection.get",
           "counterreports.item.get",
           "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get"
+          "aggregatorsettings.item.get",
+          "customreports.collection.get",
+          "customreports.item.get",
+          "erm-usage.files.item.get"
         ],
         "visible": true
       },
@@ -149,7 +154,12 @@
           "counterreports.item.get",
           "counterreports.item.post",
           "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get"
+          "aggregatorsettings.item.get",
+          "customreports.collection.get",
+          "customreports.item.get",
+          "customreports.item.post",
+          "erm-usage.files.item.get",
+          "erm-usage.files.item.post"
         ],
         "visible": true
       },
@@ -166,7 +176,11 @@
           "counterreports.item.get",
           "counterreports.item.put",
           "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get"
+          "aggregatorsettings.item.get",
+          "customreports.collection.get",
+          "customreports.item.get",
+          "customreports.item.put",
+          "erm-usage.files.item.get"
         ],
         "visible": true
       },
@@ -185,7 +199,13 @@
           "counterreports.item.post",
           "counterreports.item.put",
           "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get"
+          "aggregatorsettings.item.get",
+          "customreports.collection.get",
+          "customreports.item.get",
+          "customreports.item.post",
+          "customreports.item.put",
+          "erm-usage.files.item.get",
+          "erm-usage.files.item.post"
         ],
         "visible": true
       },
@@ -206,7 +226,15 @@
           "counterreports.item.put",
           "counterreports.item.delete",
           "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get"
+          "aggregatorsettings.item.get",
+          "customreports.collection.get",
+          "customreports.item.get",
+          "customreports.item.post",
+          "customreports.item.put",
+          "customreports.item.delete",
+          "erm-usage.files.item.get",
+          "erm-usage.files.item.post",
+          "erm-usage.files.item.delete"
         ],
         "visible": true
       },
