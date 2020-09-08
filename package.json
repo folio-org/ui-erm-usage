@@ -78,11 +78,12 @@
     "home": "/eusage",
     "queryResource": "query",
     "okapiInterfaces": {
-      "usage-data-providers": "2.5",
       "aggregator-settings": "1.2",
+      "configuration": "2.0",
       "counter-reports": "1.6 2.0",
       "custom-reports": "1.0",
-      "erm-usage/files": "1.0"
+      "erm-usage/files": "1.0",
+      "usage-data-providers": "2.5"    
     },
     "permissionSets": [
       {
