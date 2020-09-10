@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { stripesConnect } from '@folio/stripes/core';
+import { stripesConnect, IfPermission } from '@folio/stripes/core';
 import {
   injectIntl,
   FormattedMessage
@@ -105,7 +105,7 @@ class StartHarvesterButton extends React.Component {
   render() {
     const { usageDataProvider } = this.props;
     return (
-      <React.Fragment>
+      <IfPermission perm="ermusageharvester.start.single">
         <Button
           id="start-harvester-button"
           buttonStyle="primary"
@@ -129,7 +129,7 @@ class StartHarvesterButton extends React.Component {
             OK
           </Button>
         </Modal>
-      </React.Fragment>
+      </IfPermission>
     );
   }
 }

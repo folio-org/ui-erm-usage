@@ -240,12 +240,42 @@
         "visible": true
       },
       {
+        "permissionName": "ui-erm-usage-harvester.start.single",
+        "displayName": "eUsage harvester: Start harvesting for a single provide",
+        "description": "Start harvesting for a single provide",
+        "subPermissions": [
+          "ermusageharvester.start.single"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage-harvester.periodic.post",
+        "displayName": "eUsage harvester: Save harvester periodic setting",
+        "description": "Save harvester periodic setting",
+        "subPermissions": [
+          "ermusageharvester.periodic.post"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage-harvester.periodic.delete",
+        "displayName": "eUsage harvester: Delete harvester periodic setting",
+        "description": "Delete harvester periodic setting",
+        "subPermissions": [
+          "ermusageharvester.periodic.delete"
+        ],
+        "visible": false
+      },
+      {
         "permissionName": "ui-erm-usage-harvester.all",
         "displayName": "eUsage harvester: All permissions for eUsage harvester module",
         "description": "All permissions for eUsage harvester module",
         "subPermissions": [
           "module.erm-usage.enabled",
-          "ermusageharvester.all"
+          "ermusageharvester.all",
+          "ui-erm-usage-harvester.start.single",
+          "ui-erm-usage-harvester.periodic.post",
+          "ui-erm-usage-harvester.periodic.delete"
         ],
         "visible": true
       },
