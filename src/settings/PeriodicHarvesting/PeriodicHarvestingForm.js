@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { IfPermission } from '@folio/stripes-core';
 import {
   Button,
   Col,
@@ -127,16 +128,18 @@ class PeriodicHarvestingForm extends React.Component {
             </Col>
           </Row>
           <PaneMenu>
-            <Button
-              id="clickable-delete-config"
-              title="DELETE"
-              buttonStyle="danger"
-              onClick={this.beginDelete}
-              disabled={isConfigEmpty}
-              marginBottom0
-            >
-              <FormattedMessage id="ui-erm-usage.general.delete" />
-            </Button>
+            <IfPermission perm="ermusageharvester.periodic.post">
+              <Button
+                id="clickable-delete-config"
+                title="DELETE"
+                buttonStyle="danger"
+                onClick={this.beginDelete}
+                disabled={isConfigEmpty}
+                marginBottom0
+              >
+                <FormattedMessage id="ui-erm-usage.general.delete" />
+              </Button>
+            </IfPermission>
             <Button
               id="save-config"
               type="submit"

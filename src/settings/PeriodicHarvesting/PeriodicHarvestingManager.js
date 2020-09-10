@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
 import { injectIntl } from 'react-intl';
-import { stripesConnect } from '@folio/stripes/core';
+import { stripesConnect, IfPermission } from '@folio/stripes/core';
 import {
   Callout,
   ConfirmationModal,
@@ -216,23 +216,25 @@ class PeriodicHarvestingManager extends React.Component {
   getLastMenu() {
     const isEditing = this.state.isEditing;
     return (
-      <PaneMenu>
-        {isEditing ? (
-          <IconButton
-            icon="times"
-            id="clickable-close-edit-config"
-            onClick={this.showConfirm}
-            aria-label="End Edit Config"
-          />
-        ) : (
-          <IconButton
-            icon={this.getEditIcon()}
-            id="clickable-open-edit-config"
-            onClick={this.onEdit}
-            aria-label="Start Edit Config"
-          />
-        )}
-      </PaneMenu>
+      <IfPermission perm="ermusageharvester.periodic.post">
+        <PaneMenu>
+          {isEditing ? (
+            <IconButton
+              icon="times"
+              id="clickable-close-edit-config"
+              onClick={this.showConfirm}
+              aria-label="End Edit Config"
+            />
+          ) : (
+            <IconButton
+              icon={this.getEditIcon()}
+              id="clickable-open-edit-config"
+              onClick={this.onEdit}
+              aria-label="Start Edit Config"
+            />
+          )}
+        </PaneMenu>
+      </IfPermission>
     );
   }
 
