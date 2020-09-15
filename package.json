@@ -40,7 +40,7 @@
     "mocha": "^5.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-intl": "^4.5.3",
+    "react-intl": "^5.7.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.0",
@@ -64,7 +64,7 @@
     "@folio/stripes": "^5.0.0",
     "react": "*",
     "react-dom": "*",
-    "react-intl": "^4.5.3",
+    "react-intl": "^5.7.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
