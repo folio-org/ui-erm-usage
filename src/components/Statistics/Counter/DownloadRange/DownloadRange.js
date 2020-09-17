@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
+  Callout,
   Col,
   Row,
   Select,
@@ -26,6 +27,7 @@ function DownloadRange(props) {
     }
   );
 
+  const calloutRef = useRef();
   const [start, setStart] = useState('');
   const [startError, setStartError] = useState(null);
   const [end, setEnd] = useState('');
@@ -115,7 +117,9 @@ function DownloadRange(props) {
         end,
         exportFormat,
         okapiUrl,
-        httpHeaders
+        httpHeaders,
+        calloutRef,
+        props.intl
       );
     }
   };
@@ -206,6 +210,7 @@ function DownloadRange(props) {
           </div>
         </Col>
       </Row>
+      <Callout ref={calloutRef} />
     </>
   );
 }
