@@ -15,16 +15,32 @@ const downloadReportMultipleMonths = (
   end,
   format,
   okapiUrl,
-  httpHeaders
+  httpHeaders,
+  callout,
+  intl
 ) => {
+  const calloutID = callout.current.sendCallout({
+    type: 'success',
+    message: intl.formatMessage(
+      { id: 'ui-erm-usage.statistics.counter.download.multiMonth.prepare' },
+      { reportName, start, end, format }
+    ),
+    timeout: 0,
+  });
+
+  const errorMsg = intl.formatMessage(
+    { id: 'ui-erm-usage.statistics.counter.download.multiMonth.error' },
+    { reportName, start, end, format }
+  );
   return fetch(
     `${okapiUrl}/counter-reports/export/provider/${udpId}/report/${reportName}/version/${version}/from/${start}/to/${end}?format=${format}`,
     { headers: httpHeaders }
   )
     .then((response) => {
+      callout.current.removeCallout(calloutID);
       if (response.status >= 400) {
         throw new SubmissionError({
-          identifier: `Error ${response.status} retrieving counter report for multiple mpnths`,
+          identifier: `Error ${response.status} retrieving report for multiple months`,
           _error: 'Fetch counter report failed',
         });
       } else {
@@ -42,9 +58,15 @@ const downloadReportMultipleMonths = (
       );
     })
     .catch((err) => {
-      throw new Error(
-        'Error while downloading CSV/xslx report. ' + err.message
-      );
+      callout.current.sendCallout({
+        type: 'error',
+        message: errorMsg,
+        timeout: 0,
+      });
+      throw new SubmissionError({
+        identifier: `Error ${err} retrieving counter report for multiple months`,
+        _error: 'Fetch counter report failed',
+      });
     });
 };
 
