@@ -1,36 +1,17 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
 import compose from 'compose-function';
 import { get, isEmpty } from 'lodash';
 
 import { stripesConnect } from '@folio/stripes/core';
-import { Callout } from '@folio/stripes-components';
 import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
+import withReportHandlers from './components/withReportHandlers';
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
-import {
-  downloadReportMultipleMonths,
-  downloadReportSingleMonth,
-  downloadReportSingleMonthRaw,
-  downloadErmUsageFile
-} from '../util/downloadReport';
 
 function UDPViewRoute(props) {
-  const calloutRef = useRef();
-  const logger = props.stripes.logger;
-  const log = logger.log.bind(logger);
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json',
-    }
-  );
-
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
   };
@@ -97,61 +78,6 @@ function UDPViewRoute(props) {
     return props.stripes.hasInterface('erm-usage-harvester');
   };
 
-  const doDownloadReportsMultiMonths = (
-    udpId,
-    reportType,
-    counterVersion,
-    start,
-    end,
-    format
-  ) => {
-    downloadReportMultipleMonths(
-      udpId,
-      reportType,
-      counterVersion,
-      start,
-      end,
-      format,
-      props.stripes.okapi.url,
-      httpHeaders,
-      calloutRef,
-      props.intl
-    );
-  };
-
-  const doDownloadReportsSingleMonth = (reportId, format) => {
-    downloadReportSingleMonth(
-      reportId,
-      format,
-      props.stripes.okapi.url,
-      httpHeaders,
-      calloutRef,
-      props.intl
-    ).catch((err) => {
-      log(err.message);
-    });
-  };
-
-  const doDownloadReportSingleMonthRaw = (reportId, fileType) => {
-    downloadReportSingleMonthRaw(
-      reportId,
-      fileType,
-      props.stripes.okapi.url,
-      httpHeaders
-    ).catch((err) => {
-      this.log(err.message);
-    });
-  };
-
-  const doDownloadFile = (fileId, fileName) => {
-    downloadErmUsageFile(
-      fileId,
-      fileName,
-      props.stripes.okapi.url,
-      httpHeaders
-    );
-  };
-
   const {
     handlers,
     resources,
@@ -181,10 +107,6 @@ function UDPViewRoute(props) {
           ...handlers,
           onClose: handleClose,
           onEdit: handleEdit,
-          onDownloadReportMultiMonth: doDownloadReportsMultiMonths,
-          onDownloadReportSingleMonth: doDownloadReportsSingleMonth,
-          onDownloadReportSingleMonthRaw: doDownloadReportSingleMonthRaw,
-          doDownloadFile,
         }}
         isHarvesterExistent={isHarvesterExistent()}
         isLoading={isLoading()}
@@ -192,7 +114,6 @@ function UDPViewRoute(props) {
         stripes={stripes}
         tagsEnabled={tagsEnabled}
       />
-      <Callout ref={calloutRef} />
     </>
   );
 }
@@ -237,7 +158,6 @@ UDPViewRoute.propTypes = {
     store: PropTypes.object.isRequired,
   }).isRequired,
   tagsEnabled: PropTypes.bool,
-  intl: PropTypes.object,
 };
 
 UDPViewRoute.defaultProps = {
@@ -271,4 +191,8 @@ UDPViewRoute.manifest = Object.freeze({
   query: {},
 });
 
-export default compose(stripesConnect, withTags, injectIntl)(UDPViewRoute);
+export default compose(
+  withReportHandlers,
+  stripesConnect,
+  withTags
+)(UDPViewRoute);

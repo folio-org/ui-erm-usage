@@ -32,7 +32,7 @@ function CustomStatistics(props) {
     };
   }, [props.customReports]);
 
-  const { stripes, udpLabel } = props;
+  const { handlers, stripes, udpLabel } = props;
 
   const groupReportsByYear = (reports) => _.groupBy(reports, (r) => r.year);
 
@@ -77,7 +77,7 @@ function CustomStatistics(props) {
               stripes={stripes}
               customReport={line}
               udpLabel={udpLabel}
-              handlers={props.handlers}
+              handlers={handlers}
             />
           ),
         }}
