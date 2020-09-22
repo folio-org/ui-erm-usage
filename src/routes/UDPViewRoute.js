@@ -1,62 +1,38 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
+import compose from 'compose-function';
 import { get, isEmpty } from 'lodash';
 
 import { stripesConnect } from '@folio/stripes/core';
+import { Callout } from '@folio/stripes-components';
 import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
-
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
+import { downloadReportMultipleMonths } from '../util/downloadReport';
 
-class UDPViewRoute extends React.Component {
-  static manifest = Object.freeze({
-    usageDataProvider: {
-      type: 'okapi',
-      path: 'usage-data-providers/:{id}',
-    },
-    harvesterImpls: {
-      type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=false',
-      throwErrors: false,
-    },
-    settings: {
-      type: 'okapi',
-      records: 'configs',
-      path:
-        'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
-    },
-    counterReports: {
-      type: 'okapi',
-      path: 'counter-reports/sorted/:{id}?limit=1000',
-    },
-    customReports: {
-      type: 'okapi',
-      path: 'custom-reports?query=(providerId=:{id})&limit=1000',
-    },
-    query: {},
-  });
+function UDPViewRoute(props) {
+  const calloutRef = useRef();
 
-  handleClose = () => {
-    this.props.history.push(`${urls.udps()}${this.props.location.search}`);
+  const handleClose = () => {
+    props.history.push(`${urls.udps()}${props.location.search}`);
   };
 
-  handleEdit = () => {
-    const { location, match } = this.props;
-    this.props.history.push(
-      `${urls.udpEdit(match.params.id)}${location.search}`
-    );
+  const handleEdit = () => {
+    const { location, match } = props;
+    props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
   };
 
-  getRecord = (id) => {
-    return get(this.props.resources, 'usageDataProvider.records', []).find(
+  const getRecord = (id) => {
+    return get(props.resources, 'usageDataProvider.records', []).find(
       (i) => i.id === id
     );
   };
 
-  getCounterReports = (udpId) => {
-    const { resources } = this.props;
+  const getCounterReports = (udpId) => {
+    const { resources } = props;
     const records = (resources.counterReports || {}).records || null;
     const counterReports = !isEmpty(records)
       ? records[0].counterReportsPerYear
@@ -71,8 +47,8 @@ class UDPViewRoute extends React.Component {
     }
   };
 
-  getCustomReports = (udpId) => {
-    const { resources } = this.props;
+  const getCustomReports = (udpId) => {
+    const { resources } = props;
     const reports = get(
       resources,
       'customReports.records[0].customReports',
@@ -85,8 +61,8 @@ class UDPViewRoute extends React.Component {
     }
   };
 
-  isLoading = () => {
-    const { match, resources } = this.props;
+  const isLoading = () => {
+    const { match, resources } = props;
 
     return (
       match.params.id !== get(resources, 'usageDataProvider.records[0].id') &&
@@ -94,35 +70,64 @@ class UDPViewRoute extends React.Component {
     );
   };
 
-  isStatsLoading = () => {
-    const { resources } = this.props;
+  const isStatsLoading = () => {
+    const { resources } = props;
     return (
       get(resources, 'customReports.isPending', true) ||
       get(resources, 'counterReports.isPending', true)
     );
   };
 
-  isHarvesterExistent = () => {
-    return this.props.stripes.hasInterface('erm-usage-harvester');
+  const isHarvesterExistent = () => {
+    return props.stripes.hasInterface('erm-usage-harvester');
   };
 
-  render() {
-    const {
-      handlers,
-      resources,
-      stripes,
-      tagsEnabled,
-      match: {
-        params: { id },
-      },
-    } = this.props;
-    const selectedRecord = this.getRecord(id);
-    const counterReports = this.getCounterReports(id);
-    const customReports = this.getCustomReports(id);
-    const settings = get(resources, 'settings.records', []);
-    const harvesterImpls = extractHarvesterImpls(resources);
+  const doDownloadReportsMultiMonths = (
+    udpId,
+    reportType,
+    counterVersion,
+    start,
+    end,
+    format
+  ) => {
+    const httpHeaders = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': props.stripes.okapi.tenant,
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        'Content-Type': 'application/json',
+      }
+    );
+    downloadReportMultipleMonths(
+      udpId,
+      reportType,
+      counterVersion,
+      start,
+      end,
+      format,
+      props.stripes.okapi.url,
+      httpHeaders,
+      calloutRef,
+      props.intl
+    );
+  };
 
-    return (
+  const {
+    handlers,
+    resources,
+    stripes,
+    tagsEnabled,
+    match: {
+      params: { id },
+    },
+  } = props;
+  const selectedRecord = getRecord(id);
+  const counterReports = getCounterReports(id);
+  const customReports = getCustomReports(id);
+  const settings = get(resources, 'settings.records', []);
+  const harvesterImpls = extractHarvesterImpls(resources);
+  return (
+    <>
       <UDP
         canEdit={stripes.hasPerm('usagedataproviders.item.put')}
         data={{
@@ -134,17 +139,19 @@ class UDPViewRoute extends React.Component {
         }}
         handlers={{
           ...handlers,
-          onClose: this.handleClose,
-          onEdit: this.handleEdit,
+          onClose: handleClose,
+          onEdit: handleEdit,
+          onDownloadReportMultiMonth: doDownloadReportsMultiMonths,
         }}
-        isHarvesterExistent={this.isHarvesterExistent()}
-        isLoading={this.isLoading()}
-        isStatsLoading={this.isStatsLoading()}
+        isHarvesterExistent={isHarvesterExistent()}
+        isLoading={isLoading()}
+        isStatsLoading={isStatsLoading()}
         stripes={stripes}
         tagsEnabled={tagsEnabled}
       />
-    );
-  }
+      <Callout ref={calloutRef} />
+    </>
+  );
 }
 
 UDPViewRoute.propTypes = {
@@ -183,12 +190,41 @@ UDPViewRoute.propTypes = {
       token: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
     }).isRequired,
+    store: PropTypes.object.isRequired,
   }).isRequired,
   tagsEnabled: PropTypes.bool,
+  intl: PropTypes.object,
 };
 
 UDPViewRoute.defaultProps = {
   handlers: {},
 };
 
-export default stripesConnect(withTags(UDPViewRoute));
+UDPViewRoute.manifest = Object.freeze({
+  usageDataProvider: {
+    type: 'okapi',
+    path: 'usage-data-providers/:{id}',
+  },
+  harvesterImpls: {
+    type: 'okapi',
+    path: 'erm-usage-harvester/impl?aggregator=false',
+    throwErrors: false,
+  },
+  settings: {
+    type: 'okapi',
+    records: 'configs',
+    path:
+      'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+  },
+  counterReports: {
+    type: 'okapi',
+    path: 'counter-reports/sorted/:{id}?limit=1000',
+  },
+  customReports: {
+    type: 'okapi',
+    path: 'custom-reports?query=(providerId=:{id})&limit=1000',
+  },
+  query: {},
+});
+
+export default compose(stripesConnect, withTags, injectIntl)(UDPViewRoute);

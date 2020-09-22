@@ -22,7 +22,8 @@ class CounterStatistics extends React.Component {
     }).isRequired,
     providerId: PropTypes.string.isRequired,
     udpLabel: PropTypes.string.isRequired,
-    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired
+    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    handlers: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -87,6 +88,7 @@ class CounterStatistics extends React.Component {
               stripes={this.props.stripes}
               udpId={this.props.providerId}
               downloadableReports={this.downloadableReports}
+              handlers={this.props.handlers}
             />
           </Col>
         </Row>

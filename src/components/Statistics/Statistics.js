@@ -21,6 +21,7 @@ function Statistics(props) {
     counterReports,
     customReports,
     isStatsLoading,
+    handlers,
   } = props;
 
   const renderStatsAccordions = () => {
@@ -41,6 +42,7 @@ function Statistics(props) {
                 providerId={providerId}
                 udpLabel={udpLabel}
                 counterReports={counterReports}
+                handlers={handlers}
               />
             </Accordion>
           </Col>
@@ -96,6 +98,7 @@ Statistics.propTypes = {
   counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   customReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
+  handlers: PropTypes.shape({}),
 };
 
 export default Statistics;

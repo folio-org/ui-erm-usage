@@ -9,7 +9,7 @@ const saveReport = (id, reportData, fileType) => {
 
 const downloadReportMultipleMonths = (
   udpId,
-  reportName,
+  reportType,
   version,
   start,
   end,
@@ -23,17 +23,17 @@ const downloadReportMultipleMonths = (
     type: 'success',
     message: intl.formatMessage(
       { id: 'ui-erm-usage.statistics.counter.download.multiMonth.prepare' },
-      { reportName, start, end, format }
+      { reportType, start, end, format }
     ),
     timeout: 0,
   });
 
   const errorMsg = intl.formatMessage(
     { id: 'ui-erm-usage.statistics.counter.download.multiMonth.error' },
-    { reportName, start, end, format }
+    { reportType, start, end, format }
   );
   return fetch(
-    `${okapiUrl}/counter-reports/export/provider/${udpId}/report/${reportName}/version/${version}/from/${start}/to/${end}?format=${format}`,
+    `${okapiUrl}/counter-reports/export/provider/${udpId}/report/${reportType}/version/${version}/from/${start}/to/${end}?format=${format}`,
     { headers: httpHeaders }
   )
     .then((response) => {
@@ -52,7 +52,7 @@ const downloadReportMultipleMonths = (
     })
     .then((text) => {
       saveReport(
-        `${udpId}_${reportName}_${version}_${start}_${end}`,
+        `${udpId}_${reportType}_${version}_${start}_${end}`,
         text,
         format
       );
@@ -177,8 +177,8 @@ const downloadErmUsageFile = (fileId, fileName, okapiUrl, httpHeaders) => {
 
 export {
   downloadErmUsageFile,
-  downloadReportMultipleMonths,
   downloadCredentials,
   downloadReportSingleMonth,
   downloadReportSingleMonthRaw,
+  downloadReportMultipleMonths
 };
