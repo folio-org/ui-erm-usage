@@ -77,6 +77,7 @@ function CustomStatistics(props) {
               stripes={stripes}
               customReport={line}
               udpLabel={udpLabel}
+              handlers={props.handlers}
             />
           ),
         }}
@@ -127,6 +128,7 @@ CustomStatistics.propTypes = {
   }).isRequired,
   customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
   udpLabel: PropTypes.string.isRequired,
+  handlers: PropTypes.shape(),
 };
 
 export default CustomStatistics;

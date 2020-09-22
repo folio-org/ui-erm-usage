@@ -60,6 +60,7 @@ function Statistics(props) {
                 providerId={providerId}
                 udpLabel={udpLabel}
                 customReports={customReports}
+                handlers={handlers}
               />
             </Accordion>
           </Col>

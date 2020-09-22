@@ -11,10 +11,25 @@ import { withTags } from '@folio/stripes/smart-components';
 import UDP from '../components/views/UDP';
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
-import { downloadReportMultipleMonths } from '../util/downloadReport';
+import {
+  downloadReportMultipleMonths,
+  downloadReportSingleMonth,
+  downloadReportSingleMonthRaw,
+  downloadErmUsageFile
+} from '../util/downloadReport';
 
 function UDPViewRoute(props) {
   const calloutRef = useRef();
+  const logger = props.stripes.logger;
+  const log = logger.log.bind(logger);
+  const httpHeaders = Object.assign(
+    {},
+    {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'Content-Type': 'application/json',
+    }
+  );
 
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
@@ -90,14 +105,6 @@ function UDPViewRoute(props) {
     end,
     format
   ) => {
-    const httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
     downloadReportMultipleMonths(
       udpId,
       reportType,
@@ -109,6 +116,39 @@ function UDPViewRoute(props) {
       httpHeaders,
       calloutRef,
       props.intl
+    );
+  };
+
+  const doDownloadReportsSingleMonth = (reportId, format) => {
+    downloadReportSingleMonth(
+      reportId,
+      format,
+      props.stripes.okapi.url,
+      httpHeaders,
+      calloutRef,
+      props.intl
+    ).catch((err) => {
+      log(err.message);
+    });
+  };
+
+  const doDownloadReportSingleMonthRaw = (reportId, fileType) => {
+    downloadReportSingleMonthRaw(
+      reportId,
+      fileType,
+      props.stripes.okapi.url,
+      httpHeaders
+    ).catch((err) => {
+      this.log(err.message);
+    });
+  };
+
+  const doDownloadFile = (fileId, fileName) => {
+    downloadErmUsageFile(
+      fileId,
+      fileName,
+      props.stripes.okapi.url,
+      httpHeaders
     );
   };
 
@@ -142,6 +182,9 @@ function UDPViewRoute(props) {
           onClose: handleClose,
           onEdit: handleEdit,
           onDownloadReportMultiMonth: doDownloadReportsMultiMonths,
+          onDownloadReportSingleMonth: doDownloadReportsSingleMonth,
+          onDownloadReportSingleMonthRaw: doDownloadReportSingleMonthRaw,
+          doDownloadFile,
         }}
         isHarvesterExistent={isHarvesterExistent()}
         isLoading={isLoading()}
@@ -185,6 +228,7 @@ UDPViewRoute.propTypes = {
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
     hasPerm: PropTypes.func.isRequired,
+    logger: PropTypes.shape().isRequired,
     okapi: PropTypes.shape({
       tenant: PropTypes.string.isRequired,
       token: PropTypes.string.isRequired,

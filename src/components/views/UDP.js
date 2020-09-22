@@ -228,7 +228,7 @@ class UDP extends React.Component {
                 label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                 id="uploadAccordion"
               >
-                <ReportUpload udpId={providerId} stripes={stripes} />
+                <ReportUpload udpId={providerId} stripes={stripes} handlers={handlers} />
               </Accordion>
               <NotesSmartAccordion
                 id="notesAccordion"

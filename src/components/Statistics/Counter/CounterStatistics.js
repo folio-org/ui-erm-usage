@@ -72,6 +72,7 @@ class CounterStatistics extends React.Component {
                 stats={counterReports}
                 stripes={this.props.stripes}
                 udpLabel={this.props.udpLabel}
+                handlers={this.props.handlers}
               />
             </AccordionSet>
           </Col>

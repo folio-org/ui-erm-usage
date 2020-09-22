@@ -70,8 +70,8 @@ const downloadReportMultipleMonths = (
     });
 };
 
-const downloadReportSingleMonth = (udpId, format, okapiUrl, httpHeaders) => {
-  return fetch(`${okapiUrl}/counter-reports/export/${udpId}?format=${format}`, {
+const downloadReportSingleMonth = (reportId, format, okapiUrl, httpHeaders) => {
+  return fetch(`${okapiUrl}/counter-reports/export/${reportId}?format=${format}`, {
     headers: httpHeaders,
   })
     .then((response) => {
@@ -88,7 +88,7 @@ const downloadReportSingleMonth = (udpId, format, okapiUrl, httpHeaders) => {
       }
     })
     .then((text) => {
-      saveReport(udpId, text, format);
+      saveReport(reportId, text, format);
     })
     .catch((err) => {
       throw new Error(

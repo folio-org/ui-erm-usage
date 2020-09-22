@@ -54,6 +54,7 @@ function StatisticsPerYear(props) {
           stripes={props.stripes}
           maxFailedAttempts={maxFailed}
           udpLabel={props.udpLabel}
+          handlers={props.handlers}
         />
       );
     });
@@ -224,6 +225,7 @@ StatisticsPerYear.manifest = Object.freeze({
 });
 
 StatisticsPerYear.propTypes = {
+  handlers: PropTypes.shape(),
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
