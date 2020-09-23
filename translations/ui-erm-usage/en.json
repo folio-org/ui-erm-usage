@@ -31,7 +31,7 @@
   "general.note": "Note",
   "general.year": "Year",
   "general.fileSize.kb": "Filesize in kB",
-  "general.error": "Delete",
+  "general.error": "Ooops. Something went wrong...",
 
   "information.providerName": "Provider name",
   "information.organization": "Organization",
