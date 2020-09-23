@@ -3,7 +3,14 @@ import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
-import { Button, Col, KeyValue, Modal, Row } from '@folio/stripes/components';
+import {
+  Button,
+  Col,
+  KeyValue,
+  Loading,
+  Modal,
+  Row,
+} from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
 class CounterUpload extends React.Component {
@@ -29,6 +36,9 @@ class CounterUpload extends React.Component {
     intl: PropTypes.object,
   };
 
+  static upload = 'upload';
+  static overwrite = 'overwrite';
+
   constructor(props) {
     super(props);
     const logger = props.stripes.logger;
@@ -44,7 +54,8 @@ class CounterUpload extends React.Component {
     );
     this.state = {
       selectedFile: {},
-      showOverwriteModal: false,
+      showInfoModal: false,
+      infoType: '',
     };
   }
 
@@ -52,18 +63,21 @@ class CounterUpload extends React.Component {
     response.text().then((text) => {
       if (text.includes('Report already existing')) {
         this.setState({
-          showOverwriteModal: true,
+          showInfoModal: true,
+          infoType: CounterUpload.overwrite,
         });
       } else {
-        this.setState({
-          showOverwriteModal: false,
-        });
+        this.closeInfoModal();
         this.props.onFail();
       }
     });
   };
 
   doUpload = (data, doOverwrite) => {
+    this.setState({
+      showInfoModal: true,
+      infoType: CounterUpload.upload,
+    });
     fetch(
       `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
       {
@@ -76,23 +90,24 @@ class CounterUpload extends React.Component {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
+          this.closeInfoModal();
           this.setState({
-            showOverwriteModal: false,
             selectedFile: {},
           });
           this.props.onSuccess();
         }
       })
       .catch((err) => {
-        this.setState({
-          showOverwriteModal: false,
-        });
+        this.closeInfoModal();
         this.props.onFail(err.message);
       });
   };
 
-  handleCloseOverwriteModal = () => {
-    this.setState({ showOverwriteModal: false });
+  closeInfoModal = () => {
+    this.setState({
+      showInfoModal: false,
+      infoType: '',
+    });
   };
 
   uploadFile = (doOverwrite = false) => {
@@ -117,6 +132,40 @@ class CounterUpload extends React.Component {
     });
   };
 
+  renderInfo = () => {
+    if (this.state.infoType === CounterUpload.overwrite) {
+      return (
+        <>
+          <div>
+            <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
+          </div>
+          <Button onClick={this.uploadFileForceOverwrite}>
+            <FormattedMessage id="ui-erm-usage.general.yes" />
+          </Button>
+          <Button onClick={this.closeInfoModal}>
+            <FormattedMessage id="ui-erm-usage.general.no" />
+          </Button>
+        </>
+      );
+    } else if (this.state.infoType === CounterUpload.upload) {
+      return (
+        <>
+          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
+          <Loading />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <FormattedMessage id="ui-erm-usage.general.error" />
+          <Button onClick={this.closeInfoModal}>
+            <FormattedMessage id="ui-erm-usage.general.no" />
+          </Button>
+        </>
+      );
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -138,21 +187,12 @@ class CounterUpload extends React.Component {
           </Col>
         </Row>
         <Modal
-          closeOnBackgroundClick
-          open={this.state.showOverwriteModal}
+          open={this.state.showInfoModal}
           label={this.props.intl.formatMessage({
             id: 'ui-erm-usage.report.upload.modal.label',
           })}
         >
-          <div>
-            <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
-          </div>
-          <Button onClick={this.uploadFileForceOverwrite}>
-            <FormattedMessage id="ui-erm-usage.general.yes" />
-          </Button>
-          <Button onClick={this.handleCloseOverwriteModal}>
-            <FormattedMessage id="ui-erm-usage.general.no" />
-          </Button>
+          {this.renderInfo()}
         </Modal>
       </React.Fragment>
     );
