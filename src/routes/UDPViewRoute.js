@@ -12,6 +12,16 @@ import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
 
 function UDPViewRoute(props) {
+  const {
+    handlers,
+    resources,
+    stripes,
+    tagsEnabled,
+    match: {
+      params: { id },
+    },
+  } = props;
+
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
   };
@@ -21,30 +31,28 @@ function UDPViewRoute(props) {
     props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
   };
 
-  const getRecord = (id) => {
-    return get(props.resources, 'usageDataProvider.records', []).find(
-      (i) => i.id === id
+  const getRecord = (udpId) => {
+    return get(resources, 'usageDataProvider.records', []).find(
+      (i) => i.id === udpId
     );
   };
 
   const getCounterReports = (udpId) => {
-    const { resources } = props;
     const records = (resources.counterReports || {}).records || null;
-    const counterReports = !isEmpty(records)
+    const reports = !isEmpty(records)
       ? records[0].counterReportsPerYear
       : [];
     if (
-      !isEmpty(counterReports) &&
-      counterReports[0].reportsPerType[0].counterReports[0].providerId === udpId
+      !isEmpty(reports) &&
+      reports[0].reportsPerType[0].counterReports[0].providerId === udpId
     ) {
-      return counterReports;
+      return reports;
     } else {
       return [];
     }
   };
 
   const getCustomReports = (udpId) => {
-    const { resources } = props;
     const reports = get(
       resources,
       'customReports.records[0].customReports',
@@ -58,7 +66,7 @@ function UDPViewRoute(props) {
   };
 
   const isLoading = () => {
-    const { match, resources } = props;
+    const { match } = props;
 
     return (
       match.params.id !== get(resources, 'usageDataProvider.records[0].id') &&
@@ -67,7 +75,6 @@ function UDPViewRoute(props) {
   };
 
   const isStatsLoading = () => {
-    const { resources } = props;
     return (
       get(resources, 'customReports.isPending', true) ||
       get(resources, 'counterReports.isPending', true)
@@ -78,15 +85,6 @@ function UDPViewRoute(props) {
     return props.stripes.hasInterface('erm-usage-harvester');
   };
 
-  const {
-    handlers,
-    resources,
-    stripes,
-    tagsEnabled,
-    match: {
-      params: { id },
-    },
-  } = props;
   const selectedRecord = getRecord(id);
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
