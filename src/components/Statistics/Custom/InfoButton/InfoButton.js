@@ -81,6 +81,7 @@ function InfoButton(props) {
             customReport={customReport}
             onDelete={handleDelete}
             udpLabel={props.udpLabel}
+            handlers={props.handlers}
           />
         </div>
       </Modal>
@@ -127,6 +128,7 @@ InfoButton.propTypes = {
   }).isRequired,
   customReport: PropTypes.shape().isRequired,
   udpLabel: PropTypes.string.isRequired,
+  handlers: PropTypes.shape(),
 };
 
 export default stripesConnect(InfoButton);

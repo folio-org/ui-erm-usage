@@ -15,7 +15,6 @@ import {
 } from '@folio/stripes/components';
 
 import FileUploader from '../FileUploader';
-import { downloadErmUsageFile } from '../../../util/downloadReport';
 
 function FileUploadCard(props) {
   const [selectedFile, setSelectedFile] = useState();
@@ -92,12 +91,7 @@ function FileUploadCard(props) {
         <Button
           data-test-doc-file
           buttonStyle="link"
-          onClick={() => downloadErmUsageFile(
-            fileId,
-            selectedFile.name,
-            props.stripes.okapi.url,
-            httpHeaders
-          )}
+          onClick={() => props.handlers.doDownloadFile(fileId, selectedFile.name)}
         >
           <Icon icon="external-link">{selectedFile.name}</Icon>
         </Button>
@@ -168,6 +162,9 @@ function FileUploadCard(props) {
 
 FileUploadCard.propTypes = {
   intl: PropTypes.object,
+  handlers: PropTypes.shape({
+    doDownloadFile: PropTypes.func,
+  }),
   mutators: PropTypes.shape({
     setFileId: PropTypes.func,
     setFileName: PropTypes.func,

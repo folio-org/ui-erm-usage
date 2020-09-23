@@ -11,10 +11,6 @@ import {
 } from '@folio/stripes/components';
 
 import ReportInfo from '../ReportInfo';
-import {
-  downloadReportSingleMonth,
-  downloadReportSingleMonthRaw,
-} from '../../../../util/downloadReport';
 
 class ReportButton extends React.Component {
   static manifest = Object.freeze({
@@ -71,27 +67,13 @@ class ReportButton extends React.Component {
   downloadRawReport = (fileType) => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    downloadReportSingleMonthRaw(
-      id,
-      fileType,
-      this.okapiUrl,
-      this.httpHeaders
-    ).catch((err) => {
-      this.log(err.message);
-    });
+    this.props.handlers.onDownloadReportSingleMonthRaw(id, fileType);
   };
 
   downloadReport = (format) => {
     this.setState(() => ({ showDropDown: false }));
     const id = this.props.report.id;
-    downloadReportSingleMonth(
-      id,
-      format,
-      this.okapiUrl,
-      this.httpHeaders
-    ).catch((err) => {
-      this.log(err.message);
-    });
+    this.props.handlers.onDownloadReportSingleMonth(id, format);
   };
 
   deleteReport = () => {
@@ -141,7 +123,9 @@ class ReportButton extends React.Component {
             id: 'ui-erm-usage.reportOverview.reportType',
           })}:
            ${report.reportName} --
-           ${this.props.intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
+           ${this.props.intl.formatMessage({
+            id: 'ui-erm-usage.reportOverview.reportDate',
+          })}:
            ${report.yearMonth}`}
         </span>
       </React.Fragment>
@@ -223,6 +207,10 @@ ReportButton.propTypes = {
   intl: PropTypes.object,
   maxFailedAttempts: PropTypes.number.isRequired,
   udpLabel: PropTypes.string.isRequired,
+  handlers: PropTypes.shape({
+    onDownloadReportSingleMonth: PropTypes.func,
+    onDownloadReportSingleMonthRaw: PropTypes.func,
+  }),
 };
 
 export default stripesConnect(injectIntl(ReportButton));

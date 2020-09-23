@@ -9,24 +9,13 @@ import {
   Col,
   Row,
   Select,
-  TextField
+  TextField,
 } from '@folio/stripes/components';
 import { isYearMonth } from '../../../../util/validate';
-import { downloadReportMultipleMonths } from '../../../../util/downloadReport';
 import exportFormats from '../../../../util/data/exportFormats';
 import css from './DownloadRange.css';
 
 function DownloadRange(props) {
-  const okapiUrl = props.stripes.okapi.url;
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json'
-    }
-  );
-
   const calloutRef = useRef();
   const [start, setStart] = useState('');
   const [startError, setStartError] = useState(null);
@@ -41,22 +30,28 @@ function DownloadRange(props) {
 
   const validate = (s, e) => {
     if (!isYearMonth(s)) {
-      setStartError(props.intl.formatMessage({
-        id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm'
-      }));
+      setStartError(
+        props.intl.formatMessage({
+          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
+        })
+      );
     }
     if (!isYearMonth(e)) {
-      setEndError(props.intl.formatMessage({
-        id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm'
-      }));
+      setEndError(
+        props.intl.formatMessage({
+          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
+        })
+      );
     }
 
     if (isYearMonth(s) && isYearMonth(e)) {
       if (s > e) {
-        setEndError(props.intl.formatMessage({
-          id:
-            'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart'
-        }));
+        setEndError(
+          props.intl.formatMessage({
+            id:
+              'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart',
+          })
+        );
         setStartError(null);
       } else {
         setEndError(null);
@@ -73,14 +68,14 @@ function DownloadRange(props) {
     return result;
   };
 
-  const handleStartChange = e => {
+  const handleStartChange = (e) => {
     const newStart = e.target.value;
     setStart(newStart);
     setStartError(null);
     validate(newStart, end);
   };
 
-  const handleEndChange = e => {
+  const handleEndChange = (e) => {
     const newEnd = e.target.value;
     setEnd(newEnd);
     setEndError(null);
@@ -97,9 +92,9 @@ function DownloadRange(props) {
     setEndError(null);
   };
 
-  const getCounterVersion = rType => {
+  const getCounterVersion = (rType) => {
     const { downloadableReports } = props;
-    const index = downloadableReports.findIndex(r => r.value === rType.value);
+    const index = downloadableReports.findIndex((r) => r.value === rType.value);
     if (index === -1) {
       return 0;
     }
@@ -109,26 +104,22 @@ function DownloadRange(props) {
 
   const doDownload = () => {
     if (!_.isEmpty(start) && !_.isEmpty(end)) {
-      downloadReportMultipleMonths(
+      props.handlers.onDownloadReportMultiMonth(
         props.udpId,
         reportType.value,
         getCounterVersion(reportType),
         start,
         end,
-        exportFormat,
-        okapiUrl,
-        httpHeaders,
-        calloutRef,
-        props.intl
+        exportFormat
       );
     }
   };
 
-  const onSelectReportType = e => {
+  const onSelectReportType = (e) => {
     setReportType(e.target);
   };
 
-  const onSelectExportFormat = e => {
+  const onSelectExportFormat = (e) => {
     setExportFormat(e.target.value);
   };
 
@@ -139,7 +130,7 @@ function DownloadRange(props) {
       <Row>
         <Col xs={4}>
           <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
-            {startMessage => (
+            {(startMessage) => (
               <TextField
                 ariaLabel="Startdate for downloading multi month report. Format YYYY-MM."
                 label={startMessage}
@@ -155,7 +146,7 @@ function DownloadRange(props) {
         </Col>
         <Col xs={4}>
           <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
-            {endMessage => (
+            {(endMessage) => (
               <TextField
                 ariaLabel="Enddate for downloading multi month report. Format YYYY-MM."
                 label={endMessage}
@@ -176,7 +167,7 @@ function DownloadRange(props) {
       <Row>
         <Col xs={4}>
           <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
-            {label => (
+            {(label) => (
               <Select
                 label={label}
                 name="downloadMultiMonths.reportType"
@@ -188,7 +179,7 @@ function DownloadRange(props) {
         </Col>
         <Col xs={4}>
           <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
-            {label => (
+            {(label) => (
               <Select
                 label={label}
                 name="downloadMultiMonths.formats"
@@ -217,9 +208,11 @@ function DownloadRange(props) {
 
 DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
-  stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string.isRequired,
-  intl: PropTypes.object
+  intl: PropTypes.object,
+  handlers: PropTypes.shape({
+    onDownloadReportMultiMonth: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default stripesConnect(injectIntl(DownloadRange));

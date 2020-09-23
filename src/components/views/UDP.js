@@ -190,7 +190,12 @@ class UDP extends React.Component {
                   <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
                 }
                 id="harvestingAccordion"
-                displayWhenOpen={<StartHarvesterButton usageDataProvider={usageDataProvider} isHarvesterExistent={isHarvesterExistent} />}
+                displayWhenOpen={
+                  <StartHarvesterButton
+                    usageDataProvider={usageDataProvider}
+                    isHarvesterExistent={isHarvesterExistent}
+                  />
+                }
               >
                 <HarvestingConfigurationView
                   usageDataProvider={usageDataProvider}
@@ -214,6 +219,7 @@ class UDP extends React.Component {
                   counterReports={data.counterReports}
                   customReports={data.customReports}
                   isStatsLoading={isStatsLoading}
+                  handlers={handlers}
                 />
               </Accordion>
               <Accordion
@@ -222,7 +228,7 @@ class UDP extends React.Component {
                 label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                 id="uploadAccordion"
               >
-                <ReportUpload udpId={providerId} stripes={stripes} />
+                <ReportUpload udpId={providerId} stripes={stripes} handlers={handlers} />
               </Accordion>
               <NotesSmartAccordion
                 id="notesAccordion"

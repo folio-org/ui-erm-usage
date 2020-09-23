@@ -34,6 +34,7 @@ function NonCounterUploadModal(props) {
             mutators={props.form.mutators}
             udpId={props.udpId}
             stripes={props.stripes}
+            handlers={props.handlers}
           />
         </div>
       </Modal>
@@ -50,6 +51,7 @@ NonCounterUploadModal.propTypes = {
       setProviderId: PropTypes.func,
     }),
   }),
+  handlers: PropTypes.shape(),
   invalid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,

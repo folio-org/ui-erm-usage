@@ -94,6 +94,7 @@ function ReportUpload(props) {
         onSuccess={handleSuccess}
         stripes={props.stripes}
         udpId={props.udpId}
+        handlers={props.handlers}
       />
       <Callout
         ref={(ref) => {
@@ -105,6 +106,7 @@ function ReportUpload(props) {
 }
 
 ReportUpload.propTypes = {
+  handlers: PropTypes.shape(),
   intl: PropTypes.object,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
