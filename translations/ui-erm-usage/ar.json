@@ -200,5 +200,17 @@
     "statistics.custom.info.detail": "معلومات تفصيلية",
     "statistics.custom.selectFileFirst": "حدد الملف أولاً",
     "statistics.custom.selectedFile": "الملف المحدد",
-    "showTags": "عرض الوسوم"
+    "showTags": "عرض الوسوم",
+    "general.error": "Ooops. Something went wrong...",
+    "statistics.counter.upload.wait": "Uploading report. Please wait!",
+    "permission.module.enabled": "UI: eUsage module is enabled",
+    "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",
+    "permission.all": "eUsage: All permissions",
+    "permission.view": "eUsage: Can view usage data providers and COUNTER reports",
+    "permission.view-create": "eUsage: Can view and create usage data providers and COUNTER reports",
+    "permission.view-edit": "eUsage: Can view and edit usage data providers and COUNTER reports",
+    "permission.view-create-edit": "eUsage: Can view, create and edit usage data providers and COUNTER reports",
+    "permission.view-create-edit-delete": "eUsage: Can view, create, edit and delete usage data providers and COUNTER reports",
+    "permission.harvester.all": "eUsage harvester: All permissions for eUsage harvester module",
+    "permission.harvester.view": "eUsage harvester: Read-only permissions for eUsage harvester module"
 }
