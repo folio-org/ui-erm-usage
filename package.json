@@ -84,7 +84,7 @@
       "counter-reports": "1.6 2.0",
       "custom-reports": "1.0",
       "erm-usage/files": "1.0",
-      "usage-data-providers": "2.5"    
+      "usage-data-providers": "2.5"
     },
     "permissionSets": [
       {
@@ -95,6 +95,14 @@
           "configuration.entries.item.get",
           "tags.collection.get",
           "note.types.collection.get"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.module.enabled",
+        "displayName": "UI: eUsage module is enabled",
+        "subPermissions": [
+          "module.erm-usage.enabled"
         ],
         "visible": true
       },
@@ -112,6 +120,14 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "configuration.entries.item.post"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.generalSettings.manage",
+        "displayName": "Settings (eUsage): Can view and edit settings",
+        "subPermissions": [
+          "settings.erm-usage.enable"
         ],
         "visible": true
       },
@@ -278,6 +294,15 @@
           "ui-erm-usage-harvester.periodic.post",
           "ui-erm-usage-harvester.periodic.delete"
         ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.harvester.all",
+        "displayName": "eUsage harvester: All permissions for eUsage harvester module",
+        "description": "All permissions for eUsage harvester module",
+        "subPermissions": [
+          "ui-erm-usage-harvester.all"
+        ],
         "visible": true
       },
       {
@@ -287,6 +312,15 @@
         "subPermissions": [
           "module.erm-usage.enabled",
           "ermusageharvester.readonly"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.harvester.view",
+        "displayName": "eUsage harvester: Read-only permissions for eUsage harvester module",
+        "description": "Read-only permissions for eUsage harvester module",
+        "subPermissions": [
+          "ui-erm-usage-harvester.view"
         ],
         "visible": true
       }
