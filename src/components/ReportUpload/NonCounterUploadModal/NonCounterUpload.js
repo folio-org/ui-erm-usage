@@ -9,6 +9,7 @@ import {
   Col,
   Icon,
   KeyValue,
+  Loading,
   Label,
   Row,
   TextField,
@@ -19,6 +20,7 @@ import FileUploader from '../FileUploader';
 function FileUploadCard(props) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   const { intl, stripes } = props;
   const httpHeaders = Object.assign(
@@ -42,6 +44,7 @@ function FileUploadCard(props) {
   };
 
   const doUploadRawFile = (file) => {
+    setShowUploadModal(true);
     const okapiUrl = stripes.okapi.url;
     fetch(`${okapiUrl}/erm-usage/files`, {
       headers: httpHeaders,
@@ -49,6 +52,7 @@ function FileUploadCard(props) {
       body: file,
     })
       .then((response) => {
+        setShowUploadModal(false);
         if (response.ok) {
           response.json().then((json) => {
             props.mutators.setFileId({}, json.id);
@@ -66,6 +70,7 @@ function FileUploadCard(props) {
         }
       })
       .catch((err) => {
+        setShowUploadModal(false);
         const failText = intl.formatMessage({
           id: 'ui-erm-usage.report.upload.failed',
         });
@@ -107,6 +112,19 @@ function FileUploadCard(props) {
         value={downloadButton}
       />
     );
+  };
+
+  const renderUpload = () => {
+    if (showUploadModal) {
+      return (
+        <>
+          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
+          <Loading />
+        </>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -153,6 +171,9 @@ function FileUploadCard(props) {
           </Row>
           <Row>
             <Col xs={10}>{renderSelectedFile()}</Col>
+          </Row>
+          <Row>
+            {renderUpload()}
           </Row>
         </Col>
       </Row>
