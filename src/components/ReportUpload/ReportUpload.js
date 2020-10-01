@@ -55,7 +55,7 @@ function ReportUpload(props) {
     })
       .then((response) => {
         if (response.status >= 400) {
-          handleFail();
+          response.text().then((t) => handleFail(t));
         } else {
           handleSuccess();
         }

@@ -68,7 +68,7 @@ class CounterUpload extends React.Component {
         });
       } else {
         this.closeInfoModal();
-        this.props.onFail();
+        this.props.onFail(text);
       }
     });
   };
