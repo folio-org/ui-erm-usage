@@ -35,6 +35,7 @@ class AggregatorForm extends React.Component {
       connect: PropTypes.func.isRequired,
       store: PropTypes.shape({
         dispatch: PropTypes.func.isRequired,
+        getState: PropTypes.func.isRequired,
       }),
     }).isRequired,
     initialValues: PropTypes.object,

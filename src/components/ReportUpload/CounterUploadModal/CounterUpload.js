@@ -42,6 +42,7 @@ class CounterUpload extends React.Component {
   constructor(props) {
     super(props);
     const logger = props.stripes.logger;
+
     this.log = logger.log.bind(logger);
     this.okapiUrl = props.stripes.okapi.url;
     this.httpHeaders = Object.assign(

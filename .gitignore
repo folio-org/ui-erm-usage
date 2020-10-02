@@ -7,3 +7,4 @@ ModuleDescriptor.json
 yarn-error.log
 /out/
 /artifacts/
+junit.xml

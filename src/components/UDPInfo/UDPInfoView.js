@@ -22,9 +22,6 @@ function UDPInfoView(props) {
 UDPInfoView.propTypes = {
   id: PropTypes.string,
   usageDataProvider: PropTypes.object.isRequired,
-  stripes: PropTypes.shape({
-    connect: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 export default UDPInfoView;
