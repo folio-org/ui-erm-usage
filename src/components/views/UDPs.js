@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { noop } from 'lodash';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { AppIcon, IfPermission } from '@folio/stripes/core';
 import {
@@ -181,6 +181,7 @@ class UDPs extends React.Component {
       children,
       contentRef,
       data,
+      intl,
       onNeedMoreData,
       onSelectRow,
       queryGetter,
@@ -219,7 +220,6 @@ class UDPs extends React.Component {
             resetAll,
           }) => {
             const disableReset = () => !filterChanged && !searchChanged;
-
             return (
               <Paneset id="udps-paneset">
                 {this.state.filterPaneIsVisible && (
@@ -232,28 +232,23 @@ class UDPs extends React.Component {
                         />
                       </PaneMenu>
                     }
-                    // onClose={this.toggleFilterPane}
                     paneTitle={
                       <FormattedMessage id="stripes-smart-components.searchAndFilter" />
                     }
                   >
                     <form onSubmit={onSubmitSearch}>
                       <div>
-                        <FormattedMessage id="ui-erm-usage.udp.searchInputLabel">
-                          {(ariaLabel) => (
-                            <SearchField
-                              ariaLabel={ariaLabel}
-                              autoFocus
-                              data-test-udp-search-input
-                              id="input-udp-search"
-                              inputRef={this.searchField}
-                              name="query"
-                              onChange={getSearchHandlers().query}
-                              onClear={getSearchHandlers().reset}
-                              value={searchValue.query}
-                            />
-                          )}
-                        </FormattedMessage>
+                        <SearchField
+                          ariaLabel={intl.formatMessage({ id: 'ui-erm-usage.udp.searchInputLabel' })}
+                          autoFocus
+                          data-test-udp-search-input
+                          id="input-udp-search"
+                          inputRef={this.searchField}
+                          name="query"
+                          onChange={getSearchHandlers().query}
+                          onClear={getSearchHandlers().reset}
+                          value={searchValue.query}
+                        />
                         <Button
                           buttonStyle="primary"
                           disabled={
@@ -334,6 +329,7 @@ UDPs.propTypes = Object.freeze({
   contentRef: PropTypes.object,
   data: PropTypes.shape(),
   disableRecordCreation: PropTypes.bool,
+  intl: PropTypes.object,
   onNeedMoreData: PropTypes.func,
   onSelectRow: PropTypes.func,
   queryGetter: PropTypes.func.isRequired,
@@ -355,4 +351,4 @@ UDPs.defaultProps = {
   visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator'],
 };
 
-export default UDPs;
+export default injectIntl(UDPs);
