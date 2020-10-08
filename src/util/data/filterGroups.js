@@ -43,6 +43,7 @@ const filterGroups = [
     label: 'Error Codes',
     name: 'errorCodes',
     cql: 'reportErrorCodes',
+    operator: '=',
     values: [],
   }
 ];
