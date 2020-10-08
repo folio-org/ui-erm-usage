@@ -1,9 +1,15 @@
 # Change history for ui-erm-usage
 
-## 4.0.0 (IN PROGRESS)
-
+## [4.0.0](https://github.com/folio-org/ui-erm-usage/tree/v4.0.0) (2020-10-08)
 * Increment `@folio/stripes` to `v5.0` and `react-router` to `v5.2` (and, bugfix, move it to peer)
 * Replace deprecated `babel-polyfill` with `core-js` and `regenerator-runtime`
+* COUNTER reports can be downloaded as xlsx files (UIEUS-177)
+* UDP credentials can be downloaded as xlsx files (UIEUS-179)
+* Display last harvesting datetime to UDP details view (UIEUS-185)
+* Support download COUNTER report as json or xml (UIEUS-199)
+* UI gives feedback when a (multi-month) report is generated for download (UIEUS-209)
+* Bugfix: Report download does not start when switching udp (UIEUS-211)
+* UI gives feedback when a (multi-month) report is uploaded (UIEUS-212)
 
 ## [3.0.0](https://github.com/folio-org/ui-erm-usage/tree/v3.0.0) (2020-06-04)
 * Improve screenreading (UIEUS-170, UIEUS-171, UIEUS-172)
