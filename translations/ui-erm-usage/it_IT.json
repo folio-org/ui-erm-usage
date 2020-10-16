@@ -167,7 +167,7 @@
     "harvester.start": "Start harvester",
     "harvester.start.started": "Harvester started",
     "harvester.start.success.single.udp": "Harvester successfully started for",
-    "harvester.start.fail.single.udp": "Something went wrong while starting the harvester for usagedata provider",
+    "harvester.start.fail.single.udp": "Qualcosa è andato storto durante l'avvio dell'harvester per il per il fornitore dei dati di utilizzo",
     "harvester.start.inactiveInfo": "L'harvester può essere avviato solo per i fornitori di dati di utilizzo con lo stato di harvesting \"attivo\". Si prega di controllare la configurazione di harvesting.",
     "settings.harvester": "Harvester",
     "settings.section.display.settings": "Display settings",
