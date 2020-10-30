@@ -4,7 +4,7 @@
     "ui-erm-usage.resultCount": "결과 수:",
     "resultCount": "{count, number} 레코드를 찾았습니다.",
     "erm-usage": "ERM Usage",
-    "meta.title": "eUsage",
+    "meta.title": "이용통계(eUsage)",
     "information.providerName": "제공사 이름",
     "information.platform": "플랫폼",
     "information.harvestingStatus": "수집 상태",
