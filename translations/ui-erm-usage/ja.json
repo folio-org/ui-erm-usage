@@ -157,7 +157,7 @@
     "report.error.3071": "Required ReportAttribute missing",
     "report.error.3080": "Limit requested greater than maximum server limit",
     "udp.form.cancel": "Cancel",
-    "udp.form.saveAndClose": "Save & close",
+    "udp.form.saveAndClose": "保存して閉じる",
     "udp.form.delete.confirm.title": "Delete usage data Provider",
     "form.delete.confirm.message": "Do you really want to delete {name}?",
     "errors.required": "Required",
