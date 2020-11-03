@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -104,7 +104,7 @@
         "subPermissions": [
           "module.erm-usage.enabled"
         ],
-        "visible": true
+        "visible": false
       },
       {
         "permissionName": "settings.erm-usage.enabled",
