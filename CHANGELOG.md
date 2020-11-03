@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [4.0.1](https://github.com/folio-org/ui-erm-usage/tree/v4.0.1) (2020-11-03)
+* Make permission ui-erm-usage.module.enabled invisible (UIEUS-218)
+
 ## [4.0.0](https://github.com/folio-org/ui-erm-usage/tree/v4.0.0) (2020-10-08)
 * Increment `@folio/stripes` to `v5.0` and `react-router` to `v5.2` (and, bugfix, move it to peer)
 * Replace deprecated `babel-polyfill` with `core-js` and `regenerator-runtime`
