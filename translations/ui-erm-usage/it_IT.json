@@ -42,7 +42,7 @@
     "reportOverview.month.12": "Dicembre",
     "reportOverview.report": "Report",
     "udp.form.close": "Close new usage data provider Dialog",
-    "udp.form.createUDP": "Create usage data provider",
+    "udp.form.createUDP": "Creare un fornitore di dati di utilizzo",
     "udp.form.udpInfo.title": "Usage data provider information",
     "udp.form.udpInfo.providerName": "Nome del fornitore",
     "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via",
