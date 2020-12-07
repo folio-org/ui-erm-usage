@@ -101,14 +101,14 @@ function FileUploadCard(props) {
         } else {
           handleFail(
             intl.formatMessage({
-              id: 'ui-erm-usage.report.upload.failed',
+              id: 'ui-erm-usage.report.delete.failed',
             })
           );
         }
       })
       .catch((err) => {
         const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
+          id: 'ui-erm-usage.report.delete.failed',
         });
         const infoText = `${failText} ${err.message}`;
         handleFail(infoText);

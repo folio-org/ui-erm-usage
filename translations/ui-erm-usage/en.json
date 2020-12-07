@@ -116,6 +116,7 @@
   "report.upload.dropFile": "Drop file here",
   "report.upload.selectFile": "or select file",
   "report.upload.info": "It is possible to upload Counter 4 (XML & CSV) or Counter 5 (JSON & CSV) usage statistics",
+  "report.delete.failed": "Failed...",
 
   "report.error.other": "Other",
   "report.error.0": "Info or debug",
