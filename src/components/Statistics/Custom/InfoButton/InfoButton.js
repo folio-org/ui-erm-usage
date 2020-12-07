@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
@@ -26,7 +27,11 @@ function InfoButton(props) {
     }
   );
 
-  const doDelete = () => {
+  const doDeleteReport = () => {
+    props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});
+  };
+
+  const doDeleteWithFile = () => {
     fetch(`${props.stripes.okapi.url}/erm-usage/files/${customReport.fileId}`, {
       method: 'DELETE',
       headers: httpHeaders,
@@ -38,14 +43,20 @@ function InfoButton(props) {
             _error: 'Fetch file failed',
           });
         } else {
-          props.mutator.customReport
-            .DELETE({ id: customReport.id })
-            .then(() => {});
+          doDeleteReport();
         }
       })
       .catch((err) => {
         throw new Error('Error while deleting custom report. ' + err.message);
       });
+  };
+
+  const doDelete = () => {
+    if (!_.isNil(customReport.fileId)) {
+      doDeleteWithFile();
+    } else {
+      doDeleteReport();
+    }
     setShowConfirmDelete(false);
   };
 

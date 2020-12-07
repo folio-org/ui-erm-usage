@@ -13,6 +13,7 @@ import {
   Label,
   Row,
   TextField,
+  RadioButton,
 } from '@folio/stripes/components';
 
 import FileUploader from '../FileUploader';
@@ -21,6 +22,8 @@ function FileUploadCard(props) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [useFile, setUseFile] = useState(true);
+  const [linkUrl, setLinkUrl] = useState();
 
   const { intl, stripes } = props;
   const httpHeaders = Object.assign(
@@ -31,7 +34,6 @@ function FileUploadCard(props) {
       'Content-Type': 'application/octet-stream',
     }
   );
-
   const callout = useContext(CalloutContext);
 
   const handleFail = (msg) => {
@@ -59,8 +61,36 @@ function FileUploadCard(props) {
             props.mutators.setFileName({}, file.name);
             props.mutators.setFileSize({}, file.size);
             props.mutators.setProviderId({}, props.udpId);
+            props.mutators.setLinkUrl({}, null);
             setFileId(json.id);
           });
+        } else {
+          handleFail(
+            intl.formatMessage({
+              id: 'ui-erm-usage.report.upload.failed',
+            })
+          );
+        }
+      })
+      .catch((err) => {
+        setShowUploadModal(false);
+        const failText = intl.formatMessage({
+          id: 'ui-erm-usage.report.upload.failed',
+        });
+        const infoText = `${failText} ${err.message}`;
+        handleFail(infoText);
+      });
+  };
+
+  const doDeleteRawFile = () => {
+    const okapiUrl = stripes.okapi.url;
+    fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
+      headers: httpHeaders,
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          setFileId();
         } else {
           handleFail(
             intl.formatMessage({
@@ -96,7 +126,9 @@ function FileUploadCard(props) {
         <Button
           data-test-doc-file
           buttonStyle="link"
-          onClick={() => props.handlers.doDownloadFile(fileId, selectedFile.name)}
+          onClick={() =>
+            props.handlers.doDownloadFile(fileId, selectedFile.name)
+          }
         >
           <Icon icon="external-link">{selectedFile.name}</Icon>
         </Button>
@@ -124,6 +156,56 @@ function FileUploadCard(props) {
       );
     } else {
       return null;
+    }
+  };
+
+  const renderUploadFile = () => (
+    <Col xs={12} md={12}>
+      <Row>SELECT FILE TO UPLOAD</Row>
+      <Row>
+        <Col xs={10}>
+          <FileUploader
+            onSelectFile={handleSelectFile}
+            selectedFile={selectedFile}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <></>
+      </Row>
+      <Row>
+        <Col xs={10}>{renderSelectedFile()}</Col>
+      </Row>
+      <Row>{renderUpload()}</Row>
+    </Col>
+  );
+
+  const handleLinkUrlChange = (e) => {
+    if (!_.isNil(fileId)) {
+      doDeleteRawFile();
+    }
+    setLinkUrl(e.target.value);
+    props.mutators.setLinkUrl({}, e.target.value);
+    props.mutators.setProviderId({}, props.udpId);
+  };
+
+  const renderUploadLink = () => (
+    <Col xs={12} md={12}>
+      <Row>
+        <TextField
+          label="LINK URL"
+          value={linkUrl}
+          onChange={handleLinkUrlChange}
+        />
+      </Row>
+    </Col>
+  );
+
+  const renderLinkOrFile = () => {
+    if (useFile) {
+      return renderUploadFile();
+    } else {
+      return renderUploadLink();
     }
   };
 
@@ -159,22 +241,26 @@ function FileUploadCard(props) {
         </Col>
         <Col xs={6} md={6}>
           <Row>
-            <Col xs={10}>
-              <FileUploader
-                onSelectFile={handleSelectFile}
-                selectedFile={selectedFile}
+            <Col>
+              <RadioButton
+                checked={useFile}
+                inline
+                onChange={(event) => {
+                  setUseFile(!useFile);
+                }}
+                label="UPLOAD FILE"
+              />
+              <RadioButton
+                checked={!useFile}
+                inline
+                onChange={(event) => {
+                  setUseFile(!useFile);
+                }}
+                label="LINK FILE"
               />
             </Col>
           </Row>
-          <Row>
-            <></>
-          </Row>
-          <Row>
-            <Col xs={10}>{renderSelectedFile()}</Col>
-          </Row>
-          <Row>
-            {renderUpload()}
-          </Row>
+          <Row>{renderLinkOrFile()}</Row>
         </Col>
       </Row>
     </>
@@ -190,6 +276,7 @@ FileUploadCard.propTypes = {
     setFileId: PropTypes.func,
     setFileName: PropTypes.func,
     setFileSize: PropTypes.func,
+    setLinkUrl: PropTypes.func,
     setProviderId: PropTypes.func,
   }),
   stripes: PropTypes.shape().isRequired,
