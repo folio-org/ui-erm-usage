@@ -11,9 +11,11 @@ function NonCounterUploadModal(props) {
   const renderFooter = (onSubmit) => (
     <ModalFooter>
       <Button buttonStyle="primary" disabled={invalid} onClick={onSubmit}>
-        Save
+        <FormattedMessage id="ui-erm-usage.general.save" />
       </Button>
-      <Button onClick={onClose}>Cancel</Button>
+      <Button onClick={onClose}>
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
+      </Button>
     </ModalFooter>
   );
 
@@ -86,9 +88,10 @@ export default stripesFinalForm({
   validate: (values) => {
     const errors = {};
     const yyyyRegex = /^[12]\d{3}$/;
-    // if (!values.fileId) {
-    //   errors.fileId = 'Required';
-    // }
+    if (!values.fileId && !values.linkUrl) {
+      errors.fileId = 'Required';
+      errors.linkUrl = 'Required';
+    }
     if (!values.year) {
       errors.year = 'Required';
     } else if (!yyyyRegex.test(values.year)) {

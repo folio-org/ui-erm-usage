@@ -39,7 +39,9 @@ function CustomReportInfoLink(props) {
         buttonStyle="dropdownItem"
         onClick={onDelete}
       >
-        <Icon icon="trash">Delete custom report</Icon>
+        <Icon icon="trash">
+          <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
+        </Icon>
       </Button>
     </MenuSection>
   );

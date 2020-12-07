@@ -16,6 +16,8 @@ import {
   RadioButton,
 } from '@folio/stripes/components';
 
+import { validateUrl } from '../../../util/validate';
+
 import FileUploader from '../FileUploader';
 
 function FileUploadCard(props) {
@@ -46,6 +48,7 @@ function FileUploadCard(props) {
   };
 
   const doUploadRawFile = (file) => {
+    const { mutators, udpId } = props;
     setShowUploadModal(true);
     const okapiUrl = stripes.okapi.url;
     fetch(`${okapiUrl}/erm-usage/files`, {
@@ -57,11 +60,11 @@ function FileUploadCard(props) {
         setShowUploadModal(false);
         if (response.ok) {
           response.json().then((json) => {
-            props.mutators.setFileId({}, json.id);
-            props.mutators.setFileName({}, file.name);
-            props.mutators.setFileSize({}, file.size);
-            props.mutators.setProviderId({}, props.udpId);
-            props.mutators.setLinkUrl({}, null);
+            mutators.setFileId({}, json.id);
+            mutators.setFileName({}, file.name);
+            mutators.setFileSize({}, file.size);
+            mutators.setProviderId({}, udpId);
+            mutators.setLinkUrl({}, null);
             setFileId(json.id);
           });
         } else {
@@ -83,6 +86,7 @@ function FileUploadCard(props) {
   };
 
   const doDeleteRawFile = () => {
+    const { mutators } = props;
     const okapiUrl = stripes.okapi.url;
     fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
       headers: httpHeaders,
@@ -91,6 +95,9 @@ function FileUploadCard(props) {
       .then((response) => {
         if (response.ok) {
           setFileId();
+          mutators.setFileId({}, null);
+          mutators.setFileName({}, null);
+          mutators.setFileSize({}, null);
         } else {
           handleFail(
             intl.formatMessage({
@@ -100,7 +107,6 @@ function FileUploadCard(props) {
         }
       })
       .catch((err) => {
-        setShowUploadModal(false);
         const failText = intl.formatMessage({
           id: 'ui-erm-usage.report.upload.failed',
         });
@@ -116,6 +122,7 @@ function FileUploadCard(props) {
   };
 
   const renderSelectedFile = () => {
+    const { handlers } = props;
     let downloadButton = '';
     if (_.isNil(selectedFile) || _.isNil(fileId)) {
       downloadButton = (
@@ -126,9 +133,7 @@ function FileUploadCard(props) {
         <Button
           data-test-doc-file
           buttonStyle="link"
-          onClick={() =>
-            props.handlers.doDownloadFile(fileId, selectedFile.name)
-          }
+          onClick={() => handlers.doDownloadFile(fileId, selectedFile.name)}
         >
           <Icon icon="external-link">{selectedFile.name}</Icon>
         </Button>
@@ -159,9 +164,22 @@ function FileUploadCard(props) {
     }
   };
 
+  const handleLinkUrlChange = (e) => {
+    const { mutators, udpId } = props;
+    const value = e.target.value;
+    if (!_.isNil(fileId)) {
+      doDeleteRawFile();
+    }
+    setLinkUrl(value);
+    mutators.setLinkUrl({}, value);
+    mutators.setProviderId({}, udpId);
+  };
+
   const renderUploadFile = () => (
     <Col xs={12} md={12}>
-      <Row>SELECT FILE TO UPLOAD</Row>
+      <Row>
+        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileUpload" />
+      </Row>
       <Row>
         <Col xs={10}>
           <FileUploader
@@ -180,26 +198,23 @@ function FileUploadCard(props) {
     </Col>
   );
 
-  const handleLinkUrlChange = (e) => {
-    if (!_.isNil(fileId)) {
-      doDeleteRawFile();
-    }
-    setLinkUrl(e.target.value);
-    props.mutators.setLinkUrl({}, e.target.value);
-    props.mutators.setProviderId({}, props.udpId);
+  const renderUploadLink = () => {
+    const error = validateUrl(linkUrl);
+    return (
+      <Col xs={12} md={12}>
+        <Row>
+          <TextField
+            error={error}
+            label={<FormattedMessage id="ui-erm-usage.statistics.custom.linkUrl" />}
+            onChange={handleLinkUrlChange}
+            required
+            valid={error === undefined}
+            value={linkUrl}
+          />
+        </Row>
+      </Col>
+    );
   };
-
-  const renderUploadLink = () => (
-    <Col xs={12} md={12}>
-      <Row>
-        <TextField
-          label="LINK URL"
-          value={linkUrl}
-          onChange={handleLinkUrlChange}
-        />
-      </Row>
-    </Col>
-  );
 
   const renderLinkOrFile = () => {
     if (useFile) {
@@ -212,7 +227,7 @@ function FileUploadCard(props) {
   return (
     <>
       <Row>
-        <Col xs={6} md={6}>
+        <Col xs={12} md={12}>
           <Row>
             <Col xs={10}>
               <Field
@@ -238,29 +253,29 @@ function FileUploadCard(props) {
               />
             </Col>
           </Row>
-        </Col>
-        <Col xs={6} md={6}>
           <Row>
-            <Col>
+            <Col xs={10}>
               <RadioButton
                 checked={useFile}
                 inline
-                onChange={(event) => {
+                onChange={() => {
                   setUseFile(!useFile);
                 }}
-                label="UPLOAD FILE"
+                label={<FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />}
               />
               <RadioButton
                 checked={!useFile}
                 inline
-                onChange={(event) => {
+                onChange={() => {
                   setUseFile(!useFile);
                 }}
-                label="LINK FILE"
+                label={<FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />}
               />
             </Col>
           </Row>
-          <Row>{renderLinkOrFile()}</Row>
+          <Row>
+            <Col xs={10}>{renderLinkOrFile()}</Col>
+          </Row>
         </Col>
       </Row>
     </>

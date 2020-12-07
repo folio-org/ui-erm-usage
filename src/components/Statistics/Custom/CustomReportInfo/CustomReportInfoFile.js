@@ -33,7 +33,9 @@ function CustomReportInfoFile(props) {
       <Button
         id="download-custom-report-button"
         buttonStyle="dropdownItem"
-        onClick={() => handlers.doDownloadFile(customReport.fileId, customReport.fileName)}
+        onClick={() =>
+          handlers.doDownloadFile(customReport.fileId, customReport.fileName)
+        }
       >
         <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
       </Button>
@@ -42,7 +44,9 @@ function CustomReportInfoFile(props) {
         buttonStyle="dropdownItem"
         onClick={onDelete}
       >
-        <Icon icon="arrow-down">Delete custom report</Icon>
+        <Icon icon="trash">
+          <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
+        </Icon>
       </Button>
     </MenuSection>
   );

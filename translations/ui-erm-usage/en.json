@@ -11,6 +11,7 @@
 
   "meta.title": "eUsage",
 
+  "general.cancel": "Cancel",
   "general.delete": "Delete",
   "general.save": "Save",
   "general.info": "Info",
@@ -185,6 +186,7 @@
   "errors.emailInvalid": "Email address invalid",
   "errors.dateInvalid": "Date invalid",
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
+  "errors.urlRequired": "Invalid URL: http:// or https:// required!",
 
   "harvester.start": "Start harvester",
   "harvester.start.started": "Harvester started",
@@ -227,6 +229,11 @@
   "statistics.custom.info.detail": "Detail info",
   "statistics.custom.selectFileFirst": "Select file first",
   "statistics.custom.selectedFile": "Selected file",
+  "statistics.custom.selectFileUpload": "Select file to upload",
+  "statistics.custom.linkUrl": "Link URL",
+  "statistics.custom.uploadFile": "Upload file",
+  "statistics.custom.linkFile": "Link file",
+  "statistics.custom.delete": "Delete custom report",
 
   "permission.module.enabled": "UI: eUsage module is enabled",
   "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",
