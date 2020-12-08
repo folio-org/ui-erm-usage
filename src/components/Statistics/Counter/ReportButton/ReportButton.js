@@ -153,7 +153,6 @@ class ReportButton extends React.Component {
           aria-label={label}
           id={buttonId}
           buttonStyle={style}
-          data-role="toggle"
           aria-haspopup="true"
           onClick={() => this.setState((state) => ({ showDropDown: !state.showDropDown }))}
         >
