@@ -64,6 +64,11 @@ function ReportUpload(props) {
         handleFail(err.message);
       });
   };
+
+  const handleCounterUpload = () => {
+    return null;
+  };
+
   return (
     <>
       <Button
@@ -82,6 +87,7 @@ function ReportUpload(props) {
         open={showCounterUpload}
         onClose={() => setShowCounterUpload(false)}
         onFail={handleFail}
+        onSubmit={handleCounterUpload}
         onSuccess={handleSuccess}
         stripes={props.stripes}
         udpId={props.udpId}
