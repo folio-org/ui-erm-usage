@@ -1,15 +1,18 @@
 import _ from 'lodash';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import { Field } from 'react-final-form';
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
+  Checkbox,
   Col,
   KeyValue,
   Loading,
   Modal,
   Row,
+  TextField,
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
@@ -171,18 +174,36 @@ class CounterUpload extends React.Component {
       <React.Fragment>
         <Row>
           <Col xs={8}>
-            <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.general.info" />}
-              value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
-            />
+            <Row>
+              <KeyValue
+                label={<FormattedMessage id="ui-erm-usage.general.info" />}
+                value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+              />
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <FileUploader
+                  onSelectFile={this.selectFile}
+                  selectedFile={this.state.selectedFile}
+                  onClickUpload={this.uploadFile}
+                />
+              </Col>
+            </Row>
           </Col>
-        </Row>
-        <Row>
-          <Col xs={8}>
-            <FileUploader
-              onSelectFile={this.selectFile}
-              selectedFile={this.state.selectedFile}
-              onClickUpload={this.uploadFile}
+          <Col xs={4}>
+            <Field
+              component={Checkbox}
+              label="Report data has been edited manually"
+              name="reportEditedManually"
+              type="checkbox"
+            />
+            <Field
+              component={TextField}
+              fullWidth
+              id="addcounterreport_editReason"
+              label="Edit reason"
+              name="editReason"
+              placeholder="Enter reason for manual changes"
             />
           </Col>
         </Row>
