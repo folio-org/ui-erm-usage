@@ -5,7 +5,6 @@ import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   Dropdown,
-  DropdownButton,
   DropdownMenu,
   Icon,
 } from '@folio/stripes/components';
@@ -29,10 +28,6 @@ class DownloadCredentialsButton extends React.Component {
         'Content-Type': 'application/json',
       }
     );
-
-    this.state = {
-      isDropdownOpen: false,
-    };
   }
 
   onClickDownloadCredentials = (format) => {
@@ -46,22 +41,12 @@ class DownloadCredentialsButton extends React.Component {
     });
   };
 
-  onDropdownToggle = () => {
-    this.setState(({ isDropdownOpen }) => ({
-      isDropdownOpen: !isDropdownOpen,
-    }));
-  };
-
   render() {
     return (
       <Dropdown
-        open={this.state.isDropdownOpen}
-        onToggle={this.onDropdownToggle}
+        label={<FormattedMessage id="ui-erm-usage.settings.credentials.download" />}
       >
-        <DropdownButton data-role="toggle">
-          <FormattedMessage id="ui-erm-usage.settings.credentials.download" />
-        </DropdownButton>
-        <DropdownMenu data-role="menu">
+        <DropdownMenu>
           <Button
             buttonStyle="dropdownItem"
             onClick={() => this.onClickDownloadCredentials('csv')}
