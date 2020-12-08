@@ -5,22 +5,16 @@ import { Field } from 'react-final-form';
 import _ from 'lodash';
 import { CalloutContext } from '@folio/stripes/core';
 import {
-  Button,
   Col,
-  Icon,
-  KeyValue,
-  Loading,
-  Label,
   Row,
   TextField,
   RadioButton,
 } from '@folio/stripes/components';
 
-import { validateUrl } from '../../../util/validate';
+import NonCounterUploadFile from './NonCounterUploadFile';
+import NonCounterUploadLink from './NonCounterUploadLink';
 
-import FileUploader from '../FileUploader';
-
-function FileUploadCard(props) {
+function NonCounterUpload(props) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -121,49 +115,6 @@ function FileUploadCard(props) {
     doUploadRawFile(currentFile);
   };
 
-  const renderSelectedFile = () => {
-    const { handlers } = props;
-    let downloadButton = '';
-    if (_.isNil(selectedFile) || _.isNil(fileId)) {
-      downloadButton = (
-        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
-      );
-    } else {
-      downloadButton = (
-        <Button
-          data-test-doc-file
-          buttonStyle="link"
-          onClick={() => handlers.doDownloadFile(fileId, selectedFile.name)}
-        >
-          <Icon icon="external-link">{selectedFile.name}</Icon>
-        </Button>
-      );
-    }
-    return (
-      <KeyValue
-        label={
-          <Label required>
-            <FormattedMessage id="ui-erm-usage.statistics.custom.selectedFile" />
-          </Label>
-        }
-        value={downloadButton}
-      />
-    );
-  };
-
-  const renderUpload = () => {
-    if (showUploadModal) {
-      return (
-        <>
-          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
-          <Loading />
-        </>
-      );
-    } else {
-      return null;
-    }
-  };
-
   const handleLinkUrlChange = (e) => {
     const { mutators, udpId } = props;
     const value = e.target.value;
@@ -175,52 +126,23 @@ function FileUploadCard(props) {
     mutators.setProviderId({}, udpId);
   };
 
-  const renderUploadFile = () => (
-    <Col xs={12} md={12}>
-      <Row>
-        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileUpload" />
-      </Row>
-      <Row>
-        <Col xs={10}>
-          <FileUploader
-            onSelectFile={handleSelectFile}
-            selectedFile={selectedFile}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <></>
-      </Row>
-      <Row>
-        <Col xs={10}>{renderSelectedFile()}</Col>
-      </Row>
-      <Row>{renderUpload()}</Row>
-    </Col>
-  );
-
-  const renderUploadLink = () => {
-    const error = validateUrl(linkUrl);
-    return (
-      <Col xs={12} md={12}>
-        <Row>
-          <TextField
-            error={error}
-            label={<FormattedMessage id="ui-erm-usage.statistics.custom.linkUrl" />}
-            onChange={handleLinkUrlChange}
-            required
-            valid={error === undefined}
-            value={linkUrl}
-          />
-        </Row>
-      </Col>
-    );
-  };
-
   const renderLinkOrFile = () => {
     if (useFile) {
-      return renderUploadFile();
+      return (
+        <NonCounterUploadFile
+          file={selectedFile}
+          fileId={fileId}
+          isUploading={showUploadModal}
+          onSelectFile={handleSelectFile}
+        />
+      );
     } else {
-      return renderUploadLink();
+      return (
+        <NonCounterUploadLink
+          linkUrl={linkUrl}
+          onChangeLinkUrl={handleLinkUrlChange}
+        />
+      );
     }
   };
 
@@ -261,7 +183,9 @@ function FileUploadCard(props) {
                 onChange={() => {
                   setUseFile(!useFile);
                 }}
-                label={<FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />}
+                label={
+                  <FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />
+                }
               />
               <RadioButton
                 checked={!useFile}
@@ -269,7 +193,9 @@ function FileUploadCard(props) {
                 onChange={() => {
                   setUseFile(!useFile);
                 }}
-                label={<FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />}
+                label={
+                  <FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />
+                }
               />
             </Col>
           </Row>
@@ -282,7 +208,7 @@ function FileUploadCard(props) {
   );
 }
 
-FileUploadCard.propTypes = {
+NonCounterUpload.propTypes = {
   intl: PropTypes.object,
   handlers: PropTypes.shape({
     doDownloadFile: PropTypes.func,
@@ -298,4 +224,4 @@ FileUploadCard.propTypes = {
   udpId: PropTypes.string,
 };
 
-export default injectIntl(FileUploadCard);
+export default injectIntl(NonCounterUpload);
