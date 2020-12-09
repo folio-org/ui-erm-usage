@@ -71,6 +71,16 @@ function InfoButton(props) {
       Close
     </Button>
   );
+
+  const deleteConfirmMsg = (
+    <FormattedMessage
+      id="ui-erm-usage.reportOverview.deleteTemplateMessage"
+      values={{
+        name: <strong>{`${customReport.year} - ${customReport.note}`}</strong>,
+      }}
+    />
+  );
+
   return (
     <>
       <IconButton
@@ -101,9 +111,7 @@ function InfoButton(props) {
         heading={
           <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
         }
-        message={
-          <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
-        }
+        message={deleteConfirmMsg}
         onConfirm={doDelete}
         confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}
         onCancel={() => setShowConfirmDelete(false)}
