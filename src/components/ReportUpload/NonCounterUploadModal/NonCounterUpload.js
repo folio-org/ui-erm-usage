@@ -179,6 +179,7 @@ function NonCounterUpload(props) {
             <Col xs={10}>
               <RadioButton
                 checked={useFile}
+                id="custom-report-file-radio"
                 inline
                 onChange={() => {
                   setUseFile(!useFile);
@@ -189,6 +190,7 @@ function NonCounterUpload(props) {
               />
               <RadioButton
                 checked={!useFile}
+                id="custom-report-link-radio"
                 inline
                 onChange={() => {
                   setUseFile(!useFile);

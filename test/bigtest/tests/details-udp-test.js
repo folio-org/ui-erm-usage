@@ -283,6 +283,30 @@ describe('UDPDetailsPage', () => {
         true
       );
     });
+
+    it('does not render link url text field', () => {
+      expect(
+        udpDetailsPage.uploadNonCounterModal.linkUrlInput.isPresent
+      ).to.equal(false);
+    });
+
+    describe('click link file', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.uploadNonCounterModal.linkRadioButton.click();
+      });
+
+      it('does not render upload file button', () => {
+        expect(
+          udpDetailsPage.uploadNonCounterModal.uploadFileButton.isPresent
+        ).to.equal(false);
+      });
+
+      it('does render link url text field', () => {
+        expect(
+          udpDetailsPage.uploadNonCounterModal.linkUrlInput.isPresent
+        ).to.equal(true);
+      });
+    });
   });
 });
 

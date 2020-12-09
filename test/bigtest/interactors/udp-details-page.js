@@ -140,7 +140,9 @@ import {
 @interactor class UploadNonCounterModal {
   static defaultScope = '[class="upload-non-counter-modal"]';
   uploadFileButton = scoped('button[id="upload-file-button"]');
+  linkRadioButton = scoped('label[for="custom-report-link-radio"]');
   yearInput = scoped('input[id="custom-report-year"]');
+  linkUrlInput = scoped('input[id="custom-report-link-url"]');
 }
 
 @interactor class TagsSelect {

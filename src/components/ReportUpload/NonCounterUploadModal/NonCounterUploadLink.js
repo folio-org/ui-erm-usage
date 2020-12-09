@@ -13,6 +13,7 @@ function NonCounterUploadLink(props) {
       <Row>
         <TextField
           error={error}
+          id="custom-report-link-url"
           label={
             <FormattedMessage id="ui-erm-usage.statistics.custom.linkUrl" />
           }
