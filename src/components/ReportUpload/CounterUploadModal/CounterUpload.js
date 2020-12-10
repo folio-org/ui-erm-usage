@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
+import stripesFinalForm from '@folio/stripes/final-form';
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
 import {
@@ -11,6 +12,7 @@ import {
   KeyValue,
   Loading,
   Modal,
+  ModalFooter,
   Row,
   TextField,
 } from '@folio/stripes/components';
@@ -28,16 +30,24 @@ class CounterUpload extends React.Component {
     },
   });
 
-  static propTypes = {
-    onSuccess: PropTypes.func,
-    onFail: PropTypes.func,
-    stripes: PropTypes.shape().isRequired,
-    udpId: PropTypes.string,
-    mutator: PropTypes.shape({
-      counterReports: PropTypes.object,
-    }),
-    intl: PropTypes.object,
-  };
+  // static propTypes = {
+  //   onSuccess: PropTypes.func,
+  //   onFail: PropTypes.func,
+  //   stripes: PropTypes.shape().isRequired,
+  //   udpId: PropTypes.string,
+  //   mutator: PropTypes.shape({
+  //     counterReports: PropTypes.object,
+  //   }),
+  //   mutators: PropTypes.shape({
+  //     setReportId: PropTypes.func,
+  //   }),
+  //   intl: PropTypes.object,
+  //   parentCallback: PropTypes.func,
+  //   handleSubmit: PropTypes.func.isRequired,
+  //   invalid: PropTypes.bool.isRequired,
+  //   open: PropTypes.bool.isRequired,
+  //   onClose: PropTypes.func.isRequired,
+  // };
 
   static upload = 'upload';
   static overwrite = 'overwrite';
@@ -53,6 +63,14 @@ class CounterUpload extends React.Component {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
         'X-Okapi-Token': props.stripes.store.getState().okapi.token,
         'Content-Type': 'application/octet-stream',
+      }
+    );
+    this.httpHeadersJson = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': props.stripes.okapi.tenant,
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        'Content-Type': 'application/json',
       }
     );
     this.state = {
@@ -93,7 +111,21 @@ class CounterUpload extends React.Component {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
-          this.closeInfoModal();
+          response.text().then(text => {
+            // console.log(text);
+            const reportId = text.replace('Saved report with ids: ', '');
+            // console.log(reportId);
+            this.props.parentCallback(reportId);
+            fetch(
+              `${this.okapiUrl}/counter-reports/${reportId}`,
+              {
+                headers: this.httpHeadersJson,
+                method: 'PUT',
+                // body: data,
+              }
+            );
+          });
+
           this.setState({
             selectedFile: {},
           });
@@ -169,55 +201,98 @@ class CounterUpload extends React.Component {
     }
   };
 
+  footer = (onSubmit) => (
+    <ModalFooter>
+      <Button buttonStyle="primary" disabled={this.props.invalid} onClick={onSubmit}>
+        Save
+      </Button>
+      <Button onClick={this.props.onClose}>Cancel</Button>
+    </ModalFooter>
+  );
+
   render() {
     return (
-      <React.Fragment>
-        <Row>
-          <Col xs={8}>
+      <form
+        data-test-counter-report-form-page
+        id="form-counter-report"
+        onSubmit={this.props.handleSubmit}
+      >
+        <Modal
+          closeOnBackgroundClick
+          footer={this.footer(this.props.handleSubmit)}
+          open={this.props.open}
+          label={<FormattedMessage id="ui-erm-usage.statistics.counter.upload" />}
+        >
+          <div className="upload-counter-modal">
             <Row>
-              <KeyValue
-                label={<FormattedMessage id="ui-erm-usage.general.info" />}
-                value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
-              />
-            </Row>
-            <Row>
-              <Col xs={12}>
-                <FileUploader
-                  onSelectFile={this.selectFile}
-                  selectedFile={this.state.selectedFile}
-                  onClickUpload={this.uploadFile}
+              <Col xs={8}>
+                <Row>
+                  <KeyValue
+                    label={<FormattedMessage id="ui-erm-usage.general.info" />}
+                    value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+                  />
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <FileUploader
+                      onSelectFile={this.selectFile}
+                      selectedFile={this.state.selectedFile}
+                      onClickUpload={this.uploadFile}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={4}>
+                <Field
+                  component={Checkbox}
+                  label="Report data has been edited manually"
+                  name="reportEditedManually"
+                  type="checkbox"
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  id="addcounterreport_editReason"
+                  label="Edit reason"
+                  name="editReason"
+                  placeholder="Enter reason for manual changes"
                 />
               </Col>
             </Row>
-          </Col>
-          <Col xs={4}>
-            <Field
-              component={Checkbox}
-              label="Report data has been edited manually"
-              name="reportEditedManually"
-              type="checkbox"
-            />
-            <Field
-              component={TextField}
-              fullWidth
-              id="addcounterreport_editReason"
-              label="Edit reason"
-              name="editReason"
-              placeholder="Enter reason for manual changes"
-            />
-          </Col>
-        </Row>
-        <Modal
-          open={this.state.showInfoModal}
-          label={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.report.upload.modal.label',
-          })}
-        >
-          {this.renderInfo()}
+            <Modal
+              open={this.state.showInfoModal}
+              label={this.props.intl.formatMessage({
+                id: 'ui-erm-usage.report.upload.modal.label',
+              })}
+            >
+              {/* Report exists. Do you want to overwrite? */}
+              {this.renderInfo()}
+            </Modal>
+          </div>
         </Modal>
-      </React.Fragment>
+      </form>
     );
   }
 }
 
-export default stripesConnect(injectIntl(CounterUpload));
+CounterUpload.propTypes = {
+  onSuccess: PropTypes.func,
+  onFail: PropTypes.func,
+  stripes: PropTypes.shape().isRequired,
+  udpId: PropTypes.string,
+  mutator: PropTypes.shape({
+    counterReports: PropTypes.object,
+  }),
+  mutators: PropTypes.shape({
+    setReportId: PropTypes.func,
+  }),
+  intl: PropTypes.object,
+  parentCallback: PropTypes.func,
+  handleSubmit: PropTypes.func.isRequired,
+  invalid: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+export default injectIntl(stripesConnect(stripesFinalForm({
+})(CounterUpload)));
