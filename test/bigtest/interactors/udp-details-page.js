@@ -131,6 +131,11 @@ import {
   downloadCustomReportButton = scoped('button[id="download-custom-report-button"]');
   deleteCustomReportButton = scoped('button[id="delete-custom-report-button"]');
   customReportLink = scoped('a[id="custom-report-link"]');
+  closeReportInfoButton = scoped('button[id="close-report-info-button"]');
+}
+
+@interactor class ConfirmDeleteButton {
+  static defaultScope = 'button[data-test-confirmation-modal-confirm-button]';
 }
 
 @interactor class UploadCounterModal {
@@ -187,4 +192,6 @@ export default @interactor class UDPDetailsPage {
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();
+
+  confirmDeleteButton = new ConfirmDeleteButton();
 }

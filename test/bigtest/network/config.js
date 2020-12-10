@@ -175,6 +175,14 @@ export default function config() {
     errorCodes: ['other', '3000', '3031']
   });
 
+  this.delete('/custom-reports/:id', (schema, request) => {
+    return schema.customReports.find(request.params.id).destroy();
+  });
+
+  this.delete('/erm-usage/files/:id', (schema, request) => {
+    return {};
+  }, 204);
+
   this.get('/custom-reports', (schema, request) => {
     if (request.queryParams) {
       /*

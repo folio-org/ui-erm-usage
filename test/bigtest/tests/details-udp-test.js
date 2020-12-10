@@ -207,11 +207,13 @@ describe('UDPDetailsPage', () => {
     });
   });
 
+  let initialCustomReports = null;
   describe('custom reports are listed', function() {
     beforeEach(async function() {
       await udpDetailsPage.statisticsAccordion.click();
       await udpDetailsPage.clickCustomReportAccordion();
       await udpDetailsPage.clickExpandAllCustomReportYears();
+      initialCustomReports = udpDetailsPage.customReports.instances().length;
     });
 
     it('renders custom reports', () => {
@@ -234,6 +236,19 @@ describe('UDPDetailsPage', () => {
       expect(
         udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
       ).to.equal(true);
+    });
+
+    describe('delete custom report', function() {
+      beforeEach(async function() {
+        await udpDetailsPage.customReportInfo.deleteCustomReportButton.click();
+        await udpDetailsPage.confirmDeleteButton.click();
+      });
+
+      it('renders custom reports', () => {
+        expect(udpDetailsPage.customReports.instances().length).to.equal(
+          initialCustomReports - 1
+        );
+      });
     });
   });
 
@@ -382,6 +397,7 @@ describe('Renders custom reports with link correctly', () => {
   const udpInteractor = new UDPInteractor();
 
   let udp = null;
+  let initialCustomReports = null;
   beforeEach(async function() {
     udp = this.server.create('usage-data-provider', 'withCustomReportsLinks');
     await this.visit(`/eusage/${udp.id}`);
@@ -392,6 +408,7 @@ describe('Renders custom reports with link correctly', () => {
       await udpDetailsPage.statisticsAccordion.click();
       await udpDetailsPage.clickCustomReportAccordion();
       await udpDetailsPage.clickExpandAllCustomReportYears();
+      initialCustomReports = udpDetailsPage.customReports.instances().length;
     });
 
     it('renders custom reports', () => {
@@ -422,6 +439,19 @@ describe('Renders custom reports with link correctly', () => {
         expect(
           udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
         ).to.equal(true);
+      });
+
+      describe('delete custom report', function() {
+        beforeEach(async function() {
+          await udpDetailsPage.customReportInfo.deleteCustomReportButton.click();
+          await udpDetailsPage.confirmDeleteButton.click();
+        });
+
+        it('renders custom reports', () => {
+          expect(udpDetailsPage.customReports.instances().length).to.equal(
+            initialCustomReports - 1
+          );
+        });
       });
     });
   });
