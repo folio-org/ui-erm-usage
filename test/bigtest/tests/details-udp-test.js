@@ -10,7 +10,7 @@ describe('UDPDetailsPage', () => {
   const udpInteractor = new UDPInteractor();
 
   let udp = null;
-  beforeEach(async function () {
+  beforeEach(async function() {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
     await this.visit('/eusage/?filters=harvestingStatus.active');
   });
@@ -23,24 +23,24 @@ describe('UDPDetailsPage', () => {
     expect(udpInteractor.instances().length).to.be.gte(1);
   });
 
-  describe('clicking on the first item', function () {
-    beforeEach(async function () {
+  describe('clicking on the first item', function() {
+    beforeEach(async function() {
       await udpInteractor.instances(0).click();
     });
 
-    it('displays udp label in the pane header', function () {
+    it('displays udp label in the pane header', function() {
       expect(udpDetailsPage.title).to.include(udp.label);
     });
 
-    it('all accordions are present', function () {
+    it('all accordions are present', function() {
       expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.sushiCredentialsAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.statisticsAccordion.isPresent).to.equal(true);
       expect(udpDetailsPage.uploadAccordion.isPresent).to.equal(true);
     });
 
-    describe('all accordions can be expanded', function () {
-      beforeEach(async function () {
+    describe('all accordions can be expanded', function() {
+      beforeEach(async function() {
         await udpDetailsPage.expandAll.click();
       });
 
@@ -50,8 +50,8 @@ describe('UDPDetailsPage', () => {
         );
       });
 
-      describe('all accordions can be collapsed', function () {
-        beforeEach(async function () {
+      describe('all accordions can be collapsed', function() {
+        beforeEach(async function() {
           await udpDetailsPage.expandAll.click();
         });
 
@@ -63,8 +63,8 @@ describe('UDPDetailsPage', () => {
       });
     });
 
-    describe('service type is set correctly', function () {
-      beforeEach(async function () {
+    describe('service type is set correctly', function() {
+      beforeEach(async function() {
         await udpDetailsPage.harvestingAccordion.click();
       });
 
@@ -77,8 +77,8 @@ describe('UDPDetailsPage', () => {
       });
     });
 
-    describe('can select report type for download multi months', function () {
-      beforeEach(async function () {
+    describe('can select report type for download multi months', function() {
+      beforeEach(async function() {
         await udpDetailsPage.statisticsAccordion.click();
       });
 
@@ -160,12 +160,12 @@ describe('UDPDetailsPage', () => {
     });
 
     describe('can open report info menu', () => {
-      beforeEach(async function () {
+      beforeEach(async function() {
         await udpDetailsPage.statisticsAccordion.click();
       });
 
       describe('valid report has correct buttons', () => {
-        beforeEach(async function () {
+        beforeEach(async function() {
           await udpDetailsPage.validReport();
         });
 
@@ -180,7 +180,7 @@ describe('UDPDetailsPage', () => {
       });
 
       describe('failed report has correct buttons', () => {
-        beforeEach(async function () {
+        beforeEach(async function() {
           await udpDetailsPage.failedReport();
         });
 
@@ -195,7 +195,7 @@ describe('UDPDetailsPage', () => {
       });
 
       describe('can open tags helper app', () => {
-        beforeEach(async function () {
+        beforeEach(async function() {
           await udpDetailsPage.clickShowTags();
           await udpDetailsPage.tagsSelect.clickable();
         });
@@ -207,8 +207,8 @@ describe('UDPDetailsPage', () => {
     });
   });
 
-  describe('custom reports are listed', function () {
-    beforeEach(async function () {
+  describe('custom reports are listed', function() {
+    beforeEach(async function() {
       await udpDetailsPage.statisticsAccordion.click();
       await udpDetailsPage.clickCustomReportAccordion();
       await udpDetailsPage.clickExpandAllCustomReportYears();
@@ -219,8 +219,8 @@ describe('UDPDetailsPage', () => {
     });
   });
 
-  describe('custom reports can be selected', function () {
-    beforeEach(async function () {
+  describe('custom reports can be selected', function() {
+    beforeEach(async function() {
       await udpDetailsPage.statisticsAccordion.click();
       await udpDetailsPage.clickCustomReportAccordion();
       await udpDetailsPage.clickExpandAllCustomReportYears();
@@ -237,8 +237,8 @@ describe('UDPDetailsPage', () => {
     });
   });
 
-  describe('can open upload counter report', function () {
-    beforeEach(async function () {
+  describe('can open upload counter report', function() {
+    beforeEach(async function() {
       await udpDetailsPage.uploadAccordion.click();
       await udpDetailsPage.clickUploadCounterButton();
     });
@@ -258,8 +258,8 @@ describe('UDPDetailsPage', () => {
     });
   });
 
-  describe('can open upload non-counter report', function () {
-    beforeEach(async function () {
+  describe('can open upload non-counter report', function() {
+    beforeEach(async function() {
       await udpDetailsPage.uploadAccordion.click();
       await udpDetailsPage.clickUploadNonCounterButton();
     });
@@ -290,8 +290,8 @@ describe('UDPDetailsPage', () => {
       ).to.equal(false);
     });
 
-    describe('click link file', function () {
-      beforeEach(async function () {
+    describe('click link file', function() {
+      beforeEach(async function() {
         await udpDetailsPage.uploadNonCounterModal.linkRadioButton.click();
       });
 
@@ -315,12 +315,12 @@ describe('UDPDetailsPage by ID', () => {
   const udpDetailsPage = new UDPDetailsPage();
 
   let udp = null;
-  beforeEach(async function () {
+  beforeEach(async function() {
     udp = this.server.create('usage-data-provider', 'withUsageReports');
     this.visit(`/eusage/view/${udp.id}`);
   });
 
-  it('displays udp label in the pane header', function () {
+  it('displays udp label in the pane header', function() {
     expect(udpDetailsPage.title).to.include(udp.label);
   }).timeout(6000);
 });
@@ -330,17 +330,17 @@ describe('Inactive UDP disabled start harvester', () => {
   const udpDetailsPage = new UDPDetailsPage();
 
   let udp = null;
-  beforeEach(async function () {
+  beforeEach(async function() {
     udp = this.server.create('usage-data-provider', 'withSetInactive');
     this.visit(`/eusage/view/${udp.id}`);
   });
 
-  it('harvesting config accordion is present', function () {
+  it('harvesting config accordion is present', function() {
     expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
   });
 
-  describe('open harvesting accordion and check if start harvesting button is disabled', function () {
-    beforeEach(async function () {
+  describe('open harvesting accordion and check if start harvesting button is disabled', function() {
+    beforeEach(async function() {
       await udpDetailsPage.harvestingAccordionButton.click();
     });
 
@@ -356,22 +356,73 @@ describe('Active UDP enabled start harvester', () => {
   const udpDetailsPage = new UDPDetailsPage();
 
   let udp = null;
-  beforeEach(async function () {
+  beforeEach(async function() {
     udp = this.server.create('usage-data-provider');
     this.visit(`/eusage/view/${udp.id}`);
   });
 
-  it('harvesting config accordion is present', function () {
+  it('harvesting config accordion is present', function() {
     expect(udpDetailsPage.harvestingAccordion.isPresent).to.equal(true);
   });
 
-  describe('open harvesting accordion and check if start harvesting button is enabled', function () {
-    beforeEach(async function () {
+  describe('open harvesting accordion and check if start harvesting button is enabled', function() {
+    beforeEach(async function() {
       await udpDetailsPage.harvestingAccordionButton.click();
     });
 
     it('start harvesting button is present and enabled', () => {
       expect(udpDetailsPage.startHarvesterButton.isPresent).to.equal(true);
+    });
+  });
+});
+
+describe('Renders custom reports with link correctly', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  let udp = null;
+  beforeEach(async function() {
+    udp = this.server.create('usage-data-provider', 'withCustomReportsLinks');
+    await this.visit(`/eusage/${udp.id}`);
+  });
+
+  describe('custom reports are listed', function() {
+    beforeEach(async function() {
+      await udpDetailsPage.statisticsAccordion.click();
+      await udpDetailsPage.clickCustomReportAccordion();
+      await udpDetailsPage.clickExpandAllCustomReportYears();
+    });
+
+    it('renders custom reports', () => {
+      expect(udpDetailsPage.customReports.instances().length).to.be.gte(1);
+    });
+
+    describe('custom reports can be selected', function() {
+      beforeEach(async function() {
+        await udpDetailsPage.statisticsAccordion.click();
+        await udpDetailsPage.clickCustomReportAccordion();
+        await udpDetailsPage.clickExpandAllCustomReportYears();
+        await udpDetailsPage.customReports.clickFirstRow();
+      });
+
+      it('does not render download custom report button', () => {
+        expect(
+          udpDetailsPage.customReportInfo.downloadCustomReportButton.isPresent
+        ).to.equal(false);
+      });
+
+      it('does render link to custom report', () => {
+        expect(
+          udpDetailsPage.customReportInfo.customReportLink.isPresent
+        ).to.equal(true);
+      });
+
+      it('does render delete custom report button', () => {
+        expect(
+          udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
+        ).to.equal(true);
+      });
     });
   });
 });

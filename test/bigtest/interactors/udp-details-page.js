@@ -130,6 +130,7 @@ import {
   static defaultScope = '[class="custom-report-info"]';
   downloadCustomReportButton = scoped('button[id="download-custom-report-button"]');
   deleteCustomReportButton = scoped('button[id="delete-custom-report-button"]');
+  customReportLink = scoped('a[id="custom-report-link"]');
 }
 
 @interactor class UploadCounterModal {

@@ -13,6 +13,7 @@ function CustomReportInfoLink(props) {
       <ReportInfoHeader customReport={customReport} udpLabel={udpLabel} />
       <MenuSection id="menu-actions" label="Actions" labelTag="h3">
         <TextLink
+          id="custom-report-link"
           target="_blank"
           rel="noopener noreferrer"
           href={customReport.linkUrl}
