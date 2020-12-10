@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Callout } from '@folio/stripes-components';
 
-import CounterUploadModal from './CounterUploadModal';
+import CounterUpload from './CounterUploadModal/CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 function ReportUpload(props) {
@@ -65,8 +65,36 @@ function ReportUpload(props) {
       });
   };
 
-  const handleCounterUpload = () => {
-    return null;
+  const handleCounterUpload = (report) => {
+    // console.log('counter reports:');
+    // console.log(props.counterReports);
+    const json = JSON.stringify(report);
+    const reportId = '';
+    const { stripes } = props;
+    const okapiUrl = stripes.okapi.url;
+    const httpHeaders = Object.assign(
+      {},
+      {
+        'X-Okapi-Tenant': stripes.okapi.tenant,
+        'X-Okapi-Token': stripes.store.getState().okapi.token,
+        'Content-Type': 'application/json',
+      }
+    );
+    fetch(`${okapiUrl}/counter-reports${reportId}`, {
+      headers: httpHeaders,
+      method: 'PUT',
+      body: json,
+    })
+      .then((response) => {
+        if (response.status >= 400) {
+          response.text().then((t) => handleFail(t));
+        } else {
+          handleSuccess();
+        }
+      })
+      .catch((err) => {
+        handleFail(err.message);
+      });
   };
 
   return (
@@ -83,7 +111,7 @@ function ReportUpload(props) {
       >
         <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
       </Button>
-      <CounterUploadModal
+      <CounterUpload
         open={showCounterUpload}
         onClose={() => setShowCounterUpload(false)}
         onFail={handleFail}
@@ -91,6 +119,7 @@ function ReportUpload(props) {
         onSuccess={handleSuccess}
         stripes={props.stripes}
         udpId={props.udpId}
+        handlers={props.handlers}
       />
       <NonCounterUploadModal
         open={showNonCounterUpload}
