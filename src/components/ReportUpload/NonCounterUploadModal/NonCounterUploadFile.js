@@ -82,8 +82,8 @@ function NonCounterUploadFile(props) {
 }
 
 NonCounterUploadFile.propTypes = {
-  file: PropTypes.shape().isRequired,
-  fileId: PropTypes.string.isRequired,
+  file: PropTypes.shape(),
+  fileId: PropTypes.string,
   handlers: PropTypes.shape({
     doDownloadFile: PropTypes.func,
   }),
