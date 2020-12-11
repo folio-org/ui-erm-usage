@@ -10,7 +10,7 @@ function NonCounterUploadLink(props) {
   const error = validateUrl(linkUrl);
   return (
     <Col xs={12} md={12}>
-      <Row>
+      <Row data-test-report-link-url>
         <TextField
           error={error}
           id="custom-report-link-url"
