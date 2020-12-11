@@ -1,4 +1,3 @@
-
 import {
   attribute,
   clickable,
@@ -9,9 +8,21 @@ import {
   property,
   scoped,
   text,
+  triggerable,
   value
 } from '@bigtest/interactor';
 
+const file = new File([], 'Test File', { type: 'text/plain' });
+const event = { dataTransfer: { files: [file], types: ['Files'] } };
+
+@interactor class FileUploaderInteractor {
+  static defaultScope = 'input[type="file"]';
+  drop = triggerable('drop', event);
+}
+
+@interactor class DownloadFileButton {
+  static defaulScope = 'button[data-test-doc-file]';
+}
 
 @interactor class InputFieldInteractor {
   clickInput = clickable();
@@ -146,6 +157,7 @@ import {
 @interactor class UploadNonCounterModal {
   static defaultScope = '[class="upload-non-counter-modal"]';
   uploadFileButton = scoped('button[id="upload-file-button"]');
+  fileRadioButton = scoped('label[for="custom-report-file-radio"]');
   linkRadioButton = scoped('label[for="custom-report-link-radio"]');
   yearInput = scoped('input[id="custom-report-year"]');
   linkUrlInput = scoped('input[id="custom-report-link-url"]');
@@ -194,4 +206,6 @@ export default @interactor class UDPDetailsPage {
   tagsSelect = new TagsSelect();
 
   confirmDeleteButton = new ConfirmDeleteButton();
+  fileUploaderInteractor = new FileUploaderInteractor();
+  downloadFileButton = new DownloadFileButton();
 }

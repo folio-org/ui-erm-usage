@@ -299,6 +299,16 @@ describe('UDPDetailsPage', () => {
       );
     });
 
+    describe('handling drop file', () => {
+      beforeEach(async () => {
+        await udpDetailsPage.fileUploaderInteractor.drop();
+      });
+
+      it('calls onDrop and renders uploaded file', () => {
+        expect(udpDetailsPage.downloadFileButton.isPresent).to.equal(true);
+      });
+    });
+
     it('does not render link url text field', () => {
       expect(
         udpDetailsPage.uploadNonCounterModal.linkUrlInput.isPresent

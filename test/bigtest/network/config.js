@@ -179,9 +179,16 @@ export default function config() {
     return schema.customReports.find(request.params.id).destroy();
   });
 
-  this.delete('/erm-usage/files/:id', (schema, request) => {
+  this.delete('/erm-usage/files/:id', (_schema, _request) => {
     return {};
   }, 204);
+
+  this.post('/erm-usage/files', (_schema, _request) => {
+    return {
+      id: 'c120cf58-5e61-4b8a-85c9-a24a80b11903',
+      size: 1912
+    };
+  }, 200);
 
   this.get('/custom-reports', (schema, request) => {
     if (request.queryParams) {

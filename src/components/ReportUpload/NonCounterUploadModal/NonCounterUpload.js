@@ -4,12 +4,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 import _ from 'lodash';
 import { CalloutContext } from '@folio/stripes/core';
-import {
-  Col,
-  Row,
-  TextField,
-  RadioButton,
-} from '@folio/stripes/components';
+import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
 
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
