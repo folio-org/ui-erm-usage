@@ -116,7 +116,6 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
 
 @interactor class UrlInputError {
   static defaultScope = 'div[data-test-report-link-url]'
-  // static defaultScope = '[class^="feedbackError---"]';
   feedbackError = text('[class^="feedbackError---"]');
   exist = isPresent('[class^="feedbackError---"]');
 }
