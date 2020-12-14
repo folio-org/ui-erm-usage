@@ -46,6 +46,12 @@ export default Factory.extend({
     }
   }),
 
+  withCustomReportsLinks: trait({
+    afterCreate(provider, server) {
+      server.createList('custom-report', 2, { provider,  fileId: null, fileName: null, fileSize: null, linkUrl: 'https://www.abc.com' });
+    }
+  }),
+
   withSetInactive: trait({
     afterCreate(provider, _) {
       provider.harvestingConfig.harvestingStatus = 'inactive';

@@ -205,86 +205,149 @@ describe('UDPDetailsPage', () => {
         });
       });
     });
+
+    let initialCustomReports = null;
+    describe('custom reports are listed', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.statisticsAccordion.click();
+        await udpDetailsPage.clickCustomReportAccordion();
+        await udpDetailsPage.clickExpandAllCustomReportYears();
+        initialCustomReports = udpDetailsPage.customReports.instances().length;
+      });
+
+      it('renders custom reports', () => {
+        expect(udpDetailsPage.customReports.instances().length).to.be.gte(1);
+      });
+    });
+
+    describe('custom reports can be selected', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.statisticsAccordion.click();
+        await udpDetailsPage.clickCustomReportAccordion();
+        await udpDetailsPage.clickExpandAllCustomReportYears();
+        await udpDetailsPage.customReports.clickFirstRow();
+      });
+
+      it('renders custom report details', () => {
+        expect(
+          udpDetailsPage.customReportInfo.downloadCustomReportButton.isPresent
+        ).to.equal(true);
+        expect(
+          udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
+        ).to.equal(true);
+      });
+
+      describe('delete custom report', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.customReportInfo.deleteCustomReportButton.click();
+          await udpDetailsPage.confirmDeleteButton.click();
+        });
+
+        it('renders custom reports', () => {
+          expect(udpDetailsPage.customReports.instances().length).to.equal(
+            initialCustomReports - 1
+          );
+        });
+      });
+    });
+
+    describe('can open upload counter report', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.uploadAccordion.click();
+        await udpDetailsPage.clickUploadCounterButton();
+      });
+
+      it('renders upload counter report modal', () => {
+        expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
+      });
+
+      it('does not render upload non-counter report modal', () => {
+        expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
+      });
+
+      it('does render upload file button', () => {
+        expect(
+          udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent
+        ).to.equal(true);
+      });
+    });
+
+    describe('can open upload non-counter report', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.uploadAccordion.click();
+        await udpDetailsPage.clickUploadNonCounterButton();
+      });
+
+      it('does not render upload counter report modal', () => {
+        expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+      });
+
+      it('renders upload non-counter report modal', () => {
+        expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(true);
+      });
+
+      it('does render upload file button', () => {
+        expect(
+          udpDetailsPage.uploadNonCounterModal.uploadFileButton.isPresent
+        ).to.equal(true);
+      });
+
+      it('does render year input', () => {
+        expect(
+          udpDetailsPage.uploadNonCounterModal.yearInput.isPresent
+        ).to.equal(true);
+      });
+
+      describe('handling drop file', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.fileUploaderInteractor.drop();
+        });
+
+        it('calls onDrop and renders uploaded file', () => {
+          expect(udpDetailsPage.downloadFileButton.isPresent).to.equal(true);
+        });
+      });
+
+      it('does not render link url text field', () => {
+        expect(
+          udpDetailsPage.uploadNonCounterModal.linkUrlInput.isPresent
+        ).to.equal(false);
+      });
+
+      describe('click link file', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.uploadNonCounterModal.linkRadioButton.click();
+        });
+
+        it('does not render upload file button', () => {
+          expect(
+            udpDetailsPage.uploadNonCounterModal.uploadFileButton.isPresent
+          ).to.equal(false);
+        });
+
+        it('does render link url text field', () => {
+          expect(
+            udpDetailsPage.uploadNonCounterModal.linkUrlInput.isPresent
+          ).to.equal(true);
+        });
+
+        describe('enter invalid link url', function () {
+          beforeEach(async function () {
+            await udpDetailsPage.uploadNonCounterModal.linkUrlInput.fill(
+              'internet.com'
+            );
+          });
+
+          it('does render error', () => {
+            expect(udpDetailsPage.urlInputError.feedbackError).to.equal(
+              'Invalid URL: http:// or https:// required!'
+            );
+          });
+        });
+      });
+    });
   });
-
-  describe('custom reports are listed', function () {
-    beforeEach(async function () {
-      await udpDetailsPage.statisticsAccordion.click();
-      await udpDetailsPage.clickCustomReportAccordion();
-      await udpDetailsPage.clickExpandAllCustomReportYears();
-    });
-
-    it('renders custom reports', () => {
-      expect(udpDetailsPage.customReports.instances().length).to.be.gte(1);
-    });
-  });
-
-  describe('custom reports can be selected', function () {
-    beforeEach(async function () {
-      await udpDetailsPage.statisticsAccordion.click();
-      await udpDetailsPage.clickCustomReportAccordion();
-      await udpDetailsPage.clickExpandAllCustomReportYears();
-      await udpDetailsPage.customReports.clickFirstRow();
-    });
-
-    it('renders custom report details', () => {
-      expect(
-        udpDetailsPage.customReportInfo.downloadCustomReportButton.isPresent
-      ).to.equal(true);
-      expect(
-        udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
-      ).to.equal(true);
-    });
-  });
-
-  describe('can open upload counter report', function () {
-    beforeEach(async function () {
-      await udpDetailsPage.uploadAccordion.click();
-      await udpDetailsPage.clickUploadCounterButton();
-    });
-
-    it('renders upload counter report modal', () => {
-      expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
-    });
-
-    it('does not render upload non-counter report modal', () => {
-      expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
-    });
-
-    it('does render upload file button', () => {
-      expect(
-        udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent
-      ).to.equal(true);
-    });
-  });
-
-  describe('can open upload non-counter report', function () {
-    beforeEach(async function () {
-      await udpDetailsPage.uploadAccordion.click();
-      await udpDetailsPage.clickUploadNonCounterButton();
-    });
-
-    it('does not render upload counter report modal', () => {
-      expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
-    });
-
-    it('renders upload non-counter report modal', () => {
-      expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(true);
-    });
-
-    it('does render upload file button', () => {
-      expect(
-        udpDetailsPage.uploadNonCounterModal.uploadFileButton.isPresent
-      ).to.equal(true);
-    });
-
-    it('does render year input', () => {
-      expect(udpDetailsPage.uploadNonCounterModal.yearInput.isPresent).to.equal(
-        true
-      );
-    });
-  });
-});
+}); //
 
 describe('UDPDetailsPage by ID', () => {
   setupApplication();
@@ -348,6 +411,72 @@ describe('Active UDP enabled start harvester', () => {
 
     it('start harvesting button is present and enabled', () => {
       expect(udpDetailsPage.startHarvesterButton.isPresent).to.equal(true);
+    });
+  });
+});
+
+describe('Renders custom reports with link correctly', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  let udp = null;
+  let initialCustomReports = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withCustomReportsLinks');
+    await this.visit(`/eusage/${udp.id}`);
+  });
+
+  describe('custom reports are listed', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.statisticsAccordion.click();
+      await udpDetailsPage.clickCustomReportAccordion();
+      await udpDetailsPage.clickExpandAllCustomReportYears();
+      initialCustomReports = udpDetailsPage.customReports.instances().length;
+    });
+
+    it('renders custom reports', () => {
+      expect(udpDetailsPage.customReports.instances().length).to.be.gte(1);
+    });
+
+    describe('custom reports can be selected', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.statisticsAccordion.click();
+        await udpDetailsPage.clickCustomReportAccordion();
+        await udpDetailsPage.clickExpandAllCustomReportYears();
+        await udpDetailsPage.customReports.clickFirstRow();
+      });
+
+      it('does not render download custom report button', () => {
+        expect(
+          udpDetailsPage.customReportInfo.downloadCustomReportButton.isPresent
+        ).to.equal(false);
+      });
+
+      it('does render link to custom report', () => {
+        expect(
+          udpDetailsPage.customReportInfo.customReportLink.isPresent
+        ).to.equal(true);
+      });
+
+      it('does render delete custom report button', () => {
+        expect(
+          udpDetailsPage.customReportInfo.deleteCustomReportButton.isPresent
+        ).to.equal(true);
+      });
+
+      describe('delete custom report', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.customReportInfo.deleteCustomReportButton.click();
+          await udpDetailsPage.confirmDeleteButton.click();
+        });
+
+        it('renders custom reports', () => {
+          expect(udpDetailsPage.customReports.instances().length).to.equal(
+            initialCustomReports - 1
+          );
+        });
+      });
     });
   });
 });
