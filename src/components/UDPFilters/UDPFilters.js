@@ -116,7 +116,8 @@ class UDPFilters extends React.Component {
     aggregators: [],
     hasFailedReport: [],
     tags: [],
-    errorCodes: []
+    errorCodes: [],
+    reportTypes: []
   };
 
   renderCheckboxFilter = key => {
@@ -213,6 +214,38 @@ class UDPFilters extends React.Component {
     );
   };
 
+  renderReportTypesFiler = () => {
+    const { activeFilters } = this.props;
+    const reportTypesFilters = activeFilters.reportTypes || [];
+
+    return (
+      <Accordion
+        closedByDefault
+        id="clickable-report-types-filter"
+        displayClearButton={reportTypesFilters.length > 0}
+        header={FilterAccordionHeader}
+        label="REPORT TYPES"
+        onClearFilter={() => {
+          this.props.filterHandlers.clearGroup('reportTypes');
+        }}
+        separator={false}
+      >
+        <MultiSelectionFilter
+          ariaLabelledBy="clickable-report-types-filter"
+          dataOptions={this.state.reportTypes}
+          id="report-types-filter"
+          name="reportTypes"
+          onChange={e => this.props.filterHandlers.state({
+            ...activeFilters,
+            reportTypes: e.values
+          })
+          }
+          selectedValues={reportTypesFilters}
+        />
+      </Accordion>
+    );
+  }
+
   render() {
     return (
       <AccordionSet>
@@ -222,6 +255,7 @@ class UDPFilters extends React.Component {
         {this.renderCheckboxFilter('hasFailedReport')}
         {this.renderTagsFilter()}
         {this.renderErrorCodesFilter()}
+        {this.renderReportTypesFiler()}
       </AccordionSet>
     );
   }

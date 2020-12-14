@@ -57,6 +57,11 @@ class UDPsRoute extends React.Component {
       path: 'counter-reports/errors/codes',
       records: 'errorCodes'
     },
+    reportTypes: {
+      type: 'okapi',
+      path: 'counter-reports/reports/types',
+      records: 'reportTypes'
+    },
     numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
     query: {
@@ -187,7 +192,8 @@ class UDPsRoute extends React.Component {
           udps: get(resources, 'usageDataProviders.records', []),
           aggregators: get(resources, 'aggregatorSettings.records', []),
           tags: get(resources, 'tags.records', []),
-          errorCodes: get(resources, 'errorCodes.records', [])
+          errorCodes: get(resources, 'errorCodes.records', []),
+          reportTypes: get(resources, 'reportTypes.records', [])
         }}
         selectedRecordId={match.params.id}
         onNeedMoreData={this.handleNeedMoreData}
