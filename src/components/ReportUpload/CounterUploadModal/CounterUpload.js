@@ -111,19 +111,15 @@ class CounterUpload extends React.Component {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
+          // Datei wurde erfolgreich hochgeladen
           response.text().then(text => {
             // console.log(text);
-            const reportId = text.replace('Saved report with ids: ', '');
+            const reportIdxxx = text.replace('Saved report with ids: ', '');
             // console.log(reportId);
-            this.props.parentCallback(reportId);
-            fetch(
-              `${this.okapiUrl}/counter-reports/${reportId}`,
-              {
-                headers: this.httpHeadersJson,
-                method: 'PUT',
-                // body: data,
-              }
-            );
+            this.props.parentCallback(reportIdxxx);
+            // console.log('blub');
+            this.props.handleSubmit();
+            // console.log('blubblub');
           });
 
           this.setState({
@@ -284,7 +280,7 @@ CounterUpload.propTypes = {
     counterReports: PropTypes.object,
   }),
   mutators: PropTypes.shape({
-    setReportId: PropTypes.func,
+    setEditReason: PropTypes.func,
   }),
   intl: PropTypes.object,
   parentCallback: PropTypes.func,
@@ -295,4 +291,9 @@ CounterUpload.propTypes = {
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({
+  mutators: {
+    setEditReason: (args, state, tools) => {
+      tools.changeValue(state, 'editReason', () => args[1]);
+    }
+  },
 })(CounterUpload)));

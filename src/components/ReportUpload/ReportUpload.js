@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Callout } from '@folio/stripes-components';
@@ -6,39 +6,61 @@ import { Button, Callout } from '@folio/stripes-components';
 import CounterUpload from './CounterUploadModal/CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
-function ReportUpload(props) {
-  const { intl } = props;
-  const [showCounterUpload, setShowCounterUpload] = useState(false);
-  const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
-  let callout = React.createRef();
+let callout;
+let myreportid;
 
-  const handleSuccess = () => {
-    const info = intl.formatMessage({
+class ReportUpload extends React.Component {
+  constructor(props) {
+    super(props);
+    // const { intl } = props;
+    // const [showCounterUpload, setShowCounterUpload] = useState(false);
+    // const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
+
+    this.state = {
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    };
+
+    callout = React.createRef();
+  }
+
+  handleSuccess = () => {
+    const info = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.success',
     });
+    // const info = 'ui-erm-usage.report.upload.success';
     callout.sendCallout({
       message: info,
     });
-    setShowCounterUpload(false);
-    setShowNonCounterUpload(false);
+    this.setState({
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    });
+    // this.setShowCounterUpload(false);
+    // this.setShowNonCounterUpload(false);
   };
 
-  const handleFail = (msg) => {
-    const failText = intl.formatMessage({
+  handleFail = (msg) => {
+    const failText = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.failed',
     });
+    // const failText = 'ui-erm-usage.report.upload.failed';
     callout.sendCallout({
       type: 'error',
       message: `${failText} ${msg}`,
       timeout: 0,
     });
-    setShowCounterUpload(false);
-    setShowNonCounterUpload(false);
+    this.setState({
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    });
+    // this.setShowCounterUpload(false);
+    // this.setShowNonCounterUpload(false);
   };
 
-  const handleNonCounterUpload = (report) => {
+  handleNonCounterUpload = (report) => {
     const json = JSON.stringify(report);
-    const { stripes } = props;
+    const { stripes } = this.props;
     const okapiUrl = stripes.okapi.url;
     const httpHeaders = Object.assign(
       {},
@@ -55,22 +77,22 @@ function ReportUpload(props) {
     })
       .then((response) => {
         if (response.status >= 400) {
-          response.text().then((t) => handleFail(t));
+          response.text().then((t) => this.handleFail(t));
         } else {
-          handleSuccess();
+          this.handleSuccess();
         }
       })
       .catch((err) => {
-        handleFail(err.message);
+        this.handleFail(err.message);
       });
   };
 
-  const handleCounterUpload = (report) => {
+  handleCounterUpload = () => {
     // console.log('counter reports:');
-    // console.log(props.counterReports);
-    const json = JSON.stringify(report);
-    const reportId = '';
-    const { stripes } = props;
+    // console.log(myreportid);
+
+    // const json = JSON.stringify(report);
+    const { stripes } = this.props;
     const okapiUrl = stripes.okapi.url;
     const httpHeaders = Object.assign(
       {},
@@ -80,64 +102,77 @@ function ReportUpload(props) {
         'Content-Type': 'application/json',
       }
     );
-    fetch(`${okapiUrl}/counter-reports${reportId}`, {
+    fetch(`${okapiUrl}/counter-reports/${myreportid}`, {
       headers: httpHeaders,
       method: 'PUT',
-      body: json,
+      // body: json,
     })
       .then((response) => {
         if (response.status >= 400) {
-          response.text().then((t) => handleFail(t));
+          response.text().then((t) => this.handleFail(t));
         } else {
-          handleSuccess();
+          this.handleSuccess();
         }
       })
       .catch((err) => {
-        handleFail(err.message);
+        this.handleFail(err.message);
       });
   };
 
-  return (
-    <>
-      <Button
-        id="upload-counter-button"
-        onClick={() => setShowCounterUpload(true)}
-      >
-        <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
-      </Button>
-      <Button
-        id="upload-non-counter-button"
-        onClick={() => setShowNonCounterUpload(true)}
-      >
-        <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
-      </Button>
-      <CounterUpload
-        open={showCounterUpload}
-        onClose={() => setShowCounterUpload(false)}
-        onFail={handleFail}
-        onSubmit={handleCounterUpload}
-        onSuccess={handleSuccess}
-        stripes={props.stripes}
-        udpId={props.udpId}
-        handlers={props.handlers}
-      />
-      <NonCounterUploadModal
-        open={showNonCounterUpload}
-        onClose={() => setShowNonCounterUpload(false)}
-        onFail={handleFail}
-        onSubmit={handleNonCounterUpload}
-        onSuccess={handleSuccess}
-        stripes={props.stripes}
-        udpId={props.udpId}
-        handlers={props.handlers}
-      />
-      <Callout
-        ref={(ref) => {
-          callout = ref;
-        }}
-      />
-    </>
-  );
+  schnuff = (reportId) => {
+    // console.log('yyy');
+    // console.log(reportId);
+    myreportid = reportId;
+  };
+
+  render() {
+    return (
+      <>
+        <Button
+          id="upload-counter-button"
+          // onClick={() => this.setShowCounterUpload(true)}
+          onClick={() => this.setState({ showCounterUpload: true })}
+        >
+          <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
+        </Button>
+        <Button
+          id="upload-non-counter-button"
+          // onClick={() => this.setShowNonCounterUpload(true)}
+          onClick={() => this.setState({ showNonCounterUpload: true })}
+        >
+          <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+        </Button>
+        <CounterUpload
+          open={this.state.showCounterUpload}
+          // onClose={() => this.setShowCounterUpload(false)}
+          onClose={() => this.setState({ showCounterUpload: false })}
+          onFail={this.handleFail}
+          onSubmit={this.handleCounterUpload}
+          onSuccess={this.handleSuccess}
+          stripes={this.props.stripes}
+          udpId={this.props.udpId}
+          handlers={this.props.handlers}
+          parentCallback={this.schnuff}
+        />
+        <NonCounterUploadModal
+          open={this.state.showNonCounterUpload}
+          // onClose={() => this.setShowNonCounterUpload(false)}
+          onClose={() => this.setState({ showNonCounterUpload: false })}
+          onFail={this.handleFail}
+          onSubmit={this.handleNonCounterUpload}
+          onSuccess={this.handleSuccess}
+          stripes={this.props.stripes}
+          udpId={this.props.udpId}
+          handlers={this.props.handlers}
+        />
+        <Callout
+          ref={(ref) => {
+            callout = ref;
+          }}
+        />
+      </>
+    );
+  }
 }
 
 ReportUpload.propTypes = {
