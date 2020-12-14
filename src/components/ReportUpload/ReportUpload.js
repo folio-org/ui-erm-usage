@@ -7,14 +7,11 @@ import CounterUpload from './CounterUploadModal/CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 let callout;
-let myreportid;
+let globalReportId;
 
 class ReportUpload extends React.Component {
   constructor(props) {
     super(props);
-    // const { intl } = props;
-    // const [showCounterUpload, setShowCounterUpload] = useState(false);
-    // const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
 
     this.state = {
       showCounterUpload: false,
@@ -28,34 +25,28 @@ class ReportUpload extends React.Component {
     const info = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.success',
     });
-    // const info = 'ui-erm-usage.report.upload.success';
     callout.sendCallout({
       message: info,
     });
     this.setState({
-      showCounterUpload: false,
+      showCounterUpload: true,
       showNonCounterUpload: false,
     });
-    // this.setShowCounterUpload(false);
-    // this.setShowNonCounterUpload(false);
   };
 
   handleFail = (msg) => {
     const failText = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.failed',
     });
-    // const failText = 'ui-erm-usage.report.upload.failed';
     callout.sendCallout({
       type: 'error',
       message: `${failText} ${msg}`,
       timeout: 0,
     });
     this.setState({
-      showCounterUpload: false,
+      showCounterUpload: true,
       showNonCounterUpload: false,
     });
-    // this.setShowCounterUpload(false);
-    // this.setShowNonCounterUpload(false);
   };
 
   handleNonCounterUpload = (report) => {
@@ -87,11 +78,12 @@ class ReportUpload extends React.Component {
       });
   };
 
-  handleCounterUpload = () => {
+  handleCounterUpload = (data) => {
     // console.log('counter reports:');
     // console.log(myreportid);
+    // console.log(data);
 
-    // const json = JSON.stringify(report);
+    const json = JSON.stringify(data);
     const { stripes } = this.props;
     const okapiUrl = stripes.okapi.url;
     const httpHeaders = Object.assign(
@@ -102,10 +94,10 @@ class ReportUpload extends React.Component {
         'Content-Type': 'application/json',
       }
     );
-    fetch(`${okapiUrl}/counter-reports/${myreportid}`, {
+    fetch(`${okapiUrl}/counter-reports/${globalReportId}`, {
       headers: httpHeaders,
       method: 'PUT',
-      // body: json,
+      body: json,
     })
       .then((response) => {
         if (response.status >= 400) {
@@ -119,10 +111,8 @@ class ReportUpload extends React.Component {
       });
   };
 
-  schnuff = (reportId) => {
-    // console.log('yyy');
-    // console.log(reportId);
-    myreportid = reportId;
+  setReportId = (reportId) => {
+    globalReportId = reportId;
   };
 
   render() {
@@ -130,21 +120,18 @@ class ReportUpload extends React.Component {
       <>
         <Button
           id="upload-counter-button"
-          // onClick={() => this.setShowCounterUpload(true)}
           onClick={() => this.setState({ showCounterUpload: true })}
         >
           <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
         </Button>
         <Button
           id="upload-non-counter-button"
-          // onClick={() => this.setShowNonCounterUpload(true)}
           onClick={() => this.setState({ showNonCounterUpload: true })}
         >
           <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
         </Button>
         <CounterUpload
           open={this.state.showCounterUpload}
-          // onClose={() => this.setShowCounterUpload(false)}
           onClose={() => this.setState({ showCounterUpload: false })}
           onFail={this.handleFail}
           onSubmit={this.handleCounterUpload}
@@ -152,11 +139,10 @@ class ReportUpload extends React.Component {
           stripes={this.props.stripes}
           udpId={this.props.udpId}
           handlers={this.props.handlers}
-          parentCallback={this.schnuff}
+          parentCallback={this.setReportId}
         />
         <NonCounterUploadModal
           open={this.state.showNonCounterUpload}
-          // onClose={() => this.setShowNonCounterUpload(false)}
           onClose={() => this.setState({ showNonCounterUpload: false })}
           onFail={this.handleFail}
           onSubmit={this.handleNonCounterUpload}
