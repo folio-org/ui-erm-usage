@@ -111,15 +111,11 @@ class CounterUpload extends React.Component {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
-          // Datei wurde erfolgreich hochgeladen
           response.text().then(text => {
-            // console.log(text);
             const reportIdxxx = text.replace('Saved report with ids: ', '');
             // console.log(reportId);
             this.props.parentCallback(reportIdxxx);
-            // console.log('blub');
-            this.props.handleSubmit();
-            // console.log('blubblub');
+            // this.props.handleSubmit();
           });
 
           this.setState({
@@ -181,10 +177,18 @@ class CounterUpload extends React.Component {
     } else if (this.state.infoType === CounterUpload.upload) {
       return (
         <>
-          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
-          <Loading />
+          Info-Modal bitte schließen
+          <Button onClick={this.closeInfoModal}>
+            <FormattedMessage id="ui-erm-usage.general.yes" />
+          </Button>
         </>
       );
+      // return (
+      //   <>
+      //     <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
+      //     <Loading />
+      //   </>
+      // );
     } else {
       return (
         <>
