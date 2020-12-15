@@ -29,7 +29,6 @@ class ReportUpload extends React.Component {
       message: info,
     });
     this.setState({
-      showCounterUpload: true,
       showNonCounterUpload: false,
     });
   };
@@ -118,6 +117,9 @@ class ReportUpload extends React.Component {
                 if (putResponse.status >= 400) {
                   putResponse.text().then((t) => this.handleFail(t));
                 } else {
+                  this.setState({
+                    showCounterUpload: false,
+                  });
                   this.handleSuccess();
                 }
               })
