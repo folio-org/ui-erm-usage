@@ -79,10 +79,6 @@ class ReportUpload extends React.Component {
   };
 
   handleCounterUpload = (data) => {
-    // console.log('counter reports:');
-    // console.log(myreportid);
-    // console.log(data);
-
     const json = JSON.stringify(data);
     const { stripes } = this.props;
     const okapiUrl = stripes.okapi.url;
@@ -94,20 +90,43 @@ class ReportUpload extends React.Component {
         'Content-Type': 'application/json',
       }
     );
+
+    let report;
+    // GET counter-report
     fetch(`${okapiUrl}/counter-reports/${globalReportId}`, {
       headers: httpHeaders,
-      method: 'PUT',
-      body: json,
+      method: 'GET',
     })
       .then((response) => {
         if (response.status >= 400) {
           response.text().then((t) => this.handleFail(t));
         } else {
+          response.text().then(text => {
+            report = text.replace('Saved report with ids: ', '');
+            // add reportEditedManually and editReason to report
+            let test = {};
+            test = Object.assign(test, JSON.parse(report));
+            test = Object.assign(test, JSON.parse(json));
+
+            // PUT counter-report
+            fetch(`${okapiUrl}/counter-reports/${globalReportId}`, {
+              headers: httpHeaders,
+              method: 'PUT',
+              body: JSON.stringify(test),
+            })
+              .then((putResponse) => {
+                if (putResponse.status >= 400) {
+                  putResponse.text().then((t) => this.handleFail(t));
+                } else {
+                  this.handleSuccess();
+                }
+              })
+              .catch((err) => {
+                this.handleFail(err.message);
+              });
+          });
           this.handleSuccess();
         }
-      })
-      .catch((err) => {
-        this.handleFail(err.message);
       });
   };
 

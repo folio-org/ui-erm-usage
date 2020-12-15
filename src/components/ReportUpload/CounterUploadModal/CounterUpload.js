@@ -30,25 +30,6 @@ class CounterUpload extends React.Component {
     },
   });
 
-  // static propTypes = {
-  //   onSuccess: PropTypes.func,
-  //   onFail: PropTypes.func,
-  //   stripes: PropTypes.shape().isRequired,
-  //   udpId: PropTypes.string,
-  //   mutator: PropTypes.shape({
-  //     counterReports: PropTypes.object,
-  //   }),
-  //   mutators: PropTypes.shape({
-  //     setReportId: PropTypes.func,
-  //   }),
-  //   intl: PropTypes.object,
-  //   parentCallback: PropTypes.func,
-  //   handleSubmit: PropTypes.func.isRequired,
-  //   invalid: PropTypes.bool.isRequired,
-  //   open: PropTypes.bool.isRequired,
-  //   onClose: PropTypes.func.isRequired,
-  // };
-
   static upload = 'upload';
   static overwrite = 'overwrite';
 
@@ -112,10 +93,8 @@ class CounterUpload extends React.Component {
           this.showErrorInfo(response);
         } else {
           response.text().then(text => {
-            const reportIdxxx = text.replace('Saved report with ids: ', '');
-            // console.log(reportId);
-            this.props.parentCallback(reportIdxxx);
-            // this.props.handleSubmit();
+            const reportId = text.replace('Saved report with ids: ', '');
+            this.props.parentCallback(reportId);
           });
 
           this.setState({
