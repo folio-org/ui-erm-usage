@@ -223,12 +223,14 @@ class CounterUpload extends React.Component {
               <Col xs={4}>
                 <Field
                   component={Checkbox}
+                  initialValue={false}
                   label="Report data has been edited manually"
                   name="reportEditedManually"
                   type="checkbox"
                 />
                 <Field
                   component={TextField}
+                  initialValue=""
                   fullWidth
                   id="addcounterreport_editReason"
                   label="Edit reason"
