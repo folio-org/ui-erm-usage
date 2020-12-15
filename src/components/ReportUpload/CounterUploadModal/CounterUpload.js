@@ -113,19 +113,20 @@ class CounterUpload extends React.Component {
     });
   };
 
-  uploadFile = (doOverwrite = false) => {
-    const selectedFile = this.state.selectedFile;
-    if (!_.isEmpty(selectedFile)) {
+  uploadFile = (file, doOverwrite = false) => {
+    // const selectedFile = this.state.selectedFile;
+    // if (!_.isEmpty(selectedFile)) {
+    if (!_.isEmpty(file)) {
       const fileReader = new FileReader();
       fileReader.onload = (event) => {
         this.doUpload(event.target.result, doOverwrite);
       };
-      fileReader.readAsText(selectedFile);
+      fileReader.readAsText(file);
     }
   };
 
   uploadFileForceOverwrite = () => {
-    this.uploadFile(true);
+    this.uploadFile(this.state.selectedFile, true);
   };
 
   selectFile = (acceptedFiles) => {
@@ -133,6 +134,7 @@ class CounterUpload extends React.Component {
     this.setState({
       selectedFile: currentFile,
     });
+    this.uploadFile(currentFile);
   };
 
   renderInfo = () => {
@@ -213,7 +215,7 @@ class CounterUpload extends React.Component {
                     <FileUploader
                       onSelectFile={this.selectFile}
                       selectedFile={this.state.selectedFile}
-                      onClickUpload={this.uploadFile}
+                      // onClickUpload={this.uploadFile}
                     />
                   </Col>
                 </Row>
