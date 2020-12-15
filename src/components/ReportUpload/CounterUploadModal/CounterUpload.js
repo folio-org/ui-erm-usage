@@ -10,7 +10,7 @@ import {
   Checkbox,
   Col,
   KeyValue,
-  Loading,
+  // Loading,
   Modal,
   ModalFooter,
   Row,
@@ -46,18 +46,11 @@ class CounterUpload extends React.Component {
         'Content-Type': 'application/octet-stream',
       }
     );
-    this.httpHeadersJson = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
     this.state = {
       selectedFile: {},
       showInfoModal: false,
       infoType: '',
+      enableSubmit: false,
     };
   }
 
@@ -90,6 +83,9 @@ class CounterUpload extends React.Component {
     )
       .then((response) => {
         if (response.status >= 400) {
+          this.setState({
+            enableSubmit: false,
+          });
           this.showErrorInfo(response);
         } else {
           response.text().then(text => {
@@ -99,6 +95,7 @@ class CounterUpload extends React.Component {
 
           this.setState({
             selectedFile: {},
+            enableSubmit: true,
           });
           this.props.onSuccess();
         }
@@ -182,7 +179,7 @@ class CounterUpload extends React.Component {
 
   footer = (onSubmit) => (
     <ModalFooter>
-      <Button buttonStyle="primary" disabled={this.props.invalid} onClick={onSubmit}>
+      <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine} onClick={onSubmit}>
         Save
       </Button>
       <Button onClick={this.props.onClose}>Cancel</Button>
@@ -268,9 +265,9 @@ CounterUpload.propTypes = {
   intl: PropTypes.object,
   parentCallback: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  pristine: PropTypes.bool,
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({
