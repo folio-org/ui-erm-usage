@@ -11,6 +11,7 @@ import {
   Col,
   KeyValue,
   // Loading,
+  Label,
   Modal,
   ModalFooter,
   Row,
@@ -94,7 +95,6 @@ class CounterUpload extends React.Component {
           });
 
           this.setState({
-            selectedFile: {},
             enableSubmit: true,
           });
           this.props.onSuccess();
@@ -114,8 +114,6 @@ class CounterUpload extends React.Component {
   };
 
   uploadFile = (file, doOverwrite = false) => {
-    // const selectedFile = this.state.selectedFile;
-    // if (!_.isEmpty(selectedFile)) {
     if (!_.isEmpty(file)) {
       const fileReader = new FileReader();
       fileReader.onload = (event) => {
@@ -179,6 +177,28 @@ class CounterUpload extends React.Component {
     }
   };
 
+  renderSelectedFile = () => {
+    let selectedText = '';
+    const fileName = _.get(this.state.selectedFile, 'name', '');
+    if (fileName === '') {
+      selectedText = (
+        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
+      );
+    } else {
+      selectedText = fileName;
+    }
+    return (
+      <KeyValue
+        label={
+          <Label required>
+            <FormattedMessage id="ui-erm-usage.statistics.custom.selectedFile" />
+          </Label>
+        }
+        value={selectedText}
+      />
+    );
+  };
+
   footer = (onSubmit) => (
     <ModalFooter>
       <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine} onClick={onSubmit}>
@@ -215,9 +235,11 @@ class CounterUpload extends React.Component {
                     <FileUploader
                       onSelectFile={this.selectFile}
                       selectedFile={this.state.selectedFile}
-                      // onClickUpload={this.uploadFile}
                     />
                   </Col>
+                </Row>
+                <Row style={{ 'marginTop': '25px' }}>
+                  <Col xs={10}>{this.renderSelectedFile()}</Col>
                 </Row>
               </Col>
               <Col xs={4}>
