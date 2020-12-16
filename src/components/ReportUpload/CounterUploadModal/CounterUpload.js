@@ -70,11 +70,6 @@ class CounterUpload extends React.Component {
   };
 
   doUpload = (data, doOverwrite) => {
-    // TODO:
-    // Schleife für reports über mehrere Jahre
-    // wenn upload fertig, infoModal schließen
-    // console.log(data);
-
     this.setState({
       showInfoModal: true,
       infoType: CounterUpload.upload,
@@ -248,22 +243,26 @@ class CounterUpload extends React.Component {
                 </Row>
               </Col>
               <Col xs={4}>
-                <Field
-                  component={Checkbox}
-                  initialValue={false}
-                  label="Report data has been edited manually"
-                  name="reportEditedManually"
-                  type="checkbox"
-                />
-                <Field
-                  component={TextField}
-                  initialValue=""
-                  fullWidth
-                  id="addcounterreport_editReason"
-                  label="Edit reason"
-                  name="editReason"
-                  placeholder="Enter reason for manual changes"
-                />
+                <Row style={{ 'marginTop': '25px' }}>
+                  <Field
+                    component={Checkbox}
+                    initialValue={false}
+                    label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
+                    name="reportEditedManually"
+                    type="checkbox"
+                  />
+                </Row>
+                <Row style={{ 'marginTop': '15px' }}>
+                  <Field
+                    component={TextField}
+                    initialValue=""
+                    fullWidth
+                    id="addcounterreport_editReason"
+                    label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
+                    name="editReason"
+                    placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
+                  />
+                </Row>
               </Col>
             </Row>
             <Modal
@@ -272,7 +271,6 @@ class CounterUpload extends React.Component {
                 id: 'ui-erm-usage.report.upload.modal.label',
               })}
             >
-              {/* Report exists. Do you want to overwrite? */}
               {this.renderInfo()}
             </Modal>
           </div>
