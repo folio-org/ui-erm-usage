@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -122,6 +123,17 @@ class ReportInfo extends React.Component {
     );
   };
 
+  manualEditedText() {
+    return (
+      <>
+        <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
+        <br />
+        <FormattedMessage id="ui-erm-usage.general.editReason" />
+        {_.get(this.props.report, 'editReason', '-')}
+      </>
+    );
+  }
+
   render() {
     const { report, retryThreshold } = this.props;
 
@@ -143,20 +155,13 @@ class ReportInfo extends React.Component {
       />
     );
 
-    const manualEditedText = (
-      this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges.infoText' })
-      + this.props.intl.formatMessage({ id: 'ui-erm-usage.general.editReason' })
-      + report.editReason
-    );
-
     const displayManualEdited = (
       report.reportEditedManually ?
         <KeyValue
-          label={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.manualChanges',
-          })}
-          value={manualEditedText}
-        /> : '');
+          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
+          value={this.manualEditedText()}
+        />
+        : '');
 
     const headerSection = (
       <MenuSection
