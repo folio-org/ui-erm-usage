@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import {
+  Button,
+  Icon,
+  KeyValue,
+  MenuSection,
+} from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 
 class ReportInfo extends React.Component {
@@ -138,6 +143,21 @@ class ReportInfo extends React.Component {
       />
     );
 
+    const manualEditedText = (
+      this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges.infoText' })
+      + this.props.intl.formatMessage({ id: 'ui-erm-usage.general.editReason' })
+      + report.editReason
+    );
+
+    const displayManualEdited = (
+      report.reportEditedManually ?
+        <KeyValue
+          label={this.props.intl.formatMessage({
+            id: 'ui-erm-usage.general.manualChanges',
+          })}
+          value={manualEditedText}
+        /> : '');
+
     const headerSection = (
       <MenuSection
         id="menu-actions"
@@ -159,6 +179,7 @@ class ReportInfo extends React.Component {
           })}
           value={report.yearMonth}
         />
+        {displayManualEdited}
         {failInfo}
         {failedAttempts}
       </MenuSection>
