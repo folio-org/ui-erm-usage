@@ -10,7 +10,7 @@ import {
   Checkbox,
   Col,
   KeyValue,
-  // Loading,
+  Loading,
   Label,
   Modal,
   ModalFooter,
@@ -70,6 +70,11 @@ class CounterUpload extends React.Component {
   };
 
   doUpload = (data, doOverwrite) => {
+    // TODO:
+    // Schleife für reports über mehrere Jahre
+    // wenn upload fertig, infoModal schließen
+    // console.log(data);
+
     this.setState({
       showInfoModal: true,
       infoType: CounterUpload.upload,
@@ -96,6 +101,7 @@ class CounterUpload extends React.Component {
 
           this.setState({
             enableSubmit: true,
+            showInfoModal: false,
           });
           this.props.onSuccess();
         }
@@ -153,18 +159,10 @@ class CounterUpload extends React.Component {
     } else if (this.state.infoType === CounterUpload.upload) {
       return (
         <>
-          Info-Modal bitte schließen
-          <Button onClick={this.closeInfoModal}>
-            <FormattedMessage id="ui-erm-usage.general.yes" />
-          </Button>
+          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
+          <Loading />
         </>
       );
-      // return (
-      //   <>
-      //     <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
-      //     <Loading />
-      //   </>
-      // );
     } else {
       return (
         <>

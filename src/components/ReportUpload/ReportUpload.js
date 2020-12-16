@@ -7,7 +7,7 @@ import CounterUpload from './CounterUploadModal/CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 let callout;
-let globalReportId;
+let reportId;
 
 class ReportUpload extends React.Component {
   constructor(props) {
@@ -92,48 +92,43 @@ class ReportUpload extends React.Component {
 
     let report;
     // GET counter-report
-    fetch(`${okapiUrl}/counter-reports/${globalReportId}`, {
+    fetch(`${okapiUrl}/counter-reports/${reportId}`, {
       headers: httpHeaders,
       method: 'GET',
     })
       .then((response) => {
-        if (response.status >= 400) {
-          response.text().then((t) => this.handleFail(t));
-        } else {
-          response.text().then(text => {
-            report = text.replace('Saved report with ids: ', '');
-            // add reportEditedManually and editReason to report
-            let test = {};
-            test = Object.assign(test, JSON.parse(report));
-            test = Object.assign(test, JSON.parse(json));
+        response.text().then(text => {
+          report = text.replace('Saved report with ids: ', '');
+          // add reportEditedManually and editReason to report
+          let test = {};
+          test = Object.assign(test, JSON.parse(report));
+          test = Object.assign(test, JSON.parse(json));
 
-            // PUT counter-report
-            fetch(`${okapiUrl}/counter-reports/${globalReportId}`, {
-              headers: httpHeaders,
-              method: 'PUT',
-              body: JSON.stringify(test),
+          // PUT counter-report
+          fetch(`${okapiUrl}/counter-reports/${reportId}`, {
+            headers: httpHeaders,
+            method: 'PUT',
+            body: JSON.stringify(test),
+          })
+            .then((putResponse) => {
+              if (putResponse.status >= 400) {
+                putResponse.text().then((t) => this.handleFail(t));
+              } else {
+                this.setState({
+                  showCounterUpload: false,
+                });
+                this.handleSuccess();
+              }
             })
-              .then((putResponse) => {
-                if (putResponse.status >= 400) {
-                  putResponse.text().then((t) => this.handleFail(t));
-                } else {
-                  this.setState({
-                    showCounterUpload: false,
-                  });
-                  this.handleSuccess();
-                }
-              })
-              .catch((err) => {
-                this.handleFail(err.message);
-              });
-          });
-          this.handleSuccess();
-        }
+            .catch((err) => {
+              this.handleFail(err.message);
+            });
+        });
       });
   };
 
-  setReportId = (reportId) => {
-    globalReportId = reportId;
+  setReportId = (id) => {
+    reportId = id;
   };
 
   render() {
