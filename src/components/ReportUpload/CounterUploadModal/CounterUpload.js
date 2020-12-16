@@ -141,6 +141,13 @@ class CounterUpload extends React.Component {
     this.uploadFile(currentFile);
   };
 
+  cancleUpload = () => {
+    this.closeInfoModal();
+    this.setState({
+      selectedFile: {},
+    });
+  }
+
   renderInfo = () => {
     if (this.state.infoType === CounterUpload.overwrite) {
       return (
@@ -151,7 +158,7 @@ class CounterUpload extends React.Component {
           <Button onClick={this.uploadFileForceOverwrite}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button onClick={this.closeInfoModal}>
+          <Button onClick={this.cancleUpload}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
