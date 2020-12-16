@@ -158,6 +158,7 @@ class ReportInfo extends React.Component {
     const displayManualEdited = (
       report.reportEditedManually ?
         <KeyValue
+          data-test-custom-reports-edited-manually
           label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
           value={this.manualEditedText()}
         />

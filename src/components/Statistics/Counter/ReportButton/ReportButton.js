@@ -161,6 +161,7 @@ class ReportButton extends React.Component {
         <Modal
           id={dropdownId}
           closeOnBackgroundClick
+          data-test-counter-report-info
           open={this.state.showDropDown}
           label="Report info"
           footer={footer}

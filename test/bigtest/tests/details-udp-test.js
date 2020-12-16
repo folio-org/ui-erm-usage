@@ -480,3 +480,41 @@ describe('Renders custom reports with link correctly', () => {
     });
   });
 });
+
+describe('Renders counter reports info', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  let initialCounterReports = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withCounterReports');
+    await this.visit(`/eusage/${udp.id}`);
+  });
+
+  describe('custom reports are listed', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.statisticsAccordion.click();
+      await udpDetailsPage.clickCounterReportAccordion();
+      await udpDetailsPage.clickExpandAllCounterReportYears();
+      initialCounterReports = udpDetailsPage.counterReports.instances().length;
+    });
+
+    it('renders counter reports', () => {
+      expect(udpDetailsPage.counterReports.instances().length).to.be.gte(1);
+    });
+
+    describe('counter reports can be selected', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.counterReports.firstButton.click();
+      });
+
+      it('counter report info shound be visible', () => {
+        expect(udpDetailsPage.counterReportInfo.counterReportInfoModalIsPresent).to.be.true;
+      }).timeout(5000);
+      it('report edited manually info shound be visible', () => {
+        expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.true;
+      }).timeout(5000);
+    });
+  });
+});

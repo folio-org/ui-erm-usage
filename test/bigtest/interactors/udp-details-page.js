@@ -151,6 +151,21 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
   closeReportInfoButton = scoped('button[id="close-report-info-button"]');
 }
 
+@interactor class CounterReports {
+  static defaultScope = '#data-test-counter-reports';
+
+  instances = collection('button[id*=clickable-download-stats-by-id]');
+  firstButton = scoped('[id*=clickable-download-stats-by-id-]');
+}
+
+@interactor class CounterReportInfo {
+  static defaultScope = '[id="report-info"]';
+  counterReportInfoModalIsPresent = isPresent('[data-test-counter-report-info]');
+  counterReportInfoModalIsPresent2 = isPresent('div[id*="report-info-"]');
+  reportEditedManuallyInfo = '[data-test-custom-reports-edited-manually]';
+}
+
+
 @interactor class ConfirmDeleteButton {
   static defaultScope = 'button[data-test-confirmation-modal-confirm-button]';
 }
@@ -202,6 +217,11 @@ export default @interactor class UDPDetailsPage {
   clickExpandAllCustomReportYears = clickable('#expand-all-custom-report-years');
   customReports = new CustomReports();
   customReportInfo = new CustomReportInfo();
+  clickCounterReportAccordion = clickable('#counter-reports-accordion');
+  clickExpandAllCounterReportYears = clickable('#expand-all-counter-report-years');
+  counterReports = new CounterReports();
+  counterReportInfo = new CounterReportInfo();
+
 
   uploadCounterModal = new UploadCounterModal();
   uploadNonCounterModal = new UploadNonCounterModal();

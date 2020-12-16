@@ -48,7 +48,13 @@ export default Factory.extend({
 
   withCustomReportsLinks: trait({
     afterCreate(provider, server) {
-      server.createList('custom-report', 2, { provider,  fileId: null, fileName: null, fileSize: null, linkUrl: 'https://www.abc.com' });
+      server.createList('custom-report', 2, { provider, fileId: null, fileName: null, fileSize: null, linkUrl: 'https://www.abc.com' });
+    }
+  }),
+
+  withCounterReports: trait({
+    afterCreate(provider, server) {
+      server.createList('counter-report', 9, { provider });
     }
   }),
 
