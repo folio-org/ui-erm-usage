@@ -486,35 +486,47 @@ describe('Renders counter reports info', () => {
   const udpDetailsPage = new UDPDetailsPage();
 
   let udp = null;
-  let initialCounterReports = null;
   beforeEach(async function () {
     udp = this.server.create('usage-data-provider', 'withCounterReports');
     await this.visit(`/eusage/${udp.id}`);
   });
 
-  describe('custom reports are listed', function () {
+  it('renders statistics accordion', () => {
+    expect(udpDetailsPage.statisticsAccordion.isPresent).to.be.true;
+  });
+
+  describe('click statistics accordion', function () {
     beforeEach(async function () {
-      await udpDetailsPage.statisticsAccordion.click();
-      await udpDetailsPage.clickCounterReportAccordion();
-      await udpDetailsPage.clickExpandAllCounterReportYears();
-      initialCounterReports = udpDetailsPage.counterReports.instances().length;
+      await udpDetailsPage.clickStatisticsAccordion();
     });
 
-    it('renders counter reports', () => {
-      expect(udpDetailsPage.counterReports.instances().length).to.be.gte(1);
+    it('renders counter accordion', () => {
+      expect(udpDetailsPage.counterReportAccordion.isPresent).to.be.true;
     });
 
-    describe('counter reports can be selected', function () {
+    describe('click counter report accordion and expand all counter reports', function () {
       beforeEach(async function () {
-        await udpDetailsPage.counterReports.firstButton.click();
+        await udpDetailsPage.clickCounterReportAccordion();
+        await udpDetailsPage.clickExpandAllCounterReportYears();
       });
 
-      it('counter report info shound be visible', () => {
-        expect(udpDetailsPage.counterReportInfo.counterReportInfoModalIsPresent).to.be.true;
-      }).timeout(5000);
-      it('report edited manually info shound be visible', () => {
-        expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.true;
-      }).timeout(5000);
+      it('renders counter reports', () => {
+        expect(udpDetailsPage.counterReports.instances().length).to.be.gte(1);
+      });
+
+      it('renders first report', () => {
+        expect(udpDetailsPage.counterReports.firstReport.isPresent).to.be.true;
+      });
+
+      describe('select first counter report', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.counterReports.firstReportButton();
+        });
+
+        it('report edited manually info shound be visible', () => {
+          expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.true;
+        });
+      });
     });
   });
 });
