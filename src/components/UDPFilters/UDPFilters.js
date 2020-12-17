@@ -224,7 +224,7 @@ class UDPFilters extends React.Component {
         id="clickable-report-types-filter"
         displayClearButton={reportTypesFilters.length > 0}
         header={FilterAccordionHeader}
-        label="REPORT TYPES"
+        label={<FormattedMessage id="ui-erm-usage.general.reportTypes" />}
         onClearFilter={() => {
           this.props.filterHandlers.clearGroup('reportTypes');
         }}
