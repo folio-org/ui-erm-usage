@@ -1,7 +1,13 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import {
+  Button,
+  Icon,
+  KeyValue,
+  MenuSection,
+} from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 
 class ReportInfo extends React.Component {
@@ -117,6 +123,17 @@ class ReportInfo extends React.Component {
     );
   };
 
+  manualEditedText() {
+    return (
+      <>
+        <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
+        <br />
+        <FormattedMessage id="ui-erm-usage.general.editReason" />
+        {_.get(this.props.report, 'editReason', '-')}
+      </>
+    );
+  }
+
   render() {
     const { report, retryThreshold } = this.props;
 
@@ -137,6 +154,15 @@ class ReportInfo extends React.Component {
         value={`${report.failedAttempts} (Max attempts: ${retryThreshold})`}
       />
     );
+
+    const displayManualEdited = (
+      report.reportEditedManually ?
+        <KeyValue
+          data-test-custom-reports-edited-manually
+          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
+          value={this.manualEditedText()}
+        />
+        : '');
 
     const headerSection = (
       <MenuSection
@@ -159,6 +185,7 @@ class ReportInfo extends React.Component {
           })}
           value={report.yearMonth}
         />
+        {displayManualEdited}
         {failInfo}
         {failedAttempts}
       </MenuSection>

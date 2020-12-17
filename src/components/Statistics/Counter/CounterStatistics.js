@@ -67,7 +67,7 @@ class CounterStatistics extends React.Component {
             </div>
           </Col>
           <Col xs={12}>
-            <AccordionSet>
+            <AccordionSet id="data-test-counter-reports">
               <StatisticsPerYear
                 stats={counterReports}
                 stripes={this.props.stripes}
