@@ -199,6 +199,7 @@ function StatisticsPerYear(props) {
         <Col xs>
           <ExpandAllButton
             accordionStatus={yearAccordions}
+            id="expand-all-counter-report-years"
             onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
             expandLabel={

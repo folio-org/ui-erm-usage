@@ -480,3 +480,97 @@ describe('Renders custom reports with link correctly', () => {
     });
   });
 });
+
+describe('Renders manually changed counter report info', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withManuallyEditedCounterReports');
+    await this.visit(`/eusage/${udp.id}`);
+  });
+
+  it('renders statistics accordion', () => {
+    expect(udpDetailsPage.statisticsAccordion.isPresent).to.be.true;
+  });
+
+  describe('click statistics accordion', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.clickStatisticsAccordion();
+    });
+
+    it('renders counter accordion', () => {
+      expect(udpDetailsPage.counterReportAccordion.isPresent).to.be.true;
+    });
+
+    describe('click counter report accordion and expand all counter reports', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.clickCounterReportAccordion();
+        await udpDetailsPage.clickExpandAllCounterReportYears();
+      });
+
+      it('renders counter reports', () => {
+        expect(udpDetailsPage.counterReports.instances().length).to.be.gte(1);
+        expect(udpDetailsPage.counterReports.firstReport.isPresent).to.be.true;
+      });
+
+      describe('select first counter report', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.counterReports.firstReportButton();
+        });
+
+        it('report edited manually info shound be visible', () => {
+          expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.true;
+        });
+      });
+    });
+  });
+});
+
+describe('Renders NON manually changed counter reports info', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+
+  let udp = null;
+  beforeEach(async function () {
+    udp = this.server.create('usage-data-provider', 'withNonManuallyEditedCounterReports');
+    await this.visit(`/eusage/${udp.id}`);
+  });
+
+  it('renders statistics accordion', () => {
+    expect(udpDetailsPage.statisticsAccordion.isPresent).to.be.true;
+  });
+
+  describe('click statistics accordion', function () {
+    beforeEach(async function () {
+      await udpDetailsPage.clickStatisticsAccordion();
+    });
+
+    it('renders counter accordion', () => {
+      expect(udpDetailsPage.counterReportAccordion.isPresent).to.be.true;
+    });
+
+    describe('click counter report accordion and expand all counter reports', function () {
+      beforeEach(async function () {
+        await udpDetailsPage.clickCounterReportAccordion();
+        await udpDetailsPage.clickExpandAllCounterReportYears();
+      });
+
+      it('renders counter reports', () => {
+        expect(udpDetailsPage.counterReports.instances().length).to.be.gte(1);
+        expect(udpDetailsPage.counterReports.firstReport.isPresent).to.be.true;
+      });
+
+      describe('select first counter report', function () {
+        beforeEach(async function () {
+          await udpDetailsPage.counterReports.firstReportButton();
+        });
+
+        it('report edited manually info shound NOT be visible', () => {
+          expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.false;
+        });
+      });
+    });
+  });
+});
