@@ -1,4 +1,3 @@
-
 import {
   attribute,
   clickable,
@@ -9,9 +8,21 @@ import {
   property,
   scoped,
   text,
+  triggerable,
   value
 } from '@bigtest/interactor';
 
+const file = new File([], 'Test File', { type: 'text/plain' });
+const event = { dataTransfer: { files: [file], types: ['Files'] } };
+
+@interactor class FileUploaderInteractor {
+  static defaultScope = 'input[type="file"]';
+  drop = triggerable('drop', event);
+}
+
+@interactor class DownloadFileButton {
+  static defaulScope = 'button[data-test-doc-file]';
+}
 
 @interactor class InputFieldInteractor {
   clickInput = clickable();
@@ -103,6 +114,12 @@ import {
   exist = isPresent();
 }
 
+@interactor class UrlInputError {
+  static defaultScope = 'div[data-test-report-link-url]'
+  feedbackError = text('[class^="feedbackError---"]');
+  exist = isPresent('[class^="feedbackError---"]');
+}
+
 @interactor class ExpandAll {
   static defaultScope = '#clickable-expand-all-view';
 }
@@ -130,6 +147,27 @@ import {
   static defaultScope = '[class="custom-report-info"]';
   downloadCustomReportButton = scoped('button[id="download-custom-report-button"]');
   deleteCustomReportButton = scoped('button[id="delete-custom-report-button"]');
+  customReportLink = scoped('a[id="custom-report-link"]');
+  closeReportInfoButton = scoped('button[id="close-report-info-button"]');
+}
+
+@interactor class CounterReports {
+  static defaultScope = '#data-test-counter-reports';
+
+  instances = collection('button[id*=clickable-download-stats-by-id]');
+  firstReport = scoped('[id*=clickable-download-stats-by-id-]');
+  firstReportButton = clickable('[id*=clickable-download-stats-by-id-]');
+}
+
+@interactor class CounterReportInfo {
+  static defaultScope = '[id="report-info"]';
+
+  reportEditedManuallyInfo = scoped('[data-test-custom-reports-edited-manually]');
+}
+
+
+@interactor class ConfirmDeleteButton {
+  static defaultScope = 'button[data-test-confirmation-modal-confirm-button]';
 }
 
 @interactor class UploadCounterModal {
@@ -140,7 +178,10 @@ import {
 @interactor class UploadNonCounterModal {
   static defaultScope = '[class="upload-non-counter-modal"]';
   uploadFileButton = scoped('button[id="upload-file-button"]');
+  fileRadioButton = scoped('label[for="custom-report-file-radio"]');
+  linkRadioButton = scoped('label[for="custom-report-link-radio"]');
   yearInput = scoped('input[id="custom-report-year"]');
+  linkUrlInput = scoped('input[id="custom-report-link-url"]');
 }
 
 @interactor class TagsSelect {
@@ -177,6 +218,13 @@ export default @interactor class UDPDetailsPage {
   customReports = new CustomReports();
   customReportInfo = new CustomReportInfo();
 
+  clickStatisticsAccordion = clickable('#accordion-toggle-button-statisticsAccordion');
+  counterReportAccordion = scoped('[id="accordion-toggle-button-counter-reports-accordion"]');
+  clickCounterReportAccordion = clickable('#counter-reports-accordion');
+  clickExpandAllCounterReportYears = clickable('#expand-all-counter-report-years');
+  counterReports = new CounterReports();
+  counterReportInfo = new CounterReportInfo();
+
   uploadCounterModal = new UploadCounterModal();
   uploadNonCounterModal = new UploadNonCounterModal();
   clickUploadCounterButton = clickable('#upload-counter-button');
@@ -184,4 +232,9 @@ export default @interactor class UDPDetailsPage {
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();
+
+  confirmDeleteButton = new ConfirmDeleteButton();
+  fileUploaderInteractor = new FileUploaderInteractor();
+  downloadFileButton = new DownloadFileButton();
+  urlInputError = new UrlInputError();
 }
