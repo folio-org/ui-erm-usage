@@ -209,6 +209,8 @@ class CounterUpload extends React.Component {
   );
 
   render() {
+    const reportEditedManually = this.props.values.reportEditedManually;
+
     return (
       <form
         data-test-counter-report-form-page
@@ -255,6 +257,7 @@ class CounterUpload extends React.Component {
                 <Row style={{ 'marginTop': '15px' }}>
                   <Field
                     component={TextField}
+                    disabled={!reportEditedManually}
                     initialValue=""
                     fullWidth
                     id="addcounterreport_editReason"
@@ -288,21 +291,18 @@ CounterUpload.propTypes = {
   mutator: PropTypes.shape({
     counterReports: PropTypes.object,
   }),
-  mutators: PropTypes.shape({
-    setEditReason: PropTypes.func,
-  }),
   intl: PropTypes.object,
   parentCallback: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   pristine: PropTypes.bool,
+  values: PropTypes.shape(),
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({
-  mutators: {
-    setEditReason: (args, state, tools) => {
-      tools.changeValue(state, 'editReason', () => args[1]);
-    }
+  enableReinitialize: true,
+  subscription: {
+    values: true
   },
 })(CounterUpload)));
