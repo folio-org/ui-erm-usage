@@ -201,7 +201,7 @@ class CounterUpload extends React.Component {
 
   footer = (onSubmit) => (
     <ModalFooter>
-      <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine} onClick={onSubmit}>
+      <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine || this.props.invalid} onClick={onSubmit}>
         Save
       </Button>
       <Button onClick={this.props.onClose}>Cancel</Button>
@@ -258,12 +258,13 @@ class CounterUpload extends React.Component {
                   <Field
                     component={TextField}
                     disabled={!reportEditedManually}
-                    initialValue=""
                     fullWidth
+                    initialValue=""
                     id="addcounterreport_editReason"
                     label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
                     name="editReason"
                     placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
+                    required
                   />
                 </Row>
               </Col>
@@ -296,6 +297,7 @@ CounterUpload.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  invalid: PropTypes.bool,
   pristine: PropTypes.bool,
   values: PropTypes.shape(),
 };
@@ -303,6 +305,14 @@ CounterUpload.propTypes = {
 export default injectIntl(stripesConnect(stripesFinalForm({
   enableReinitialize: true,
   subscription: {
-    values: true
+    values: true,
+    invalid: true,
+  },
+  validate: (values) => {
+    const errors = {};
+    if (!values.editReason) {
+      errors.editReason = 'Required';
+    }
+    return errors;
   },
 })(CounterUpload)));
