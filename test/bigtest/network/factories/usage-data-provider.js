@@ -52,9 +52,15 @@ export default Factory.extend({
     }
   }),
 
-  withCounterReports: trait({
+  withNonManuallyEditedCounterReports: trait({
     afterCreate(provider, server) {
-      server.createList('counter-report', 9, { provider });
+      server.createList('counter-report', 9, { provider, reportEditedManually: false, editReason: null });
+    }
+  }),
+
+  withManuallyEditedCounterReports: trait({
+    afterCreate(provider, server) {
+      server.createList('counter-report', 9, { provider, reportEditedManually: true, editReason: 'reason for edit manually' });
     }
   }),
 
