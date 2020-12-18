@@ -127,7 +127,7 @@
         "permissionName": "ui-erm-usage.generalSettings.manage",
         "displayName": "Settings (eUsage): Can view and edit settings",
         "subPermissions": [
-          "settings.erm-usage.enable"
+          "settings.erm-usage.enabled"
         ],
         "visible": true
       },
