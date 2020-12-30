@@ -224,5 +224,21 @@
     "statistics.custom.delete": "حذف التقرير المخصص",
     "general.manualChanges": "التغييرات اليدوية",
     "general.manualChanges.infoText": "تم تحرير بيانات التقرير يدويًا.",
-    "general.editReason": "تحرير السبب:"
+    "general.editReason": "تحرير السبب:",
+    "information.vendor": "",
+    "udp.counterUpload": "",
+    "udp.editUDPDialog": "",
+    "udpInfo.contentVendor": "",
+    "udpInfo.contentPlatform": "",
+    "aggregatorInfo.harvestVia": "",
+    "udp.form.updateUDP": "",
+    "udp.form.udpInfo.contentPlatformId": "",
+    "udp.form.findVendor.enterVendorId": "",
+    "udp.form.findVendor.findVendorByIdButton": "",
+    "udp.form.findVendor.searchLabel": "",
+    "udp.form.findVendor.contenVendorId": "",
+    "udp.form.selectedReports.addReportTitle": "",
+    "udp.form.selectedReports.emptyListMessage": "",
+    "aggregator.form.delete": "",
+    "aggregator.form.delete.confirm.message": ""
 }
