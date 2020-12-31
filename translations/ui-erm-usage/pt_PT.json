@@ -224,21 +224,5 @@
     "statistics.custom.delete": "Delete custom report",
     "general.manualChanges": "Manual changes",
     "general.manualChanges.infoText": "Report data has been edited manually.",
-    "general.editReason": "Edit reason: ",
-    "information.vendor": "",
-    "udp.counterUpload": "",
-    "udp.editUDPDialog": "",
-    "udpInfo.contentVendor": "",
-    "udpInfo.contentPlatform": "",
-    "aggregatorInfo.harvestVia": "",
-    "udp.form.updateUDP": "",
-    "udp.form.udpInfo.contentPlatformId": "",
-    "udp.form.findVendor.enterVendorId": "",
-    "udp.form.findVendor.findVendorByIdButton": "",
-    "udp.form.findVendor.searchLabel": "",
-    "udp.form.findVendor.contenVendorId": "",
-    "udp.form.selectedReports.addReportTitle": "",
-    "udp.form.selectedReports.emptyListMessage": "",
-    "aggregator.form.delete": "",
-    "aggregator.form.delete.confirm.message": ""
+    "general.editReason": "Edit reason: "
 }
