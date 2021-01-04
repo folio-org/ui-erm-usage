@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [4.0.2](https://github.com/folio-org/ui-erm-usage/tree/v4.0.2) (2021-01-04)
+* Bugfix: Permission "Settings (eUsage): Can view and edit settings" does not enable settings (UIEUS-230)
+
 ## [4.0.1](https://github.com/folio-org/ui-erm-usage/tree/v4.0.1) (2020-11-03)
 * Make permission ui-erm-usage.module.enabled invisible (UIEUS-218)
 
