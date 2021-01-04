@@ -120,12 +120,13 @@ class UDPFilters extends React.Component {
     reportTypes: []
   };
 
-  renderCheckboxFilter = key => {
+  renderCheckboxFilter = (key, closedByDefault = false) => {
     const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
     return (
       <Accordion
+        closedByDefault={closedByDefault}
         displayClearButton={groupFilters.length > 0}
         header={FilterAccordionHeader}
         id={`filter-accordion-${key}`}
@@ -251,11 +252,11 @@ class UDPFilters extends React.Component {
       <AccordionSet>
         {this.renderCheckboxFilter('harvestingStatus')}
         {this.renderCheckboxFilter('harvestVia')}
-        {this.renderCheckboxFilter('aggregators')}
-        {this.renderCheckboxFilter('hasFailedReport')}
+        {this.renderCheckboxFilter('aggregators', true)}
+        {this.renderReportTypesFiler()}
+        {this.renderCheckboxFilter('hasFailedReport', true)}
         {this.renderTagsFilter()}
         {this.renderErrorCodesFilter()}
-        {this.renderReportTypesFiler()}
       </AccordionSet>
     );
   }
