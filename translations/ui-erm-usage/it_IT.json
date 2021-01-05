@@ -224,5 +224,6 @@
     "statistics.custom.delete": "Delete custom report",
     "general.manualChanges": "Manual changes",
     "general.manualChanges.infoText": "Report data has been edited manually.",
-    "general.editReason": "Edit reason: "
+    "general.editReason": "Edit reason: ",
+    "general.reportTypes": "Report types"
 }
