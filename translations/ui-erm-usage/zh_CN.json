@@ -224,5 +224,6 @@
     "statistics.custom.delete": "删除自定义报告",
     "general.manualChanges": "人工变更",
     "general.manualChanges.infoText": "报告数据已被人工编辑。",
-    "general.editReason": "编辑原因："
+    "general.editReason": "编辑原因：",
+    "general.reportTypes": "Report types"
 }

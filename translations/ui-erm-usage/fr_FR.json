@@ -223,6 +223,7 @@
     "statistics.custom.linkFile": "Link file",
     "statistics.custom.delete": "Supprimer le rapport personnalisé",
     "general.manualChanges": "Modifications manuelles",
-    "general.manualChanges.infoText": "Report data has been edited manually.",
-    "general.editReason": "Raison de la modification:"
+    "general.manualChanges.infoText": "Les données du rapport ont été modifiées manuellement.",
+    "general.editReason": "Raison de la modification:",
+    "general.reportTypes": "Types de rapports"
 }

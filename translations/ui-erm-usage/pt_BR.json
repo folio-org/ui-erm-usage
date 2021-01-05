@@ -224,5 +224,6 @@
     "statistics.custom.delete": "Excluir relatório personalizado",
     "general.manualChanges": "Mudanças manuais",
     "general.manualChanges.infoText": "Os dados do relatório foram editados manualmente.",
-    "general.editReason": "Editar motivo:"
+    "general.editReason": "Editar motivo:",
+    "general.reportTypes": "Report types"
 }
