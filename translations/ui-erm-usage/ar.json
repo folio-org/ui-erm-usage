@@ -102,7 +102,7 @@
     "udp.statsUpload": "تحميل الإحصائيات",
     "udp.searchInputLabel": "بحث مزودي بيانات الاستخدام",
     "udpHarvestingConfig.lastHarvesting": "آخر حصاد",
-    "reportOverview.confirmDelete": "يرجى تأكيد الحذف!",
+    "reportOverview.confirmDelete": "حذف تقرير non-counter؟",
     "reportOverview.reportType": "نوع التقرير",
     "reportOverview.reportDate": "تاريخ التقرير",
     "reportOverview.reportsPerYear": "تم تجميع التقارير بواسطة السنة",
@@ -212,5 +212,18 @@
     "permission.view-create-edit": "الاستخدام الإلكتروني: إمكانية عرض، إنشاء، وتحرير مزودي بيانات الاستخدام وتقارير COUNTER",
     "permission.view-create-edit-delete": "الاستخدام الإلكتروني: إمكانية عرض، إنشاء، تحرير، وحذف مزودي بيانات الاستخدام وتقارير COUNTER",
     "permission.harvester.all": "حاصد الاستخدام الإلكتروني: كل الصلاحيات لوحدة حاصد الاستخدام الإلكتروني",
-    "permission.harvester.view": "حاصد الاستخدام الإلكتروني: صلاحيات القراءة فقط لوحدة حاصد الاستخدام الإلكتروني"
+    "permission.harvester.view": "حاصد الاستخدام الإلكتروني: صلاحيات القراءة فقط لوحدة حاصد الاستخدام الإلكتروني",
+    "general.cancel": "إلغاء",
+    "reportOverview.deleteTemplateMessage": "سيتم حذف {name} من تقارير NON-COUNTER",
+    "report.delete.failed": "فشل...",
+    "errors.urlRequired": "عنوان URL غير صالح: مطلوب http:// أو https://!",
+    "statistics.custom.selectFileUpload": "اختر ملف للتحميل",
+    "statistics.custom.linkUrl": "URL الرابط",
+    "statistics.custom.uploadFile": "تحميل ملف",
+    "statistics.custom.linkFile": "ربط ملف",
+    "statistics.custom.delete": "حذف التقرير المخصص",
+    "general.manualChanges": "التغييرات اليدوية",
+    "general.manualChanges.infoText": "تم تحرير بيانات التقرير يدويًا.",
+    "general.editReason": "تحرير السبب:",
+    "general.reportTypes": "أنواع التقارير"
 }

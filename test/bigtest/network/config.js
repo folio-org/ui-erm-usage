@@ -175,6 +175,10 @@ export default function config() {
     errorCodes: ['other', '3000', '3031']
   });
 
+  this.get('/counter-reports/reports/types', {
+    reportTypes: ['JR1', 'BR1']
+  });
+
   this.delete('/custom-reports/:id', (schema, request) => {
     return schema.customReports.find(request.params.id).destroy();
   });

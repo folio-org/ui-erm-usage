@@ -32,4 +32,34 @@ describe('Usage Data Provider', () => {
       expect(udp.instance.isVisible).to.equal(true);
     });
   });
+
+  describe('can expand report types filter accordion', () => {
+    beforeEach(async function () {
+      await udp.reportTypesAccordion.click();
+    });
+
+    it('report types filter is visible', () => {
+      expect(udp.reportTypesFilter.isPresent).to.equal(true);
+    });
+
+    describe('expand report types filter and select first filter', () => {
+      beforeEach(async function () {
+        await udp.reportTypesFilter.click();
+        await udp.reportTypesFilterOptionList.instances(0).click();
+      });
+
+      it('selected a report type', () => {
+        expect(udp.selectedReportTypes.instances().length).to.equal(1);
+      });
+
+      describe('and remove selected report type', () => {
+        beforeEach(async function () {
+          await udp.selectedReportTypes.clickSelectedReportType();
+        });
+        it('selected no report type', () => {
+          expect(udp.selectedReportTypes.isPresent).to.equal(false);
+        });
+      });
+    });
+  });
 });

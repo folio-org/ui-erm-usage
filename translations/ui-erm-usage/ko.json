@@ -212,5 +212,18 @@
     "permission.view-create-edit": "eUsage : 통계 데이터 제공업체 및 COUNTER 보고서를 보고, 만들고 편집할 수 있습니다.",
     "permission.view-create-edit-delete": "eUsage : 통계 데이터 제공업체 및 COUNTER 보고서를 보고, 만들고 편집 및 삭제할 수 있습니다.",
     "permission.harvester.all": "eUsage 수집기 : eUsage 수집기 모듈에 대한 모든 권한",
-    "permission.harvester.view": "eUsage 수집기 : eUsage 수집기 모듈에 대한 읽기 전용 권한"
+    "permission.harvester.view": "eUsage 수집기 : eUsage 수집기 모듈에 대한 읽기 전용 권한",
+    "general.cancel": "Cancel",
+    "reportOverview.deleteTemplateMessage": "{name} will be removed from non-counter reports.",
+    "report.delete.failed": "Failed...",
+    "errors.urlRequired": "Invalid URL: http:// or https:// required!",
+    "statistics.custom.selectFileUpload": "Select file to upload",
+    "statistics.custom.linkUrl": "Link URL",
+    "statistics.custom.uploadFile": "Upload file",
+    "statistics.custom.linkFile": "Link file",
+    "statistics.custom.delete": "Delete custom report",
+    "general.manualChanges": "Manual changes",
+    "general.manualChanges.infoText": "Report data has been edited manually.",
+    "general.editReason": "Edit reason: ",
+    "general.reportTypes": "Report types"
 }

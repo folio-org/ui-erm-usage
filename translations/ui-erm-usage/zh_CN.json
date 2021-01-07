@@ -102,7 +102,7 @@
     "udp.statsUpload": "统计上传",
     "udp.searchInputLabel": "搜索使用数据提供者",
     "udpHarvestingConfig.lastHarvesting": "上次收割",
-    "reportOverview.confirmDelete": "请确认删除！",
+    "reportOverview.confirmDelete": "删除非counter报告？",
     "reportOverview.reportType": "报告类型",
     "reportOverview.reportDate": "报告日期",
     "reportOverview.reportsPerYear": "按年份分组的报告",
@@ -212,5 +212,18 @@
     "permission.view-create-edit": "电子使用：可以查看、创建和编辑使用数据提供者和COUNTER报告",
     "permission.view-create-edit-delete": "电子使用：可以查看、创建、编辑和删除使用数据提供者和COUNTER报告",
     "permission.harvester.all": "电子使用收割器：电子使用收割器模块的所有权限",
-    "permission.harvester.view": "电子使用收割器：电子使用收割器模块的只读权限"
+    "permission.harvester.view": "电子使用收割器：电子使用收割器模块的只读权限",
+    "general.cancel": "取消",
+    "reportOverview.deleteTemplateMessage": "{name}将从非counter报告中移除。",
+    "report.delete.failed": "失败...",
+    "errors.urlRequired": "无效的URL：必须为http://或https://！",
+    "statistics.custom.selectFileUpload": "选择上传文件",
+    "statistics.custom.linkUrl": "链接 URL",
+    "statistics.custom.uploadFile": "上传文件",
+    "statistics.custom.linkFile": "链接文件",
+    "statistics.custom.delete": "删除自定义报告",
+    "general.manualChanges": "人工变更",
+    "general.manualChanges.infoText": "报告数据已被人工编辑。",
+    "general.editReason": "编辑原因：",
+    "general.reportTypes": "Report types"
 }

@@ -102,7 +102,7 @@
     "udp.statsUpload": "Upload de estatísticas",
     "udp.searchInputLabel": "Pesquisar provedores de dados de uso",
     "udpHarvestingConfig.lastHarvesting": "Último harvesting",
-    "reportOverview.confirmDelete": "Confirme a exclusão!",
+    "reportOverview.confirmDelete": "Excluir relatório não-counter?",
     "reportOverview.reportType": "Tipo de relatório",
     "reportOverview.reportDate": "Data do relatório",
     "reportOverview.reportsPerYear": "Relatórios agrupados por ano",
@@ -212,5 +212,18 @@
     "permission.view-create-edit": "eUso: Pode visualizar, criar e editar provedores de dados de uso e relatórios COUNTER",
     "permission.view-create-edit-delete": "eUso: Pode visualizar, criar, editar e excluir provedores de dados de uso e relatórios COUNTER",
     "permission.harvester.all": "Harvester do eUso: Todas as permissões para o módulo Harvester do eUso",
-    "permission.harvester.view": "Harvester do eUso: Permissões somente leitura para o módulo Harvester do eUso"
+    "permission.harvester.view": "Harvester do eUso: Permissões somente leitura para o módulo Harvester do eUso",
+    "general.cancel": "Cancelar",
+    "reportOverview.deleteTemplateMessage": "{nome} será removido dos relatórios não-contáveis.",
+    "report.delete.failed": "Falhou ...",
+    "errors.urlRequired": "URL inválido: http:// ou https:// obrigatório!",
+    "statistics.custom.selectFileUpload": "Selecione arquivo para carregar",
+    "statistics.custom.linkUrl": "URL do link",
+    "statistics.custom.uploadFile": "Carregar arquivo",
+    "statistics.custom.linkFile": "Arquivo de link",
+    "statistics.custom.delete": "Excluir relatório personalizado",
+    "general.manualChanges": "Mudanças manuais",
+    "general.manualChanges.infoText": "Os dados do relatório foram editados manualmente.",
+    "general.editReason": "Editar motivo:",
+    "general.reportTypes": "Report types"
 }

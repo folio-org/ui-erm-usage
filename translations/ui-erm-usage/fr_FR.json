@@ -102,7 +102,7 @@
     "udp.statsUpload": "Statistics upload",
     "udp.searchInputLabel": "Search usage data providers",
     "udpHarvestingConfig.lastHarvesting": "Last harvesting",
-    "reportOverview.confirmDelete": "Veuillez confirmer la suppression!",
+    "reportOverview.confirmDelete": "Supprimer le rapport non-Counter ?",
     "reportOverview.reportType": "Type de rapport",
     "reportOverview.reportDate": "Date du rapport",
     "reportOverview.reportsPerYear": "Rapports regroupés par année",
@@ -212,5 +212,18 @@
     "permission.view-create-edit": "eUsage: Can view, create and edit usage data providers and COUNTER reports",
     "permission.view-create-edit-delete": "eUsage: Can view, create, edit and delete usage data providers and COUNTER reports",
     "permission.harvester.all": "eUsage harvester: All permissions for eUsage harvester module",
-    "permission.harvester.view": "eUsage harvester: Read-only permissions for eUsage harvester module"
+    "permission.harvester.view": "eUsage harvester: Read-only permissions for eUsage harvester module",
+    "general.cancel": "Annuler",
+    "reportOverview.deleteTemplateMessage": "{name} sera supprimé des rapports non-Counter.",
+    "report.delete.failed": "Échec...",
+    "errors.urlRequired": "Invalid URL: http:// or https:// required!",
+    "statistics.custom.selectFileUpload": "Sélectionnez le fichier à télécharger",
+    "statistics.custom.linkUrl": "URL du lien",
+    "statistics.custom.uploadFile": "Télécharger le fichier",
+    "statistics.custom.linkFile": "Link file",
+    "statistics.custom.delete": "Supprimer le rapport personnalisé",
+    "general.manualChanges": "Modifications manuelles",
+    "general.manualChanges.infoText": "Les données du rapport ont été modifiées manuellement.",
+    "general.editReason": "Raison de la modification:",
+    "general.reportTypes": "Types de rapports"
 }
