@@ -102,7 +102,7 @@
     "udp.statsUpload": "Statistics upload",
     "udp.searchInputLabel": "Search usage data providers",
     "udpHarvestingConfig.lastHarvesting": "Last harvesting",
-    "reportOverview.confirmDelete": "Please confirm delete!",
+    "reportOverview.confirmDelete": "Delete non-counter report?",
     "reportOverview.reportType": "Report type",
     "reportOverview.reportDate": "Report date",
     "reportOverview.reportsPerYear": "Reports grouped by year",
