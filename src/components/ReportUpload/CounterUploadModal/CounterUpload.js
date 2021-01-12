@@ -91,7 +91,9 @@ class CounterUpload extends React.Component {
           reportEditedManually: true,
           editReason: 'this is a reason'
         },
-        contents: fileBase64,
+        contents: {
+          data: fileBase64,
+        }
       };
 
       const json = JSON.stringify(data);
