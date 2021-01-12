@@ -44,7 +44,7 @@ class CounterUpload extends React.Component {
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
         'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/octet-stream',
+        'Content-Type': 'application/json',
       }
     );
     this.state = {
@@ -69,20 +69,41 @@ class CounterUpload extends React.Component {
     });
   };
 
-  doUpload = (data, doOverwrite) => {
-    this.setState({
-      showInfoModal: true,
-      infoType: CounterUpload.upload,
-    });
-    fetch(
-      `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
-      {
-        headers: this.httpHeaders,
-        method: 'POST',
-        body: data,
-      }
-    )
-      .then((response) => {
+  getBase64(file, cb) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
+  doUpload = (file, doOverwrite) => {
+    const blob = new Blob([JSON.stringify(file, null, 2)], { type : 'application/json' });
+    let fileBase64 = '';
+    this.getBase64(blob, (result) => {
+      fileBase64 = result;
+
+      const data = {
+        reportMetadata: {
+          reportEditedManually: true,
+          editReason: 'this is a reason'
+        },
+        contents: fileBase64,
+      };
+
+      const json = JSON.stringify(data);
+
+      fetch(
+        `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
+        {
+          headers: this.httpHeaders,
+          method: 'POST',
+          body: json
+        }
+      ).then((response) => {
         if (response.status >= 400) {
           this.setState({
             enableSubmit: false,
@@ -101,10 +122,56 @@ class CounterUpload extends React.Component {
           this.props.onSuccess();
         }
       })
-      .catch((err) => {
-        this.closeInfoModal();
-        this.props.onFail(err.message);
-      });
+        .catch((err) => {
+          this.closeInfoModal();
+          this.props.onFail(err.message);
+        });
+    });
+
+
+    // const testData = {
+    //   reportMetadata: {
+    //     reportEditedManually: true,
+    //     editReason: 'this is a reason'
+    //   },
+    //   contents: fileBase64,
+    // };
+    // const json = JSON.stringify(testData);
+    this.setState({
+      showInfoModal: true,
+      infoType: CounterUpload.upload,
+    });
+    // fetch(
+    //   `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
+    //   {
+    //     headers: this.httpHeaders,
+    //     method: 'POST',
+    //     body: json
+    //   }
+    // )
+    //   .then((response) => {
+    //     if (response.status >= 400) {
+    //       this.setState({
+    //         enableSubmit: false,
+    //       });
+    //       this.showErrorInfo(response);
+    //     } else {
+    //       response.text().then(text => {
+    //         const reportId = text.replace('Saved report with ids: ', '');
+    //         this.props.parentCallback(reportId);
+    //       });
+
+    //       this.setState({
+    //         enableSubmit: true,
+    //         showInfoModal: false,
+    //       });
+    //       this.props.onSuccess();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     this.closeInfoModal();
+    //     this.props.onFail(err.message);
+    //   });
   };
 
   closeInfoModal = () => {
