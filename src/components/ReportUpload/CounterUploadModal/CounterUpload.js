@@ -51,7 +51,7 @@ class CounterUpload extends React.Component {
       selectedFile: {},
       showInfoModal: false,
       infoType: '',
-      enableSubmit: false,
+      // enableSubmit: false,
     };
   }
 
@@ -98,6 +98,10 @@ class CounterUpload extends React.Component {
 
       const json = JSON.stringify(data);
 
+      this.setState({
+        showInfoModal: true,
+        infoType: CounterUpload.upload,
+      });
       fetch(
         `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
         {
@@ -107,9 +111,9 @@ class CounterUpload extends React.Component {
         }
       ).then((response) => {
         if (response.status >= 400) {
-          this.setState({
-            enableSubmit: false,
-          });
+          // this.setState({
+          //   enableSubmit: false,
+          // });
           this.showErrorInfo(response);
         } else {
           response.text().then(text => {
@@ -118,8 +122,9 @@ class CounterUpload extends React.Component {
           });
 
           this.setState({
-            enableSubmit: true,
+            // enableSubmit: true,
             showInfoModal: false,
+            selectedFile: {},
           });
           this.props.onSuccess();
         }
@@ -139,10 +144,10 @@ class CounterUpload extends React.Component {
     //   contents: fileBase64,
     // };
     // const json = JSON.stringify(testData);
-    this.setState({
-      showInfoModal: true,
-      infoType: CounterUpload.upload,
-    });
+    // this.setState({
+    //   showInfoModal: true,
+    //   infoType: CounterUpload.upload,
+    // });
     // fetch(
     //   `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
     //   {
@@ -183,18 +188,20 @@ class CounterUpload extends React.Component {
     });
   };
 
-  uploadFile = (file, doOverwrite = false) => {
-    if (!_.isEmpty(file)) {
+  uploadFile = (doOverwrite = false) => {
+    const selectedFile = this.state.selectedFile;
+    if (!_.isEmpty(selectedFile)) {
       const fileReader = new FileReader();
       fileReader.onload = (event) => {
         this.doUpload(event.target.result, doOverwrite);
       };
-      fileReader.readAsText(file);
+      fileReader.readAsText(selectedFile);
     }
   };
 
   uploadFileForceOverwrite = () => {
-    this.uploadFile(this.state.selectedFile, true);
+    // this.uploadFile(this.state.selectedFile, true);
+    this.uploadFile(true);
   };
 
   selectFile = (acceptedFiles) => {
@@ -202,7 +209,7 @@ class CounterUpload extends React.Component {
     this.setState({
       selectedFile: currentFile,
     });
-    this.uploadFile(currentFile);
+    // this.uploadFile(currentFile);
   };
 
   cancleUpload = () => {
@@ -268,11 +275,11 @@ class CounterUpload extends React.Component {
     );
   };
 
-  footer = (onSubmit) => (
+  footer = () => (
     <ModalFooter>
-      <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine || this.props.invalid} onClick={onSubmit}>
+      {/* <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine || this.props.invalid} onClick={onSubmit}>
         Save
-      </Button>
+      </Button> */}
       <Button onClick={this.props.onClose}>Cancel</Button>
     </ModalFooter>
   );
@@ -284,11 +291,11 @@ class CounterUpload extends React.Component {
       <form
         data-test-counter-report-form-page
         id="form-counter-report"
-        onSubmit={this.props.handleSubmit}
+        // onSubmit={this.props.handleSubmit}
       >
         <Modal
           closeOnBackgroundClick
-          footer={this.footer(this.props.handleSubmit)}
+          footer={this.footer()}
           open={this.props.open}
           label={<FormattedMessage id="ui-erm-usage.statistics.counter.upload" />}
         >
@@ -306,12 +313,13 @@ class CounterUpload extends React.Component {
                     <FileUploader
                       onSelectFile={this.selectFile}
                       selectedFile={this.state.selectedFile}
+                      onClickUpload={this.uploadFile}
                     />
                   </Col>
                 </Row>
-                <Row style={{ 'marginTop': '25px' }}>
+                {/* <Row style={{ 'marginTop': '25px' }}>
                   <Col xs={10}>{this.renderSelectedFile()}</Col>
-                </Row>
+                </Row> */}
               </Col>
               <Col xs={4}>
                 <Row style={{ 'marginTop': '25px' }}>
@@ -366,8 +374,8 @@ CounterUpload.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  invalid: PropTypes.bool,
-  pristine: PropTypes.bool,
+  // invalid: PropTypes.bool,
+  // pristine: PropTypes.bool,
   values: PropTypes.shape(),
 };
 
