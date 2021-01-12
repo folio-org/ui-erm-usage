@@ -44,7 +44,7 @@ Read the [Stripes Module Developer's Guide](https://github.com/folio-org/stripes
 
 Other [modules](https://dev.folio.org/source-code/#client-side).
 
-See project [UIER](https://issues.folio.org/browse/UIER)
+See project [UIEUS](https://issues.folio.org/browse/UIEUS)
 at the [FOLIO issue tracker](https://dev.folio.org/guidelines/issue-tracker).
 
 Other FOLIO Developer documentation is at [dev.folio.org](https://dev.folio.org/)
