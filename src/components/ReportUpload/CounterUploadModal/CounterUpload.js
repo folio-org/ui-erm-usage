@@ -251,7 +251,7 @@ class CounterUpload extends React.Component {
           closeOnBackgroundClick
           footer={this.footer()}
           open={this.props.open}
-          label={<FormattedMessage id="ui-erm-usage.statistics.counter.upload" />}
+          label={this.props.intl.formatMessage({ id:'ui-erm-usage.statistics.counter.upload' })}
         >
           <div className="upload-counter-modal">
             <Row>
@@ -277,6 +277,7 @@ class CounterUpload extends React.Component {
                 <Row style={{ 'marginTop': '25px' }}>
                   <Field
                     component={Checkbox}
+                    id="addcounterreport_reportEditedManually"
                     initialValue={false}
                     label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
                     name="reportEditedManually"
