@@ -131,6 +131,10 @@ class ReportUpload extends React.Component {
     reportId = id;
   };
 
+  doNothing = () => {
+    return null;
+  }
+
   render() {
     return (
       <>
@@ -150,7 +154,8 @@ class ReportUpload extends React.Component {
           open={this.state.showCounterUpload}
           onClose={() => this.setState({ showCounterUpload: false })}
           onFail={this.handleFail}
-          onSubmit={this.handleCounterUpload}
+          // onSubmit={this.handleCounterUpload}
+          onSubmit={this.doNothing}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
           udpId={this.props.udpId}

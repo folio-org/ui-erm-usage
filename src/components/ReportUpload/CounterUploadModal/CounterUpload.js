@@ -52,6 +52,8 @@ class CounterUpload extends React.Component {
       showInfoModal: false,
       infoType: '',
       // enableSubmit: false,
+      reportEditedManually: false,
+      editReason: '',
     };
   }
 
@@ -81,15 +83,14 @@ class CounterUpload extends React.Component {
   }
 
   doUpload = (file, doOverwrite) => {
-    // const blob = new Blob([JSON.stringify(file, null, 2)], { type : 'application/json' });
     let fileBase64 = '';
     this.getBase64(file, (result) => {
       fileBase64 = result;
 
       const data = {
         reportMetadata: {
-          reportEditedManually: true,
-          editReason: 'this is a reason'
+          reportEditedManually: this.state.reportEditedManually,
+          editReason: this.state.editReason
         },
         contents: {
           data: fileBase64,
@@ -134,51 +135,6 @@ class CounterUpload extends React.Component {
           this.props.onFail(err.message);
         });
     });
-
-
-    // const testData = {
-    //   reportMetadata: {
-    //     reportEditedManually: true,
-    //     editReason: 'this is a reason'
-    //   },
-    //   contents: fileBase64,
-    // };
-    // const json = JSON.stringify(testData);
-    // this.setState({
-    //   showInfoModal: true,
-    //   infoType: CounterUpload.upload,
-    // });
-    // fetch(
-    //   `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
-    //   {
-    //     headers: this.httpHeaders,
-    //     method: 'POST',
-    //     body: json
-    //   }
-    // )
-    //   .then((response) => {
-    //     if (response.status >= 400) {
-    //       this.setState({
-    //         enableSubmit: false,
-    //       });
-    //       this.showErrorInfo(response);
-    //     } else {
-    //       response.text().then(text => {
-    //         const reportId = text.replace('Saved report with ids: ', '');
-    //         this.props.parentCallback(reportId);
-    //       });
-
-    //       this.setState({
-    //         enableSubmit: true,
-    //         showInfoModal: false,
-    //       });
-    //       this.props.onSuccess();
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.closeInfoModal();
-    //     this.props.onFail(err.message);
-    //   });
   };
 
   closeInfoModal = () => {
@@ -192,13 +148,6 @@ class CounterUpload extends React.Component {
     const selectedFile = this.state.selectedFile;
     if (!_.isEmpty(selectedFile)) {
       this.doUpload(selectedFile, doOverwrite);
-
-
-      // const fileReader = new FileReader();
-      // fileReader.onload = (event) => {
-      //   this.doUpload(event.target.result, doOverwrite);
-      // };
-      // fileReader.readAsText(selectedFile);
     }
   };
 
@@ -287,8 +236,17 @@ class CounterUpload extends React.Component {
     </ModalFooter>
   );
 
+  changeReportEditedManually = () => {
+    this.setState(prevState => ({ reportEditedManually: !prevState.reportEditedManually }));
+  };
+
+  changeEditReason = event => {
+    this.setState({ editReason: event.target.value });
+  };
+
   render() {
-    const reportEditedManually = this.props.values.reportEditedManually;
+    // const reportEditedManually = this.props.values.reportEditedManually;
+    const reportEditedManually = this.state.reportEditedManually;
 
     return (
       <form
@@ -331,6 +289,9 @@ class CounterUpload extends React.Component {
                     initialValue={false}
                     label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
                     name="reportEditedManually"
+                    onChange={this.changeReportEditedManually}
+                    checked={this.state.reportEditedManually}
+                    // value={this.state.reportEditedManually}
                     type="checkbox"
                   />
                 </Row>
@@ -343,6 +304,7 @@ class CounterUpload extends React.Component {
                     id="addcounterreport_editReason"
                     label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
                     name="editReason"
+                    onChange={this.changeEditReason}
                     placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
                     required
                   />
@@ -374,12 +336,12 @@ CounterUpload.propTypes = {
   }),
   intl: PropTypes.object,
   parentCallback: PropTypes.func,
-  handleSubmit: PropTypes.func.isRequired,
+  // handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   // invalid: PropTypes.bool,
   // pristine: PropTypes.bool,
-  values: PropTypes.shape(),
+  // values: PropTypes.shape(),
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({
