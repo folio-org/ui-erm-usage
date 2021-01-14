@@ -172,9 +172,10 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
 
 @interactor class UploadCounterModal {
   static defaultScope = '[class="upload-counter-modal"]';
-  uploadFileButton = scoped('button[id="upload-file-button"]');
+  selectFileButton = scoped('button[id="upload-file-button"]');
   reportEditedManuallyCheckbox = scoped('[id="addcounterreport_reportEditedManually"]');
   editReasonTextfield = scoped('[id="addcounterreport_editReason"]');
+  uploadFileButton = scoped('button[id="upload-report-button"]');
 }
 
 @interactor class UploadNonCounterModal {

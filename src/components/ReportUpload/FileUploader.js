@@ -33,6 +33,7 @@ class FileUploader extends React.Component {
           aria-label={`Upload counter report file ${this.props.selectedFile.name}`}
           buttonStyle="primary"
           disabled={this.props.disable}
+          id="upload-report-button"
           onClick={() => this.props.onClickUpload()}
         >
           {`${upload} ${this.props.selectedFile.name}`}
