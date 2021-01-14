@@ -51,7 +51,6 @@ class CounterUpload extends React.Component {
       selectedFile: {},
       showInfoModal: false,
       infoType: '',
-      // enableSubmit: false,
       reportEditedManually: false,
       editReason: '',
     };
@@ -74,12 +73,12 @@ class CounterUpload extends React.Component {
   getBase64(file, cb) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = function () {
+    reader.onload = () => {
       cb(reader.result);
     };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    // reader.onerror = (error) => {
+    //   console.log('Error: ', error);
+    // };
   }
 
   doUpload = (file, doOverwrite) => {
@@ -112,18 +111,9 @@ class CounterUpload extends React.Component {
         }
       ).then((response) => {
         if (response.status >= 400) {
-          // this.setState({
-          //   enableSubmit: false,
-          // });
           this.showErrorInfo(response);
         } else {
-          response.text().then(text => {
-            const reportId = text.replace('Saved report with ids: ', '');
-            this.props.parentCallback(reportId);
-          });
-
           this.setState({
-            // enableSubmit: true,
             showInfoModal: false,
             selectedFile: {},
           });
@@ -152,7 +142,6 @@ class CounterUpload extends React.Component {
   };
 
   uploadFileForceOverwrite = () => {
-    // this.uploadFile(this.state.selectedFile, true);
     this.uploadFile(true);
   };
 
@@ -161,7 +150,6 @@ class CounterUpload extends React.Component {
     this.setState({
       selectedFile: currentFile,
     });
-    // this.uploadFile(currentFile);
   };
 
   cancleUpload = () => {
@@ -245,14 +233,12 @@ class CounterUpload extends React.Component {
   };
 
   render() {
-    // const reportEditedManually = this.props.values.reportEditedManually;
     const reportEditedManually = this.state.reportEditedManually;
 
     return (
       <form
         data-test-counter-report-form-page
         id="form-counter-report"
-        // onSubmit={this.props.handleSubmit}
       >
         <Modal
           closeOnBackgroundClick
@@ -278,9 +264,6 @@ class CounterUpload extends React.Component {
                     />
                   </Col>
                 </Row>
-                {/* <Row style={{ 'marginTop': '25px' }}>
-                  <Col xs={10}>{this.renderSelectedFile()}</Col>
-                </Row> */}
               </Col>
               <Col xs={4}>
                 <Row style={{ 'marginTop': '25px' }}>
@@ -291,7 +274,6 @@ class CounterUpload extends React.Component {
                     name="reportEditedManually"
                     onChange={this.changeReportEditedManually}
                     checked={this.state.reportEditedManually}
-                    // value={this.state.reportEditedManually}
                     type="checkbox"
                   />
                 </Row>
@@ -335,13 +317,10 @@ CounterUpload.propTypes = {
     counterReports: PropTypes.object,
   }),
   intl: PropTypes.object,
-  parentCallback: PropTypes.func,
-  // handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   // invalid: PropTypes.bool,
   // pristine: PropTypes.bool,
-  // values: PropTypes.shape(),
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({

@@ -7,7 +7,6 @@ import CounterUpload from './CounterUploadModal/CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 let callout;
-let reportId;
 
 class ReportUpload extends React.Component {
   constructor(props) {
@@ -29,6 +28,7 @@ class ReportUpload extends React.Component {
       message: info,
     });
     this.setState({
+      showCounterUpload: false,
       showNonCounterUpload: false,
     });
   };
@@ -77,60 +77,6 @@ class ReportUpload extends React.Component {
       });
   };
 
-  handleCounterUpload = (data) => {
-    const json = JSON.stringify(data);
-    const { stripes } = this.props;
-    const okapiUrl = stripes.okapi.url;
-    const httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': stripes.okapi.tenant,
-        'X-Okapi-Token': stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
-
-    let report;
-    // GET counter-report
-    fetch(`${okapiUrl}/counter-reports/${reportId}`, {
-      headers: httpHeaders,
-      method: 'GET',
-    })
-      .then((response) => {
-        response.text().then(text => {
-          report = text.replace('Saved report with ids: ', '');
-          // add reportEditedManually and editReason to report
-          let test = {};
-          test = Object.assign(test, JSON.parse(report));
-          test = Object.assign(test, JSON.parse(json));
-
-          // PUT counter-report
-          fetch(`${okapiUrl}/counter-reports/${reportId}`, {
-            headers: httpHeaders,
-            method: 'PUT',
-            body: JSON.stringify(test),
-          })
-            .then((putResponse) => {
-              if (putResponse.status >= 400) {
-                putResponse.text().then((t) => this.handleFail(t));
-              } else {
-                this.setState({
-                  showCounterUpload: false,
-                });
-                this.handleSuccess();
-              }
-            })
-            .catch((err) => {
-              this.handleFail(err.message);
-            });
-        });
-      });
-  };
-
-  setReportId = (id) => {
-    reportId = id;
-  };
-
   doNothing = () => {
     return null;
   }
@@ -154,13 +100,11 @@ class ReportUpload extends React.Component {
           open={this.state.showCounterUpload}
           onClose={() => this.setState({ showCounterUpload: false })}
           onFail={this.handleFail}
-          // onSubmit={this.handleCounterUpload}
           onSubmit={this.doNothing}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
           udpId={this.props.udpId}
           handlers={this.props.handlers}
-          parentCallback={this.setReportId}
         />
         <NonCounterUploadModal
           open={this.state.showNonCounterUpload}
