@@ -81,9 +81,9 @@ class CounterUpload extends React.Component {
   }
 
   doUpload = (file, doOverwrite) => {
-    const blob = new Blob([JSON.stringify(file, null, 2)], { type : 'application/json' });
+    // const blob = new Blob([JSON.stringify(file, null, 2)], { type : 'application/json' });
     let fileBase64 = '';
-    this.getBase64(blob, (result) => {
+    this.getBase64(file, (result) => {
       fileBase64 = result;
 
       const data = {
@@ -191,11 +191,14 @@ class CounterUpload extends React.Component {
   uploadFile = (doOverwrite = false) => {
     const selectedFile = this.state.selectedFile;
     if (!_.isEmpty(selectedFile)) {
-      const fileReader = new FileReader();
-      fileReader.onload = (event) => {
-        this.doUpload(event.target.result, doOverwrite);
-      };
-      fileReader.readAsText(selectedFile);
+      this.doUpload(selectedFile, doOverwrite);
+
+
+      // const fileReader = new FileReader();
+      // fileReader.onload = (event) => {
+      //   this.doUpload(event.target.result, doOverwrite);
+      // };
+      // fileReader.readAsText(selectedFile);
     }
   };
 
