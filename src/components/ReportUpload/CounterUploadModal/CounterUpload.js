@@ -18,6 +18,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
+// import { notRequired, required } from '../../../util/validate';
 
 class CounterUpload extends React.Component {
   static manifest = Object.freeze({
@@ -54,6 +55,7 @@ class CounterUpload extends React.Component {
       reportEditedManually: false,
       editReason: '',
     };
+    // this.isRequired = notRequired;
   }
 
   showErrorInfo = (response) => {
@@ -226,6 +228,7 @@ class CounterUpload extends React.Component {
 
   changeReportEditedManually = () => {
     this.setState(prevState => ({ reportEditedManually: !prevState.reportEditedManually }));
+    // this.isRequired = this.state.reportEditedManually ? required : notRequired;
   };
 
   changeEditReason = event => {
@@ -234,6 +237,10 @@ class CounterUpload extends React.Component {
 
   render() {
     const reportEditedManually = this.state.reportEditedManually;
+    let disableUploadButton = true;
+    if ((this.state.reportEditedManually === true && this.state.editReason !== '') || (this.state.reportEditedManually === false && this.state.editReason === '')) {
+      disableUploadButton = false;
+    }
 
     return (
       <form
@@ -261,6 +268,7 @@ class CounterUpload extends React.Component {
                       onSelectFile={this.selectFile}
                       selectedFile={this.state.selectedFile}
                       onClickUpload={this.uploadFile}
+                      disable={disableUploadButton}
                     />
                   </Col>
                 </Row>
@@ -288,7 +296,8 @@ class CounterUpload extends React.Component {
                     name="editReason"
                     onChange={this.changeEditReason}
                     placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
-                    required
+                    required={reportEditedManually}
+                    // validate={this.isRequired}
                   />
                 </Row>
               </Col>
@@ -329,11 +338,11 @@ export default injectIntl(stripesConnect(stripesFinalForm({
     values: true,
     invalid: true,
   },
-  validate: (values) => {
-    const errors = {};
-    if (!values.editReason) {
-      errors.editReason = 'Required';
-    }
-    return errors;
-  },
+  // validate: (values) => {
+  //   const errors = {};
+  //   if (values.reportEditedManually === true) {
+  //     errors.editReason = 'Required';
+  //   }
+  //   return errors;
+  // },
 })(CounterUpload)));
