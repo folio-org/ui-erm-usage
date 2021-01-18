@@ -11,14 +11,12 @@ import {
   Col,
   KeyValue,
   Loading,
-  Label,
   Modal,
   ModalFooter,
   Row,
   TextField,
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
-// import { notRequired, required } from '../../../util/validate';
 
 class CounterUpload extends React.Component {
   static manifest = Object.freeze({
@@ -55,7 +53,6 @@ class CounterUpload extends React.Component {
       reportEditedManually: false,
       editReason: '',
     };
-    // this.isRequired = notRequired;
   }
 
   showErrorInfo = (response) => {
@@ -78,9 +75,6 @@ class CounterUpload extends React.Component {
     reader.onload = () => {
       cb(reader.result);
     };
-    // reader.onerror = (error) => {
-    //   console.log('Error: ', error);
-    // };
   }
 
   doUpload = (file, doOverwrite) => {
@@ -195,40 +189,14 @@ class CounterUpload extends React.Component {
     }
   };
 
-  renderSelectedFile = () => {
-    let selectedText = '';
-    const fileName = _.get(this.state.selectedFile, 'name', '');
-    if (fileName === '') {
-      selectedText = (
-        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
-      );
-    } else {
-      selectedText = fileName;
-    }
-    return (
-      <KeyValue
-        label={
-          <Label required>
-            <FormattedMessage id="ui-erm-usage.statistics.custom.selectedFile" />
-          </Label>
-        }
-        value={selectedText}
-      />
-    );
-  };
-
   footer = () => (
     <ModalFooter>
-      {/* <Button buttonStyle="primary" disabled={!this.state.enableSubmit || this.props.pristine || this.props.invalid} onClick={onSubmit}>
-        Save
-      </Button> */}
       <Button onClick={this.props.onClose}>Cancel</Button>
     </ModalFooter>
   );
 
   changeReportEditedManually = () => {
     this.setState(prevState => ({ reportEditedManually: !prevState.reportEditedManually }));
-    // this.isRequired = this.state.reportEditedManually ? required : notRequired;
   };
 
   changeEditReason = event => {
@@ -298,7 +266,6 @@ class CounterUpload extends React.Component {
                     onChange={this.changeEditReason}
                     placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
                     required={reportEditedManually}
-                    // validate={this.isRequired}
                   />
                 </Row>
               </Col>
@@ -323,27 +290,11 @@ CounterUpload.propTypes = {
   onFail: PropTypes.func,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  mutator: PropTypes.shape({
-    counterReports: PropTypes.object,
-  }),
   intl: PropTypes.object,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  // invalid: PropTypes.bool,
-  // pristine: PropTypes.bool,
 };
 
 export default injectIntl(stripesConnect(stripesFinalForm({
   enableReinitialize: true,
-  subscription: {
-    values: true,
-    invalid: true,
-  },
-  // validate: (values) => {
-  //   const errors = {};
-  //   if (values.reportEditedManually === true) {
-  //     errors.editReason = 'Required';
-  //   }
-  //   return errors;
-  // },
 })(CounterUpload)));
