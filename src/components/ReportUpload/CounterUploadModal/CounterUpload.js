@@ -1,9 +1,9 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 import stripesFinalForm from '@folio/stripes/final-form';
-import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
