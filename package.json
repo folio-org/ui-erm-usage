@@ -65,8 +65,10 @@
     "react": "*",
     "react-dom": "*",
     "react-intl": "^5.7.0",
+    "react-redux": "*",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "redux": "*"
   },
   "stripes": {
     "actsAs": [
