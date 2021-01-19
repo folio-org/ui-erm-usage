@@ -272,6 +272,9 @@ describe('UDPDetailsPage', () => {
         expect(udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox.isPresent).to.equal(true);
         expect(udpDetailsPage.uploadCounterModal.editReasonTextfield.isPresent).to.equal(true);
       });
+      it('does render cancel button', () => {
+        expect(udpDetailsPage.uploadCounterModal.uploadCounterCancelButton.isPresent).to.equal(true);
+      });
 
       describe('handling drop file', () => {
         beforeEach(async () => {

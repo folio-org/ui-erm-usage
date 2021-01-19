@@ -191,7 +191,9 @@ class CounterUpload extends React.Component {
 
   footer = () => (
     <ModalFooter>
-      <Button onClick={this.props.onClose}>Cancel</Button>
+      <Button id="cancel-upload-counter-report" onClick={this.props.onClose}>
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
+      </Button>
     </ModalFooter>
   );
 
@@ -218,10 +220,11 @@ class CounterUpload extends React.Component {
         <Modal
           closeOnBackgroundClick
           footer={this.footer()}
+          id="upload-counter-modal"
           open={this.props.open}
           label={this.props.intl.formatMessage({ id:'ui-erm-usage.statistics.counter.upload' })}
         >
-          <div className="upload-counter-modal">
+          <div className="upload-counter-modal-div">
             <Row>
               <Col xs={8}>
                 <Row>
