@@ -4,6 +4,7 @@ import {
   collection,
   fillable,
   interactor,
+  is,
   isPresent,
   property,
   scoped,
@@ -177,6 +178,7 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
   reportEditedManuallyCheckbox = scoped('[id="addcounterreport_reportEditedManually"]');
   editReasonTextfield = scoped('[id="addcounterreport_editReason"]');
   uploadFileButton = scoped('button[id="upload-report-button"]');
+  uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
   uploadCounterCancelButton = scoped('button[id="cancel-upload-counter-report"]');
 }
 

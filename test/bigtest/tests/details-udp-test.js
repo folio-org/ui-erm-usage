@@ -284,6 +284,26 @@ describe('UDPDetailsPage', () => {
         it('renders upload report buttton', () => {
           expect(udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent).to.equal(true);
         });
+
+        describe('click report edited manually checkbox', () => {
+          beforeEach(async () => {
+            await udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox.click();
+          });
+
+          it('upload file button should be disabled', () => {
+            expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.true;
+          });
+
+          describe('enter edit reason', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.uploadCounterModal.editReasonTextfield.fill('my edit reason');
+            });
+
+            it('upload file button should be enabled', () => {
+              expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
+            });
+          });
+        });
       });
     });
 
