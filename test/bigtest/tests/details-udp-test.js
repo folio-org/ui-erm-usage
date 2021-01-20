@@ -278,7 +278,7 @@ describe('UDPDetailsPage', () => {
 
       describe('handling drop file', () => {
         beforeEach(async () => {
-          await udpDetailsPage.fileUploaderInteractor.drop();
+          await udpDetailsPage.couterFileUploaderInteractor.drop();
         });
 
         it('renders upload report buttton', () => {
@@ -301,6 +301,20 @@ describe('UDPDetailsPage', () => {
 
             it('upload file button should be enabled', () => {
               expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
+            });
+
+            describe('upload counter report', () => {
+              beforeEach(async () => {
+                await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+              });
+
+              // it('counterReportExists', () => {
+              //   expect(udpDetailsPage.counterReportExists.overwriteYesButton.isPresent).to.be.true;
+              // });
+
+              it('upload counter report modal should be closed', () => {
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+              });
             });
           });
         });

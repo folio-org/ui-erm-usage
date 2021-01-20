@@ -162,10 +162,10 @@ class CounterUpload extends React.Component {
           <div>
             <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
           </div>
-          <Button onClick={this.uploadFileForceOverwrite}>
+          <Button id="overwriteYes" onClick={this.uploadFileForceOverwrite}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button onClick={this.cancleUpload}>
+          <Button id="overwriteNo" onClick={this.cancleUpload}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
@@ -278,6 +278,7 @@ class CounterUpload extends React.Component {
               label={this.props.intl.formatMessage({
                 id: 'ui-erm-usage.report.upload.modal.label',
               })}
+              id="counterReportExists"
             >
               {this.renderInfo()}
             </Modal>

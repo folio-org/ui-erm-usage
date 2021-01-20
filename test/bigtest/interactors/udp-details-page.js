@@ -21,6 +21,15 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
   drop = triggerable('drop', event);
 }
 
+const counterfile = new File([], 'base64,eyJSZXBvcnRfSGVhZGVyIjp7IkNyZWF0ZWQiOiIyMDIwLTA0LTA4VDA4OjIzOjAyWiIsIlJlbGVhc2UiOiI1IiwiUmVwb3J0X0lEIjoiRFIiLCJDcmVhdGVkX0J5IjoiTXkgU2VydmljZSIsIkV4Y2VwdGlvbnMiOltdLCJSZXBvcnRfTmFtZSI6IkRhdGFiYXNlIE1hc3RlciBSZXBvcnQiLCJJbnN0aXR1dGlvbl9JRCI6W3siVHlwZSI6IlByb3ByaWV0YXJ5IiwiVmFsdWUiOiJTZXJ2aWNlTXkgQ3VzdG9tZXIifV0sIlJlcG9ydF9GaWx0ZXJzIjpbeyJOYW1lIjoiQmVnaW5fRGF0ZSIsIlZhbHVlIjoiMjAxOS0wMS0wMSJ9LHsiTmFtZSI6IkVuZF9EYXRlIiwiVmFsdWUiOiIyMDE5LTAxLTMxIn1dLCJJbnN0aXR1dGlvbl9OYW1lIjoiTXkgSW5zdGl0dXRpb24iLCJSZXBvcnRfQXR0cmlidXRlcyI6W119LCJSZXBvcnRfSXRlbXMiOlt7IkRhdGFiYXNlIjoiRGF0YWJhc2UgMSIsIlBsYXRmb3JtIjoiTXkgUGxhdGZvcm0iLCJQdWJsaXNoZXIiOiJQdWJsaXNoZXIgMSIsIlBlcmZvcm1hbmNlIjpbeyJQZXJpb2QiOnsiRW5kX0RhdGUiOiIyMDE5LTAxLTMxIiwiQmVnaW5fRGF0ZSI6IjIwMTktMDEtMDEifSwiSW5zdGFuY2UiOlt7IkNvdW50IjoxMCwiTWV0cmljX1R5cGUiOiJTZWFyY2hlc19GZWRlcmF0ZWQifSx7IkNvdW50Ijo2NjEsIk1ldHJpY19UeXBlIjoiU2VhcmNoZXNfUmVndWxhciJ9LHsiQ291bnQiOjE1MDAsIk1ldHJpY19UeXBlIjoiVG90YWxfSXRlbV9JbnZlc3RpZ2F0aW9ucyJ9LHsiQ291bnQiOjEwNjksIk1ldHJpY19UeXBlIjoiVG90YWxfSXRlbV9SZXF1ZXN0cyJ9LHsiQ291bnQiOjk5MiwiTWV0cmljX1R5cGUiOiJVbmlxdWVfSXRlbV9JbnZlc3RpZ2F0aW9ucyJ9LHsiQ291bnQiOjk0NCwiTWV0cmljX1R5cGUiOiJVbmlxdWVfSXRlbV9SZXF1ZXN0cyJ9XX1dLCJQdWJsaXNoZXJfSUQiOltdfV19Cg=="',
+  { type: 'application/json' });
+const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } };
+
+@interactor class CounterUploaderInteractor {
+  static defaultScope = 'input[type="file"]';
+  drop = triggerable('drop', counterevent);
+}
+
 @interactor class DownloadFileButton {
   static defaulScope = 'button[data-test-doc-file]';
 }
@@ -182,6 +191,11 @@ const event = { dataTransfer: { files: [file], types: ['Files'] } };
   uploadCounterCancelButton = scoped('button[id="cancel-upload-counter-report"]');
 }
 
+// @interactor class CounterReportExists {
+//   static defaultScope = '[id="counterReportExists"]';
+//   overwriteYesButton = scoped('button[id="overwriteYes"]');
+// }
+
 @interactor class UploadNonCounterModal {
   static defaultScope = '[class="upload-non-counter-modal"]';
   uploadFileButton = scoped('button[id="upload-file-button"]');
@@ -236,12 +250,14 @@ export default @interactor class UDPDetailsPage {
   uploadNonCounterModal = new UploadNonCounterModal();
   clickUploadCounterButton = clickable('#upload-counter-button');
   clickUploadNonCounterButton = clickable('#upload-non-counter-button');
+  // counterReportExists = new CounterReportExists();
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();
 
   confirmDeleteButton = new ConfirmDeleteButton();
   fileUploaderInteractor = new FileUploaderInteractor();
+  couterFileUploaderInteractor = new CounterUploaderInteractor();
   downloadFileButton = new DownloadFileButton();
   urlInputError = new UrlInputError();
 }

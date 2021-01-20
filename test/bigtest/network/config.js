@@ -134,6 +134,13 @@ export default function config() {
       return schema.counterReports.all();
     }
   });
+
+  this.post('/counter-reports/upload/provider/:id', (_, { requestBody }) => {
+    const counterReport = JSON.parse(requestBody);
+
+    return this.create('counterReport', counterReport);
+  });
+
   this.get('/counter-reports/sorted/:udpId', (schema, request) => {
     if (request.queryParams) {
       /*
