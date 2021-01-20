@@ -308,10 +308,6 @@ describe('UDPDetailsPage', () => {
                 await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
               });
 
-              // it('counterReportExists', () => {
-              //   expect(udpDetailsPage.counterReportExists.overwriteYesButton.isPresent).to.be.true;
-              // });
-
               it('upload counter report modal should be closed', () => {
                 expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
               });
@@ -656,26 +652,3 @@ describe('Renders NON manually changed counter reports info', () => {
     });
   });
 });
-
-
-// describe('djfsdfjlsödfkjk', () => {
-//   setupApplication();
-//   const udpDetailsPage = new UDPDetailsPage();
-
-//   let udp = null;
-//   beforeEach(async function () {
-//     udp = this.server.create('usage-data-provider', 'withUsageReports');
-//     await this.visit(`/eusage/${udp.id}`);
-
-//     console.log(udp);
-
-//     await udpDetailsPage.uploadAccordion.click();
-//     await udpDetailsPage.clickUploadCounterButton();
-//     await udpDetailsPage.couterFileUploaderInteractor.drop();
-//     await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
-//   });
-
-//   it('xxx counterReportExists', () => {
-//     expect(udpDetailsPage.counterReportExists.overwriteYesButton.isPresent).to.be.true;
-//   });
-// });
