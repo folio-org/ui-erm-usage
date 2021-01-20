@@ -276,7 +276,7 @@ describe('UDPDetailsPage', () => {
         expect(udpDetailsPage.uploadCounterModal.uploadCounterCancelButton.isPresent).to.equal(true);
       });
 
-      describe('handling drop file', () => {
+      describe('handling drop counter report', () => {
         beforeEach(async () => {
           await udpDetailsPage.couterFileUploaderInteractor.drop();
         });
@@ -327,6 +327,29 @@ describe('UDPDetailsPage', () => {
               });
             });
           });
+        });
+      });
+
+      describe('handling drop non-counter report', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.fileUploaderInteractor.drop();
+        });
+
+        it('upload file button should be enabled', () => {
+          expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
+        });
+
+        describe('upload non-counter report', () => {
+          beforeEach(async () => {
+            await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+          });
+
+          it('upload counter report modal should be open', () => {
+            expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
+          });
+          // it('callout message should be visible', () => {
+          //   expect(udpDetailsPage.callout.calloutMessge.isPresent).to.equal(true);
+          // });
         });
       });
     });
@@ -633,3 +656,26 @@ describe('Renders NON manually changed counter reports info', () => {
     });
   });
 });
+
+
+// describe('djfsdfjlsödfkjk', () => {
+//   setupApplication();
+//   const udpDetailsPage = new UDPDetailsPage();
+
+//   let udp = null;
+//   beforeEach(async function () {
+//     udp = this.server.create('usage-data-provider', 'withUsageReports');
+//     await this.visit(`/eusage/${udp.id}`);
+
+//     console.log(udp);
+
+//     await udpDetailsPage.uploadAccordion.click();
+//     await udpDetailsPage.clickUploadCounterButton();
+//     await udpDetailsPage.couterFileUploaderInteractor.drop();
+//     await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+//   });
+
+//   it('xxx counterReportExists', () => {
+//     expect(udpDetailsPage.counterReportExists.overwriteYesButton.isPresent).to.be.true;
+//   });
+// });

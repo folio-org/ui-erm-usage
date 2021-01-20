@@ -117,6 +117,7 @@ class ReportUpload extends React.Component {
           handlers={this.props.handlers}
         />
         <Callout
+          id="report-update-callout"
           ref={(ref) => {
             callout = ref;
           }}

@@ -192,9 +192,15 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
 }
 
-// @interactor class CounterReportExists {
-//   static defaultScope = '[id="counterReportExists"]';
-//   overwriteYesButton = scoped('button[id="overwriteYes"]');
+@interactor class CounterReportExists {
+  static defaultScope = '[id="counterReportExists"]';
+  overwriteYesButton = scoped('button[id="overwriteYes"]');
+}
+
+// @interactor class Callout {
+//   static defaultScope = '[id="OverlayContainer"]';
+//   calloutMessge = scoped('[id=report-update-callout]');
+//   // calloutMessge = scoped('[class*=message---]');
 // }
 
 @interactor class UploadNonCounterModal {
@@ -251,7 +257,8 @@ export default @interactor class UDPDetailsPage {
   uploadNonCounterModal = new UploadNonCounterModal();
   clickUploadCounterButton = clickable('#upload-counter-button');
   clickUploadNonCounterButton = clickable('#upload-non-counter-button');
-  // counterReportExists = new CounterReportExists();
+  counterReportExists = new CounterReportExists();
+  // callout = new Callout();
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();
