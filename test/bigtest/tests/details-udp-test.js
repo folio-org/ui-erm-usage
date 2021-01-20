@@ -316,6 +316,16 @@ describe('UDPDetailsPage', () => {
                 expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
               });
             });
+
+            describe('cancel upload counter report', () => {
+              beforeEach(async () => {
+                await udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.click();
+              });
+
+              it('upload counter report modal should be closed', () => {
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+              });
+            });
           });
         });
       });

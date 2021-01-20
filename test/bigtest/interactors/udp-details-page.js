@@ -189,6 +189,7 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   uploadFileButton = scoped('button[id="upload-report-button"]');
   uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
   uploadCounterCancelButton = scoped('button[id="cancel-upload-counter-report"]');
+  cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
 }
 
 // @interactor class CounterReportExists {
