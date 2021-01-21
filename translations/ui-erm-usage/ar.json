@@ -225,5 +225,8 @@
     "general.manualChanges": "التغييرات اليدوية",
     "general.manualChanges.infoText": "تم تحرير بيانات التقرير يدويًا.",
     "general.editReason": "تحرير السبب:",
-    "general.reportTypes": "أنواع التقارير"
+    "general.reportTypes": "أنواع التقارير",
+    "report.upload.editedManually": "Report data has been edited manually",
+    "report.upload.editReason": "Edit reason",
+    "report.upload.editReason.placeholder": "Enter reason for manual changes"
 }

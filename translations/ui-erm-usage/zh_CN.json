@@ -225,5 +225,8 @@
     "general.manualChanges": "人工变更",
     "general.manualChanges.infoText": "报告数据已被人工编辑。",
     "general.editReason": "编辑原因：",
-    "general.reportTypes": "Report types"
+    "general.reportTypes": "Report types",
+    "report.upload.editedManually": "Report data has been edited manually",
+    "report.upload.editReason": "Edit reason",
+    "report.upload.editReason.placeholder": "Enter reason for manual changes"
 }
