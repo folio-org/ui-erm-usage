@@ -394,6 +394,25 @@ describe('UDPDetailsPage', () => {
         it('calls onDrop and renders uploaded file', () => {
           expect(udpDetailsPage.downloadFileButton.isPresent).to.equal(true);
         });
+
+        describe('xxx enter year and save', () => {
+          beforeEach(async () => {
+            await udpDetailsPage.uploadNonCounterModal.yearInput.fill(2000);
+          });
+
+          it('xxx save button is enable', () => {
+            expect(udpDetailsPage.uploadNonCounterModal.saveNonCounterButtonIsDisabled).to.be.false;
+          });
+          describe('xxx click save', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.uploadNonCounterModal.saveNonCounterButton.click();
+            });
+
+            it('xxx modal closed', () => {
+              expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
+            });
+          });
+        });
       });
 
       it('does not render link url text field', () => {

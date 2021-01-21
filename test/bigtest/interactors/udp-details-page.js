@@ -214,6 +214,8 @@ const noncounterevent = { dataTransfer: { files: [noncounterfile], types: ['File
   linkRadioButton = scoped('label[for="custom-report-link-radio"]');
   yearInput = scoped('input[id="custom-report-year"]');
   linkUrlInput = scoped('input[id="custom-report-link-url"]');
+  saveNonCounterButton = scoped('button[id="save-non-counter-button"]');
+  saveNonCounterButtonIsDisabled = is('button[id="save-non-counter-button"]', ':disabled');
 }
 
 @interactor class TagsSelect {
