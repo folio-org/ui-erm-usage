@@ -1,15 +1,20 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
+import { Field } from 'react-final-form';
+import stripesFinalForm from '@folio/stripes/final-form';
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
+  Checkbox,
   Col,
   KeyValue,
   Loading,
   Modal,
+  ModalFooter,
   Row,
+  TextField,
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
@@ -25,17 +30,6 @@ class CounterUpload extends React.Component {
     },
   });
 
-  static propTypes = {
-    onSuccess: PropTypes.func,
-    onFail: PropTypes.func,
-    stripes: PropTypes.shape().isRequired,
-    udpId: PropTypes.string,
-    mutator: PropTypes.shape({
-      counterReports: PropTypes.object,
-    }),
-    intl: PropTypes.object,
-  };
-
   static upload = 'upload';
   static overwrite = 'overwrite';
 
@@ -49,13 +43,15 @@ class CounterUpload extends React.Component {
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
         'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/octet-stream',
+        'Content-Type': 'application/json',
       }
     );
     this.state = {
       selectedFile: {},
       showInfoModal: false,
       infoType: '',
+      reportEditedManually: false,
+      editReason: '',
     };
   }
 
@@ -73,34 +69,58 @@ class CounterUpload extends React.Component {
     });
   };
 
-  doUpload = (data, doOverwrite) => {
-    this.setState({
-      showInfoModal: true,
-      infoType: CounterUpload.upload,
-    });
-    fetch(
-      `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
-      {
-        headers: this.httpHeaders,
-        method: 'POST',
-        body: data,
-      }
-    )
-      .then((response) => {
+  getBase64(file, cb) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      cb(reader.result);
+    };
+  }
+
+  doUpload = (file, doOverwrite) => {
+    let fileBase64 = '';
+    this.getBase64(file, (result) => {
+      fileBase64 = result;
+
+      const data = {
+        reportMetadata: {
+          reportEditedManually: this.state.reportEditedManually,
+          editReason: this.state.editReason
+        },
+        contents: {
+          data: fileBase64,
+        }
+      };
+
+      const json = JSON.stringify(data);
+
+      this.setState({
+        showInfoModal: true,
+        infoType: CounterUpload.upload,
+      });
+      fetch(
+        `${this.okapiUrl}/counter-reports/upload/provider/${this.props.udpId}?overwrite=${doOverwrite}`,
+        {
+          headers: this.httpHeaders,
+          method: 'POST',
+          body: json
+        }
+      ).then((response) => {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
-          this.closeInfoModal();
           this.setState({
+            showInfoModal: false,
             selectedFile: {},
           });
           this.props.onSuccess();
         }
       })
-      .catch((err) => {
-        this.closeInfoModal();
-        this.props.onFail(err.message);
-      });
+        .catch((err) => {
+          this.closeInfoModal();
+          this.props.onFail(err.message);
+        });
+    });
   };
 
   closeInfoModal = () => {
@@ -113,11 +133,7 @@ class CounterUpload extends React.Component {
   uploadFile = (doOverwrite = false) => {
     const selectedFile = this.state.selectedFile;
     if (!_.isEmpty(selectedFile)) {
-      const fileReader = new FileReader();
-      fileReader.onload = (event) => {
-        this.doUpload(event.target.result, doOverwrite);
-      };
-      fileReader.readAsText(selectedFile);
+      this.doUpload(selectedFile, doOverwrite);
     }
   };
 
@@ -132,6 +148,16 @@ class CounterUpload extends React.Component {
     });
   };
 
+  cancleUpload = () => {
+    this.closeInfoModal();
+    this.props.onClose();
+    this.setState({
+      selectedFile: {},
+      reportEditedManually: false,
+      editReason: '',
+    });
+  }
+
   renderInfo = () => {
     if (this.state.infoType === CounterUpload.overwrite) {
       return (
@@ -139,10 +165,10 @@ class CounterUpload extends React.Component {
           <div>
             <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
           </div>
-          <Button onClick={this.uploadFileForceOverwrite}>
+          <Button id="overwriteYes" onClick={this.uploadFileForceOverwrite}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button onClick={this.closeInfoModal}>
+          <Button id="overwriteNo" onClick={this.cancleUpload}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
@@ -166,37 +192,116 @@ class CounterUpload extends React.Component {
     }
   };
 
+  footer = () => (
+    <ModalFooter>
+      <Button id="cancel-upload-counter-report" onClick={this.cancleUpload}>
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
+      </Button>
+    </ModalFooter>
+  );
+
+  changeReportEditedManually = () => {
+    this.setState(prevState => ({ reportEditedManually: !prevState.reportEditedManually }));
+  };
+
+  changeEditReason = event => {
+    this.setState({ editReason: event.target.value });
+  };
+
   render() {
+    const reportEditedManually = this.state.reportEditedManually;
+    let disableUploadButton = true;
+    if ((this.state.reportEditedManually === true && this.state.editReason !== '') || (this.state.reportEditedManually === false && this.state.editReason === '')) {
+      disableUploadButton = false;
+    }
+
     return (
-      <React.Fragment>
-        <Row>
-          <Col xs={8}>
-            <KeyValue
-              label={<FormattedMessage id="ui-erm-usage.general.info" />}
-              value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={8}>
-            <FileUploader
-              onSelectFile={this.selectFile}
-              selectedFile={this.state.selectedFile}
-              onClickUpload={this.uploadFile}
-            />
-          </Col>
-        </Row>
+      <form
+        data-test-counter-report-form-page
+        id="form-counter-report"
+      >
         <Modal
-          open={this.state.showInfoModal}
-          label={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.report.upload.modal.label',
-          })}
+          closeOnBackgroundClick
+          footer={this.footer()}
+          id="upload-counter-modal"
+          open={this.props.open}
+          label={this.props.intl.formatMessage({ id:'ui-erm-usage.statistics.counter.upload' })}
         >
-          {this.renderInfo()}
+          <div className="upload-counter-modal-div">
+            <Row>
+              <Col xs={8}>
+                <Row>
+                  <KeyValue
+                    label={<FormattedMessage id="ui-erm-usage.general.info" />}
+                    value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+                  />
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <FileUploader
+                      onSelectFile={this.selectFile}
+                      selectedFile={this.state.selectedFile}
+                      onClickUpload={this.uploadFile}
+                      disable={disableUploadButton}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={4}>
+                <Row style={{ 'marginTop': '25px' }}>
+                  <Field
+                    component={Checkbox}
+                    id="addcounterreport_reportEditedManually"
+                    initialValue={false}
+                    label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
+                    name="reportEditedManually"
+                    onChange={this.changeReportEditedManually}
+                    checked={this.state.reportEditedManually}
+                    type="checkbox"
+                  />
+                </Row>
+                <Row style={{ 'marginTop': '15px' }}>
+                  <Field
+                    component={TextField}
+                    disabled={!reportEditedManually}
+                    fullWidth
+                    initialValue=""
+                    id="addcounterreport_editReason"
+                    label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
+                    name="editReason"
+                    onChange={this.changeEditReason}
+                    placeholder={this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
+                    required={reportEditedManually}
+                  />
+                </Row>
+              </Col>
+            </Row>
+            <Modal
+              open={this.state.showInfoModal}
+              label={this.props.intl.formatMessage({
+                id: 'ui-erm-usage.report.upload.modal.label',
+              })}
+              id="counterReportExists"
+            >
+              {this.renderInfo()}
+            </Modal>
+          </div>
         </Modal>
-      </React.Fragment>
+      </form>
     );
   }
 }
 
-export default stripesConnect(injectIntl(CounterUpload));
+CounterUpload.propTypes = {
+  onSuccess: PropTypes.func,
+  onFail: PropTypes.func,
+  stripes: PropTypes.shape().isRequired,
+  udpId: PropTypes.string,
+  intl: PropTypes.object,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+export default injectIntl(stripesConnect(stripesFinalForm({
+  enableReinitialize: true,
+})(CounterUpload)));

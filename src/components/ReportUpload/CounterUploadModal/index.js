@@ -1,1 +1,1 @@
-export { default } from './CounterUploadModal';
+export { default } from './CounterUpload';
