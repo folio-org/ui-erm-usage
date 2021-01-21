@@ -150,8 +150,11 @@ class CounterUpload extends React.Component {
 
   cancleUpload = () => {
     this.closeInfoModal();
+    this.props.onClose();
     this.setState({
       selectedFile: {},
+      reportEditedManually: false,
+      editReason: '',
     });
   }
 
@@ -191,7 +194,7 @@ class CounterUpload extends React.Component {
 
   footer = () => (
     <ModalFooter>
-      <Button id="cancel-upload-counter-report" onClick={this.props.onClose}>
+      <Button id="cancel-upload-counter-report" onClick={this.cancleUpload}>
         <FormattedMessage id="ui-erm-usage.general.cancel" />
       </Button>
     </ModalFooter>
