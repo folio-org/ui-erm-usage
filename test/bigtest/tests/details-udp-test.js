@@ -273,12 +273,12 @@ describe('UDPDetailsPage', () => {
         expect(udpDetailsPage.uploadCounterModal.editReasonTextfield.isPresent).to.equal(true);
       });
       it('does render cancel button', () => {
-        expect(udpDetailsPage.uploadCounterModal.uploadCounterCancelButton.isPresent).to.equal(true);
+        expect(udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.isPresent).to.equal(true);
       });
 
       describe('handling drop counter report', () => {
         beforeEach(async () => {
-          await udpDetailsPage.couterFileUploaderInteractor.drop();
+          await udpDetailsPage.uploadCounterModal.couterFileUploaderInteractor.drop();
         });
 
         it('renders upload report buttton', () => {
@@ -311,6 +311,9 @@ describe('UDPDetailsPage', () => {
               it('upload counter report modal should be closed', () => {
                 expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
               });
+              it('callout message should be visible with Upload successful!', () => {
+                expect(udpDetailsPage.callout.calloutMessge.text).to.contains('Upload successful!');
+              });
             });
 
             describe('cancel upload counter report', () => {
@@ -328,7 +331,7 @@ describe('UDPDetailsPage', () => {
 
       describe('handling drop non-counter report', () => {
         beforeEach(async () => {
-          await udpDetailsPage.fileUploaderInteractor.drop();
+          await udpDetailsPage.uploadCounterModal.nonCouterFileUploaderInteractor.drop();
         });
 
         it('upload file button should be enabled', () => {
@@ -343,9 +346,16 @@ describe('UDPDetailsPage', () => {
           it('upload counter report modal should be open', () => {
             expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
           });
-          // it('callout message should be visible', () => {
-          //   expect(udpDetailsPage.callout.calloutMessge.isPresent).to.equal(true);
-          // });
+
+          describe('close counter upload modal', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.click();
+            });
+
+            it('callout message should be visible', () => {
+              expect(udpDetailsPage.callout.calloutMessge.isPresent).to.equal(true);
+            });
+          });
         });
       });
     });

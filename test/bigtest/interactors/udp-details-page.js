@@ -30,6 +30,20 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   drop = triggerable('drop', counterevent);
 }
 
+
+const noncounterfile = new File([], 'Non counter file', { type: 'text/plain' });
+const noncounterevent = { dataTransfer: { files: [noncounterfile], types: ['Files'] } };
+
+@interactor class NonCounterUploaderInteractor {
+  static defaultScope = 'input[type="file"]';
+  drop = triggerable('drop', noncounterevent);
+}
+
+@interactor class Callout {
+  static defaultScope = '#OverlayContainer';
+  calloutMessge = scoped('[class*=message---]');
+}
+
 @interactor class DownloadFileButton {
   static defaulScope = 'button[data-test-doc-file]';
 }
@@ -188,8 +202,9 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   editReasonTextfield = scoped('[id="addcounterreport_editReason"]');
   uploadFileButton = scoped('button[id="upload-report-button"]');
   uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
-  uploadCounterCancelButton = scoped('button[id="cancel-upload-counter-report"]');
   cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
+  couterFileUploaderInteractor = new CounterUploaderInteractor();
+  nonCouterFileUploaderInteractor = new NonCounterUploaderInteractor();
 }
 
 @interactor class UploadNonCounterModal {
@@ -246,13 +261,13 @@ export default @interactor class UDPDetailsPage {
   uploadNonCounterModal = new UploadNonCounterModal();
   clickUploadCounterButton = clickable('#upload-counter-button');
   clickUploadNonCounterButton = clickable('#upload-non-counter-button');
+  callout = new Callout();
 
   clickShowTags = clickable('#clickable-show-tags');
   tagsSelect = new TagsSelect();
 
   confirmDeleteButton = new ConfirmDeleteButton();
   fileUploaderInteractor = new FileUploaderInteractor();
-  couterFileUploaderInteractor = new CounterUploaderInteractor();
   downloadFileButton = new DownloadFileButton();
   urlInputError = new UrlInputError();
 }
