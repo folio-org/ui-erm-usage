@@ -11,12 +11,16 @@
 
   "meta.title": "eUsage",
 
+  "general.cancel": "Cancel",
   "general.delete": "Delete",
   "general.save": "Save",
   "general.info": "Info",
   "general.report": "Report",
   "general.type": "Type",
   "general.date": "Date",
+  "general.manualChanges": "Manual changes",
+  "general.manualChanges.infoText": "Report data has been edited manually.",
+  "general.editReason": "Edit reason: ",
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",
@@ -27,6 +31,7 @@
   "general.pleaseConfirm": "Please confirm!",
   "general.tags": "Tags",
   "general.errorCodes": "Error codes",
+  "general.reportTypes": "Report types",
   "general.edit": "Edit",
   "general.note": "Note",
   "general.year": "Year",
@@ -83,7 +88,8 @@
   "reportOverview.month.12": "Dec",
   "reportOverview.report": "Report",
 
-  "reportOverview.confirmDelete": "Please confirm delete!",
+  "reportOverview.confirmDelete": "Delete non-counter report?",
+  "reportOverview.deleteTemplateMessage": "{name} will be removed from non-counter reports.",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
   "reportOverview.reportsPerYear": "Reports grouped by year",
@@ -115,6 +121,7 @@
   "report.upload.dropFile": "Drop file here",
   "report.upload.selectFile": "or select file",
   "report.upload.info": "It is possible to upload Counter 4 (XML & CSV) or Counter 5 (JSON & CSV) usage statistics",
+  "report.delete.failed": "Failed...",
 
   "report.error.other": "Other",
   "report.error.0": "Info or debug",
@@ -185,6 +192,7 @@
   "errors.emailInvalid": "Email address invalid",
   "errors.dateInvalid": "Date invalid",
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
+  "errors.urlRequired": "Invalid URL: http:// or https:// required!",
 
   "harvester.start": "Start harvester",
   "harvester.start.started": "Harvester started",
@@ -227,6 +235,11 @@
   "statistics.custom.info.detail": "Detail info",
   "statistics.custom.selectFileFirst": "Select file first",
   "statistics.custom.selectedFile": "Selected file",
+  "statistics.custom.selectFileUpload": "Select file to upload",
+  "statistics.custom.linkUrl": "Link URL",
+  "statistics.custom.uploadFile": "Upload file",
+  "statistics.custom.linkFile": "Link file",
+  "statistics.custom.delete": "Delete custom report",
 
   "permission.module.enabled": "UI: eUsage module is enabled",
   "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",

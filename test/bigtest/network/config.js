@@ -175,6 +175,25 @@ export default function config() {
     errorCodes: ['other', '3000', '3031']
   });
 
+  this.get('/counter-reports/reports/types', {
+    reportTypes: ['JR1', 'BR1']
+  });
+
+  this.delete('/custom-reports/:id', (schema, request) => {
+    return schema.customReports.find(request.params.id).destroy();
+  });
+
+  this.delete('/erm-usage/files/:id', (_schema, _request) => {
+    return {};
+  }, 204);
+
+  this.post('/erm-usage/files', (_schema, _request) => {
+    return {
+      id: 'c120cf58-5e61-4b8a-85c9-a24a80b11903',
+      size: 1912
+    };
+  }, 200);
+
   this.get('/custom-reports', (schema, request) => {
     if (request.queryParams) {
       /*

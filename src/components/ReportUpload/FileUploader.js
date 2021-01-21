@@ -1,14 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import {
-  Button
-} from '@folio/stripes/components';
+import { Button } from '@folio/stripes/components';
 
 class FileUploader extends React.Component {
   static propTypes = {
@@ -16,17 +11,22 @@ class FileUploader extends React.Component {
     onClickUpload: PropTypes.func,
     selectedFile: PropTypes.object,
     intl: PropTypes.object,
-  }
+  };
 
   onDrop = (acceptedFiles) => {
     this.props.onSelectFile(acceptedFiles);
-  }
+  };
 
   renderUploadButton = () => {
-    if (_.isEmpty(this.props.selectedFile) || _.isNil(this.props.onClickUpload)) {
+    if (
+      _.isEmpty(this.props.selectedFile) ||
+      _.isNil(this.props.onClickUpload)
+    ) {
       return null;
     } else {
-      const upload = this.props.intl.formatMessage({ id: 'ui-erm-usage.report.upload.upload' });
+      const upload = this.props.intl.formatMessage({
+        id: 'ui-erm-usage.report.upload.upload',
+      });
       return (
         <Button
           aria-label={`Upload counter report file ${this.props.selectedFile.name}`}
@@ -37,45 +37,47 @@ class FileUploader extends React.Component {
         </Button>
       );
     }
-  }
+  };
 
   render() {
     const baseStyle = {
-      'display': 'flex',
-      'alignItems': 'center',
-      'flexDirection': 'column',
-      'justifyContent': 'center',
-      'height': '100%',
-      'borderWidth': '2',
-      'borderColor': '#666',
-      'borderStyle': 'dashed',
-      'borderRadius': '5'
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      height: '100%',
+      borderWidth: '2',
+      borderColor: '#666',
+      borderStyle: 'dashed',
+      borderRadius: '5',
     };
 
     const style = { ...baseStyle };
     return (
-      <Dropzone
-        onDrop={this.onDrop}
-        multiple={false}
-      >
-        {({ getRootProps, getInputProps, open }) => (
-          <div {...getRootProps({ onClick: evt => evt.preventDefault() })}>
-            <div style={style}>
-              <input {...getInputProps()} />
-              <FormattedMessage aria-label="Drop file for counter report upload" id="ui-erm-usage.report.upload.dropFile" />
-              <Button
-                aria-label="Or select file for counter report upload"
-                buttonStyle="primary"
-                id="upload-file-button"
-                onClick={() => open()}
-              >
-                <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
-              </Button>
-              {this.renderUploadButton()}
+      <div id="upload-file-zone">
+        <Dropzone onDrop={this.onDrop} multiple={false}>
+          {({ getRootProps, getInputProps, open }) => (
+            <div {...getRootProps({ onClick: (evt) => evt.preventDefault() })}>
+              <div style={style}>
+                <input {...getInputProps()} />
+                <FormattedMessage
+                  aria-label="Drop file for counter report upload"
+                  id="ui-erm-usage.report.upload.dropFile"
+                />
+                <Button
+                  aria-label="Or select file for counter report upload"
+                  buttonStyle="primary"
+                  id="upload-file-button"
+                  onClick={() => open()}
+                >
+                  <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
+                </Button>
+                {this.renderUploadButton()}
+              </div>
             </div>
-          </div>
-        )}
-      </Dropzone>
+          )}
+        </Dropzone>
+      </div>
     );
   }
 }

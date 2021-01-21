@@ -116,15 +116,17 @@ class UDPFilters extends React.Component {
     aggregators: [],
     hasFailedReport: [],
     tags: [],
-    errorCodes: []
+    errorCodes: [],
+    reportTypes: []
   };
 
-  renderCheckboxFilter = key => {
+  renderCheckboxFilter = (key, closedByDefault = false) => {
     const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
     return (
       <Accordion
+        closedByDefault={closedByDefault}
         displayClearButton={groupFilters.length > 0}
         header={FilterAccordionHeader}
         id={`filter-accordion-${key}`}
@@ -213,13 +215,46 @@ class UDPFilters extends React.Component {
     );
   };
 
+  renderReportTypesFiler = () => {
+    const { activeFilters } = this.props;
+    const reportTypesFilters = activeFilters.reportTypes || [];
+
+    return (
+      <Accordion
+        closedByDefault
+        id="clickable-report-types-filter"
+        displayClearButton={reportTypesFilters.length > 0}
+        header={FilterAccordionHeader}
+        label={<FormattedMessage id="ui-erm-usage.general.reportTypes" />}
+        onClearFilter={() => {
+          this.props.filterHandlers.clearGroup('reportTypes');
+        }}
+        separator={false}
+      >
+        <MultiSelectionFilter
+          ariaLabelledBy="clickable-report-types-filter"
+          dataOptions={this.state.reportTypes}
+          id="report-types-filter"
+          name="reportTypes"
+          onChange={e => this.props.filterHandlers.state({
+            ...activeFilters,
+            reportTypes: e.values
+          })
+          }
+          selectedValues={reportTypesFilters}
+        />
+      </Accordion>
+    );
+  }
+
   render() {
     return (
       <AccordionSet>
         {this.renderCheckboxFilter('harvestingStatus')}
         {this.renderCheckboxFilter('harvestVia')}
-        {this.renderCheckboxFilter('aggregators')}
-        {this.renderCheckboxFilter('hasFailedReport')}
+        {this.renderCheckboxFilter('aggregators', true)}
+        {this.renderReportTypesFiler()}
+        {this.renderCheckboxFilter('hasFailedReport', true)}
         {this.renderTagsFilter()}
         {this.renderErrorCodesFilter()}
       </AccordionSet>

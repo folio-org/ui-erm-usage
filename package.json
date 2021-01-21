@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -26,15 +26,14 @@
     "@bigtest/interactor": "^0.9.2",
     "@bigtest/mocha": "^0.5.2",
     "@bigtest/react": "^0.1.2",
-    "@folio/eslint-config-stripes": "^5.2.0",
-    "@folio/stripes": "^5.0.0",
+    "@folio/eslint-config-stripes": "^4.2.0",
+    "@folio/stripes": "^6.0.0",
     "@folio/stripes-cli": "^1.18.0",
-    "@folio/stripes-components": "^8.0.0",
-    "@folio/stripes-connect": "^6.0.0",
-    "@folio/stripes-core": "^6.0.0",
-    "@folio/stripes-final-form": "^4.0.0",
+    "@folio/stripes-components": "^9.0.0",
+    "@folio/stripes-core": "^7.0.0",
+    "@folio/stripes-final-form": "^5.0.0",
     "@folio/stripes-logger": "^1.0.0",
-    "@folio/stripes-smart-components": "^5.0.0",
+    "@folio/stripes-smart-components": "^6.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "babel-eslint": "^9.0.0",
@@ -53,10 +52,10 @@
     "jest-junit": "^11.0.1",
     "miragejs": "^0.1.40",
     "mocha": "^5.2.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-intl": "^5.7.0",
-    "react-redux": "^5.0.7",
+    "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.0",
     "regenerator-runtime": "^0.13.3",
@@ -74,15 +73,17 @@
     "react-final-form": "^6.3.5",
     "react-final-form-arrays": "^3.1.1",
     "react-router-prop-types": "^1.0.4",
-    "redux-form": "^7.0.3"
+    "redux-form": "^8.3.7"
   },
   "peerDependencies": {
-    "@folio/stripes": "^5.0.0",
+    "@folio/stripes": "^6.0.0",
     "react": "*",
     "react-dom": "*",
     "react-intl": "^5.7.0",
+    "react-redux": "*",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "redux": "*"
   },
   "stripes": {
     "actsAs": [
@@ -119,7 +120,7 @@
         "subPermissions": [
           "module.erm-usage.enabled"
         ],
-        "visible": true
+        "visible": false
       },
       {
         "permissionName": "settings.erm-usage.enabled",
@@ -142,7 +143,7 @@
         "permissionName": "ui-erm-usage.generalSettings.manage",
         "displayName": "Settings (eUsage): Can view and edit settings",
         "subPermissions": [
-          "settings.erm-usage.enable"
+          "settings.erm-usage.enabled"
         ],
         "visible": true
       },

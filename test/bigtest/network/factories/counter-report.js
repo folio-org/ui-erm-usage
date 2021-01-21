@@ -50,6 +50,9 @@ export default Factory.extend({
     }
   },
 
+  reportEditedManually: true,
+  editReason: 'edit reason',
+
   afterCreate(report, _) {
     if (report.provider) {
       report.update({
