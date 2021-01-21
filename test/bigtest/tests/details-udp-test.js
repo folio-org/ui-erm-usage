@@ -328,36 +328,6 @@ describe('UDPDetailsPage', () => {
           });
         });
       });
-
-      // describe('handling drop non-counter report', () => {
-      //   beforeEach(async () => {
-      //     await udpDetailsPage.uploadCounterModal.nonCouterFileUploaderInteractor.drop();
-      //   });
-
-      //   it('upload file button should be enabled', () => {
-      //     expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
-      //   });
-
-      //   describe('upload non-counter report', () => {
-      //     beforeEach(async () => {
-      //       await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
-      //     });
-
-      //     it('upload counter report modal should be open', () => {
-      //       expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(true);
-      //     });
-
-      //     describe('close counter upload modal', () => {
-      //       beforeEach(async () => {
-      //         await udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.click();
-      //       });
-
-      //       it('callout message should be visible', () => {
-      //         expect(udpDetailsPage.callout.calloutMessge.isPresent).to.equal(true);
-      //       });
-      //     });
-      //   });
-      // });
     });
 
     describe('can open upload non-counter report', function () {

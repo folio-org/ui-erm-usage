@@ -30,15 +30,6 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   drop = triggerable('drop', counterevent);
 }
 
-
-// const noncounterfile = new File([], 'Non counter file', { type: 'text/plain' });
-// const noncounterevent = { dataTransfer: { files: [noncounterfile], types: ['Files'] } };
-
-// @interactor class NonCounterUploaderInteractor {
-//   static defaultScope = 'input[type="file"]';
-//   drop = triggerable('drop', noncounterevent);
-// }
-
 @interactor class Callout {
   static defaultScope = '#OverlayContainer';
   calloutMessge = scoped('[class*=message---]');
@@ -204,7 +195,6 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
   cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
   couterFileUploaderInteractor = new CounterUploaderInteractor();
-  // nonCouterFileUploaderInteractor = new NonCounterUploaderInteractor();
 }
 
 @interactor class UploadNonCounterModal {
