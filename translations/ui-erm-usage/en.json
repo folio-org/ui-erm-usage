@@ -122,6 +122,9 @@
   "report.upload.selectFile": "or select file",
   "report.upload.info": "It is possible to upload Counter 4 (XML & CSV) or Counter 5 (JSON & CSV) usage statistics",
   "report.delete.failed": "Failed...",
+  "report.upload.editedManually": "Report data has been edited manually",
+  "report.upload.editReason": "Edit reason",
+  "report.upload.editReason.placeholder": "Enter reason for manual changes",
 
   "report.error.other": "Other",
   "report.error.0": "Info or debug",

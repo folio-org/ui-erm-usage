@@ -11,6 +11,7 @@ class FileUploader extends React.Component {
     onClickUpload: PropTypes.func,
     selectedFile: PropTypes.object,
     intl: PropTypes.object,
+    disable: PropTypes.bool,
   };
 
   onDrop = (acceptedFiles) => {
@@ -31,6 +32,8 @@ class FileUploader extends React.Component {
         <Button
           aria-label={`Upload counter report file ${this.props.selectedFile.name}`}
           buttonStyle="primary"
+          disabled={this.props.disable}
+          id="upload-report-button"
           onClick={() => this.props.onClickUpload()}
         >
           {`${upload} ${this.props.selectedFile.name}`}

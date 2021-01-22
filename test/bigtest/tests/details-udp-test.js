@@ -266,9 +266,67 @@ describe('UDPDetailsPage', () => {
       });
 
       it('does render upload file button', () => {
-        expect(
-          udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent
-        ).to.equal(true);
+        expect(udpDetailsPage.uploadCounterModal.selectFileButton.isPresent).to.equal(true);
+      });
+      it('does render edit manually fields', () => {
+        expect(udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox.isPresent).to.equal(true);
+        expect(udpDetailsPage.uploadCounterModal.editReasonTextfield.isPresent).to.equal(true);
+      });
+      it('does render cancel button', () => {
+        expect(udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.isPresent).to.equal(true);
+      });
+
+      describe('handling drop counter report', () => {
+        beforeEach(async () => {
+          await udpDetailsPage.uploadCounterModal.couterFileUploaderInteractor.drop();
+        });
+
+        it('renders upload report buttton', () => {
+          expect(udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent).to.equal(true);
+        });
+
+        describe('click report edited manually checkbox', () => {
+          beforeEach(async () => {
+            await udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox.click();
+          });
+
+          it('upload file button should be disabled', () => {
+            expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.true;
+          });
+
+          describe('enter edit reason', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.uploadCounterModal.editReasonTextfield.fill('my edit reason');
+            });
+
+            it('upload file button should be enabled', () => {
+              expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
+            });
+
+            describe('upload counter report', () => {
+              beforeEach(async () => {
+                await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+              });
+
+              it('upload counter report modal should be closed', () => {
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+              });
+              it('callout message should be visible with Upload successful!', () => {
+                expect(udpDetailsPage.callout.calloutMessge.text).to.contains('Upload successful!');
+              });
+            });
+
+            describe('cancel upload counter report', () => {
+              beforeEach(async () => {
+                await udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.click();
+              });
+
+              it('upload counter report modal should be closed', () => {
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+              });
+            });
+          });
+        });
       });
     });
 
@@ -305,6 +363,25 @@ describe('UDPDetailsPage', () => {
 
         it('calls onDrop and renders uploaded file', () => {
           expect(udpDetailsPage.downloadFileButton.isPresent).to.equal(true);
+        });
+
+        describe('enter year and save', () => {
+          beforeEach(async () => {
+            await udpDetailsPage.uploadNonCounterModal.yearInput.fill(2000);
+          });
+
+          it('save non-counter report button is enable', () => {
+            expect(udpDetailsPage.uploadNonCounterModal.saveNonCounterButtonIsDisabled).to.be.false;
+          });
+          describe('save non-counter report', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.uploadNonCounterModal.saveNonCounterButton.click();
+            });
+
+            it('upload non-counter report modal should be closed', () => {
+              expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
+            });
+          });
         });
       });
 
