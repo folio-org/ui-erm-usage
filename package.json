@@ -11,9 +11,9 @@
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
-    "test": "stripes test karma",
-    "test-int": "stripes test nightmare --run udp-crud --show",
-    "test-udp-crud": "stripes test nightmare --run udp-crud --show",
+    "test": "yarn run test:jest && yarn run test:bigtest",
+    "test:jest": "jest --ci --coverage",
+    "test:bigtest": "stripes test karma --bundle --karma.singleRun --karma.browsers ChromeDocker --karma.reporters mocha junit --coverage",
     "lint": "eslint src"
   },
   "devDependencies": {
@@ -57,6 +57,7 @@
     "react-intl": "^5.7.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
+    "react-titled": "^1.0.0",
     "redux": "^4.0.0",
     "regenerator-runtime": "^0.13.3",
     "sinon": "^7.1.1"
