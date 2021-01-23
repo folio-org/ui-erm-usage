@@ -226,7 +226,7 @@
     "general.manualChanges.infoText": "Os dados do relatório foram editados manualmente.",
     "general.editReason": "Editar motivo:",
     "general.reportTypes": "Tipos de relatórios",
-    "report.upload.editedManually": "Report data has been edited manually",
-    "report.upload.editReason": "Edit reason",
-    "report.upload.editReason.placeholder": "Enter reason for manual changes"
+    "report.upload.editedManually": "Os dados do relatório foram editados manualmente",
+    "report.upload.editReason": "Editar motivo",
+    "report.upload.editReason.placeholder": "Insira o motivo para as multas manuais"
 }
