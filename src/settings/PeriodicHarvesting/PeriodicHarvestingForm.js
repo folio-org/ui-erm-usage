@@ -99,6 +99,7 @@ class PeriodicHarvestingForm extends React.Component {
                 component={Timepicker}
                 autoComplete="off"
                 timeZone={this.props.timeZone}
+                validate={required}
               />
             </Col>
           </Row>
