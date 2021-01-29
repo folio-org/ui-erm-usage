@@ -71,7 +71,7 @@ const renderPeriodicHarvestingForm = () => {
   );
 };
 
-describe('AggregatorForm', () => {
+describe('PeriodicHarvestingForm', () => {
   test('test required fields', () => {
     const { getAllByText } = renderPeriodicHarvestingForm();
     userEvent.click(screen.getByText('Save'));
