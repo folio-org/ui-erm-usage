@@ -156,7 +156,7 @@ class PeriodicHarvestingForm extends React.Component {
           id="delete-config-confirmation"
           open={this.state.confirmDelete}
           heading={
-            <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
+            <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.confirmDelete" />
           }
           message={
             <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.deleteQuestion" />
