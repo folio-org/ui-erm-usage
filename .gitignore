@@ -8,3 +8,4 @@ yarn-error.log
 /out/
 /artifacts/
 junit.xml
+.vscode/launch.json
