@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { MemoryRouter } from 'react-router-dom';
@@ -49,8 +49,16 @@ const stripes = {
   },
   withOkapi: true,
 };
+
+const initialValues = {
+  startDate: '2021-01-01',
+  startTime: '2021-01-01T07:00:00+00:00',
+  periodicInterval: 'weekly',
+};
+
 const onSubmit = jest.fn();
-const renderPeriodicHarvestingForm = () => {
+const onDelete = jest.fn();
+const renderPeriodicHarvestingForm = (initialVals = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -60,9 +68,9 @@ const renderPeriodicHarvestingForm = () => {
             <PeriodicHarvestingForm
               handleSubmit={jest.fn}
               onSubmit={onSubmit}
-              onDelete={jest.fn}
+              onDelete={onDelete}
               timeZone="UTC"
-              initialValues={{}}
+              initialValues={initialVals}
             />
           )}
         />
@@ -92,5 +100,31 @@ describe('PeriodicHarvestingForm', () => {
     );
     userEvent.click(screen.getByText('Save'));
     expect(onSubmit).toHaveBeenCalled();
+  });
+
+  test('test cancel delete', async () => {
+    const { getByText } = renderPeriodicHarvestingForm(initialValues);
+    userEvent.click(getByText('Delete'));
+    expect(
+      getByText('Do you really want to delete the periodic harvesting config?')
+    ).toBeInTheDocument();
+    const cancel = getByText('Cancel');
+    expect(cancel).toBeInTheDocument();
+    userEvent.click(cancel);
+    await waitForElementToBeRemoved(() => getByText('Cancel'));
+    expect(onDelete).not.toHaveBeenCalled();
+  });
+
+  test('test do delete', async () => {
+    const { getByText } = renderPeriodicHarvestingForm(initialValues);
+    userEvent.click(getByText('Delete'));
+    expect(
+      getByText('Do you really want to delete the periodic harvesting config?')
+    ).toBeInTheDocument();
+    const submit = getByText('Submit');
+    expect(submit).toBeInTheDocument();
+    userEvent.click(submit);
+    await waitForElementToBeRemoved(() => getByText('Submit'));
+    expect(onDelete).toHaveBeenCalled();
   });
 });
