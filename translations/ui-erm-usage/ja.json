@@ -225,5 +225,8 @@
     "general.manualChanges": "手動変更",
     "general.manualChanges.infoText": "レポートデータは手動で編集されています。",
     "general.editReason": "編集理由：",
-    "general.reportTypes": "レポートタイプ"
+    "general.reportTypes": "レポートタイプ",
+    "report.upload.editedManually": "Report data has been edited manually",
+    "report.upload.editReason": "Edit reason",
+    "report.upload.editReason.placeholder": "Enter reason for manual changes"
 }
