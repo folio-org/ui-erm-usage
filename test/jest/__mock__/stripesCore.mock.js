@@ -51,6 +51,15 @@ jest.mock(
         stripes,
         ...rest
       }) => {
+        if (Component.manifest === null || Component.manifest === undefined) {
+          const fakeStripes = stripes || STRIPES;
+          return (
+            <Component
+              {...rest}
+              stripes={fakeStripes}
+            />
+          );
+        }
         const fakeMutator =
           mutator ||
           Object.keys(Component.manifest).reduce((acc, mutatorName) => {

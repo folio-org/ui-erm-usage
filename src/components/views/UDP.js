@@ -40,7 +40,6 @@ import urls from '../../util/urls';
 class UDP extends React.Component {
   constructor(props) {
     super(props);
-    this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
 
     this.state = {
       accordions: {
@@ -174,7 +173,7 @@ class UDP extends React.Component {
               </Col>
             </Row>
             <AccordionSet>
-              <this.connectedViewMetaData
+              <ViewMetaData
                 metadata={get(usageDataProvider, 'metadata', {})}
                 stripes={stripes}
               />

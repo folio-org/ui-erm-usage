@@ -5,6 +5,7 @@ jest.mock(
   () => ({
     ...jest.requireActual('@folio/stripes/smart-components'),
     LocationLookup: () => <div>LocationLookup</div>,
+    NotesSmartAccordion: () => <div>NotesSmartAccordion</div>,
     ViewMetaData: () => <div>ViewMetaData</div>,
   }),
   { virtual: true }
