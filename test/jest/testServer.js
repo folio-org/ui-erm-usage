@@ -1,7 +1,8 @@
-import '@testing-library/jest-dom';
-import 'isomorphic-fetch';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import handlers from './server-handlers';
 
-import { server } from './testServer';
+const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
 // if you need to add a handler after calling setupServer for some specific test
@@ -9,3 +10,5 @@ beforeAll(() => server.listen());
 // (which is important for test isolation):
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+export { server, rest };
