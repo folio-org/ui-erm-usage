@@ -27,7 +27,11 @@ jest.mock(
       setTimezone: () => {},
       setToken: () => {},
       store: {
-        getState: () => {},
+        getState: () => ({
+          okapi: {
+            token: 'abc',
+          },
+        }),
         dispatch: () => {},
         subscribe: () => {},
         replaceReducer: () => {},
@@ -53,12 +57,7 @@ jest.mock(
       }) => {
         if (Component.manifest === null || Component.manifest === undefined) {
           const fakeStripes = stripes || STRIPES;
-          return (
-            <Component
-              {...rest}
-              stripes={fakeStripes}
-            />
-          );
+          return <Component {...rest} stripes={fakeStripes} />;
         }
         const fakeMutator =
           mutator ||

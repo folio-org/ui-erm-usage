@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -9,46 +10,6 @@ import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
-
-const stripes = {
-  actionNames: [],
-  clone: () => ({ ...stripes }),
-  connect: () => {},
-  config: {},
-  currency: 'USD',
-  hasInterface: () => true,
-  hasPerm: jest.fn().mockReturnValue(true),
-  locale: 'en-US',
-  logger: {
-    log: () => {},
-  },
-  okapi: {
-    tenant: 'diku',
-    url: 'https://folio-testing-okapi.dev.folio.org',
-  },
-  plugins: {},
-  setBindings: () => {},
-  setCurrency: () => {},
-  setLocale: () => {},
-  setSinglePlugin: () => {},
-  setTimezone: () => {},
-  setToken: () => {},
-  store: {
-    getState: () => {},
-    dispatch: () => {},
-    subscribe: () => {},
-    replaceReducer: () => {},
-  },
-  timezone: 'UTC',
-  user: {
-    perms: {},
-    user: {
-      id: 'b1add99d-530b-5912-94f3-4091b4d87e2c',
-      username: 'diku_admin',
-    },
-  },
-  withOkapi: true,
-};
 
 const initialValues = {
   startDate: '2021-01-01',
@@ -58,7 +19,7 @@ const initialValues = {
 
 const onSubmit = jest.fn();
 const onDelete = jest.fn();
-const renderPeriodicHarvestingForm = (initialVals = {}) => {
+const renderPeriodicHarvestingForm = (stripes, initialVals = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -80,22 +41,28 @@ const renderPeriodicHarvestingForm = (initialVals = {}) => {
 };
 
 describe('PeriodicHarvestingForm', () => {
+  let stripes;
+
+  beforeEach(() => {
+    stripes = useStripes();
+  });
+
   test('test required fields', () => {
-    const { getAllByText } = renderPeriodicHarvestingForm();
+    renderPeriodicHarvestingForm(stripes);
     userEvent.click(screen.getByText('Save'));
-    expect(getAllByText('Required')).toHaveLength(3);
+    expect(screen.getAllByText('Required')).toHaveLength(3);
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
   test('test submit to be called', () => {
-    const { getByLabelText, getByText } = renderPeriodicHarvestingForm();
+    renderPeriodicHarvestingForm(stripes);
     userEvent.type(
-      getByLabelText('Start date', { exact: false }),
+      screen.getByLabelText('Start date', { exact: false }),
       '2021-01-01'
     );
-    userEvent.type(getByText('Start time', { exact: false }), '5:01 AM');
+    userEvent.type(screen.getByText('Start time', { exact: false }), '5:01 AM');
     userEvent.selectOptions(
-      getByLabelText('Periodic interval', { exact: false }),
+      screen.getByLabelText('Periodic interval', { exact: false }),
       ['weekly']
     );
     userEvent.click(screen.getByText('Save'));
@@ -103,28 +70,32 @@ describe('PeriodicHarvestingForm', () => {
   });
 
   test('test cancel delete', async () => {
-    const { getByText } = renderPeriodicHarvestingForm(initialValues);
-    userEvent.click(getByText('Delete'));
+    renderPeriodicHarvestingForm(stripes, initialValues);
+    userEvent.click(screen.getByText('Delete'));
     expect(
-      getByText('Do you really want to delete the periodic harvesting config?')
+      screen.getByText(
+        'Do you really want to delete the periodic harvesting config?'
+      )
     ).toBeInTheDocument();
-    const cancel = getByText('Cancel');
+    const cancel = screen.getByText('Cancel');
     expect(cancel).toBeInTheDocument();
     userEvent.click(cancel);
-    await waitForElementToBeRemoved(() => getByText('Cancel'));
+    await waitForElementToBeRemoved(() => screen.getByText('Cancel'));
     expect(onDelete).not.toHaveBeenCalled();
   });
 
   test('test do delete', async () => {
-    const { getByText } = renderPeriodicHarvestingForm(initialValues);
-    userEvent.click(getByText('Delete'));
+    renderPeriodicHarvestingForm(stripes, initialValues);
+    userEvent.click(screen.getByText('Delete'));
     expect(
-      getByText('Do you really want to delete the periodic harvesting config?')
+      screen.getByText(
+        'Do you really want to delete the periodic harvesting config?'
+      )
     ).toBeInTheDocument();
-    const submit = getByText('Submit');
+    const submit = screen.getByText('Submit');
     expect(submit).toBeInTheDocument();
     userEvent.click(submit);
-    await waitForElementToBeRemoved(() => getByText('Submit'));
+    await waitForElementToBeRemoved(() => screen.getByText('Submit'));
     expect(onDelete).toHaveBeenCalled();
   });
 });

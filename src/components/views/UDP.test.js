@@ -1,55 +1,13 @@
 import React from 'react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { MemoryRouter } from 'react-router-dom';
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import UDP from './UDP';
-
-const stripes = {
-  actionNames: [],
-  clone: () => ({ ...stripes }),
-  connect: () => {},
-  config: {},
-  currency: 'USD',
-  hasInterface: () => true,
-  hasPerm: jest.fn().mockReturnValue(true),
-  locale: 'en-US',
-  logger: {
-    log: () => {},
-  },
-  okapi: {
-    tenant: 'diku',
-    url: 'https://folio-testing-okapi.dev.folio.org',
-  },
-  plugins: {},
-  setBindings: () => {},
-  setCurrency: () => {},
-  setLocale: () => {},
-  setSinglePlugin: () => {},
-  setTimezone: () => {},
-  setToken: () => {},
-  store: {
-    getState: () => ({
-      okapi: {
-        token: 'abc',
-      },
-    }),
-    dispatch: () => {},
-    subscribe: () => {},
-    replaceReducer: () => {},
-  },
-  timezone: 'UTC',
-  user: {
-    perms: {},
-    user: {
-      id: 'b1add99d-530b-5912-94f3-4091b4d87e2c',
-      username: 'diku_admin',
-    },
-  },
-  withOkapi: true,
-};
 
 const usageDataProvider = {
   id: '00db3e61-e08e-4f8b-93ee-8e60fd402fc8',
@@ -145,10 +103,10 @@ const data = {
 const handlers = {
   onClose: jest.fn,
   onEdit: jest.fn,
-  onDownloadReportMultiMonth: jest.fn
+  onDownloadReportMultiMonth: jest.fn,
 };
 
-const renderUDP = () => {
+const renderUDP = (stripes) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -167,11 +125,17 @@ const renderUDP = () => {
 };
 
 describe('UDP', () => {
+  let stripes;
+
+  beforeEach(() => {
+    stripes = useStripes();
+  });
+
   test('should render UDP', () => {
-    const { getByText } = renderUDP();
-    userEvent.click(getByText('Harvesting configuration'));
+    renderUDP(stripes);
+    userEvent.click(screen.getByText('Harvesting configuration'));
 
     // TODO: Harvesting status is always visible. How to test the accordion?
-    expect(getByText('Harvesting status')).toBeVisible();
+    expect(screen.getByText('Harvesting status')).toBeVisible();
   });
 });
