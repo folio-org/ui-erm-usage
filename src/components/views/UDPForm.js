@@ -95,7 +95,7 @@ class UDPForm extends React.Component {
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
-          {(ariaLabel) => (
+          {([ariaLabel]) => (
             <IconButton
               id="clickable-close-udp-form-x"
               onClick={onClose}
@@ -250,7 +250,7 @@ class UDPForm extends React.Component {
                 {initialValues.metadata &&
                   initialValues.metadata.createdDate && (
                     <ViewMetaData metadata={initialValues.metadata} />
-                )}
+                  )}
                 <UDPInfoForm
                   accordionId="editUDPInfo"
                   expanded={sections.editUDPInfo}
