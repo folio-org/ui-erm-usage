@@ -174,7 +174,7 @@
     "settings.section.number.failed": "Number of failed attempts",
     "settings.harvester.start.success": "Harvester successfully started!",
     "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
-    "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
+    "settings.harvester.start.tenant": "Inicie el harvest para el tenant actual:",
     "settings.harvester.config": "Harvester configuration",
     "settings.credentials.download": "Download credentials",
     "settings.credentials.download.csv": "Download as CSV",
