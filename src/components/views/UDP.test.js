@@ -4,12 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { MemoryRouter } from 'react-router-dom';
-import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import UDP from './UDP';
 
-const usageDataProvider = {
+const stubUDP = {
   id: '00db3e61-e08e-4f8b-93ee-8e60fd402fc8',
   label: 'Otto Harrassowitz GmbH & Co. KG',
   harvestingConfig: {
@@ -36,7 +35,7 @@ const usageDataProvider = {
     'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
 };
 
-const counterReports = [
+const stubCounterReports = [
   {
     year: 2018,
     reportsPerType: [
@@ -75,14 +74,14 @@ const counterReports = [
   },
 ];
 
-const harvesterImpls = [
+const stubHarvesterImpls = [
   {
     value: 'cs41',
     label: 'Counter Sushi 4.1',
   },
 ];
 
-const settings = [
+const stubSettings = [
   {
     id: '38d7d9ae-95aa-4134-91b0-4ddbd9143fa7',
     module: 'ERM-USAGE',
@@ -93,11 +92,11 @@ const settings = [
 ];
 
 const data = {
-  counterReports,
+  counterReports: stubCounterReports,
   customReports: [],
-  harvesterImpls,
-  settings,
-  usageDataProvider,
+  harvesterImpls: stubHarvesterImpls,
+  settings: stubSettings,
+  usageDataProvider: stubUDP,
 };
 
 const handlers = {

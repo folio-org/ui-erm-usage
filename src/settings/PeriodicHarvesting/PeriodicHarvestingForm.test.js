@@ -5,13 +5,11 @@ import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { MemoryRouter } from 'react-router-dom';
-
-import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 
-const initialValues = {
+const stubInitialValues = {
   startDate: '2021-01-01',
   startTime: '2021-01-01T07:00:00+00:00',
   periodicInterval: 'weekly',
@@ -70,7 +68,7 @@ describe('PeriodicHarvestingForm', () => {
   });
 
   test('test cancel delete', async () => {
-    renderPeriodicHarvestingForm(stripes, initialValues);
+    renderPeriodicHarvestingForm(stripes, stubInitialValues);
     userEvent.click(screen.getByText('Delete'));
     expect(
       screen.getByText(
@@ -85,7 +83,7 @@ describe('PeriodicHarvestingForm', () => {
   });
 
   test('test do delete', async () => {
-    renderPeriodicHarvestingForm(stripes, initialValues);
+    renderPeriodicHarvestingForm(stripes, stubInitialValues);
     userEvent.click(screen.getByText('Delete'));
     expect(
       screen.getByText(
