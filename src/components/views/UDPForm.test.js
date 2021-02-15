@@ -130,4 +130,49 @@ describe('UDPForm', () => {
       ).not.toHaveAttribute('disabled');
     });
   });
+
+  describe('report release and select reports', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: jest.fn().mockImplementation((query) => ({
+          matches: false,
+          media: query,
+          onchange: null,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+          addEventListener: jest.fn(),
+          removeEventListener: jest.fn(),
+          dispatchEvent: jest.fn(),
+        })),
+      });
+    });
+
+    test('switch between counter 4 and 5 reports', async () => {
+      userEvent.selectOptions(
+        screen.getByLabelText('Report release', { exact: false }),
+        ['4']
+      );
+      userEvent.click(await screen.findByText('Add report type'));
+      userEvent.click(await screen.findByText('Report type'));
+      userEvent.click(await screen.findByText('BR1'));
+      expect(screen.getAllByText('BR1').length).toEqual(2);
+
+      userEvent.selectOptions(
+        screen.getByLabelText('Report release', { exact: false }),
+        ['5']
+      );
+      expect(screen.getByText('Clear report selection')).toBeVisible();
+
+      userEvent.click(await screen.findByText('Clear reports'));
+      userEvent.click(await screen.findByText('Add report type'));
+
+      userEvent.click(await screen.findByText('Report type'));
+      userEvent.click(await screen.findByText('PR'));
+      expect(screen.getAllByText('PR').length).toEqual(2);
+      expect(screen.queryAllByText('BR1').length).toEqual(0);
+    });
+  });
 });
