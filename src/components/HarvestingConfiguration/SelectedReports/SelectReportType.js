@@ -68,7 +68,7 @@ function SelectReportType(props) {
         ))}
       </Col>
       <Col xs={4}>
-        <Button onClick={() => fields.push('')}>
+        <Button data-test-add-report-button onClick={() => fields.push('')}>
           <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
             {([label]) => <Icon icon="plus-sign">{label}</Icon>}
           </FormattedMessage>

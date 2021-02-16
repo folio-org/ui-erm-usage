@@ -47,6 +47,6 @@ export default @interactor class UDPEditPage {
 
   reportReleaseSelect = new ReportReleaseSelect();
   reportTypeSelect = new ReportTypeSelect();
-  clickAddReportButton = clickable('[data-test-repeatable-field-add-item-button]');
+  clickAddReportButton = clickable('[data-test-add-report-button]');
   confirmationModal = new ConfirmationModal();
 }
