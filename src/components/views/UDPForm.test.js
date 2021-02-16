@@ -175,4 +175,106 @@ describe('UDPForm', () => {
       expect(screen.queryAllByText('BR1').length).toEqual(0);
     });
   });
+
+  describe('harvesting start and end', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
+
+    test('harvesting start invalid format', async () => {
+      const startInput = screen.getByLabelText('Harvesting start', {
+        exact: false,
+      });
+      userEvent.type(startInput, '2020-ab');
+      userEvent.tab();
+      expect(
+        screen.getByText('Date invalid', { exact: false })
+      ).toBeInTheDocument();
+    });
+
+    test('harvesting start valid format', async () => {
+      const startInput = screen.getByLabelText('Harvesting start', {
+        exact: false,
+      });
+      userEvent.type(startInput, '2020-01');
+      userEvent.tab();
+      expect(
+        screen.queryByText('Date invalid', { exact: false })
+      ).not.toBeInTheDocument();
+    });
+
+    test('harvesting start < end is invalid', async () => {
+      const startInput = screen.getByLabelText('Harvesting start', {
+        exact: false,
+      });
+      userEvent.type(startInput, '2020-02');
+
+      const endInput = screen.getByLabelText('Harvesting end', {
+        exact: false,
+      });
+      userEvent.type(endInput, '2020-01');
+      userEvent.tab();
+      expect(
+        screen.getByText('End date must be greater than start date', {
+          exact: false,
+        })
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe('fill form', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: jest.fn().mockImplementation((query) => ({
+          matches: false,
+          media: query,
+          onchange: null,
+          addListener: jest.fn(),
+          removeListener: jest.fn(),
+          addEventListener: jest.fn(),
+          removeEventListener: jest.fn(),
+          dispatchEvent: jest.fn(),
+        })),
+      });
+    });
+
+    test('happy path', async () => {
+      userEvent.type(
+        screen.getByLabelText('Provider name', {
+          exact: false,
+        }),
+        'FooBar'
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvesting status', { exact: false }),
+        ['active']
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvest statistics via', { exact: false }),
+        ['aggregator']
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Aggregator', { exact: false }),
+        ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']
+      );
+
+      userEvent.selectOptions(
+        screen.getByLabelText('Report release', { exact: false }),
+        ['4']
+      );
+      userEvent.click(await screen.findByText('Add report type'));
+      userEvent.click(await screen.findByText('Report type'));
+      userEvent.click(await screen.findByText('BR1'));
+      const startInput = screen.getByLabelText('Harvesting start', {
+        exact: false,
+      });
+      userEvent.type(startInput, '2020-01');
+
+      userEvent.click(await screen.findByText('Save & close'));
+      expect(onSubmit).toHaveBeenCalled();
+    });
+  });
 });
