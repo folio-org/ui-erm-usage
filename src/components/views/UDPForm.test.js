@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Form } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
@@ -44,6 +44,30 @@ const stubHarvesterImpls = [
   },
 ];
 
+const initialUdp = {
+  id: '0ba00047-b6cb-417a-a735-e2c1e45e30f1',
+  label: 'Usage data provider',
+  harvestingConfig: {
+    harvestingStatus: 'active',
+    harvestVia: 'sushi',
+    sushiConfig: {
+      serviceType: 'cs41',
+      serviceUrl: 'http://usage.udp.com/SushiServer',
+    },
+    reportRelease: 4,
+    requestedReports: ['DR1'],
+    harvestingStart: '2018-01',
+  },
+  sushiCredentials: {
+    customerId: '0000000000',
+    requestorId: '00000000-0000-0000-0000-000000000000',
+    requestorName: 'Opentown Libraries',
+    requestorMail: 'electronic@lib.optentown.edu',
+  },
+  notes:
+    'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
+};
+
 const onDelete = jest.fn();
 const onClose = jest.fn();
 const handleSubmit = jest.fn();
@@ -51,7 +75,7 @@ const onSubmit = jest.fn();
 const clearReports = jest.fn();
 const setReportRelease = jest.fn();
 
-const renderUDPForm = (stripes) => {
+const renderUDPForm = (stripes, udp = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -70,6 +94,7 @@ const renderUDPForm = (stripes) => {
               }}
               handlers={{ onClose, onDelete }}
               handleSubmit={handleSubmit}
+              initialValues={udp}
               onSubmit={onSubmit}
               store={stripes.store}
             />
@@ -84,14 +109,28 @@ describe('UDPForm', () => {
   let stripes;
   beforeEach(() => {
     stripes = useStripes();
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
   });
 
-  test('renders form', async () => {
+  test('should render form', async () => {
     renderUDPForm(stripes);
     expect(screen.getByText('Harvesting status')).toBeVisible();
   });
 
-  describe('harvestVia', () => {
+  describe('test harvestVia options', () => {
     beforeEach(() => {
       renderUDPForm(stripes);
       userEvent.selectOptions(
@@ -100,7 +139,7 @@ describe('UDPForm', () => {
       );
     });
 
-    test('select harvestVia=aggregator', async () => {
+    test('should enable aggregator options', async () => {
       userEvent.selectOptions(
         screen.getByLabelText('Harvest statistics via', { exact: false }),
         ['aggregator']
@@ -115,7 +154,7 @@ describe('UDPForm', () => {
       ).toHaveAttribute('disabled');
     });
 
-    test('select harvestVia=sushi', async () => {
+    test('should enable sushi options', async () => {
       userEvent.selectOptions(
         screen.getByLabelText('Harvest statistics via', { exact: false }),
         ['sushi']
@@ -131,26 +170,12 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('report release and select reports', () => {
+  describe('test report release and selected reports options', () => {
     beforeEach(() => {
       renderUDPForm(stripes);
-
-      Object.defineProperty(window, 'matchMedia', {
-        writable: true,
-        value: jest.fn().mockImplementation((query) => ({
-          matches: false,
-          media: query,
-          onchange: null,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
-        })),
-      });
     });
 
-    test('switch between counter 4 and 5 reports', async () => {
+    test('should switch between counter 4 and 5 reports', async () => {
       userEvent.selectOptions(
         screen.getByLabelText('Report release', { exact: false }),
         ['4']
@@ -176,7 +201,7 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('harvesting start and end', () => {
+  describe('test harvesting start and end', () => {
     beforeEach(() => {
       renderUDPForm(stripes);
     });
@@ -222,23 +247,9 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('fill form', () => {
+  describe('test fill form', () => {
     beforeEach(() => {
       renderUDPForm(stripes);
-
-      Object.defineProperty(window, 'matchMedia', {
-        writable: true,
-        value: jest.fn().mockImplementation((query) => ({
-          matches: false,
-          media: query,
-          onchange: null,
-          addListener: jest.fn(),
-          removeListener: jest.fn(),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
-        })),
-      });
     });
 
     test('happy path', async () => {
@@ -275,6 +286,42 @@ describe('UDPForm', () => {
 
       userEvent.click(await screen.findByText('Save & close'));
       expect(onSubmit).toHaveBeenCalled();
+    });
+  });
+
+  describe('test delete UDP', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes, initialUdp);
+    });
+
+    test('delete modal is shown', async () => {
+      userEvent.click(await screen.findByText('Delete'));
+      expect(
+        screen.getByText('Delete usage data Provider')
+      ).toBeInTheDocument();
+    });
+
+    test('click cancel delete', async () => {
+      userEvent.click(await screen.findByText('Delete'));
+      const cancel = screen.findByRole('button', {
+        name: 'Cancel',
+        id: 'clickable-delete-udp-confirmation-cancel',
+      });
+      userEvent.click(await cancel);
+      await waitForElementToBeRemoved(() =>
+        screen.queryByText('Delete usage data Provider')
+      );
+      expect(onDelete).not.toHaveBeenCalled();
+    });
+
+    test('click submit delete', async () => {
+      userEvent.click(await screen.findByText('Delete'));
+      const submit = screen.getByRole('button', {
+        name: 'Submit',
+        id: 'clickable-delete-udp-confirmation-confirm',
+      });
+      userEvent.click(submit);
+      expect(onDelete).toHaveBeenCalled();
     });
   });
 });
