@@ -55,6 +55,18 @@ function SushiCredentialsForm(props) {
         <Col xs={4}>
           <Field
             label={
+              <FormattedMessage id="ui-erm-usage.sushiCreds.platform" />
+            }
+            name="sushiCredentials.platform"
+            id="addudp_platform"
+            placeholder="Enter platform to request usage for"
+            component={TextField}
+            fullWidth
+          />
+        </Col>
+        <Col xs={4}>
+          <Field
+            label={
               <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
             }
             name="sushiCredentials.requestorName"
@@ -64,7 +76,7 @@ function SushiCredentialsForm(props) {
             fullWidth
           />
         </Col>
-        <Col xs={8}>
+        <Col xs={4}>
           <Field
             label={
               <FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />
