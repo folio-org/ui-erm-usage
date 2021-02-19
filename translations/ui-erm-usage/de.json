@@ -190,7 +190,7 @@
     "settings.harvester.config.periodic.periodicInterval": "Periodisches Intervall",
     "settings.harvester.config.periodic.lastTriggered": "Zuletzt ausgelöst um",
     "settings.harvester.config.periodic.notDefined": "Es ist kein periodischer Abruf definiert und dadurch nicht verfügbar. Klicken Sie auf +, um einen periodischen Abruf zu definieren.",
-    "settings.harvester.config.periodic.deleteQuestion": "Möchten Sie die periodische Abrufkonfiguration wirklich löschen?",
+    "settings.harvester.config.periodic.deleteQuestion": "Möchten Sie die Konfiguration für periodischen Abruf wirklich löschen?",
     "statistics.noStats": "Keine Statistiken verfügbar",
     "statistics.counter.upload": "COUNTER-Bericht hochladen",
     "statistics.counter.download.multiMonth.prepare": "Das Herunterladen des Berichts {reportType} von {start} bis {end} als {format}-Datei wird vorbereitet. Dies kann einige Zeit dauern, bitte warten Sie.",
