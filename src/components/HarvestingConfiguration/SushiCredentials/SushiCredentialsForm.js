@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
@@ -6,9 +7,32 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { required } from '../../../util/validate';
 
 function SushiCredentialsForm(props) {
-  const { useAggregator } = props;
+  const { useAggregator, values } = props;
 
-  const getValidator = () => (!useAggregator ? required : () => {});
+  const isCustIdRequired = () => {
+    if (!useAggregator) {
+      return true;
+    }
+
+    const isValueDefined =
+      _.get(values, 'sushiCredentials.requestorId', false) ||
+      _.get(values, 'sushiCredentials.apiKey', false) ||
+      _.get(values, 'sushiCredentials.platform', false) ||
+      _.get(values, 'sushiCredentials.requestorName', false) ||
+      _.get(values, 'sushiCredentials.requestorMAil', false);
+
+    if (useAggregator && isValueDefined) {
+      return true;
+    }
+    return false;
+  };
+
+  const getValidator = () => {
+    if (isCustIdRequired()) {
+      return required;
+    }
+    return () => {};
+  };
 
   return (
     <React.Fragment>
@@ -20,7 +44,7 @@ function SushiCredentialsForm(props) {
             id="addudp_customerid"
             placeholder="Enter the SUSHI customer ID"
             component={TextField}
-            required={!useAggregator}
+            required={isCustIdRequired()}
             validate={getValidator()}
             key={useAggregator ? 1 : 0}
             fullWidth
@@ -54,9 +78,7 @@ function SushiCredentialsForm(props) {
       <Row>
         <Col xs={4}>
           <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.platform" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.sushiCreds.platform" />}
             name="sushiCredentials.platform"
             id="addudp_platform"
             placeholder="Enter platform to request usage for"
@@ -95,6 +117,7 @@ function SushiCredentialsForm(props) {
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
+  values: PropTypes.shape(),
 };
 
 export default SushiCredentialsForm;
