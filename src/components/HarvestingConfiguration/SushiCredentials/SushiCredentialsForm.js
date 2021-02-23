@@ -31,7 +31,9 @@ function SushiCredentialsForm(props) {
     if (isCustIdRequired()) {
       return required;
     }
-    return () => {};
+    return () => {
+      // return empty object as there are no errors.
+    };
   };
 
   return (
