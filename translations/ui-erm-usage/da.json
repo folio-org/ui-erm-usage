@@ -228,5 +228,6 @@
     "general.reportTypes": "Report types",
     "report.upload.editedManually": "Rapportdata er blevet redigeret manuelt",
     "report.upload.editReason": "Rediger årsag",
-    "report.upload.editReason.placeholder": "Angiv årsag til de manuelle ændringer"
+    "report.upload.editReason.placeholder": "Angiv årsag til de manuelle ændringer",
+    "sushiCreds.platform": "Platform"
 }
