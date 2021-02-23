@@ -5,5 +5,7 @@ node_modules
 yarn.lock
 ModuleDescriptor.json
 yarn-error.log
+junit.xml
 /out/
 /artifacts/
+/.vscode/
