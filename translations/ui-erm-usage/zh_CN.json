@@ -228,5 +228,6 @@
     "general.reportTypes": "报告类型",
     "report.upload.editedManually": "报告数据已人工编辑",
     "report.upload.editReason": "修改原因",
-    "report.upload.editReason.placeholder": "输入人工更改的原因"
+    "report.upload.editReason.placeholder": "输入人工更改的原因",
+    "sushiCreds.platform": "Platform"
 }
