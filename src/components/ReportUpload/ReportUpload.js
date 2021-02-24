@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Callout } from '@folio/stripes-components';
 
-import CounterUpload from './CounterUploadModal/CounterUpload';
-import CounterUploadModal from './CounterUploadModal/CounterUploadModal';
+import CounterUpload from './CounterUpload';
 import NonCounterUploadModal from './NonCounterUploadModal';
 import NonCounterUploadForm from './NonCounterUploadModal/NonCounterUploadForm';
 
@@ -45,7 +44,7 @@ class ReportUpload extends React.Component {
       timeout: 0,
     });
     this.setState({
-      showCounterUpload: true,
+      showCounterUpload: false,
       showNonCounterUpload: false,
     });
   };
@@ -109,7 +108,7 @@ class ReportUpload extends React.Component {
           udpId={this.props.udpId}
           handlers={this.props.handlers}
         /> */}
-        <CounterUploadModal
+        <CounterUpload
           open={this.state.showCounterUpload}
           onClose={() => this.setState({ showCounterUpload: false })}
           onFail={this.handleFail}

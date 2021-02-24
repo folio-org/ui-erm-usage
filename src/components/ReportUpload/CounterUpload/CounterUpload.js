@@ -1,30 +1,33 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
-import CounterUpload from './CounterUpload';
+import CounterUploadModal from './CounterUploadModal';
 
-function CounterUploadModal(props) {
-  const { intl, onClose, onFail, onSuccess, open, udpId } = props;
-
-  const okapiUrl = props.stripes.okapi.url;
+function CounterUpload({
+  intl,
+  onClose,
+  onFail,
+  onSuccess,
+  open,
+  stripes,
+  udpId,
+}) {
+  const okapiUrl = stripes.okapi.url;
   const httpHeaders = Object.assign(
     {},
     {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+      'X-Okapi-Tenant': stripes.okapi.tenant,
+      'X-Okapi-Token': stripes.store.getState().okapi.token,
       'Content-Type': 'application/json',
     }
   );
 
   const [selectedFile, setSelectedFile] = useState({});
+  const [values, setValues] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [infoType, setInfoType] = useState('');
-
-  useEffect(() => {
-    setSelectedFile({});
-  }, []);
 
   const closeInfoModal = () => {
     setShowInfoModal(false);
@@ -43,8 +46,8 @@ function CounterUploadModal(props) {
     });
   };
 
-  const doUpload = (report, doOverwrite) => {
-    setSelectedFile(report);
+  const doUpload = async (report, doOverwrite) => {
+    setValues(report);
     const json = JSON.stringify(report);
 
     setShowInfoModal(true);
@@ -60,11 +63,12 @@ function CounterUploadModal(props) {
       .then((response) => {
         if (response.status >= 400) {
           showErrorInfo(response);
+          return Promise.resolve(true);
         } else {
           setShowInfoModal(false);
           setSelectedFile({});
-
           onSuccess();
+          return Promise.resolve(true);
         }
       })
       .catch((err) => {
@@ -74,11 +78,11 @@ function CounterUploadModal(props) {
   };
 
   const uploadFile = (report) => {
-    doUpload(report, false);
+    return doUpload(report, false);
   };
 
   const uploadFileForceOverwrite = () => {
-    doUpload(selectedFile, true);
+    return doUpload(values, true);
   };
 
   const cancleUpload = () => {
@@ -121,7 +125,13 @@ function CounterUploadModal(props) {
 
   return (
     <>
-      <CounterUpload open={open} onClose={onClose} onSubmit={uploadFile} />
+      <CounterUploadModal
+        open={open}
+        onClose={onClose}
+        onSubmit={uploadFile}
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
+      />
       <Modal
         open={showInfoModal}
         label={intl.formatMessage({
@@ -279,7 +289,7 @@ function CounterUploadModal(props) {
 //   }
 // }
 
-CounterUploadModal.propTypes = {
+CounterUpload.propTypes = {
   onSuccess: PropTypes.func,
   onFail: PropTypes.func,
   stripes: PropTypes.shape().isRequired,
@@ -287,10 +297,9 @@ CounterUploadModal.propTypes = {
   intl: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  // handlers: PropTypes.shape(),
   mutators: PropTypes.shape({
     setContent: PropTypes.func,
   }),
 };
 
-export default injectIntl(CounterUploadModal);
+export default injectIntl(CounterUpload);

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field, Form } from 'react-final-form';
 import { stripesConnect } from '@folio/stripes/core';
@@ -16,14 +16,14 @@ import {
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
-function CounterUpload(props) {
-  const { intl, onClose, onSubmit, open } = props;
-  const [selectedFile, setSelectedFile] = useState({});
-
-  useEffect(() => {
-    setSelectedFile({});
-  }, []);
-
+function CounterUploadModal({
+  intl,
+  onClose,
+  onSubmit,
+  open,
+  selectedFile,
+  setSelectedFile,
+}) {
   const getBase64 = (file, cb) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -48,7 +48,11 @@ function CounterUpload(props) {
         buttonStyle="primary"
         disabled={!isValid}
         id="save-counter-button"
-        onClick={handleSubmit}
+        onClick={(report) => handleSubmit(report, onReset)
+          .then(() => {
+            onReset();
+          })
+        }
       >
         <FormattedMessage id="ui-erm-usage.general.save" />
       </Button>
@@ -87,12 +91,8 @@ function CounterUpload(props) {
         }
         return errors;
       }}
-      render={({ handleSubmit, form, values }) => (
-        <form
-          data-test-counter-report-form-page
-          id="form-counter-report"
-          onSubmit={handleSubmit}
-        >
+      render={({ handleSubmit, form }) => (
+        <form data-test-counter-report-form-page id="form-counter-report">
           <Modal
             closeOnBackgroundClick
             footer={footer(form.getState().valid, handleSubmit, form.reset)}
@@ -183,8 +183,8 @@ function CounterUpload(props) {
     />
   );
 }
-CounterUpload.upload = 'upload';
-CounterUpload.overwrite = 'overwrite';
+CounterUploadModal.upload = 'upload';
+CounterUploadModal.overwrite = 'overwrite';
 
 // class CounterUpload extends React.Component {
 //   static manifest = Object.freeze({
@@ -378,7 +378,7 @@ CounterUpload.overwrite = 'overwrite';
 //   }
 // }
 
-CounterUpload.propTypes = {
+CounterUploadModal.propTypes = {
   intl: PropTypes.object,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -386,6 +386,8 @@ CounterUpload.propTypes = {
   mutators: PropTypes.shape({
     setContent: PropTypes.func,
   }),
+  selectedFile: PropTypes.shape().isRequired,
+  setSelectedFile: PropTypes.func.isRequired
 };
 
-export default injectIntl(stripesConnect(CounterUpload));
+export default injectIntl(stripesConnect(CounterUploadModal));
