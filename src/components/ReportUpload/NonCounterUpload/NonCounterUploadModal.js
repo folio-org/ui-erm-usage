@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import stripesFinalForm from '@folio/stripes/final-form';
 import { Button, Modal, ModalFooter } from '@folio/stripes-components';
-import NonCounterUpload from './NonCounterUpload';
+import NonCounterInnerForm from './NonCounterInnerForm';
 
 function NonCounterUploadModal(props) {
   const { invalid, onClose } = props;
@@ -41,7 +41,7 @@ function NonCounterUploadModal(props) {
           }
         >
           <div className="upload-non-counter-modal">
-            <NonCounterUpload
+            <NonCounterInnerForm
               mutators={props.form.mutators}
               udpId={props.udpId}
               stripes={props.stripes}

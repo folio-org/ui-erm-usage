@@ -5,8 +5,7 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 
 import { validateUrl } from '../../../util/validate';
 
-function NonCounterUploadLink(props) {
-  const { linkUrl, onChangeLinkUrl } = props;
+function NonCounterUploadLink({ linkUrl, onChangeLinkUrl }) {
   const error = validateUrl(linkUrl);
   return (
     <Col xs={12} md={12}>

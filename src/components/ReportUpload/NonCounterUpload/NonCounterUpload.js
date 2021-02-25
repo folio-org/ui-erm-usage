@@ -1,22 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import stripesFinalForm from '@folio/stripes/final-form';
-import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
-function NonCounterUploadForm(props) {
-  const {
-    handlers,
-    invalid,
-    onFail,
-    onClose,
-    onSuccess,
-    open,
-    stripes,
-    udpId,
-  } = props;
-
+function NonCounterUpload({
+  handlers,
+  onFail,
+  onClose,
+  onSuccess,
+  open,
+  stripes,
+  udpId,
+}) {
   const handleNonCounterUpload = (report) => {
     const json = JSON.stringify(report);
     const okapiUrl = stripes.okapi.url;
@@ -57,14 +51,14 @@ function NonCounterUploadForm(props) {
   );
 }
 
-NonCounterUploadModal.propTypes = {
+NonCounterUpload.propTypes = {
   handlers: PropTypes.shape(),
-  invalid: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onFail: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
 };
 
-export default NonCounterUploadForm;
+export default NonCounterUpload;
