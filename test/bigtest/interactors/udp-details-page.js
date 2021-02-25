@@ -192,6 +192,8 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   reportEditedManuallyCheckbox = scoped('[id="addcounterreport_reportEditedManually"]');
   editReasonTextfield = scoped('[id="addcounterreport_editReason"]');
   uploadFileButton = scoped('button[id="upload-report-button"]');
+  saveCounterButton = scoped('button[id="save-counter-button"]');
+  saveCounterButtonIsDisabled = is('button[id="save-counter-button"]', ':disabled');
   uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
   cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
   couterFileUploaderInteractor = new CounterUploaderInteractor();

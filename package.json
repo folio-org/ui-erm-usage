@@ -14,6 +14,7 @@
     "test": "yarn run test:jest && yarn run test:bigtest",
     "test:jest": "jest --ci --coverage",
     "test:bigtest": "stripes test karma --bundle --karma.singleRun --karma.browsers ChromeDocker --karma.reporters mocha junit --coverage",
+    "test:karma": "stripes test karma",
     "lint": "eslint src"
   },
   "devDependencies": {

@@ -282,7 +282,7 @@ describe('UDPDetailsPage', () => {
         });
 
         it('renders upload report buttton', () => {
-          expect(udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent).to.equal(true);
+          expect(udpDetailsPage.uploadCounterModal.saveCounterButton.isPresent).to.equal(true);
         });
 
         describe('click report edited manually checkbox', () => {
@@ -291,7 +291,7 @@ describe('UDPDetailsPage', () => {
           });
 
           it('upload file button should be disabled', () => {
-            expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.true;
+            expect(udpDetailsPage.uploadCounterModal.saveCounterButtonIsDisabled).to.be.true;
           });
 
           describe('enter edit reason', () => {
@@ -300,12 +300,12 @@ describe('UDPDetailsPage', () => {
             });
 
             it('upload file button should be enabled', () => {
-              expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled).to.be.false;
+              expect(udpDetailsPage.uploadCounterModal.saveCounterButtonIsDisabled).to.be.false;
             });
 
             describe('upload counter report', () => {
               beforeEach(async () => {
-                await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+                await udpDetailsPage.uploadCounterModal.saveCounterButton.click();
               });
 
               it('upload counter report modal should be closed', () => {
