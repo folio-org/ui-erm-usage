@@ -62,7 +62,7 @@ class FileUploader extends React.Component {
           {({ getRootProps, getInputProps, open }) => (
             <div {...getRootProps({ onClick: (evt) => evt.preventDefault() })}>
               <div style={style}>
-                <input {...getInputProps()} />
+                <input {...getInputProps()} data-testid="fileInput" />
                 <FormattedMessage
                   aria-label="Drop file for counter report upload"
                   id="ui-erm-usage.report.upload.dropFile"

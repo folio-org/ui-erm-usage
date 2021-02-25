@@ -122,7 +122,7 @@ function CounterUpload({
       );
     }
   };
-
+  
   return (
     <>
       <CounterUploadModal
@@ -139,11 +139,14 @@ function CounterUpload({
         })}
         id="counterReportExists"
       >
-        {renderInfo()}
+        {showInfoModal && renderInfo()}
       </Modal>
     </>
   );
 }
+
+CounterUpload.upload = 'upload';
+CounterUpload.overwrite = 'overwrite';
 
 CounterUpload.propTypes = {
   onSuccess: PropTypes.func,

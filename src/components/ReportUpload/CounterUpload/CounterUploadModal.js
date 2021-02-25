@@ -42,32 +42,34 @@ function CounterUploadModal({
     setSelectedFile(currentFile);
   };
 
-  const footer = (isValid, handleSubmit, onReset) => (
-    <ModalFooter>
-      <Button
-        buttonStyle="primary"
-        disabled={!isValid}
-        id="save-counter-button"
-        onClick={(report) => handleSubmit(report, onReset)
-          .then(() => {
+  const footer = (isValid, handleSubmit, onReset) => {
+    return (
+      <ModalFooter>
+        <Button
+          buttonStyle="primary"
+          disabled={!isValid}
+          id="save-counter-button"
+          onClick={(report) =>
+            handleSubmit(report, onReset).then(() => {
+              onReset();
+            })
+          }
+        >
+          <FormattedMessage id="ui-erm-usage.general.save" />
+        </Button>
+        <Button
+          id="cancel-upload-counter-report"
+          onClick={() => {
             onReset();
-          })
-        }
-      >
-        <FormattedMessage id="ui-erm-usage.general.save" />
-      </Button>
-      <Button
-        id="cancel-upload-counter-report"
-        onClick={() => {
-          onReset();
-          setSelectedFile({});
-          onClose();
-        }}
-      >
-        <FormattedMessage id="ui-erm-usage.general.cancel" />
-      </Button>
-    </ModalFooter>
-  );
+            setSelectedFile({});
+            onClose();
+          }}
+        >
+          <FormattedMessage id="ui-erm-usage.general.cancel" />
+        </Button>
+      </ModalFooter>
+    );
+  };
 
   const isReportEditedManually = (isEditedManually) => {
     if (_.isNil(isEditedManually)) {
@@ -189,8 +191,6 @@ function CounterUploadModal({
     />
   );
 }
-CounterUploadModal.upload = 'upload';
-CounterUploadModal.overwrite = 'overwrite';
 
 CounterUploadModal.propTypes = {
   intl: PropTypes.object,
@@ -201,7 +201,7 @@ CounterUploadModal.propTypes = {
     setContent: PropTypes.func,
   }),
   selectedFile: PropTypes.shape().isRequired,
-  setSelectedFile: PropTypes.func.isRequired
+  setSelectedFile: PropTypes.func.isRequired,
 };
 
 export default injectIntl(stripesConnect(CounterUploadModal));
