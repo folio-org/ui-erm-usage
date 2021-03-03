@@ -134,15 +134,40 @@ class ReportInfo extends React.Component {
     );
   }
 
+  getFailedInfo(failedReason) {
+    let newReason;
+    // const errorCode = failedReason.match(/(?<=Number=\s+).*?(?=\s+,)/gs);
+    // const errorCode = failedReason.substring(failedReason.indexOf('Number=') + 1);
+    const errorCode = failedReason.match('Number=(.*), Severity=')[1];
+
+    if (errorCode === '1000' || errorCode === '1010' || errorCode === '1011' || errorCode === '1020' ||
+        errorCode === '1030' || errorCode === '2000' || errorCode === '2010' || errorCode === '2020' ||
+        errorCode === '3000' || errorCode === '3010' || errorCode === '3020' || errorCode === '3030' ||
+        errorCode === '3031' || errorCode === '3040' || errorCode === '3050' || errorCode === '3060' ||
+        errorCode === '3061' || errorCode === '3062' || errorCode === '3070' ||
+        errorCode === '3071' || errorCode === '3080') {
+      const translatedErrorCode = `${this.props.intl.formatMessage({
+        id: `ui-erm-usage.report.error.${errorCode}`
+      })} (${errorCode})`;
+      newReason = `SUSHI exception: xxx (xxx) ${translatedErrorCode}`;
+    } else {
+      newReason = failedReason;
+    }
+    return newReason;
+  }
+
   render() {
     const { report, retryThreshold } = this.props;
+
+    const failedInfo = this.getFailedInfo(report.failedReason);
 
     const failInfo = !report.failedReason ? null : (
       <KeyValue
         label={this.props.intl.formatMessage({
           id: 'ui-erm-usage.general.info',
         })}
-        value={report.failedReason}
+        // value={report.failedReason}
+        value={failedInfo}
       />
     );
 
