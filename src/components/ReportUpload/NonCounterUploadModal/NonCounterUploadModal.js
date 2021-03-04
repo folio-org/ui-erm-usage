@@ -26,13 +26,12 @@ function NonCounterUploadModal(props) {
       onSubmit={props.handleSubmit}
     >
       <Modal
-        className="upload-non-counter-modal"
         closeOnBackgroundClick
         footer={renderFooter(props.handleSubmit)}
         open={props.open}
         label={<FormattedMessage id="ui-erm-usage.statistics.custom.upload" />}
       >
-        <div>
+        <div className="upload-non-counter-modal">
           <NonCounterUpload
             mutators={props.form.mutators}
             udpId={props.udpId}
