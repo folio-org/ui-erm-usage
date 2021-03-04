@@ -38,6 +38,7 @@ const filterGroups = [
     name: 'tags',
     cql: 'tags.tagList',
     values: [],
+    operator: '=',
   },
   {
     label: 'Error Codes',
