@@ -139,25 +139,25 @@ class ReportInfo extends React.Component {
     return val >= 1 && val <= 999;
   };
 
-  translateErrorCodesFilterValues = (val) => {
+  translateErrorCodes = (val) => {
+    const { intl } = this.props;
     let label;
     if (this.isWarningCode(val)) {
-      label = `${this.props.intl.formatMessage({
+      label = `${intl.formatMessage({
         id: 'ui-erm-usage.report.error.1'
       })} (${val})`;
     } else {
-      label = `${this.props.intl.formatMessage({
+      label = `${intl.formatMessage({
         id: `ui-erm-usage.report.error.${val}`
       })} (${val})`;
     }
-    return label;
+    return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.sushiException' })}: ${label}`;
   };
 
-  getFailedInfo(failedReason) {
+  adaptSushiFailedInfo(failedReason) {
     if (failedReason.includes('Number') && failedReason.includes('Severity') && failedReason.includes('Message')) {
       const errorCode = failedReason.match('Number=(.*), Severity=')[1];
-      const translatedErrorCode = this.translateErrorCodesFilterValues(errorCode);
-      return `SUSHI exception: ${translatedErrorCode}`;
+      return this.translateErrorCodes(errorCode);
     } else {
       return failedReason;
     }
@@ -171,7 +171,7 @@ class ReportInfo extends React.Component {
         label={this.props.intl.formatMessage({
           id: 'ui-erm-usage.general.info',
         })}
-        value={this.getFailedInfo(report.failedReason)}
+        value={this.adaptSushiFailedInfo(report.failedReason)}
       />
     );
 
