@@ -168,6 +168,7 @@ class ReportInfo extends React.Component {
 
     const failInfo = !report.failedReason ? null : (
       <KeyValue
+        data-test-report-failed-reason
         label={this.props.intl.formatMessage({
           id: 'ui-erm-usage.general.info',
         })}

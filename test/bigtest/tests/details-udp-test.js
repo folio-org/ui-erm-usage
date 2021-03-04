@@ -192,6 +192,14 @@ describe('UDPDetailsPage', () => {
             udpDetailsPage.reportInfoFailed.deleteButton.isPresent
           ).to.equal(true);
         });
+
+        it('failedReason should be visible', () => {
+          expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(true);
+        });
+
+        it('failedReason should contain sushi substring', () => {
+          expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.contains('SUSHI exception');
+        });
       });
 
       describe('can open tags helper app', () => {

@@ -149,6 +149,7 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   static defaultScope = '[class="report-info-failed"]';
   downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
   deleteButton = scoped('button[id="delete-report-button"]');
+  failedReason = scoped('[data-test-report-failed-reason]');
 }
 
 @interactor class CustomReports {
