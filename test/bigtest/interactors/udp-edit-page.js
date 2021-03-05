@@ -1,4 +1,5 @@
 import {
+  attribute,
   clickable,
   interactor,
   isPresent,
@@ -8,6 +9,11 @@ import {
 
 @interactor class HarvestingStatusSelect {
   static defaultScope = 'select[name="harvestingConfig.harvestingStatus"]';
+  value = value();
+}
+
+@interactor class HarvestingViaSelect {
+  static defaultScope = 'select[name="harvestingConfig.harvestVia"]';
   value = value();
 }
 
@@ -31,6 +37,15 @@ import {
   clickCancelClearReportsButton = clickable('[data-test-confirmation-modal-cancel-button]');
 }
 
+@interactor class CustomerId {
+  static defaultScope = 'input[id="addudp_customerid"]';
+  required = attribute('required');
+}
+
+@interactor class Platform {
+  static defaultScope = 'input[id="addudp_platform"]';
+}
+
 export default @interactor class UDPEditPage {
   static defaultScope = '[data-test-form-page]';
   isLoaded = isPresent('[class*=paneTitleLabel---]');
@@ -41,6 +56,7 @@ export default @interactor class UDPEditPage {
 
   title = text('[class*=paneTitleLabel---]');
   harvestingStatusSelect = new HarvestingStatusSelect();
+  harvestingViaSelect = new HarvestingViaSelect();
   deleteUDPConfirmation = new DeleteUDPConfirmation();
 
   clickDeleteUDP = clickable('#clickable-delete-udp');
@@ -49,4 +65,7 @@ export default @interactor class UDPEditPage {
   reportTypeSelect = new ReportTypeSelect();
   clickAddReportButton = clickable('[data-test-add-report-button]');
   confirmationModal = new ConfirmationModal();
+
+  customerId = new CustomerId();
+  platform = new Platform();
 }

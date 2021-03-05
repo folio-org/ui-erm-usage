@@ -266,14 +266,24 @@ describe('UDPDetailsPage', () => {
       });
 
       it('does render upload file button', () => {
-        expect(udpDetailsPage.uploadCounterModal.selectFileButton.isPresent).to.equal(true);
+        expect(
+          udpDetailsPage.uploadCounterModal.selectFileButton.isPresent
+        ).to.equal(true);
       });
       it('does render edit manually fields', () => {
-        expect(udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox.isPresent).to.equal(true);
-        expect(udpDetailsPage.uploadCounterModal.editReasonTextfield.isPresent).to.equal(true);
+        expect(
+          udpDetailsPage.uploadCounterModal.reportEditedManuallyCheckbox
+            .isPresent
+        ).to.equal(true);
+        expect(
+          udpDetailsPage.uploadCounterModal.editReasonTextfield.isPresent
+        ).to.equal(true);
       });
       it('does render cancel button', () => {
-        expect(udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton.isPresent).to.equal(true);
+        expect(
+          udpDetailsPage.uploadCounterModal.cancelUploadCounterReportButton
+            .isPresent
+        ).to.equal(true);
       });
 
       describe('handling drop counter report', () => {
@@ -282,7 +292,9 @@ describe('UDPDetailsPage', () => {
         });
 
         it('renders upload report buttton', () => {
-          expect(udpDetailsPage.uploadCounterModal.saveCounterButton.isPresent).to.equal(true);
+          expect(
+            udpDetailsPage.uploadCounterModal.uploadFileButton.isPresent
+          ).to.equal(true);
         });
 
         describe('click report edited manually checkbox', () => {
@@ -291,16 +303,21 @@ describe('UDPDetailsPage', () => {
           });
 
           it('upload file button should be disabled', () => {
-            expect(udpDetailsPage.uploadCounterModal.saveCounterButtonIsDisabled).to.be.true;
+            expect(udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled)
+              .to.be.true;
           });
 
           describe('enter edit reason', () => {
             beforeEach(async () => {
-              await udpDetailsPage.uploadCounterModal.editReasonTextfield.fill('my edit reason');
+              await udpDetailsPage.uploadCounterModal.editReasonTextfield.fill(
+                'my edit reason'
+              );
             });
 
             it('upload file button should be enabled', () => {
-              expect(udpDetailsPage.uploadCounterModal.saveCounterButtonIsDisabled).to.be.false;
+              expect(
+                udpDetailsPage.uploadCounterModal.uploadFileButtonIsDisabled
+              ).to.be.false;
             });
 
             describe('upload counter report', () => {
@@ -309,10 +326,14 @@ describe('UDPDetailsPage', () => {
               });
 
               it('upload counter report modal should be closed', () => {
-                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(
+                  false
+                );
               });
               it('callout message should be visible with Upload successful!', () => {
-                expect(udpDetailsPage.callout.calloutMessge.text).to.contains('Upload successful!');
+                expect(udpDetailsPage.callout.calloutMessge.text).to.contains(
+                  'Upload successful!'
+                );
               });
             });
 
@@ -322,7 +343,9 @@ describe('UDPDetailsPage', () => {
               });
 
               it('upload counter report modal should be closed', () => {
-                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(false);
+                expect(udpDetailsPage.uploadCounterModal.isPresent).to.equal(
+                  false
+                );
               });
             });
           });
@@ -370,20 +393,21 @@ describe('UDPDetailsPage', () => {
             await udpDetailsPage.uploadNonCounterModal.yearInput.fill(2000);
           });
 
-          // BigTest complains it cannot finr the save-non-counter-button. However, it is there.
-          
-          // it('save non-counter report button is enable', () => {
-          //   expect(udpDetailsPage.uploadNonCounterModal.saveNonCounterButtonIsDisabled).to.be.false;
-          // });
-          // describe('save non-counter report', () => {
-          //   beforeEach(async () => {
-          //     await udpDetailsPage.uploadNonCounterModal.saveNonCounterButton.click();
-          //   });
+          it('save non-counter report button is enable', () => {
+            expect(udpDetailsPage.saveNonCounterButton.isDisabled).to.be.false;
+          });
 
-          //   it('upload non-counter report modal should be closed', () => {
-          //     expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(false);
-          //   });
-          // });
+          describe('save non-counter report', () => {
+            beforeEach(async () => {
+              await udpDetailsPage.saveNonCounterButton.click();
+            });
+
+            it('upload non-counter report modal should be closed', () => {
+              expect(udpDetailsPage.uploadNonCounterModal.isPresent).to.equal(
+                false
+              );
+            });
+          });
         });
       });
 
@@ -566,7 +590,10 @@ describe('Renders manually changed counter report info', () => {
 
   let udp = null;
   beforeEach(async function () {
-    udp = this.server.create('usage-data-provider', 'withManuallyEditedCounterReports');
+    udp = this.server.create(
+      'usage-data-provider',
+      'withManuallyEditedCounterReports'
+    );
     await this.visit(`/eusage/${udp.id}`);
   });
 
@@ -600,7 +627,9 @@ describe('Renders manually changed counter report info', () => {
         });
 
         it('report edited manually info shound be visible', () => {
-          expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.true;
+          expect(
+            udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent
+          ).to.be.true;
         });
       });
     });
@@ -613,7 +642,10 @@ describe('Renders NON manually changed counter reports info', () => {
 
   let udp = null;
   beforeEach(async function () {
-    udp = this.server.create('usage-data-provider', 'withNonManuallyEditedCounterReports');
+    udp = this.server.create(
+      'usage-data-provider',
+      'withNonManuallyEditedCounterReports'
+    );
     await this.visit(`/eusage/${udp.id}`);
   });
 
@@ -647,7 +679,9 @@ describe('Renders NON manually changed counter reports info', () => {
         });
 
         it('report edited manually info shound NOT be visible', () => {
-          expect(udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent).to.be.false;
+          expect(
+            udpDetailsPage.counterReportInfo.reportEditedManuallyInfo.isPresent
+          ).to.be.false;
         });
       });
     });

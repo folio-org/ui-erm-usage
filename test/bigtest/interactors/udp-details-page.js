@@ -206,8 +206,12 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   linkRadioButton = scoped('label[for="custom-report-link-radio"]');
   yearInput = scoped('input[id="custom-report-year"]');
   linkUrlInput = scoped('input[id="custom-report-link-url"]');
-  saveNonCounterButton = scoped('button[id="save-non-counter-button"]');
-  saveNonCounterButtonIsDisabled = is('button[id="save-non-counter-button"]', ':disabled');
+}
+
+@interactor class SaveNonCounterButton {
+  static defaulScope = 'button[id="save-non-counter-button"]';
+  isDisabled = property('button[id="save-non-counter-button"]', 'disabled');
+  click = clickable('button[id="save-non-counter-button"]');
 }
 
 @interactor class TagsSelect {
@@ -264,4 +268,6 @@ export default @interactor class UDPDetailsPage {
   fileUploaderInteractor = new FileUploaderInteractor();
   downloadFileButton = new DownloadFileButton();
   urlInputError = new UrlInputError();
+
+  saveNonCounterButton = new SaveNonCounterButton();
 }

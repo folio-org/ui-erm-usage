@@ -53,6 +53,16 @@ class SushiCredentialsView extends React.Component {
           <Col xs={3}>
             <KeyValue
               label={
+                <FormattedMessage id="ui-erm-usage.sushiCreds.platform" />
+              }
+              value={
+                usageDataProvider.sushiCredentials?.platform ?? <NoValue />
+              }
+            />
+          </Col>
+          <Col xs={3}>
+            <KeyValue
+              label={
                 <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
               }
               value={

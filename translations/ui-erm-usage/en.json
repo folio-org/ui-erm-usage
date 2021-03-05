@@ -73,6 +73,7 @@
   "sushiCreds.customerId": "Customer ID",
   "sushiCreds.requestorId": "Requestor ID",
   "sushiCreds.apiKey": "API key",
+  "sushiCreds.platform": "Platform",
   "sushiCreds.requestorName": "Requestor name",
   "sushiCreds.requestorMail": "Requestor mail",
 

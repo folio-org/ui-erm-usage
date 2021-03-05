@@ -228,5 +228,6 @@
     "general.reportTypes": "أنواع التقارير",
     "report.upload.editedManually": "تم تحرير بيانات التقرير يدويًا",
     "report.upload.editReason": "تحرير السبب",
-    "report.upload.editReason.placeholder": "قم بإدخال سبب التغييرات اليدوية"
+    "report.upload.editReason.placeholder": "قم بإدخال سبب التغييرات اليدوية",
+    "sushiCreds.platform": "منصة"
 }

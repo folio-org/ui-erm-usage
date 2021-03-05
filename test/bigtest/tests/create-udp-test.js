@@ -14,9 +14,12 @@ describe('Create UDP', () => {
   const udpEditPage = new UDPEditPage();
 
   beforeEach(function () {
-    return this.visit('/eusage/create?filters=harvestingStatus.active&sort=label', () => {
-      expect(udpInteractor.$root).to.exist;
-    });
+    return this.visit(
+      '/eusage/create?filters=harvestingStatus.active&sort=label',
+      () => {
+        expect(udpInteractor.$root).to.exist;
+      }
+    );
   });
 
   it('harvestingStatus select is available', () => {
@@ -73,6 +76,40 @@ describe('Create UDP', () => {
       });
       it('selected report release did not change to "5"', () => {
         expect(udpEditPage.reportReleaseSelect.value).to.be.equal('4');
+      });
+    });
+
+    describe('customer id is optional if harvestVia = Aggregator', () => {
+      beforeEach(async () => {
+        await udpEditPage.harvestingViaSelect.select('Aggregator');
+        await wait(300);
+      });
+
+      it('customer id is optional', () => {
+        expect(udpEditPage.customerId.required).to.be.null;
+      });
+    });
+
+    describe('customer id is mandatory if harvestVia = Aggregator and sushi creds is filled', () => {
+      beforeEach(async () => {
+        await udpEditPage.harvestingViaSelect.select('Aggregator');
+        await udpEditPage.platform.fill('foo');
+        await wait(300);
+      });
+
+      it('customer id is mandatory', () => {
+        expect(udpEditPage.customerId.required).to.not.be.null;
+      });
+    });
+
+    describe('customer id is mandatory if harvestVia = Sushi', () => {
+      beforeEach(async () => {
+        await udpEditPage.harvestingViaSelect.select('Sushi');
+        await wait(300);
+      });
+
+      it('customer id is mandatory', () => {
+        expect(udpEditPage.customerId.required).to.not.be.null;
       });
     });
   });
