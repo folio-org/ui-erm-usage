@@ -194,7 +194,7 @@
     "statistics.noStats": "لا توجد إحصائيات متاحة",
     "statistics.counter.upload": "تحميل تقرير عداد",
     "statistics.counter.download.multiMonth.prepare": "سيتم تحضير تنزيل التقرير {reportName} من {start} حتى {end} كملف {format} . قد يستغرق هذا بعض الوقت. برجاء الانتظار!",
-    "statistics.counter.download.multiMonth.error": "خطأ في استرداد تقرير العداد لـ {reportName} من {start} حتى {end} كملف {format} . ربما لا يوجد تقرير متاح؟",
+    "statistics.counter.download.multiMonth.error": "خطأ في استرداد تقرير العداد لـ {reportType} من {start} حتى {end} كملف {format} . ربما لا يوجد تقرير متاح؟",
     "statistics.custom.upload": "تحميل تقرير غير عداد",
     "statistics.custom.info": "بيانات التقرير المخصص",
     "statistics.custom.info.detail": "معلومات تفصيلية",
