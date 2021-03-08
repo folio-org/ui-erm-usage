@@ -14,7 +14,7 @@ import {
 } from '@folio/stripes/smart-components';
 
 import filterGroups from '../../util/data/filterGroups';
-import isSushiWarningCode from '../../util/sushiWarningCode';
+import isSushiWarningCode from '../../util/isSushiWarningCode';
 
 class UDPFilters extends React.Component {
   static propTypes = Object.freeze({

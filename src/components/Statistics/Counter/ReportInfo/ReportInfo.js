@@ -9,7 +9,7 @@ import {
   MenuSection,
 } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
-import isSushiWarningCode from '../../../../util/sushiWarningCode';
+import isSushiWarningCode from '../../../../util/isSushiWarningCode';
 
 class ReportInfo extends React.Component {
   onClickDownloadRawReport = (release) => {
