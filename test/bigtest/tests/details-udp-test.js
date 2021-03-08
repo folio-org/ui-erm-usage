@@ -177,6 +177,15 @@ describe('UDPDetailsPage', () => {
             udpDetailsPage.reportInfoValid.deleteButton.isPresent
           ).to.equal(true);
         });
+
+        describe('click download button', () => {
+          beforeEach(async function () {
+            await udpDetailsPage.reportInfoValid.clickDownloadJsonXmlButton();
+          });
+          it('report info modal should be closed', () => {
+            expect(udpDetailsPage.reportInfoValid.isPresent).to.equal(false);
+          });
+        });
       });
 
       describe('failed report has correct buttons', () => {
