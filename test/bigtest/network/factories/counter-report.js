@@ -36,7 +36,7 @@ export default Factory.extend({
 
   failedReason: (i) => {
     if (i % 2 === 0) {
-      return 'Report not valid: Exception{Number=3030, Severity=ERROR, Message=No Data Found}';
+      return 'failed';
     } else {
       return null;
     }

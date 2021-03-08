@@ -142,7 +142,6 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
 @interactor class ReportInfoValid {
   static defaultScope = '[class="report-info-valid"]';
   downloadJsonXmlButton = scoped('button[id="download-json-xml-button"]');
-  clickDownloadJsonXmlButton = clickable('[id="download-json-xml-button"]');
   deleteButton = scoped('button[id="delete-report-button"]');
 }
 

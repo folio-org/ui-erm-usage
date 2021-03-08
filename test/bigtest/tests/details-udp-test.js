@@ -11,7 +11,11 @@ describe('UDPDetailsPage', () => {
 
   let udp = null;
   beforeEach(async function () {
-    udp = this.server.create('usage-data-provider', 'withUsageReports');
+    udp = this.server.create(
+      'usage-data-provider',
+      'withUsageReports',
+      { failedReason: 'Report not valid: Exception{Number=3030, Severity=ERROR, Message=No Data Found}' }
+    );
     await this.visit('/eusage/?filters=harvestingStatus.active');
   });
 
@@ -177,15 +181,6 @@ describe('UDPDetailsPage', () => {
             udpDetailsPage.reportInfoValid.deleteButton.isPresent
           ).to.equal(true);
         });
-
-        describe('click download button', () => {
-          beforeEach(async function () {
-            await udpDetailsPage.reportInfoValid.clickDownloadJsonXmlButton();
-          });
-          it('report info modal should be closed', () => {
-            expect(udpDetailsPage.reportInfoValid.isPresent).to.equal(false);
-          });
-        });
       });
 
       describe('failed report has correct buttons', () => {
@@ -200,14 +195,6 @@ describe('UDPDetailsPage', () => {
           expect(
             udpDetailsPage.reportInfoFailed.deleteButton.isPresent
           ).to.equal(true);
-        });
-
-        it('failedReason should be visible', () => {
-          expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(true);
-        });
-
-        it('failedReason should contain sushi substring', () => {
-          expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.contains('SUSHI exception');
         });
       });
 
@@ -702,5 +689,47 @@ describe('Renders NON manually changed counter reports info', () => {
         });
       });
     });
+  });
+});
+
+describe('UDPDetailsPage with sushi error code', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  beforeEach(async function () {
+    this.server.create('usage-data-provider', 'withCounterReportWithSushiErrorCode');
+    await this.visit('/eusage/?filters=harvestingStatus.active');
+    await udpInteractor.instances(0).click();
+    await udpDetailsPage.statisticsAccordion.click();
+    await udpDetailsPage.failedReport();
+  });
+  it('failedReason should be visible', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(true);
+  });
+
+  it('failedReason should contain sushi substring', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.contains('SUSHI exception');
+  });
+});
+
+describe('UDPDetailsPage with non sushi error code', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  beforeEach(async function () {
+    this.server.create('usage-data-provider', 'withCounterReportWithNonSushiErrorCode');
+    await this.visit('/eusage/?filters=harvestingStatus.active');
+    await udpInteractor.instances(0).click();
+    await udpDetailsPage.statisticsAccordion.click();
+    await udpDetailsPage.failedReport();
+  });
+  it('failedReason should be visible', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(true);
+  });
+
+  it('failedReason should not contain sushi substring', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.not.contains('SUSHI exception');
   });
 });
