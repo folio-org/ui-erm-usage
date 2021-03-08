@@ -9,6 +9,7 @@ import {
   MenuSection,
 } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
+import isSushiWarningCode from '../../../../util/sushiWarningCode';
 
 class ReportInfo extends React.Component {
   onClickDownloadRawReport = (release) => {
@@ -134,15 +135,10 @@ class ReportInfo extends React.Component {
     );
   }
 
-  isWarningCode = code => {
-    const val = parseInt(code, 10);
-    return val >= 1 && val <= 999;
-  };
-
   translateErrorCodes = (val) => {
     const { intl } = this.props;
     let label;
-    if (this.isWarningCode(val)) {
+    if (isSushiWarningCode(val)) {
       label = `${intl.formatMessage({
         id: 'ui-erm-usage.report.error.1'
       })} (${val})`;
