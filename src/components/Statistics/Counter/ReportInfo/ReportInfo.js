@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -9,6 +9,7 @@ import {
   MenuSection,
 } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
+import isSushiWarningCode from '../../../../util/isSushiWarningCode';
 
 class ReportInfo extends React.Component {
   onClickDownloadRawReport = (release) => {
@@ -129,9 +130,33 @@ class ReportInfo extends React.Component {
         <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
         <br />
         <FormattedMessage id="ui-erm-usage.general.editReason" />
-        {_.get(this.props.report, 'editReason', '-')}
+        {get(this.props.report, 'editReason', '-')}
       </>
     );
+  }
+
+  translateErrorCodes = (val) => {
+    const { intl } = this.props;
+    let label;
+    if (isSushiWarningCode(val)) {
+      label = `${intl.formatMessage({
+        id: 'ui-erm-usage.report.error.1'
+      })} (${val})`;
+    } else {
+      label = `${intl.formatMessage({
+        id: `ui-erm-usage.report.error.${val}`
+      })} (${val})`;
+    }
+    return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.sushiException' })}: ${label}`;
+  };
+
+  adaptSushiFailedInfo(failedReason) {
+    if (failedReason.includes('Number') && failedReason.includes('Severity') && failedReason.includes('Message')) {
+      const errorCode = failedReason.match('Number=(.*), Severity=')[1];
+      return this.translateErrorCodes(errorCode);
+    } else {
+      return failedReason;
+    }
   }
 
   render() {
@@ -139,10 +164,11 @@ class ReportInfo extends React.Component {
 
     const failInfo = !report.failedReason ? null : (
       <KeyValue
+        data-test-report-failed-reason
         label={this.props.intl.formatMessage({
           id: 'ui-erm-usage.general.info',
         })}
-        value={report.failedReason}
+        value={this.adaptSushiFailedInfo(report.failedReason)}
       />
     );
 
