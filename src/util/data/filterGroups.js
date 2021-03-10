@@ -32,8 +32,8 @@ const filterGroups = [
     name: 'hasFailedReport',
     cql: 'hasFailedReport',
     values: [
-      { name: 'Yes', cql: 'yes' },
-      { name: 'No', cql: 'no' }
+      { name: <FormattedMessage id="ui-erm-usage.general.yes" />, cql: 'yes' },
+      { name: <FormattedMessage id="ui-erm-usage.general.no" />, cql: 'no' }
     ]
   },
   {
