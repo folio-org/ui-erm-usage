@@ -8,7 +8,7 @@ import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
 class MaxFailedAttempts extends React.Component {
   static propTypes = {
-    stripes: PropTypes.object
+    stripes: PropTypes.object,
   };
 
   constructor(props) {
@@ -31,13 +31,13 @@ class MaxFailedAttempts extends React.Component {
     );
   };
 
-  getInitialValues = settings => {
+  getInitialValues = (settings) => {
     let loadedValues = {};
     let value;
     try {
       value = settings.length === 0 ? MAX_FAILED_ATTEMPTS : settings[0].value;
       loadedValues = {
-        maxFailedAttempts: value
+        maxFailedAttempts: value,
       };
     } catch (e) {} // eslint-disable-line no-empty
     return loadedValues;
@@ -65,7 +65,9 @@ class MaxFailedAttempts extends React.Component {
                   type="number"
                   id="maxFailedAttempts"
                   name="maxFailedAttempts"
-                  label="Number failed attempts"
+                  label={
+                    <FormattedMessage id="ui-erm-usage.settings.section.number.failed" />
+                  }
                 />
               </Col>
             </Row>
