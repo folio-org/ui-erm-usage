@@ -38,6 +38,9 @@
   "general.fileSize.kb": "Filesize in kB",
   "general.error": "Ooops. Something went wrong...",
 
+  "general.status.inactive": "Inactive",
+  "general.status.active": "Active",
+
   "information.providerName": "Provider name",
   "information.organization": "Organization",
   "information.platform": "Platform",

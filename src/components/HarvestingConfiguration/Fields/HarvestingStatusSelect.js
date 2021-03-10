@@ -5,21 +5,24 @@ import { Select } from '@folio/stripes/components';
 import { required } from '../../../util/validate';
 
 import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions';
+import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
 
-const HarvestingStatusSelect = () => (
-  <Field
-    label={
-      <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />
-    }
-    name="harvestingConfig.harvestingStatus"
-    id="addudp_harvestingstatus"
-    placeholder="Select a harvesting status"
-    component={Select}
-    dataOptions={harvestingStatusOptions}
-    required
-    validate={required}
-    fullWidth
-  />
-);
+const HarvestingStatusSelect = () => {
+  return (
+    <Field
+      label={
+        <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />
+      }
+      name="harvestingConfig.harvestingStatus"
+      id="addudp_harvestingstatus"
+      placeholder="Select a harvesting status"
+      component={Select}
+      dataOptions={useTranslateLabels(harvestingStatusOptions)}
+      required
+      validate={required}
+      fullWidth
+    />
+  );
+};
 
 export default HarvestingStatusSelect;

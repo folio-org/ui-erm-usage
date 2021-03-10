@@ -53,7 +53,11 @@ class UDPs extends React.Component {
 
   formatter = {
     label: (udp) => udp.label,
-    harvestingStatus: (udp) => udp.harvestingConfig.harvestingStatus,
+    harvestingStatus: (udp) => (
+      <FormattedMessage
+        id={`ui-erm-usage.general.status.${udp.harvestingConfig.harvestingStatus}`}
+      />
+    ),
     latestStats: (udp) => udp.latestReport,
     aggregator: (udp) => this.getAggregatorName(udp),
   };
@@ -239,7 +243,9 @@ class UDPs extends React.Component {
                     <form onSubmit={onSubmitSearch}>
                       <div>
                         <SearchField
-                          ariaLabel={intl.formatMessage({ id: 'ui-erm-usage.udp.searchInputLabel' })}
+                          ariaLabel={intl.formatMessage({
+                            id: 'ui-erm-usage.udp.searchInputLabel',
+                          })}
                           autoFocus
                           data-test-udp-search-input
                           id="input-udp-search"

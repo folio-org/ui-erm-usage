@@ -1,11 +1,14 @@
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+
 const filterGroups = [
   {
     label: 'Harvesting status',
     name: 'harvestingStatus',
     cql: 'harvestingConfig.harvestingStatus',
     values: [
-      { name: 'Active', cql: 'active' },
-      { name: 'Inactive', cql: 'inactive' }
+      { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
+      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' }
     ]
   },
   {
