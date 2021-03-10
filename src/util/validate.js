@@ -56,13 +56,17 @@ const isYearMonth = value => {
 
 const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
 
-const validateUrl = value => {
-  const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,})/;
+const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,})/;
 
+const validateUrl = value => {
   if (!value || urlRegex.test(value)) return undefined;
   return <FormattedMessage id="ui-erm-usage.errors.urlRequired" />;
 };
 
+const requiredValidateUrl = value => {
+  if (urlRegex.test(value)) return undefined;
+  return <FormattedMessage id="ui-erm-usage.errors.urlRequired" />;
+};
 
 export {
   composeValidators,
@@ -72,5 +76,6 @@ export {
   notRequired,
   required,
   validateUrl,
-  yearMonth
+  yearMonth,
+  requiredValidateUrl,
 };

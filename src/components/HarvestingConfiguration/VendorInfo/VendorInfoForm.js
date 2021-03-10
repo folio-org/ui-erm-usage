@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
-import { notRequired, required } from '../../../util/validate';
+import { notRequired, required, requiredValidateUrl } from '../../../util/validate';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
@@ -52,7 +52,7 @@ class VendorInfoForm extends React.Component {
             component={TextField}
             disabled={disabled}
             required={!disabled}
-            validate={this.isRequired}
+            validate={requiredValidateUrl}
             fullWidth
           />
         </Col>
