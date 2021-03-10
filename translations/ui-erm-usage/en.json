@@ -170,7 +170,7 @@
   "udp.form.selectedReports.clearModalHeading": "Clear report selection",
   "udp.form.selectedReports.confirmClearMessage": "Do you want to clear selected reports when changing Counter version?",
   "udp.form.selectedReports.confirmClearLabel": "Clear reports",
-  "udp.form.selectedReports.addReportButton": "Add Report",
+  "udp.form.selectedReports.addReportButton": "Add Report type",
 
   "udp.form.reportList.selectReportInfo": "Select Counter {counterVersion} report",
   "udp.form.reportList.selectReportFirst": "Select Counter report release first!",
