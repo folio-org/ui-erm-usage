@@ -229,5 +229,6 @@
     "report.upload.editedManually": "Rapportdata er blevet redigeret manuelt",
     "report.upload.editReason": "Rediger årsag",
     "report.upload.editReason.placeholder": "Angiv årsag til de manuelle ændringer",
-    "sushiCreds.platform": "Platform"
+    "sushiCreds.platform": "Platform",
+    "report.error.sushiException": "SUSHI exception"
 }
