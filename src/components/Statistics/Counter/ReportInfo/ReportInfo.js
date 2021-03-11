@@ -138,8 +138,9 @@ class ReportInfo extends React.Component {
         id: 'ui-erm-usage.report.error.1',
       })} (${val})`;
     } else {
+      const id = `ui-erm-usage.report.error.${val}`;
       label = `${intl.formatMessage({
-        id: `ui-erm-usage.report.error.${val}`,
+        id,
       })} (${val})`;
     }
     return `${intl.formatMessage({
