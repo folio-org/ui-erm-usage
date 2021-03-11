@@ -466,7 +466,7 @@ class AggregatorForm extends React.Component {
                 id="deleteaggregator-confirmation"
                 open={confirmDelete}
                 heading={
-                  <FormattedMessage id="aggregator.form.delete.confirm.title" />
+                  <FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />
                 }
                 message={confirmationMessage}
                 onConfirm={() => {

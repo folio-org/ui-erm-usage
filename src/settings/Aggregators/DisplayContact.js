@@ -1,63 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Field
-} from 'redux-form';
-import {
-  Row,
-  Col,
-  Button,
-  TextField
-} from '@folio/stripes/components';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Field } from 'redux-form';
+import { Row, Col, Button, TextField } from '@folio/stripes/components';
 
-
-class DisplayContact extends React.Component {
-  static propTypes = {
-    fields: PropTypes.object,
-    stripes: PropTypes.shape({
-      store: PropTypes.object
-    }),
-  };
-
-  constructor(props) {
-    super(props);
-    this.renderSubContact = this.renderSubContact.bind(this);
-  }
-
-  renderSubContact = (elem, index, fields) => {
+function DisplayContact({ fields }) {
+  const intl = useIntl();
+  const renderSubContact = (elem, index, currentFields) => {
     return (
       <Row key={elem}>
         <Col xs={8}>
           <Field
-            label={`Contact #${parseInt(index + 1, 10)}`}
+            label={intl.formatMessage(
+              {
+                id:
+                  'ui-erm-usage.aggregator.config.accountConfig.contact.number',
+              },
+              { number: parseInt(index + 1, 10) }
+            )}
             name={elem}
             id={elem}
             component={TextField}
             fullWidth
           />
         </Col>
-        <Col xs={4} style={{ 'textAlign': 'right', 'marginTop': '25px' }}>
-          <Button onClick={() => fields.remove(index)} buttonStyle="danger">
-            Remove
+        <Col xs={4} style={{ textAlign: 'right', marginTop: '25px' }}>
+          <Button
+            onClick={() => currentFields.remove(index)}
+            buttonStyle="danger"
+          >
+            <FormattedMessage id="ui-erm-usage.general.remove" />
           </Button>
         </Col>
       </Row>
     );
-  }
+  };
 
-  render() {
-    const { fields } = this.props;
-    return (
-      <Row>
-        <Col xs={12}>
-          {fields.map(this.renderSubContact)}
-        </Col>
-        <Col xs={12} style={{ paddingTop: '10px' }}>
-          <Button onClick={() => fields.push('')}>+ Add Contact</Button>
-        </Col>
-      </Row>
-    );
-  }
+  return (
+    <Row>
+      <Col xs={12}>{fields.map(renderSubContact)}</Col>
+      <Col xs={12} style={{ paddingTop: '10px' }}>
+        <Button onClick={() => fields.push('')}>
+          <FormattedMessage id="ui-erm-usage.aggregator.config.addContact" />
+        </Button>
+      </Col>
+    </Row>
+  );
 }
+
+DisplayContact.propTypes = {
+  fields: PropTypes.object,
+};
 
 export default DisplayContact;

@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { KeyValue, MenuSection } from '@folio/stripes-components';
 import { ViewMetaData } from '@folio/stripes-smart-components';
 
 function ReportInfoHeader(props) {
   const { children, customReport, udpLabel } = props;
+  const intl = useIntl();
   return (
-    <MenuSection id="menu-actions" label="Custom Report Info" labelTag="h3">
+    <MenuSection
+      id="menu-actions"
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.report.custom.info',
+      })}
+      labelTag="h3"
+    >
       <ViewMetaData metadata={customReport.metadata} />
       <KeyValue
         label={<FormattedMessage id="ui-erm-usage.usage-data-provider" />}

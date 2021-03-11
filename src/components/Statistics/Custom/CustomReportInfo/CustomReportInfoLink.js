@@ -1,17 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Icon, MenuSection, TextLink } from '@folio/stripes-components';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
 function CustomReportInfoLink(props) {
   const { customReport, onDelete, udpLabel } = props;
+  const intl = useIntl();
 
   return (
     <>
       <ReportInfoHeader customReport={customReport} udpLabel={udpLabel} />
-      <MenuSection id="menu-actions" label="Actions" labelTag="h3">
+      <MenuSection
+        id="menu-actions"
+        label={intl.formatMessage({
+          id: 'ui-erm-usage.general.actions',
+        })}
+        labelTag="h3"
+      >
         <TextLink
           id="custom-report-link"
           target="_blank"

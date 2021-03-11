@@ -2,12 +2,7 @@ import { get } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import {
-  Button,
-  Icon,
-  KeyValue,
-  MenuSection,
-} from '@folio/stripes/components';
+import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import reportDownloadTypes from '../../../../util/data/reportDownloadTypes';
 import isSushiWarningCode from '../../../../util/isSushiWarningCode';
 
@@ -140,18 +135,24 @@ class ReportInfo extends React.Component {
     let label;
     if (isSushiWarningCode(val)) {
       label = `${intl.formatMessage({
-        id: 'ui-erm-usage.report.error.1'
+        id: 'ui-erm-usage.report.error.1',
       })} (${val})`;
     } else {
       label = `${intl.formatMessage({
-        id: `ui-erm-usage.report.error.${val}`
+        id: `ui-erm-usage.report.error.${val}`,
       })} (${val})`;
     }
-    return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.sushiException' })}: ${label}`;
+    return `${intl.formatMessage({
+      id: 'ui-erm-usage.report.error.sushiException',
+    })}: ${label}`;
   };
 
   adaptSushiFailedInfo(failedReason) {
-    if (failedReason.includes('Number') && failedReason.includes('Severity') && failedReason.includes('Message')) {
+    if (
+      failedReason.includes('Number') &&
+      failedReason.includes('Severity') &&
+      failedReason.includes('Message')
+    ) {
       const errorCode = failedReason.match('Number=(.*), Severity=')[1];
       return this.translateErrorCodes(errorCode);
     } else {
@@ -160,12 +161,12 @@ class ReportInfo extends React.Component {
   }
 
   render() {
-    const { report, retryThreshold } = this.props;
+    const { intl, report, retryThreshold } = this.props;
 
     const failInfo = !report.failedReason ? null : (
       <KeyValue
         data-test-report-failed-reason
-        label={this.props.intl.formatMessage({
+        label={intl.formatMessage({
           id: 'ui-erm-usage.general.info',
         })}
         value={this.adaptSushiFailedInfo(report.failedReason)}
@@ -174,39 +175,50 @@ class ReportInfo extends React.Component {
 
     const failedAttempts = !report.failedAttempts ? null : (
       <KeyValue
-        label={this.props.intl.formatMessage({
+        label={intl.formatMessage({
           id: 'ui-erm-usage.report.action.failedAttempts',
         })}
-        value={`${report.failedAttempts} (Max attempts: ${retryThreshold})`}
+        value={intl.formatMessage(
+          {
+            id: 'ui-erm-usage.statistics.report.info.maxAttempts',
+          },
+          {
+            current: report.failedAttempts,
+            max: retryThreshold,
+          }
+        )}
       />
     );
 
-    const displayManualEdited = (
-      report.reportEditedManually ?
-        <KeyValue
-          data-test-custom-reports-edited-manually
-          label={this.props.intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
-          value={this.manualEditedText()}
-        />
-        : '');
+    const displayManualEdited = report.reportEditedManually ? (
+      <KeyValue
+        data-test-custom-reports-edited-manually
+        label={intl.formatMessage({
+          id: 'ui-erm-usage.general.manualChanges',
+        })}
+        value={this.manualEditedText()}
+      />
+    ) : (
+      ''
+    );
 
     const headerSection = (
       <MenuSection
         id="menu-actions"
-        label={this.props.intl.formatMessage({
+        label={intl.formatMessage({
           id: 'ui-erm-usage.general.report',
         })}
         labelTag="h3"
       >
         <KeyValue label="Usage data provider" value={this.props.udpLabel} />
         <KeyValue
-          label={this.props.intl.formatMessage({
+          label={intl.formatMessage({
             id: 'ui-erm-usage.general.type',
           })}
           value={report.reportName}
         />
         <KeyValue
-          label={this.props.intl.formatMessage({
+          label={intl.formatMessage({
             id: 'ui-erm-usage.general.date',
           })}
           value={report.yearMonth}
@@ -225,7 +237,7 @@ class ReportInfo extends React.Component {
     const actionSection = (
       <MenuSection
         id="menu-actions"
-        label={this.props.intl.formatMessage({
+        label={intl.formatMessage({
           id: 'ui-erm-usage.general.actions',
         })}
         labelTag="h3"

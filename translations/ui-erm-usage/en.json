@@ -13,6 +13,7 @@
 
   "general.cancel": "Cancel",
   "general.delete": "Delete",
+  "general.remove": "Remove",
   "general.save": "Save",
   "general.info": "Info",
   "general.report": "Report",
@@ -117,6 +118,8 @@
   "report.action.general.delete.entry": "Delete entry",
   "report.action.failedAttempts": "Failed attempts",
 
+  "report.custom.info": "Custom Report Info",
+
   "report.upload.failed": "Failed...",
   "report.upload.success": "Upload successful!",
   "report.upload.modal.label": "Counter-Report upload",
@@ -207,6 +210,11 @@
   "aggregator.config.accountConfig.type": "Type",
   "aggregator.config.accountConfig.mail": "Mail",
   "aggregator.config.accountConfig.contact": "Contact",
+  "aggregator.config.accountConfig.contact.number": "Contact #{number}",
+  "aggregator.config.addContact": "+ Add Contact",
+  "aggregator.config.contacts": "Contacts",
+  "aggregator.config.popover": "For German National Statistic Server specify the keys:",
+  "aggregator.config.addParam": "Add config parameter",
 
   "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
@@ -267,6 +275,10 @@
   "statistics.custom.uploadFile": "Upload file",
   "statistics.custom.linkFile": "Link file",
   "statistics.custom.delete": "Delete custom report",
+  "statistics.delete": "Do you really want to delete this report?",
+  "statistics.harvesting.error": "There are harvesting errors for this report.",
+  "statistics.harvesting.success": "Harvesting was successfull.",
+  "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
 
   "permission.module.enabled": "UI: eUsage module is enabled",
   "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",

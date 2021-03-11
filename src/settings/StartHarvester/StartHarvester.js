@@ -85,7 +85,9 @@ export default class StartHarvester extends React.Component {
           label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
         >
           <div>{this.state.modalText}</div>
-          <Button onClick={this.handleClose}>OK</Button>
+          <Button onClick={this.handleClose}>
+            <FormattedMessage id="ui-erm-usage.general.ok" />
+          </Button>
         </Modal>
       </Pane>
     );

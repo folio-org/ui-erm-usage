@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Col, Pane, Row, TextField } from '@folio/stripes/components';
+import { Col, Row, TextField } from '@folio/stripes/components';
 import { Field } from 'redux-form';
 import { ConfigManager } from '@folio/stripes/smart-components';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
@@ -15,21 +15,6 @@ class MaxFailedAttempts extends React.Component {
     super(props);
     this.configManager = props.stripes.connect(ConfigManager);
   }
-
-  renderNotPresent = () => {
-    return (
-      <Pane
-        defaultWidth="fill"
-        fluidContentWidth
-        paneTitle="Required interface not present"
-      >
-        <div>
-          The interface usage-harvester is needed to start the harvester, but it
-          is not present.
-        </div>
-      </Pane>
-    );
-  };
 
   getInitialValues = (settings) => {
     let loadedValues = {};
