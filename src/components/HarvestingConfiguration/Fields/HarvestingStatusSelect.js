@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'react-final-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Select } from '@folio/stripes/components';
 import { required } from '../../../util/validate';
 
@@ -8,6 +8,7 @@ import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions'
 import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
 
 const HarvestingStatusSelect = () => {
+  const intl = useIntl();
   return (
     <Field
       label={
@@ -15,7 +16,9 @@ const HarvestingStatusSelect = () => {
       }
       name="harvestingConfig.harvestingStatus"
       id="addudp_harvestingstatus"
-      placeholder="Select a harvesting status"
+      placeholder={intl.formatMessage({
+        id: 'ui-erm-usage.udp.form.placeholder.harvestingStatus',
+      })}
       component={Select}
       dataOptions={useTranslateLabels(harvestingStatusOptions)}
       required

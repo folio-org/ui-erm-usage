@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormattedMessage
-} from 'react-intl';
-import {
-  Button,
-  Modal,
-  Pane
-} from '@folio/stripes/components';
+import { FormattedMessage } from 'react-intl';
+import { Button, Modal, Pane } from '@folio/stripes/components';
 
 export default class StartHarvester extends React.Component {
   static manifest = Object.freeze({
@@ -18,7 +12,7 @@ export default class StartHarvester extends React.Component {
       GET: {
         path: 'erm-usage-harvester/start',
       },
-    }
+    },
   });
 
   static propTypes = {
@@ -32,45 +26,43 @@ export default class StartHarvester extends React.Component {
 
     this.state = {
       showInfoModal: false,
-      modalText: ''
+      modalText: '',
     };
 
-    this.successText = <FormattedMessage id="ui-erm-usage.settings.harvester.start.success" />;
-    this.failText = <FormattedMessage id="ui-erm-usage.settings.harvester.start.fail" />;
+    this.successText = (
+      <FormattedMessage id="ui-erm-usage.settings.harvester.start.success" />
+    );
+    this.failText = (
+      <FormattedMessage id="ui-erm-usage.settings.harvester.start.fail" />
+    );
   }
 
   onClickStartHarvester = () => {
-    this.props.mutator.harvesterStart.GET()
+    this.props.mutator.harvesterStart
+      .GET()
       .then(() => {
-        this.setState(
-          {
-            showInfoModal: true,
-            modalText: this.successText
-          }
-        );
+        this.setState({
+          showInfoModal: true,
+          modalText: this.successText,
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         const infoText = this.failText + ' ' + err.message;
-        this.setState(
-          {
-            showInfoModal: true,
-            modalText: infoText
-          }
-        );
+        this.setState({
+          showInfoModal: true,
+          modalText: infoText,
+        });
       });
-  }
+  };
 
   handleClose = () => {
     this.setState({ showInfoModal: false });
-  }
+  };
 
   render() {
     const startHarvesterButton = (
-      <Button
-        id="start-harvester"
-        onClick={() => this.onClickStartHarvester()}
-      >
-        { 'Start harvesting' }
+      <Button id="start-harvester" onClick={() => this.onClickStartHarvester()}>
+        <FormattedMessage id="ui-erm-usage.harvester.start" />
       </Button>
     );
 
@@ -82,22 +74,18 @@ export default class StartHarvester extends React.Component {
         paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}
       >
         <div>
-          {<FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />}
-          { startHarvesterButton }
+          {
+            <FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />
+          }
+          {startHarvesterButton}
         </div>
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
           label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
         >
-          <div>
-            { this.state.modalText }
-          </div>
-          <Button
-            onClick={this.handleClose}
-          >
-            OK
-          </Button>
+          <div>{this.state.modalText}</div>
+          <Button onClick={this.handleClose}>OK</Button>
         </Modal>
       </Pane>
     );
