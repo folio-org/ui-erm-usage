@@ -31,9 +31,7 @@ function CustomReportInfoFile(props) {
         <Button
           id="download-custom-report-button"
           buttonStyle="dropdownItem"
-          onClick={() =>
-            handlers.doDownloadFile(customReport.fileId, customReport.fileName)
-          }
+          onClick={() => handlers.doDownloadFile(customReport.fileId, customReport.fileName)}
         >
           <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
         </Button>
