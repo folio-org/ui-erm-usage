@@ -63,6 +63,11 @@ const validateUrl = value => {
   return <FormattedMessage id="ui-erm-usage.errors.urlRequired" />;
 };
 
+const requiredValidateUrl = value => {
+  const urlRegex = /^https?:\/\/[^\s]/;
+  if (urlRegex.test(value)) return undefined;
+  return <FormattedMessage id="ui-erm-usage.errors.urlRequired" />;
+};
 
 export {
   composeValidators,
@@ -72,5 +77,6 @@ export {
   notRequired,
   required,
   validateUrl,
-  yearMonth
+  yearMonth,
+  requiredValidateUrl,
 };
