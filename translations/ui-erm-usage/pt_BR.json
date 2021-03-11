@@ -229,5 +229,6 @@
     "report.upload.editedManually": "Os dados do relatório foram editados manualmente",
     "report.upload.editReason": "Editar motivo",
     "report.upload.editReason.placeholder": "Insira o motivo para as multas manuais",
-    "sushiCreds.platform": "Plataforma"
+    "sushiCreds.platform": "Plataforma",
+    "report.error.sushiException": "SUSHI exception"
 }

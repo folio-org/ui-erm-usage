@@ -229,5 +229,6 @@
     "report.upload.editedManually": "Dane raportu zostały edytowane ręcznie",
     "report.upload.editReason": "Powód edycji",
     "report.upload.editReason.placeholder": "Wprowadź przyczynę ręcznych zmian",
-    "sushiCreds.platform": "Platforma"
+    "sushiCreds.platform": "Platforma",
+    "report.error.sushiException": "SUSHI exception"
 }

@@ -229,5 +229,6 @@
     "report.upload.editedManually": "Berichtsdaten wurden manuell bearbeitet",
     "report.upload.editReason": "Bearbeitungsgrund",
     "report.upload.editReason.placeholder": "Grund für manuelle Änderungen eingeben",
-    "sushiCreds.platform": "Platform"
+    "sushiCreds.platform": "Platform",
+    "report.error.sushiException": "SUSHI exception"
 }
