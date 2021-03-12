@@ -139,9 +139,9 @@
     "report.error.1010": "Service occupé",
     "report.error.1011": "Report queed for processing",
     "report.error.1020": "Client has made too many requests",
-    "report.error.1030": "Insufficient information to process request",
+    "report.error.1030": "Informations insuffisantes pour traiter la réservation",
     "report.error.2000": "Demandeur non autorisé à accéder au service",
-    "report.error.2010": "Requestor is not authorized to access usage for institution",
+    "report.error.2010": "Le demandeur n'est pas autorisé à accéder aux données d'utilisation pour l'institution",
     "report.error.2020": "Clé API invalide",
     "report.error.3000": "Rapport non pris en charge",
     "report.error.3010": "Version du rapport non prise en charge",
@@ -227,8 +227,8 @@
     "general.editReason": "Raison de la modification:",
     "general.reportTypes": "Types de rapports",
     "report.upload.editedManually": "Report data has been edited manually",
-    "report.upload.editReason": "Edit reason",
+    "report.upload.editReason": "Modifier la raison",
     "report.upload.editReason.placeholder": "Enter reason for manual changes",
-    "sushiCreds.platform": "Platform",
-    "report.error.sushiException": "SUSHI exception"
+    "sushiCreds.platform": "Plateforme",
+    "report.error.sushiException": "Exception SUSHI"
 }

@@ -230,5 +230,5 @@
     "report.upload.editReason": "Editar motivo",
     "report.upload.editReason.placeholder": "Insira o motivo para as multas manuais",
     "sushiCreds.platform": "Plataforma",
-    "report.error.sushiException": "SUSHI exception"
+    "report.error.sushiException": "Exceção SUSHI"
 }
