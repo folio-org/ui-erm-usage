@@ -230,5 +230,5 @@
     "report.upload.editReason": "Powód edycji",
     "report.upload.editReason.placeholder": "Wprowadź przyczynę ręcznych zmian",
     "sushiCreds.platform": "Platforma",
-    "report.error.sushiException": "SUSHI exception"
+    "report.error.sushiException": "Wyjątek SUSHI"
 }
