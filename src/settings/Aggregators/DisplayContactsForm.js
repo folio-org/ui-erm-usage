@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import {
   FieldArray
 } from 'redux-form';
+import { FormattedMessage } from 'react-intl';
 import DisplayContact from './DisplayContact';
 import formCss from '../../util/sharedStyles/form.css';
 
@@ -10,7 +11,7 @@ class DisplayContactsForm extends React.Component {
     return (
       <Fragment>
         <div className={formCss.label}>
-          Contacts
+          <FormattedMessage id="ui-erm-usage.aggregator.config.contacts" />
         </div>
         <FieldArray
           component={DisplayContact}

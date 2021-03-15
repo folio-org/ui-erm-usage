@@ -655,7 +655,7 @@ describe('Renders NON manually changed counter reports info', () => {
 
   it('renders statistics accordion', () => {
     expect(udpDetailsPage.statisticsAccordion.isPresent).to.be.true;
-  });
+  }).timeout(5000);
 
   describe('click statistics accordion', function () {
     beforeEach(async function () {

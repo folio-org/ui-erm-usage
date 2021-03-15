@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Accordion, Col, Row, TextField } from '@folio/stripes/components';
 import { required } from '../../util/validate';
 
 function UDPInfoForm(props) {
   const { expanded, onToggle, accordionId } = props;
+  const intl = useIntl();
 
   return (
     <Accordion
@@ -23,7 +24,9 @@ function UDPInfoForm(props) {
                 label={
                   <FormattedMessage id="ui-erm-usage.information.providerName" />
                 }
-                placeholder="Enter a name to identify the usage data provider"
+                placeholder={intl.formatMessage({
+                  id: 'ui-erm-usage.udp.form.placeholder.udpName',
+                })}
                 name="label"
                 id="addudp_providername"
                 component={TextField}
@@ -39,7 +42,9 @@ function UDPInfoForm(props) {
                 }
                 name="description"
                 id="addudp_description"
-                placeholder="Description of the usage data provider"
+                placeholder={intl.formatMessage({
+                  id: 'ui-erm-usage.udp.form.placeholder.udpDescription',
+                })}
                 component={TextField}
                 fullWidth
               />
