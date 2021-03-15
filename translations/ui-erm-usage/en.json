@@ -38,6 +38,8 @@
   "general.fileSize.kb": "Filesize in kB",
   "general.error": "Ooops. Something went wrong...",
 
+  "action.refreshStatistics": "Refresh statistics table",
+
   "information.providerName": "Provider name",
   "information.organization": "Organization",
   "information.platform": "Platform",

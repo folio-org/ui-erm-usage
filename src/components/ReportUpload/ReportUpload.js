@@ -31,6 +31,7 @@ class ReportUpload extends React.Component {
       showCounterUpload: false,
       showNonCounterUpload: false,
     });
+    this.props.onReloadStatistics();
   };
 
   handleFail = (msg) => {
@@ -79,7 +80,7 @@ class ReportUpload extends React.Component {
 
   handleSubmit = () => {
     return null;
-  }
+  };
 
   render() {
     return (
@@ -129,6 +130,7 @@ class ReportUpload extends React.Component {
 ReportUpload.propTypes = {
   handlers: PropTypes.shape(),
   intl: PropTypes.object,
+  onReloadStatistics: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
 };

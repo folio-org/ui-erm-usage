@@ -78,8 +78,18 @@ class UDP extends React.Component {
     });
   };
 
+  reloadUdp = () => {
+    const oldCount = this.props.udpReloadCount;
+    this.props.mutator.udpReloadToggle.replace(oldCount + 1);
+  };
+
+  reloadStatistics = () => {
+    const oldCount = this.props.statsReloadCount;
+    this.props.mutator.statsReloadToggle.replace(oldCount + 1);
+  };
+
   renderDetailMenu = (udp) => {
-    const { canEdit, handlers, tagsEnabled } = this.props;
+    const { tagsEnabled } = this.props;
 
     const tags = ((udp && udp.tags) || {}).tagList || [];
 
@@ -100,18 +110,49 @@ class UDP extends React.Component {
             )}
           </FormattedMessage>
         )}
-        {canEdit && (
+      </PaneMenu>
+    );
+  };
+
+  getActionMenu = () => ({ onToggle }) => {
+    const { canEdit, handlers } = this.props;
+    return (
+      <>
+        <div>
           <Button
-            id="clickable-edit-udp"
-            buttonStyle="primary"
-            onClick={handlers.onEdit}
+            id="clickable-refresh-statistics"
+            buttonStyle="dropDownItem"
+            onClick={() => {
+              onToggle();
+              this.reloadStatistics();
+            }}
             aria-label="Edit usage data provider"
             marginBottom0
           >
-            <FormattedMessage id="ui-erm-usage.general.edit" />
+            <Icon icon="refresh">
+              <FormattedMessage id="ui-erm-usage.action.refreshStatistics" />
+            </Icon>
           </Button>
+        </div>
+        {canEdit && (
+          <div>
+            <Button
+              id="clickable-edit-udp"
+              buttonStyle="dropDownItem"
+              onClick={() => {
+                handlers.onEdit();
+                this.goToEdit();
+              }}
+              aria-label="Edit usage data provider"
+              marginBottom0
+            >
+              <Icon icon="edit">
+                <FormattedMessage id="ui-erm-usage.general.edit" />
+              </Icon>
+            </Button>
+          </div>
         )}
-      </PaneMenu>
+      </>
     );
   };
 
@@ -159,6 +200,7 @@ class UDP extends React.Component {
             id="pane-udpdetails"
             defaultWidth="40%"
             paneTitle={<span data-test-header-title>{label}</span>}
+            actionMenu={this.getActionMenu()}
             lastMenu={detailMenu}
             dismissible
             onClose={handlers.onClose}
@@ -194,6 +236,7 @@ class UDP extends React.Component {
                   <StartHarvesterButton
                     usageDataProvider={usageDataProvider}
                     isHarvesterExistent={isHarvesterExistent}
+                    onReloadUDP={this.reloadUdp}
                   />
                 }
               >
@@ -228,7 +271,12 @@ class UDP extends React.Component {
                 label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                 id="uploadAccordion"
               >
-                <ReportUpload udpId={providerId} stripes={stripes} handlers={handlers} />
+                <ReportUpload
+                  udpId={providerId}
+                  stripes={stripes}
+                  handlers={handlers}
+                  onReloadStatistics={this.reloadStatistics}
+                />
               </Accordion>
               <NotesSmartAccordion
                 id="notesAccordion"
@@ -269,8 +317,18 @@ UDP.propTypes = {
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
+  mutator: PropTypes.shape({
+    udpReloadToggle: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
+    statsReloadToggle: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
+  udpReloadCount: PropTypes.number.isRequired,
   stripes: PropTypes.object.isRequired,
   tagsEnabled: PropTypes.bool,
+  statsReloadCount: PropTypes.number.isRequired,
 };
 
 export default UDP;
