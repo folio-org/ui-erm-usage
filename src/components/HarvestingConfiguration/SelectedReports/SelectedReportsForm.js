@@ -73,7 +73,7 @@ class SelectedReportsForm extends React.Component {
       <Field
         component={Selection}
         dataOptions={list}
-        label="Report type"
+        label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
         name={field}
       />
     );
@@ -82,7 +82,11 @@ class SelectedReportsForm extends React.Component {
   render() {
     const reportsSelect = (
       <FieldArray
-        addLabel={<Icon icon="plus-sign">Add report type</Icon>}
+        addLabel={
+          <Icon icon="plus-sign">
+            <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportButton" />
+          </Icon>
+        }
         component={RepeatableField}
         name="harvestingConfig.requestedReports"
         onAdd={(fields) => fields.push('')}

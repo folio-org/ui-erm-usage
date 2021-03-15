@@ -84,7 +84,9 @@ class HarvestingConfigurationView extends React.Component {
     const harvestingStatus = harvestingStatusOptions.find(
       (e) => e.value === hStatus
     );
-    const harvestingStatusLabel = harvestingStatus.label ?? <NoValue />;
+    const harvestingStatusLabel = (
+      <FormattedMessage id={harvestingStatus.label} />
+    ) ?? <NoValue />;
 
     const counterVersion = _.get(
       usageDataProvider,

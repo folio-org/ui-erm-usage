@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
 import { notRequired, required, requiredValidateUrl } from '../../../util/validate';
@@ -9,6 +9,7 @@ class VendorInfoForm extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+    intl: PropTypes.object,
   };
 
   constructor(props) {
@@ -23,7 +24,7 @@ class VendorInfoForm extends React.Component {
   }
 
   render() {
-    const { disabled, harvesterImpls } = this.props;
+    const { disabled, harvesterImpls, intl } = this.props;
 
     return (
       <React.Fragment>
@@ -34,7 +35,9 @@ class VendorInfoForm extends React.Component {
             }
             name="harvestingConfig.sushiConfig.serviceType"
             id="addudp_servicetype"
-            placeholder="Select the vendor's API type"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.vendor.apiType',
+            })}
             component={Select}
             dataOptions={harvesterImpls}
             disabled={disabled}
@@ -48,7 +51,9 @@ class VendorInfoForm extends React.Component {
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="harvestingConfig.sushiConfig.serviceUrl"
             id="addudp_serviceurl"
-            placeholder="Enter the vendor's serviceURL"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.vendor.url',
+            })}
             component={TextField}
             disabled={disabled}
             required={!disabled}
@@ -61,4 +66,4 @@ class VendorInfoForm extends React.Component {
   }
 }
 
-export default VendorInfoForm;
+export default injectIntl(VendorInfoForm);
