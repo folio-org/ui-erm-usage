@@ -223,6 +223,18 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   tagSelection = scoped('#input-tag-input');
 }
 
+@interactor class ActionsDropdown {
+  click = clickable('[data-test-pane-header-actions-button]');
+}
+
+@interactor class RefreshStatsButton {
+  static defaultScope = ('#clickable-refresh-statistics');
+}
+
+@interactor class EditUDPButton {
+  static defaultScope = ('#clickable-edit-udp');
+}
+
 export default @interactor class UDPDetailsPage {
   static defaultScope = '#pane-udpdetails';
   title = text('[data-test-header-title]');
@@ -274,4 +286,8 @@ export default @interactor class UDPDetailsPage {
 
   saveNonCounterButton = new SaveNonCounterButton();
   customReportAccordion2000 = new CustomReportAccordion2000();
+
+  actionsButton = new ActionsDropdown();
+  refreshStatsButton = new RefreshStatsButton();
+  editUDPButton = new EditUDPButton();
 }

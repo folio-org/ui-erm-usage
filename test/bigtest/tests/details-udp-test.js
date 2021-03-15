@@ -31,6 +31,17 @@ describe('UDPDetailsPage', () => {
       await udpInteractor.instances(0).click();
     });
 
+    describe('click actions header', () => {
+      beforeEach(async function () {
+        await udpDetailsPage.actionsButton.click();
+      });
+
+      it('actions menu contains refresh stats and edit options', () => {
+        expect(udpDetailsPage.refreshStatsButton.isPresent).to.equal(true);
+        expect(udpDetailsPage.editUDPButton.isPresent).to.equal(true);
+      });
+    });
+
     it('displays udp label in the pane header', function () {
       expect(udpDetailsPage.title).to.include(udp.label);
     });
