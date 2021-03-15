@@ -159,6 +159,10 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   clickFirstRow = clickable('[id*=custom-report-button-]');
 }
 
+@interactor class CustomReportAccordion2000 {
+  static defaultScope = '#accordion-toggle-button-2000';
+}
+
 @interactor class CustomReportInfo {
   static defaultScope = '[class="custom-report-info"]';
   downloadCustomReportButton = scoped('button[id="download-custom-report-button"]');
@@ -269,4 +273,5 @@ export default @interactor class UDPDetailsPage {
   urlInputError = new UrlInputError();
 
   saveNonCounterButton = new SaveNonCounterButton();
+  customReportAccordion2000 = new CustomReportAccordion2000();
 }
