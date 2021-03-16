@@ -21,7 +21,7 @@
   "general.date": "Date",
   "general.manualChanges": "Manual changes",
   "general.manualChanges.infoText": "Report data has been edited manually.",
-  "general.editReason": "Edit reason: ",
+  "general.editReason": "Edit reason:",
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",

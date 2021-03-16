@@ -120,12 +120,13 @@ class ReportInfo extends React.Component {
   };
 
   manualEditedText() {
+    const editReason = ` ${get(this.props.report, 'editReason', '-')}`;
     return (
       <>
         <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
         <br />
         <FormattedMessage id="ui-erm-usage.general.editReason" />
-        {get(this.props.report, 'editReason', '-')}
+        {editReason}
       </>
     );
   }
