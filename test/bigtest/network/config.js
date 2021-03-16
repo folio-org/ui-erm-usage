@@ -228,6 +228,12 @@ export default function config() {
     }
   });
 
+  this.post('/custom-reports', (_, { requestBody }) => {
+    const customReport = JSON.parse(requestBody);
+
+    return this.create('customReport', customReport);
+  });
+
   this.get('/note-types');
 
   this.get(
