@@ -260,5 +260,6 @@
     "statistics.delete": "Do you really want to delete this report?",
     "statistics.harvesting.error": "There are harvesting errors for this report.",
     "statistics.harvesting.success": "Harvesting was successfull.",
-    "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})"
+    "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
+    "action.refreshStatistics": "Refresh statistics table"
 }
