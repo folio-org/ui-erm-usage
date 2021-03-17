@@ -224,7 +224,7 @@
     "statistics.custom.delete": "Delete custom report",
     "general.manualChanges": "Manual changes",
     "general.manualChanges.infoText": "Report data has been edited manually.",
-    "general.editReason": "Edit reason: ",
+    "general.editReason": "Edit reason:",
     "general.reportTypes": "Report types",
     "report.upload.editedManually": "Report data has been edited manually",
     "report.upload.editReason": "Edit reason",
@@ -260,5 +260,6 @@
     "statistics.delete": "Do you really want to delete this report?",
     "statistics.harvesting.error": "There are harvesting errors for this report.",
     "statistics.harvesting.success": "Harvesting was successfull.",
-    "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})"
+    "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
+    "action.refreshStatistics": "Refresh statistics table"
 }

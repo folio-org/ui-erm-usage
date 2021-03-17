@@ -260,5 +260,6 @@
     "statistics.delete": "Czy na pewno chcesz usunąć ten raport?",
     "statistics.harvesting.error": "W tym raporcie występują błędy z pobierania danych",
     "statistics.harvesting.success": "Pomyślne pobieranie danych",
-    "statistics.report.info.maxAttempts": "{current} (maksymalna liczba prób: {max} )"
+    "statistics.report.info.maxAttempts": "{current} (maksymalna liczba prób: {max} )",
+    "action.refreshStatistics": "Refresh statistics table"
 }
