@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
 import { notRequired, required } from '../../../util/validate';
@@ -10,6 +10,7 @@ class AggregatorInfoForm extends React.Component {
   static propTypes = {
     aggregators: PropTypes.arrayOf(PropTypes.shape()),
     disabled: PropTypes.bool,
+    intl: PropTypes.object,
   };
 
   constructor(props) {
@@ -35,7 +36,7 @@ class AggregatorInfoForm extends React.Component {
   };
 
   render() {
-    const { disabled, aggregators } = this.props;
+    const { disabled, aggregators, intl } = this.props;
     const records = aggregators;
     const aggs = records && records.length ? records[0].aggregatorSettings : {};
     const aggOptions = this.extractAggregatorSelectOptions(aggs);
@@ -49,7 +50,9 @@ class AggregatorInfoForm extends React.Component {
             }
             name="harvestingConfig.aggregator.id"
             id="addudp_aggid"
-            placeholder="Select an aggregator"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.aggregator.select',
+            })}
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
@@ -65,7 +68,9 @@ class AggregatorInfoForm extends React.Component {
             }
             name="harvestingConfig.aggregator.vendorCode"
             id="addudp_vendorcode"
-            placeholder="Enter the aggregator's vendor code"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.aggregator.vendor',
+            })}
             component={TextField}
             disabled={disabled}
             fullWidth
@@ -76,4 +81,4 @@ class AggregatorInfoForm extends React.Component {
   }
 }
 
-export default AggregatorInfoForm;
+export default injectIntl(AggregatorInfoForm);

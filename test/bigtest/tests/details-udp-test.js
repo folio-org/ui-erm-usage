@@ -11,7 +11,10 @@ describe('UDPDetailsPage', () => {
 
   let udp = null;
   beforeEach(async function () {
-    udp = this.server.create('usage-data-provider', 'withUsageReports');
+    udp = this.server.create('usage-data-provider', 'withUsageReports', {
+      failedReason:
+        'Report not valid: Exception{Number=3030, Severity=ERROR, Message=No Data Found}',
+    });
     await this.visit('/eusage/?filters=harvestingStatus.active');
   });
 
@@ -26,6 +29,17 @@ describe('UDPDetailsPage', () => {
   describe('clicking on the first item', function () {
     beforeEach(async function () {
       await udpInteractor.instances(0).click();
+    });
+
+    describe('click actions header', () => {
+      beforeEach(async function () {
+        await udpDetailsPage.actionsButton.click();
+      });
+
+      it('actions menu contains refresh stats and edit options', () => {
+        expect(udpDetailsPage.refreshStatsButton.isPresent).to.equal(true);
+        expect(udpDetailsPage.editUDPButton.isPresent).to.equal(true);
+      });
     });
 
     it('displays udp label in the pane header', function () {
@@ -407,6 +421,21 @@ describe('UDPDetailsPage', () => {
                 false
               );
             });
+
+            // wait and check if statistics accordion is reloaded
+            describe('custom reports are listed', function () {
+              beforeEach(async function () {
+                await udpDetailsPage.statisticsAccordion.click();
+                await udpDetailsPage.clickCustomReportAccordion();
+                await udpDetailsPage.clickExpandAllCustomReportYears();
+              });
+
+              it('reports are updated and accordion for year 2000 appears', () => {
+                expect(
+                  udpDetailsPage.customReportAccordion2000.isPresent
+                ).to.equal(true);
+              });
+            });
           });
         });
       });
@@ -651,7 +680,7 @@ describe('Renders NON manually changed counter reports info', () => {
 
   it('renders statistics accordion', () => {
     expect(udpDetailsPage.statisticsAccordion.isPresent).to.be.true;
-  });
+  }).timeout(5000);
 
   describe('click statistics accordion', function () {
     beforeEach(async function () {
@@ -685,5 +714,61 @@ describe('Renders NON manually changed counter reports info', () => {
         });
       });
     });
+  });
+});
+
+describe('UDPDetailsPage with sushi error code', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  beforeEach(async function () {
+    this.server.create(
+      'usage-data-provider',
+      'withCounterReportWithSushiErrorCode'
+    );
+    await this.visit('/eusage/?filters=harvestingStatus.active');
+    await udpInteractor.instances(0).click();
+    await udpDetailsPage.statisticsAccordion.click();
+    await udpDetailsPage.failedReport();
+  });
+  it('failedReason should be visible', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(
+      true
+    );
+  });
+
+  it('failedReason should contain sushi substring', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.contains(
+      'SUSHI exception'
+    );
+  });
+});
+
+describe('UDPDetailsPage with non sushi error code', () => {
+  setupApplication();
+  const udpDetailsPage = new UDPDetailsPage();
+  const udpInteractor = new UDPInteractor();
+
+  beforeEach(async function () {
+    this.server.create(
+      'usage-data-provider',
+      'withCounterReportWithNonSushiErrorCode'
+    );
+    await this.visit('/eusage/?filters=harvestingStatus.active');
+    await udpInteractor.instances(0).click();
+    await udpDetailsPage.statisticsAccordion.click();
+    await udpDetailsPage.failedReport();
+  });
+  it('failedReason should be visible', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.isPresent).to.equal(
+      true
+    );
+  });
+
+  it('failedReason should not contain sushi substring', () => {
+    expect(udpDetailsPage.reportInfoFailed.failedReason.text).to.not.contains(
+      'SUSHI exception'
+    );
   });
 });

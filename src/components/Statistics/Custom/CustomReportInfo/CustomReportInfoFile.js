@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes-components';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
 function CustomReportInfoFile(props) {
   const { customReport, handlers, onDelete, udpLabel } = props;
+  const intl = useIntl();
 
   return (
     <>
@@ -20,7 +21,13 @@ function CustomReportInfoFile(props) {
           value={customReport.fileSize}
         />
       </ReportInfoHeader>
-      <MenuSection id="menu-actions" label="Actions" labelTag="h3">
+      <MenuSection
+        id="menu-actions"
+        label={intl.formatMessage({
+          id: 'ui-erm-usage.general.actions',
+        })}
+        labelTag="h3"
+      >
         <Button
           id="download-custom-report-button"
           buttonStyle="dropdownItem"

@@ -14,6 +14,7 @@ import {
 } from '@folio/stripes/smart-components';
 
 import filterGroups from '../../util/data/filterGroups';
+import isSushiWarningCode from '../../util/isSushiWarningCode';
 
 class UDPFilters extends React.Component {
   static isFilterDefinedLocally = filter => {
@@ -46,7 +47,7 @@ class UDPFilters extends React.Component {
   static translateErrorCodesFilterValues = (entry, intl) => {
     const val = get(entry, 'label', entry);
     let label;
-    if (UDPFilters.isWarningCode(val)) {
+    if (isSushiWarningCode(val)) {
       label = `${intl.formatMessage({
         id: 'ui-erm-usage.report.error.1'
       })} (${val})`;

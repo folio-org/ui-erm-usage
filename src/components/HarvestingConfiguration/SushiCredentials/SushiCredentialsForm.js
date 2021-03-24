@@ -2,12 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Col, Row, TextField } from '@folio/stripes/components';
 import { required } from '../../../util/validate';
 
 function SushiCredentialsForm(props) {
   const { useAggregator, values } = props;
+
+  const intl = useIntl();
 
   const isCustIdRequired = () => {
     if (!useAggregator) {
@@ -44,7 +46,9 @@ function SushiCredentialsForm(props) {
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />}
             name="sushiCredentials.customerId"
             id="addudp_customerid"
-            placeholder="Enter the SUSHI customer ID"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.customerId',
+            })}
             component={TextField}
             required={isCustIdRequired()}
             validate={getValidator()}
@@ -61,7 +65,9 @@ function SushiCredentialsForm(props) {
             }
             name="sushiCredentials.requestorId"
             id="addudp_requestorid"
-            placeholder="Enter the SUSHI requestor ID"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorId',
+            })}
             component={TextField}
             fullWidth
           />
@@ -71,7 +77,9 @@ function SushiCredentialsForm(props) {
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
             name="sushiCredentials.apiKey"
             id="addudp_apikey"
-            placeholder="Enter the SUSHI API key"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.apiKey',
+            })}
             component={TextField}
             fullWidth
           />
@@ -83,7 +91,9 @@ function SushiCredentialsForm(props) {
             label={<FormattedMessage id="ui-erm-usage.sushiCreds.platform" />}
             name="sushiCredentials.platform"
             id="addudp_platform"
-            placeholder="Enter platform to request usage for"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.platform',
+            })}
             component={TextField}
             fullWidth
           />
@@ -95,7 +105,9 @@ function SushiCredentialsForm(props) {
             }
             name="sushiCredentials.requestorName"
             id="addudp_reqname"
-            placeholder="Enter the SUSHI requestor name"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorName',
+            })}
             component={TextField}
             fullWidth
           />
@@ -107,7 +119,9 @@ function SushiCredentialsForm(props) {
             }
             name="sushiCredentials.requestorMail"
             id="addudp_requestormail"
-            placeholder="Enter the SUSHI requestor mail"
+            placeholder={intl.formatMessage({
+              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorMail',
+            })}
             component={TextField}
             fullWidth
           />

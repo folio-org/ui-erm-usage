@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import {
   Accordion,
   AccordionSet,
@@ -40,6 +40,7 @@ class AggregatorForm extends React.Component {
     }).isRequired,
     initialValues: PropTypes.object,
     invalid: PropTypes.bool,
+    intl: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
@@ -296,7 +297,13 @@ class AggregatorForm extends React.Component {
   }
 
   render() {
-    const { stripes, handleSubmit, initialValues, aggregators } = this.props;
+    const {
+      stripes,
+      handleSubmit,
+      initialValues,
+      aggregators,
+      intl,
+    } = this.props;
     const aggregator = initialValues || {};
     const { aggregatorConfigFields, confirmDelete, sections } = this.state;
     const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
@@ -368,7 +375,10 @@ class AggregatorForm extends React.Component {
                         }
                         name="serviceType"
                         id="input-aggregator-service-type"
-                        placeholder="Select a service type"
+                        placeholder={intl.formatMessage({
+                          id:
+                            'ui-erm-usage.aggregator.form.placeholder.serviceType',
+                        })}
                         component={Select}
                         dataOptions={aggregators}
                         fullWidth
@@ -424,7 +434,10 @@ class AggregatorForm extends React.Component {
                         }
                         name="accountConfig.configType"
                         id="input-aggregator-account-type"
-                        placeholder="Select a config type"
+                        placeholder={intl.formatMessage({
+                          id:
+                            'ui-erm-usage.aggregator.form.placeholder.configType',
+                        })}
                         component={Select}
                         dataOptions={aggregatorAccountConfigTypes}
                         fullWidth
@@ -454,7 +467,7 @@ class AggregatorForm extends React.Component {
                 id="deleteaggregator-confirmation"
                 open={confirmDelete}
                 heading={
-                  <FormattedMessage id="aggregator.form.delete.confirm.title" />
+                  <FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />
                 }
                 message={confirmationMessage}
                 onConfirm={() => {
@@ -472,8 +485,10 @@ class AggregatorForm extends React.Component {
   }
 }
 
-export default stripesForm({
-  form: 'aggreagtorForm',
-  navigationCheck: true,
-  enableReinitialize: true,
-})(AggregatorForm);
+export default injectIntl(
+  stripesForm({
+    form: 'aggreagtorForm',
+    navigationCheck: true,
+    enableReinitialize: true,
+  })(AggregatorForm)
+);

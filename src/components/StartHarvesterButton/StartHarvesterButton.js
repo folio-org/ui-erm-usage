@@ -2,15 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { stripesConnect, IfPermission } from '@folio/stripes/core';
-import {
-  injectIntl,
-  FormattedMessage
-} from 'react-intl';
-import {
-  Button,
-  InfoPopover,
-  Modal,
-} from '@folio/stripes/components';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Button, InfoPopover, Modal } from '@folio/stripes/components';
 
 class StartHarvesterButton extends React.Component {
   static manifest = Object.freeze({
@@ -21,15 +14,16 @@ class StartHarvesterButton extends React.Component {
       GET: {
         path: 'erm-usage-harvester/start/!{usageDataProvider.id}',
       },
-    }
+    },
   });
 
   static propTypes = {
     intl: PropTypes.object,
     isHarvesterExistent: PropTypes.bool,
+    onReloadUDP: PropTypes.func.isRequired,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
-    }),
+    }).isRequired,
     usageDataProvider: PropTypes.object.isRequired,
   };
 
@@ -38,7 +32,7 @@ class StartHarvesterButton extends React.Component {
 
     this.state = {
       showInfoModal: false,
-      modalText: ''
+      modalText: '',
     };
     const { usageDataProvider } = props;
     this.successText = this.createSuccessText(usageDataProvider);
@@ -53,54 +47,58 @@ class StartHarvesterButton extends React.Component {
   }
 
   onClickStartHarvester = () => {
-    this.props.mutator.harvesterStart.GET()
+    this.props.mutator.harvesterStart
+      .GET()
       .then(() => {
-        this.setState(
-          {
-            showInfoModal: true,
-            modalText: this.successText
-          }
-        );
+        this.setState({
+          showInfoModal: true,
+          modalText: this.successText,
+        });
+        this.props.onReloadUDP();
       })
-      .catch(err => {
+      .catch((err) => {
         const infoText = this.failText + ' ' + err.message;
-        this.setState(
-          {
-            showInfoModal: true,
-            modalText: infoText
-          }
-        );
+        this.setState({
+          showInfoModal: true,
+          modalText: infoText,
+        });
       });
-  }
+  };
 
   handleClose = () => {
     this.setState({ showInfoModal: false });
-  }
+  };
 
   isInActive = (udp) => {
     const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
     return !this.props.isHarvesterExistent || status === 'inactive';
-  }
+  };
 
   createSuccessText = (udp) => {
-    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.success.single.udp' })} ${udp.label} !`;
-  }
+    return `${this.props.intl.formatMessage({
+      id: 'ui-erm-usage.harvester.start.success.single.udp',
+    })} ${udp.label} !`;
+  };
 
   createFailText = (udp) => {
-    return `${this.props.intl.formatMessage({ id: 'ui-erm-usage.harvester.start.fail.single.udp' })} ${udp.label}...`;
-  }
+    return `${this.props.intl.formatMessage({
+      id: 'ui-erm-usage.harvester.start.fail.single.udp',
+    })} ${udp.label}...`;
+  };
 
   renderInfoPopover = (udp) => {
     if (this.isInActive(udp)) {
       return (
         <InfoPopover
-          content={<FormattedMessage id="ui-erm-usage.harvester.start.inactiveInfo" />}
+          content={
+            <FormattedMessage id="ui-erm-usage.harvester.start.inactiveInfo" />
+          }
         />
       );
     } else {
       return null;
     }
-  }
+  };
 
   render() {
     const { usageDataProvider } = this.props;
@@ -112,22 +110,16 @@ class StartHarvesterButton extends React.Component {
           disabled={this.isInActive(usageDataProvider)}
           onClick={() => this.onClickStartHarvester()}
         >
-          { <FormattedMessage id="ui-erm-usage.harvester.start" /> }
+          {<FormattedMessage id="ui-erm-usage.harvester.start" />}
         </Button>
-        { this.renderInfoPopover(usageDataProvider) }
+        {this.renderInfoPopover(usageDataProvider)}
         <Modal
           closeOnBackgroundClick
           open={this.state.showInfoModal}
           label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
         >
-          <div>
-            { this.state.modalText }
-          </div>
-          <Button
-            onClick={this.handleClose}
-          >
-            OK
-          </Button>
+          <div>{this.state.modalText}</div>
+          <Button onClick={this.handleClose}>OK</Button>
         </Modal>
       </IfPermission>
     );

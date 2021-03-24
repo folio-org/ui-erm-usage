@@ -1,5 +1,22 @@
 # Change history for ui-erm-usage
 
+## [5.0.0](https://github.com/folio-org/ui-erm-usage/tree/v5.0.0) (2021-03-18)
+* Bugfix: Translation of editReason depends on trailing space (UIEUS-252)
+* Reload UDP detail view on changes (UIEUS-246)
+* Add missing translations (UIEUS-248)
+* Bugfix: Field value for "service url" is not validated in UI (UIEUS-249)
+* Improve layout of SUSHI error messages displayed in report info modal (UIEUS-242)
+* Bugfix: Tags filter not working (UIEUS-244)
+* Bugfix: Broken layout of Non-Counter upload modal (UIEUS-241)
+* Bugfix: Add platform to Sushi credentials (UIEUS-240)
+* Upgrade stripes-cli to v2 (UIEUS-239)
+* Upgrade to stripes v6 (UIEUS-232)
+* Filter UDPs by available report type (UIEUS-222)
+* Add info if report was edited manually to report info (UIEUS-224)
+* Reports can be flagged as edited when uploading (UIEUS-223)
+* Non-counter upload can store link (UIEUS-227)
+* Remove deprecated `<Dropdown>` data-role: "toggle" (UIEUS-228)
+
 ## [4.0.2](https://github.com/folio-org/ui-erm-usage/tree/v4.0.2) (2021-01-04)
 * Bugfix: Permission "Settings (eUsage): Can view and edit settings" does not enable settings (UIEUS-230)
 

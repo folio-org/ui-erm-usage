@@ -13,6 +13,7 @@
 
   "general.cancel": "Cancel",
   "general.delete": "Delete",
+  "general.remove": "Remove",
   "general.save": "Save",
   "general.info": "Info",
   "general.report": "Report",
@@ -20,7 +21,7 @@
   "general.date": "Date",
   "general.manualChanges": "Manual changes",
   "general.manualChanges.infoText": "Report data has been edited manually.",
-  "general.editReason": "Edit reason: ",
+  "general.editReason": "Edit reason:",
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",
@@ -37,6 +38,10 @@
   "general.year": "Year",
   "general.fileSize.kb": "Filesize in kB",
   "general.error": "Ooops. Something went wrong...",
+
+  "action.refreshStatistics": "Refresh statistics table",
+  "general.status.inactive": "Inactive",
+  "general.status.active": "Active",
 
   "information.providerName": "Provider name",
   "information.organization": "Organization",
@@ -116,6 +121,8 @@
   "report.action.general.delete.entry": "Delete entry",
   "report.action.failedAttempts": "Failed attempts",
 
+  "report.custom.info": "Custom Report Info",
+
   "report.upload.failed": "Failed...",
   "report.upload.success": "Upload successful!",
   "report.upload.modal.label": "Counter-Report upload",
@@ -129,6 +136,7 @@
   "report.upload.editReason": "Edit reason",
   "report.upload.editReason.placeholder": "Enter reason for manual changes",
 
+  "report.error.sushiException": "SUSHI exception",
   "report.error.other": "Other",
   "report.error.0": "Info or debug",
   "report.error.1": "Warnings",
@@ -168,10 +176,29 @@
   "udp.form.selectedReports.clearModalHeading": "Clear report selection",
   "udp.form.selectedReports.confirmClearMessage": "Do you want to clear selected reports when changing Counter version?",
   "udp.form.selectedReports.confirmClearLabel": "Clear reports",
-  "udp.form.selectedReports.addReportButton": "Add Report",
+  "udp.form.selectedReports.addReportButton": "Add Report type",
 
   "udp.form.reportList.selectReportInfo": "Select Counter {counterVersion} report",
   "udp.form.reportList.selectReportFirst": "Select Counter report release first!",
+
+  "udp.form.placeholder.udpName": "Enter a name to identify the usage data provider",
+  "udp.form.placeholder.udpDescription": "Description of the usage data provider",
+  "udp.form.placeholder.harvestingStatus": "Select a harvesting status",
+  "udp.form.placeholder.harvestingVia": "Select how to harvest statistics",
+  "udp.form.placeholder.aggregator.select": "Select an aggregator",
+  "udp.form.placeholder.aggregator.vendor": "Enter the aggregator's vendor code",
+  "udp.form.placeholder.vendor.apiType": "Select the vendor's API type",
+  "udp.form.placeholder.vendor.url": "Enter the vendor's serviceURL",
+  "udp.form.placeholder.reportRelease": "Select the report release",
+  "udp.form.placeholder.sushi.customerId": "Enter the SUSHI customer ID",
+  "udp.form.placeholder.sushi.requestorId": "Enter the SUSHI requestor ID",
+  "udp.form.placeholder.sushi.apiKey": "Enter the SUSHI API key",
+  "udp.form.placeholder.sushi.platform": "Enter platform to request usage for",
+  "udp.form.placeholder.sushi.requestorName": "Enter the SUSHI requestor name",
+  "udp.form.placeholder.sushi.requestorMail": "Enter the SUSHI requestor mail",
+
+  "aggregator.form.placeholder.serviceType": "Select a service type",
+  "aggregator.form.placeholder.configType": "Select a config type",
 
   "aggregator.generalInformation": "General information",
   "aggregator.name": "Name",
@@ -186,6 +213,11 @@
   "aggregator.config.accountConfig.type": "Type",
   "aggregator.config.accountConfig.mail": "Mail",
   "aggregator.config.accountConfig.contact": "Contact",
+  "aggregator.config.accountConfig.contact.number": "Contact #{number}",
+  "aggregator.config.addContact": "+ Add Contact",
+  "aggregator.config.contacts": "Contacts",
+  "aggregator.config.popover": "For German National Statistic Server specify the keys:",
+  "aggregator.config.addParam": "Add config parameter",
 
   "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
@@ -247,6 +279,10 @@
   "statistics.custom.uploadFile": "Upload file",
   "statistics.custom.linkFile": "Link file",
   "statistics.custom.delete": "Delete custom report",
+  "statistics.delete": "Do you really want to delete this report?",
+  "statistics.harvesting.error": "There are harvesting errors for this report.",
+  "statistics.harvesting.success": "Harvesting was successfull.",
+  "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
 
   "permission.module.enabled": "UI: eUsage module is enabled",
   "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",

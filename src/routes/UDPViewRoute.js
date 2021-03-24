@@ -14,6 +14,7 @@ import extractHarvesterImpls from '../util/harvesterImpls';
 function UDPViewRoute(props) {
   const {
     handlers,
+    mutator,
     resources,
     stripes,
     tagsEnabled,
@@ -39,9 +40,7 @@ function UDPViewRoute(props) {
 
   const getCounterReports = (udpId) => {
     const records = (resources.counterReports || {}).records || null;
-    const reports = !isEmpty(records)
-      ? records[0].counterReportsPerYear
-      : [];
+    const reports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
     if (
       !isEmpty(reports) &&
       reports[0].reportsPerType[0].counterReports[0].providerId === udpId
@@ -90,6 +89,8 @@ function UDPViewRoute(props) {
   const customReports = getCustomReports(id);
   const settings = get(resources, 'settings.records', []);
   const harvesterImpls = extractHarvesterImpls(resources);
+  const statsReloadCount = get(resources, 'statsReloadToggle', 0);
+  const udpReloadCount = get(resources, 'udpReloadToggle', 0);
   return (
     <>
       <UDP
@@ -109,8 +110,11 @@ function UDPViewRoute(props) {
         isHarvesterExistent={isHarvesterExistent()}
         isLoading={isLoading()}
         isStatsLoading={isStatsLoading()}
+        mutator={mutator}
+        statsReloadCount={statsReloadCount}
         stripes={stripes}
         tagsEnabled={tagsEnabled}
+        udpReloadCount={udpReloadCount}
       />
     </>
   );
@@ -165,7 +169,7 @@ UDPViewRoute.defaultProps = {
 UDPViewRoute.manifest = Object.freeze({
   usageDataProvider: {
     type: 'okapi',
-    path: 'usage-data-providers/:{id}',
+    path: 'usage-data-providers/:{id}?unused=%{udpReloadToggle}',
   },
   harvesterImpls: {
     type: 'okapi',
@@ -180,11 +184,22 @@ UDPViewRoute.manifest = Object.freeze({
   },
   counterReports: {
     type: 'okapi',
-    path: 'counter-reports/sorted/:{id}?limit=1000',
+    path: 'counter-reports/sorted/:{id}?unused=%{statsReloadToggle}&limit=1000',
   },
   customReports: {
     type: 'okapi',
-    path: 'custom-reports?query=(providerId=:{id})&limit=1000',
+    path:
+      'custom-reports?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000',
+  },
+  statsReloadToggle: {
+    // We mutate this when we update a report, to force a stripes-connect reload.
+    // Thanks to Mike Taylor in ui-courses (https://github.com/folio-org/ui-courses/blame/a8dcccfd58e89e102f6fad1e95b52dbe89947e0b/src/routes/CourseRoute.js#L36)
+    initialValue: 0,
+  },
+  udpReloadToggle: {
+    // We mutate this when we update a report, to force a stripes-connect reload.
+    // Thanks to Mike Taylor.
+    initialValue: 0,
   },
   query: {},
 });

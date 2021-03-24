@@ -64,6 +64,18 @@ export default Factory.extend({
     }
   }),
 
+  withCounterReportWithSushiErrorCode: trait({
+    afterCreate(provider, server) {
+      server.createList('counter-report', 9, { provider, failedReason: 'Report not valid: Exception{Number=3030, Severity=ERROR, Message=No Data Found}' });
+    }
+  }),
+
+  withCounterReportWithNonSushiErrorCode: trait({
+    afterCreate(provider, server) {
+      server.createList('counter-report', 9, { provider, failedReason: '{"status":"error","message":"Invalid REST request: HTTP 404 Not Found"}' });
+    }
+  }),
+
   withSetInactive: trait({
     afterCreate(provider, _) {
       provider.harvestingConfig.harvestingStatus = 'inactive';

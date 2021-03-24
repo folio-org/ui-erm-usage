@@ -6,7 +6,7 @@ import {
   Accordion,
   Col,
   ConfirmationModal,
-  Row
+  Row,
 } from '@folio/stripes/components';
 import formCss from '../../util/sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
@@ -18,7 +18,7 @@ import {
   HarvestingStartField,
   HarvestingStatusSelect,
   HarvestingViaSelect,
-  ReportReleaseSelect
+  ReportReleaseSelect,
 } from './Fields';
 
 class HarvestingConfigurationForm extends React.Component {
@@ -27,11 +27,11 @@ class HarvestingConfigurationForm extends React.Component {
 
     this.state = {
       confirmClear: false,
-      selectedReportRelease: ''
+      selectedReportRelease: '',
     };
   }
 
-  changeSelectedCounterVersion = event => {
+  changeSelectedCounterVersion = (event) => {
     event.preventDefault();
 
     const val = event.target.value;
@@ -54,7 +54,7 @@ class HarvestingConfigurationForm extends React.Component {
     }
   };
 
-  confirmClearReports = confirmation => {
+  confirmClearReports = (confirmation) => {
     if (confirmation) {
       this.props.form.mutators.clearSelectedReports({}, this.props.values);
       this.props.form.mutators.setReportRelease(
@@ -75,7 +75,7 @@ class HarvestingConfigurationForm extends React.Component {
       accordionId,
       harvesterImplementations,
       initialValues,
-      values
+      values,
     } = this.props;
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
@@ -93,7 +93,9 @@ class HarvestingConfigurationForm extends React.Component {
 
     return (
       <Accordion
-        label="Harvesting Configuration"
+        label={
+          <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+        }
         open={expanded}
         id={accordionId}
         onToggle={onToggleAccordion}
@@ -196,11 +198,11 @@ HarvestingConfigurationForm.propTypes = {
   form: PropTypes.shape({
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
-      setReportRelease: PropTypes.func
-    })
+      setReportRelease: PropTypes.func,
+    }),
   }),
   onToggle: PropTypes.func,
-  values: PropTypes.shape()
+  values: PropTypes.shape(),
 };
 
 export default HarvestingConfigurationForm;

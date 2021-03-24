@@ -104,7 +104,7 @@ class ReportButton extends React.Component {
   };
 
   render() {
-    const { report } = this.props;
+    const { intl, report } = this.props;
     if (_.isUndefined(report)) {
       return null;
     }
@@ -115,17 +115,17 @@ class ReportButton extends React.Component {
     const confirmMessage = (
       <React.Fragment>
         <span>
-          Do you really want to delete this report?
+          {intl.formatMessage({
+            id: 'ui-erm-usage.statistics.delete',
+          })}
           <br />
         </span>
         <span>
-          {`${this.props.intl.formatMessage({
+          {`${intl.formatMessage({
             id: 'ui-erm-usage.reportOverview.reportType',
           })}:
            ${report.reportName} --
-           ${this.props.intl.formatMessage({
-            id: 'ui-erm-usage.reportOverview.reportDate',
-          })}:
+           ${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
            ${report.yearMonth}`}
         </span>
       </React.Fragment>
@@ -134,8 +134,8 @@ class ReportButton extends React.Component {
     const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
     const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
     const failedInfo = report.failedAttempts
-      ? 'There are harvesting errors for this report.'
-      : 'Harvesting was successfull.';
+      ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
+      : intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.success' });
     const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
     const reportInfoClassName = report.failedAttempts
       ? 'report-info-failed'
