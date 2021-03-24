@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
@@ -8,7 +7,6 @@ import { Button } from '@folio/stripes/components';
 class FileUploader extends React.Component {
   static propTypes = {
     onSelectFile: PropTypes.func.isRequired,
-    onClickUpload: PropTypes.func,
     selectedFile: PropTypes.object,
     intl: PropTypes.object,
     disable: PropTypes.bool,
@@ -16,30 +14,6 @@ class FileUploader extends React.Component {
 
   onDrop = (acceptedFiles) => {
     this.props.onSelectFile(acceptedFiles);
-  };
-
-  renderUploadButton = () => {
-    if (
-      _.isEmpty(this.props.selectedFile) ||
-      _.isNil(this.props.onClickUpload)
-    ) {
-      return null;
-    } else {
-      const upload = this.props.intl.formatMessage({
-        id: 'ui-erm-usage.report.upload.upload',
-      });
-      return (
-        <Button
-          aria-label={`Upload counter report file ${this.props.selectedFile.name}`}
-          buttonStyle="primary"
-          disabled={this.props.disable}
-          id="upload-report-button"
-          onClick={() => this.props.onClickUpload()}
-        >
-          {`${upload} ${this.props.selectedFile.name}`}
-        </Button>
-      );
-    }
   };
 
   render() {
@@ -75,7 +49,6 @@ class FileUploader extends React.Component {
                 >
                   <FormattedMessage id="ui-erm-usage.report.upload.selectFile" />
                 </Button>
-                {this.renderUploadButton()}
               </div>
             </div>
           )}

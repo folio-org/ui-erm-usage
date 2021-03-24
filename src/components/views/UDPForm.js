@@ -250,7 +250,7 @@ class UDPForm extends React.Component {
                 {initialValues.metadata &&
                   initialValues.metadata.createdDate && (
                     <ViewMetaData metadata={initialValues.metadata} />
-                  )}
+                )}
                 <UDPInfoForm
                   accordionId="editUDPInfo"
                   expanded={sections.editUDPInfo}

@@ -55,6 +55,10 @@ const stubSettings = [
 
 const onToggle = jest.fn;
 
+jest.mock('./AggregatorInfo/AggregatorContactInfo', () => {
+  return () => <span>AggregatorContactInfo</span>;
+});
+
 const renderHarvestingConfigurationView = (stripes) => {
   return renderWithIntl(
     <MemoryRouter>

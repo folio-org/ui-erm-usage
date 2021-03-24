@@ -49,11 +49,7 @@ function CounterUploadModal({
           buttonStyle="primary"
           disabled={!isValid}
           id="save-counter-button"
-          onClick={(report) =>
-            handleSubmit(report, onReset).then(() => {
-              onReset();
-            })
-          }
+          onClick={(report) => handleSubmit(report, onReset).then(() => { onReset(); })}
         >
           <FormattedMessage id="ui-erm-usage.general.save" />
         </Button>

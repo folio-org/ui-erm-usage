@@ -75,6 +75,10 @@ const onSubmit = jest.fn();
 const clearReports = jest.fn();
 const setReportRelease = jest.fn();
 
+jest.mock('../HarvestingConfiguration/SushiCredentials/SushiCredentialsForm', () => {
+  return () => <span>SushiCredentialsForm</span>;
+});
+
 const renderUDPForm = (stripes, udp = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
@@ -308,9 +312,7 @@ describe('UDPForm', () => {
         id: 'clickable-delete-udp-confirmation-cancel',
       });
       userEvent.click(await cancel);
-      await waitForElementToBeRemoved(() =>
-        screen.queryByText('Delete usage data Provider')
-      );
+      await waitForElementToBeRemoved(() => screen.queryByText('Delete usage data Provider'));
       expect(onDelete).not.toHaveBeenCalled();
     });
 
