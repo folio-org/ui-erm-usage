@@ -10,6 +10,8 @@ import {
   Button,
   Col,
   ExpandAllButton,
+  // expandAllFunction,
+  HasCommand,
   Icon,
   Layout,
   Pane,
@@ -156,6 +158,28 @@ class UDP extends React.Component {
     );
   };
 
+  handleEdit = () => {
+    if (this.props.canEdit) {
+      this.props.handlers.onEdit();
+      this.goToEdit();
+    }
+  }
+
+  shortcuts = [
+    {
+      name: 'edit',
+      handler: this.handleEdit,
+    },
+    {
+      name: 'expandAllSections',
+      handler: this.handleExpandAll,
+    },
+    // {
+    //   name: 'collapseAllSections',
+    //   handler: this.collapseAllSections
+    // }
+  ]
+
   renderLoadingPane = () => {
     return (
       <Pane
@@ -195,107 +219,113 @@ class UDP extends React.Component {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
       return (
-        <React.Fragment>
-          <Pane
-            id="pane-udpdetails"
-            defaultWidth="40%"
-            paneTitle={<span data-test-header-title>{label}</span>}
-            actionMenu={this.getActionMenu()}
-            lastMenu={detailMenu}
-            dismissible
-            onClose={handlers.onClose}
-          >
-            <TitleManager record={label} stripes={stripes} />
-            <Row end="xs">
-              <Col xs>
-                <ExpandAllButton
-                  accordionStatus={this.state.accordions}
-                  onToggle={this.handleExpandAll}
-                  id="clickable-expand-all-view"
-                />
-              </Col>
-            </Row>
-            <AccordionSet>
-              <this.connectedViewMetaData
-                metadata={get(usageDataProvider, 'metadata', {})}
-                stripes={stripes}
-              />
-              <UDPInfoView
-                id="udpInfo"
-                usageDataProvider={usageDataProvider}
-                stripes={stripes}
-              />
-              <Accordion
-                open={this.state.accordions.harvestingAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={
-                  <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-                }
-                id="harvestingAccordion"
-                displayWhenOpen={
-                  <StartHarvesterButton
-                    usageDataProvider={usageDataProvider}
-                    isHarvesterExistent={isHarvesterExistent}
-                    onReloadUDP={this.reloadUdp}
+        <HasCommand
+          commands={this.shortcuts}
+          isWithinScope={this.checkScope}
+          scope={document.body}
+        >
+          <React.Fragment>
+            <Pane
+              id="pane-udpdetails"
+              defaultWidth="40%"
+              paneTitle={<span data-test-header-title>{label}</span>}
+              actionMenu={this.getActionMenu()}
+              lastMenu={detailMenu}
+              dismissible
+              onClose={handlers.onClose}
+            >
+              <TitleManager record={label} stripes={stripes} />
+              <Row end="xs">
+                <Col xs>
+                  <ExpandAllButton
+                    accordionStatus={this.state.accordions}
+                    onToggle={this.handleExpandAll}
+                    id="clickable-expand-all-view"
                   />
-                }
-              >
-                <HarvestingConfigurationView
+                </Col>
+              </Row>
+              <AccordionSet>
+                <this.connectedViewMetaData
+                  metadata={get(usageDataProvider, 'metadata', {})}
+                  stripes={stripes}
+                />
+                <UDPInfoView
+                  id="udpInfo"
                   usageDataProvider={usageDataProvider}
                   stripes={stripes}
-                  sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+                />
+                <Accordion
+                  open={this.state.accordions.harvestingAccordion}
                   onToggle={this.handleAccordionToggle}
-                  settings={data.settings}
-                  harvesterImpls={data.harvesterImpls}
-                />
-              </Accordion>
-              <Accordion
-                open={this.state.accordions.statisticsAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-                id="statisticsAccordion"
-              >
-                <Statistics
+                  label={
+                    <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+                  }
+                  id="harvestingAccordion"
+                  displayWhenOpen={
+                    <StartHarvesterButton
+                      usageDataProvider={usageDataProvider}
+                      isHarvesterExistent={isHarvesterExistent}
+                      onReloadUDP={this.reloadUdp}
+                    />
+                  }
+                >
+                  <HarvestingConfigurationView
+                    usageDataProvider={usageDataProvider}
+                    stripes={stripes}
+                    sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
+                    onToggle={this.handleAccordionToggle}
+                    settings={data.settings}
+                    harvesterImpls={data.harvesterImpls}
+                  />
+                </Accordion>
+                <Accordion
+                  open={this.state.accordions.statisticsAccordion}
+                  onToggle={this.handleAccordionToggle}
+                  label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
+                  id="statisticsAccordion"
+                >
+                  <Statistics
+                    stripes={stripes}
+                    providerId={providerId}
+                    udpLabel={label}
+                    counterReports={data.counterReports}
+                    customReports={data.customReports}
+                    isStatsLoading={isStatsLoading}
+                    handlers={handlers}
+                  />
+                </Accordion>
+                <Accordion
+                  open={this.state.accordions.uploadAccordion}
+                  onToggle={this.handleAccordionToggle}
+                  label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
+                  id="uploadAccordion"
+                >
+                  <ReportUpload
+                    udpId={providerId}
+                    stripes={stripes}
+                    handlers={handlers}
+                    onReloadStatistics={this.reloadStatistics}
+                  />
+                </Accordion>
+                <NotesSmartAccordion
+                  id="notesAccordion"
+                  domainName="erm-usage"
+                  entityId={usageDataProvider.id}
+                  entityName={usageDataProvider.label}
+                  entityType="erm-usage-data-provider"
+                  pathToNoteCreate={urls.noteCreate()}
+                  pathToNoteDetails={urls.notes()}
+                  onToggle={this.handleAccordionToggle}
+                  open={this.state.accordions.notesAccordion}
                   stripes={stripes}
-                  providerId={providerId}
-                  udpLabel={label}
-                  counterReports={data.counterReports}
-                  customReports={data.customReports}
-                  isStatsLoading={isStatsLoading}
-                  handlers={handlers}
                 />
-              </Accordion>
-              <Accordion
-                open={this.state.accordions.uploadAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
-                id="uploadAccordion"
-              >
-                <ReportUpload
-                  udpId={providerId}
-                  stripes={stripes}
-                  handlers={handlers}
-                  onReloadStatistics={this.reloadStatistics}
-                />
-              </Accordion>
-              <NotesSmartAccordion
-                id="notesAccordion"
-                domainName="erm-usage"
-                entityId={usageDataProvider.id}
-                entityName={usageDataProvider.label}
-                entityType="erm-usage-data-provider"
-                pathToNoteCreate={urls.noteCreate()}
-                pathToNoteDetails={urls.notes()}
-                onToggle={this.handleAccordionToggle}
-                open={this.state.accordions.notesAccordion}
-                stripes={stripes}
-              />
-            </AccordionSet>
-          </Pane>
-          {helperApp && (
-            <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
-          )}
-        </React.Fragment>
+              </AccordionSet>
+            </Pane>
+            {helperApp && (
+              <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
+            )}
+          </React.Fragment>
+        </HasCommand>
       );
     }
   }
