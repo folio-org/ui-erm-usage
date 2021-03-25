@@ -8,6 +8,7 @@ import {
   Col,
   ConfirmationModal,
   ExpandAllButton,
+  expandAllFunction,
   HasCommand,
   IconButton,
   Pane,
@@ -69,9 +70,37 @@ class UDPForm extends React.Component {
         name: 'save',
         handler: this.handleSaveKeyCommand
       },
+      {
+        name: 'expandAllSections',
+        handler: this.expandAllSections,
+      },
+      {
+        name: 'collapseAllSections',
+        handler: this.collapseAllSections,
+      }
     ];
 
     this.handleExpandAll = this.handleExpandAll.bind(this);
+  }
+
+  toggleAllSections = (expand) => {
+    this.setState((curState) => {
+      const newSections = expandAllFunction(curState.sections, expand);
+
+      return {
+        sections: newSections
+      };
+    });
+  }
+
+  expandAllSections = (e) => {
+    e.preventDefault();
+    this.toggleAllSections(true);
+  }
+
+  collapseAllSections = (e) => {
+    e.preventDefault();
+    this.toggleAllSections(false);
   }
 
   handleSaveKeyCommand = (e) => {
