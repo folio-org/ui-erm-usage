@@ -150,7 +150,6 @@ class UDP extends React.Component {
   handleEdit = () => {
     if (this.props.canEdit) {
       this.props.handlers.onEdit();
-      this.goToEdit();
     }
   }
 

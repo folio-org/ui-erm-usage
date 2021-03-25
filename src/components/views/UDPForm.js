@@ -8,6 +8,7 @@ import {
   Col,
   ConfirmationModal,
   ExpandAllButton,
+  HasCommand,
   IconButton,
   Pane,
   PaneFooter,
@@ -63,7 +64,25 @@ class UDPForm extends React.Component {
       }
     };
 
+    this.shortcuts = [
+      {
+        name: 'save',
+        handler: this.handleSaveKeyCommand
+      },
+    ];
+
     this.handleExpandAll = this.handleExpandAll.bind(this);
+  }
+
+  handleSaveKeyCommand = (e) => {
+    e.preventDefault();
+    this.executeSave();
+  };
+
+  executeSave() {
+    const { handleSubmit, onSubmit } = this.props;
+
+    handleSubmit(onSubmit);
   }
 
   getFormName() {
@@ -218,68 +237,70 @@ class UDPForm extends React.Component {
     const footer = this.renderPaneFooter();
 
     return (
-      <form
-        className={css.UDPFormRoot}
-        id="form-udp"
-        onSubmit={handleSubmit}
-        data-test-form-page
-      >
-        <Paneset isRoot>
-          <Pane
-            defaultWidth="100%"
-            firstMenu={firstMenu}
-            footer={footer}
-            lastMenu={lastMenu}
-            paneTitle={paneTitle}
-          >
-            <div className={css.UDPFormContent}>
-              <AccordionSet>
-                <Row end="xs">
-                  <Col xs>
-                    <ExpandAllButton
-                      id="clickable-expand-all"
-                      accordionStatus={sections}
-                      onToggle={this.handleExpandAll}
-                    />
-                  </Col>
-                </Row>
-                {initialValues.metadata &&
-                  initialValues.metadata.createdDate && (
-                    <ViewMetaData metadata={initialValues.metadata} />
-                )}
-                <UDPInfoForm
-                  accordionId="editUDPInfo"
-                  expanded={sections.editUDPInfo}
-                  onToggle={this.handleSectionToggle}
-                  {...this.props}
+      <HasCommand commands={this.shortcuts}>
+        <form
+          className={css.UDPFormRoot}
+          id="form-udp"
+          onSubmit={handleSubmit}
+          data-test-form-page
+        >
+          <Paneset isRoot>
+            <Pane
+              defaultWidth="100%"
+              firstMenu={firstMenu}
+              footer={footer}
+              lastMenu={lastMenu}
+              paneTitle={paneTitle}
+            >
+              <div className={css.UDPFormContent}>
+                <AccordionSet>
+                  <Row end="xs">
+                    <Col xs>
+                      <ExpandAllButton
+                        id="clickable-expand-all"
+                        accordionStatus={sections}
+                        onToggle={this.handleExpandAll}
+                      />
+                    </Col>
+                  </Row>
+                  {initialValues.metadata &&
+                    initialValues.metadata.createdDate && (
+                      <ViewMetaData metadata={initialValues.metadata} />
+                  )}
+                  <UDPInfoForm
+                    accordionId="editUDPInfo"
+                    expanded={sections.editUDPInfo}
+                    onToggle={this.handleSectionToggle}
+                    {...this.props}
+                  />
+                  <HarvestingConfigurationForm
+                    accordionId="editHarvestingConfig"
+                    aggregators={aggregators}
+                    expanded={sections.editHarvestingConfig}
+                    onToggle={this.handleSectionToggle}
+                    harvesterImplementations={harvesterImpls}
+                    {...this.props}
+                  />
+                </AccordionSet>
+                <ConfirmationModal
+                  id="delete-udp-confirmation"
+                  open={confirmDelete}
+                  heading={
+                    <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
+                  }
+                  message={this.getConfirmationMessage(udp)}
+                  onConfirm={() => {
+                    this.confirmDelete(true);
+                  }}
+                  onCancel={() => {
+                    this.confirmDelete(false);
+                  }}
                 />
-                <HarvestingConfigurationForm
-                  accordionId="editHarvestingConfig"
-                  aggregators={aggregators}
-                  expanded={sections.editHarvestingConfig}
-                  onToggle={this.handleSectionToggle}
-                  harvesterImplementations={harvesterImpls}
-                  {...this.props}
-                />
-              </AccordionSet>
-              <ConfirmationModal
-                id="delete-udp-confirmation"
-                open={confirmDelete}
-                heading={
-                  <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
-                }
-                message={this.getConfirmationMessage(udp)}
-                onConfirm={() => {
-                  this.confirmDelete(true);
-                }}
-                onCancel={() => {
-                  this.confirmDelete(false);
-                }}
-              />
-            </div>
-          </Pane>
-        </Paneset>
-      </form>
+              </div>
+            </Pane>
+          </Paneset>
+        </form>
+      </HasCommand>
     );
   }
 }
