@@ -105,6 +105,15 @@ const handlers = {
   onDownloadReportMultiMonth: jest.fn,
 };
 
+const mutators = {
+  udpReloadToggle: {
+    replace: jest.fn,
+  },
+  statsReloadToggle: {
+    replace: jest.fn,
+  },
+};
+
 const renderUDP = (stripes) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
@@ -116,7 +125,10 @@ const renderUDP = (stripes) => {
           isHarvesterExistent={false}
           isLoading={false}
           isStatsLoading={false}
+          mutator={mutators}
+          statsReloadCount={0}
           tagsEnabled={false}
+          udpReloadCount={0}
         />
       </MemoryRouter>
     </StripesContext.Provider>

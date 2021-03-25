@@ -11,7 +11,7 @@ const renderReportUpload = (stripes) => {
   return act(() => {
     renderWithIntl(
       <MemoryRouter>
-        <ReportUpload stripes={stripes} />
+        <ReportUpload onReloadStatistics={jest.fn} stripes={stripes} />
       </MemoryRouter>
     );
   });
