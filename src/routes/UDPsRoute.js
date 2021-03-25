@@ -180,7 +180,7 @@ class UDPsRoute extends React.Component {
   };
 
   render() {
-    const { location, match, children, resources } = this.props;
+    const { location, match, children, resources, history } = this.props;
 
     if (this.source) {
       this.source.update(this.props, 'usageDataProviders');
@@ -201,6 +201,7 @@ class UDPsRoute extends React.Component {
         querySetter={this.querySetter}
         searchString={location.search}
         source={this.source}
+        history={history}
       >
         {children}
       </UDPs>
