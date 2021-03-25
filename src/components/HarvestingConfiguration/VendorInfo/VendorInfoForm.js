@@ -31,6 +31,14 @@ class VendorInfoForm extends React.Component {
     return required(type);
   }
 
+  validateUrl = (url) => {
+    const { disabled } = this.props;
+    if (disabled) {
+      return undefined;
+    }
+    return requiredValidateUrl(url);
+  };
+
   render() {
     const { disabled, harvesterImpls, intl } = this.props;
 
@@ -65,7 +73,7 @@ class VendorInfoForm extends React.Component {
             component={TextField}
             disabled={disabled}
             required={!disabled}
-            validate={requiredValidateUrl}
+            validate={(val) => this.validateUrl(val)}
             fullWidth
           />
         </Col>
