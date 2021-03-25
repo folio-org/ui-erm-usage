@@ -10,6 +10,7 @@ import {
 
 import pkg from '../package';
 import commands from './commands';
+import commandsGeneral from './commandsGeneral';
 import UDPsRoute from './routes/UDPsRoute';
 import UDPViewRoute from './routes/UDPViewRoute';
 import UDPCreateRoute from './routes/UDPCreateRoute';
@@ -54,6 +55,7 @@ class ErmUsage extends React.Component {
     } = this.props;
 
     this.shortcutScope = document.body;
+    const allCommands = commands.concat(commandsGeneral);
 
     if (showSettings) {
       return <Settings {...this.props} />;
@@ -61,7 +63,7 @@ class ErmUsage extends React.Component {
 
     return (
       <>
-        <CommandList commands={commands}>
+        <CommandList commands={allCommands}>
           <HasCommand
             commands={this.shortcuts}
             isWithinScope={this.checkScope}

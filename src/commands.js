@@ -5,17 +5,17 @@ const commands = [
   {
     name: 'new',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.createRecord" />),
-    shortcut: 'alt+n',
+    shortcut: 'alt+n'
   },
   {
     name: 'edit',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.editRecord" />),
-    shortcut: 'mod+alt+e',
+    shortcut: 'mod+alt+e'
   },
   {
     name: 'save',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.saveRecord" />),
-    shortcut: 'mod+s',
+    shortcut: 'mod+s'
   },
   {
     name: 'expandAllSections',
@@ -30,7 +30,7 @@ const commands = [
   {
     name: 'search',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.goToSearchFilter" />),
-    shortcut: 'mod+alt+h',
+    shortcut: 'mod+alt+h'
   }
 ];
 

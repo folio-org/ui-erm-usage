@@ -165,8 +165,27 @@ class UDP extends React.Component {
     {
       name: 'collapseAllSections',
       handler: (e) => collapseAllSections(e, this.accordionStatusRef)
-    }
+    },
+    {
+      name: 'close',
+      // handler: (e) => this.handleClose(e),
+      // handler: (e) => this.reloadUdp(e),
+    },
   ];
+
+  // handleClose = () => {
+  //   window.location.reload();
+
+  //   const {
+  //     match: { params },
+  //     location: { search },
+  //     history,
+  //   } = this.props;
+
+  //   const idParam = params.id || '';
+  //   console.log(`${urls.udpView(idParam)}${search}`);
+  //   history.push(`${urls.udpView(idParam)}${search}`);
+  // }
 
   renderLoadingPane = () => {
     return (
@@ -182,6 +201,10 @@ class UDP extends React.Component {
         </Layout>
       </Pane>
     );
+  };
+
+  checkScope = () => {
+    return document.getElementById('ModuleContainer').contains(document.activeElement);
   };
 
   render() {
@@ -322,9 +345,12 @@ UDP.propTypes = {
     onClose: PropTypes.func.isRequired,
     onEdit: PropTypes.func,
   }).isRequired,
+  history: PropTypes.object,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
+  location: PropTypes.object,
+  match: PropTypes.object,
   mutator: PropTypes.shape({
     udpReloadToggle: PropTypes.shape({
       replace: PropTypes.func.isRequired,
