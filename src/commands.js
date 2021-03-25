@@ -31,11 +31,6 @@ const commands = [
     name: 'search',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.goToSearchFilter" />),
     shortcut: 'mod+alt+h',
-  },
-  {
-    name: 'openShortcutModal',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.openShortcutModal" />),
-    shortcut: 'mod+shift+7',
   }
 ];
 
