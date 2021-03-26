@@ -40,16 +40,20 @@ function SelectReportType(props) {
         {fields.map((elem, index) => (
           <Row key={index}>
             <Col xs={6}>
-              <Field
-                component={Selection}
-                dataOptions={omitUsedOptions(
-                  counterReportsCurrentVersion,
-                  selectedReports,
-                  index
-                )}
-                label="Report type"
-                name={elem}
-              />
+              <div id={`reportType-selection-${index}`}>
+                <Field
+                  component={Selection}
+                  dataOptions={omitUsedOptions(
+                    counterReportsCurrentVersion,
+                    selectedReports,
+                    index
+                  )}
+                  label={
+                    <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
+                  }
+                  name={elem}
+                />
+              </div>
             </Col>
             <Col xs={2}>
               <div className={`${css.repeatableFieldRemoveItem}`}>
