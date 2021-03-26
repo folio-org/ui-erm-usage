@@ -35,6 +35,13 @@ const mutators = {
   },
 };
 
+jest.mock(
+  '../HarvestingConfiguration/AggregatorInfo/AggregatorContactInfo',
+  () => {
+    return () => <span>AggregatorContactInfo</span>;
+  }
+);
+
 const renderUDP = (stripes) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
@@ -63,9 +70,9 @@ describe('UDP', () => {
     stripes = useStripes();
   });
 
-  test('should render UDP', () => {
+  test('should render UDP', async () => {
     renderUDP(stripes);
-    userEvent.click(screen.getByText('Harvesting configuration'));
+    await userEvent.click(screen.getByText('Harvesting configuration'));
 
     // TODO: Harvesting status is always visible. How to test the accordion?
     expect(screen.getByText('Harvesting status')).toBeVisible();
