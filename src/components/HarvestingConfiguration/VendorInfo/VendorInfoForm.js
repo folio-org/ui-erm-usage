@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
-import { notRequired, required, requiredValidateUrl } from '../../../util/validate';
+import {
+  notRequired,
+  required,
+  requiredValidateUrl,
+} from '../../../util/validate';
 
 class VendorInfoForm extends React.Component {
   static propTypes = {
@@ -22,6 +26,14 @@ class VendorInfoForm extends React.Component {
       this.isRequired = this.props.disabled ? notRequired : required;
     }
   }
+
+  validateUrl = (url) => {
+    const { disabled } = this.props;
+    if (disabled) {
+      return undefined;
+    }
+    return requiredValidateUrl(url);
+  };
 
   render() {
     const { disabled, harvesterImpls, intl } = this.props;
@@ -57,7 +69,7 @@ class VendorInfoForm extends React.Component {
             component={TextField}
             disabled={disabled}
             required={!disabled}
-            validate={requiredValidateUrl}
+            validate={(val) => this.validateUrl(val)}
             fullWidth
           />
         </Col>

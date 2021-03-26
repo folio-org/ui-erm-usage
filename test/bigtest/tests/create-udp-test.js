@@ -14,6 +14,7 @@ describe('Create UDP', () => {
   const udpEditPage = new UDPEditPage();
 
   beforeEach(function () {
+    this.server.createList('aggregator-setting', 3);
     return this.visit(
       '/eusage/create?filters=harvestingStatus.active&sort=label',
       () => {
@@ -111,6 +112,22 @@ describe('Create UDP', () => {
       it('customer id is mandatory', () => {
         expect(udpEditPage.customerId.required).to.not.be.null;
       });
+    });
+  });
+
+  describe('harvest via aggregator happy path', () => {
+    beforeEach(async () => {
+      await udpEditPage.providerName.fill('Provier 1');
+      await udpEditPage.harvestingStatusSelect.select('Active');
+      await udpEditPage.harvestingViaSelect.select('Aggregator');
+      await udpEditPage.aggregatorSelect.select('Aggregator 1');
+      await udpEditPage.reportReleaseSelect.select('Counter 4');
+      await udpEditPage.clickAddReportButton();
+      await udpEditPage.reportTypeSelection.expandAndClick(1);
+      await udpEditPage.harvestingStart.fill('2020-01');
+    });
+    it('Save & close button is enabled', () => {
+      expect(udpEditPage.saveButtonIsDisabled).to.be.false;
     });
   });
 });
