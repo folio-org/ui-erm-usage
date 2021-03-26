@@ -2,10 +2,14 @@ import {
   attribute,
   clickable,
   interactor,
+  is,
   isPresent,
+  scoped,
   text,
   value,
 } from '@bigtest/interactor';
+
+import SelectionInteractor from '@folio/stripes-components/lib/Selection/tests/interactor'; // eslint-disable-line
 
 @interactor class HarvestingStatusSelect {
   static defaultScope = 'select[name="harvestingConfig.harvestingStatus"]';
@@ -17,13 +21,19 @@ import {
   value = value();
 }
 
+@interactor class AggregatorSelect {
+  static defaultScope = 'select[name="harvestingConfig.aggregator.id"]';
+  value = value();
+}
+
 @interactor class ReportReleaseSelect {
   static defaultScope = 'select[id="addudp_reportrelease"]';
   value = value();
 }
 
 @interactor class ReportTypeSelect {
-  static defaultScope = 'select[id=""]';
+  static defaultScope = 'select[name="harvestingConfig.requestedReports[0]"]';
+  value = value();
 }
 
 @interactor class DeleteUDPConfirmation {
@@ -57,13 +67,20 @@ export default @interactor class UDPEditPage {
   title = text('[class*=paneTitleLabel---]');
   harvestingStatusSelect = new HarvestingStatusSelect();
   harvestingViaSelect = new HarvestingViaSelect();
+  aggregatorSelect = new AggregatorSelect();
   deleteUDPConfirmation = new DeleteUDPConfirmation();
 
   clickDeleteUDP = clickable('#clickable-delete-udp');
 
+  reportTypeSelection = new SelectionInteractor('#reportType-selection-0');
+
   reportReleaseSelect = new ReportReleaseSelect();
   reportTypeSelect = new ReportTypeSelect();
-  clickAddReportButton = clickable('[data-test-add-report-button]');
+
+  clickAddReportButton = clickable('[data-test-repeatable-field-add-item-button]');
+  harvestingStart = scoped('#input-harvestingStart');
+  providerName = scoped('#addudp_providername');
+  saveButtonIsDisabled = is('[data-test-udp-form-submit-button]', ':disabled');
   confirmationModal = new ConfirmationModal();
 
   customerId = new CustomerId();
