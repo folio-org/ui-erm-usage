@@ -3,22 +3,10 @@ import { screen } from '@testing-library/react';
 import renderWithIntl from '../../../../test/jest/helpers';
 
 import SushiCredentialsView from './SushiCredentialsView';
-
-const stubUDP = {
-  id: 'ccdbb4c7-9d58-4b59-96ef-7074c34e901b',
-  label: 'Test UDP',
-  description: 'This is a mock udp',
-  sushiCredentials: {
-    customerId: 'customer123',
-    requestorId: 'requestor123',
-    apiKey: 'api123',
-    requestorName: 'Karla Kolumna',
-    requestorMail: 'kolumna@mail.com',
-  },
-};
+import udp from '../../../../test/fixtures/udp';
 
 const renderSushiCredentialsView = (
-  usageDataProvider = stubUDP,
+  usageDataProvider = udp,
   hideCredentials = true
 ) => {
   const settings = [
@@ -38,26 +26,26 @@ const renderSushiCredentialsView = (
 
 describe('SushiCredentialsView', () => {
   test('renders credentials', () => {
-    renderSushiCredentialsView(stubUDP, false);
+    renderSushiCredentialsView(udp, false);
 
     expect(
-      screen.getByText(stubUDP.sushiCredentials.customerId)
+      screen.getByText(udp.sushiCredentials.customerId)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(stubUDP.sushiCredentials.requestorId)
+      screen.getByText(udp.sushiCredentials.requestorId)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(stubUDP.sushiCredentials.apiKey)
+      screen.getByText(udp.sushiCredentials.apiKey)
     ).toBeInTheDocument();
   });
 
   test('hides credentials', () => {
-    renderSushiCredentialsView(stubUDP, true);
+    renderSushiCredentialsView(udp, true);
 
-    expect(screen.queryByText(stubUDP.sushiCredentials.customerId)).toBeNull();
+    expect(screen.queryByText(udp.sushiCredentials.customerId)).toBeNull();
     expect(
-      screen.queryByText(stubUDP.sushiCredentials.requestorId)
+      screen.queryByText(udp.sushiCredentials.requestorId)
     ).toBeNull();
-    expect(screen.queryByText(stubUDP.sushiCredentials.apiKey)).toBeNull();
+    expect(screen.queryByText(udp.sushiCredentials.apiKey)).toBeNull();
   });
 });
