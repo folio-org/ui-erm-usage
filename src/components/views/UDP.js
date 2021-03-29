@@ -273,7 +273,6 @@ class UDP extends React.Component {
                 <ReportUpload
                   udpId={providerId}
                   stripes={stripes}
-                  handlers={handlers}
                   onReloadStatistics={this.reloadStatistics}
                 />
               </Accordion>

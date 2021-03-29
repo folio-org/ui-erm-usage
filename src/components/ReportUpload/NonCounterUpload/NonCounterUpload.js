@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 function NonCounterUpload({
-  handlers,
   onFail,
   onClose,
   onSuccess,
@@ -46,13 +45,12 @@ function NonCounterUpload({
       onSubmit={handleNonCounterUpload}
       stripes={stripes}
       udpId={udpId}
-      handlers={handlers}
     />
   );
 }
 
 NonCounterUpload.propTypes = {
-  handlers: PropTypes.shape(),
+  // handlers: PropTypes.shape(),
   onFail: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,

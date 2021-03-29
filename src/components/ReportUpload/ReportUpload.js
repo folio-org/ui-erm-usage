@@ -79,7 +79,6 @@ class ReportUpload extends React.Component {
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
           udpId={this.props.udpId}
-          handlers={this.props.handlers}
         />
         <Callout
           ref={(ref) => {
@@ -92,7 +91,6 @@ class ReportUpload extends React.Component {
 }
 
 ReportUpload.propTypes = {
-  handlers: PropTypes.shape(),
   intl: PropTypes.object,
   onReloadStatistics: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,

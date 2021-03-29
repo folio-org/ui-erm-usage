@@ -208,9 +208,6 @@ function NonCounterUploadInnerForm(props) {
 
 NonCounterUploadInnerForm.propTypes = {
   intl: PropTypes.object,
-  handlers: PropTypes.shape({
-    doDownloadFile: PropTypes.func,
-  }),
   mutators: PropTypes.shape({
     setFileId: PropTypes.func,
     setFileName: PropTypes.func,
