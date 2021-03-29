@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 const commandsGeneral = [
   {
+    name: 'expandCollapse',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.expandCollapse" />),
     shortcut: 'spacebar'
   },
@@ -12,18 +13,22 @@ const commandsGeneral = [
     shortcut: 'esc'
   },
   {
+    name: 'copy',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.copy" />),
     shortcut: 'mod+c'
   },
   {
+    name: 'cut',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.cut" />),
     shortcut: 'mod+x'
   },
   {
+    name: 'paste',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.paste" />),
     shortcut: 'mod+v'
   },
   {
+    name: 'find',
     label: (<FormattedMessage id="ui-erm-usage.shortcut.find" />),
     shortcut: 'mod+f'
   }

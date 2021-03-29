@@ -44,6 +44,7 @@ class UDP extends React.Component {
 
     this.state = {
       helperApp: null,
+      showReportUploadModal: true,
     };
   }
 
@@ -168,24 +169,13 @@ class UDP extends React.Component {
     },
     {
       name: 'close',
-      // handler: (e) => this.handleClose(e),
-      // handler: (e) => this.reloadUdp(e),
+      handler: () => this.handleCloseModal()
     },
   ];
 
-  // handleClose = () => {
-  //   window.location.reload();
-
-  //   const {
-  //     match: { params },
-  //     location: { search },
-  //     history,
-  //   } = this.props;
-
-  //   const idParam = params.id || '';
-  //   console.log(`${urls.udpView(idParam)}${search}`);
-  //   history.push(`${urls.udpView(idParam)}${search}`);
-  // }
+  handleCloseModal = () => {
+    this.setState({ showReportUploadModal: false });
+  };
 
   renderLoadingPane = () => {
     return (
@@ -307,6 +297,7 @@ class UDP extends React.Component {
                       stripes={stripes}
                       handlers={handlers}
                       onReloadStatistics={this.reloadStatistics}
+                      showReportUploadModal={this.state.showReportUploadModal}
                     />
                   </Accordion>
                   <NotesSmartAccordion
@@ -345,12 +336,9 @@ UDP.propTypes = {
     onClose: PropTypes.func.isRequired,
     onEdit: PropTypes.func,
   }).isRequired,
-  history: PropTypes.object,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
-  location: PropTypes.object,
-  match: PropTypes.object,
   mutator: PropTypes.shape({
     udpReloadToggle: PropTypes.shape({
       replace: PropTypes.func.isRequired,
