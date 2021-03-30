@@ -4,7 +4,6 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
 import {
-  notRequired,
   required,
   requiredValidateUrl,
 } from '../../../util/validate';
@@ -16,17 +15,6 @@ class VendorInfoForm extends React.Component {
     intl: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.isRequired = this.props.disabled ? notRequired : required;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.disabled !== prevProps.disabled) {
-      this.isRequired = this.props.disabled ? notRequired : required;
-    }
-  }
-
   validateUrl = (url) => {
     const { disabled } = this.props;
     if (disabled) {
@@ -34,6 +22,14 @@ class VendorInfoForm extends React.Component {
     }
     return requiredValidateUrl(url);
   };
+
+  validateServiceType = (type) => {
+    const { disabled } = this.props;
+    if (disabled) {
+      return undefined;
+    }
+    return required(type);
+  }
 
   render() {
     const { disabled, harvesterImpls, intl } = this.props;
@@ -54,7 +50,7 @@ class VendorInfoForm extends React.Component {
             dataOptions={harvesterImpls}
             disabled={disabled}
             required={!disabled}
-            validate={this.isRequired}
+            validate={this.validateServiceType}
             fullWidth
           />
         </Col>
