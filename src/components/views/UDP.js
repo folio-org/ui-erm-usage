@@ -12,6 +12,7 @@ import {
   ExpandAllButton,
   Icon,
   Layout,
+  Modal,
   Pane,
   PaneHeaderIconButton,
   PaneMenu,
@@ -51,6 +52,7 @@ class UDP extends React.Component {
         statisticsAccordion: false,
       },
       helperApp: null,
+      showDeleteReports: false,
     };
   }
 
@@ -86,6 +88,18 @@ class UDP extends React.Component {
   reloadStatistics = () => {
     const oldCount = this.props.statsReloadCount;
     this.props.mutator.statsReloadToggle.replace(oldCount + 1);
+  };
+
+  doShowDeleteReports = () => {
+    this.setState({
+      showDeleteReports: true,
+    });
+  };
+
+  doCloseDeleteReports = () => {
+    this.setState({
+      showDeleteReports: false,
+    });
   };
 
   renderDetailMenu = (udp) => {
@@ -132,6 +146,20 @@ class UDP extends React.Component {
             <Icon icon="refresh">
               <FormattedMessage id="ui-erm-usage.action.refreshStatistics" />
             </Icon>
+          </Button>
+        </div>
+        <div>
+          <Button
+            id="clickable-delete-reports"
+            buttonStyle="dropDownItem"
+            onClick={() => {
+              onToggle();
+              this.doShowDeleteReports();
+            }}
+            aria-label="Delete reports"
+            marginBottom0
+          >
+            <Icon icon="trash">DELETE REPORTS</Icon>
           </Button>
         </div>
         {canEdit && (
@@ -295,6 +323,31 @@ class UDP extends React.Component {
           {helperApp && (
             <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
           )}
+          <Modal
+            id="delete-reports-modal"
+            closeOnBackgroundClick
+            data-test-delete-reports-modal
+            open={this.state.showDeleteReports}
+            label="DELETE MULTIPLE REPORTS"
+            footer={
+              <Button
+                id="close-delete-reports-button"
+                onClick={this.doCloseDeleteReports}
+              >
+                CLOSE
+              </Button>
+            }
+          >
+            <Statistics
+              stripes={stripes}
+              providerId={providerId}
+              udpLabel={label}
+              counterReports={data.counterReports}
+              customReports={data.customReports}
+              isStatsLoading={isStatsLoading}
+              handlers={handlers}
+            />
+          </Modal>
         </React.Fragment>
       );
     }
