@@ -20,6 +20,15 @@ class ReportUpload extends React.Component {
     callout = React.createRef();
   }
 
+  componentWillReceiveProps(props) {
+    if (!props.showReportUploadModal) {
+      this.setState({
+        showCounterUpload: false,
+        showNonCounterUpload: false,
+      });
+    }
+  }
+
   handleSuccess = () => {
     const info = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.success',
@@ -133,6 +142,7 @@ ReportUpload.propTypes = {
   onReloadStatistics: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
+  showReportUploadModal: PropTypes.bool,
 };
 
 export default injectIntl(ReportUpload);
