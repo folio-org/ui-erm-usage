@@ -15,6 +15,7 @@ import {
   MultiColumnList,
   Pane,
   Button,
+  HasCommand,
   Icon,
   NoValue,
   PaneMenu,
@@ -96,6 +97,17 @@ class UDPs extends React.Component {
       filterPaneIsVisible: !curState.filterPaneIsVisible,
     }));
   };
+
+  createNewUdp = () => {
+    this.props.history.push(`${urls.udpCreate()}${this.props.searchString}`);
+  }
+
+  shortcuts = [
+    {
+      name: 'new',
+      handler: this.createNewUdp,
+    },
+  ];
 
   getAggregatorName = (udp) => {
     return udp.harvestingConfig.harvestVia === 'aggregator' ? (
@@ -201,131 +213,133 @@ class UDPs extends React.Component {
     const sortOrder = query.sort || '';
 
     return (
-      <div data-test-udp-instances ref={contentRef}>
-        <SearchAndSortQuery
-          initialFilterState={{
-            harvestingStatus: ['active'],
-          }}
-          initialSearchState={{ query: '' }}
-          initialSortState={{ sort: 'label' }}
-          queryGetter={queryGetter}
-          querySetter={querySetter}
-          syncToLocationSearch={syncToLocationSearch}
-        >
-          {({
-            searchValue,
-            getSearchHandlers,
-            onSubmitSearch,
-            onSort,
-            getFilterHandlers,
-            activeFilters,
-            filterChanged,
-            searchChanged,
-            resetAll,
-          }) => {
-            const disableReset = () => !filterChanged && !searchChanged;
-            return (
-              <Paneset id="udps-paneset">
-                {this.state.filterPaneIsVisible && (
+      <HasCommand commands={this.shortcuts}>
+        <div data-test-udp-instances ref={contentRef}>
+          <SearchAndSortQuery
+            initialFilterState={{
+              harvestingStatus: ['active'],
+            }}
+            initialSearchState={{ query: '' }}
+            initialSortState={{ sort: 'label' }}
+            queryGetter={queryGetter}
+            querySetter={querySetter}
+            syncToLocationSearch={syncToLocationSearch}
+          >
+            {({
+              searchValue,
+              getSearchHandlers,
+              onSubmitSearch,
+              onSort,
+              getFilterHandlers,
+              activeFilters,
+              filterChanged,
+              searchChanged,
+              resetAll,
+            }) => {
+              const disableReset = () => !filterChanged && !searchChanged;
+              return (
+                <Paneset id="udps-paneset">
+                  {this.state.filterPaneIsVisible && (
+                    <Pane
+                      defaultWidth="20%"
+                      lastMenu={
+                        <PaneMenu>
+                          <CollapseFilterPaneButton
+                            onClick={this.toggleFilterPane}
+                          />
+                        </PaneMenu>
+                      }
+                      paneTitle={
+                        <FormattedMessage id="stripes-smart-components.searchAndFilter" />
+                      }
+                    >
+                      <form onSubmit={onSubmitSearch}>
+                        <div>
+                          <SearchField
+                            ariaLabel={intl.formatMessage({
+                              id: 'ui-erm-usage.udp.searchInputLabel',
+                            })}
+                            autoFocus
+                            data-test-udp-search-input
+                            id="input-udp-search"
+                            inputRef={this.searchField}
+                            name="query"
+                            onChange={getSearchHandlers().query}
+                            onClear={getSearchHandlers().reset}
+                            value={searchValue.query}
+                          />
+                          <Button
+                            buttonStyle="primary"
+                            disabled={
+                              !searchValue.query || searchValue.query === ''
+                            }
+                            fullWidth
+                            id="clickable-search-agreements"
+                            type="submit"
+                          >
+                            <FormattedMessage id="stripes-smart-components.search" />
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            buttonStyle="none"
+                            id="clickable-reset-all"
+                            disabled={disableReset()}
+                            onClick={resetAll}
+                          >
+                            <Icon icon="times-circle-solid">
+                              <FormattedMessage id="stripes-smart-components.resetAll" />
+                            </Icon>
+                          </Button>
+                        </div>
+                      </form>
+                      <UDPFilters
+                        activeFilters={activeFilters.state}
+                        data={data}
+                        filterHandlers={getFilterHandlers()}
+                      />
+                    </Pane>
+                  )}
                   <Pane
-                    defaultWidth="20%"
-                    lastMenu={
-                      <PaneMenu>
-                        <CollapseFilterPaneButton
-                          onClick={this.toggleFilterPane}
-                        />
-                      </PaneMenu>
-                    }
+                    appIcon={<AppIcon app="erm-usage" />}
+                    defaultWidth="fill"
+                    firstMenu={this.renderResultsFirstMenu(activeFilters)}
+                    lastMenu={this.renderResultsLastMenu()}
+                    padContent={false}
                     paneTitle={
-                      <FormattedMessage id="stripes-smart-components.searchAndFilter" />
+                      <FormattedMessage id="ui-erm-usage.usage-data-providers" />
                     }
+                    paneSub={this.renderResultsPaneSubtitle(source)}
                   >
-                    <form onSubmit={onSubmitSearch}>
-                      <div>
-                        <SearchField
-                          ariaLabel={intl.formatMessage({
-                            id: 'ui-erm-usage.udp.searchInputLabel',
-                          })}
-                          autoFocus
-                          data-test-udp-search-input
-                          id="input-udp-search"
-                          inputRef={this.searchField}
-                          name="query"
-                          onChange={getSearchHandlers().query}
-                          onClear={getSearchHandlers().reset}
-                          value={searchValue.query}
-                        />
-                        <Button
-                          buttonStyle="primary"
-                          disabled={
-                            !searchValue.query || searchValue.query === ''
-                          }
-                          fullWidth
-                          id="clickable-search-agreements"
-                          type="submit"
-                        >
-                          <FormattedMessage id="stripes-smart-components.search" />
-                        </Button>
-                      </div>
-                      <div>
-                        <Button
-                          buttonStyle="none"
-                          id="clickable-reset-all"
-                          disabled={disableReset()}
-                          onClick={resetAll}
-                        >
-                          <Icon icon="times-circle-solid">
-                            <FormattedMessage id="stripes-smart-components.resetAll" />
-                          </Icon>
-                        </Button>
-                      </div>
-                    </form>
-                    <UDPFilters
-                      activeFilters={activeFilters.state}
-                      data={data}
-                      filterHandlers={getFilterHandlers()}
+                    <MultiColumnList
+                      autosize
+                      columnMapping={this.columnMapping}
+                      columnWidths={this.columnWidths}
+                      contentData={data.udps}
+                      formatter={this.formatter}
+                      id="list-udps"
+                      isEmptyMessage={this.renderIsEmptyMessage(query, source)}
+                      onHeaderClick={onSort}
+                      onNeedMoreData={onNeedMoreData}
+                      isSelected={({ item }) => item.id === selectedRecordId}
+                      onRowClick={onSelectRow}
+                      rowFormatter={this.rowFormatter}
+                      sortDirection={
+                        sortOrder.startsWith('-') ? 'descending' : 'ascending'
+                      }
+                      sortOrder={sortOrder.replace(/^-/, '').replace(/,.*/, '')}
+                      totalCount={count}
+                      virtualize
+                      visibleColumns={visibleColumns}
                     />
                   </Pane>
-                )}
-                <Pane
-                  appIcon={<AppIcon app="erm-usage" />}
-                  defaultWidth="fill"
-                  firstMenu={this.renderResultsFirstMenu(activeFilters)}
-                  lastMenu={this.renderResultsLastMenu()}
-                  padContent={false}
-                  paneTitle={
-                    <FormattedMessage id="ui-erm-usage.usage-data-providers" />
-                  }
-                  paneSub={this.renderResultsPaneSubtitle(source)}
-                >
-                  <MultiColumnList
-                    autosize
-                    columnMapping={this.columnMapping}
-                    columnWidths={this.columnWidths}
-                    contentData={data.udps}
-                    formatter={this.formatter}
-                    id="list-udps"
-                    isEmptyMessage={this.renderIsEmptyMessage(query, source)}
-                    onHeaderClick={onSort}
-                    onNeedMoreData={onNeedMoreData}
-                    isSelected={({ item }) => item.id === selectedRecordId}
-                    onRowClick={onSelectRow}
-                    rowFormatter={this.rowFormatter}
-                    sortDirection={
-                      sortOrder.startsWith('-') ? 'descending' : 'ascending'
-                    }
-                    sortOrder={sortOrder.replace(/^-/, '').replace(/,.*/, '')}
-                    totalCount={count}
-                    virtualize
-                    visibleColumns={visibleColumns}
-                  />
-                </Pane>
-                {children}
-              </Paneset>
-            );
-          }}
-        </SearchAndSortQuery>
-      </div>
+                  {children}
+                </Paneset>
+              );
+            }}
+          </SearchAndSortQuery>
+        </div>
+      </HasCommand>
     );
   }
 }
@@ -335,6 +349,7 @@ UDPs.propTypes = Object.freeze({
   contentRef: PropTypes.object,
   data: PropTypes.shape(),
   disableRecordCreation: PropTypes.bool,
+  history: PropTypes.object.isRequired,
   intl: PropTypes.object,
   onNeedMoreData: PropTypes.func,
   onSelectRow: PropTypes.func,
