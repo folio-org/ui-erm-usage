@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _, { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 import { TitleManager } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
+  AccordionStatus,
   Button,
   Col,
   ExpandAllButton,
+  collapseAllSections,
+  expandAllSections,
+  HasCommand,
   Icon,
   Layout,
   Pane,
@@ -30,40 +34,28 @@ import Statistics from '../Statistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
-import {
-  calcStateExpandAllAccordions,
-  calcStateToggleAccordion,
-} from '../../util/stateUtils';
-
 import urls from '../../util/urls';
 
 class UDP extends React.Component {
   constructor(props) {
     super(props);
+    this.accordionStatusRef = React.createRef();
 
     this.state = {
-      accordions: {
-        harvestingAccordion: false,
-        sushiCredsAccordion: false,
-        uploadAccordion: false,
-        notesAccordion: false,
-        statisticsAccordion: false,
-      },
       helperApp: null,
+      showReportUploadModal: true,
     };
   }
 
-  handleExpandAll = (obj) => {
-    this.setState((curState) => {
-      return calcStateExpandAllAccordions(curState, obj);
-    });
-  };
-
-  handleAccordionToggle = ({ id }) => {
-    this.setState((state) => {
-      return calcStateToggleAccordion(state, id);
-    });
-  };
+  getInitialAccordionsState = () => {
+    return {
+      harvestingAccordion: false,
+      sushiCredsAccordion: false,
+      uploadAccordion: false,
+      notesAccordion: false,
+      statisticsAccordion: false,
+    };
+  }
 
   showHelperApp = (helperName) => {
     this.setState({
@@ -155,6 +147,35 @@ class UDP extends React.Component {
     );
   };
 
+  handleEdit = () => {
+    if (this.props.canEdit) {
+      this.props.handlers.onEdit();
+    }
+  }
+
+  shortcuts = [
+    {
+      name: 'edit',
+      handler: this.handleEdit,
+    },
+    {
+      name: 'expandAllSections',
+      handler: (e) => expandAllSections(e, this.accordionStatusRef)
+    },
+    {
+      name: 'collapseAllSections',
+      handler: (e) => collapseAllSections(e, this.accordionStatusRef)
+    },
+    {
+      name: 'close',
+      handler: () => this.handleCloseModal()
+    },
+  ];
+
+  handleCloseModal = () => {
+    this.setState({ showReportUploadModal: false });
+  };
+
   renderLoadingPane = () => {
     return (
       <Pane
@@ -169,6 +190,10 @@ class UDP extends React.Component {
         </Layout>
       </Pane>
     );
+  };
+
+  checkScope = () => {
+    return document.getElementById('ModuleContainer').contains(document.activeElement);
   };
 
   render() {
@@ -190,110 +215,107 @@ class UDP extends React.Component {
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
-    if (_.isEmpty(usageDataProvider)) {
+    if (isEmpty(usageDataProvider)) {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
       return (
-        <React.Fragment>
-          <Pane
-            id="pane-udpdetails"
-            defaultWidth="40%"
-            paneTitle={<span data-test-header-title>{label}</span>}
-            actionMenu={this.getActionMenu()}
-            lastMenu={detailMenu}
-            dismissible
-            onClose={handlers.onClose}
-          >
-            <TitleManager record={label} stripes={stripes} />
-            <Row end="xs">
-              <Col xs>
-                <ExpandAllButton
-                  accordionStatus={this.state.accordions}
-                  onToggle={this.handleExpandAll}
-                  id="clickable-expand-all-view"
-                />
-              </Col>
-            </Row>
-            <AccordionSet>
-              <ViewMetaData
-                metadata={get(usageDataProvider, 'metadata', {})}
-                stripes={stripes}
-              />
-              <UDPInfoView
-                id="udpInfo"
-                usageDataProvider={usageDataProvider}
-                stripes={stripes}
-              />
-              <Accordion
-                open={this.state.accordions.harvestingAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={
-                  <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-                }
-                id="harvestingAccordion"
-                displayWhenOpen={
-                  <StartHarvesterButton
-                    usageDataProvider={usageDataProvider}
-                    isHarvesterExistent={isHarvesterExistent}
-                    onReloadUDP={this.reloadUdp}
+        <HasCommand
+          commands={this.shortcuts}
+          isWithinScope={this.checkScope}
+          scope={document.body}
+        >
+          <React.Fragment>
+            <Pane
+              id="pane-udpdetails"
+              defaultWidth="40%"
+              paneTitle={<span data-test-header-title>{label}</span>}
+              actionMenu={this.getActionMenu()}
+              lastMenu={detailMenu}
+              dismissible
+              onClose={handlers.onClose}
+            >
+              <TitleManager record={label} stripes={stripes} />
+              <AccordionStatus ref={this.accordionStatusRef}>
+                <Row end="xs">
+                  <Col xs>
+                    <ExpandAllButton
+                      id="clickable-expand-all-view"
+                    />
+                  </Col>
+                </Row>
+                <AccordionSet initialStatus={this.getInitialAccordionsState()}>
+                  <ViewMetaData
+                    metadata={get(usageDataProvider, 'metadata', {})}
+                    stripes={stripes}
                   />
-                }
-              >
-                <HarvestingConfigurationView
-                  usageDataProvider={usageDataProvider}
-                  stripes={stripes}
-                  sushiCredsOpen={this.state.accordions.sushiCredsAccordion}
-                  onToggle={this.handleAccordionToggle}
-                  settings={data.settings}
-                  harvesterImpls={data.harvesterImpls}
-                />
-              </Accordion>
-              <Accordion
-                open={this.state.accordions.statisticsAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-                id="statisticsAccordion"
-              >
-                <Statistics
-                  stripes={stripes}
-                  providerId={providerId}
-                  udpLabel={label}
-                  counterReports={data.counterReports}
-                  customReports={data.customReports}
-                  isStatsLoading={isStatsLoading}
-                  handlers={handlers}
-                />
-              </Accordion>
-              <Accordion
-                open={this.state.accordions.uploadAccordion}
-                onToggle={this.handleAccordionToggle}
-                label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
-                id="uploadAccordion"
-              >
-                <ReportUpload
-                  udpId={providerId}
-                  stripes={stripes}
-                  onReloadStatistics={this.reloadStatistics}
-                />
-              </Accordion>
-              <NotesSmartAccordion
-                id="notesAccordion"
-                domainName="erm-usage"
-                entityId={usageDataProvider.id}
-                entityName={usageDataProvider.label}
-                entityType="erm-usage-data-provider"
-                pathToNoteCreate={urls.noteCreate()}
-                pathToNoteDetails={urls.notes()}
-                onToggle={this.handleAccordionToggle}
-                open={this.state.accordions.notesAccordion}
-                stripes={stripes}
-              />
-            </AccordionSet>
-          </Pane>
-          {helperApp && (
-            <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
-          )}
-        </React.Fragment>
+                  <UDPInfoView
+                    id="udpInfo"
+                    usageDataProvider={usageDataProvider}
+                    stripes={stripes}
+                  />
+                  <Accordion
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+                    }
+                    id="harvestingAccordion"
+                    displayWhenOpen={
+                      <StartHarvesterButton
+                        usageDataProvider={usageDataProvider}
+                        isHarvesterExistent={isHarvesterExistent}
+                        onReloadUDP={this.reloadUdp}
+                      />
+                    }
+                  >
+                    <HarvestingConfigurationView
+                      usageDataProvider={usageDataProvider}
+                      stripes={stripes}
+                      settings={data.settings}
+                      harvesterImpls={data.harvesterImpls}
+                    />
+                  </Accordion>
+                  <Accordion
+                    label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
+                    id="statisticsAccordion"
+                  >
+                    <Statistics
+                      stripes={stripes}
+                      providerId={providerId}
+                      udpLabel={label}
+                      counterReports={data.counterReports}
+                      customReports={data.customReports}
+                      isStatsLoading={isStatsLoading}
+                      handlers={handlers}
+                    />
+                  </Accordion>
+                  <Accordion
+                    label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
+                    id="uploadAccordion"
+                  >
+                    <ReportUpload
+                      udpId={providerId}
+                      stripes={stripes}
+                      onReloadStatistics={this.reloadStatistics}
+                      showReportUploadModal={this.state.showReportUploadModal}
+                    />
+                  </Accordion>
+                  <NotesSmartAccordion
+                    id="notesAccordion"
+                    domainName="erm-usage"
+                    entityId={usageDataProvider.id}
+                    entityName={usageDataProvider.label}
+                    entityType="erm-usage-data-provider"
+                    pathToNoteCreate={urls.noteCreate()}
+                    pathToNoteDetails={urls.notes()}
+                    stripes={stripes}
+                  />
+                </AccordionSet>
+              </AccordionStatus>
+            </Pane>
+            {helperApp && (
+              <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
+            )}
+          </React.Fragment>
+        </HasCommand>
       );
     }
   }
