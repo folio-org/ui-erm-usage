@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import _ from 'lodash';
+import _, { isNil } from 'lodash';
 import {
   Accordion,
   AccordionSet,
@@ -30,8 +30,13 @@ function DeleteStatistics(props) {
     handlers,
   } = props;
 
-  const addReportToDelete = (id) => {
-    setReportsToDelete((oldReps) => [...oldReps, id]);
+  const handleClickReport = (id) => {
+    if (reportsToDelete.includes(id)) {
+      setReportsToDelete((oldReps) => [...oldReps, id]);
+      setReportsToDelete(reportsToDelete.filter((item) => item !== id));
+    } else {
+      setReportsToDelete((oldReps) => [...oldReps, id]);
+    }
   };
 
   // const renderReportPerYear = (reports, maxFailed) => {
@@ -92,19 +97,10 @@ function DeleteStatistics(props) {
     const selectButtons = Object.create({});
     reports.forEach((r) => {
       selectButtons.report = (
-        <Checkbox
-          checked={false}
-          label={r.reportName}
-          value={r.id}
-        />
+        <Checkbox checked={false} label={r.reportName} value={r.id} />
       );
       const month = r.yearMonth.substring(5, 7);
-      selectButtons[month] = (
-        <Checkbox
-          checked={false}
-          value={r.id}
-        />
-      );
+      selectButtons[month] = <Checkbox checked={false} value={r.id} />;
     });
     return selectButtons;
   };
@@ -119,7 +115,6 @@ function DeleteStatistics(props) {
     }
   };
 
-  // TODO: Is this the correct structure?
   const renderAndGroupPerYear = (stats) => {
     const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
     return stats.map((statsPerYear) => {
@@ -145,104 +140,65 @@ function DeleteStatistics(props) {
     });
   };
 
+  const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
+  const renderReport = (report) => (
+    <ReportDeleteButton
+      report={report}
+      maxFailedAttempts={maxFailed}
+      onClick={handleClickReport}
+      selected={report ? reportsToDelete.includes(report.id) : false}
+    />);
+
   const reportFormatter = {
     'report': (report) => report.report,
-    '01': (report) => (
-      <ReportDeleteButton
-        report={report['01']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '02': (report) => (
-      <ReportDeleteButton
-        report={report['02']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '03': (report) => (
-      <ReportDeleteButton
-        report={report['03']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '04': (report) => (
-      <ReportDeleteButton
-        report={report['04']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '05': (report) => (
-      <ReportDeleteButton
-        report={report['05']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '06': (report) => (
-      <ReportDeleteButton
-        report={report['06']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '07': (report) => (
-      <ReportDeleteButton
-        report={report['07']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '08': (report) => (
-      <ReportDeleteButton
-        report={report['08']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '09': (report) => (
-      <ReportDeleteButton
-        report={report['09']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '10': (report) => (
-      <ReportDeleteButton
-        report={report['10']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '11': (report) => (
-      <ReportDeleteButton
-        report={report['11']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
-    '12': (report) => (
-      <ReportDeleteButton
-        report={report['12']}
-        maxFailedAttempts={5}
-        onClick={() => console.log('clicked')}
-        selected
-      />
-    ),
+    '01': (report) => {
+      const r = report['01'];
+      return renderReport(r);
+    },
+    '02': (report) => {
+      const r = report['02'];
+      return renderReport(r);
+    },
+    '03': (report) => {
+      const r = report['03'];
+      return renderReport(r);
+    },
+    '04': (report) => {
+      const r = report['04'];
+      return renderReport(r);
+    },
+    '05': (report) => {
+      const r = report['05'];
+      return renderReport(r);
+    },
+    '06': (report) => {
+      const r = report['06'];
+      return renderReport(r);
+    },
+    '07': (report) => {
+      const r = report['07'];
+      return renderReport(r);
+    },
+    '08': (report) => {
+      const r = report['08'];
+      return renderReport(r);
+    },
+    '09': (report) => {
+      const r = report['09'];
+      return renderReport(r);
+    },
+    '10': (report) => {
+      const r = report['10'];
+      return renderReport(r);
+    },
+    '11': (report) => {
+      const r = report['11'];
+      return renderReport(r);
+    },
+    '12': (report) => {
+      const r = report['12'];
+      return renderReport(r);
+    },
   };
 
   const renderStatsAccordions = (reports) => {
@@ -253,7 +209,8 @@ function DeleteStatistics(props) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
 
-    if (counterReports.length > 0) {
+    // if (counterReports.length > 0) {
+    if (!isNil(reports) && reports.length > 0) {
       counterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
@@ -303,8 +260,9 @@ function DeleteStatistics(props) {
     );
   };
 
-  const reports = renderAndGroupPerYear(counterReports);
-  // console.log(reportsToDelete);
+  // const reports = renderAndGroupPerYear(counterReports);
+  const reports = props.counterReportsPerYear;
+  console.log(reportsToDelete);
 
   return renderStatsAccordions(reports);
 }
@@ -339,6 +297,7 @@ DeleteStatistics.propTypes = {
     failedAttemptsSettings: PropTypes.object,
   }),
   resources: PropTypes.object.isRequired,
+  counterReportsPerYear: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default stripesConnect(DeleteStatistics);

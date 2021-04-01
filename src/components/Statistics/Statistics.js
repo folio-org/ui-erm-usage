@@ -25,6 +25,7 @@ function Statistics(props) {
     customReports,
     isStatsLoading,
     handlers,
+    counterReportsPerYear
   } = props;
 
   // const renderReportPerYear = (reports, maxFailed) => {
@@ -91,7 +92,6 @@ function Statistics(props) {
     }
   };
 
-  // TODO: Is this the correct structure?
   const renderAndGroupPerYear = (stats) => {
     const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
     return stats.map((statsPerYear) => {
@@ -246,6 +246,7 @@ function Statistics(props) {
                 handlers={handlers}
                 showMultiMonthDownload
                 reportFormatter={reportFormatter}
+                counterReportsPerYear={counterReportsPerYear}
               />
             </Accordion>
           </Col>
@@ -283,7 +284,8 @@ function Statistics(props) {
     );
   };
 
-  const reports = renderAndGroupPerYear(counterReports);
+  // const reports = renderAndGroupPerYear(counterReports);
+  const reports = counterReportsPerYear;
   return renderStatsAccordions(reports);
 }
 
@@ -317,6 +319,7 @@ Statistics.propTypes = {
     failedAttemptsSettings: PropTypes.object,
   }),
   resources: PropTypes.object.isRequired,
+  counterReportsPerYear: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default stripesConnect(Statistics);

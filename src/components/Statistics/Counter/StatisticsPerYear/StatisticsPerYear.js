@@ -117,7 +117,6 @@ function StatisticsPerYear(props) {
       '12': '63px',
     };
 
-    // TODO: I need an array of years and 'ReportButtons' grouped per year
 
     const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
 

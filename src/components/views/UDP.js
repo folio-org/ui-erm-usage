@@ -32,12 +32,15 @@ import DeleteStatistics from '../Statistics/DeleteStatistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
+import DeleteStatisticsModal from '../Statistics/DeleteStatisticsModal';
+
 import {
   calcStateExpandAllAccordions,
   calcStateToggleAccordion,
 } from '../../util/stateUtils';
 
 import urls from '../../util/urls';
+import groupReportsPerYear from '../../util/groupReportsPerYear';
 
 class UDP extends React.Component {
   constructor(props) {
@@ -220,6 +223,7 @@ class UDP extends React.Component {
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
+    const counterReportsPerYear = groupReportsPerYear(data.counterReports);
     if (_.isEmpty(usageDataProvider)) {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
@@ -292,6 +296,7 @@ class UDP extends React.Component {
                   customReports={data.customReports}
                   isStatsLoading={isStatsLoading}
                   handlers={handlers}
+                  counterReportsPerYear={counterReportsPerYear}
                 />
               </Accordion>
               <Accordion
@@ -324,7 +329,17 @@ class UDP extends React.Component {
           {helperApp && (
             <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
           )}
-          <Modal
+          <DeleteStatisticsModal
+            data={data}
+            handlers={handlers}
+            isStatsLoading={isStatsLoading}
+            onCloseModal={this.doCloseDeleteReports}
+            open={this.state.showDeleteReports}
+            providerId={providerId}
+            stripes={stripes}
+            counterReportsPerYear={counterReportsPerYear}
+          />
+          {/* <Modal
             id="delete-reports-modal"
             closeOnBackgroundClick
             data-test-delete-reports-modal
@@ -348,7 +363,7 @@ class UDP extends React.Component {
               isStatsLoading={isStatsLoading}
               handlers={handlers}
             />
-          </Modal>
+          </Modal> */}
         </React.Fragment>
       );
     }
