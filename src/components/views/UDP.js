@@ -143,6 +143,30 @@ class UDP extends React.Component {
             </Button>
           </div>
         )}
+        <div>
+          <Button
+            buttonStyle="dropDownItem"
+            id="upload-counter-button"
+            marginBottom0
+            // onClick={() => this.setState({ showCounterUpload: true })}
+          >
+            <Icon icon="plus-sign">
+              <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
+            </Icon>
+          </Button>
+        </div>
+        <div>
+          <Button
+            buttonStyle="dropDownItem"
+            id="upload-non-counter-button"
+            marginBottom0
+            // onClick={() => this.setState({ showNonCounterUpload: true })}
+          >
+            <Icon icon="plus-sign">
+              <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+            </Icon>
+          </Button>
+        </div>
       </>
     );
   };
