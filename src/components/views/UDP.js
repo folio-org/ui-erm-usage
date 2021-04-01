@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
-import { TitleManager } from '@folio/stripes/core';
+import { IfPermission, TitleManager } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -110,6 +110,21 @@ class UDP extends React.Component {
     return (
       <>
         <div>
+          <IfPermission perm="ermusageharvester.start.single">
+            <Button
+              buttonStyle="dropDownItem"
+              id="start-harvester-button"
+              marginBottom0
+              // disabled={this.isInActive(usageDataProvider)}
+              // onClick={() => this.onClickStartHarvester()}
+            >
+              <Icon icon="play">
+                <FormattedMessage id="ui-erm-usage.harvester.start" />
+              </Icon>
+            </Button>
+          </IfPermission>
+        </div>
+        <div>
           <Button
             id="clickable-refresh-statistics"
             buttonStyle="dropDownItem"
@@ -125,24 +140,6 @@ class UDP extends React.Component {
             </Icon>
           </Button>
         </div>
-        {canEdit && (
-          <div>
-            <Button
-              id="clickable-edit-udp"
-              buttonStyle="dropDownItem"
-              onClick={() => {
-                handlers.onEdit();
-                this.goToEdit();
-              }}
-              aria-label="Edit usage data provider"
-              marginBottom0
-            >
-              <Icon icon="edit">
-                <FormattedMessage id="ui-erm-usage.general.edit" />
-              </Icon>
-            </Button>
-          </div>
-        )}
         <div>
           <Button
             buttonStyle="dropDownItem"
@@ -167,6 +164,24 @@ class UDP extends React.Component {
             </Icon>
           </Button>
         </div>
+        {canEdit && (
+          <div>
+            <Button
+              id="clickable-edit-udp"
+              buttonStyle="dropDownItem"
+              onClick={() => {
+                handlers.onEdit();
+                this.goToEdit();
+              }}
+              aria-label="Edit usage data provider"
+              marginBottom0
+            >
+              <Icon icon="edit">
+                <FormattedMessage id="ui-erm-usage.general.edit" />
+              </Icon>
+            </Button>
+          </div>
+        )}
       </>
     );
   };
