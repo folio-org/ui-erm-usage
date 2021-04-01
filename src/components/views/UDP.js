@@ -39,7 +39,6 @@ import urls from '../../util/urls';
 class UDP extends React.Component {
   constructor(props) {
     super(props);
-    this.connectedViewMetaData = this.props.stripes.connect(ViewMetaData);
     this.accordionStatusRef = React.createRef();
 
     this.state = {
@@ -245,7 +244,7 @@ class UDP extends React.Component {
                   </Col>
                 </Row>
                 <AccordionSet initialStatus={this.getInitialAccordionsState()}>
-                  <this.connectedViewMetaData
+                  <ViewMetaData
                     metadata={get(usageDataProvider, 'metadata', {})}
                     stripes={stripes}
                   />
@@ -295,7 +294,6 @@ class UDP extends React.Component {
                     <ReportUpload
                       udpId={providerId}
                       stripes={stripes}
-                      handlers={handlers}
                       onReloadStatistics={this.reloadStatistics}
                       showReportUploadModal={this.state.showReportUploadModal}
                     />

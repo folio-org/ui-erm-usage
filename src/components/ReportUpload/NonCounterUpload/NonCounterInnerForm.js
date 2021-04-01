@@ -9,7 +9,7 @@ import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
 
-function NonCounterUpload(props) {
+function NonCounterUploadInnerForm(props) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -117,6 +117,7 @@ function NonCounterUpload(props) {
       doDeleteRawFile();
     }
     setLinkUrl(value);
+    mutators.setFileId({}, null);
     mutators.setLinkUrl({}, value);
     mutators.setProviderId({}, udpId);
   };
@@ -205,11 +206,8 @@ function NonCounterUpload(props) {
   );
 }
 
-NonCounterUpload.propTypes = {
+NonCounterUploadInnerForm.propTypes = {
   intl: PropTypes.object,
-  handlers: PropTypes.shape({
-    doDownloadFile: PropTypes.func,
-  }),
   mutators: PropTypes.shape({
     setFileId: PropTypes.func,
     setFileName: PropTypes.func,
@@ -221,4 +219,4 @@ NonCounterUpload.propTypes = {
   udpId: PropTypes.string,
 };
 
-export default injectIntl(NonCounterUpload);
+export default injectIntl(NonCounterUploadInnerForm);

@@ -3,14 +3,19 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import stripesFinalForm from '@folio/stripes/final-form';
 import { Button, Modal, ModalFooter } from '@folio/stripes-components';
-import NonCounterUpload from './NonCounterUpload';
+import NonCounterInnerForm from './NonCounterInnerForm';
 
 function NonCounterUploadModal(props) {
   const { invalid, onClose } = props;
 
   const renderFooter = (onSubmit) => (
     <ModalFooter>
-      <Button buttonStyle="primary" disabled={invalid} id="save-non-counter-button" onClick={onSubmit}>
+      <Button
+        buttonStyle="primary"
+        disabled={invalid}
+        id="save-non-counter-button"
+        onClick={onSubmit}
+      >
         <FormattedMessage id="ui-erm-usage.general.save" />
       </Button>
       <Button onClick={onClose}>
@@ -20,27 +25,31 @@ function NonCounterUploadModal(props) {
   );
 
   return (
-    <form
-      data-test-custom-report-form-page
-      id="form-custom-report"
-      onSubmit={props.handleSubmit}
-    >
-      <Modal
-        closeOnBackgroundClick
-        footer={renderFooter(props.handleSubmit)}
-        open={props.open}
-        label={<FormattedMessage id="ui-erm-usage.statistics.custom.upload" />}
+    <>
+      <form
+        data-test-custom-report-form-page
+        id="form-custom-report"
+        onSubmit={props.handleSubmit}
       >
-        <div className="upload-non-counter-modal">
-          <NonCounterUpload
-            mutators={props.form.mutators}
-            udpId={props.udpId}
-            stripes={props.stripes}
-            handlers={props.handlers}
-          />
-        </div>
-      </Modal>
-    </form>
+        <Modal
+          id="upload-non-counter-modal"
+          closeOnBackgroundClick
+          footer={renderFooter(props.handleSubmit)}
+          open={props.open}
+          label={
+            <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+          }
+        >
+          <div className="upload-non-counter-modal">
+            <NonCounterInnerForm
+              mutators={props.form.mutators}
+              udpId={props.udpId}
+              stripes={props.stripes}
+            />
+          </div>
+        </Modal>
+      </form>
+    </>
   );
 }
 
@@ -53,7 +62,6 @@ NonCounterUploadModal.propTypes = {
       setProviderId: PropTypes.func,
     }),
   }),
-  handlers: PropTypes.shape(),
   invalid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,

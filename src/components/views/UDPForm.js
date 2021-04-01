@@ -15,7 +15,7 @@ import {
   PaneFooter,
   PaneMenu,
   Paneset,
-  Row
+  Row,
 } from '@folio/stripes/components';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 import { IfPermission } from '@folio/stripes/core';
@@ -31,14 +31,18 @@ class UDPForm extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       aggregators: PropTypes.array.isRequired,
-      harvesterImpls: PropTypes.array.isRequired
+      harvesterImpls: PropTypes.array.isRequired,
     }).isRequired,
     handlers: PropTypes.shape({
       onClose: PropTypes.func.isRequired,
-      onDelete: PropTypes.func
+      onDelete: PropTypes.func,
     }),
     initialValues: PropTypes.shape({
-      id: PropTypes.string
+      id: PropTypes.string,
+      label: PropTypes.string,
+      metadata: PropTypes.shape({
+        createdDate: PropTypes.string,
+      }),
     }),
     invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
@@ -46,11 +50,11 @@ class UDPForm extends React.Component {
     onSubmit: PropTypes.func.isRequired,
     pristine: PropTypes.bool,
     store: PropTypes.object.isRequired,
-    submitting: PropTypes.bool
+    submitting: PropTypes.bool,
   };
 
   static defaultProps = {
-    initialValues: {}
+    initialValues: {},
   };
 
   constructor(props) {
@@ -61,8 +65,8 @@ class UDPForm extends React.Component {
       sections: {
         editUDPInfo: true,
         editHarvestingConfig: true,
-        editNotes: false
-      }
+        editNotes: false,
+      },
     };
 
     this.shortcuts = [
@@ -120,11 +124,11 @@ class UDPForm extends React.Component {
 
   beginDelete = () => {
     this.setState({
-      confirmDelete: true
+      confirmDelete: true,
     });
   };
 
-  confirmDelete = confirmation => {
+  confirmDelete = (confirmation) => {
     if (confirmation) {
       this.props.handlers.onDelete(this.props.initialValues.id);
     } else {
@@ -134,12 +138,12 @@ class UDPForm extends React.Component {
 
   renderFirstMenu() {
     const {
-      handlers: { onClose }
+      handlers: { onClose },
     } = this.props;
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
-          {ariaLabel => (
+          {([ariaLabel]) => (
             <IconButton
               id="clickable-close-udp-form-x"
               onClick={onClose}
@@ -183,7 +187,7 @@ class UDPForm extends React.Component {
       handleSubmit,
       invalid,
       pristine,
-      submitting
+      submitting,
     } = this.props;
 
     const disabled = pristine || submitting || invalid;
@@ -228,20 +232,20 @@ class UDPForm extends React.Component {
   }
 
   handleSectionToggle = ({ id }) => {
-    this.setState(state => {
+    this.setState((state) => {
       const newState = _.cloneDeep(state);
       newState.sections[id] = !newState.sections[id];
       return newState;
     });
   };
 
-  getConfirmationMessage = udp => {
+  getConfirmationMessage = (udp) => {
     const name = udp.label || '';
     return (
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
         values={{
-          name
+          name,
         }}
       />
     );
@@ -251,7 +255,7 @@ class UDPForm extends React.Component {
     const {
       initialValues,
       handleSubmit,
-      data: { aggregators, harvesterImpls }
+      data: { aggregators, harvesterImpls },
     } = this.props;
     const { confirmDelete, sections } = this.state;
     const udp = initialValues || {};
@@ -343,11 +347,11 @@ export default stripesFinalForm({
     },
     setReportRelease: (args, state, tools) => {
       tools.changeValue(state, 'harvestingConfig.reportRelease', () => args[1]);
-    }
+    },
   },
   subscription: {
     values: true,
-    invalid: true
+    invalid: true,
   },
-  validate: values => endDate(values)
+  validate: (values) => endDate(values),
 })(UDPForm);

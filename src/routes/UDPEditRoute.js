@@ -14,29 +14,29 @@ class UDPEditRoute extends React.Component {
     aggregators: {
       type: 'okapi',
       path: 'aggregator-settings',
-      shouldRefresh: () => false
+      shouldRefresh: () => false,
     },
     harvesterImpls: {
       type: 'okapi',
       path: 'erm-usage-harvester/impl?aggregator=false',
-      shouldRefresh: () => false
+      shouldRefresh: () => false,
     },
     usageDataProvider: {
       type: 'okapi',
       path: 'usage-data-providers/:{id}',
-      shouldRefresh: () => false
-    }
+      shouldRefresh: () => false,
+    },
   });
 
   static defaultProps = {
-    handlers: {}
+    handlers: {},
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      hasPerms: props.stripes.hasPerm('usagedataproviders.item.put')
+      hasPerms: props.stripes.hasPerm('usagedataproviders.item.put'),
     };
   }
 
@@ -47,7 +47,7 @@ class UDPEditRoute extends React.Component {
     );
   };
 
-  handleSubmit = udp => {
+  handleSubmit = (udp) => {
     const { history, location, mutator } = this.props;
 
     mutator.usageDataProvider.PUT(udp).then(({ id }) => {
@@ -55,7 +55,7 @@ class UDPEditRoute extends React.Component {
     });
   };
 
-  handleDelete = id => {
+  handleDelete = (id) => {
     const { history, location, mutator } = this.props;
     mutator.usageDataProvider.DELETE({ id }).then(() => {
       history.push(`${urls.udps()}${location.search}`);
@@ -64,8 +64,8 @@ class UDPEditRoute extends React.Component {
 
   fetchIsPending = () => {
     return Object.values(this.props.resources)
-      .filter(r => r && r.resource !== 'usageDataProvider')
-      .some(r => r.isPending);
+      .filter((r) => r && r.resource !== 'usageDataProvider')
+      .some((r) => r.isPending);
   };
 
   render() {
@@ -75,13 +75,14 @@ class UDPEditRoute extends React.Component {
     const udp = get(resources, 'usageDataProvider.records[0]', {});
 
     if (!this.state.hasPerms) return <div>No Permission</div>;
-    if (this.fetchIsPending()) return <LoadingPane onClose={this.handleClose} />;
-
+    if (this.fetchIsPending()) {
+      return <LoadingPane onClose={this.handleClose} />;
+    }
     return (
       <UDPForm
         data={{
           aggregators,
-          harvesterImpls
+          harvesterImpls,
         }}
         handlers={{
           ...handlers,
@@ -100,32 +101,35 @@ class UDPEditRoute extends React.Component {
 UDPEditRoute.propTypes = {
   handlers: PropTypes.object,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
   }).isRequired,
   location: PropTypes.shape({
-    search: PropTypes.string.isRequired
+    search: PropTypes.string.isRequired,
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired
-    }).isRequired
+      id: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   mutator: PropTypes.shape({
     aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProvider: PropTypes.shape({
-      POST: PropTypes.func.isRequired
-    }).isRequired
+      DELETE: PropTypes.func.isRequired,
+      POST: PropTypes.func.isRequired,
+      PUT: PropTypes.func.isRequired,
+    }).isRequired,
   }),
   resources: PropTypes.shape({
     aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
-    usageDataProvider: PropTypes.object
+    usageDataProvider: PropTypes.object,
   }).isRequired,
   stripes: PropTypes.shape({
     hasPerm: PropTypes.func.isRequired,
-    okapi: PropTypes.object.isRequired
-  }).isRequired
+    okapi: PropTypes.object.isRequired,
+    store: PropTypes.object.isRequired,
+  }).isRequired,
 };
 
 export default stripesConnect(UDPEditRoute);

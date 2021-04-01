@@ -14,11 +14,8 @@ import {
 
 import FileUploader from '../FileUploader';
 
-function NonCounterUploadFile(props) {
-  const { fileId, isUploading, onSelectFile, file } = props;
-
+function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, file }) {
   const renderSelectedFile = () => {
-    const { handlers } = props;
     let downloadButton = '';
     if (_.isNil(file) || _.isNil(fileId)) {
       downloadButton = (

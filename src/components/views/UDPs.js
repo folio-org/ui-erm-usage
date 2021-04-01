@@ -274,7 +274,7 @@ class UDPs extends React.Component {
                               !searchValue.query || searchValue.query === ''
                             }
                             fullWidth
-                            id="clickable-search-agreements"
+                            id="clickable-search-udps"
                             type="submit"
                           >
                             <FormattedMessage id="stripes-smart-components.search" />

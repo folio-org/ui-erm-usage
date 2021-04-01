@@ -8,4 +8,5 @@ yarn-error.log
 junit.xml
 /out/
 /artifacts/
+junit.xml
 /.vscode/

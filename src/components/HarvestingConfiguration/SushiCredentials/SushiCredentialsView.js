@@ -12,7 +12,7 @@ class SushiCredentialsView extends React.Component {
   render() {
     const { usageDataProvider, settings } = this.props;
 
-    const hideCredentials = settings.length && settings[0].value === 'true';
+    const hideCredentials = settings.length && JSON.parse(settings[0].value);
 
     const cId = usageDataProvider.sushiCredentials?.customerId ?? <NoValue />;
     const customerId = hideCredentials ? '*'.repeat(cId.length) : cId;

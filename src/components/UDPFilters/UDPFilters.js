@@ -17,6 +17,51 @@ import filterGroups from '../../util/data/filterGroups';
 import isSushiWarningCode from '../../util/isSushiWarningCode';
 
 class UDPFilters extends React.Component {
+  static isFilterDefinedLocally = filter => {
+    return filter && !isEmpty(filter.values);
+  };
+
+  static getRemoteDefinedFilterVals = (data, intl, filterName) => {
+    const inputVals = data[`${filterName}`] || [];
+    if (filterName === 'errorCodes') {
+      // we need to translate numeric error codes to human readable text...
+      return inputVals.map(entry => {
+        return UDPFilters.translateErrorCodesFilterValues(entry, intl);
+      });
+    } else {
+      return inputVals.map(entry => {
+        const val = get(entry, 'label', entry);
+        return {
+          label: val,
+          value: val
+        };
+      });
+    }
+  };
+
+  static isWarningCode = code => {
+    const val = parseInt(code, 10);
+    return val >= 1 && val <= 999;
+  };
+
+  static translateErrorCodesFilterValues = (entry, intl) => {
+    const val = get(entry, 'label', entry);
+    let label;
+    if (isSushiWarningCode(val)) {
+      label = `${intl.formatMessage({
+        id: 'ui-erm-usage.report.error.1'
+      })} (${val})`;
+    } else {
+      label = `${intl.formatMessage({
+        id: `ui-erm-usage.report.error.${val}`
+      })} (${val})`;
+    }
+    return {
+      label,
+      value: val
+    };
+  };
+
   static propTypes = Object.freeze({
     activeFilters: PropTypes.object,
     data: PropTypes.object.isRequired,
@@ -65,46 +110,6 @@ class UDPFilters extends React.Component {
 
     return null;
   }
-
-  static isFilterDefinedLocally = filter => {
-    return filter && !isEmpty(filter.values);
-  };
-
-  static getRemoteDefinedFilterVals = (data, intl, filterName) => {
-    const inputVals = data[`${filterName}`] || [];
-    if (filterName === 'errorCodes') {
-      // we need to translate numeric error codes to human readable text...
-      return inputVals.map(entry => {
-        return UDPFilters.translateErrorCodesFilterValues(entry, intl);
-      });
-    } else {
-      return inputVals.map(entry => {
-        const val = get(entry, 'label', entry);
-        return {
-          label: val,
-          value: val
-        };
-      });
-    }
-  };
-
-  static translateErrorCodesFilterValues = (entry, intl) => {
-    const val = get(entry, 'label', entry);
-    let label;
-    if (isSushiWarningCode(val)) {
-      label = `${intl.formatMessage({
-        id: 'ui-erm-usage.report.error.1'
-      })} (${val})`;
-    } else {
-      label = `${intl.formatMessage({
-        id: `ui-erm-usage.report.error.${val}`
-      })} (${val})`;
-    }
-    return {
-      label,
-      value: val
-    };
-  };
 
   state = {
     harvestingStatus: [],
