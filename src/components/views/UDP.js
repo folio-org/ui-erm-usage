@@ -28,6 +28,7 @@ import HelperApp from '../HelperApp';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
+import DeleteStatistics from '../Statistics/DeleteStatistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
@@ -338,7 +339,7 @@ class UDP extends React.Component {
               </Button>
             }
           >
-            <Statistics
+            <DeleteStatistics
               stripes={stripes}
               providerId={providerId}
               udpLabel={label}

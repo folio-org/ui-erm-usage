@@ -1,0 +1,11 @@
+.active {
+  border: 1px;
+  border-style: solid;
+  border-color: blue;
+  background-color: blueviolet;
+  padding: 2px;
+}
+
+.paddinged {
+  padding: 2px;
+}

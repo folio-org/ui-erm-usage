@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import _ from 'lodash';
 import {
   Accordion,
   AccordionSet,
+  Checkbox,
   Col,
   Icon,
   Row,
@@ -12,11 +13,13 @@ import {
 import { stripesConnect } from '@folio/stripes/core';
 import CounterStatistics from './Counter';
 import CustomStatistics from './Custom';
-import ReportInfoButton from './Counter/ReportInfoButton';
+import ReportDeleteButton from './Counter/ReportDeleteButton/ReportDeleteButton';
 import css from './Statistics.css';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
-function Statistics(props) {
+function DeleteStatistics(props) {
+  const [reportsToDelete, setReportsToDelete] = useState([]);
+
   const {
     stripes,
     providerId,
@@ -26,6 +29,10 @@ function Statistics(props) {
     isStatsLoading,
     handlers,
   } = props;
+
+  const addReportToDelete = (id) => {
+    setReportsToDelete((oldReps) => [...oldReps, id]);
+  };
 
   // const renderReportPerYear = (reports, maxFailed) => {
   //   const o = Object.create({});
@@ -37,12 +44,12 @@ function Statistics(props) {
   //       maxMonth = parseInt(month, 10);
   //     }
   //     o[month] = (
-  //       <ReportInfoButton
+  //       <ReportDeleteButton
   //         report={r}
-  //         stripes={props.stripes}
   //         maxFailedAttempts={maxFailed}
   //         udpLabel={props.udpLabel}
-  //         handlers={props.handlers}
+  //         onClick={addReportToDelete}
+  //         selected={reportsToDelete.includes(r.id)}
   //       />
   //     );
   //   });
@@ -50,7 +57,7 @@ function Statistics(props) {
   //     const newMonth = maxMonth + 1;
   //     const monthPadded = newMonth.toString().padStart(2, '0');
   //     o[monthPadded] = (
-  //       <ReportInfoButton
+  //       <ReportDeleteButton
   //         stripes={props.stripes}
   //         maxFailedAttempts={maxFailed}
   //         udpLabel={props.udpLabel}
@@ -81,6 +88,27 @@ function Statistics(props) {
     return o;
   };
 
+  const renderSelectPerYear = (reports) => {
+    const selectButtons = Object.create({});
+    reports.forEach((r) => {
+      selectButtons.report = (
+        <Checkbox
+          checked={false}
+          label={r.reportName}
+          value={r.id}
+        />
+      );
+      const month = r.yearMonth.substring(5, 7);
+      selectButtons[month] = (
+        <Checkbox
+          checked={false}
+          value={r.id}
+        />
+      );
+    });
+    return selectButtons;
+  };
+
   const extractMaxFailedAttempts = () => {
     const { resources } = props;
     const settings = resources.failedAttemptsSettings || {};
@@ -97,6 +125,13 @@ function Statistics(props) {
     return stats.map((statsPerYear) => {
       const y = statsPerYear.year;
       const year = y.toString();
+      const s = [];
+      // statsPerYear.reportsPerType.forEach((reportsTyped) => {
+      //   const reports = renderReportPerYear(reportsTyped.counterReports, maxFailed);
+      //   const checkBoxes = renderSelectPerYear(reportsTyped.counterReports);
+      //   s.push(reports);
+      //   s.push(checkBoxes);
+      // });
       const renderedStats = statsPerYear.reportsPerType.map((reportsTyped) => {
         return renderReportPerYear(reportsTyped.counterReports, maxFailed);
       });
@@ -110,116 +145,102 @@ function Statistics(props) {
     });
   };
 
-  const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
-
   const reportFormatter = {
     'report': (report) => report.report,
     '01': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['01']}
-        stripes={stripes}
-        maxFailedAttempts={maxFailed}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        maxFailedAttempts={5}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '02': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['02']}
-        stripes={stripes}
-        maxFailedAttempts={maxFailed}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        maxFailedAttempts={5}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '03': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['03']}
-        stripes={stripes}
-        maxFailedAttempts={maxFailed}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        maxFailedAttempts={5}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '04': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['04']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '05': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['05']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '06': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['06']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '07': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['07']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '08': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['08']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '09': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['09']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '10': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['10']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '11': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['11']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
     '12': (report) => (
-      <ReportInfoButton
+      <ReportDeleteButton
         report={report['12']}
-        stripes={stripes}
         maxFailedAttempts={5}
-        udpLabel={udpLabel}
-        handlers={handlers}
+        onClick={() => console.log('clicked')}
+        selected
       />
     ),
   };
@@ -244,7 +265,6 @@ function Statistics(props) {
                 counterReports={counterReports}
                 tmpReports={reports}
                 handlers={handlers}
-                showMultiMonthDownload
                 reportFormatter={reportFormatter}
               />
             </Accordion>
@@ -284,10 +304,12 @@ function Statistics(props) {
   };
 
   const reports = renderAndGroupPerYear(counterReports);
+  // console.log(reportsToDelete);
+
   return renderStatsAccordions(reports);
 }
 
-Statistics.manifest = Object.freeze({
+DeleteStatistics.manifest = Object.freeze({
   failedAttemptsSettings: {
     type: 'okapi',
     records: 'configs',
@@ -296,7 +318,7 @@ Statistics.manifest = Object.freeze({
   },
 });
 
-Statistics.propTypes = {
+DeleteStatistics.propTypes = {
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
@@ -319,4 +341,4 @@ Statistics.propTypes = {
   resources: PropTypes.object.isRequired,
 };
 
-export default stripesConnect(Statistics);
+export default stripesConnect(DeleteStatistics);

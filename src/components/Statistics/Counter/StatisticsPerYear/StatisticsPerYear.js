@@ -11,7 +11,8 @@ import {
   MultiColumnList,
   Row,
 } from '@folio/stripes/components';
-import ReportButton from '../ReportButton';
+import ReportInfoButton from '../ReportInfoButton';
+import ReportDeleteButton from '../ReportDeleteButton/ReportDeleteButton';
 import { MAX_FAILED_ATTEMPTS } from '../../../../util/constants';
 
 function StatisticsPerYear(props) {
@@ -49,7 +50,7 @@ function StatisticsPerYear(props) {
         maxMonth = parseInt(month, 10);
       }
       o[month] = (
-        <ReportButton
+        <ReportInfoButton
           report={r}
           stripes={props.stripes}
           maxFailedAttempts={maxFailed}
@@ -62,7 +63,7 @@ function StatisticsPerYear(props) {
       const newMonth = maxMonth + 1;
       const monthPadded = newMonth.toString().padStart(2, '0');
       o[monthPadded] = (
-        <ReportButton
+        <ReportInfoButton
           stripes={props.stripes}
           maxFailedAttempts={maxFailed}
           udpLabel={props.udpLabel}
@@ -84,7 +85,7 @@ function StatisticsPerYear(props) {
   };
 
   const createReportOverviewPerYear = (groupedStats) => {
-    const { intl } = props;
+    const { intl, tmpStats } = props;
     const visibleColumns = [
       'report',
       '01',
@@ -101,28 +102,29 @@ function StatisticsPerYear(props) {
       '12',
     ];
     const columnWidths = {
-      'report': '50px',
-      '01': '50px',
-      '02': '50px',
-      '03': '50px',
-      '04': '50px',
-      '05': '50px',
-      '06': '50px',
-      '07': '50px',
-      '08': '50px',
-      '09': '50px',
-      '10': '50px',
-      '11': '50px',
-      '12': '50px',
+      'report': '75px',
+      '01': '63px',
+      '02': '63px',
+      '03': '63px',
+      '04': '63px',
+      '05': '63px',
+      '06': '63px',
+      '07': '63px',
+      '08': '63px',
+      '09': '63px',
+      '10': '63px',
+      '11': '63px',
+      '12': '63px',
     };
 
+    // TODO: I need an array of years and 'ReportButtons' grouped per year
+
     const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
-    return groupedStats.map((statsPerYear) => {
+
+    return tmpStats.map((statsPerYear) => {
       const y = statsPerYear.year;
       const year = y.toString();
-      const reportsOfAYear = statsPerYear.reportsPerType.map((reportsTyped) => {
-        return renderReportPerYear(reportsTyped.counterReports, maxFailed);
-      });
+      const reps = statsPerYear.stats;
       return (
         <Accordion
           id={year}
@@ -132,10 +134,11 @@ function StatisticsPerYear(props) {
           onToggle={handleAccordionToggle}
         >
           <MultiColumnList
-            contentData={reportsOfAYear}
+            contentData={reps}
             visibleColumns={visibleColumns}
             columnWidths={columnWidths}
             interactive={false}
+            formatter={props.reportFormatter}
             columnMapping={{
               'report': intl.formatMessage({
                 id: 'ui-erm-usage.reportOverview.report',
@@ -181,6 +184,70 @@ function StatisticsPerYear(props) {
         </Accordion>
       );
     });
+    // return groupedStats.map((statsPerYear) => {
+    //   const y = statsPerYear.year;
+    //   const year = y.toString();
+    //   const reportsOfAYear = statsPerYear.reportsPerType.map((reportsTyped) => {
+    //     return renderReportPerYear(reportsTyped.counterReports, maxFailed);
+    //   });
+    //   return (
+    //     <Accordion
+    //       id={year}
+    //       key={year}
+    //       label={year}
+    //       open={yearAccordions[y]}
+    //       onToggle={handleAccordionToggle}
+    //     >
+    //       <MultiColumnList
+    //         contentData={reportsOfAYear}
+    //         visibleColumns={visibleColumns}
+    //         columnWidths={columnWidths}
+    //         interactive={false}
+    //         columnMapping={{
+    //           'report': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.report',
+    //           }),
+    //           '01': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.01',
+    //           }),
+    //           '02': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.02',
+    //           }),
+    //           '03': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.03',
+    //           }),
+    //           '04': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.04',
+    //           }),
+    //           '05': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.05',
+    //           }),
+    //           '06': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.06',
+    //           }),
+    //           '07': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.07',
+    //           }),
+    //           '08': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.08',
+    //           }),
+    //           '09': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.09',
+    //           }),
+    //           '10': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.10',
+    //           }),
+    //           '11': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.11',
+    //           }),
+    //           '12': intl.formatMessage({
+    //             id: 'ui-erm-usage.reportOverview.month.12',
+    //           }),
+    //         }}
+    //       />
+    //     </Accordion>
+    //   );
+    // });
   };
 
   if (_.isEmpty(props.stats)) {
@@ -244,6 +311,9 @@ StatisticsPerYear.propTypes = {
   intl: PropTypes.object,
   stats: PropTypes.arrayOf(PropTypes.shape()),
   udpLabel: PropTypes.string.isRequired,
+  reportsPerYear: PropTypes.shape({}),
+  tmpStats: PropTypes.arrayOf(PropTypes.shape()),
+  reportFormatter: PropTypes.shape({}).isRequired
 };
 
 export default stripesConnect(injectIntl(StatisticsPerYear));

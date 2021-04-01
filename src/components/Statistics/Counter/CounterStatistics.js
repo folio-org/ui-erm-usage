@@ -14,48 +14,55 @@ class CounterStatistics extends React.Component {
       connect: PropTypes.func,
       okapi: PropTypes.shape({
         url: PropTypes.string.isRequired,
-        tenant: PropTypes.string.isRequired
+        tenant: PropTypes.string.isRequired,
       }).isRequired,
       store: PropTypes.shape({
-        getState: PropTypes.func
-      })
+        getState: PropTypes.func,
+      }),
     }).isRequired,
     providerId: PropTypes.string.isRequired,
     udpLabel: PropTypes.string.isRequired,
     counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    tmpReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     handlers: PropTypes.shape({}).isRequired,
+    showMultiMonthDownload: PropTypes.bool,
+    reportFormatter: PropTypes.shape({}).isRequired
   };
 
   constructor(props) {
     super(props);
-    this.downloadableReports = this.calcDownloadableReportTypes(props.counterReports);
+    this.downloadableReports = this.calcDownloadableReportTypes(
+      props.counterReports
+    );
   }
 
   componentDidUpdate(prevProps) {
     const { counterReports } = this.props;
     if (!_.isEqual(counterReports, prevProps.counterReports)) {
-      this.downloadableReports = this.calcDownloadableReportTypes(counterReports);
+      this.downloadableReports = this.calcDownloadableReportTypes(
+        counterReports
+      );
     }
   }
 
-  calcDownloadableReportTypes = counterReports => {
+  calcDownloadableReportTypes = (counterReports) => {
     const reportNames = counterReports
-      .flatMap(c => c.reportsPerType)
-      .flatMap(r => r.counterReports)
+      .flatMap((c) => c.reportsPerType)
+      .flatMap((r) => r.counterReports)
       .filter(
         // eslint-disable-next-line eqeqeq
-        cr => (!cr.failedAttempts || cr.failedAttempts === 0)
+        (cr) => !cr.failedAttempts || cr.failedAttempts === 0
       )
-      .map(cr => cr.reportName);
+      .map((cr) => cr.reportName);
     const available = new Set(reportNames);
     const intersection = new Set(
-      reportDownloadTypes.filter(y => available.has(y.value))
+      reportDownloadTypes.filter((y) => available.has(y.value))
     );
     return _.sortBy([...intersection], ['label']);
   };
 
   render() {
-    const { counterReports } = this.props;
+    const { counterReports, showMultiMonthDownload } = this.props;
 
     return (
       <React.Fragment>
@@ -70,9 +77,11 @@ class CounterStatistics extends React.Component {
             <AccordionSet id="data-test-counter-reports">
               <StatisticsPerYear
                 stats={counterReports}
+                tmpStats={this.props.tmpReports}
                 stripes={this.props.stripes}
                 udpLabel={this.props.udpLabel}
                 handlers={this.props.handlers}
+                reportFormatter={this.props.reportFormatter}
               />
             </AccordionSet>
           </Col>
@@ -84,14 +93,16 @@ class CounterStatistics extends React.Component {
               <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
             </div>
           </Col>
-          <Col xs={12}>
-            <DownloadRange
-              stripes={this.props.stripes}
-              udpId={this.props.providerId}
-              downloadableReports={this.downloadableReports}
-              handlers={this.props.handlers}
-            />
-          </Col>
+          {showMultiMonthDownload && (
+            <Col xs={12}>
+              <DownloadRange
+                stripes={this.props.stripes}
+                udpId={this.props.providerId}
+                downloadableReports={this.downloadableReports}
+                handlers={this.props.handlers}
+              />
+            </Col>
+          )}
         </Row>
       </React.Fragment>
     );

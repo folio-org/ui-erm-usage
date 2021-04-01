@@ -12,7 +12,7 @@ import {
 
 import ReportInfo from '../ReportInfo';
 
-class ReportButton extends React.Component {
+class ReportInfoButton extends React.Component {
   static manifest = Object.freeze({
     counterReports: {
       type: 'okapi',
@@ -46,11 +46,11 @@ class ReportButton extends React.Component {
 
   getButtonStyle = (failedAttempts) => {
     if (!failedAttempts) {
-      return 'success';
+      return 'success slim';
     } else if (failedAttempts < this.props.maxFailedAttempts) {
-      return 'warning';
+      return 'warning slim';
     } else {
-      return 'danger';
+      return 'danger slim';
     }
   };
 
@@ -105,7 +105,7 @@ class ReportButton extends React.Component {
 
   render() {
     const { intl, report } = this.props;
-    if (_.isUndefined(report)) {
+    if (_.isNil(report)) {
       return null;
     }
 
@@ -150,6 +150,8 @@ class ReportButton extends React.Component {
     return (
       <React.Fragment>
         <Button
+          bottomMargin0
+          // paddingSide0
           aria-label={label}
           id={buttonId}
           buttonStyle={style}
@@ -197,7 +199,7 @@ class ReportButton extends React.Component {
   }
 }
 
-ReportButton.propTypes = {
+ReportInfoButton.propTypes = {
   stripes: PropTypes.shape().isRequired,
   report: PropTypes.object,
   mutator: PropTypes.shape({
@@ -213,4 +215,4 @@ ReportButton.propTypes = {
   }),
 };
 
-export default stripesConnect(injectIntl(ReportButton));
+export default stripesConnect(injectIntl(ReportInfoButton));
