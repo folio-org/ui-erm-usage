@@ -105,23 +105,37 @@ class UDP extends React.Component {
     );
   };
 
+  isInActive = (udp) => {
+    const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
+    return !this.props.isHarvesterExistent || status === 'inactive';
+  };
+
   getActionMenu = () => ({ onToggle }) => {
-    const { canEdit, handlers } = this.props;
+    const { canEdit, handlers, data } = this.props;
+    const usageDataProvider = get(data, 'usageDataProvider', {});
+
     return (
       <>
         <div>
           <IfPermission perm="ermusageharvester.start.single">
-            <Button
+            <StartHarvesterButton
+              usageDataProvider={usageDataProvider}
+              isHarvesterExistent={this.props.isHarvesterExistent}
+              onReloadUDP={this.reloadUdp}
+              onToggle={onToggle}
+            />
+            {/* <Button
               buttonStyle="dropDownItem"
               id="start-harvester-button"
               marginBottom0
+              disabled={this.isInActive(usageDataProvider)}
               // disabled={this.isInActive(usageDataProvider)}
               // onClick={() => this.onClickStartHarvester()}
             >
               <Icon icon="play">
                 <FormattedMessage id="ui-erm-usage.harvester.start" />
               </Icon>
-            </Button>
+            </Button> */}
           </IfPermission>
         </div>
         <div>

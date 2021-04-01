@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { stripesConnect, IfPermission } from '@folio/stripes/core';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Button, InfoPopover, Modal } from '@folio/stripes/components';
+import { Button, Icon, InfoPopover, Modal } from '@folio/stripes/components';
 
 class StartHarvesterButton extends React.Component {
   static manifest = Object.freeze({
@@ -21,6 +21,7 @@ class StartHarvesterButton extends React.Component {
     intl: PropTypes.object,
     isHarvesterExistent: PropTypes.bool,
     onReloadUDP: PropTypes.func.isRequired,
+    onToggle: PropTypes.func.isRequired,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }).isRequired,
@@ -106,11 +107,18 @@ class StartHarvesterButton extends React.Component {
       <IfPermission perm="ermusageharvester.start.single">
         <Button
           id="start-harvester-button"
-          buttonStyle="primary"
+          buttonStyle="dropDownItem"
           disabled={this.isInActive(usageDataProvider)}
           onClick={() => this.onClickStartHarvester()}
+          // onClick={async () => {
+          //   await this.props.onToggle();
+          //   this.onClickStartHarvester();
+          // }}
+          marginBottom0
         >
-          {<FormattedMessage id="ui-erm-usage.harvester.start" />}
+          <Icon icon="play">
+            <FormattedMessage id="ui-erm-usage.harvester.start" />
+          </Icon>
         </Button>
         {this.renderInfoPopover(usageDataProvider)}
         <Modal
