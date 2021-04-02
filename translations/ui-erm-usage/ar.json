@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "توجد أخطاء حصاد لهذا التقرير.",
     "statistics.harvesting.success": "كان الحصاد ناجحاً.",
     "statistics.report.info.maxAttempts": "{current} (الحد الأقصى للمحاولات: {max})",
-    "action.refreshStatistics": "تحديث جدول الإحصائيات"
+    "action.refreshStatistics": "تحديث جدول الإحصائيات",
+    "udpHarvestingConfig.deleteThisItem": "حذف هذه المادة",
+    "udpHarvestingConfig.addReportType": "إضافة نوع التقرير",
+    "settings.harvester.config.periodic.confirmDelete": "حذف تهيئة الحصاد الدوري؟"
 }

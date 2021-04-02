@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "该报告存在收割错误。",
     "statistics.harvesting.success": "收割成功。",
     "statistics.report.info.maxAttempts": "{current} （最大尝试次数： {max} ）",
-    "action.refreshStatistics": "刷新统计表"
+    "action.refreshStatistics": "刷新统计表",
+    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.addReportType": "Add report type",
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
 }

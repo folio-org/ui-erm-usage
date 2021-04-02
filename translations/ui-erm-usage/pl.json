@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "W tym raporcie występują błędy z pobierania danych",
     "statistics.harvesting.success": "Pomyślne pobieranie danych",
     "statistics.report.info.maxAttempts": "{current} (maksymalna liczba prób: {max} )",
-    "action.refreshStatistics": "Refresh statistics table"
+    "action.refreshStatistics": "Refresh statistics table",
+    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.addReportType": "Add report type",
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
 }
