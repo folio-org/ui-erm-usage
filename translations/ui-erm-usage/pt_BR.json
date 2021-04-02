@@ -258,8 +258,11 @@
     "aggregator.config.popover": "Para German National Statistic Server, especifique as chaves:",
     "aggregator.config.addParam": "Adicionar parâmetro de configuração",
     "statistics.delete": "Você realmente deseja excluir este relatório?",
-    "statistics.harvesting.error": "There are harvesting errors for this report.",
+    "statistics.harvesting.error": "Existem erros de harvesting para este relatório.",
     "statistics.harvesting.success": "O harvesting foi bem sucedido.",
     "statistics.report.info.maxAttempts": "{current} (Tentativas máximas: {max})",
-    "action.refreshStatistics": "Atualizar tabela de estatísticas"
+    "action.refreshStatistics": "Atualizar tabela de estatísticas",
+    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.addReportType": "Add report type",
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
 }

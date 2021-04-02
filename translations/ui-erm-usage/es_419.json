@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "There are harvesting errors for this report.",
     "statistics.harvesting.success": "Harvesting was successfull.",
     "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
-    "action.refreshStatistics": "Refresh statistics table"
+    "action.refreshStatistics": "Refresh statistics table",
+    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.addReportType": "Add report type",
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
 }

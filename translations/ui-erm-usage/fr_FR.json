@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "Il y a des erreurs de moissonnage pour ce rapport.",
     "statistics.harvesting.success": "Moissonnage réussi",
     "statistics.report.info.maxAttempts": "{current} (Nombre maximum de tentatives: {max} )",
-    "action.refreshStatistics": "Actualiser le tableau des statistiques"
+    "action.refreshStatistics": "Actualiser le tableau des statistiques",
+    "udpHarvestingConfig.deleteThisItem": "Supprimer cet élément",
+    "udpHarvestingConfig.addReportType": "Ajouter un type de rapport",
+    "settings.harvester.config.periodic.confirmDelete": "Supprimer la configuration de moissonnage périodique?"
 }
