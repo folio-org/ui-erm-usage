@@ -31,7 +31,7 @@ import HelperApp from '../HelperApp';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
-import StartHarvesterButton from '../StartHarvesterButton';
+import StartHarvesterModal from '../StartHarvesterModal';
 import ReportUpload from '../ReportUpload';
 
 import urls from '../../util/urls';
@@ -44,6 +44,7 @@ class UDP extends React.Component {
     this.state = {
       helperApp: null,
       showReportUploadModal: true,
+      showInfoModal: false,
     };
   }
 
@@ -110,6 +111,14 @@ class UDP extends React.Component {
     return !this.props.isHarvesterExistent || status === 'inactive';
   };
 
+  openStartHarvesterModal = () => {
+    this.setState({ showInfoModal: true });
+  }
+
+  closeStartHarvesterModal = () => {
+    this.setState({ showInfoModal: false });
+  }
+
   getActionMenu = () => ({ onToggle }) => {
     const { canEdit, handlers, data } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
@@ -118,25 +127,29 @@ class UDP extends React.Component {
       <>
         <div>
           <IfPermission perm="ermusageharvester.start.single">
-            <StartHarvesterButton
-              usageDataProvider={usageDataProvider}
-              isHarvesterExistent={this.props.isHarvesterExistent}
-              onReloadUDP={this.reloadUdp}
-              onToggle={onToggle}
-            />
-            {/* <Button
+            <Button
               buttonStyle="dropDownItem"
               id="start-harvester-button"
               marginBottom0
               disabled={this.isInActive(usageDataProvider)}
-              // disabled={this.isInActive(usageDataProvider)}
-              // onClick={() => this.onClickStartHarvester()}
+              onClick={() => {
+                this.openStartHarvesterModal();
+                onToggle();
+              }}
             >
               <Icon icon="play">
                 <FormattedMessage id="ui-erm-usage.harvester.start" />
               </Icon>
-            </Button> */}
+            </Button>
           </IfPermission>
+          { this.state.showInfoModal &&
+            <StartHarvesterModal
+              usageDataProvider={usageDataProvider}
+              isHarvesterExistent={this.props.isHarvesterExistent}
+              onReloadUDP={this.reloadUdp}
+              onClose={this.closeStartHarvesterModal}
+            />
+          }
         </div>
         <div>
           <Button
@@ -312,7 +325,7 @@ class UDP extends React.Component {
                     }
                     id="harvestingAccordion"
                     displayWhenOpen={
-                      <StartHarvesterButton
+                      <StartHarvesterModal
                         usageDataProvider={usageDataProvider}
                         isHarvesterExistent={isHarvesterExistent}
                         onReloadUDP={this.reloadUdp}

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { stripesConnect, IfPermission } from '@folio/stripes/core';
+import { stripesConnect } from '@folio/stripes/core';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Button, Icon, InfoPopover, Modal } from '@folio/stripes/components';
+import { Button, InfoPopover, Modal } from '@folio/stripes/components';
 
-class StartHarvesterButton extends React.Component {
+class StartHarvesterModal extends React.Component {
   static manifest = Object.freeze({
     harvesterStart: {
       type: 'okapi',
@@ -21,54 +21,43 @@ class StartHarvesterButton extends React.Component {
     intl: PropTypes.object,
     isHarvesterExistent: PropTypes.bool,
     onReloadUDP: PropTypes.func.isRequired,
-    onToggle: PropTypes.func.isRequired,
     mutator: PropTypes.shape({
       harvesterStart: PropTypes.object,
     }).isRequired,
     usageDataProvider: PropTypes.object.isRequired,
+    onClose: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
+    const { usageDataProvider } = props;
     this.state = {
-      showInfoModal: false,
       modalText: '',
     };
-    const { usageDataProvider } = props;
-    this.successText = this.createSuccessText(usageDataProvider);
-    this.failText = this.createFailText(usageDataProvider);
-  }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
-      this.successText = this.createSuccessText(this.props.usageDataProvider);
-      this.failText = this.createFailText(this.props.usageDataProvider);
-    }
-  }
-
-  onClickStartHarvester = () => {
     this.props.mutator.harvesterStart
       .GET()
       .then(() => {
         this.setState({
-          showInfoModal: true,
-          modalText: this.successText,
+          modalText: this.createSuccessText(usageDataProvider),
         });
         this.props.onReloadUDP();
       })
       .catch((err) => {
-        const infoText = this.failText + ' ' + err.message;
+        const infoText = this.createFailText(usageDataProvider) + ' ' + err.message;
         this.setState({
-          showInfoModal: true,
           modalText: infoText,
         });
       });
-  };
+  }
 
-  handleClose = () => {
-    this.setState({ showInfoModal: false });
-  };
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
+  //     this.successText = this.createSuccessText(this.props.usageDataProvider);
+  //     this.failText = this.createFailText(this.props.usageDataProvider);
+  //   }
+  // }
 
   isInActive = (udp) => {
     const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
@@ -104,34 +93,19 @@ class StartHarvesterButton extends React.Component {
   render() {
     const { usageDataProvider } = this.props;
     return (
-      <IfPermission perm="ermusageharvester.start.single">
-        <Button
-          id="start-harvester-button"
-          buttonStyle="dropDownItem"
-          disabled={this.isInActive(usageDataProvider)}
-          onClick={() => this.onClickStartHarvester()}
-          // onClick={async () => {
-          //   await this.props.onToggle();
-          //   this.onClickStartHarvester();
-          // }}
-          marginBottom0
-        >
-          <Icon icon="play">
-            <FormattedMessage id="ui-erm-usage.harvester.start" />
-          </Icon>
-        </Button>
+      <>
         {this.renderInfoPopover(usageDataProvider)}
         <Modal
           closeOnBackgroundClick
-          open={this.state.showInfoModal}
           label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
+          open
         >
           <div>{this.state.modalText}</div>
-          <Button onClick={this.handleClose}>OK</Button>
+          <Button onClick={this.props.onClose}>OK</Button>
         </Modal>
-      </IfPermission>
+      </>
     );
   }
 }
 
-export default stripesConnect(injectIntl(StartHarvesterButton));
+export default stripesConnect(injectIntl(StartHarvesterModal));
