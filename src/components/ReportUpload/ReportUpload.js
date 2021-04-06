@@ -13,21 +13,25 @@ class ReportUpload extends React.Component {
     super(props);
 
     this.state = {
-      showCounterUpload: false,
-      showNonCounterUpload: false,
+      showCounterUpload: props.showCounterUpload,
+      showNonCounterUpload: props.showNonCounterUpload,
     };
 
     callout = React.createRef();
   }
 
-  componentWillReceiveProps(props) {
-    if (!props.showReportUploadModal) {
-      this.setState({
-        showCounterUpload: false,
-        showNonCounterUpload: false,
-      });
-    }
-  }
+  // componentWillReceiveProps(props) {
+  //   if (props.showCounterUpload) {
+  //     this.setState({
+  //       showCounterUpload: true,
+  //     });
+  //   }
+  //   if (props.showNonCounterUpload) {
+  //     this.setState({
+  //       showNonCounterUpload: true,
+  //     });
+  //   }
+  // }
 
   handleSuccess = () => {
     const info = this.props.intl.formatMessage({
@@ -40,6 +44,7 @@ class ReportUpload extends React.Component {
       showCounterUpload: false,
       showNonCounterUpload: false,
     });
+    this.props.closeReportUploadModal();
     this.props.onReloadStatistics();
   };
 
@@ -56,12 +61,13 @@ class ReportUpload extends React.Component {
       showCounterUpload: false,
       showNonCounterUpload: false,
     });
+    this.props.closeReportUploadModal();
   };
 
   render() {
     return (
       <>
-        <Button
+        {/* <Button
           id="upload-counter-button"
           onClick={() => this.setState({ showCounterUpload: true })}
         >
@@ -72,10 +78,11 @@ class ReportUpload extends React.Component {
           onClick={() => this.setState({ showNonCounterUpload: true })}
         >
           <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
-        </Button>
+        </Button> */}
         <CounterUpload
           open={this.state.showCounterUpload}
-          onClose={() => this.setState({ showCounterUpload: false })}
+          // onClose={() => this.setState({ showCounterUpload: false })}
+          onClose={this.props.closeReportUploadModal()}
           onFail={this.handleFail}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
@@ -83,7 +90,8 @@ class ReportUpload extends React.Component {
         />
         <NonCounterUpload
           open={this.state.showNonCounterUpload}
-          onClose={() => this.setState({ showNonCounterUpload: false })}
+          // onClose={() => this.setState({ showNonCounterUpload: false })}
+          onClose={this.props.closeReportUploadModal()}
           onFail={this.handleFail}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
@@ -101,10 +109,14 @@ class ReportUpload extends React.Component {
 
 ReportUpload.propTypes = {
   intl: PropTypes.object,
+  // onClose: PropTypes.func,
+  closeReportUploadModal: PropTypes.func.isRequired,
   onReloadStatistics: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  showReportUploadModal: PropTypes.bool,
+  // showReportUploadModal: PropTypes.bool,
+  showCounterUpload: PropTypes.bool,
+  showNonCounterUpload: PropTypes.bool,
 };
 
 export default injectIntl(ReportUpload);

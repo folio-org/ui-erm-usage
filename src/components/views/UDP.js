@@ -43,10 +43,20 @@ class UDP extends React.Component {
 
     this.state = {
       helperApp: null,
-      showReportUploadModal: true,
-      showInfoModal: false,
+      // showReportUploadModal: false,
+      showStartHarvesterModal: false,
+      showCounterUpload: false,
+      showNonCounterUpload: false,
     };
   }
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.data.usageDataProvider !== prevProps.data.usageDataProvider) {
+  //     this.setState({
+  //       showCounterUpload: false,
+  //     });
+  //   }
+  // }
 
   getInitialAccordionsState = () => {
     return {
@@ -112,16 +122,40 @@ class UDP extends React.Component {
   };
 
   openStartHarvesterModal = () => {
-    this.setState({ showInfoModal: true });
+    this.setState({ showStartHarvesterModal: true });
   }
 
   closeStartHarvesterModal = () => {
-    this.setState({ showInfoModal: false });
+    this.setState({ showStartHarvesterModal: false });
+  }
+
+  openCounterUploadModal = () => {
+    this.setState({ showCounterUpload: true });
+  }
+
+  closeCounterUploadModal = () => {
+    this.setState({ showCounterUpload: false });
+  }
+
+  openNonCounterUploadModal = () => {
+    this.setState({ showNonCounterUpload: true });
+  }
+
+  closeNonCounterUploadModal = () => {
+    this.setState({ showNonCounterUpload: false });
+  }
+
+  closeReportUploadModal = () => {
+    console.log('UDP closeReportUploadModal');
+    this.setState({ showCounterUpload: false });
+    this.setState({ showNonCounterUpload: false });
   }
 
   getActionMenu = () => ({ onToggle }) => {
     const { canEdit, handlers, data } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
+
+    const providerId = get(usageDataProvider, 'id', '');
 
     return (
       <>
@@ -142,7 +176,7 @@ class UDP extends React.Component {
               </Icon>
             </Button>
           </IfPermission>
-          { this.state.showInfoModal &&
+          { this.state.showStartHarvesterModal &&
             <StartHarvesterModal
               usageDataProvider={usageDataProvider}
               isHarvesterExistent={this.props.isHarvesterExistent}
@@ -172,25 +206,53 @@ class UDP extends React.Component {
             buttonStyle="dropDownItem"
             id="upload-counter-button"
             marginBottom0
-            // onClick={() => this.setState({ showCounterUpload: true })}
+            onClick={() => {
+              this.openCounterUploadModal();
+              onToggle();
+            }}
           >
             <Icon icon="plus-sign">
               <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
             </Icon>
           </Button>
+          {/* <ReportUpload
+            udpId={providerId}
+            stripes={this.props.stripes}
+            onReloadStatistics={this.reloadStatistics}
+            showCounterUpload={this.state.showCounterUpload}
+          /> */}
         </div>
         <div>
           <Button
             buttonStyle="dropDownItem"
             id="upload-non-counter-button"
             marginBottom0
-            // onClick={() => this.setState({ showNonCounterUpload: true })}
+            onClick={() => {
+              this.openNonCounterUploadModal();
+              onToggle();
+            }}
           >
             <Icon icon="plus-sign">
               <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
             </Icon>
           </Button>
+          {/* <ReportUpload
+            udpId={providerId}
+            stripes={this.props.stripes}
+            onReloadStatistics={this.reloadStatistics}
+            showNonCounterUpload={this.state.showNonCounterUpload}
+          /> */}
         </div>
+        { (this.state.showCounterUpload || this.state.showNonCounterUpload) &&
+        <ReportUpload
+          udpId={providerId}
+          stripes={this.props.stripes}
+          onReloadStatistics={this.reloadStatistics}
+          showCounterUpload={this.state.showCounterUpload}
+          showNonCounterUpload={this.state.showNonCounterUpload}
+          closeReportUploadModal={() => this.closeReportUploadModal}
+        />
+        }
         {canEdit && (
           <div>
             <Button
@@ -238,9 +300,9 @@ class UDP extends React.Component {
     },
   ];
 
-  handleCloseModal = () => {
-    this.setState({ showReportUploadModal: false });
-  };
+  // handleCloseModal = () => {
+  //   this.setState({ showReportUploadModal: false });
+  // };
 
   renderLoadingPane = () => {
     return (
@@ -324,13 +386,13 @@ class UDP extends React.Component {
                       <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
                     }
                     id="harvestingAccordion"
-                    displayWhenOpen={
-                      <StartHarvesterModal
-                        usageDataProvider={usageDataProvider}
-                        isHarvesterExistent={isHarvesterExistent}
-                        onReloadUDP={this.reloadUdp}
-                      />
-                    }
+                    // displayWhenOpen={
+                    //   <StartHarvesterModal
+                    //     usageDataProvider={usageDataProvider}
+                    //     isHarvesterExistent={isHarvesterExistent}
+                    //     onReloadUDP={this.reloadUdp}
+                    //   />
+                    // }
                   >
                     <HarvestingConfigurationView
                       usageDataProvider={usageDataProvider}
@@ -357,12 +419,12 @@ class UDP extends React.Component {
                     label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                     id="uploadAccordion"
                   >
-                    <ReportUpload
+                    {/* <ReportUpload
                       udpId={providerId}
                       stripes={stripes}
                       onReloadStatistics={this.reloadStatistics}
                       showReportUploadModal={this.state.showReportUploadModal}
-                    />
+                    /> */}
                   </Accordion>
                   <NotesSmartAccordion
                     id="notesAccordion"
