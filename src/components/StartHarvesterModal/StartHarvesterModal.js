@@ -52,13 +52,6 @@ class StartHarvesterModal extends React.Component {
       });
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.usageDataProvider.id !== prevProps.usageDataProvider.id) {
-  //     this.successText = this.createSuccessText(this.props.usageDataProvider);
-  //     this.failText = this.createFailText(this.props.usageDataProvider);
-  //   }
-  // }
-
   isInActive = (udp) => {
     const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
     return !this.props.isHarvesterExistent || status === 'inactive';

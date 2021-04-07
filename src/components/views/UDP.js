@@ -33,7 +33,6 @@ import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
 import StartHarvesterModal from '../StartHarvesterModal';
-// import ReportUpload from '../ReportUpload';
 import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 
@@ -48,7 +47,6 @@ class UDP extends React.Component {
 
     this.state = {
       helperApp: null,
-      // showReportUploadModal: false,
       showStartHarvesterModal: false,
       showCounterUpload: false,
       showNonCounterUpload: false,
@@ -68,7 +66,6 @@ class UDP extends React.Component {
       showCounterUpload: false,
       showNonCounterUpload: false,
     });
-    // this.props.onReloadStatistics();
     this.reloadStatistics();
   };
 
@@ -169,7 +166,6 @@ class UDP extends React.Component {
   getActionMenu = () => ({ onToggle }) => {
     const { canEdit, handlers, data } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
-
     const providerId = get(usageDataProvider, 'id', '');
 
     return (
