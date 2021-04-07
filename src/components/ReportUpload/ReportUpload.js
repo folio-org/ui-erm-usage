@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { Button, Callout } from '@folio/stripes-components';
+import { injectIntl } from 'react-intl';
+import { Callout } from '@folio/stripes-components';
 
 import CounterUpload from './CounterUpload';
 import NonCounterUpload from './NonCounterUpload';
@@ -44,8 +44,8 @@ class ReportUpload extends React.Component {
       showCounterUpload: false,
       showNonCounterUpload: false,
     });
-    this.props.closeReportUploadModal();
     this.props.onReloadStatistics();
+    this.props.closeReportUploadModal();
   };
 
   handleFail = (msg) => {
@@ -82,7 +82,7 @@ class ReportUpload extends React.Component {
         <CounterUpload
           open={this.state.showCounterUpload}
           // onClose={() => this.setState({ showCounterUpload: false })}
-          onClose={this.props.closeReportUploadModal()}
+          onClose={() => this.props.closeReportUploadModal()}
           onFail={this.handleFail}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
@@ -91,7 +91,7 @@ class ReportUpload extends React.Component {
         <NonCounterUpload
           open={this.state.showNonCounterUpload}
           // onClose={() => this.setState({ showNonCounterUpload: false })}
-          onClose={this.props.closeReportUploadModal()}
+          onClose={() => this.props.closeReportUploadModal()}
           onFail={this.handleFail}
           onSuccess={this.handleSuccess}
           stripes={this.props.stripes}
@@ -114,7 +114,6 @@ ReportUpload.propTypes = {
   onReloadStatistics: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  // showReportUploadModal: PropTypes.bool,
   showCounterUpload: PropTypes.bool,
   showNonCounterUpload: PropTypes.bool,
 };

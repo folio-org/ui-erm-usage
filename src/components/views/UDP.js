@@ -50,14 +50,6 @@ class UDP extends React.Component {
     };
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.data.usageDataProvider !== prevProps.data.usageDataProvider) {
-  //     this.setState({
-  //       showCounterUpload: false,
-  //     });
-  //   }
-  // }
-
   getInitialAccordionsState = () => {
     return {
       harvestingAccordion: false,
@@ -133,22 +125,15 @@ class UDP extends React.Component {
     this.setState({ showCounterUpload: true });
   }
 
-  closeCounterUploadModal = () => {
-    this.setState({ showCounterUpload: false });
-  }
-
   openNonCounterUploadModal = () => {
     this.setState({ showNonCounterUpload: true });
   }
 
-  closeNonCounterUploadModal = () => {
-    this.setState({ showNonCounterUpload: false });
-  }
-
   closeReportUploadModal = () => {
-    console.log('UDP closeReportUploadModal');
-    this.setState({ showCounterUpload: false });
-    this.setState({ showNonCounterUpload: false });
+    this.setState({
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    });
   }
 
   getActionMenu = () => ({ onToggle }) => {
@@ -250,7 +235,7 @@ class UDP extends React.Component {
           onReloadStatistics={this.reloadStatistics}
           showCounterUpload={this.state.showCounterUpload}
           showNonCounterUpload={this.state.showNonCounterUpload}
-          closeReportUploadModal={() => this.closeReportUploadModal}
+          closeReportUploadModal={this.closeReportUploadModal}
         />
         }
         {canEdit && (
@@ -330,7 +315,6 @@ class UDP extends React.Component {
       isLoading,
       isStatsLoading,
       handlers,
-      isHarvesterExistent,
       stripes,
     } = this.props;
 
