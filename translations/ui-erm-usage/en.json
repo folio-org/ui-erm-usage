@@ -56,7 +56,6 @@
   "udp.harvestingConfiguration": "Harvesting configuration",
   "udp.notes": "Notes",
   "udp.statistics": "Statistics",
-  "udp.statsUpload": "Statistics upload",
   "udp.searchInputLabel": "Search usage data providers",
 
   "udpHarvestingConfig.harvestingStatus": "Harvesting status",
