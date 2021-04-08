@@ -33,6 +33,8 @@ import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
+import CounterStatistics from '../Counter';
+import CustomStatistics from '../Custom';
 
 import urls from '../../util/urls';
 
@@ -196,6 +198,46 @@ class UDP extends React.Component {
     return document.getElementById('ModuleContainer').contains(document.activeElement);
   };
 
+  getCounterStatistics(label, providerId) {
+    const { data, handlers, stripes } = this.props;
+    if (this.props.isStatsLoading) {
+      return <Icon icon="spinner-ellipsis" width="10px" />;
+    }
+    if (data.counterReports.length > 0) {
+      return (
+        <CounterStatistics
+          stripes={stripes}
+          providerId={providerId}
+          udpLabel={label}
+          counterReports={data.counterReports}
+          handlers={handlers}
+        />
+      );
+    } else {
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
+    }
+  }
+
+  getCustomStatistics(label, providerId) {
+    const { data, handlers, stripes } = this.props;
+    if (this.props.isStatsLoading) {
+      return <Icon icon="spinner-ellipsis" width="10px" />;
+    }
+    if (data.customReports.length > 0) {
+      return (
+        <CustomStatistics
+          stripes={stripes}
+          providerId={providerId}
+          udpLabel={label}
+          customReports={data.customReports}
+          handlers={handlers}
+        />
+      );
+    } else {
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
+    }
+  }
+
   render() {
     const {
       data,
@@ -287,6 +329,14 @@ class UDP extends React.Component {
                       handlers={handlers}
                     />
                   </Accordion>
+
+                  <Accordion id="counter-reports-accordion" label="COUNTER">
+                    {this.getCounterStatistics(label, providerId)}
+                  </Accordion>
+                  <Accordion id="custom-reports-accordion" label="Non-COUNTER">
+                    {this.getCustomStatistics(label, providerId)}
+                  </Accordion>
+
                   <Accordion
                     label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                     id="uploadAccordion"
