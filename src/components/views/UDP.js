@@ -155,14 +155,6 @@ class UDP extends React.Component {
     this.setState({ showStartHarvesterModal: false });
   }
 
-  openCounterUploadModal = () => {
-    this.setState({ showCounterUpload: true });
-  }
-
-  openNonCounterUploadModal = () => {
-    this.setState({ showNonCounterUpload: true });
-  }
-
   getActionMenu = () => ({ onToggle }) => {
     const { canEdit, handlers, data } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
@@ -218,7 +210,7 @@ class UDP extends React.Component {
             id="upload-counter-button"
             marginBottom0
             onClick={() => {
-              this.openCounterUploadModal();
+              this.setState({ showCounterUpload: true });
               onToggle();
             }}
           >
@@ -233,7 +225,7 @@ class UDP extends React.Component {
             id="upload-non-counter-button"
             marginBottom0
             onClick={() => {
-              this.openNonCounterUploadModal();
+              this.setState({ showNonCounterUpload: true });
               onToggle();
             }}
           >
