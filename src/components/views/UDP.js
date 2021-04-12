@@ -54,7 +54,8 @@ class UDP extends React.Component {
       sushiCredsAccordion: false,
       uploadAccordion: false,
       notesAccordion: false,
-      statisticsAccordion: false,
+      counterStatisticsAccordion: false,
+      nonCounterStatisticsAccordion: false,
     };
   }
 
@@ -314,13 +315,13 @@ class UDP extends React.Component {
                     />
                   </Accordion>
                   <Accordion
-                    id="counter-reports-accordion"
+                    id="counterStatisticsAccordion"
                     label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
                   >
                     {this.getCounterStatistics(label, providerId)}
                   </Accordion>
                   <Accordion
-                    id="custom-reports-accordion"
+                    id="nonCounterStatisticsAccordion"
                     label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
                   >
                     {this.getCustomStatistics(label, providerId)}
