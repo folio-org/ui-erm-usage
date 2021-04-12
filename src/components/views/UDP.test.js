@@ -77,4 +77,39 @@ describe('UDP', () => {
     // TODO: Harvesting status is always visible. How to test the accordion?
     expect(screen.getByText('Harvesting status')).toBeVisible();
   });
+
+  test('should render action menu button', async () => {
+    renderUDP(stripes);
+    expect(screen.getByText('Actions')).toBeVisible();
+  });
+
+  describe('test action menu', () => {
+    beforeEach(() => {
+      renderUDP(stripes);
+      userEvent.click(screen.getByText('Actions'));
+    });
+
+    test('should render action menu with actions', async () => {
+      expect(screen.getByText('Start harvester')).toBeVisible();
+      expect(screen.getByText('Refresh statistics table')).toBeVisible();
+      expect(screen.getByText('Upload COUNTER report')).toBeVisible();
+      expect(screen.getByText('Upload non-COUNTER report')).toBeVisible();
+    });
+
+    test('click upload counter report', async () => {
+      userEvent.click(await screen.findByText('Upload COUNTER report'));
+      const heading = screen.getByRole('heading', {
+        name: 'Upload COUNTER report',
+      });
+      expect(heading).toBeInTheDocument();
+    });
+
+    test('click upload non-counter report', async () => {
+      userEvent.click(await screen.findByText('Upload non-COUNTER report'));
+      const heading = screen.getByRole('heading', {
+        name: 'Upload non-COUNTER report',
+      });
+      expect(heading).toBeInTheDocument();
+    });
+  });
 });
