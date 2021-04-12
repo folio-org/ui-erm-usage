@@ -31,7 +31,7 @@ import HelperApp from '../HelperApp';
 
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import StartHarvesterButton from '../StartHarvesterButton';
+import StartHarvesterModal from '../StartHarvesterModal';
 import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 import CounterStatistics from '../Counter';
