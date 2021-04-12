@@ -30,7 +30,6 @@ import HelperApp from '../HelperApp';
 
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import Statistics from '../Statistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 import CounterStatistics from '../Counter';
@@ -242,7 +241,6 @@ class UDP extends React.Component {
     const {
       data,
       isLoading,
-      isStatsLoading,
       handlers,
       isHarvesterExistent,
       stripes,
@@ -315,10 +313,16 @@ class UDP extends React.Component {
                       harvesterImpls={data.harvesterImpls}
                     />
                   </Accordion>
-                  <Accordion id="counter-reports-accordion" label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}>
+                  <Accordion
+                    id="counter-reports-accordion"
+                    label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
+                  >
                     {this.getCounterStatistics(label, providerId)}
                   </Accordion>
-                  <Accordion id="custom-reports-accordion" label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}>
+                  <Accordion
+                    id="custom-reports-accordion"
+                    label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
+                  >
                     {this.getCustomStatistics(label, providerId)}
                   </Accordion>
                   <Accordion
