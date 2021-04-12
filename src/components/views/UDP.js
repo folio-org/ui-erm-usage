@@ -31,10 +31,11 @@ import HelperApp from '../HelperApp';
 
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import Statistics from '../Statistics';
 import StartHarvesterModal from '../StartHarvesterModal';
 import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
+import CounterStatistics from '../Counter';
+import CustomStatistics from '../Custom';
 
 import urls from '../../util/urls';
 
@@ -90,7 +91,8 @@ class UDP extends React.Component {
       sushiCredsAccordion: false,
       uploadAccordion: false,
       notesAccordion: false,
-      statisticsAccordion: false,
+      counterStatisticsAccordion: false,
+      nonCounterStatisticsAccordion: false,
     };
   }
 
@@ -322,11 +324,50 @@ class UDP extends React.Component {
     return document.getElementById('ModuleContainer').contains(document.activeElement);
   };
 
+  getCounterStatistics(label, providerId) {
+    const { data, handlers, stripes } = this.props;
+    if (this.props.isStatsLoading) {
+      return <Icon icon="spinner-ellipsis" width="10px" />;
+    }
+    if (data.counterReports.length > 0) {
+      return (
+        <CounterStatistics
+          stripes={stripes}
+          providerId={providerId}
+          udpLabel={label}
+          counterReports={data.counterReports}
+          handlers={handlers}
+        />
+      );
+    } else {
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
+    }
+  }
+
+  getCustomStatistics(label, providerId) {
+    const { data, handlers, stripes } = this.props;
+    if (this.props.isStatsLoading) {
+      return <Icon icon="spinner-ellipsis" width="10px" />;
+    }
+    if (data.customReports.length > 0) {
+      return (
+        <CustomStatistics
+          stripes={stripes}
+          providerId={providerId}
+          udpLabel={label}
+          customReports={data.customReports}
+          handlers={handlers}
+        />
+      );
+    } else {
+      return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
+    }
+  }
+
   render() {
     const {
       data,
       isLoading,
-      isStatsLoading,
       handlers,
       stripes,
     } = this.props;
@@ -392,18 +433,16 @@ class UDP extends React.Component {
                     />
                   </Accordion>
                   <Accordion
-                    label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-                    id="statisticsAccordion"
+                    id="counterStatisticsAccordion"
+                    label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
                   >
-                    <Statistics
-                      stripes={stripes}
-                      providerId={providerId}
-                      udpLabel={label}
-                      counterReports={data.counterReports}
-                      customReports={data.customReports}
-                      isStatsLoading={isStatsLoading}
-                      handlers={handlers}
-                    />
+                    {this.getCounterStatistics(label, providerId)}
+                  </Accordion>
+                  <Accordion
+                    id="nonCounterStatisticsAccordion"
+                    label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
+                  >
+                    {this.getCustomStatistics(label, providerId)}
                   </Accordion>
                   <NotesSmartAccordion
                     id="notesAccordion"

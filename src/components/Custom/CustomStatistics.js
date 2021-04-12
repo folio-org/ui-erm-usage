@@ -12,7 +12,7 @@ import {
 } from '@folio/stripes-components';
 import InfoButton from './InfoButton';
 
-import css from '../Statistics.css';
+import css from './CustomStatistics.css';
 
 function CustomStatistics(props) {
   const [yearAccordions, setYearAccordions] = useState({});

@@ -12,7 +12,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 import ReportButton from '../ReportButton';
-import { MAX_FAILED_ATTEMPTS } from '../../../../util/constants';
+import { MAX_FAILED_ATTEMPTS } from '../../../util/constants';
 
 function StatisticsPerYear(props) {
   const [yearAccordions, setYearAccordions] = useState({});

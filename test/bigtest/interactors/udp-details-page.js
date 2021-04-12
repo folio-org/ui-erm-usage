@@ -260,14 +260,14 @@ export default @interactor class UDPDetailsPage {
   harvestingAccordionButton = new HarvestingAccordionButton();
   notesAccordionButton = new NotesAccordionButton();
   startHarvesterButton = new StartHarvesterButton();
-  clickCustomReportAccordion = clickable('#custom-reports-accordion');
+  clickCustomReportAccordion = clickable('#nonCounterStatisticsAccordion');
   clickExpandAllCustomReportYears = clickable('#expand-all-custom-report-years');
   customReports = new CustomReports();
   customReportInfo = new CustomReportInfo();
 
   clickStatisticsAccordion = clickable('#accordion-toggle-button-statisticsAccordion');
   counterReportAccordion = scoped('[id="accordion-toggle-button-counter-reports-accordion"]');
-  clickCounterReportAccordion = clickable('#counter-reports-accordion');
+  clickCounterReportAccordion = clickable('#counterStatisticsAccordion');
   clickExpandAllCounterReportYears = clickable('#expand-all-counter-report-years');
   counterReports = new CounterReports();
   counterReportInfo = new CounterReportInfo();

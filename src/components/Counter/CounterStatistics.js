@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { AccordionSet, Col, Row } from '@folio/stripes/components';
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
+import reportDownloadTypes from '../../util/data/reportDownloadTypes';
 import css from './CounterStatistics.css';
 
 class CounterStatistics extends React.Component {
