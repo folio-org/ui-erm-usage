@@ -247,7 +247,7 @@
     "udp.form.placeholder.sushi.customerId": "輸入SUSHI客戶ID",
     "udp.form.placeholder.sushi.requestorId": "輸入SUSHI申請者ID",
     "udp.form.placeholder.sushi.apiKey": "輸入SUSHI API密鑰",
-    "udp.form.placeholder.sushi.platform": "Enter platform to request usage for",
+    "udp.form.placeholder.sushi.platform": "輸入平台以請求使用",
     "udp.form.placeholder.sushi.requestorName": "輸入SUSHI申請者名稱",
     "udp.form.placeholder.sushi.requestorMail": "輸入SHSHI申請郵件",
     "aggregator.form.placeholder.serviceType": "選擇服務類型",
