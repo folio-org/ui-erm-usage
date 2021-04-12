@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { TitleManager } from '@folio/stripes/core';
+import { IfPermission, TitleManager } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -21,6 +21,7 @@ import {
   PaneMenu,
   Row,
 } from '@folio/stripes/components';
+import { Callout } from '@folio/stripes-components';
 import {
   NotesSmartAccordion,
   ViewMetaData,
@@ -31,10 +32,13 @@ import HelperApp from '../HelperApp';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
-import StartHarvesterButton from '../StartHarvesterButton';
-import ReportUpload from '../ReportUpload';
+import StartHarvesterModal from '../StartHarvesterModal';
+import CounterUpload from '../ReportUpload/CounterUpload';
+import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 
 import urls from '../../util/urls';
+
+let callout;
 
 class UDP extends React.Component {
   constructor(props) {
@@ -43,9 +47,42 @@ class UDP extends React.Component {
 
     this.state = {
       helperApp: null,
-      showReportUploadModal: true,
+      showStartHarvesterModal: false,
+      showCounterUpload: false,
+      showNonCounterUpload: false,
     };
+
+    callout = React.createRef();
   }
+
+  handleSuccess = () => {
+    const info = this.props.intl.formatMessage({
+      id: 'ui-erm-usage.report.upload.success',
+    });
+    callout.sendCallout({
+      message: info,
+    });
+    this.setState({
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    });
+    this.reloadStatistics();
+  };
+
+  handleFail = (msg) => {
+    const failText = this.props.intl.formatMessage({
+      id: 'ui-erm-usage.report.upload.failed',
+    });
+    callout.sendCallout({
+      type: 'error',
+      message: `${failText} ${msg}`,
+      timeout: 0,
+    });
+    this.setState({
+      showCounterUpload: false,
+      showNonCounterUpload: false,
+    });
+  };
 
   getInitialAccordionsState = () => {
     return {
@@ -105,10 +142,52 @@ class UDP extends React.Component {
     );
   };
 
+  isInActive = (udp) => {
+    const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
+    return !this.props.isHarvesterExistent || status === 'inactive';
+  };
+
+  openStartHarvesterModal = () => {
+    this.setState({ showStartHarvesterModal: true });
+  }
+
+  closeStartHarvesterModal = () => {
+    this.setState({ showStartHarvesterModal: false });
+  }
+
   getActionMenu = () => ({ onToggle }) => {
-    const { canEdit, handlers } = this.props;
+    const { canEdit, handlers, data } = this.props;
+    const usageDataProvider = get(data, 'usageDataProvider', {});
+    const providerId = get(usageDataProvider, 'id', '');
+
     return (
       <>
+        <div>
+          <IfPermission perm="ermusageharvester.start.single">
+            <Button
+              buttonStyle="dropDownItem"
+              id="start-harvester-button"
+              marginBottom0
+              disabled={this.isInActive(usageDataProvider)}
+              onClick={() => {
+                this.openStartHarvesterModal();
+                onToggle();
+              }}
+            >
+              <Icon icon="play">
+                <FormattedMessage id="ui-erm-usage.harvester.start" />
+              </Icon>
+            </Button>
+          </IfPermission>
+          { this.state.showStartHarvesterModal &&
+            <StartHarvesterModal
+              usageDataProvider={usageDataProvider}
+              isHarvesterExistent={this.props.isHarvesterExistent}
+              onReloadUDP={this.reloadUdp}
+              onClose={this.closeStartHarvesterModal}
+            />
+          }
+        </div>
         <div>
           <Button
             id="clickable-refresh-statistics"
@@ -125,6 +204,57 @@ class UDP extends React.Component {
             </Icon>
           </Button>
         </div>
+        <div>
+          <Button
+            buttonStyle="dropDownItem"
+            id="upload-counter-button"
+            marginBottom0
+            onClick={() => {
+              this.setState({ showCounterUpload: true });
+              onToggle();
+            }}
+          >
+            <Icon icon="plus-sign">
+              <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
+            </Icon>
+          </Button>
+        </div>
+        <div>
+          <Button
+            buttonStyle="dropDownItem"
+            id="upload-non-counter-button"
+            marginBottom0
+            onClick={() => {
+              this.setState({ showNonCounterUpload: true });
+              onToggle();
+            }}
+          >
+            <Icon icon="plus-sign">
+              <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+            </Icon>
+          </Button>
+        </div>
+        <CounterUpload
+          open={this.state.showCounterUpload}
+          onClose={() => this.setState({ showCounterUpload: false })}
+          onFail={this.handleFail}
+          onSuccess={this.handleSuccess}
+          stripes={this.props.stripes}
+          udpId={providerId}
+        />
+        <NonCounterUpload
+          open={this.state.showNonCounterUpload}
+          onClose={() => this.setState({ showNonCounterUpload: false })}
+          onFail={this.handleFail}
+          onSuccess={this.handleSuccess}
+          stripes={this.props.stripes}
+          udpId={providerId}
+        />
+        <Callout
+          ref={(ref) => {
+            callout = ref;
+          }}
+        />
         {canEdit && (
           <div>
             <Button
@@ -172,10 +302,6 @@ class UDP extends React.Component {
     },
   ];
 
-  handleCloseModal = () => {
-    this.setState({ showReportUploadModal: false });
-  };
-
   renderLoadingPane = () => {
     return (
       <Pane
@@ -202,7 +328,6 @@ class UDP extends React.Component {
       isLoading,
       isStatsLoading,
       handlers,
-      isHarvesterExistent,
       stripes,
     } = this.props;
 
@@ -258,13 +383,6 @@ class UDP extends React.Component {
                       <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
                     }
                     id="harvestingAccordion"
-                    displayWhenOpen={
-                      <StartHarvesterButton
-                        usageDataProvider={usageDataProvider}
-                        isHarvesterExistent={isHarvesterExistent}
-                        onReloadUDP={this.reloadUdp}
-                      />
-                    }
                   >
                     <HarvestingConfigurationView
                       usageDataProvider={usageDataProvider}
@@ -285,17 +403,6 @@ class UDP extends React.Component {
                       customReports={data.customReports}
                       isStatsLoading={isStatsLoading}
                       handlers={handlers}
-                    />
-                  </Accordion>
-                  <Accordion
-                    label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
-                    id="uploadAccordion"
-                  >
-                    <ReportUpload
-                      udpId={providerId}
-                      stripes={stripes}
-                      onReloadStatistics={this.reloadStatistics}
-                      showReportUploadModal={this.state.showReportUploadModal}
                     />
                   </Accordion>
                   <NotesSmartAccordion
@@ -334,6 +441,7 @@ UDP.propTypes = {
     onClose: PropTypes.func.isRequired,
     onEdit: PropTypes.func,
   }).isRequired,
+  intl: PropTypes.object,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
@@ -351,4 +459,4 @@ UDP.propTypes = {
   statsReloadCount: PropTypes.number.isRequired,
 };
 
-export default UDP;
+export default injectIntl(UDP);
