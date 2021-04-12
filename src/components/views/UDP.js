@@ -315,28 +315,12 @@ class UDP extends React.Component {
                       harvesterImpls={data.harvesterImpls}
                     />
                   </Accordion>
-                  <Accordion
-                    label={<FormattedMessage id="ui-erm-usage.udp.statistics" />}
-                    id="statisticsAccordion"
-                  >
-                    <Statistics
-                      stripes={stripes}
-                      providerId={providerId}
-                      udpLabel={label}
-                      counterReports={data.counterReports}
-                      customReports={data.customReports}
-                      isStatsLoading={isStatsLoading}
-                      handlers={handlers}
-                    />
-                  </Accordion>
-
-                  <Accordion id="counter-reports-accordion" label="COUNTER">
+                  <Accordion id="counter-reports-accordion" label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}>
                     {this.getCounterStatistics(label, providerId)}
                   </Accordion>
-                  <Accordion id="custom-reports-accordion" label="Non-COUNTER">
+                  <Accordion id="custom-reports-accordion" label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}>
                     {this.getCustomStatistics(label, providerId)}
                   </Accordion>
-
                   <Accordion
                     label={<FormattedMessage id="ui-erm-usage.udp.statsUpload" />}
                     id="uploadAccordion"
