@@ -14,11 +14,20 @@ import { stripesConnect } from '@folio/stripes/core';
 import CounterStatistics from './Counter';
 import CustomStatistics from './Custom';
 import ReportDeleteButton from './Counter/ReportDeleteButton/ReportDeleteButton';
+import ReportInfoButton from './Counter/ReportInfoButton';
 import css from './Statistics.css';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
 function DeleteStatistics(props) {
-  const [reportsToDelete, setReportsToDelete] = useState([]);
+  const [reportsToDelete, setReportsToDelete] = useState(new Set());
+
+  const addToReportsToDelete = (id) => {
+    setReportsToDelete(oldReps => new Set(oldReps.add(id)));
+  };
+
+  const removeFromReportsToDelete = (id) => {
+    setReportsToDelete(prev => new Set([...prev].filter(x => x !== id)));
+  };
 
   const {
     stripes,
@@ -31,11 +40,16 @@ function DeleteStatistics(props) {
   } = props;
 
   const handleClickReport = (id) => {
-    if (reportsToDelete.includes(id)) {
-      setReportsToDelete((oldReps) => [...oldReps, id]);
-      setReportsToDelete(reportsToDelete.filter((item) => item !== id));
+    // if (reportsToDelete.includes(id)) {
+    if (reportsToDelete.has(id)) {
+      // OLD: setReportsToDelete((oldReps) => [...oldReps, id]);
+      // setReportsToDelete(reportsToDelete.filter((item) => item !== id));
+      // setReportsToDelete(prev => new Set([...prev].filter(x => x !== id)));
+      removeFromReportsToDelete(id);
     } else {
-      setReportsToDelete((oldReps) => [...oldReps, id]);
+      // setReportsToDelete((oldReps) => [...oldReps, id]);
+      // setReportsToDelete(oldReps => new Set(oldReps.add(id)));
+      addToReportsToDelete(id);
     }
   };
 
@@ -141,64 +155,177 @@ function DeleteStatistics(props) {
   };
 
   const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
-  const renderReport = (report) => (
-    <ReportDeleteButton
-      report={report}
-      maxFailedAttempts={maxFailed}
-      onClick={handleClickReport}
-      selected={report ? reportsToDelete.includes(report.id) : false}
-    />);
+  // const renderReport = (report) => (
+  //   <ReportDeleteButton
+  //     report={report}
+  //     maxFailedAttempts={maxFailed}
+  //     onClick={handleClickReport}
+  //     selected={report ? reportsToDelete.includes(report.id) : false}
+  //   />);
+
+  const renderReport = (report, isCheckbox) => {
+    if (isCheckbox) {
+      if (_.isNil(report)) {
+        return <></>;
+      }
+      return (
+        <Checkbox
+          checked={report ? reportsToDelete.has(report.id) : false}
+          value={report.id}
+          onChange={handleClickReport}
+        />
+      );
+      // return (
+      //   <ReportDeleteButton
+      //     report={report}
+      //     maxFailedAttempts={maxFailed}
+      //     onClick={handleClickReport}
+      //     selected={report ? reportsToDelete.has(report.id) : false}
+      //   />);
+    } else {
+      return (
+        <ReportInfoButton
+          report={report}
+          stripes={stripes}
+          maxFailedAttempts={maxFailed}
+          udpLabel={udpLabel}
+          handlers={handlers}
+        />
+      );
+    }
+  };
+
+  const renderReportName = (report) => {
+    if (report?.checkbox) {
+      const reportIds = [];
+      Object.values(report).forEach(o => {
+        if (!_.isNil(o) && !_.isNil(o.id)) {
+          reportIds.push(o.id);
+        }
+      });
+      // const isChecked = reportIds.every(el => reportsToDelete.includes(el));
+      const isChecked = reportIds.every(el => reportsToDelete.has(el));
+      const handleClick = () => {
+        if (isChecked) {
+          // remove reports from reportsToDelete
+          reportIds.forEach(id => {
+            // setReportsToDelete(prev => new Set([...prev].filter(x => x !== id)));
+            removeFromReportsToDelete(id);
+          });
+        } else {
+          // add reports to reportsToDelete
+          reportIds.forEach(id => {
+            // setReportsToDelete(oldReps => new Set(oldReps.add(id)));
+            addToReportsToDelete(id);
+          });
+        }
+      };
+      return (
+        <Checkbox checked={isChecked} label={report.report} value={report.report} onChange={() => handleClick()} />
+      );
+    }
+    return report.report;
+  };
 
   const reportFormatter = {
-    'report': (report) => report.report,
+    'report': (report) => renderReportName(report),
     '01': (report) => {
       const r = report['01'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '02': (report) => {
       const r = report['02'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '03': (report) => {
       const r = report['03'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '04': (report) => {
       const r = report['04'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '05': (report) => {
       const r = report['05'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '06': (report) => {
       const r = report['06'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '07': (report) => {
       const r = report['07'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '08': (report) => {
       const r = report['08'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '09': (report) => {
       const r = report['09'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '10': (report) => {
       const r = report['10'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '11': (report) => {
       const r = report['11'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
     '12': (report) => {
       const r = report['12'];
-      return renderReport(r);
+      return renderReport(r, report?.checkbox);
     },
+  };
+
+  const createCheckBoxEntry = (stat, key) => {
+    if (isNil(stat[key])) {
+      return null;
+    }
+    if (key === 'report') {
+      return stat.report;
+    }
+
+    return {
+      id: stat[key].id,
+    };
+  };
+
+  const preprocessReports = (reports) => {
+    if (isNil(reports)) {
+      return null;
+    }
+    const newReports = [];
+    reports.forEach(r => {
+      const newReport = Object.assign({}, r);
+      const stats = r.stats;
+      const newStats = [];
+      // need to duplicate each line to display checkboxes
+      stats.forEach((s) => {
+        newStats.push(Object.assign({}, s));
+        const checkBoxes = {
+          'report': createCheckBoxEntry(s, 'report'),
+          '01': createCheckBoxEntry(s, '01'),
+          '02': createCheckBoxEntry(s, '02'),
+          '03': createCheckBoxEntry(s, '03'),
+          '04': createCheckBoxEntry(s, '04'),
+          '05': createCheckBoxEntry(s, '05'),
+          '06': createCheckBoxEntry(s, '06'),
+          '07': createCheckBoxEntry(s, '07'),
+          '08': createCheckBoxEntry(s, '08'),
+          '09': createCheckBoxEntry(s, '09'),
+          '10': createCheckBoxEntry(s, '10'),
+          '11': createCheckBoxEntry(s, '11'),
+          '12': createCheckBoxEntry(s, '12'),
+          'checkbox': true
+        };
+        newStats.push(checkBoxes);
+      });
+      newReport.stats = newStats;
+      newReports.push(newReport);
+    });
+    return newReports;
   };
 
   const renderStatsAccordions = (reports) => {
@@ -208,6 +335,8 @@ function DeleteStatistics(props) {
     if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
+
+    const processedReports = preprocessReports(reports);
 
     // if (counterReports.length > 0) {
     if (!isNil(reports) && reports.length > 0) {
@@ -220,7 +349,7 @@ function DeleteStatistics(props) {
                 providerId={providerId}
                 udpLabel={udpLabel}
                 counterReports={counterReports}
-                tmpReports={reports}
+                tmpReports={processedReports}
                 handlers={handlers}
                 reportFormatter={reportFormatter}
               />

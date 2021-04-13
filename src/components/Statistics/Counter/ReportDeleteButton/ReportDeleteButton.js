@@ -8,25 +8,25 @@ import { Button, Checkbox, Icon } from '@folio/stripes/components';
 import css from './ReportDeleteButton.css';
 
 class ReportDeleteButton extends React.Component {
-  getButtonStyle = (failedAttempts) => {
-    if (!failedAttempts) {
-      return 'success slim';
-    } else if (failedAttempts < this.props.maxFailedAttempts) {
-      return 'warning slim';
-    } else {
-      return 'danger slim';
-    }
-  };
+  // getButtonStyle = (failedAttempts) => {
+  //   if (!failedAttempts) {
+  //     return 'success slim';
+  //   } else if (failedAttempts < this.props.maxFailedAttempts) {
+  //     return 'warning slim';
+  //   } else {
+  //     return 'danger slim';
+  //   }
+  // };
 
-  getButtonIcon = (failedAttempts) => {
-    if (!failedAttempts) {
-      return <Icon icon="check-circle" size="small" />;
-    } else if (failedAttempts < this.props.maxFailedAttempts) {
-      return <Icon icon="exclamation-circle" />;
-    } else {
-      return <Icon icon="times-circle" />;
-    }
-  };
+  // getButtonIcon = (failedAttempts) => {
+  //   if (!failedAttempts) {
+  //     return <Icon icon="check-circle" size="small" />;
+  //   } else if (failedAttempts < this.props.maxFailedAttempts) {
+  //     return <Icon icon="exclamation-circle" />;
+  //   } else {
+  //     return <Icon icon="times-circle" />;
+  //   }
+  // };
 
   render() {
     const { intl, onClick, report, selected } = this.props;
@@ -34,42 +34,49 @@ class ReportDeleteButton extends React.Component {
       return null;
     }
 
-    const icon = this.getButtonIcon(report.failedAttempts);
-    const style = this.getButtonStyle(report.failedAttempts);
+    // const icon = this.getButtonIcon(report.failedAttempts);
+    // const style = this.getButtonStyle(report.failedAttempts);
 
-    const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
-    const failedInfo = report.failedAttempts
-      ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
-      : intl.formatMessage({
-          id: 'ui-erm-usage.statistics.harvesting.success',
-        });
-    const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
+    // const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
+    // const failedInfo = report.failedAttempts
+    //   ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
+    //   : intl.formatMessage({
+    //       id: 'ui-erm-usage.statistics.harvesting.success',
+    //     });
+    // const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
 
+    // return (
+    //   <React.Fragment>
+    //     <div className={css.paddinged}>
+    //       <Checkbox
+    //         checked={selected}
+    //         value={report.id}
+    //         onChange={() => onClick(report.id)}
+    //       />
+    //     </div>
+    //     <div className={css.paddinged}>
+    //       <Button
+    //         aria-label={label}
+    //         id={buttonId}
+    //         buttonStyle={style}
+    //         //   className={css.active}
+    //         bottomMargin0
+    //         // paddingSide0
+    //         align="start"
+    //         // aria-haspopup="true"
+    //         onClick={() => onClick(report.id)}
+    //       >
+    //         {icon}
+    //       </Button>
+    //     </div>
+    //   </React.Fragment>
+    // );
     return (
-      <React.Fragment>
-        <div className={css.paddinged}>
-          <Checkbox
-            checked={selected}
-            value={report.id}
-            onChange={() => onClick(report.id)}
-          />
-        </div>
-        <div className={css.paddinged}>
-          <Button
-            aria-label={label}
-            id={buttonId}
-            buttonStyle={style}
-            //   className={css.active}
-            bottomMargin0
-            // paddingSide0
-            align="start"
-            // aria-haspopup="true"
-            onClick={() => onClick(report.id)}
-          >
-            {icon}
-          </Button>
-        </div>
-      </React.Fragment>
+      <Checkbox
+        checked={selected}
+        value={report.id}
+        onChange={() => onClick(report.id)}
+      />
     );
   }
 }
