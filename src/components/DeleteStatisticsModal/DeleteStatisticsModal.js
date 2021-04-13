@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalFooter } from '@folio/stripes-components';
 
 import DeleteStatistics from './DeleteStatistics';
 
 function DeleteStatisticsModal({
-  data,
   handlers,
   isStatsLoading,
   onCloseModal,
   open,
   providerId,
   stripes,
-  counterReportsPerYear,
+  counterReports,
+  udpLabel
 }) {
+  const [reportsToDelete, setReportsToDelete] = useState(new Set());
+
+  const addToReportsToDelete = (id) => {
+    setReportsToDelete(oldReps => new Set(oldReps.add(id)));
+  };
+
+  const removeFromReportsToDelete = (id) => {
+    setReportsToDelete(prev => new Set([...prev].filter(x => x !== id)));
+  };
+
   return (
     <Modal
       id="delete-reports-modal"
@@ -26,14 +36,14 @@ function DeleteStatisticsModal({
         <ModalFooter>
           <Button
             buttonStyle="primary"
-            // disabled={invalid}
-            id="save-non-counter-button"
-            onClick={() => console.log('SAVE')}
+            disabled={reportsToDelete.size === 0}
+            id="delete-multi-reports-button"
+            onClick={() => console.log(`WILL SAVE ${reportsToDelete}`)}
           >
             SAVE
           </Button>
           <Button
-            id="close-delete-reports-button"
+            id="close-delete-multi-reports-button"
             // onClick={this.doCloseDeleteReports}
             onClick={onCloseModal}
           >
@@ -45,21 +55,19 @@ function DeleteStatisticsModal({
       <DeleteStatistics
         stripes={stripes}
         providerId={providerId}
-        counterReports={data.counterReports}
-        customReports={data.customReports}
         isStatsLoading={isStatsLoading}
         handlers={handlers}
-        counterReportsPerYear={counterReportsPerYear}
+        counterReports={counterReports}
+        reportsToDelete={reportsToDelete}
+        addToReportsToDelete={addToReportsToDelete}
+        removeFromReportsToDelete={removeFromReportsToDelete}
+        udpLabel={udpLabel}
       />
     </Modal>
   );
 }
 
 DeleteStatisticsModal.propTypes = {
-  data: PropTypes.shape({
-    counterReports: PropTypes.arrayOf(PropTypes.shape()),
-    customReports: PropTypes.arrayOf(PropTypes.shape()),
-  }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
     onEdit: PropTypes.func,
@@ -69,7 +77,8 @@ DeleteStatisticsModal.propTypes = {
   open: PropTypes.bool,
   providerId: PropTypes.string.isRequired,
   stripes: PropTypes.object.isRequired,
-  counterReportsPerYear: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default DeleteStatisticsModal;

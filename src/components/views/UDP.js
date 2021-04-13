@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _, { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 import { TitleManager } from '@folio/stripes/core';
@@ -12,7 +12,6 @@ import {
   ExpandAllButton,
   Icon,
   Layout,
-  Modal,
   Pane,
   PaneHeaderIconButton,
   PaneMenu,
@@ -28,11 +27,10 @@ import HelperApp from '../HelperApp';
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
 import Statistics from '../Statistics';
-import DeleteStatistics from '../Statistics/DeleteStatistics';
 import StartHarvesterButton from '../StartHarvesterButton';
 import ReportUpload from '../ReportUpload';
 
-import DeleteStatisticsModal from '../Statistics/DeleteStatisticsModal';
+import DeleteStatisticsModal from '../DeleteStatisticsModal';
 
 import {
   calcStateExpandAllAccordions,
@@ -224,7 +222,7 @@ class UDP extends React.Component {
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
     const counterReportsPerYear = groupReportsPerYear(data.counterReports);
-    if (_.isEmpty(usageDataProvider)) {
+    if (isEmpty(usageDataProvider)) {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
       return (
@@ -292,11 +290,10 @@ class UDP extends React.Component {
                   stripes={stripes}
                   providerId={providerId}
                   udpLabel={label}
-                  counterReports={data.counterReports}
                   customReports={data.customReports}
                   isStatsLoading={isStatsLoading}
                   handlers={handlers}
-                  counterReportsPerYear={counterReportsPerYear}
+                  counterReports={counterReportsPerYear}
                 />
               </Accordion>
               <Accordion
@@ -337,33 +334,9 @@ class UDP extends React.Component {
             open={this.state.showDeleteReports}
             providerId={providerId}
             stripes={stripes}
-            counterReportsPerYear={counterReportsPerYear}
+            counterReports={counterReportsPerYear}
+            udpLabel={label}
           />
-          {/* <Modal
-            id="delete-reports-modal"
-            closeOnBackgroundClick
-            data-test-delete-reports-modal
-            open={this.state.showDeleteReports}
-            label="DELETE MULTIPLE REPORTS"
-            footer={
-              <Button
-                id="close-delete-reports-button"
-                onClick={this.doCloseDeleteReports}
-              >
-                CLOSE
-              </Button>
-            }
-          >
-            <DeleteStatistics
-              stripes={stripes}
-              providerId={providerId}
-              udpLabel={label}
-              counterReports={data.counterReports}
-              customReports={data.customReports}
-              isStatsLoading={isStatsLoading}
-              handlers={handlers}
-            />
-          </Modal> */}
         </React.Fragment>
       );
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import _ from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import {
   Accordion,
   AccordionSet,
@@ -16,98 +16,23 @@ import ReportInfoButton from './Counter/ReportInfoButton';
 import css from './Statistics.css';
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
-function Statistics(props) {
-  const {
-    stripes,
-    providerId,
-    udpLabel,
-    counterReports,
-    customReports,
-    isStatsLoading,
-    handlers,
-    counterReportsPerYear
-  } = props;
-
-  // const renderReportPerYear = (reports, maxFailed) => {
-  //   const o = Object.create({});
-  //   let maxMonth = 0;
-  //   reports.forEach((r) => {
-  //     o.report = r.reportName;
-  //     const month = r.yearMonth.substring(5, 7);
-  //     if (parseInt(month, 10) >= maxMonth) {
-  //       maxMonth = parseInt(month, 10);
-  //     }
-  //     o[month] = (
-  //       <ReportInfoButton
-  //         report={r}
-  //         stripes={props.stripes}
-  //         maxFailedAttempts={maxFailed}
-  //         udpLabel={props.udpLabel}
-  //         handlers={props.handlers}
-  //       />
-  //     );
-  //   });
-  //   while (maxMonth < 12) {
-  //     const newMonth = maxMonth + 1;
-  //     const monthPadded = newMonth.toString().padStart(2, '0');
-  //     o[monthPadded] = (
-  //       <ReportInfoButton
-  //         stripes={props.stripes}
-  //         maxFailedAttempts={maxFailed}
-  //         udpLabel={props.udpLabel}
-  //       />
-  //     );
-  //     maxMonth = newMonth;
-  //   }
-  //   return o;
-  // };
-
-  const renderReportPerYear = (reports, maxFailed) => {
-    const o = Object.create({});
-    let maxMonth = 0;
-    reports.forEach((r) => {
-      o.report = r.reportName;
-      const month = r.yearMonth.substring(5, 7);
-      if (parseInt(month, 10) >= maxMonth) {
-        maxMonth = parseInt(month, 10);
-      }
-      o[month] = r;
-    });
-    while (maxMonth < 12) {
-      const newMonth = maxMonth + 1;
-      const monthPadded = newMonth.toString().padStart(2, '0');
-      o[monthPadded] = null;
-      maxMonth = newMonth;
-    }
-    return o;
-  };
-
+function Statistics({
+  counterReports,
+  customReports,
+  handlers,
+  isStatsLoading,
+  providerId,
+  resources,
+  stripes,
+  udpLabel,
+}) {
   const extractMaxFailedAttempts = () => {
-    const { resources } = props;
     const settings = resources.failedAttemptsSettings || {};
-    if (_.isEmpty(settings) || settings.records.length === 0) {
+    if (isEmpty(settings) || settings.records.length === 0) {
       return MAX_FAILED_ATTEMPTS;
     } else {
       return settings.records[0].value;
     }
-  };
-
-  const renderAndGroupPerYear = (stats) => {
-    const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
-    return stats.map((statsPerYear) => {
-      const y = statsPerYear.year;
-      const year = y.toString();
-      const renderedStats = statsPerYear.reportsPerType.map((reportsTyped) => {
-        return renderReportPerYear(reportsTyped.counterReports, maxFailed);
-      });
-      return {
-        year,
-        stats: renderedStats,
-      };
-      // return statsPerYear.reportsPerType.map((reportsTyped) => {
-      //   return renderReportPerYear(reportsTyped.counterReports, maxFailed);
-      // });
-    });
   };
 
   const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
@@ -232,7 +157,7 @@ function Statistics(props) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
 
-    if (counterReports.length > 0) {
+    if (reports.length > 0) {
       counterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
@@ -240,13 +165,10 @@ function Statistics(props) {
               <CounterStatistics
                 stripes={stripes}
                 providerId={providerId}
-                udpLabel={udpLabel}
-                counterReports={counterReports}
-                tmpReports={reports}
+                reports={reports}
                 handlers={handlers}
                 showMultiMonthDownload
                 reportFormatter={reportFormatter}
-                counterReportsPerYear={counterReportsPerYear}
               />
             </Accordion>
           </Col>
@@ -272,7 +194,7 @@ function Statistics(props) {
       );
     }
 
-    if (_.isNil(counterStats) && _.isNil(nonCounterStats)) {
+    if (isNil(counterStats) && isNil(nonCounterStats)) {
       return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
     }
 
@@ -284,9 +206,7 @@ function Statistics(props) {
     );
   };
 
-  // const reports = renderAndGroupPerYear(counterReports);
-  const reports = counterReportsPerYear;
-  return renderStatsAccordions(reports);
+  return renderStatsAccordions(counterReports);
 }
 
 Statistics.manifest = Object.freeze({
@@ -299,6 +219,15 @@ Statistics.manifest = Object.freeze({
 });
 
 Statistics.propTypes = {
+  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  customReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  handlers: PropTypes.shape({}),
+  isStatsLoading: PropTypes.bool.isRequired,
+  mutator: PropTypes.shape({
+    failedAttemptsSettings: PropTypes.object,
+  }),
+  providerId: PropTypes.string.isRequired,
+  resources: PropTypes.object.isRequired,
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
@@ -309,17 +238,7 @@ Statistics.propTypes = {
       getState: PropTypes.func,
     }),
   }).isRequired,
-  providerId: PropTypes.string.isRequired,
   udpLabel: PropTypes.string.isRequired,
-  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  customReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  isStatsLoading: PropTypes.bool.isRequired,
-  handlers: PropTypes.shape({}),
-  mutator: PropTypes.shape({
-    failedAttemptsSettings: PropTypes.object,
-  }),
-  resources: PropTypes.object.isRequired,
-  counterReportsPerYear: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default stripesConnect(Statistics);
