@@ -12,7 +12,6 @@
     "information.latestStatistics": "Dernières statistiques",
     "udp.harvestingConfiguration": "Configuration du moissonnage",
     "udp.notes": "Notes",
-    "udp.statistics": "Statistiques",
     "udpHarvestingConfig.harvestingStatus": "Statut du moissonnage",
     "udpHarvestingConfig.reportRelease": "Format/type de rapport",
     "udpHarvestingConfig.requestedReport": "Rapport demandé",
@@ -99,7 +98,6 @@
     "information.aggregators": "Agrégateurs",
     "information.hasFailedReport": "A un ou plusieurs rapports d'échec",
     "information.harvestVia": "Moissonnage via",
-    "udp.statsUpload": "Statistics upload",
     "udp.searchInputLabel": "Search usage data providers",
     "udpHarvestingConfig.lastHarvesting": "Dernier moissonnage",
     "reportOverview.confirmDelete": "Supprimer le rapport non-Counter ?",
@@ -192,10 +190,10 @@
     "settings.harvester.config.periodic.notDefined": "Le moissonnage périodique n'est pas défini et donc non activé. Cliquez sur + pour définir le moissonnage périodique.",
     "settings.harvester.config.periodic.deleteQuestion": "Voulez-vous vraiment supprimer la configuration de moissonnage périodique?",
     "statistics.noStats": "Aucune statistique disponible",
-    "statistics.counter.upload": "Upload counter report",
+    "statistics.counter.upload": "Importer le rapport COUNTER",
     "statistics.counter.download.multiMonth.prepare": "Préparation du téléchargement du rapport {reportType} du {start} au {end} en tant que fichier {format} . Cela peut prendre un certain temps. Merci de patienter.",
     "statistics.counter.download.multiMonth.error": "Erreur lors de la récupération du rapport Counter de {reportType} du {start} au {end} en tant que fichier {format} Peut-être n'y a-t-il pas de rapport disponible?",
-    "statistics.custom.upload": "Upload non-counter report",
+    "statistics.custom.upload": "Importer un rapport autre que COUNTER",
     "statistics.custom.info": "Customreport info",
     "statistics.custom.info.detail": "Informations détaillées",
     "statistics.custom.selectFileFirst": "Sélectionnez d'abord le fichier",
@@ -264,5 +262,8 @@
     "action.refreshStatistics": "Actualiser le tableau des statistiques",
     "udpHarvestingConfig.deleteThisItem": "Supprimer cet élément",
     "udpHarvestingConfig.addReportType": "Ajouter un type de rapport",
-    "settings.harvester.config.periodic.confirmDelete": "Supprimer la configuration de moissonnage périodique?"
+    "settings.harvester.config.periodic.confirmDelete": "Supprimer la configuration de moissonnage périodique?",
+    "udp.counterStatistics": "Statistiques COUNTER",
+    "udp.nonCounterStatistics": "Statistiques autres que COUNTER",
+    "udp.statsUpload": "Téléchargement des statistiques"
 }

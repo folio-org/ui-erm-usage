@@ -12,7 +12,6 @@
     "information.latestStatistics": "Letzte Statistiken",
     "udp.harvestingConfiguration": "Abrufeinstellungen",
     "udp.notes": "Bemerkungen",
-    "udp.statistics": "Statistiken",
     "udpHarvestingConfig.harvestingStatus": "Abrufstatus",
     "udpHarvestingConfig.reportRelease": "Berichtsversion",
     "udpHarvestingConfig.requestedReport": "Angeforderte Berichte",
@@ -99,7 +98,6 @@
     "information.aggregators": "Aggregatoren",
     "information.hasFailedReport": "Besitzt fehlgeschlagene Berichte",
     "information.harvestVia": "Abruf über",
-    "udp.statsUpload": "Statistik-Upload",
     "udp.searchInputLabel": "Datenquellen durchsuchen",
     "udpHarvestingConfig.lastHarvesting": "Letzter Abruf",
     "reportOverview.confirmDelete": "Bericht löschen?",
@@ -264,5 +262,8 @@
     "action.refreshStatistics": "Statistiktabelle aktualisieren",
     "udpHarvestingConfig.deleteThisItem": "Delete this item",
     "udpHarvestingConfig.addReportType": "Add report type",
-    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?",
+    "udp.counterStatistics": "COUNTER statistics",
+    "udp.nonCounterStatistics": "Non-COUNTER statistics",
+    "udp.statsUpload": "Statistics upload"
 }
