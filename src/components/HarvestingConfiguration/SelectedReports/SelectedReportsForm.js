@@ -2,34 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import {
-  Icon,
-  Label,
-  RepeatableField,
-  Selection,
-} from '@folio/stripes/components';
+import { Label } from '@folio/stripes/components';
 import formCss from '../../../util/sharedStyles/form.css';
 import counterReports from './data/counterReports';
 import css from './SelectedReportsForm.css';
 
-const omitUsedOptions = (list, usedValues, id) => {
-  const unUsedValues = _.cloneDeep(list);
-  if (!_.isEmpty(usedValues)) {
-    usedValues.forEach((item, index) => {
-      if (id !== index) {
-        const usedValueIndex = _.findIndex(unUsedValues, (v) => {
-          return v.label === item;
-        });
-        if (usedValueIndex !== -1) {
-          unUsedValues.splice(usedValueIndex, 1);
-        }
-      }
-    });
-  }
-  return unUsedValues;
-};
+import SelectReportType from './SelectReportType';
 
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReports.getOptions(), [
@@ -62,46 +41,17 @@ class SelectedReportsForm extends React.Component {
     }
   }
 
-  renderFields(field, index) {
-    const { selectedReports } = this.props;
-    const list = omitUsedOptions(
-      this.counterReportsCurrentVersion,
-      selectedReports,
-      index
-    );
-    return (
-      <div id={`reportType-selection-${index}`}>
-        <Field
-          component={Selection}
-          dataOptions={list}
-          label={
-            <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
-          }
-          name={field}
-        />
-      </div>
-    );
-  }
-
   render() {
     const reportsSelect = (
-      <FieldArray
-        addLabel={
-          <Icon icon="plus-sign">
-            <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.addReportButton" />
-          </Icon>
-        }
-        component={RepeatableField}
-        name="harvestingConfig.requestedReports"
-        onAdd={(fields) => fields.push('')}
-        renderField={(field, index) => this.renderFields(field, index)}
-        validate={(values) => {
-          if (!values || values.length < 1) {
-            return 'Min 1 entry';
-          }
-          return undefined;
-        }}
-      />
+      <FieldArray name="harvestingConfig.requestedReports">
+        {({ fields }) => (
+          <SelectReportType
+            counterReportsCurrentVersion={this.counterReportsCurrentVersion}
+            fields={fields}
+            selectedReports={this.props.selectedReports}
+          />
+        )}
+      </FieldArray>
     );
 
     return (

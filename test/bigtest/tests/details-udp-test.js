@@ -336,7 +336,7 @@ describe('UDPDetailsPage', () => {
 
             describe('upload counter report', () => {
               beforeEach(async () => {
-                await udpDetailsPage.uploadCounterModal.uploadFileButton.click();
+                await udpDetailsPage.uploadCounterModal.saveCounterButton.click();
               });
 
               it('upload counter report modal should be closed', () => {

@@ -76,7 +76,8 @@ export default @interactor class UDPEditPage {
 
   reportReleaseSelect = new ReportReleaseSelect();
   reportTypeSelect = new ReportTypeSelect();
-  clickAddReportButton = clickable('[data-test-repeatable-field-add-item-button]');
+
+  clickAddReportButton = clickable('[data-test-add-report-button]');
   harvestingStart = scoped('#input-harvestingStart');
   providerName = scoped('#addudp_providername');
   saveButtonIsDisabled = is('[data-test-udp-form-submit-button]', ':disabled');

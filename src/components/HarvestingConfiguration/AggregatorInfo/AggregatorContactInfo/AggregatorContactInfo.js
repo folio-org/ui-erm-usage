@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SubmissionError } from 'redux-form';
 import { InfoPopover } from '@folio/stripes/components';
 
 class AggregatorContactInfo extends React.Component {
@@ -42,18 +41,23 @@ class AggregatorContactInfo extends React.Component {
       headers: this.httpHeaders,
     })
       .then((response) => {
-        if (response.status >= 400) {
-          throw new SubmissionError({
-            identifier: `Error ${response.status} retrieving aggregator name by id`,
-            _error: 'Fetch agg name failed',
-          });
-        } else {
-          return response.json();
+        if (!response.ok) {
+          return Promise.reject(response);
         }
+        return response.json();
+      })
+      .catch(async (resp) => {
+        const err = await resp.text().then((text) => text);
+        return Promise.reject(err);
       })
       .then((json) => {
         this.setState({
           contact: json.accountConfig.displayContact,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          contact: `Error retrieving aggregator info by id: ${error} `,
         });
       });
   };

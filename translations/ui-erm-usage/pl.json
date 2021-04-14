@@ -252,7 +252,7 @@
     "udp.form.placeholder.sushi.requestorMail": "Wprowadź adres e-mail żądającego SUSHI",
     "aggregator.form.placeholder.serviceType": "Wybierz typ usługi",
     "aggregator.form.placeholder.configType": "Wybierz typ konfiguracji",
-    "aggregator.config.accountConfig.contact.number": "Kontakt #{numer}",
+    "aggregator.config.accountConfig.contact.number": "Kontakt #{number}",
     "aggregator.config.addContact": "+ Dodaj kontakt",
     "aggregator.config.contacts": "Kontakty",
     "aggregator.config.popover": "Dla German National Statistic Server należy podać klucze:",
@@ -261,5 +261,8 @@
     "statistics.harvesting.error": "W tym raporcie występują błędy z pobierania danych",
     "statistics.harvesting.success": "Pomyślne pobieranie danych",
     "statistics.report.info.maxAttempts": "{current} (maksymalna liczba prób: {max} )",
-    "action.refreshStatistics": "Refresh statistics table"
+    "action.refreshStatistics": "Refresh statistics table",
+    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.addReportType": "Add report type",
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
 }

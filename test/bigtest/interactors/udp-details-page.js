@@ -196,8 +196,10 @@ const counterevent = { dataTransfer: { files: [counterfile], types: ['Files'] } 
   selectFileButton = scoped('button[id="upload-file-button"]');
   reportEditedManuallyCheckbox = scoped('[id="addcounterreport_reportEditedManually"]');
   editReasonTextfield = scoped('[id="addcounterreport_editReason"]');
-  uploadFileButton = scoped('button[id="upload-report-button"]');
-  uploadFileButtonIsDisabled = is('button[id="upload-report-button"]', ':disabled');
+  uploadFileButton = scoped('button[id="save-counter-button"]');
+  saveCounterButton = scoped('button[id="save-counter-button"]');
+  saveCounterButtonIsDisabled = is('button[id="save-counter-button"]', ':disabled');
+  uploadFileButtonIsDisabled = is('button[id="save-counter-button"]', ':disabled');
   cancelUploadCounterReportButton = scoped('button[id="cancel-upload-counter-report"]');
   couterFileUploaderInteractor = new CounterUploaderInteractor();
 }
@@ -258,14 +260,14 @@ export default @interactor class UDPDetailsPage {
   harvestingAccordionButton = new HarvestingAccordionButton();
   notesAccordionButton = new NotesAccordionButton();
   startHarvesterButton = new StartHarvesterButton();
-  clickCustomReportAccordion = clickable('#custom-reports-accordion');
+  clickCustomReportAccordion = clickable('#nonCounterStatisticsAccordion');
   clickExpandAllCustomReportYears = clickable('#expand-all-custom-report-years');
   customReports = new CustomReports();
   customReportInfo = new CustomReportInfo();
 
   clickStatisticsAccordion = clickable('#accordion-toggle-button-statisticsAccordion');
   counterReportAccordion = scoped('[id="accordion-toggle-button-counter-reports-accordion"]');
-  clickCounterReportAccordion = clickable('#counter-reports-accordion');
+  clickCounterReportAccordion = clickable('#counterStatisticsAccordion');
   clickExpandAllCounterReportYears = clickable('#expand-all-counter-report-years');
   counterReports = new CounterReports();
   counterReportInfo = new CounterReportInfo();

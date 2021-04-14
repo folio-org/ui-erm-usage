@@ -119,9 +119,12 @@ function UDPViewRoute(props) {
           onClose: handleClose,
           onEdit: handleEdit,
         }}
+        history={props.history}
         isHarvesterExistent={isHarvesterExistent()}
         isLoading={isLoading()}
         isStatsLoading={isStatsLoading()}
+        location={props.location}
+        match={props.match}
         mutator={mutator}
         statsReloadCount={statsReloadCount}
         stripes={stripes}
