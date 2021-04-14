@@ -222,6 +222,9 @@ class UDP extends React.Component {
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
     const counterReportsPerYear = groupReportsPerYear(data.counterReports);
+
+    const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
+
     if (isEmpty(usageDataProvider)) {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
@@ -294,6 +297,7 @@ class UDP extends React.Component {
                   isStatsLoading={isStatsLoading}
                   handlers={handlers}
                   counterReports={counterReportsPerYear}
+                  maxFailedAttempts={maxFailedAttempts}
                 />
               </Accordion>
               <Accordion
@@ -330,6 +334,7 @@ class UDP extends React.Component {
             data={data}
             handlers={handlers}
             isStatsLoading={isStatsLoading}
+            maxFailedAttempts={maxFailedAttempts}
             onCloseModal={this.doCloseDeleteReports}
             open={this.state.showDeleteReports}
             providerId={providerId}
@@ -349,6 +354,7 @@ UDP.propTypes = {
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
     customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
+    maxFailedAttempts: PropTypes.number,
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object,
   }).isRequired,

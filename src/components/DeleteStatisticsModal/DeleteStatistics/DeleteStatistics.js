@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { isEmpty, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import {
   Accordion,
   AccordionSet,
@@ -14,7 +14,6 @@ import { stripesConnect } from '@folio/stripes/core';
 import CounterStatistics from '../../Statistics/Counter';
 import ReportInfoButton from '../../Statistics/Counter/ReportInfoButton';
 import css from '../../Statistics/Statistics.css';
-import { MAX_FAILED_ATTEMPTS } from '../../../util/constants';
 
 function DeleteStatistics({
   stripes,
@@ -25,20 +24,9 @@ function DeleteStatistics({
   reportsToDelete,
   addToReportsToDelete,
   removeFromReportsToDelete,
-  resources,
-  counterReports
+  counterReports,
+  maxFailedAttempts
 }) {
-  const extractMaxFailedAttempts = () => {
-    const settings = resources.failedAttemptsSettings || {};
-    if (isEmpty(settings) || settings.records.length === 0) {
-      return MAX_FAILED_ATTEMPTS;
-    } else {
-      return settings.records[0].value;
-    }
-  };
-
-  const maxFailed = parseInt(extractMaxFailedAttempts(), 10);
-
   const handleClickReportCheckbox = (id) => {
     if (reportsToDelete.has(id)) {
       removeFromReportsToDelete(id);
@@ -64,7 +52,7 @@ function DeleteStatistics({
         <ReportInfoButton
           report={report}
           stripes={stripes}
-          maxFailedAttempts={maxFailed}
+          maxFailedAttempts={maxFailedAttempts}
           udpLabel={udpLabel}
           handlers={handlers}
         />
@@ -254,27 +242,15 @@ function DeleteStatistics({
   return renderStatsAccordions(counterReports);
 }
 
-DeleteStatistics.manifest = Object.freeze({
-  failedAttemptsSettings: {
-    type: 'okapi',
-    records: 'configs',
-    path:
-      'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
-  },
-});
-
 DeleteStatistics.propTypes = {
   counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handlers: PropTypes.shape({}),
   isStatsLoading: PropTypes.bool.isRequired,
-  mutator: PropTypes.shape({
-    failedAttemptsSettings: PropTypes.object,
-  }),
+  maxFailedAttempts: PropTypes.number.isRequired,
   providerId: PropTypes.string.isRequired,
   reportsToDelete: PropTypes.shape().isRequired,
   addToReportsToDelete: PropTypes.func.isRequired,
   removeFromReportsToDelete: PropTypes.func.isRequired,
-  resources: PropTypes.object.isRequired,
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({

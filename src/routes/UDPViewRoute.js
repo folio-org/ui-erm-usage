@@ -10,6 +10,7 @@ import UDP from '../components/views/UDP';
 import withReportHandlers from './components/withReportHandlers';
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
+import { MAX_FAILED_ATTEMPTS } from '../util/constants';
 
 function UDPViewRoute(props) {
   const {
@@ -84,6 +85,15 @@ function UDPViewRoute(props) {
     return props.stripes.hasInterface('erm-usage-harvester');
   };
 
+  const getMaxFailedAttempts = () => {
+    const settings = resources.failedAttemptsSettings || {};
+    if (isEmpty(settings) || settings.records.length === 0) {
+      return MAX_FAILED_ATTEMPTS;
+    } else {
+      return settings.records[0].value;
+    }
+  };
+
   const selectedRecord = getRecord(id);
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
@@ -91,6 +101,7 @@ function UDPViewRoute(props) {
   const harvesterImpls = extractHarvesterImpls(resources);
   const statsReloadCount = get(resources, 'statsReloadToggle', 0);
   const udpReloadCount = get(resources, 'udpReloadToggle', 0);
+  const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
   return (
     <>
       <UDP
@@ -99,6 +110,7 @@ function UDPViewRoute(props) {
           counterReports,
           customReports,
           harvesterImpls,
+          maxFailedAttempts,
           settings,
           usageDataProvider: selectedRecord,
         }}
@@ -147,6 +159,7 @@ UDPViewRoute.propTypes = {
       records: PropTypes.arrayOf(PropTypes.object),
     }),
     usageDataProvider: PropTypes.shape(),
+    failedAttemptsSettings: PropTypes.shape(),
   }).isRequired,
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
@@ -190,6 +203,12 @@ UDPViewRoute.manifest = Object.freeze({
     type: 'okapi',
     path:
       'custom-reports?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000',
+  },
+  failedAttemptsSettings: {
+    type: 'okapi',
+    records: 'configs',
+    path:
+      'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
   },
   statsReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.

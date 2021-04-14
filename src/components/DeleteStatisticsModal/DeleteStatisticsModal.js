@@ -7,6 +7,7 @@ import DeleteStatistics from './DeleteStatistics';
 function DeleteStatisticsModal({
   handlers,
   isStatsLoading,
+  maxFailedAttempts,
   onCloseModal,
   open,
   providerId,
@@ -62,6 +63,7 @@ function DeleteStatisticsModal({
         addToReportsToDelete={addToReportsToDelete}
         removeFromReportsToDelete={removeFromReportsToDelete}
         udpLabel={udpLabel}
+        maxFailedAttempts={maxFailedAttempts}
       />
     </Modal>
   );
@@ -73,6 +75,7 @@ DeleteStatisticsModal.propTypes = {
     onEdit: PropTypes.func,
   }).isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
+  maxFailedAttempts: PropTypes.number.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   open: PropTypes.bool,
   providerId: PropTypes.string.isRequired,
