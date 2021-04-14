@@ -11,9 +11,9 @@ import {
   Row,
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
-import CounterStatistics from '../../Statistics/Counter';
-import ReportInfoButton from '../../Statistics/Counter/ReportInfoButton';
-import css from '../../Statistics/Statistics.css';
+import CounterStatistics from '../../Counter';
+import ReportInfoButton from '../../Counter/ReportInfoButton';
+import css from '../../Counter/CounterStatistics.css';
 
 function DeleteStatistics({
   stripes,
