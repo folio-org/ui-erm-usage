@@ -45,6 +45,7 @@ function DeleteStatistics({
           checked={report ? reportsToDelete.has(report.id) : false}
           value={report.id}
           onChange={() => handleClickReportCheckbox(report.id)}
+          data-testid={`checkbox-${report.id}`}
         />
       );
     } else {

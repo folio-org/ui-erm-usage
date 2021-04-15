@@ -510,7 +510,6 @@ class UDP extends React.Component {
               <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
             )}
             <DeleteStatisticsModal
-              data={data}
               handlers={handlers}
               isStatsLoading={isStatsLoading}
               maxFailedAttempts={maxFailedAttempts}

@@ -291,6 +291,7 @@
 
   "statistics.multi.button": "Delete reports",
   "statistics.multi.delete.header": "Delete multiple reports",
+  "statistics.multi.delete.header.question": "Are you sure to delete multiple reports?",
   "statistics.multi.delete.submit": "Delete {count} {count, plural, one {report} other {reports}}",
   "statistics.multi.delete.success": "Deleted {count} {count, plural, one {report} other {reports}}.",
   "statistics.multi.delete.fail": "Delete failed.",

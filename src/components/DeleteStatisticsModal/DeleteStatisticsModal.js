@@ -129,13 +129,14 @@ function DeleteStatisticsModal({
         id="delete-multi-statistics-confirmation"
         open={showConfirmDelete}
         heading={
-          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header" />
+          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header.question" />
         }
         message={
           <FormattedMessage
             id="ui-erm-usage.statistics.multi.delete.confirmation"
             values={{
               count: reportsToDelete.size,
+              strong: (chunks) => <strong>{chunks}</strong>,
             }}
           />
         }
@@ -172,10 +173,7 @@ function DeleteStatisticsModal({
 }
 
 DeleteStatisticsModal.propTypes = {
-  handlers: PropTypes.shape({
-    onClose: PropTypes.func.isRequired,
-    onEdit: PropTypes.func,
-  }).isRequired,
+  handlers: PropTypes.shape({}).isRequired,
   intl: PropTypes.object,
   isStatsLoading: PropTypes.bool.isRequired,
   maxFailedAttempts: PropTypes.number.isRequired,
