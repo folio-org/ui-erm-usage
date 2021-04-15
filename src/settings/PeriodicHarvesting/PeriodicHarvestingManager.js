@@ -300,12 +300,12 @@ class PeriodicHarvestingManager extends React.Component {
             id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
           })}
           confirmLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.settings.harvester.config.periodic.edit.keep',
+            id: 'ui-erm-usage.general.keepEditing',
           })}
           onConfirm={this.hideConfirm}
           cancelLabel={this.props.intl.formatMessage({
             id:
-              'ui-erm-usage.settings.harvester.config.periodic.edit.closeWithoutSave',
+              'ui-erm-usage.general.closeWithoutSave',
           })}
           onCancel={this.cancelEditing}
         />

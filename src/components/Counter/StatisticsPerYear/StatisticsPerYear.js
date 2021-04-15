@@ -56,7 +56,7 @@ function StatisticsPerYear({ intl, reportFormatter, reports }) {
       '12',
     ];
     const columnWidths = {
-      'report': '60px',
+      'report': '65px',
       '01': '50px',
       '02': '50px',
       '03': '50px',
