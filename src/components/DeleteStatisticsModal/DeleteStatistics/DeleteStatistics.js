@@ -215,6 +215,7 @@ function DeleteStatistics({
           <Col xs={12}>
             <Accordion id="counter-reports-accordion" label="COUNTER">
               <CounterStatistics
+                infoText={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.infoText" />}
                 stripes={stripes}
                 providerId={providerId}
                 reports={processedReports}

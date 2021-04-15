@@ -11,7 +11,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-function StatisticsPerYear({ intl, reportFormatter, reports }) {
+function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
   const [yearAccordions, setYearAccordions] = useState({});
   const prevYearAccordions = useRef();
 
@@ -145,7 +145,7 @@ function StatisticsPerYear({ intl, reportFormatter, reports }) {
     <React.Fragment>
       <Row>
         <Col xs={8}>
-          <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
+          { infoText }
         </Col>
       </Row>
       <Row end="xs">
@@ -170,6 +170,7 @@ function StatisticsPerYear({ intl, reportFormatter, reports }) {
 }
 
 StatisticsPerYear.propTypes = {
+  infoText: PropTypes.node.isRequired,
   intl: PropTypes.object,
   reportFormatter: PropTypes.shape({}).isRequired,
   reports: PropTypes.arrayOf(PropTypes.shape()),

@@ -11,6 +11,7 @@ import css from './CounterStatistics.css';
 class CounterStatistics extends React.Component {
   static propTypes = {
     handlers: PropTypes.shape({}),
+    infoText: PropTypes.node,
     providerId: PropTypes.string.isRequired,
     reportFormatter: PropTypes.shape({}).isRequired,
     reports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
@@ -26,6 +27,10 @@ class CounterStatistics extends React.Component {
       }),
     }).isRequired,
   };
+
+  static defaultProps = {
+    infoText: <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
+  }
 
   constructor(props) {
     super(props);
@@ -52,7 +57,7 @@ class CounterStatistics extends React.Component {
   };
 
   render() {
-    const { showMultiMonthDownload } = this.props;
+    const { infoText, showMultiMonthDownload } = this.props;
 
     return (
       <React.Fragment>
@@ -66,6 +71,7 @@ class CounterStatistics extends React.Component {
           <Col xs={12}>
             <AccordionSet id="data-test-counter-reports">
               <StatisticsPerYear
+                infoText={infoText}
                 reports={this.props.reports}
                 reportFormatter={this.props.reportFormatter}
               />

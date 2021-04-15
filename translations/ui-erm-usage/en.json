@@ -295,6 +295,7 @@
   "statistics.multi.delete.success": "Deleted {count} {count, plural, one {report} other {reports}}.",
   "statistics.multi.delete.fail": "Delete failed.",
   "statistics.multi.delete.confirmation": "The selected <strong>{count} {count, plural, one {report} other {reports}}</strong> will be <strong>deleted</strong>.",
+  "statistics.multi.delete.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. Select checkboxes to select reports for deletion.",
 
   "permission.module.enabled": "UI: eUsage module is enabled",
   "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",
