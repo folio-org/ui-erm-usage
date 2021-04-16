@@ -40,7 +40,7 @@ import DeleteStatisticsModal from '../DeleteStatisticsModal';
 
 import urls from '../../util/urls';
 import groupReportsPerYear from '../../util/groupReportsPerYear';
-import createStandardReportFormatter from '../StandardReportFormatter';
+import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 
 let callout;
 
