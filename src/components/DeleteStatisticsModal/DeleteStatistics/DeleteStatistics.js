@@ -35,23 +35,24 @@ function DeleteStatistics({
     }
   };
 
-  const renderReport = (report, isCheckbox) => {
-    if (isCheckbox) {
-      if (isNil(report)) {
+  const renderReportNew = (report, month) => {
+    const r = report[month];
+    if (report?.checkbox) {
+      if (isNil(r)) {
         return <></>;
       }
       return (
         <Checkbox
-          checked={report ? reportsToDelete.has(report.id) : false}
-          value={report.id}
-          onChange={() => handleClickReportCheckbox(report.id)}
-          data-testid={`checkbox-${report.id}`}
+          checked={r ? reportsToDelete.has(r.id) : false}
+          value={r.id}
+          onChange={() => handleClickReportCheckbox(r.id)}
+          data-testid={`checkbox-${r.id}`}
         />
       );
     } else {
       return (
         <ReportInfoButton
-          report={report}
+          report={r}
           stripes={stripes}
           maxFailedAttempts={maxFailedAttempts}
           udpLabel={udpLabel}
@@ -98,52 +99,40 @@ function DeleteStatistics({
   const reportFormatter = {
     'report': (report) => renderReportName(report),
     '01': (report) => {
-      const r = report['01'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '01');
     },
     '02': (report) => {
-      const r = report['02'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '02');
     },
     '03': (report) => {
-      const r = report['03'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '03');
     },
     '04': (report) => {
-      const r = report['04'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '04');
     },
     '05': (report) => {
-      const r = report['05'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '05');
     },
     '06': (report) => {
-      const r = report['06'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '06');
     },
     '07': (report) => {
-      const r = report['07'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '07');
     },
     '08': (report) => {
-      const r = report['08'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '08');
     },
     '09': (report) => {
-      const r = report['09'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '09');
     },
     '10': (report) => {
-      const r = report['10'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '10');
     },
     '11': (report) => {
-      const r = report['11'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '11');
     },
     '12': (report) => {
-      const r = report['12'];
-      return renderReport(r, report?.checkbox);
+      return renderReportNew(report, '12');
     },
   };
 
