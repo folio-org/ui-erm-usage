@@ -46,27 +46,35 @@ function DeleteStatisticsModal({
         'Content-type': 'application/json',
       },
       body: idArray,
-    }).then((res) => {
-      setShowConfirmDelete(false);
-      if (res.ok) {
-        setReportsToDelete(new Set());
-        const msg = intl.formatMessage(
-          {
-            id: 'ui-erm-usage.statistics.multi.delete.success',
-          },
-          {
-            count: reportsToDelete.size,
-          }
-        );
-        onSuccess(msg);
-      } else {
+    })
+      .then((res) => {
+        setShowConfirmDelete(false);
+        if (res.ok) {
+          setReportsToDelete(new Set());
+          const msg = intl.formatMessage(
+            {
+              id: 'ui-erm-usage.statistics.multi.delete.success',
+            },
+            {
+              count: reportsToDelete.size,
+            }
+          );
+          onSuccess(msg);
+        } else {
+          onFail(
+            intl.formatMessage({
+              id: 'ui-erm-usage.statistics.multi.delete.fail',
+            })
+          );
+        }
+      })
+      .catch(() => {
         onFail(
           intl.formatMessage({
             id: 'ui-erm-usage.statistics.multi.delete.fail',
           })
         );
-      }
-    });
+      });
   };
 
   const handleCloseModal = () => {

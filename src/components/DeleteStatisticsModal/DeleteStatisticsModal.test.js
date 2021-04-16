@@ -1,8 +1,9 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
+import { server, rest } from '../../../test/jest/testServer';
 import renderWithIntl from '../../../test/jest/helpers';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
 
@@ -67,7 +68,6 @@ const renderDeleteStatistics = (stripes) => {
   return act(() => {
     renderWithIntl(
       <StripesContext.Provider value={stripes}>
-        {/* <MemoryRouter> */}
         <DeleteStatisticsModal
           handlers={handlers}
           isStatsLoading={false}
@@ -81,7 +81,6 @@ const renderDeleteStatistics = (stripes) => {
           counterReports={counterReports}
           udpLabel={udpLabel}
         />
-        {/* </MemoryRouter> */}
       </StripesContext.Provider>
     );
   });
@@ -92,7 +91,7 @@ describe('DeleteStatisticsModal', () => {
   beforeEach(() => {
     stripes = useStripes();
   });
-  describe('render non-counter upload', () => {
+  describe('render checkboxes', () => {
     beforeEach(() => {
       renderDeleteStatistics(stripes);
       const expandAllButton = screen.getByRole('button', {
@@ -130,8 +129,9 @@ describe('DeleteStatisticsModal', () => {
       const submit = screen.getByRole('button', { name: 'Delete 2 reports' });
       expect(submit).not.toHaveAttribute('disabled');
 
-      // userEvent.click(submit);
-      // expect(onSuccess).toHaveBeenCalled();
+      userEvent.click(checkBoxRepTwo);
+      const submit1 = screen.getByRole('button', { name: 'Delete 1 report' });
+      expect(submit1).not.toHaveAttribute('disabled');
     });
   });
 
@@ -149,12 +149,86 @@ describe('DeleteStatisticsModal', () => {
       userEvent.click(submit);
     });
 
-    test('click cancel', () => {
-      expect(
-        screen.getByRole('heading', {
-          name: 'Are you sure to delete multiple reports?',
-        })
-      ).toBeVisible();
+    test('click cancel', async () => {
+      const heading = screen.queryByRole('heading', {
+        name: 'Are you sure to delete multiple reports?',
+      });
+      expect(heading).toBeVisible();
+
+      const cancel = screen.getByRole('button', {
+        name: 'Cancel',
+      });
+      userEvent.click(cancel);
+      await waitFor(() => expect(heading).not.toBeVisible());
+    });
+
+    test('click delete', async () => {
+      const heading = screen.queryByRole('heading', {
+        name: 'Are you sure to delete multiple reports?',
+      });
+      expect(heading).toBeVisible();
+
+      const submit = screen.getByRole('button', {
+        name: 'Delete',
+      });
+      userEvent.click(submit);
+      await waitFor(() => expect(heading).not.toBeVisible());
+      expect(onSuccess).toHaveBeenCalled();
+    });
+
+    test('click delete - server error', async () => {
+      server.use(
+        rest.post(
+          'https://folio-testing-okapi.dev.folio.org/counter-reports/reports/delete',
+          (req, res, ctx) => {
+            return res(ctx.status(500));
+          }
+        )
+      );
+      const heading = screen.queryByRole('heading', {
+        name: 'Are you sure to delete multiple reports?',
+      });
+      expect(heading).toBeVisible();
+
+      const submit = screen.getByRole('button', {
+        name: 'Delete',
+      });
+      userEvent.click(submit);
+      await waitFor(() => expect(onFail).toHaveBeenCalled());
+    });
+  });
+
+  describe('check close dialog', () => {
+    beforeEach(() => {
+      renderDeleteStatistics(stripes);
+      const expandAllButton = screen.getByRole('button', {
+        name: 'Expand all years',
+      });
+      userEvent.click(expandAllButton);
+      const idReport1 = counterReports[0].stats[0]['01'].id;
+      const checkBoxRepOne = screen.getByTestId(`checkbox-${idReport1}`);
+      userEvent.click(checkBoxRepOne);
+      const cancel = screen.getByRole('button', {
+        name: 'Cancel',
+      });
+      userEvent.click(cancel);
+    });
+
+    test('click keep editing', async () => {
+      const heading = screen.queryByRole('heading', {
+        name: 'Are you sure?',
+      });
+      expect(heading).toBeVisible();
+
+      const keepEditing = screen.getByRole('button', {
+        name: 'Keep editing',
+      });
+      userEvent.click(keepEditing);
+      await waitFor(() => expect(heading).not.toBeVisible());
+      const deleteHeader = screen.getByRole('heading', {
+        name: 'Delete multiple reports',
+      });
+      expect(deleteHeader).toBeInTheDocument();
     });
   });
 });
