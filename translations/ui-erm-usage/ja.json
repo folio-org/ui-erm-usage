@@ -12,7 +12,6 @@
     "information.latestStatistics": "最新の統計",
     "udp.harvestingConfiguration": "ハーベスト構成",
     "udp.notes": "ノート",
-    "udp.statistics": "統計",
     "udpHarvestingConfig.harvestingStatus": "ハーベスト状況",
     "udpHarvestingConfig.reportRelease": "レポートリリース",
     "udpHarvestingConfig.requestedReport": "要求されたレポート",
@@ -99,7 +98,6 @@
     "information.aggregators": "アグリゲーター",
     "information.hasFailedReport": "失敗したレポートの有無",
     "information.harvestVia": "ハーベストの経由",
-    "udp.statsUpload": "統計のアップロード",
     "udp.searchInputLabel": "Search usage data providers",
     "udpHarvestingConfig.lastHarvesting": "最新ハーベスト",
     "reportOverview.confirmDelete": "Delete non-counter report?",
@@ -264,5 +262,8 @@
     "action.refreshStatistics": "Refresh statistics table",
     "udpHarvestingConfig.deleteThisItem": "Delete this item",
     "udpHarvestingConfig.addReportType": "Add report type",
-    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?",
+    "udp.counterStatistics": "COUNTER statistics",
+    "udp.nonCounterStatistics": "Non-COUNTER statistics",
+    "udp.statsUpload": "Statistics upload"
 }

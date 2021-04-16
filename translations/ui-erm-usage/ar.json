@@ -12,7 +12,6 @@
     "information.latestStatistics": "أحدث الإحصائيات",
     "udp.harvestingConfiguration": "تهيئة الحصاد",
     "udp.notes": "ملاحظات",
-    "udp.statistics": "إحصائيات",
     "udpHarvestingConfig.harvestingStatus": "حالة الحصاد",
     "udpHarvestingConfig.reportRelease": "إطلاق التقرير",
     "udpHarvestingConfig.requestedReport": "التقرير المطلوب",
@@ -99,7 +98,6 @@
     "information.aggregators": "المجمعات",
     "information.hasFailedReport": "له تقارير فاشلة",
     "information.harvestVia": "الحصاد عن طريق",
-    "udp.statsUpload": "تحميل الإحصائيات",
     "udp.searchInputLabel": "بحث مزودي بيانات الاستخدام",
     "udpHarvestingConfig.lastHarvesting": "آخر حصاد",
     "reportOverview.confirmDelete": "حذف تقرير non-counter؟",
@@ -264,5 +262,8 @@
     "action.refreshStatistics": "تحديث جدول الإحصائيات",
     "udpHarvestingConfig.deleteThisItem": "حذف هذه المادة",
     "udpHarvestingConfig.addReportType": "إضافة نوع التقرير",
-    "settings.harvester.config.periodic.confirmDelete": "حذف تهيئة الحصاد الدوري؟"
+    "settings.harvester.config.periodic.confirmDelete": "حذف تهيئة الحصاد الدوري؟",
+    "udp.counterStatistics": "إحصائيات COUNTER",
+    "udp.nonCounterStatistics": "إحصائيات Non-COUNTER",
+    "udp.statsUpload": "تحميل الإحصائيات"
 }

@@ -12,7 +12,6 @@
     "information.latestStatistics": "최신 통계",
     "udp.harvestingConfiguration": "수집 구성",
     "udp.notes": "노트",
-    "udp.statistics": "통계",
     "udpHarvestingConfig.harvestingStatus": "수집 상태",
     "udpHarvestingConfig.reportRelease": "보고서 릴리스",
     "udpHarvestingConfig.requestedReport": "요청된 보고서",
@@ -99,7 +98,6 @@
     "information.aggregators": "제공사(Aggregators)",
     "information.hasFailedReport": "실패한 보고서(들)",
     "information.harvestVia": "수집",
-    "udp.statsUpload": "통계 업로드",
     "udp.searchInputLabel": "이용통계 데이터 제공사 검색",
     "udpHarvestingConfig.lastHarvesting": "마지막 수집",
     "reportOverview.confirmDelete": "삭제를 확인하십시오!",
@@ -264,5 +262,8 @@
     "action.refreshStatistics": "Refresh statistics table",
     "udpHarvestingConfig.deleteThisItem": "Delete this item",
     "udpHarvestingConfig.addReportType": "Add report type",
-    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?"
+    "settings.harvester.config.periodic.confirmDelete": "Delete periodic harvesting config?",
+    "udp.counterStatistics": "COUNTER statistics",
+    "udp.nonCounterStatistics": "Non-COUNTER statistics",
+    "udp.statsUpload": "Statistics upload"
 }
