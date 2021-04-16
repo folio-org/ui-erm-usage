@@ -10,9 +10,12 @@ import DeleteStatisticsModal from './DeleteStatisticsModal';
 const onCloseModal = jest.fn();
 const onFail = jest.fn();
 const onSuccess = jest.fn();
+const onDownloadReportSingleMonthRaw = jest.fn();
 const udpId = 'e67924ee-aa00-454e-8fd0-c3f81339d20e';
 const udpLabel = 'American Chemical Society';
-const handlers = {};
+const handlers = {
+  onDownloadReportSingleMonthRaw,
+};
 
 const counterReports = [
   {
@@ -53,8 +56,30 @@ const counterReports = [
           reportEditedManually: false,
           editReason: '',
         },
-        '04': null,
-        '05': null,
+        '04': {
+          id: 'b4e281c9-24ca-4762-987e-1e45364c064b',
+          downloadTime: '2021-04-15T11:46:35.917+00:00',
+          release: '5',
+          reportName: 'DR',
+          yearMonth: '2019-04',
+          providerId: 'e67924ee-aa00-454e-8fd0-c3f81339d20e',
+          reportEditedManually: false,
+          editReason: '',
+          failedAttempts : 2,
+          failedReason : 'Report not valid: Exception{Number=1020, Severity=FATAL, Message=Client has made too many requests}',
+        },
+        '05': {
+          id: 'b4e281c9-24ca-4762-987e-1e45364c064c',
+          downloadTime: '2021-04-15T11:46:35.917+00:00',
+          release: '5',
+          reportName: 'DR',
+          yearMonth: '2019-05',
+          providerId: 'e67924ee-aa00-454e-8fd0-c3f81339d20e',
+          reportEditedManually: false,
+          editReason: '',
+          failedAttempts : 10,
+          failedReason : 'Report not valid: Exception{Number=1020, Severity=FATAL, Message=Client has made too many requests}',
+        },
         '06': null,
         '07': null,
         '08': null,
@@ -115,7 +140,7 @@ describe('DeleteStatisticsModal', () => {
       });
       userEvent.click(selectDR);
       expect(
-        screen.getByRole('button', { name: 'Delete 3 reports' })
+        screen.getByRole('button', { name: 'Delete 5 reports' })
       ).not.toHaveAttribute('disabled');
     });
 
@@ -229,6 +254,34 @@ describe('DeleteStatisticsModal', () => {
         name: 'Delete multiple reports',
       });
       expect(deleteHeader).toBeInTheDocument();
+    });
+  });
+
+  describe('check report info', () => {
+    beforeEach(() => {
+      renderDeleteStatistics(stripes);
+      const expandAllButton = screen.getByRole('button', {
+        name: 'Expand all years',
+      });
+      userEvent.click(expandAllButton);
+
+      const reportJanButton = screen.getByTestId(
+        'clickable-download-stats-by-id-DR-2019-01'
+      );
+      userEvent.click(reportJanButton);
+    });
+
+    test('download report', () => {
+      const heading = screen.queryByRole('heading', {
+        name: 'Report info',
+      });
+      expect(heading).toBeVisible();
+
+      const download = screen.getByRole('button', {
+        name: 'Icon Download report as JSON'
+      });
+      userEvent.click(download);
+      expect(onDownloadReportSingleMonthRaw).toHaveBeenCalled();
     });
   });
 });

@@ -151,9 +151,9 @@ class ReportInfoButton extends React.Component {
       <React.Fragment>
         <Button
           bottomMargin0
-          // paddingSide0
           aria-label={label}
           id={buttonId}
+          data-testid={buttonId}
           buttonStyle={style}
           aria-haspopup="true"
           onClick={() => this.setState((state) => ({ showDropDown: !state.showDropDown }))}
