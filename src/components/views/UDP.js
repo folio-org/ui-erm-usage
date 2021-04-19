@@ -36,8 +36,11 @@ import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 import CounterStatistics from '../Counter';
 import CustomStatistics from '../Custom';
+import DeleteStatisticsModal from '../DeleteStatisticsModal';
 
 import urls from '../../util/urls';
+import groupReportsPerYear from '../../util/groupReportsPerYear';
+import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 
 let callout;
 
@@ -48,6 +51,7 @@ class UDP extends React.Component {
 
     this.state = {
       helperApp: null,
+      showDeleteReports: false,
       showStartHarvesterModal: false,
       showCounterUpload: false,
       showNonCounterUpload: false,
@@ -56,16 +60,17 @@ class UDP extends React.Component {
     callout = React.createRef();
   }
 
-  handleSuccess = () => {
-    const info = this.props.intl.formatMessage({
+  handleSuccess = (msg) => {
+    const success = this.props.intl.formatMessage({
       id: 'ui-erm-usage.report.upload.success',
     });
     callout.sendCallout({
-      message: info,
+      message: `${success} ${msg}`,
     });
     this.setState({
       showCounterUpload: false,
       showNonCounterUpload: false,
+      showDeleteReports: false,
     });
     this.reloadStatistics();
   };
@@ -82,6 +87,7 @@ class UDP extends React.Component {
     this.setState({
       showCounterUpload: false,
       showNonCounterUpload: false,
+      showDeleteReports: false,
     });
   };
 
@@ -94,7 +100,7 @@ class UDP extends React.Component {
       counterStatisticsAccordion: false,
       nonCounterStatisticsAccordion: false,
     };
-  }
+  };
 
   showHelperApp = (helperName) => {
     this.setState({
@@ -116,6 +122,18 @@ class UDP extends React.Component {
   reloadStatistics = () => {
     const oldCount = this.props.statsReloadCount;
     this.props.mutator.statsReloadToggle.replace(oldCount + 1);
+  };
+
+  doShowDeleteReports = () => {
+    this.setState({
+      showDeleteReports: true,
+    });
+  };
+
+  doCloseDeleteReports = () => {
+    this.setState({
+      showDeleteReports: false,
+    });
   };
 
   renderDetailMenu = (udp) => {
@@ -151,11 +169,11 @@ class UDP extends React.Component {
 
   openStartHarvesterModal = () => {
     this.setState({ showStartHarvesterModal: true });
-  }
+  };
 
   closeStartHarvesterModal = () => {
     this.setState({ showStartHarvesterModal: false });
-  }
+  };
 
   getActionMenu = () => ({ onToggle }) => {
     const { canEdit, handlers, data } = this.props;
@@ -181,14 +199,14 @@ class UDP extends React.Component {
               </Icon>
             </Button>
           </IfPermission>
-          { this.state.showStartHarvesterModal &&
+          {this.state.showStartHarvesterModal && (
             <StartHarvesterModal
               usageDataProvider={usageDataProvider}
               isHarvesterExistent={this.props.isHarvesterExistent}
               onReloadUDP={this.reloadUdp}
               onClose={this.closeStartHarvesterModal}
             />
-          }
+          )}
         </div>
         <div>
           <Button
@@ -233,6 +251,22 @@ class UDP extends React.Component {
           >
             <Icon icon="plus-sign">
               <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+            </Icon>
+          </Button>
+        </div>
+        <div>
+          <Button
+            id="clickable-delete-reports"
+            buttonStyle="dropDownItem"
+            onClick={() => {
+              onToggle();
+              this.doShowDeleteReports();
+            }}
+            aria-label="Delete reports"
+            marginBottom0
+          >
+            <Icon icon="trash">
+              <FormattedMessage id="ui-erm-usage.statistics.multi.button" />
             </Icon>
           </Button>
         </div>
@@ -283,7 +317,7 @@ class UDP extends React.Component {
     if (this.props.canEdit) {
       this.props.handlers.onEdit();
     }
-  }
+  };
 
   shortcuts = [
     {
@@ -292,15 +326,15 @@ class UDP extends React.Component {
     },
     {
       name: 'expandAllSections',
-      handler: (e) => expandAllSections(e, this.accordionStatusRef)
+      handler: (e) => expandAllSections(e, this.accordionStatusRef),
     },
     {
       name: 'collapseAllSections',
-      handler: (e) => collapseAllSections(e, this.accordionStatusRef)
+      handler: (e) => collapseAllSections(e, this.accordionStatusRef),
     },
     {
       name: 'close',
-      handler: () => this.handleCloseModal()
+      handler: () => this.handleCloseModal(),
     },
   ];
 
@@ -321,22 +355,32 @@ class UDP extends React.Component {
   };
 
   checkScope = () => {
-    return document.getElementById('ModuleContainer').contains(document.activeElement);
+    return document
+      .getElementById('ModuleContainer')
+      .contains(document.activeElement);
   };
 
-  getCounterStatistics(label, providerId) {
+  getCounterStatistics(reports, label, providerId, maxFailedAttempts) {
     const { data, handlers, stripes } = this.props;
     if (this.props.isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
     if (data.counterReports.length > 0) {
+      const reportFormatter = createStandardReportFormatter(
+        handlers,
+        maxFailedAttempts,
+        stripes,
+        label
+      );
       return (
         <CounterStatistics
           stripes={stripes}
           providerId={providerId}
           udpLabel={label}
-          counterReports={data.counterReports}
+          reports={reports}
           handlers={handlers}
+          reportFormatter={reportFormatter}
+          showMultiMonthDownload
         />
       );
     } else {
@@ -365,12 +409,7 @@ class UDP extends React.Component {
   }
 
   render() {
-    const {
-      data,
-      isLoading,
-      handlers,
-      stripes,
-    } = this.props;
+    const { data, isLoading, isStatsLoading, handlers, stripes } = this.props;
 
     const { helperApp } = this.state;
 
@@ -381,6 +420,9 @@ class UDP extends React.Component {
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
+    const counterReportsPerYear = groupReportsPerYear(data.counterReports);
+    const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
+
     if (isEmpty(usageDataProvider)) {
       return <div id="pane-udpdetails">Loading...</div>;
     } else {
@@ -404,9 +446,7 @@ class UDP extends React.Component {
               <AccordionStatus ref={this.accordionStatusRef}>
                 <Row end="xs">
                   <Col xs>
-                    <ExpandAllButton
-                      id="clickable-expand-all-view"
-                    />
+                    <ExpandAllButton id="clickable-expand-all-view" />
                   </Col>
                 </Row>
                 <AccordionSet initialStatus={this.getInitialAccordionsState()}>
@@ -434,13 +474,22 @@ class UDP extends React.Component {
                   </Accordion>
                   <Accordion
                     id="counterStatisticsAccordion"
-                    label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udp.counterStatistics" />
+                    }
                   >
-                    {this.getCounterStatistics(label, providerId)}
+                    {this.getCounterStatistics(
+                      counterReportsPerYear,
+                      label,
+                      providerId,
+                      maxFailedAttempts
+                    )}
                   </Accordion>
                   <Accordion
                     id="nonCounterStatisticsAccordion"
-                    label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
+                    label={
+                      <FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />
+                    }
                   >
                     {this.getCustomStatistics(label, providerId)}
                   </Accordion>
@@ -460,6 +509,19 @@ class UDP extends React.Component {
             {helperApp && (
               <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
             )}
+            <DeleteStatisticsModal
+              handlers={handlers}
+              isStatsLoading={isStatsLoading}
+              maxFailedAttempts={maxFailedAttempts}
+              onCloseModal={this.doCloseDeleteReports}
+              open={this.state.showDeleteReports}
+              onFail={this.handleFail}
+              onSuccess={this.handleSuccess}
+              providerId={providerId}
+              stripes={stripes}
+              counterReports={counterReportsPerYear}
+              udpLabel={label}
+            />
           </React.Fragment>
         </HasCommand>
       );
@@ -473,6 +535,7 @@ UDP.propTypes = {
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
     customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
+    maxFailedAttempts: PropTypes.number,
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object,
   }).isRequired,

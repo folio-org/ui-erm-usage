@@ -53,9 +53,7 @@ const handlers = [
   rest.delete(
     'https://folio-testing-okapi.dev.folio.org/erm-usage/files/:fileId',
     (req, res, ctx) => {
-      return res(
-        ctx.status(204)
-      );
+      return res(ctx.status(204));
     }
   ),
 
@@ -63,6 +61,13 @@ const handlers = [
     'https://folio-testing-okapi.dev.folio.org/custom-reports',
     (req, res, ctx) => {
       return res(ctx.text('{}'));
+    }
+  ),
+
+  rest.post(
+    'https://folio-testing-okapi.dev.folio.org/counter-reports/reports/delete',
+    (req, res, ctx) => {
+      return res(ctx.status(204));
     }
   ),
 ];

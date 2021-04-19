@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isEqual, sortBy } from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -10,52 +10,54 @@ import css from './CounterStatistics.css';
 
 class CounterStatistics extends React.Component {
   static propTypes = {
+    handlers: PropTypes.shape({}),
+    infoText: PropTypes.node,
+    providerId: PropTypes.string.isRequired,
+    reportFormatter: PropTypes.shape({}).isRequired,
+    reports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    showMultiMonthDownload: PropTypes.bool,
     stripes: PropTypes.shape({
       connect: PropTypes.func,
       okapi: PropTypes.shape({
         url: PropTypes.string.isRequired,
-        tenant: PropTypes.string.isRequired
+        tenant: PropTypes.string.isRequired,
       }).isRequired,
       store: PropTypes.shape({
-        getState: PropTypes.func
-      })
+        getState: PropTypes.func,
+      }),
     }).isRequired,
-    providerId: PropTypes.string.isRequired,
-    udpLabel: PropTypes.string.isRequired,
-    counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    handlers: PropTypes.shape({}).isRequired,
   };
+
+  static defaultProps = {
+    infoText: <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
+  }
 
   constructor(props) {
     super(props);
-    this.downloadableReports = this.calcDownloadableReportTypes(props.counterReports);
+    this.downloadableReports = this.calcDownloadableReportTypes();
   }
 
   componentDidUpdate(prevProps) {
-    const { counterReports } = this.props;
-    if (!_.isEqual(counterReports, prevProps.counterReports)) {
-      this.downloadableReports = this.calcDownloadableReportTypes(counterReports);
+    const { reports } = this.props;
+    if (!isEqual(reports, prevProps.reports)) {
+      this.downloadableReports = this.calcDownloadableReportTypes();
     }
   }
 
-  calcDownloadableReportTypes = counterReports => {
-    const reportNames = counterReports
-      .flatMap(c => c.reportsPerType)
-      .flatMap(r => r.counterReports)
-      .filter(
-        // eslint-disable-next-line eqeqeq
-        cr => (!cr.failedAttempts || cr.failedAttempts === 0)
-      )
-      .map(cr => cr.reportName);
-    const available = new Set(reportNames);
+  calcDownloadableReportTypes = () => {
+    const reportNamesNew = this.props.reports
+      .flatMap((c) => c.stats)
+      .filter((cr) => !cr.failedAttempts || cr.failedAttempts === 0)
+      .map((cr) => cr.report);
+    const available = new Set(reportNamesNew);
     const intersection = new Set(
-      reportDownloadTypes.filter(y => available.has(y.value))
+      reportDownloadTypes.filter((y) => available.has(y.value))
     );
-    return _.sortBy([...intersection], ['label']);
+    return sortBy([...intersection], ['label']);
   };
 
   render() {
-    const { counterReports } = this.props;
+    const { infoText, showMultiMonthDownload } = this.props;
 
     return (
       <React.Fragment>
@@ -69,30 +71,31 @@ class CounterStatistics extends React.Component {
           <Col xs={12}>
             <AccordionSet id="data-test-counter-reports">
               <StatisticsPerYear
-                stats={counterReports}
-                stripes={this.props.stripes}
-                udpLabel={this.props.udpLabel}
-                handlers={this.props.handlers}
+                infoText={infoText}
+                reports={this.props.reports}
+                reportFormatter={this.props.reportFormatter}
               />
             </AccordionSet>
           </Col>
         </Row>
-        <Row className={css.subAccordionSections}>
-          <Col xs={12}>
-            <hr />
-            <div className={css.sub2Headings}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
-            </div>
-          </Col>
-          <Col xs={12}>
-            <DownloadRange
-              stripes={this.props.stripes}
-              udpId={this.props.providerId}
-              downloadableReports={this.downloadableReports}
-              handlers={this.props.handlers}
-            />
-          </Col>
-        </Row>
+        {showMultiMonthDownload && (
+          <Row className={css.subAccordionSections}>
+            <Col xs={12}>
+              <hr />
+              <div className={css.sub2Headings}>
+                <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths" />
+              </div>
+            </Col>
+            <Col xs={12}>
+              <DownloadRange
+                stripes={this.props.stripes}
+                udpId={this.props.providerId}
+                downloadableReports={this.downloadableReports}
+                handlers={this.props.handlers}
+              />
+            </Col>
+          </Row>
+        )}
       </React.Fragment>
     );
   }

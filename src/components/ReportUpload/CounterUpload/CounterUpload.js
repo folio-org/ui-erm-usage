@@ -67,7 +67,11 @@ function CounterUpload({
         } else {
           setShowInfoModal(false);
           setSelectedFile({});
-          onSuccess();
+          onSuccess(
+            intl.formatMessage({
+              id: 'ui-erm-usage.report.upload.completed',
+            })
+          );
           return Promise.resolve(true);
         }
       })
