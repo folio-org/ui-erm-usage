@@ -70,12 +70,16 @@ class SelectedReportsForm extends React.Component {
       index
     );
     return (
-      <Field
-        component={Selection}
-        dataOptions={list}
-        label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
-        name={field}
-      />
+      <div id={`reportType-selection-${index}`}>
+        <Field
+          component={Selection}
+          dataOptions={list}
+          label={
+            <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
+          }
+          name={field}
+        />
+      </div>
     );
   }
 
