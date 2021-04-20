@@ -1,5 +1,9 @@
 # Change history for ui-erm-usage
 
+## [5.0.1](https://github.com/folio-org/ui-erm-usage/tree/v5.0.1) (2021-04-20)
+* Bugfix: Do not validate vendor's SUSHI URL when creating UDP that fetches statistics via aggregator (UIEUS-254)
+* Bugfix: Validate aggregator as mandatory when when harvesting changing from SUSHI to aggregator (UIEUS-256)
+
 ## [5.0.0](https://github.com/folio-org/ui-erm-usage/tree/v5.0.0) (2021-03-18)
 * Bugfix: Translation of editReason depends on trailing space (UIEUS-252)
 * Reload UDP detail view on changes (UIEUS-246)
