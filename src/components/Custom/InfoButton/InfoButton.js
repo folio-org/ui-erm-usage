@@ -87,6 +87,7 @@ function InfoButton(props) {
         aria-label={ariaLabel}
         icon="info"
         id={`custom-report-button-${customReport.id}`}
+        data-testid={`custom-report-button-${customReport.id}`}
         onClick={() => setShowModal(!showModal)}
       />
       <Modal

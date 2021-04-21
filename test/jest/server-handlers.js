@@ -70,6 +70,13 @@ const handlers = [
       return res(ctx.status(204));
     }
   ),
+
+  rest.delete(
+    'https://folio-testing-okapi.dev.folio.org/custom-reports/:id',
+    (req, res, ctx) => {
+      return res(ctx.status(204));
+    }
+  ),
 ];
 
 export default handlers;

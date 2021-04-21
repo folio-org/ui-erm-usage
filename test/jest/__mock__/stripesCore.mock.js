@@ -6,7 +6,7 @@ jest.mock(
     const STRIPES = {
       actionNames: [],
       clone: () => ({ ...STRIPES }),
-      connect: () => {},
+      connect: (Component) => Component,
       config: {},
       currency: 'USD',
       hasInterface: () => true,
