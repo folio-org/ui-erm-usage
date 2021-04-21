@@ -1,10 +1,10 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { Accordion } from '@folio/stripes-components';
-import { MemoryRouter } from 'react-router-dom';
+import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import CustomStatistics from './CustomStatistics';
@@ -28,22 +28,26 @@ const customReports = [
   },
 ];
 
+const doDownloadFile = jest.fn();
+
 const handlers = {
-  onClose: jest.fn,
-  onEdit: jest.fn,
-  onDownloadReportMultiMonth: jest.fn,
+  doDownloadFile,
 };
+
+jest.mock('@folio/stripes-smart-components');
 
 const renderCustomStatistics = (stripes) => {
   return renderWithIntl(
-    <Accordion id="nonCounterStatisticsAccordion" label="NON-Counter stats">
-      <CustomStatistics
-        customReports={customReports}
-        handlers={handlers}
-        stripes={stripes}
-        udpLabel="American Chemical Society"
-      />
-    </Accordion>
+    <StripesContext.Provider value={stripes}>
+      <Accordion id="nonCounterStatisticsAccordion" label="NON-Counter stats">
+        <CustomStatistics
+          customReports={customReports}
+          handlers={handlers}
+          stripes={stripes}
+          udpLabel="American Chemical Society"
+        />
+      </Accordion>
+    </StripesContext.Provider>
   );
 };
 
@@ -54,41 +58,62 @@ describe('CustomStatistics', () => {
     stripes = useStripes();
   });
 
-  test('should render UDP', async () => {
+  test('should render UDP', () => {
     renderCustomStatistics(stripes);
     expect(screen.getByText('2020')).toBeVisible();
   });
 
-  // describe('displays file info', () => {
-  //   beforeEach(async () => {
-  //     renderCustomStatistics(stripes);
-  //     const expandAll = screen.getByRole('button', {
-  //       name: 'Expand all years',
-  //     });
-  //     userEvent.click(expandAll);
+  describe('displays file info', () => {
+    beforeEach(async () => {
+      renderCustomStatistics(stripes);
+      const expandAll = screen.getByRole('button', {
+        name: 'Expand all years',
+      });
+      userEvent.click(expandAll);
 
-  //     const reportButton = screen.getByRole('button', {
-  //       name: 'Open report info for custom report 2020 foo.',
-  //     });
-  //     await userEvent.click(reportButton);
-  //   });
+      const reportButton = screen.getByRole('button', {
+        name: 'Open report info for custom report 2020 foo.',
+      });
+      await userEvent.click(reportButton);
+    });
 
-  //   test('shows correct attributes', async () => {
-  //     await waitFor(() =>
-  //       expect(screen.getByText('American Chemical Society')).not.toBeVisible()
-  //     );
-  //     // expect(screen.getByText('American Chemical Society')).toBeVisible();
-  //     expect(screen.getByText('foo')).toBeVisible();
+    test('shows correct attributes and executes delete', async () => {
+      expect(screen.getByText('American Chemical Society')).toBeVisible();
 
-  //     const downloadButton = screen.getByRole('button', {
-  //       name: 'Download file.txt',
-  //     });
-  //     expect(downloadButton).toBeInTheDocument();
+      const downloadButton = screen.getByRole('button', {
+        name: 'Icon Download file.txt',
+      });
+      expect(downloadButton).toBeInTheDocument();
 
-  //     const deleteButton = screen.getByRole('button', {
-  //       name: 'Delete custom report',
-  //     });
-  //     expect(deleteButton).toBeInTheDocument();
-  //   });
-  // });
+      const deleteButton = screen.getByRole('button', {
+        name: 'Icon Delete custom report',
+      });
+      expect(deleteButton).toBeInTheDocument();
+    });
+  });
+
+  describe('displays link info', () => {
+    beforeEach(async () => {
+      renderCustomStatistics(stripes);
+      const expandAll = screen.getByRole('button', {
+        name: 'Expand all years',
+      });
+      userEvent.click(expandAll);
+
+      const reportButton = screen.getByRole('button', {
+        name: 'Open report info for custom report 2020 link.',
+      });
+      await userEvent.click(reportButton);
+    });
+
+    test('shows correct attributes', () => {
+      expect(screen.getByText('American Chemical Society')).toBeVisible();
+      expect(screen.getByText('http://www.a.de')).toBeVisible();
+
+      const deleteButton = screen.getByRole('button', {
+        name: 'Icon Delete custom report',
+      });
+      expect(deleteButton).toBeInTheDocument();
+    });
+  });
 });
