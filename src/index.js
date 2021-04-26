@@ -1,9 +1,17 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Switch } from 'react-router-dom';
-import { Route } from '@folio/stripes/core';
 import {
+  AppContextMenu,
+  Route,
+} from '@folio/stripes/core';
+import {
+  KeyboardShortcutsModal,
+  NavList,
+  NavListItem,
+  NavListSection,
   CommandList,
   HasCommand,
 } from '@folio/stripes/components';
@@ -27,6 +35,14 @@ class ErmUsage extends React.Component {
     showSettings: PropTypes.bool
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showKeyboardShortcutsModal: false,
+    };
+  }
+
   focusSearchField = () => {
     const { history } = this.props;
     const el = document.getElementById('input-udp-search');
@@ -47,6 +63,15 @@ class ErmUsage extends React.Component {
       handler: this.focusSearchField
     }
   ];
+
+  shortcutModalToggle(handleToggle) {
+    handleToggle();
+    this.changeKeyboardShortcutsModal(true);
+  }
+
+  changeKeyboardShortcutsModal = (modalState) => {
+    this.setState({ showKeyboardShortcutsModal: modalState });
+  };
 
   render() {
     const {
@@ -69,6 +94,20 @@ class ErmUsage extends React.Component {
             isWithinScope={this.checkScope}
             scope={this.shortcutScope}
           >
+            <AppContextMenu>
+              {(handleToggle) => (
+                <NavList>
+                  <NavListSection>
+                    <NavListItem
+                      id="keyboard-shortcuts-item"
+                      onClick={() => { this.shortcutModalToggle(handleToggle); }}
+                    >
+                      <FormattedMessage id="ui-erm-usage.appMenu.keyboardShortcuts" />
+                    </NavListItem>
+                  </NavListSection>
+                </NavList>
+              )}
+            </AppContextMenu>
             <Switch>
               <Route path={`${path}/notes/create`} component={NoteCreateRoute} />
               <Route path={`${path}/notes/:id/edit`} component={NoteEditRoute} />
@@ -81,6 +120,13 @@ class ErmUsage extends React.Component {
             </Switch>
           </HasCommand>
         </CommandList>
+        { this.state.showKeyboardShortcutsModal && (
+          <KeyboardShortcutsModal
+            open
+            onClose={() => { this.changeKeyboardShortcutsModal(false); }}
+            allCommands={commands.concat(commandsGeneral)}
+          />
+        )}
       </>
     );
   }
