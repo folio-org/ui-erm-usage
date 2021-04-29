@@ -1,7 +1,15 @@
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
+import {
+  KeyboardShortcutsModal,
+  // NavList,
+  // NavListItem,
+  // NavListSection,
+  // CommandList,
+  // HasCommand,
+} from '@folio/stripes/components';
 import { useStripes } from '@folio/stripes/core';
 import renderWithIntl from '../test/jest/helpers';
 import UDPEditRoute from './routes/UDPEditRoute';
@@ -15,8 +23,8 @@ const match = {
   url: '/eusage',
 };
 
-const register = jest.fn();
-const deregister = jest.fn();
+// const register = jest.fn();
+// const deregister = jest.fn();
 
 const editRouteProps = {
   history: {
@@ -40,6 +48,20 @@ const editRouteProps = {
 const renderWithRouter = (component) => {
   return act(() => {
     renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
+  });
+};
+
+const renderKeyboardShortcutsModal = () => {
+  return act(() => {
+    renderWithIntl(
+      <MemoryRouter>
+        <KeyboardShortcutsModal
+          open
+          onClose={() => jest.fn()}
+          allCommands={[{ name: 'new', label: 'New shortcut', shortcut: 'alt+n' }]}
+        />
+      </MemoryRouter>
+    );
   });
 };
 
@@ -68,12 +90,24 @@ describe('Application root', () => {
   it('should render without crashing', () => {
     const { getByText } = render(
       <MemoryRouter>
-        <ErmUsage match={match} register={register} deregister={deregister} />
+        <ErmUsage match={match} />
       </MemoryRouter>
     );
     const div = document.createElement('div');
     div.id = 'root';
     document.body.appendChild(div);
     expect(getByText('eUsage')).toBeDefined();
+  });
+});
+
+describe('KeyboardShortcutsModal', () => {
+  beforeEach(() => {
+    stripes = useStripes();
+    renderKeyboardShortcutsModal(stripes);
+  });
+
+  it('should render KeyboardShortcutsModal with shortcut', () => {
+    expect(document.querySelector('#keyboard-shortcuts-modal')).toBeInTheDocument();
+    expect(screen.getByText('New shortcut')).toBeInTheDocument();
   });
 });
