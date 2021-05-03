@@ -2,14 +2,7 @@ import React from 'react';
 import { act, screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import {
-  KeyboardShortcutsModal,
-  // NavList,
-  // NavListItem,
-  // NavListSection,
-  // CommandList,
-  // HasCommand,
-} from '@folio/stripes/components';
+import { KeyboardShortcutsModal } from '@folio/stripes/components';
 import { useStripes } from '@folio/stripes/core';
 import renderWithIntl from '../test/jest/helpers';
 import UDPEditRoute from './routes/UDPEditRoute';
@@ -22,9 +15,6 @@ const match = {
   path: '/eusage',
   url: '/eusage',
 };
-
-// const register = jest.fn();
-// const deregister = jest.fn();
 
 const editRouteProps = {
   history: {
