@@ -98,9 +98,9 @@ describe('KeyboardShortcutsModal', () => {
 
   test('close KeyboardShortcutsModal', async () => {
     renderKeyboardShortcutsModal();
-    expect(screen.getByText('ui-users.blocks.closeButton')).toBeInTheDocument();
+    expect(screen.getByText('Close')).toBeInTheDocument();
 
-    userEvent.click(screen.getByText('ui-users.blocks.closeButton'));
+    userEvent.click(screen.getByText('Close'));
     expect(onClose).toHaveBeenCalled();
   });
 });
