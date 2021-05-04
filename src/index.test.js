@@ -1,8 +1,9 @@
 import React from 'react';
 import { act, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KeyboardShortcutsModal } from '@folio/stripes/components';
+import { Button, KeyboardShortcutsModal } from '@folio/stripes/components';
 import { useStripes } from '@folio/stripes/core';
 import renderWithIntl from '../test/jest/helpers';
 import UDPEditRoute from './routes/UDPEditRoute';
@@ -35,6 +36,8 @@ const editRouteProps = {
   },
 };
 
+const onClose = jest.fn();
+
 const renderWithRouter = (component) => {
   return act(() => {
     renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
@@ -47,9 +50,11 @@ const renderKeyboardShortcutsModal = () => {
       <MemoryRouter>
         <KeyboardShortcutsModal
           open
-          onClose={() => jest.fn()}
+          onClose={onClose}
           allCommands={[{ name: 'new', label: 'New shortcut', shortcut: 'alt+n' }]}
-        />
+        >
+          <Button>Close</Button>
+        </KeyboardShortcutsModal>
       </MemoryRouter>
     );
   });
@@ -85,13 +90,17 @@ describe('AppContextMenu', () => {
 });
 
 describe('KeyboardShortcutsModal', () => {
-  beforeEach(() => {
-    stripes = useStripes();
-    renderKeyboardShortcutsModal(stripes);
-  });
-
   it('should render KeyboardShortcutsModal with shortcut', () => {
+    renderKeyboardShortcutsModal();
     expect(document.querySelector('#keyboard-shortcuts-modal')).toBeInTheDocument();
     expect(screen.getByText('New shortcut')).toBeInTheDocument();
+  });
+
+  test('close KeyboardShortcutsModal', async () => {
+    renderKeyboardShortcutsModal();
+    expect(screen.getByText('ui-users.blocks.closeButton')).toBeInTheDocument();
+
+    userEvent.click(screen.getByText('ui-users.blocks.closeButton'));
+    expect(onClose).toHaveBeenCalled();
   });
 });
