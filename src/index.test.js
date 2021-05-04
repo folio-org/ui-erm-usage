@@ -36,7 +36,8 @@ const editRouteProps = {
   },
 };
 
-const onClose = jest.fn();
+const showKeyboardShortcutsModal = jest.fn();
+const onClose = showKeyboardShortcutsModal();
 
 const renderWithRouter = (component) => {
   return act(() => {
@@ -81,7 +82,7 @@ describe('AppContextMenu', () => {
   it('should render AppContextMenu', () => {
     renderWithIntl(
       <MemoryRouter>
-        <ErmUsage match={match} />
+        <ErmUsage match={match} showKeyboardShortcutsModal={showKeyboardShortcutsModal} />
       </MemoryRouter>
     );
     expect(screen.getByText('Keyboard shortcuts')).toBeInTheDocument();
@@ -98,9 +99,12 @@ describe('KeyboardShortcutsModal', () => {
 
   test('close KeyboardShortcutsModal', async () => {
     renderKeyboardShortcutsModal();
-    expect(screen.getByText('Close')).toBeInTheDocument();
+    // expect(screen.getByText('Close')).toBeInTheDocument();
+    expect(screen.getByText('ui-users.blocks.closeButton')).toBeInTheDocument();
 
-    userEvent.click(screen.getByText('Close'));
-    expect(onClose).toHaveBeenCalled();
+    // userEvent.click(screen.getByText('Close'));
+    userEvent.click(screen.getByText('ui-users.blocks.closeButton'));
+    // expect(onClose).toHaveBeenCalled();
+    expect(showKeyboardShortcutsModal).toHaveBeenCalled();
   });
 });
