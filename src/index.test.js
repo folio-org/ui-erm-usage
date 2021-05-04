@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, screen, render } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { KeyboardShortcutsModal } from '@folio/stripes/components';
@@ -55,10 +55,6 @@ const renderKeyboardShortcutsModal = () => {
   });
 };
 
-jest.mock('./index', () => {
-  return () => <span>eUsage</span>;
-});
-
 let stripes;
 describe('index', () => {
   beforeEach(() => {
@@ -76,17 +72,15 @@ describe('index', () => {
   });
 });
 
-describe('Application root', () => {
-  it('should render without crashing', () => {
-    const { getByText } = render(
+describe('AppContextMenu', () => {
+  it('should render AppContextMenu', () => {
+    renderWithIntl(
       <MemoryRouter>
         <ErmUsage match={match} />
       </MemoryRouter>
     );
-    const div = document.createElement('div');
-    div.id = 'root';
-    document.body.appendChild(div);
-    expect(getByText('eUsage')).toBeDefined();
+    expect(screen.getByText('Keyboard shortcuts')).toBeInTheDocument();
+    expect(document.querySelector('#keyboard-shortcuts-item')).toBeInTheDocument();
   });
 });
 

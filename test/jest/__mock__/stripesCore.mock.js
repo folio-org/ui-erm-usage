@@ -108,6 +108,9 @@ jest.mock(
       },
 
       // eslint-disable-next-line react/prop-types
+      AppContextMenu: (props) => <>{props.children()}</>,
+
+      // eslint-disable-next-line react/prop-types
       Pluggable: (props) => <>{props.children}</>,
     };
   },
