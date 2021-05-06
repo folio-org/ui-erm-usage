@@ -1,9 +1,7 @@
 import React from 'react';
 import { act, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Button, KeyboardShortcutsModal } from '@folio/stripes/components';
 import { useStripes } from '@folio/stripes/core';
 import renderWithIntl from '../test/jest/helpers';
 import UDPEditRoute from './routes/UDPEditRoute';
@@ -36,28 +34,9 @@ const editRouteProps = {
   },
 };
 
-const showKeyboardShortcutsModal = jest.fn();
-const onClose = showKeyboardShortcutsModal();
-
 const renderWithRouter = (component) => {
   return act(() => {
     renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
-  });
-};
-
-const renderKeyboardShortcutsModal = () => {
-  return act(() => {
-    renderWithIntl(
-      <MemoryRouter>
-        <KeyboardShortcutsModal
-          open
-          onClose={onClose}
-          allCommands={[{ name: 'new', label: 'New shortcut', shortcut: 'alt+n' }]}
-        >
-          <Button>Close</Button>
-        </KeyboardShortcutsModal>
-      </MemoryRouter>
-    );
   });
 };
 
@@ -82,29 +61,10 @@ describe('AppContextMenu', () => {
   it('should render AppContextMenu', () => {
     renderWithIntl(
       <MemoryRouter>
-        <ErmUsage match={match} showKeyboardShortcutsModal={showKeyboardShortcutsModal} />
+        <ErmUsage match={match} />
       </MemoryRouter>
     );
     expect(screen.getByText('Keyboard shortcuts')).toBeInTheDocument();
     expect(document.querySelector('#keyboard-shortcuts-item')).toBeInTheDocument();
-  });
-});
-
-describe('KeyboardShortcutsModal', () => {
-  it('should render KeyboardShortcutsModal with shortcut', () => {
-    renderKeyboardShortcutsModal();
-    expect(document.querySelector('#keyboard-shortcuts-modal')).toBeInTheDocument();
-    expect(screen.getByText('New shortcut')).toBeInTheDocument();
-  });
-
-  test('close KeyboardShortcutsModal', async () => {
-    renderKeyboardShortcutsModal();
-    // expect(screen.getByText('Close')).toBeInTheDocument();
-    expect(screen.getByText('ui-users.blocks.closeButton')).toBeInTheDocument();
-
-    // userEvent.click(screen.getByText('Close'));
-    userEvent.click(screen.getByText('ui-users.blocks.closeButton'));
-    // expect(onClose).toHaveBeenCalled();
-    expect(showKeyboardShortcutsModal).toHaveBeenCalled();
   });
 });
