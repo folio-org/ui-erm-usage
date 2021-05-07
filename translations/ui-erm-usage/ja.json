@@ -277,5 +277,18 @@
     "statistics.multi.delete.success": "Deleted {count} {count, plural, one {report} other {reports}}.",
     "statistics.multi.delete.fail": "Delete failed.",
     "statistics.multi.delete.confirmation": "The selected <strong>{count} {count, plural, one {report} other {reports}}</strong> will be <strong>deleted</strong>.",
-    "statistics.multi.delete.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. Select checkboxes to select reports for deletion."
+    "statistics.multi.delete.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. Select checkboxes to select reports for deletion.",
+    "appMenu.keyboardShortcuts": "Keyboard shortcuts",
+    "shortcut.createRecord": "Create a new record",
+    "shortcut.editRecord": "Edit a record",
+    "shortcut.saveRecord": "Save a record",
+    "shortcut.expandCollapse": "Expand or collapse an accordion",
+    "shortcut.expandAll": "Expand all accordions",
+    "shortcut.collapseAll": "Collapse all accordions",
+    "shortcut.goToSearchFilter": "Go to Search & Filter pane",
+    "shortcut.closeModal": "Close a modal or pop-up",
+    "shortcut.copy": "Copy",
+    "shortcut.cut": "Cut",
+    "shortcut.paste": "Paste",
+    "shortcut.find": "Find"
 }
