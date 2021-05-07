@@ -34,7 +34,7 @@ describe('PeriodicHarvestingView', () => {
     expect(screen.getByText('May 7, 2021 2:13 PM')).toBeVisible();
   });
 
-  test('initialValues are rendered correctly', () => {
+  test('not defined text is rendered', () => {
     renderPeriodicHarvestingView();
     expect(
       screen.getByText(
