@@ -123,9 +123,7 @@ describe('Delete Aggregator', () => {
       id: 'clickable-deleteaggregator-confirmation-cancel',
     });
     await userEvent.click(cancelBtn);
-    await waitForElementToBeRemoved(() =>
-      screen.getByText('Delete aggregator')
-    );
+    await waitForElementToBeRemoved(() => screen.getByText('Delete aggregator'));
   });
 
   test('click submit', async () => {

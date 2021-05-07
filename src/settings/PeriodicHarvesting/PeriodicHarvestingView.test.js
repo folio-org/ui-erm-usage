@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import renderWithIntl from '../../../test/jest/helpers';
-
 import PeriodicHarvestingView from './PeriodicHarvestingView';
+
 const initialValues = {
   id: '8bf5fe33-5ec8-420c-a86d-6320c55ba554',
   startAt: '2021-05-07T12:13:19.000+0000',
@@ -31,7 +31,6 @@ describe('PeriodicHarvestingView', () => {
     expect(screen.getByText('2021-05-07')).toBeVisible();
     expect(screen.getByText('12:13 PM')).toBeVisible();
     expect(screen.getByText('daily')).toBeVisible();
-    expect(screen.getByText('May 7, 2021 2:13 PM')).toBeVisible();
   });
 
   test('not defined text is rendered', () => {
