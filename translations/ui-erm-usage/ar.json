@@ -277,5 +277,18 @@
     "statistics.multi.delete.success": "تم حذف {count} {count, plural, one {تقرير} other {تقريراً}}",
     "statistics.multi.delete.fail": "فشل الحذف.",
     "statistics.multi.delete.confirmation": "سيتم <strong>حذف</strong> <strong>{count} {count, plural, one {نقرير} other {تقريراً}}</strong> المحدد.",
-    "statistics.multi.delete.infoText": "نظرة عامة حول الإحصائيات المحصودة سنويًا. قم بتوسيع سنة والنقر فوق الزر الملون لتنزيل/حذف التقرير أو الحصول على معلومات إضافية. قم بتحديد المربعات لاختيار تقارير للحذف."
+    "statistics.multi.delete.infoText": "نظرة عامة حول الإحصائيات المحصودة سنويًا. قم بتوسيع سنة والنقر فوق الزر الملون لتنزيل/حذف التقرير أو الحصول على معلومات إضافية. قم بتحديد المربعات لاختيار تقارير للحذف.",
+    "appMenu.keyboardShortcuts": "اختصارات لوحة المفاتيح",
+    "shortcut.createRecord": "إنشاء تسجيلة جديدة",
+    "shortcut.editRecord": "تحرير تسجيلة",
+    "shortcut.saveRecord": "حفظ تسجيلة",
+    "shortcut.expandCollapse": "توسيع أو طي قسم",
+    "shortcut.expandAll": "توسيع كل الأقسام",
+    "shortcut.collapseAll": "طي كل الأقسام",
+    "shortcut.goToSearchFilter": "اذهب إلى الجزء الخاص بالبحث والتنقيح",
+    "shortcut.closeModal": "إغلاق النموذج أو النافذة المنبثقة",
+    "shortcut.copy": "نسخ",
+    "shortcut.cut": "قص",
+    "shortcut.paste": "لصق",
+    "shortcut.find": "بحث"
 }
