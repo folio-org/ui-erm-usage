@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
-import { Accordion } from '@folio/stripes-components';
+import { Accordion } from '@folio/stripes/components';
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
 
@@ -34,7 +34,7 @@ const handlers = {
   doDownloadFile,
 };
 
-jest.mock('@folio/stripes-smart-components');
+jest.mock('@folio/stripes/smart-components');
 
 const renderCustomStatistics = (stripes) => {
   return renderWithIntl(

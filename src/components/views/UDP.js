@@ -9,6 +9,7 @@ import {
   AccordionSet,
   AccordionStatus,
   Button,
+  Callout,
   Col,
   ExpandAllButton,
   collapseAllSections,
@@ -21,7 +22,6 @@ import {
   PaneMenu,
   Row,
 } from '@folio/stripes/components';
-import { Callout } from '@folio/stripes-components';
 import {
   NotesSmartAccordion,
   ViewMetaData,

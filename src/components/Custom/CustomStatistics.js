@@ -9,7 +9,7 @@ import {
   ExpandAllButton,
   MultiColumnList,
   Row,
-} from '@folio/stripes-components';
+} from '@folio/stripes/components';
 import InfoButton from './InfoButton';
 
 import css from './CustomStatistics.css';

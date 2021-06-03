@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { SubmissionError } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
-import { stripesConnect } from '@folio/stripes-core';
+import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   ConfirmationModal,
   IconButton,
   Modal,
-} from '@folio/stripes-components';
+} from '@folio/stripes/components';
 
 import CustomReportInfo from '../CustomReportInfo';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import stripesFinalForm from '@folio/stripes/final-form';
-import { Button, Modal, ModalFooter } from '@folio/stripes-components';
+import { Button, Modal, ModalFooter } from '@folio/stripes/components';
 import NonCounterInnerForm from './NonCounterInnerForm';
 
 function NonCounterUploadModal(props) {
