@@ -7,7 +7,7 @@ import '../../../../test/jest/__mock__';
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
 import InfoButton from './InfoButton';
 
-jest.mock('@folio/stripes-smart-components');
+jest.mock('@folio/stripes/smart-components');
 
 const customReport = {
   id: 'f2c8a2ed-1048-4beb-9ea3-d438f334cc44',

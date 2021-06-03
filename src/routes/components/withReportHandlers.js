@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { withStripes } from '@folio/stripes/core';
-import { Callout } from '@folio/stripes-components';
+import { Callout } from '@folio/stripes/components';
 import { SubmissionError } from 'redux-form';
 import saveAs from 'file-saver';
 import { saveReport } from '../../util/downloadReport';

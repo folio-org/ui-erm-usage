@@ -7,7 +7,7 @@ import {
   ConfirmationModal,
   Modal,
   ModalFooter,
-} from '@folio/stripes-components';
+} from '@folio/stripes/components';
 
 import DeleteStatistics from './DeleteStatistics';
 

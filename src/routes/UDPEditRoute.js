@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { stripesConnect } from '@folio/stripes/core';
-import { LoadingPane } from '@folio/stripes-components';
+import { LoadingPane } from '@folio/stripes/components';
 
 import UDPForm from '../components/views/UDPForm';
 import extractHarvesterImpls from '../util/harvesterImpls';
