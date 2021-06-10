@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { IfPermission, TitleManager } from '@folio/stripes/core';
+import { IfPermission, TitleManager, Pluggable } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -472,6 +472,7 @@ class UDP extends React.Component {
                       harvesterImpls={data.harvesterImpls}
                     />
                   </Accordion>
+                  <Pluggable type="ui-agreements-extension" data={{ op: 'match-names' }} />
                   <Accordion
                     id="counterStatisticsAccordion"
                     label={

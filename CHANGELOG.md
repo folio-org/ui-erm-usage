@@ -1,5 +1,8 @@
 # Change history for ui-erm-usage
 
+## [5.1.0](https://github.com/folio-org/ui-erm-usage/tree/v5.1.0) (IN PROGRESS)
+* Add a pluggable surface of type `ui-agreements-extension` (UIEUS-268)
+
 ## [5.0.1](https://github.com/folio-org/ui-erm-usage/tree/v5.0.1) (2021-04-20)
 * Bugfix: Do not validate vendor's SUSHI URL when creating UDP that fetches statistics via aggregator (UIEUS-254)
 * Bugfix: Validate aggregator as mandatory when when harvesting changing from SUSHI to aggregator (UIEUS-256)
