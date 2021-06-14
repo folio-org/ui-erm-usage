@@ -1,7 +1,15 @@
 # Change history for ui-erm-usage
 
-## [5.1.0](https://github.com/folio-org/ui-erm-usage/tree/v5.1.0) (IN PROGRESS)
+## [5.1.0](https://github.com/folio-org/ui-erm-usage/tree/v5.1.0) (2021-06-14)
 * Add a pluggable surface of type `ui-agreements-extension` (UIEUS-268)
+* Apply baseline keyboard shortcuts (UIEUS-253)
+* Migration from BigTest to RTL/Jest (UIEUS-229)
+* Move action buttons to the actions menu (UIEUS-250)
+* Flatten accordion hierarchy (UIEUS-251)
+* Delete multiple reports (UIEUS-247)
+* Implement keyboard shortcut modal (UIEUS-260)
+* Compile Translation Files into AST Format (UIEUS-258)
+* Prefer @folio/stripes exports to private paths when importing components (UIEUS-263)
 
 ## [5.0.1](https://github.com/folio-org/ui-erm-usage/tree/v5.0.1) (2021-04-20)
 * Bugfix: Do not validate vendor's SUSHI URL when creating UDP that fetches statistics via aggregator (UIEUS-254)
