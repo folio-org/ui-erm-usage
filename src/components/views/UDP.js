@@ -472,7 +472,7 @@ class UDP extends React.Component {
                       harvesterImpls={data.harvesterImpls}
                     />
                   </Accordion>
-                  <Pluggable type="ui-agreements-extension" data={{ op: 'match-names' }} />
+                  <Pluggable type="ui-agreements-extension" data={{ op: 'match-names', data }} />
                   <Accordion
                     id="counterStatisticsAccordion"
                     label={
