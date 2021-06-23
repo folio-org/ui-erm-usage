@@ -354,12 +354,6 @@ class UDP extends React.Component {
     );
   };
 
-  checkScope = () => {
-    return document
-      .getElementById('ModuleContainer')
-      .contains(document.activeElement);
-  };
-
   getCounterStatistics(reports, label, providerId, maxFailedAttempts) {
     const { data, handlers, stripes } = this.props;
     if (this.props.isStatsLoading) {
@@ -429,7 +423,6 @@ class UDP extends React.Component {
       return (
         <HasCommand
           commands={this.shortcuts}
-          isWithinScope={this.checkScope}
           scope={document.body}
         >
           <React.Fragment>
