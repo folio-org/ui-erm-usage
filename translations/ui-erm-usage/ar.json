@@ -276,7 +276,7 @@
     "statistics.multi.delete.submit": "حذف {count} {count, plural, one {تقرير} other {تقريراً}}",
     "statistics.multi.delete.success": "تم حذف {count} {count, plural, one {تقرير} other {تقريراً}}",
     "statistics.multi.delete.fail": "فشل الحذف.",
-    "statistics.multi.delete.confirmation": "سيتم <strong>حذف</strong> <strong>{count} {count, plural, one {نقرير} other {تقريراً}}</strong> المحدد.",
+    "statistics.multi.delete.confirmation": "سيتم <strong>حذف</strong> <strong>{count} {count, plural, one {تقرير} other {تقريراً}}</strong> المحدد.",
     "statistics.multi.delete.infoText": "نظرة عامة حول الإحصائيات المحصودة سنويًا. قم بتوسيع سنة والنقر فوق الزر الملون لتنزيل/حذف التقرير أو الحصول على معلومات إضافية. قم بتحديد المربعات لاختيار تقارير للحذف.",
     "appMenu.keyboardShortcuts": "اختصارات لوحة المفاتيح",
     "shortcut.createRecord": "إنشاء تسجيلة جديدة",
