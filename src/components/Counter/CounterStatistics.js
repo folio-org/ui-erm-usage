@@ -51,7 +51,7 @@ class CounterStatistics extends React.Component {
       .map((cr) => cr.report);
     const available = new Set(reportNamesNew);
     const intersection = new Set(
-      reportDownloadTypes.filter((y) => available.has(y.value))
+      reportDownloadTypes.filter((y) => available.has(y.value.split('_')[0]))
     );
     return sortBy([...intersection], ['label']);
   };
