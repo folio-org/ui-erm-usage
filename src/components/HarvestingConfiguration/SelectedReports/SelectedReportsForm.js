@@ -9,6 +9,7 @@ import counterReports from './data/counterReports';
 import css from './SelectedReportsForm.css';
 
 import SelectReportType from './SelectReportType';
+import { notRequired, requiredArray } from '../../../util/validate';
 
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReports.getOptions(), [
@@ -44,12 +45,18 @@ class SelectedReportsForm extends React.Component {
 
   render() {
     const reportsSelect = (
-      <FieldArray name="harvestingConfig.requestedReports">
+      <FieldArray
+        name="harvestingConfig.requestedReports"
+        required={this.props.required}
+        validate={this.props.required ? requiredArray : notRequired}
+        key={this.props.required ? 1 : 0}
+      >
         {({ fields }) => (
           <SelectReportType
             counterReportsCurrentVersion={this.counterReportsCurrentVersion}
             fields={fields}
             selectedReports={this.props.selectedReports}
+            required={this.props.required}
           />
         )}
       </FieldArray>

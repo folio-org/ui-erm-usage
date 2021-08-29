@@ -13,6 +13,7 @@ import {
 } from '@folio/stripes/components';
 
 import css from './SelectReportType.css';
+import { notRequired, required } from '../../../util/validate';
 
 const omitUsedOptions = (list, usedValues, id) => {
   const unUsedValues = _.cloneDeep(list);
@@ -52,6 +53,8 @@ function SelectReportType(props) {
                     <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
                   }
                   name={elem}
+                  validate={props.required ? required : notRequired}
+                  key={props.required ? 1 : 0}
                 />
               </div>
             </Col>
@@ -86,6 +89,7 @@ SelectReportType.propTypes = {
   fields: PropTypes.object,
   counterReportsCurrentVersion: PropTypes.arrayOf(PropTypes.shape()),
   selectedReports: PropTypes.arrayOf(PropTypes.string),
+  required: PropTypes.bool
 };
 
 export default SelectReportType;
