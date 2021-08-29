@@ -21,6 +21,7 @@ class SelectedReportsForm extends React.Component {
   static propTypes = {
     counterVersion: PropTypes.number,
     selectedReports: PropTypes.arrayOf(PropTypes.string),
+    required: PropTypes.bool
   };
 
   constructor(props) {
@@ -57,7 +58,7 @@ class SelectedReportsForm extends React.Component {
     return (
       <React.Fragment>
         <div className={formCss.label}>
-          <Label required>
+          <Label required={this.props.required}>
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />
           </Label>
         </div>

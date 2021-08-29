@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
 import { Col, Select, TextField } from '@folio/stripes/components';
-import { required } from '../../../util/validate';
+import { notRequired, required } from '../../../util/validate';
 
 class AggregatorInfoForm extends React.Component {
   static propTypes = {
     aggregators: PropTypes.arrayOf(PropTypes.shape()),
     disabled: PropTypes.bool,
     intl: PropTypes.object,
+    required: PropTypes.bool
   };
 
   extractAggregatorSelectOptions = (aggregators) => {
@@ -22,14 +23,6 @@ class AggregatorInfoForm extends React.Component {
       return { value: a.id, label: a.label };
     });
     return _.sortBy(aggs, ['label', 'value']);
-  };
-
-  validateAgg = (aggregator) => {
-    const { disabled } = this.props;
-    if (disabled) {
-      return undefined;
-    }
-    return required(aggregator);
   };
 
   render() {
@@ -53,8 +46,9 @@ class AggregatorInfoForm extends React.Component {
             component={Select}
             dataOptions={aggOptions}
             disabled={disabled}
-            required={!disabled}
-            validate={this.validateAgg}
+            required={!disabled && this.props.required}
+            validate={!disabled && this.props.required ? required : notRequired}
+            key={!disabled && this.props.required ? 1 : 0}
             fullWidth
           />
         </Col>

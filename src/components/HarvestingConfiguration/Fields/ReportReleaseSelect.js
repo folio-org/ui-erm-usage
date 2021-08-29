@@ -3,13 +3,14 @@ import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Select } from '@folio/stripes/components';
-import { required } from '../../../util/validate';
+import { notRequired, required } from '../../../util/validate';
 
 import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
 
 const propTypes = {
   id: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool
 };
 
 const ReportReleaseSelect = (props) => {
@@ -26,8 +27,9 @@ const ReportReleaseSelect = (props) => {
       })}
       component={Select}
       dataOptions={reportReleaseOptions}
-      required
-      validate={required}
+      required={props.required}
+      validate={props.required ? required : notRequired}
+      key={props.required ? 1 : 0}
       fullWidth
       onChange={props.onChange}
     />

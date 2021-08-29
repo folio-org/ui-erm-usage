@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Col, Row, TextField } from '@folio/stripes/components';
-import { required } from '../../../util/validate';
+import { notRequired, required } from '../../../util/validate';
 
-function SushiCredentialsForm(props) {
+const SushiCredentialsForm = (props) => {
   const { useAggregator, values } = props;
 
   const intl = useIntl();
@@ -29,15 +29,6 @@ function SushiCredentialsForm(props) {
     return false;
   };
 
-  const getValidator = () => {
-    if (isCustIdRequired()) {
-      return required;
-    }
-    return () => {
-      // return empty object as there are no errors.
-    };
-  };
-
   return (
     <React.Fragment>
       <Row>
@@ -50,9 +41,9 @@ function SushiCredentialsForm(props) {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.customerId',
             })}
             component={TextField}
-            required={isCustIdRequired()}
-            validate={getValidator()}
-            key={useAggregator ? 1 : 0}
+            required={isCustIdRequired() && props.required}
+            validate={isCustIdRequired() && props.required ? required : notRequired}
+            key={isCustIdRequired() && props.required ? 1 : 0}
             fullWidth
           />
         </Col>
@@ -129,11 +120,12 @@ function SushiCredentialsForm(props) {
       </Row>
     </React.Fragment>
   );
-}
+};
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
   values: PropTypes.shape(),
+  required: PropTypes.bool
 };
 
 export default SushiCredentialsForm;

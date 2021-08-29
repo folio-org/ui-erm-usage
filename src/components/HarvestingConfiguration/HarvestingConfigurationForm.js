@@ -80,6 +80,7 @@ class HarvestingConfigurationForm extends React.Component {
     const { confirmClear } = this.state;
     const onToggleAccordion = this.props.onToggle;
     const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
+    const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
     const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
     const requestedReports = get(
       values,
@@ -112,10 +113,13 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <HarvestingViaSelect />
+                  <HarvestingViaSelect
+                    required={isHarvestingStatusActive}
+                  />
                 </Col>
                 <AggregatorInfoForm
                   aggregators={aggregators}
+                  required={isHarvestingStatusActive}
                   disabled={harvestVia !== 'aggregator'}
                 />
               </Row>
@@ -127,6 +131,7 @@ class HarvestingConfigurationForm extends React.Component {
                 </Col>
                 <VendorInfoForm
                   disabled={harvestVia !== 'sushi'}
+                  required={isHarvestingStatusActive}
                   harvesterImpls={harvesterImplementations}
                 />
               </Row>
@@ -136,6 +141,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   <ReportReleaseSelect
                     id="addudp_reportrelease"
+                    required={isHarvestingStatusActive}
                     onChange={this.changeSelectedCounterVersion}
                   />
                 </Col>
@@ -143,6 +149,7 @@ class HarvestingConfigurationForm extends React.Component {
                   <SelectedReportsForm
                     initialValues={initialValues}
                     counterVersion={parseInt(reportRelease, 10)}
+                    required={isHarvestingStatusActive}
                     selectedReports={requestedReports}
                   />
                 </Col>
@@ -151,7 +158,9 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <Row>
                 <Col xs={4}>
-                  <HarvestingStartField />
+                  <HarvestingStartField
+                    required={isHarvestingStatusActive}
+                  />
                 </Col>
                 <Col xs={4}>
                   <HarvestingEndField />
@@ -161,6 +170,7 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <SushiCredentialsForm
                 useAggregator={harvestVia === 'aggregator'}
+                required={isHarvestingStatusActive}
                 values={this.props.values}
               />
             </section>
