@@ -109,6 +109,7 @@ describe('UDPForm', () => {
   let stripes;
   beforeEach(() => {
     stripes = useStripes();
+    jest.clearAllMocks();
 
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -323,55 +324,66 @@ describe('UDPForm', () => {
     });
   });
 
-  // TODO: Activate test when bugfix UIEUS-256 is merged
-  // describe('test change from sushi to aggregator', () => {
-  //   beforeEach(() => {
-  //     renderUDPForm(stripes);
-  //   });
+  describe('test change from sushi to aggregator', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
 
-  //   test('form is invalid when changing from sushi to aggregator', async () => {
-  //     userEvent.type(
-  //       screen.getByLabelText('Provider name', {
-  //         exact: false,
-  //       }),
-  //       'FooBar'
-  //     );
-  //     userEvent.selectOptions(
-  //       screen.getByLabelText('Harvesting status', { exact: false }),
-  //       ['active']
-  //     );
-  //     userEvent.selectOptions(
-  //       screen.getByLabelText('Harvest statistics via', { exact: false }),
-  //       ['sushi']
-  //     );
-  //     userEvent.selectOptions(
-  //       screen.getByLabelText('Service type', { exact: false }),
-  //       ['cs41']
-  //     );
+    test('form is invalid when changing from sushi to aggregator', async () => {
+      userEvent.type(
+        screen.getByLabelText('Provider name', {
+          exact: false,
+        }),
+        'FooBar'
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvesting status', { exact: false }),
+        ['active']
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvest statistics via', { exact: false }),
+        ['sushi']
+      );
+      userEvent.selectOptions(
+        screen.getByLabelText('Service type', { exact: false }),
+        ['cs41']
+      );
+      userEvent.type(
+        screen.getByLabelText('Service URL', {
+          exact: false,
+        }),
+        'http://abc'
+      );
 
-  //     userEvent.selectOptions(
-  //       screen.getByLabelText('Report release', { exact: false }),
-  //       ['4']
-  //     );
-  //     userEvent.click(await screen.findByText('Add report type'));
-  //     userEvent.click(await screen.findByText('Report type'));
-  //     userEvent.click(await screen.findByText('BR1'));
-  //     const startInput = screen.getByLabelText('Harvesting start', {
-  //       exact: false,
-  //     });
-  //     userEvent.type(startInput, '2020-01');
+      userEvent.selectOptions(
+        screen.getByLabelText('Report release', { exact: false }),
+        ['4']
+      );
+      userEvent.click(await screen.findByText('Add report type'));
+      userEvent.click(await screen.findByText('Report type'));
+      userEvent.click(await screen.findByText('BR1'));
 
-  //     const customerIdInput = screen.getByLabelText('Customer ID', {
-  //       exact: false,
-  //     });
-  //     await userEvent.type(customerIdInput, 'MyCustomerID');
+      userEvent.type(
+        screen.getByLabelText('Harvesting start', {
+          exact: false,
+        }),
+        '2020-01'
+      );
 
-  //     userEvent.selectOptions(
-  //       screen.getByLabelText('Harvest statistics via', { exact: false }),
-  //       ['aggregator']
-  //     );
-  //     userEvent.click(await screen.findByText('Save & close'));
-  //     expect(onSubmit).not.toHaveBeenCalled();
-  //   });
-  // });
+      userEvent.type(
+        screen.getByLabelText('Customer ID', {
+          exact: false,
+        }),
+        'MyCustomerID'
+      );
+
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvest statistics via', { exact: false }),
+        ['aggregator']
+      );
+
+      userEvent.click(await screen.findByText('Save & close'));
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+  });
 });
