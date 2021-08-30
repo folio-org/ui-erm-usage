@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
@@ -7,27 +6,9 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { notRequired, required } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { useAggregator, values } = props;
+  const { useAggregator } = props;
 
   const intl = useIntl();
-
-  const isCustIdRequired = () => {
-    if (!useAggregator) {
-      return true;
-    }
-
-    const isValueDefined =
-      _.get(values, 'sushiCredentials.requestorId', false) ||
-      _.get(values, 'sushiCredentials.apiKey', false) ||
-      _.get(values, 'sushiCredentials.platform', false) ||
-      _.get(values, 'sushiCredentials.requestorName', false) ||
-      _.get(values, 'sushiCredentials.requestorMAil', false);
-
-    if (useAggregator && isValueDefined) {
-      return true;
-    }
-    return false;
-  };
 
   return (
     <React.Fragment>
@@ -41,9 +22,9 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.customerId',
             })}
             component={TextField}
-            required={isCustIdRequired() && props.required}
-            validate={isCustIdRequired() && props.required ? required : notRequired}
-            key={isCustIdRequired() && props.required ? 1 : 0}
+            required={!useAggregator && props.required}
+            validate={!useAggregator && props.required ? required : notRequired}
+            key={!useAggregator && props.required ? 1 : 0}
             fullWidth
           />
         </Col>
@@ -124,7 +105,6 @@ const SushiCredentialsForm = (props) => {
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
-  values: PropTypes.shape(),
   required: PropTypes.bool
 };
 

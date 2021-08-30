@@ -171,7 +171,6 @@ class HarvestingConfigurationForm extends React.Component {
               <SushiCredentialsForm
                 useAggregator={harvestVia === 'aggregator'}
                 required={isHarvestingStatusActive}
-                values={this.props.values}
               />
             </section>
           </Col>
