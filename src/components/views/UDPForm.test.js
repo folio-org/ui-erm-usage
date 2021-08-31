@@ -408,6 +408,11 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
 
+      expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
+      userEvent.click(screen.getByText('Add report type'));
+      userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+      expect(screen.getByRole('button', { name: 'Report type' }).classList.contains('hasError')).toBe(true);
+
       expect(screen.getByRole('textbox', { name: 'Harvesting start' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
@@ -433,6 +438,11 @@ describe('UDPForm', () => {
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
+
+      expect(screen.getByRole('combobox', { name: 'Report release' })).not.toBeRequired();
+      userEvent.click(screen.getByText('Add report type'));
+      userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+      expect(screen.getByRole('button', { name: 'Report type' }).classList.contains('hasError')).toBe(false);
 
       expect(screen.getByRole('textbox', { name: 'Harvesting start' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
