@@ -386,4 +386,62 @@ describe('UDPForm', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
   });
+
+  describe('test required attributes for harvesting status choice', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
+
+    test('harvesting status is active', async () => {
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvesting status', { exact: false }),
+        ['active']
+      );
+
+      expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Harvest statistics via' })).toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Aggregator' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Vendor code' })).not.toBeRequired();
+
+      expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
+
+      expect(screen.getByRole('textbox', { name: 'Harvesting start' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor ID' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'API key' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Platform' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor name' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
+    });
+
+    test('harvesting status is inactive', async () => {
+      userEvent.selectOptions(
+        screen.getByLabelText('Harvesting status', { exact: false }),
+        ['inactive']
+      );
+
+      expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Harvest statistics via' })).not.toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Aggregator' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Vendor code' })).not.toBeRequired();
+
+      expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
+
+      expect(screen.getByRole('textbox', { name: 'Harvesting start' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor ID' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'API key' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Platform' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor name' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
+    });
+  });
 });
