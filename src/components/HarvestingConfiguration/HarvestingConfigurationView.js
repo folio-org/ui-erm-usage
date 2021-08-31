@@ -36,6 +36,9 @@ class HarvestingConfigurationView extends React.Component {
 
   createProvider = (udp) => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
+    if (!harvestVia) {
+      return null;
+    }
     if (harvestVia === 'aggregator') {
       return (
         <AggregatorInfoView
@@ -96,7 +99,7 @@ class HarvestingConfigurationView extends React.Component {
     const reportRelease = reportReleaseOptions.find(
       (e) => e.value === counterVersion
     );
-    const reportReleaseLabel = reportRelease.label ?? <NoValue />;
+    const reportReleaseLabel = reportRelease?.label ?? <NoValue />;
 
     const harvestingStart = usageDataProvider.harvestingConfig
       ?.harvestingStart ?? <NoValue />;
