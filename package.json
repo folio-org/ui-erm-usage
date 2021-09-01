@@ -106,7 +106,7 @@
       "counter-reports": "3.0",
       "custom-reports": "1.0",
       "erm-usage/files": "1.0",
-      "usage-data-providers": "2.5"
+      "usage-data-providers": "2.7"
     },
     "permissionSets": [
       {
