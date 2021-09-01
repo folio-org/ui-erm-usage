@@ -145,7 +145,7 @@
     "report.error.3010": "不支持报告版本",
     "report.error.3020": "无效的日期参数",
     "report.error.3030": "没有请求日期的使用情况",
-    "report.error.3031": "尚未准备好请求日期的使用情况",
+    "report.error.3031": "尚未准备好请求日期的使用",
     "report.error.3040": "返回部分数据",
     "report.error.3050": "在此情况下无法识别参数",
     "report.error.3060": "无效的报告筛选值",
