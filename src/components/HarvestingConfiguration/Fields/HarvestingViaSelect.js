@@ -1,12 +1,13 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Select } from '@folio/stripes/components';
 
-import { required } from '../../../util/validate';
+import { required, notRequired } from '../../../util/validate';
 import harvestingViaOptions from '../../../util/data/harvestingViaOptions';
 
-const HarvestingViaSelect = () => {
+const HarvestingViaSelect = (props) => {
   const intl = useIntl();
   return (
     <Field
@@ -21,10 +22,15 @@ const HarvestingViaSelect = () => {
       component={Select}
       dataOptions={harvestingViaOptions}
       fullWidth
-      required
-      validate={required}
+      required={props.required}
+      validate={props.required ? required : notRequired}
+      key={props.required ? 1 : 0}
     />
   );
+};
+
+HarvestingViaSelect.propTypes = {
+  required: PropTypes.bool
 };
 
 export default HarvestingViaSelect;

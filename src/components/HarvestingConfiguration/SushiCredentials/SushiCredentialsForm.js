@@ -1,42 +1,14 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Col, Row, TextField } from '@folio/stripes/components';
-import { required } from '../../../util/validate';
+import { notRequired, required } from '../../../util/validate';
 
-function SushiCredentialsForm(props) {
-  const { useAggregator, values } = props;
+const SushiCredentialsForm = (props) => {
+  const { useAggregator } = props;
 
   const intl = useIntl();
-
-  const isCustIdRequired = () => {
-    if (!useAggregator) {
-      return true;
-    }
-
-    const isValueDefined =
-      _.get(values, 'sushiCredentials.requestorId', false) ||
-      _.get(values, 'sushiCredentials.apiKey', false) ||
-      _.get(values, 'sushiCredentials.platform', false) ||
-      _.get(values, 'sushiCredentials.requestorName', false) ||
-      _.get(values, 'sushiCredentials.requestorMAil', false);
-
-    if (useAggregator && isValueDefined) {
-      return true;
-    }
-    return false;
-  };
-
-  const getValidator = () => {
-    if (isCustIdRequired()) {
-      return required;
-    }
-    return () => {
-      // return empty object as there are no errors.
-    };
-  };
 
   return (
     <React.Fragment>
@@ -50,9 +22,9 @@ function SushiCredentialsForm(props) {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.customerId',
             })}
             component={TextField}
-            required={isCustIdRequired()}
-            validate={getValidator()}
-            key={useAggregator ? 1 : 0}
+            required={!useAggregator && props.required}
+            validate={!useAggregator && props.required ? required : notRequired}
+            key={!useAggregator && props.required ? 1 : 0}
             fullWidth
           />
         </Col>
@@ -129,11 +101,11 @@ function SushiCredentialsForm(props) {
       </Row>
     </React.Fragment>
   );
-}
+};
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
-  values: PropTypes.shape(),
+  required: PropTypes.bool
 };
 
 export default SushiCredentialsForm;
