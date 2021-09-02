@@ -9,6 +9,11 @@ const required = value => {
 
 const notRequired = () => undefined;
 
+const requiredArray = value => {
+  if (value && value.length > 0) return undefined;
+  return <FormattedMessage id="ui-erm-usage.errors.required" />;
+};
+
 const mail = value => {
   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -76,6 +81,7 @@ export {
   mail,
   notRequired,
   required,
+  requiredArray,
   validateUrl,
   yearMonth,
   requiredValidateUrl,
