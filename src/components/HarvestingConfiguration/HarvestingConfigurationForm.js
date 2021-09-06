@@ -51,6 +51,10 @@ class HarvestingConfigurationForm extends React.Component {
       } else {
         this.props.form.mutators.setReportRelease({}, val);
       }
+      if ((val === '4' && this.props.values.sushiCredentials?.apiKey) ||
+        (val === '5' && this.props.values.sushiCredentials?.apiKey && this.props.values.sushiCredentials?.requestorId)) {
+        this.props.form.change('sushiCredentials.apiKey', undefined);
+      }
     }
   };
 
@@ -170,6 +174,8 @@ class HarvestingConfigurationForm extends React.Component {
             <section className={formCss.separator}>
               <SushiCredentialsForm
                 useAggregator={harvestVia === 'aggregator'}
+                form={this.props.form}
+                values={values}
                 required={isHarvestingStatusActive}
               />
             </section>
@@ -205,6 +211,7 @@ HarvestingConfigurationForm.propTypes = {
   harvesterImplementations: PropTypes.arrayOf(PropTypes.object),
   initialValues: PropTypes.object,
   form: PropTypes.shape({
+    change: PropTypes.func,
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
