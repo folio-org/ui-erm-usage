@@ -454,4 +454,63 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
     });
   });
+
+  describe('test that reqId and apiKey fields are disabled and cleared depending on reportRelease selection', () => {
+    const reportReleaseProvider = {
+      label: 'Provider with reqId and apiKey',
+      sushiCredentials: {
+        requestorId: 'id1234',
+        apiKey: 'key1234'
+      }
+    };
+
+    const testSelectReportRelease = (reportRelease) => {
+      renderUDPForm(stripes, reportReleaseProvider);
+      const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+      const releaseSelectBox = screen.getByLabelText('Report release', { exact: false });
+
+      expect(reqIdBox).not.toBeDisabled();
+      expect(reqIdBox.value).toBe('id1234');
+      expect(apiKeyBox).not.toBeDisabled();
+      expect(apiKeyBox.value).toBe('key1234');
+
+      userEvent.selectOptions(releaseSelectBox, reportRelease.toString());
+
+      expect(releaseSelectBox.value).toBe(reportRelease.toString());
+      expect(reqIdBox).not.toBeDisabled();
+      expect(reqIdBox.value).toBe('id1234');
+      expect(apiKeyBox.value).toBe('');
+      expect(apiKeyBox).toBeDisabled();
+    };
+
+    test('select reportRelease 4', async () => {
+      testSelectReportRelease(4);
+    });
+
+    test('select reportRelease 5', async () => {
+      testSelectReportRelease(5);
+    });
+
+    test('change reqId and apiKey with reportRelease 5 selected', async () => {
+      renderUDPForm(stripes, { harvestingConfig: { reportRelease: 5 } });
+      const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+
+      expect(reqIdBox).not.toBeDisabled();
+      expect(apiKeyBox).not.toBeDisabled();
+
+      userEvent.type(reqIdBox, 'a');
+      expect(reqIdBox.value).toBe('a');
+      expect(apiKeyBox).toBeDisabled();
+      userEvent.clear(reqIdBox);
+      expect(apiKeyBox).not.toBeDisabled();
+
+      userEvent.type(apiKeyBox, 'a');
+      expect(apiKeyBox.value).toBe('a');
+      expect(reqIdBox).toBeDisabled();
+      userEvent.clear(apiKeyBox);
+      expect(reqIdBox).not.toBeDisabled();
+    });
+  });
 });

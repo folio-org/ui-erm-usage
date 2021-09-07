@@ -6,9 +6,13 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { notRequired, required } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { useAggregator } = props;
-
+  const { useAggregator, values, form } = props;
   const intl = useIntl();
+
+  const isDisableRequestorId = !!(values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.apiKey);
+
+  const isDisableApiKey = !!(values.harvestingConfig?.reportRelease === 4 ||
+      (values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.requestorId));
 
   return (
     <React.Fragment>
@@ -30,18 +34,19 @@ const SushiCredentialsForm = (props) => {
         </Col>
         <Col xs={4}>
           <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId">
-                {(msg) => msg}
-              </FormattedMessage>
-            }
+            label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />}
             name="sushiCredentials.requestorId"
             id="addudp_requestorid"
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorId',
             })}
             component={TextField}
+            disabled={isDisableRequestorId}
             fullWidth
+            onChange={(e) => {
+              form.change(e.target.name, e.target.value);
+              if (isDisableApiKey) form.change('sushiCredentials.apiKey', undefined);
+            }}
           />
         </Col>
         <Col xs={4}>
@@ -53,7 +58,12 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.apiKey',
             })}
             component={TextField}
+            disabled={isDisableApiKey}
             fullWidth
+            onChange={(e) => {
+              form.change(e.target.name, e.target.value);
+              if (isDisableRequestorId) form.change('sushiCredentials.requestorId', undefined);
+            }}
           />
         </Col>
       </Row>
@@ -105,6 +115,8 @@ const SushiCredentialsForm = (props) => {
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
+  values: PropTypes.shape(),
+  form: PropTypes.shape(),
   required: PropTypes.bool
 };
 
