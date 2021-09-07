@@ -9,10 +9,10 @@ const SushiCredentialsForm = (props) => {
   const { useAggregator, values, form } = props;
   const intl = useIntl();
 
-  const isDisableRequestorId = !!(values.harvestingConfig?.reportRelease === '5' && values.sushiCredentials?.apiKey);
+  const isDisableRequestorId = !!(values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.apiKey);
 
-  const isDisableApiKey = !!(values.harvestingConfig?.reportRelease === '4' ||
-      (values.harvestingConfig?.reportRelease === '5' && values.sushiCredentials?.requestorId));
+  const isDisableApiKey = !!(values.harvestingConfig?.reportRelease === 4 ||
+      (values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.requestorId));
 
   return (
     <React.Fragment>

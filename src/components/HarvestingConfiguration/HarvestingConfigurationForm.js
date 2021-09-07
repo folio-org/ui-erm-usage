@@ -34,7 +34,7 @@ class HarvestingConfigurationForm extends React.Component {
   changeSelectedCounterVersion = (event) => {
     event.preventDefault();
 
-    const val = event.target.value;
+    const val = parseInt(event.target.value, 10);
     const selectedReportRelease = get(
       this.props.values,
       'harvestingConfig.reportRelease',
@@ -51,8 +51,8 @@ class HarvestingConfigurationForm extends React.Component {
       } else {
         this.props.form.mutators.setReportRelease({}, val);
       }
-      if ((val === '4' && this.props.values.sushiCredentials?.apiKey) ||
-        (val === '5' && this.props.values.sushiCredentials?.apiKey && this.props.values.sushiCredentials?.requestorId)) {
+      if ((val === 4 && this.props.values.sushiCredentials?.apiKey) ||
+        (val === 5 && this.props.values.sushiCredentials?.apiKey && this.props.values.sushiCredentials?.requestorId)) {
         this.props.form.change('sushiCredentials.apiKey', undefined);
       }
     }
@@ -85,7 +85,7 @@ class HarvestingConfigurationForm extends React.Component {
     const onToggleAccordion = this.props.onToggle;
     const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
     const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
-    const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
+    const reportRelease = get(values, 'harvestingConfig.reportRelease', null);
     const requestedReports = get(
       values,
       'harvestingConfig.requestedReports',
@@ -152,7 +152,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={8}>
                   <SelectedReportsForm
                     initialValues={initialValues}
-                    counterVersion={parseInt(reportRelease, 10)}
+                    counterVersion={reportRelease}
                     required={isHarvestingStatusActive}
                     selectedReports={requestedReports}
                   />
