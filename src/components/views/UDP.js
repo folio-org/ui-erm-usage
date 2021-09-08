@@ -296,10 +296,7 @@ class UDP extends React.Component {
             <Button
               id="clickable-edit-udp"
               buttonStyle="dropDownItem"
-              onClick={() => {
-                handlers.onEdit();
-                this.goToEdit();
-              }}
+              onClick={() => { handlers.onEdit(); }}
               aria-label="Edit usage data provider"
               marginBottom0
             >
