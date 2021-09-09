@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
 
@@ -142,6 +143,36 @@ describe('UDPs SASQ View', () => {
 
     it('submit button should be present', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
+    });
+
+    test('enter search string', async () => {
+      const searchFieldInput = document.querySelector('#input-udp-search');
+      expect(searchFieldInput).toBeInTheDocument();
+      userEvent.type(searchFieldInput, 'test');
+
+      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      expect(searchFieldInput.value).toBe('test');
+      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
+
+      // expect focus in result list ////////////////////////////////////////////////////
+
+      // WORKING when focus is set manually: /////////////////////
+      // document.querySelector('[data-test-pane-header]').focus();
+      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
+
+      // NOT WORKING ////////////////////////////////////////////
+      // await (waitFor(() => document.querySelector('[data-test-pane-header]').toHaveFocus()));
+      // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
+
+      // await new Promise((r) => setTimeout(r, 2000));
+      // jest.setTimeout(20000);
+
+      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
+      // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
     });
   });
 
