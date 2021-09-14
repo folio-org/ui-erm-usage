@@ -31,8 +31,14 @@ describe('ReportInfo.js', () => {
     expect(screen.queryByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
   });
 
-  test('failedReason with defined Code', () => {
+  test('failedReason with defined Code with whitespace', () => {
     render('{\\"Code\\": 1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}');
+    expect(screen.queryByText('Info')).toBeInTheDocument();
+    expect(screen.queryByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
+  });
+
+  test('failedReason with defined Code without whitespace', () => {
+    render('{\\"Code\\":1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}');
     expect(screen.queryByText('Info')).toBeInTheDocument();
     expect(screen.queryByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
   });

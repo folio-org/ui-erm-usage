@@ -150,7 +150,7 @@ class ReportInfo extends React.Component {
   };
 
   adaptSushiFailedInfo(failedReason) {
-    const matchResult = failedReason.match('(?:Number=|"Code": )([0-9]{1,4})');
+    const matchResult = failedReason.match('(?:Number=|"Code": ?)([0-9]{1,4})');
     return (matchResult !== null) ? this.translateErrorCodes(matchResult[1]) : failedReason;
   }
 
