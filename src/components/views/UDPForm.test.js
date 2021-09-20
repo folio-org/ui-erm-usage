@@ -453,6 +453,22 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Requestor name' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
     });
+
+    describe('test required value of customerId field', () => {
+      test('change harvest statistics via from sushi to aggregator', async () => {
+        userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
+        userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']);
+        userEvent.click(screen.getByRole('textbox', { name: 'Customer ID' }));
+        userEvent.click(screen.getByRole('textbox', { name: 'Platform' }));
+
+        expect(screen.getByText('Required')).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
+
+        userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['aggregator']);
+        expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
+        expect(screen.queryByText('Required')).not.toBeInTheDocument();
+      });
+    });
   });
 
   describe('test that reqId and apiKey fields are disabled and cleared depending on reportRelease selection', () => {

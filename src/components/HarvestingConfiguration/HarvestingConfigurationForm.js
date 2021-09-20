@@ -58,6 +58,13 @@ class HarvestingConfigurationForm extends React.Component {
     }
   };
 
+  changeSelectedHarvestVia = (event) => {
+    event.preventDefault();
+
+    this.props.form.change(event.target.name, event.target.value);
+    this.props.form.resetFieldState('sushiCredentials.customerId');
+  };
+
   confirmClearReports = (confirmation) => {
     if (confirmation) {
       this.props.form.mutators.clearSelectedReports({}, this.props.values);
@@ -119,6 +126,7 @@ class HarvestingConfigurationForm extends React.Component {
                 <Col xs={4}>
                   <HarvestingViaSelect
                     required={isHarvestingStatusActive}
+                    onChange={this.changeSelectedHarvestVia}
                   />
                 </Col>
                 <AggregatorInfoForm
@@ -212,6 +220,7 @@ HarvestingConfigurationForm.propTypes = {
   initialValues: PropTypes.object,
   form: PropTypes.shape({
     change: PropTypes.func,
+    resetFieldState: PropTypes.func,
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
