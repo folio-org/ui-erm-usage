@@ -61,9 +61,7 @@ class HarvestingConfigurationForm extends React.Component {
   changeSelectedHarvestVia = (event) => {
     event.preventDefault();
 
-    const val = event.target.value;
-
-    this.props.form.change(event.target.name, val);
+    this.props.form.change(event.target.name, event.target.value);
     this.props.form.resetFieldState('sushiCredentials.customerId');
   };
 

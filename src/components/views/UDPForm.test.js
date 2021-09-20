@@ -459,8 +459,7 @@ describe('UDPForm', () => {
         userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
         userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']);
 
-        const customerIdInput = screen.getByLabelText('Customer ID', { exact: false });
-        userEvent.type(customerIdInput, '');
+        userEvent.click(screen.getByRole('textbox', { name: 'Customer ID' }));
         userEvent.click(screen.getByRole('textbox', { name: 'Platform' }));
 
         expect(screen.getByText('Required')).toBeInTheDocument();
