@@ -458,7 +458,6 @@ describe('UDPForm', () => {
       test('change harvest statistics via from sushi to aggregator', async () => {
         userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
         userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']);
-
         userEvent.click(screen.getByRole('textbox', { name: 'Customer ID' }));
         userEvent.click(screen.getByRole('textbox', { name: 'Platform' }));
 
