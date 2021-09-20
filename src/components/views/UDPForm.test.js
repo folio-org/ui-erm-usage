@@ -454,18 +454,22 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
     });
 
-    test('Harvest statistics via is sushi', async () => {
-      userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
-      userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']);
+    describe('test required value of customerId field', () => {
+      test('change harvest statistics via from sushi to aggregator', async () => {
+        userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
+        userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']);
 
-      expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
-    });
+        const customerIdInput = screen.getByLabelText('Customer ID', { exact: false });
+        userEvent.type(customerIdInput, '');
+        userEvent.click(screen.getByRole('textbox', { name: 'Platform' }));
 
-    test('Harvest statistics via is aggregator', async () => {
-      userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
-      userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['aggregator']);
+        expect(screen.getByText('Required')).toBeInTheDocument();
+        expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
 
-      expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
+        userEvent.selectOptions(screen.getByLabelText('Harvest statistics via', { exact: false }), ['aggregator']);
+        expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
+        expect(screen.queryByText('Required')).not.toBeInTheDocument();
+      });
     });
   });
 
