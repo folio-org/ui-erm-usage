@@ -25,12 +25,14 @@ const HarvestingViaSelect = (props) => {
       required={props.required}
       validate={props.required ? required : notRequired}
       key={props.required ? 1 : 0}
+      onChange={props.onChange}
     />
   );
 };
 
 HarvestingViaSelect.propTypes = {
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default HarvestingViaSelect;
