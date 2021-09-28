@@ -15,12 +15,26 @@ jest.mock('./AggregatorInfo/AggregatorContactInfo', () => {
   return () => <span>AggregatorContactInfo</span>;
 });
 
-const renderHarvestingConfigurationView = (stripes) => {
+const renderHarvestingConfigurationView = () => {
   return renderWithIntl(
     <MemoryRouter>
       <HarvestingConfigurationView
         usageDataProvider={udp}
-        stripes={stripes}
+        stripes={{ hasPerm: () => true }}
+        onToggle={onToggle}
+        settings={settings}
+        harvesterImpls={harvesterImpls}
+      />
+    </MemoryRouter>
+  );
+};
+
+const renderHarvestingConfigurationViewWithoutPerms = () => {
+  return renderWithIntl(
+    <MemoryRouter>
+      <HarvestingConfigurationView
+        usageDataProvider={udp}
+        stripes={{ hasPerm: () => false }}
         onToggle={onToggle}
         settings={settings}
         harvesterImpls={harvesterImpls}
@@ -41,5 +55,15 @@ describe('HarvestingConfigurationView', () => {
     expect(screen.getByText('Harvesting status')).toBeVisible();
     expect(screen.getByText('Active')).toBeVisible();
     expect(screen.getByText('German National Statistics Server')).toBeVisible();
+  });
+
+  test('render with permissions should render aggregator name as link', async () => {
+    await renderHarvestingConfigurationView(stripes);
+    expect(screen.getByText('German National Statistics Server')).toHaveAttribute('href');
+  });
+
+  test('render without permissions should render aggregator name without link', async () => {
+    await renderHarvestingConfigurationViewWithoutPerms(stripes);
+    expect(screen.getByText('German National Statistics Server')).not.toHaveAttribute('href');
   });
 });
