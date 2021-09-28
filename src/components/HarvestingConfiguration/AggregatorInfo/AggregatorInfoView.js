@@ -18,15 +18,21 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     ''
   );
 
+  const hasPermGeneralSettingsManage = stripes.hasPerm('ui-erm-usage.generalSettings.manage');
+  const displayAggregationName = hasPermGeneralSettingsManage ?
+    <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
+      {aggregatorName}
+    </Link> :
+    <React.Fragment>
+      {aggregatorName}
+    </React.Fragment>;
   const aggregatorContact = (
     <AggregatorContactInfo aggregatorId={aggregatorId} stripes={stripes} />
   );
   const aggregatorLink = aggregatorId ?
     (
       <React.Fragment>
-        <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
-          {aggregatorName}
-        </Link>
+        {displayAggregationName}
         {aggregatorContact}
       </React.Fragment>
     ) : (
@@ -67,7 +73,9 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
 
 AggregatorInfoView.propTypes = {
   usageDataProvider: PropTypes.object.isRequired,
-  stripes: PropTypes.shape().isRequired,
+  stripes: PropTypes.shape({
+    hasPerm: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default AggregatorInfoView;
