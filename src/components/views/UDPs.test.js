@@ -16,6 +16,9 @@ import udp from '../../../test/fixtures/udp';
 import aggregator from '../../../test/fixtures/aggregator';
 import UDPs from './UDPs';
 
+jest.unmock('@folio/stripes/components');
+jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
+
 const testUDP = {
   logger: { log: noop },
   mutator: { sources: {}, query: {}, resultCount: {} },
@@ -39,7 +42,7 @@ const testUDP = {
             harvestVia: 'aggregator',
             aggregator: {
               id: '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
-              name: 'German National Statistics Server',
+              name: 'Huhu',
               vendorCode: 'ACSO',
             },
             reportRelease: 5,
@@ -95,7 +98,7 @@ const connectedTestSource = new StripesConnectedSource(
 const renderUDPs = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
-      <ModuleHierarchyProvider value={['@folio/erm-usage']}>
+      <ModuleHierarchyProvider module="@folio/erm-usage">
         <UDPs
           data={{
             udps: [udp],
@@ -104,7 +107,7 @@ const renderUDPs = (stripes) => renderWithIntl(
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
           }}
-          usageDataProviders={[udp]}
+          // usageDataProviders={[udp]}
           selectedRecordId={''}
           onNeedMoreData={jest.fn()}
           queryGetter={jest.fn()}
@@ -113,7 +116,7 @@ const renderUDPs = (stripes) => renderWithIntl(
           source={connectedTestSource}
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={''}
-          contentData={[udp]}
+          // contentData={[udp]}
         />
       </ModuleHierarchyProvider>
     </StripesContext.Provider>
@@ -233,11 +236,15 @@ describe('UDPs SASQ View', () => {
       // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
     });
 
-    // render result list:
-    it('render no result message', () => {
-      expect(screen.getByText('Loading…')).toBeVisible();
-      expect(document.querySelector('.noResultsMessage')).toBeInTheDocument();
+    it('render udp title in result list', () => {
+      expect(screen.queryByText('German National Statistics Server')).toBeInTheDocument();
     });
+
+    // render result list:
+    // it('render no result message', () => {
+    //   expect(screen.getByText('Loading…')).toBeVisible();
+    //   expect(document.querySelector('.noResultsMessage')).toBeInTheDocument();
+    // });
   });
 
   // TODO: list of results will not rendered yet
