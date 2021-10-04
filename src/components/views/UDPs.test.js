@@ -1,4 +1,5 @@
 import React from 'react';
+// import { act, screen, waitFor } from '@testing-library/react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
@@ -95,6 +96,8 @@ const connectedTestSource = new StripesConnectedSource(
 //   aggregator: 200,
 // };
 
+const onSearchComplete = jest.fn();
+
 const renderUDPs = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -107,7 +110,6 @@ const renderUDPs = (stripes) => renderWithIntl(
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
           }}
-          // usageDataProviders={[udp]}
           selectedRecordId={''}
           onNeedMoreData={jest.fn()}
           queryGetter={jest.fn()}
@@ -116,7 +118,7 @@ const renderUDPs = (stripes) => renderWithIntl(
           source={connectedTestSource}
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={''}
-          // contentData={[udp]}
+          onSearchComplete={onSearchComplete}
         />
       </ModuleHierarchyProvider>
     </StripesContext.Provider>
@@ -244,7 +246,16 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
+      // document.querySelector('[data-test-pane-header]').focus();
+      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
+      // await waitFor(() => expect(onSearchComplete).toHaveBeenCalled());
+
       // expect(document.querySelector('#huhuhuhhu')).toHaveFocus();
+
+      // await act(async () => expect(document.querySelector('#huhuhuhhu')).toHaveFocus());
+
+      // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
+      // await waitFor(() => expect(document.querySelector('#huhuhuhhu')).toHaveFocus());
 
       // expect focus in result list ////////////////////////////////////////////////////
 
@@ -257,6 +268,21 @@ describe('UDPs SASQ View', () => {
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
 
       // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
+    });
+
+    test('check columns of MCL', async () => {
+      const searchFieldInput = document.querySelector('#input-udp-search');
+      expect(searchFieldInput).toBeInTheDocument();
+      userEvent.type(searchFieldInput, 'American');
+
+      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      expect(screen.queryByText('Provider name')).toBeInTheDocument();
+      expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
+      expect(screen.queryByText('Latest statistics')).toBeInTheDocument();
+      expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
     });
   });
 });
