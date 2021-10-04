@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -123,6 +123,32 @@ const renderUDPs = (stripes) => renderWithIntl(
   </MemoryRouter>
 );
 
+const renderUDPsWithoutResults = (stripes) => renderWithIntl(
+  <MemoryRouter>
+    <StripesContext.Provider value={stripes}>
+      <ModuleHierarchyProvider module="@folio/erm-usage">
+        <UDPs
+          data={{
+            udps: [],
+            aggregators: [aggregator],
+            tags: [],
+            errorCodes: ['3030', '3031', 'other'],
+            reportTypes: ['BR', 'TR'],
+          }}
+          selectedRecordId={''}
+          onNeedMoreData={jest.fn()}
+          queryGetter={jest.fn()}
+          querySetter={jest.fn()}
+          searchString={'status.active'}
+          source={connectedTestSource}
+          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
+          history={''}
+        />
+      </ModuleHierarchyProvider>
+    </StripesContext.Provider>
+  </MemoryRouter>
+);
+
 describe('UDPs SASQ View', () => {
   let stripes;
   beforeEach(() => {
@@ -212,32 +238,25 @@ describe('UDPs SASQ View', () => {
 
       expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-
       userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
-      expect(searchFieldInput.value).toBe('American');
+      expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
+      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
-      // expect focus in result list ////////////////////////////////////////////////////
-
-      // WORKING when focus is set manually: /////////////////////
-      // document.querySelector('[data-test-pane-header]').focus();
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
+
+      // expect focus in result list ////////////////////////////////////////////////////
 
       // NOT WORKING ////////////////////////////////////////////
       // await (waitFor(() => document.querySelector('[data-test-pane-header]').toHaveFocus()));
       // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-
       // await new Promise((r) => setTimeout(r, 2000));
 
       // jest.setTimeout(20000);
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
 
       // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-    });
-
-    it('render udp title in result list', () => {
-      expect(screen.queryByText('German National Statistics Server')).toBeInTheDocument();
     });
 
     // render result list:
@@ -248,4 +267,40 @@ describe('UDPs SASQ View', () => {
   });
 
   // TODO: list of results will not rendered yet
+});
+
+describe('UDPs SASQ View - Without results', () => {
+  let stripes;
+  beforeEach(() => {
+    stripes = useStripes();
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+
+    renderUDPsWithoutResults(stripes);
+  });
+
+  test('enter search string', async () => {
+    const searchFieldInput = document.querySelector('#input-udp-search');
+    expect(searchFieldInput).toBeInTheDocument();
+    userEvent.type(searchFieldInput, 'American');
+
+    expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
+    expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
+  });
 });
