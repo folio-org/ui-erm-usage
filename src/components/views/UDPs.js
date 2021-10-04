@@ -348,6 +348,7 @@ class UDPs extends React.Component {
                     }
                     paneTitleRef={this.resultsPaneTitleRef}
                     paneSub={this.renderResultsPaneSubtitle(source)}
+                    id="huhuhuhhu"
                   >
                     <MultiColumnList
                       autosize

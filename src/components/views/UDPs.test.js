@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -244,7 +244,7 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
-      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
+      // expect(document.querySelector('#huhuhuhhu')).toHaveFocus();
 
       // expect focus in result list ////////////////////////////////////////////////////
 
@@ -258,15 +258,7 @@ describe('UDPs SASQ View', () => {
 
       // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
     });
-
-    // render result list:
-    // it('render no result message', () => {
-    //   expect(screen.getByText('Loading…')).toBeVisible();
-    //   expect(document.querySelector('.noResultsMessage')).toBeInTheDocument();
-    // });
   });
-
-  // TODO: list of results will not rendered yet
 });
 
 describe('UDPs SASQ View - Without results', () => {
@@ -302,5 +294,7 @@ describe('UDPs SASQ View - Without results', () => {
 
     expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
     expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
+    expect(document.querySelector('#huhuhuhhu')).not.toHaveFocus();
+    expect(document.querySelector('#clickable-search-udps')).toHaveFocus();
   });
 });
