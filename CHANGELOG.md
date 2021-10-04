@@ -1,5 +1,20 @@
 # Change history for ui-erm-usage
 
+## [6.0.0](https://github.com/folio-org/ui-erm-usage/tree/v6.0.0) (2021-10-04)
+* Clicking aggregator name link results in error (UIEUS-276)
+* HavestingConfigurationForm not updating required fields correctly (UIEUS-274)
+* Increment stripes to v7 (UIEUS-271)
+* SUSHI error messages not displayed correctly in ReportInfo modal (UIEUS-275)
+* Rename "COUNTER reports" to "usage reports" in permission names (UIEUS-235)
+* Console error when editing a UDP (UIEUS-273)
+* Restrict editing options on usage data providers (UIEUS-269)
+* Possible to create providers without requested reports (UIEUS-272)
+* No required configuration fields for inactive harvesting status (UIEUS-266)
+* Support Standard Report Views in UI (UIEUS-265)
+* Remove isWithinScope property (UIEUS-270)
+* Pass data into "ui-agreements-extension" plugin
+* Fix propypes-checking error
+
 ## [5.1.0](https://github.com/folio-org/ui-erm-usage/tree/v5.1.0) (2021-06-14)
 * Add a pluggable surface of type `ui-agreements-extension` (UIEUS-268)
 * Apply baseline keyboard shortcuts (UIEUS-253)
