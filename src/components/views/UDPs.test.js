@@ -97,6 +97,7 @@ const connectedTestSource = new StripesConnectedSource(
 // };
 
 const onSearchComplete = jest.fn();
+const history = {};
 
 const renderUDPs = (stripes) => renderWithIntl(
   <MemoryRouter>
@@ -117,7 +118,7 @@ const renderUDPs = (stripes) => renderWithIntl(
           searchString={'status.active'}
           source={connectedTestSource}
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
-          history={''}
+          history={history}
           onSearchComplete={onSearchComplete}
         />
       </ModuleHierarchyProvider>
@@ -144,7 +145,7 @@ const renderUDPsWithoutResults = (stripes) => renderWithIntl(
           searchString={'status.active'}
           source={connectedTestSource}
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
-          history={''}
+          history={history}
         />
       </ModuleHierarchyProvider>
     </StripesContext.Provider>
@@ -246,16 +247,15 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
+      // expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+
       // document.querySelector('[data-test-pane-header]').focus();
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
       // await waitFor(() => expect(onSearchComplete).toHaveBeenCalled());
 
-      // expect(document.querySelector('#huhuhuhhu')).toHaveFocus();
-
-      // await act(async () => expect(document.querySelector('#huhuhuhhu')).toHaveFocus());
-
+      // await act(async () => expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus());
       // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-      // await waitFor(() => expect(document.querySelector('#huhuhuhhu')).toHaveFocus());
+      // await waitFor(() => expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus());
 
       // expect focus in result list ////////////////////////////////////////////////////
 
@@ -320,7 +320,7 @@ describe('UDPs SASQ View - Without results', () => {
 
     expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
     expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
-    expect(document.querySelector('#huhuhuhhu')).not.toHaveFocus();
-    expect(document.querySelector('#clickable-search-udps')).toHaveFocus();
+    // expect(document.querySelector('#paneHeaderpane-list-udps')).not.toHaveFocus();
+    // expect(document.querySelector('#clickable-search-udps')).toHaveFocus();
   });
 });

@@ -47,8 +47,8 @@ class UDPs extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.searchPending &&
-      prevState.recordsArePending === true &&
-      this.state.recordsArePending === false
+      prevState.recordsArePending === true
+      // && this.state.recordsArePending === false
     ) {
       this.onSearchComplete();
     }
@@ -66,7 +66,9 @@ class UDPs extends React.Component {
     this.setState({ searchPending: false });
 
     // Focus the pane header if we have results to minimize tabbing distance
-    if (hasResults && this.resultsPaneTitleRef.current) {
+    if (
+      hasResults &&
+      this.resultsPaneTitleRef.current) {
       this.resultsPaneTitleRef.current.focus();
     }
   }
@@ -348,7 +350,7 @@ class UDPs extends React.Component {
                     }
                     paneTitleRef={this.resultsPaneTitleRef}
                     paneSub={this.renderResultsPaneSubtitle(source)}
-                    id="huhuhuhhu"
+                    id="pane-list-udps"
                   >
                     <MultiColumnList
                       autosize
