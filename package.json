@@ -158,8 +158,8 @@
         "displayName": "eUsage: All permissions",
         "description": "All permissions of eUsage module",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "eusage.all"
+          "ui-erm-usage.view-create-edit-delete",
+          "ui-erm-usage.generalSettings.manage"
         ],
         "visible": true
       },
@@ -310,11 +310,11 @@
         "displayName": "eUsage harvester: All permissions for eUsage harvester module",
         "description": "All permissions for eUsage harvester module",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "ermusageharvester.all",
-          "ui-erm-usage-harvester.start.single",
-          "ui-erm-usage-harvester.periodic.post",
-          "ui-erm-usage-harvester.periodic.delete"
+          "ermusageharvester.start.single",
+          "ermusageharvester.impl.get",
+          "ermusageharvester.periodic.get",
+          "ermusageharvester.periodic.post",
+          "ermusageharvester.periodic.delete"
         ],
         "visible": false
       },
