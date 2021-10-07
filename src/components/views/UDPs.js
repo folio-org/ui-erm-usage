@@ -249,6 +249,7 @@ class UDPs extends React.Component {
     const count = source ? source.totalCount() : 0;
     const sortOrder = query.sort || '';
 
+    // console.log(this.props);
     return (
       <HasCommand commands={this.shortcuts}>
         <div data-test-udp-instances ref={contentRef}>

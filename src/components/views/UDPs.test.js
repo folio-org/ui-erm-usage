@@ -1,6 +1,6 @@
 import React from 'react';
-// import { act, screen, waitFor } from '@testing-library/react';
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
+// import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -20,7 +20,27 @@ import UDPs from './UDPs';
 jest.unmock('@folio/stripes/components');
 jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
 
+// const mockTotalCount = jest.fn();
+// jest.mock('@folio/stripes-smart-components/lib/SearchAndSort/ConnectedSource/StripesConnectedSource', () => {
+//   return jest.fn().mockImplementation(() => {
+//     return { totalCount: mockTotalCount };
+//   });
+// });
+
 const testUDP = {
+  // source: {
+  //   resources: {
+  //     usageDataProviders: {
+  //       hasLoaded: true,
+  //       isPending: false,
+  //       loadedAt: { },
+  //       other: { totalRecords: 1 },
+  //       pendingMutations: [],
+  //       resource: 'usageDataProviders',
+  //     }
+  //   }
+  // },
+
   logger: { log: noop },
   mutator: { sources: {}, query: {}, resultCount: {} },
   props: {
@@ -29,10 +49,26 @@ const testUDP = {
     match: {},
     staticContext: undefined,
     children: {},
+    resources: {
+      usageDataProviders: {
+        hasLoaded: true,
+        isPending: false,
+        loadedAt: { },
+        other: { totalRecords: 1 },
+        pendingMutations: [],
+        resource: 'usageDataProviders',
+      }
+    }
   },
   recordsObj: {},
   resources: {
     usageDataProviders: {
+      hasLoaded: true,
+      isPending: false,
+      loadedAt: { },
+      other: { totalRecords: 1 },
+      pendingMutations: [],
+      resource: 'usageDataProviders',
       records: [
         {
           id: 'e67924ee-aa00-454e-8fd0-c3f81339d20e',
@@ -65,7 +101,7 @@ const testUDP = {
           notes:
             'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
         }
-      ]
+      ],
     },
     aggregatorSettings: {},
     harvesterImpls: {},
@@ -126,6 +162,7 @@ const renderUDPs = (stripes) => renderWithIntl(
   </MemoryRouter>
 );
 
+// const test = () => '1';
 const renderUDPsWithoutResults = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -247,7 +284,7 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
-      // expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
 
       // document.querySelector('[data-test-pane-header]').focus();
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
