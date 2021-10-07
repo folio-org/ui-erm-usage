@@ -172,7 +172,7 @@
     "settings.section.number.failed": "Anzahl der Fehlversuche",
     "settings.harvester.start.success": "Abruf erfolgreich gestartet!",
     "settings.harvester.start.fail": "Fehler beim Starten des Abrufs...",
-    "settings.harvester.start.tenant": "Abruf für aktuellen Tenant starten:",
+    "settings.harvester.start.tenant": "Abruf für aktuellen Mandanten starten:",
     "settings.harvester.config": "Abrufeinstellungen",
     "settings.credentials.download": "Anmeldeinformationen herunterladen",
     "settings.credentials.download.csv": "Als CSV herunterladen",
