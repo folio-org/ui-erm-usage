@@ -28,19 +28,6 @@ jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ wid
 // });
 
 const testUDP = {
-  // source: {
-  //   resources: {
-  //     usageDataProviders: {
-  //       hasLoaded: true,
-  //       isPending: false,
-  //       loadedAt: { },
-  //       other: { totalRecords: 1 },
-  //       pendingMutations: [],
-  //       resource: 'usageDataProviders',
-  //     }
-  //   }
-  // },
-
   logger: { log: noop },
   mutator: { sources: {}, query: {}, resultCount: {} },
   props: {
@@ -49,7 +36,8 @@ const testUDP = {
     match: {},
     staticContext: undefined,
     children: {},
-    resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 } } },
+    // hier isPending, muss zuerst true sein und dann für den Fokus FALSE!!!!
+    resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
   },
   recordsObj: {
     other: { totalRecords: 1 },
@@ -128,6 +116,8 @@ const connectedTestSource = new StripesConnectedSource(
 const onSearchComplete = jest.fn();
 const history = {};
 
+// liste darf nicht initial erzeugt werden, weil der initiale state ein anderer sein muss
+// UDPs mit den records darf erst beim Klick auf den Suchbutton gerendert werden, sonst ist der prevState falsch
 const renderUDPs = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -155,7 +145,6 @@ const renderUDPs = (stripes) => renderWithIntl(
   </MemoryRouter>
 );
 
-// const test = () => '1';
 const renderUDPsWithoutResults = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -277,6 +266,7 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
+      // hier:
       expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
 
       // document.querySelector('[data-test-pane-header]').focus();

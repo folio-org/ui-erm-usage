@@ -45,8 +45,6 @@ class UDPs extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log('this.state.recordsArePending');
-    // console.log(this.state.recordsArePending);
     if (
       this.state.searchPending &&
       prevState.recordsArePending === true
@@ -69,12 +67,9 @@ class UDPs extends React.Component {
     const hasResults = !!(this.props.source?.totalCount() ?? 0);
 
     this.setState({ searchPending: false });
-    console.log('hasResults');
-    console.log(hasResults);
 
     // Focus the pane header if we have results to minimize tabbing distance
     if (
-      // HIER hasResult
       hasResults &&
       this.resultsPaneTitleRef.current) {
       this.resultsPaneTitleRef.current.focus();
