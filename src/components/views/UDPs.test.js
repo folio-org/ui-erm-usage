@@ -49,18 +49,11 @@ const testUDP = {
     match: {},
     staticContext: undefined,
     children: {},
-    resources: {
-      usageDataProviders: {
-        hasLoaded: true,
-        isPending: false,
-        loadedAt: { },
-        other: { totalRecords: 1 },
-        pendingMutations: [],
-        resource: 'usageDataProviders',
-      }
-    }
+    resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 } } },
   },
-  recordsObj: {},
+  recordsObj: {
+    other: { totalRecords: 1 },
+  },
   resources: {
     usageDataProviders: {
       hasLoaded: true,

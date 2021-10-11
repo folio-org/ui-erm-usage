@@ -45,9 +45,12 @@ class UDPs extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // console.log('this.state.recordsArePending');
+    // console.log(this.state.recordsArePending);
     if (
       this.state.searchPending &&
       prevState.recordsArePending === true
+      // HIER recordsArePending
       // && this.state.recordsArePending === false
     ) {
       this.onSearchComplete();
@@ -61,12 +64,17 @@ class UDPs extends React.Component {
   }
 
   onSearchComplete = () => {
+    // const test = { resources: { records: { hasLoaded: true, other: { totalRecords: 2 } } } };
+    // this.props.source.update(test, 'records');
     const hasResults = !!(this.props.source?.totalCount() ?? 0);
 
     this.setState({ searchPending: false });
+    console.log('hasResults');
+    console.log(hasResults);
 
     // Focus the pane header if we have results to minimize tabbing distance
     if (
+      // HIER hasResult
       hasResults &&
       this.resultsPaneTitleRef.current) {
       this.resultsPaneTitleRef.current.focus();
@@ -403,6 +411,7 @@ UDPs.propTypes = Object.freeze({
     loaded: PropTypes.func,
     pending: PropTypes.func.isRequired,
     totalCount: PropTypes.func,
+    update: PropTypes.func,
   }),
   syncToLocationSearch: PropTypes.bool,
   visibleColumns: PropTypes.arrayOf(PropTypes.string),

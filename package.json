@@ -12,7 +12,7 @@
     "start": "stripes serve",
     "build": "stripes build --output ./output",
     "test": "yarn run test:jest",
-    "test:jest": "jest --ci --coverage --silent",
+    "test:jest": "jest --ci --coverage",
     "test:bigtest": "stripes test karma --bundle --karma.singleRun --karma.browsers ChromeDocker --karma.reporters mocha junit --coverage",
     "test:karma": "stripes test karma",
     "lint": "eslint src",
