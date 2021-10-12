@@ -28,9 +28,8 @@ const testUDP = {
     match: {},
     staticContext: undefined,
     children: {},
-    // hier isPending, muss zuerst true sein und dann für den Fokus FALSE!!!!
+    // HERE isPending: has to be TRUE first and than set to FALSE
     resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
-    // resources: { usageDataProviders: { hasLoaded: false, other: { totalRecords: undefined }, isPending: true } },
   },
   recordsObj: {
     other: { totalRecords: 1 },
@@ -220,7 +219,7 @@ describe('UDPs SASQ View', () => {
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
-      // hier:
+      // HERE test for jumping focus:
       expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
 
       // document.querySelector('[data-test-pane-header]').focus();

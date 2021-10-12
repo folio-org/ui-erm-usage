@@ -47,9 +47,9 @@ class UDPs extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.searchPending &&
+      // recordsArePending prev and actual state
       prevState.recordsArePending === true
-      // HIER recordsArePending
-      // && this.state.recordsArePending === false
+      && this.state.recordsArePending === false
     ) {
       this.onSearchComplete();
     }
