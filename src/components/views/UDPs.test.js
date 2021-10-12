@@ -1,6 +1,6 @@
 import React from 'react';
-import { act, screen, waitFor } from '@testing-library/react';
-// import { screen } from '@testing-library/react';
+// import { act, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -9,7 +9,6 @@ import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { ModuleHierarchyProvider } from '@folio/stripes-core/src/components/ModuleHierarchy';
 import { StripesConnectedSource } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
-// import { Accordion, MultiColumnList, MultiColumnListCell } from '@folio/stripes-testing';
 
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
@@ -19,13 +18,6 @@ import UDPs from './UDPs';
 
 jest.unmock('@folio/stripes/components');
 jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
-
-// const mockTotalCount = jest.fn();
-// jest.mock('@folio/stripes-smart-components/lib/SearchAndSort/ConnectedSource/StripesConnectedSource', () => {
-//   return jest.fn().mockImplementation(() => {
-//     return { totalCount: mockTotalCount };
-//   });
-// });
 
 const testUDP = {
   logger: { log: noop },
@@ -38,6 +30,7 @@ const testUDP = {
     children: {},
     // hier isPending, muss zuerst true sein und dann für den Fokus FALSE!!!!
     resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
+    // resources: { usageDataProviders: { hasLoaded: false, other: { totalRecords: undefined }, isPending: true } },
   },
   recordsObj: {
     other: { totalRecords: 1 },
@@ -50,39 +43,7 @@ const testUDP = {
       other: { totalRecords: 1 },
       pendingMutations: [],
       resource: 'usageDataProviders',
-      records: [
-        {
-          id: 'e67924ee-aa00-454e-8fd0-c3f81339d20e',
-          label: 'American Chemical Society',
-          description: 'This is a mock udp',
-          harvestingConfig: {
-            harvestingStatus: 'active',
-            harvestVia: 'aggregator',
-            aggregator: {
-              id: '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
-              name: 'Huhu',
-              vendorCode: 'ACSO',
-            },
-            reportRelease: 5,
-            requestedReports: ['IR', 'TR'],
-            harvestingStart: '2019-01',
-          },
-          sushiCredentials: {
-            customerId: '0000000000',
-            requestorId: '00000',
-            apiKey: 'api123',
-            requestorName: 'Opentown Libraries',
-            requestorMail: 'electronic@lib.optentown.edu',
-          },
-          latestReport: '2018-04',
-          earliestReport: '2018-01',
-          hasFailedReport: 'no',
-          reportErrorCodes: [],
-          reportTypes: ['JR1'],
-          notes:
-            'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
-        }
-      ],
+      records: [],
     },
     aggregatorSettings: {},
     harvesterImpls: {},
@@ -98,20 +59,6 @@ const connectedTestSource = new StripesConnectedSource(
   testUDP.logger,
   'usageDataProviders'
 );
-
-// const columnMapping = {
-//   label: 'Label',
-//   harvestingStatus: 'Harvesting status',
-//   latestStats: 'Latest statistics',
-//   aggregator: 'Aggregator',
-// };
-
-// const columnWidths = {
-//   label: 300,
-//   harvestingStatus: 150,
-//   latestStats: 150,
-//   aggregator: 200,
-// };
 
 const onSearchComplete = jest.fn();
 const history = {};
@@ -262,6 +209,13 @@ describe('UDPs SASQ View', () => {
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
       userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
+      userEvent.type(searchFieldInput, 'xxx');
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      userEvent.type(searchFieldInput, 'American');
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      // jest.setTimeout(400000);
       expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
       expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();

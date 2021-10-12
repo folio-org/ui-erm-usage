@@ -7,9 +7,6 @@ jest.mock(
     LocationLookup: () => <div>LocationLookup</div>,
     NotesSmartAccordion: () => <div>NotesSmartAccordion</div>,
     ViewMetaData: () => <div>ViewMetaData</div>,
-    // StripesConnectedSource: () => jest.fn().mockImplementation(() => {
-    //   return { totalCount: jest.fn() };
-    // })
   }),
   { virtual: true }
 );
