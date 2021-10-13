@@ -1,6 +1,6 @@
 import React from 'react';
-// import { act, screen, waitFor } from '@testing-library/react';
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor, render } from '@testing-library/react';
+// import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -117,6 +117,90 @@ const renderUDPsWithoutResults = (stripes) => renderWithIntl(
   </MemoryRouter>
 );
 
+
+const renderUDPsSetSource = (stripes, { source }) => renderWithIntl(
+  <MemoryRouter>
+    <StripesContext.Provider value={stripes}>
+      <ModuleHierarchyProvider module="@folio/erm-usage">
+        <UDPs
+          data={{
+            udps: [udp],
+            aggregators: [aggregator],
+            tags: [],
+            errorCodes: ['3030', '3031', 'other'],
+            reportTypes: ['BR', 'TR'],
+          }}
+          selectedRecordId={''}
+          onNeedMoreData={jest.fn()}
+          queryGetter={jest.fn()}
+          querySetter={jest.fn()}
+          searchString={'status.active'}
+          // source={{ pending: true }}
+          // source={{ pending: jest.fn(), totalCount: jest.fn(), loaded: jest.fn() }}
+          source={source}
+          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
+          history={history}
+          onSearchComplete={onSearchComplete}
+        />
+      </ModuleHierarchyProvider>
+    </StripesContext.Provider>
+  </MemoryRouter>
+);
+
+describe('xxx', () => {
+  let stripes;
+  beforeEach(() => {
+    jest.clearAllMocks();
+    stripes = useStripes();
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
+  describe('state changed', () => {
+    const sourcePending = { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) };
+    const sourceLoaded = { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) };
+
+    it('dfeervervf', async () => {
+      const { rerender } = await renderUDPsSetSource(
+        stripes,
+        sourcePending
+      );
+
+      await rerender(renderUDPsSetSource(
+        stripes,
+        sourceLoaded
+      ));
+
+      // const { rerender } = renderUDPsSetSource();
+      // rerender(renderUDPsSetSource());
+
+      const searchFieldInput = document.querySelector('#input-udp-search');
+      userEvent.type(searchFieldInput, 'American');
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      // jest.setTimeout(400000);
+      expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
+      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
+      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
+
+      // HERE test for jumping focus:
+      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+    });
+  });
+});
+
 describe('UDPs SASQ View', () => {
   let stripes;
   beforeEach(() => {
@@ -220,7 +304,7 @@ describe('UDPs SASQ View', () => {
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
       // HERE test for jumping focus:
-      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+      // expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
 
       // document.querySelector('[data-test-pane-header]').focus();
       // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
