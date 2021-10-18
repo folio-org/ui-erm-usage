@@ -47,7 +47,6 @@ class UDPs extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.searchPending &&
-      // recordsArePending prev and actual state
       prevState.recordsArePending === true
       && this.state.recordsArePending === false
     ) {
@@ -62,8 +61,6 @@ class UDPs extends React.Component {
   }
 
   onSearchComplete = () => {
-    // const test = { resources: { records: { hasLoaded: true, other: { totalRecords: 2 } } } };
-    // this.props.source.update(test, 'records');
     const hasResults = !!(this.props.source?.totalCount() ?? 0);
 
     this.setState({ searchPending: false });
@@ -252,7 +249,6 @@ class UDPs extends React.Component {
     const count = source ? source.totalCount() : 0;
     const sortOrder = query.sort || '';
 
-    // console.log(this.props);
     return (
       <HasCommand commands={this.shortcuts}>
         <div data-test-udp-instances ref={contentRef}>

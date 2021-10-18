@@ -27,7 +27,6 @@ const testUDP = {
     match: {},
     staticContext: undefined,
     children: {},
-    // HERE isPending: has to be TRUE first and than set to FALSE
     resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
   },
   recordsObj: {
@@ -61,8 +60,6 @@ const connectedTestSource = new StripesConnectedSource(
 const onSearchComplete = jest.fn();
 const history = {};
 
-// liste darf nicht initial erzeugt werden, weil der initiale state ein anderer sein muss
-// UDPs mit den records darf erst beim Klick auf den Suchbutton gerendert werden, sonst ist der prevState falsch
 const renderUDPs = (stripes) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -118,6 +115,8 @@ const renderUDPsWithoutResults = (stripes) => renderWithIntl(
 
 let renderWithIntlResult = {};
 
+// rerender result list for generate correct state and prevState of recordsArePending
+// trigger a new list of results: source isPending has to be TRUE first, than FALSE
 const renderUDPsSetSource = (stripes, props = {}, rerender) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
@@ -135,7 +134,6 @@ const renderUDPsSetSource = (stripes, props = {}, rerender) => renderWithIntl(
           queryGetter={jest.fn()}
           querySetter={jest.fn()}
           searchString={'status.active'}
-          // source={connectedTestSource}
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={history}
           onSearchComplete={onSearchComplete}
@@ -147,7 +145,7 @@ const renderUDPsSetSource = (stripes, props = {}, rerender) => renderWithIntl(
   rerender
 );
 
-describe('xxx', () => {
+describe('rerender result list', () => {
   let stripes;
 
   afterEach(() => {
@@ -173,20 +171,22 @@ describe('xxx', () => {
     });
   });
 
-  describe('state changed', () => {
+  describe('trigger search with loading new results', () => {
     const sourcePending = { source: { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) } };
     const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) } };
 
-    it('dfeervervf', () => {
+    it('should set the focus to the result list', () => {
       renderWithIntlResult = renderUDPsSetSource(
         stripes,
         sourcePending,
       );
       expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
 
-      // rerender();
       const searchFieldInput = document.querySelector('#input-udp-search');
       userEvent.type(searchFieldInput, 'American');
+
+      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
       userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
       renderUDPsSetSource(
@@ -195,12 +195,10 @@ describe('xxx', () => {
         renderWithIntlResult.rerender
       );
 
-      // jest.setTimeout(400000);
-      // expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
-      // expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
-      // expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
+      expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
+      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
+      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
-      // HERE test for jumping focus:
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
       expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
     });
@@ -227,7 +225,6 @@ describe('UDPs SASQ View', () => {
     });
 
     renderUDPs(stripes);
-    // jest.setTimeout(400000);
   });
 
   afterEach(() => {
@@ -289,50 +286,6 @@ describe('UDPs SASQ View', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
     });
 
-    test('enter search string', async () => {
-      const searchFieldInput = document.querySelector('#input-udp-search');
-      expect(searchFieldInput).toBeInTheDocument();
-      userEvent.type(searchFieldInput, 'American');
-
-      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
-      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-      userEvent.click(screen.getByRole('button', { name: 'Search' }));
-
-      userEvent.type(searchFieldInput, 'xxx');
-      userEvent.click(screen.getByRole('button', { name: 'Search' }));
-
-      userEvent.type(searchFieldInput, 'American');
-      userEvent.click(screen.getByRole('button', { name: 'Search' }));
-
-      // jest.setTimeout(400000);
-      expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
-      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
-      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
-
-      // HERE test for jumping focus:
-      // expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
-
-      // document.querySelector('[data-test-pane-header]').focus();
-      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
-      // await waitFor(() => expect(onSearchComplete).toHaveBeenCalled());
-
-      // await act(async () => expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus());
-      // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-      // await waitFor(() => expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus());
-
-      // expect focus in result list ////////////////////////////////////////////////////
-
-      // NOT WORKING ////////////////////////////////////////////
-      // await (waitFor(() => document.querySelector('[data-test-pane-header]').toHaveFocus()));
-      // await waitFor(() => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-      // await new Promise((r) => setTimeout(r, 2000));
-
-      // jest.setTimeout(20000);
-      // expect(document.querySelector('[data-test-pane-header]')).toHaveFocus();
-
-      // await act(async () => expect(document.querySelector('[data-test-pane-header]')).toHaveFocus());
-    });
-
     test('check columns of MCL', async () => {
       const searchFieldInput = document.querySelector('#input-udp-search');
       expect(searchFieldInput).toBeInTheDocument();
@@ -383,7 +336,5 @@ describe('UDPs SASQ View - Without results', () => {
 
     expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
     expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
-    // expect(document.querySelector('#paneHeaderpane-list-udps')).not.toHaveFocus();
-    // expect(document.querySelector('#clickable-search-udps')).toHaveFocus();
   });
 });
