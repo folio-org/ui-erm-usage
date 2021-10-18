@@ -35,7 +35,7 @@ const udps = [
     label: 'Test udp',
     description: 'This is a second mock udp',
     harvestingConfig: {
-      harvestingStatus: 'inactive',
+      harvestingStatus: 'active',
     },
   }
 ];

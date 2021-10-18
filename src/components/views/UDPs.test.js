@@ -12,6 +12,7 @@ import { useStripes } from '@folio/stripes/core';
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import udp from '../../../test/fixtures/udp';
+import udps from '../../../test/fixtures/udps';
 import aggregator from '../../../test/fixtures/aggregator';
 import UDPs from './UDPs';
 
@@ -29,15 +30,12 @@ const testUDP = {
     children: {},
     resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
   },
-  recordsObj: {
-    other: { totalRecords: 1 },
-  },
   resources: {
     usageDataProviders: {
       hasLoaded: true,
       isPending: false,
       loadedAt: { },
-      other: { totalRecords: 1 },
+      other: { },
       pendingMutations: [],
       resource: 'usageDataProviders',
       records: [],
@@ -123,7 +121,7 @@ const renderUDPsSetSource = (stripes, props = {}, rerender) => renderWithIntl(
       <ModuleHierarchyProvider module="@folio/erm-usage">
         <UDPs
           data={{
-            udps: [udp],
+            udps,
             aggregators: [aggregator],
             tags: [],
             errorCodes: ['3030', '3031', 'other'],

@@ -402,7 +402,6 @@ UDPs.propTypes = Object.freeze({
     loaded: PropTypes.func,
     pending: PropTypes.func.isRequired,
     totalCount: PropTypes.func,
-    update: PropTypes.func,
   }),
   syncToLocationSearch: PropTypes.bool,
   visibleColumns: PropTypes.arrayOf(PropTypes.string),
