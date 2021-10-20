@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { noop } from 'lodash';
@@ -29,9 +29,48 @@ import urls from '../../util/urls';
 class UDPs extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      filterPaneIsVisible: true,
+    this.resultsPaneTitleRef = createRef();
+  }
+
+  state = {
+    filterPaneIsVisible: true,
+    recordsArePending: true,
+    searchPending: false,
+  };
+
+  static getDerivedStateFromProps(props) {
+    return {
+      recordsArePending: props.source?.pending() ?? true
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.searchPending &&
+      prevState.recordsArePending === true
+      && this.state.recordsArePending === false
+    ) {
+      this.onSearchComplete();
+    }
+  }
+
+  handleSubmitSearch = (e, onSubmitSearch) => {
+    this.setState({ searchPending: true });
+
+    onSubmitSearch(e);
+  }
+
+  onSearchComplete = () => {
+    const hasResults = !!(this.props.source?.totalCount() ?? 0);
+
+    this.setState({ searchPending: false });
+
+    // Focus the pane header if we have results to minimize tabbing distance
+    if (
+      hasResults &&
+      this.resultsPaneTitleRef.current) {
+      this.resultsPaneTitleRef.current.focus();
+    }
   }
 
   columnMapping = {
@@ -251,7 +290,9 @@ class UDPs extends React.Component {
                         <FormattedMessage id="stripes-smart-components.searchAndFilter" />
                       }
                     >
-                      <form onSubmit={onSubmitSearch}>
+                      <form
+                        onSubmit={e => this.handleSubmitSearch(e, onSubmitSearch)}
+                      >
                         <div>
                           <SearchField
                             ariaLabel={intl.formatMessage({
@@ -307,7 +348,9 @@ class UDPs extends React.Component {
                     paneTitle={
                       <FormattedMessage id="ui-erm-usage.usage-data-providers" />
                     }
+                    paneTitleRef={this.resultsPaneTitleRef}
                     paneSub={this.renderResultsPaneSubtitle(source)}
+                    id="pane-list-udps"
                   >
                     <MultiColumnList
                       autosize
@@ -357,6 +400,7 @@ UDPs.propTypes = Object.freeze({
   selectedRecordId: PropTypes.string,
   source: PropTypes.shape({
     loaded: PropTypes.func,
+    pending: PropTypes.func.isRequired,
     totalCount: PropTypes.func,
   }),
   syncToLocationSearch: PropTypes.bool,

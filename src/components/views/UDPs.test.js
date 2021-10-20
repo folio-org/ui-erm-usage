@@ -1,67 +1,115 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { noop } from 'lodash';
 
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
-import { StripesConnectedSource } from '@folio/stripes/smart-components';
+import { ModuleHierarchyProvider } from '@folio/stripes-core/src/components/ModuleHierarchy';
 import { useStripes } from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import udp from '../../../test/fixtures/udp';
+import udps from '../../../test/fixtures/udps';
 import aggregator from '../../../test/fixtures/aggregator';
 import UDPs from './UDPs';
 
-const testUDP = {
-  logger: { log: noop },
-  mutator: { sources: {}, query: {}, resultCount: {} },
-  props: {
-    history: {},
-    location: {},
-    match: {},
-    staticContext: undefined,
-    children: {},
-  },
-  recordsObj: {},
-  resources: {
-    usageDataProviders: {},
-    aggregatorSettings: {},
-    harvesterImpls: {},
-    errorCodes: {},
-    reportTypes: {},
-    query: { query: '', filters: 'status.active', sort: 'label' },
-    resultCount: 30,
-  },
-};
+jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
 
-const connectedTestSource = new StripesConnectedSource(
-  testUDP.props,
-  testUDP.logger,
-  'usageDataProviders'
-);
+const onSearchComplete = jest.fn();
+const history = {};
 
-const renderUDPs = (stripes) => renderWithIntl(
+let renderWithIntlResult = {};
+const sourcePending = { source: { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) } };
+const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) } };
+
+// rerender result list for generate correct state and prevState of recordsArePending
+// trigger a new list of results: source isPending has to be TRUE first, than FALSE
+const renderUDPs = (stripes, props = {}, udpsData, rerender) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
-      <UDPs
-        data={{
-          udps: [udp],
-          aggregators: [aggregator],
-          tags: [],
-          errorCodes: ['3030', '3031', 'other'],
-          reportTypes: ['BR', 'TR'],
-        }}
-        selectedRecordId={''}
-        onNeedMoreData={jest.fn()}
-        queryGetter={jest.fn()}
-        querySetter={jest.fn()}
-        searchString={'status.active'}
-        source={connectedTestSource}
-      />
+      <ModuleHierarchyProvider module="@folio/erm-usage">
+        <UDPs
+          data={{
+            udps: udpsData,
+            aggregators: [aggregator],
+            tags: [],
+            errorCodes: ['3030', '3031', 'other'],
+            reportTypes: ['BR', 'TR'],
+          }}
+          selectedRecordId={''}
+          onNeedMoreData={jest.fn()}
+          queryGetter={jest.fn()}
+          querySetter={jest.fn()}
+          searchString={'status.active'}
+          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
+          history={history}
+          onSearchComplete={onSearchComplete}
+          {...props}
+        />
+      </ModuleHierarchyProvider>
     </StripesContext.Provider>
-  </MemoryRouter>
+  </MemoryRouter>,
+  rerender
 );
+
+describe('rerender result list', () => {
+  let stripes;
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    stripes = useStripes();
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
+  describe('trigger search with loading new results', () => {
+    it('should set the focus to the result list', () => {
+      renderWithIntlResult = renderUDPs(
+        stripes,
+        sourcePending,
+        udps,
+      );
+      expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
+
+      const searchFieldInput = document.querySelector('#input-udp-search');
+      userEvent.type(searchFieldInput, 'American');
+
+      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      renderUDPs(
+        stripes,
+        sourceLoaded,
+        udps,
+        renderWithIntlResult.rerender
+      );
+
+      expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
+      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
+      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
+
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+    });
+  });
+});
 
 describe('UDPs SASQ View', () => {
   let stripes;
@@ -82,7 +130,7 @@ describe('UDPs SASQ View', () => {
       })),
     });
 
-    renderUDPs(stripes);
+    renderUDPs(stripes, sourceLoaded, udps);
   });
 
   afterEach(() => {
@@ -143,7 +191,56 @@ describe('UDPs SASQ View', () => {
     it('submit button should be present', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
     });
+
+    it('columns of MCL should be present', async () => {
+      const searchFieldInput = document.querySelector('#input-udp-search');
+      expect(searchFieldInput).toBeInTheDocument();
+      userEvent.type(searchFieldInput, 'American');
+
+      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+      expect(screen.queryByText('Provider name')).toBeInTheDocument();
+      expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
+      expect(screen.queryByText('Latest statistics')).toBeInTheDocument();
+      expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
+    });
+  });
+});
+
+describe('UDPs SASQ View - Without results', () => {
+  let stripes;
+  beforeEach(() => {
+    stripes = useStripes();
+
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+
+    renderUDPs(stripes, {}, []);
   });
 
-  // TODO: list of results will not rendered yet
+  test('enter search string', async () => {
+    const searchFieldInput = document.querySelector('#input-udp-search');
+    expect(searchFieldInput).toBeInTheDocument();
+    userEvent.type(searchFieldInput, 'American');
+
+    expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
+    expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
+  });
 });
