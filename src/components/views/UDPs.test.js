@@ -2,126 +2,35 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { noop } from 'lodash';
 
 import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import { ModuleHierarchyProvider } from '@folio/stripes-core/src/components/ModuleHierarchy';
-import { StripesConnectedSource } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import udp from '../../../test/fixtures/udp';
 import udps from '../../../test/fixtures/udps';
 import aggregator from '../../../test/fixtures/aggregator';
 import UDPs from './UDPs';
 
-jest.unmock('@folio/stripes/components');
 jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
-
-const testUDP = {
-  logger: { log: noop },
-  mutator: { sources: {}, query: {}, resultCount: {} },
-  props: {
-    history: {},
-    location: {},
-    match: {},
-    staticContext: undefined,
-    children: {},
-    resources: { usageDataProviders: { hasLoaded: true, other: { totalRecords: 2 }, isPending: true } },
-  },
-  resources: {
-    usageDataProviders: {
-      hasLoaded: true,
-      isPending: false,
-      loadedAt: { },
-      other: { },
-      pendingMutations: [],
-      resource: 'usageDataProviders',
-      records: [],
-    },
-    aggregatorSettings: {},
-    harvesterImpls: {},
-    errorCodes: {},
-    reportTypes: {},
-    query: { query: '', filters: 'status.active', sort: 'label' },
-    resultCount: 30,
-  },
-};
-
-const connectedTestSource = new StripesConnectedSource(
-  testUDP.props,
-  testUDP.logger,
-  'usageDataProviders'
-);
 
 const onSearchComplete = jest.fn();
 const history = {};
 
-const renderUDPs = (stripes) => renderWithIntl(
-  <MemoryRouter>
-    <StripesContext.Provider value={stripes}>
-      <ModuleHierarchyProvider module="@folio/erm-usage">
-        <UDPs
-          data={{
-            udps: [udp],
-            aggregators: [aggregator],
-            tags: [],
-            errorCodes: ['3030', '3031', 'other'],
-            reportTypes: ['BR', 'TR'],
-          }}
-          selectedRecordId={''}
-          onNeedMoreData={jest.fn()}
-          queryGetter={jest.fn()}
-          querySetter={jest.fn()}
-          searchString={'status.active'}
-          source={connectedTestSource}
-          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
-          history={history}
-          onSearchComplete={onSearchComplete}
-        />
-      </ModuleHierarchyProvider>
-    </StripesContext.Provider>
-  </MemoryRouter>
-);
-
-const renderUDPsWithoutResults = (stripes) => renderWithIntl(
-  <MemoryRouter>
-    <StripesContext.Provider value={stripes}>
-      <ModuleHierarchyProvider module="@folio/erm-usage">
-        <UDPs
-          data={{
-            udps: [],
-            aggregators: [aggregator],
-            tags: [],
-            errorCodes: ['3030', '3031', 'other'],
-            reportTypes: ['BR', 'TR'],
-          }}
-          selectedRecordId={''}
-          onNeedMoreData={jest.fn()}
-          queryGetter={jest.fn()}
-          querySetter={jest.fn()}
-          searchString={'status.active'}
-          source={connectedTestSource}
-          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
-          history={history}
-        />
-      </ModuleHierarchyProvider>
-    </StripesContext.Provider>
-  </MemoryRouter>
-);
-
 let renderWithIntlResult = {};
+const sourcePending = { source: { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) } };
+const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) } };
 
 // rerender result list for generate correct state and prevState of recordsArePending
 // trigger a new list of results: source isPending has to be TRUE first, than FALSE
-const renderUDPsSetSource = (stripes, props = {}, rerender) => renderWithIntl(
+const renderUDPs = (stripes, props = {}, udpsData, rerender) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
       <ModuleHierarchyProvider module="@folio/erm-usage">
         <UDPs
           data={{
-            udps,
+            udps: udpsData,
             aggregators: [aggregator],
             tags: [],
             errorCodes: ['3030', '3031', 'other'],
@@ -170,13 +79,11 @@ describe('rerender result list', () => {
   });
 
   describe('trigger search with loading new results', () => {
-    const sourcePending = { source: { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) } };
-    const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) } };
-
     it('should set the focus to the result list', () => {
-      renderWithIntlResult = renderUDPsSetSource(
+      renderWithIntlResult = renderUDPs(
         stripes,
         sourcePending,
+        udps,
       );
       expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
 
@@ -187,9 +94,10 @@ describe('rerender result list', () => {
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
       userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
-      renderUDPsSetSource(
+      renderUDPs(
         stripes,
         sourceLoaded,
+        udps,
         renderWithIntlResult.rerender
       );
 
@@ -222,7 +130,7 @@ describe('UDPs SASQ View', () => {
       })),
     });
 
-    renderUDPs(stripes);
+    renderUDPs(stripes, sourceLoaded, udps);
   });
 
   afterEach(() => {
@@ -284,7 +192,7 @@ describe('UDPs SASQ View', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
     });
 
-    test('check columns of MCL', async () => {
+    it('columns of MCL should be present', async () => {
       const searchFieldInput = document.querySelector('#input-udp-search');
       expect(searchFieldInput).toBeInTheDocument();
       userEvent.type(searchFieldInput, 'American');
@@ -320,7 +228,7 @@ describe('UDPs SASQ View - Without results', () => {
       })),
     });
 
-    renderUDPsWithoutResults(stripes);
+    renderUDPs(stripes, {}, []);
   });
 
   test('enter search string', async () => {
