@@ -11,14 +11,12 @@ export default function withReportHandlers(WrappedComponent) {
   function WithReportHandlers(props) {
     const calloutRef = useRef();
 
-    const httpHeaders = Object.assign(
-      {},
+    const httpHeaders =
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
+        'X-Okapi-Token': props.stripes.store.getState().okapi.token
+      };
+
     const okapiUrl = props.stripes.okapi.url;
 
     const downloadReportMultipleMonths = (
@@ -145,11 +143,10 @@ export default function withReportHandlers(WrappedComponent) {
               _error: 'Fetch file failed',
             });
           } else {
-            return response.text();
+            return response.blob();
           }
         })
-        .then((text) => {
-          const blob = new Blob([text]);
+        .then(blob => {
           saveAs(blob, fileName);
         })
         .catch((err) => {
