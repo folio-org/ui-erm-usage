@@ -1,5 +1,9 @@
 # Change history for ui-erm-usage
 
+## [6.1.0](https://github.com/folio-org/ui-erm-usage/tree/v6.1.0) (2022-02-24)
+* Refactor psets away from backend ".all" permissions (UIEUS-281)
+* Corrupted data when downloading binary files (UIEUS-285)
+
 ## [6.0.0](https://github.com/folio-org/ui-erm-usage/tree/v6.0.0) (2021-10-04)
 * Clicking aggregator name link results in error (UIEUS-276)
 * HavestingConfigurationForm not updating required fields correctly (UIEUS-274)
