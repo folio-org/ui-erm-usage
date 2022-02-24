@@ -4,6 +4,8 @@ Copyright (C) 2018-2019 The Open Library Foundation
 
 This software is distributed under the terms of the Apache License, Version 2.0. See the file "[LICENSE](LICENSE)" for more information.
 
+<img alt="EFRE-Lod logo" src="https://github.com/folio-org/ui-erm-usage/blob/master/EFRE_2015_quer_RGB_klein.jpg" width="500" >
+
 ## Introduction
 
 The ERM-Usage UI Module, or `ui-erm-usage`, is a Stripes UI module for managing usage statistics. It allows to enter credentials for accessing usage data providers. These credentials are used by the backend module [mod-erm-usage](https://github.com/folio-org/mod-erm-usage) to harvest usage statistics periodically.
