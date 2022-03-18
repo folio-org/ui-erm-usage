@@ -228,7 +228,7 @@
     "sushiCreds.platform": "プラットホーム",
     "report.error.sushiException": "SUSHI exception",
     "general.remove": "Remove",
-    "general.status.inactive": "無効",
+    "general.status.inactive": "非アクティブ",
     "general.status.active": "有効",
     "report.custom.info": "Custom Report Info",
     "udp.form.placeholder.udpName": "Enter a name to identify the usage data provider",

@@ -250,7 +250,7 @@
     "aggregator.form.placeholder.configType": "Select a config type",
     "aggregator.config.accountConfig.contact.number": "Contact #{number}",
     "aggregator.config.addContact": "+ Aggiungi contatto",
-    "aggregator.config.contacts": "Contacts",
+    "aggregator.config.contacts": "Contatti",
     "aggregator.config.popover": "For German National Statistic Server specify the keys:",
     "aggregator.config.addParam": "Add config parameter",
     "statistics.delete": "Do you really want to delete this report?",
