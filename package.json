@@ -141,6 +141,7 @@
           "aggregatorsettings.item.delete",
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
+          "configuration.entries.item.put",
           "configuration.entries.item.post"
         ],
         "visible": false
