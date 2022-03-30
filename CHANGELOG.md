@@ -1,5 +1,9 @@
 # Change history for ui-erm-usage
 
+## [6.1.1](https://github.com/folio-org/ui-erm-usage/tree/v6.1.1) (2022-03-30)
+* Permission "Settings (eUsage): Can view and edit settings" doesn't allow create/edit Aggregator record (UIEUS-288)
+* An error occurs when trying to save changes to eUsage settings (UIEUS-287)
+
 ## [6.1.0](https://github.com/folio-org/ui-erm-usage/tree/v6.1.0) (2022-02-24)
 * Refactor psets away from backend ".all" permissions (UIEUS-281)
 * Corrupted data when downloading binary files (UIEUS-285)
