@@ -52,7 +52,7 @@
     "udp.form.selectedReports.confirmClearLabel": "Cancella i report",
     "udp.form.selectedReports.addReportButton": "Aggiungi report",
     "udp.form.reportList.selectReportInfo": "Seleziona il rapporto Counter {counterVersion}",
-    "udp.form.reportList.selectReportFirst": "Select Counter report release first!",
+    "udp.form.reportList.selectReportFirst": "Seleziona innanzitutto la versione del rapporto Counter",
     "aggregator.generalInformation": "Informazioni generali",
     "aggregator.name": "Nome",
     "aggregator.serviceType": "Tipologia servizio",
