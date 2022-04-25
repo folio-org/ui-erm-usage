@@ -30,8 +30,8 @@ import css from './UDPForm.css';
 class UDPForm extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
-      aggregators: PropTypes.array.isRequired,
-      harvesterImpls: PropTypes.array.isRequired,
+      aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
+      harvesterImpls: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
     handlers: PropTypes.shape({
       onClose: PropTypes.func.isRequired,
