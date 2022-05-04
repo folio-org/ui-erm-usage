@@ -263,7 +263,7 @@
     "settings.harvester.config.periodic.confirmDelete": "刪除定期資料擷取設定？",
     "udp.counterStatistics": "COUNTER statistics",
     "udp.nonCounterStatistics": "Non-COUNTER statistics",
-    "udp.statsUpload": "Statistics upload",
+    "udp.statsUpload": "統計上傳",
     "general.sure": "你確定嗎？",
     "general.unsaved.selections": "There are unsaved selections.",
     "general.keepEditing": "Keep editing",
