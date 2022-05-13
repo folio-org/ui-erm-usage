@@ -168,7 +168,7 @@
     "harvester.start.fail.single.udp": "Something went wrong while starting the harvester for usagedata provider",
     "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
     "settings.harvester": "Harvester",
-    "settings.section.display.settings": "Display settings",
+    "settings.section.display.settings": "Configuración de pantalla",
     "settings.section.number.failed": "Number of failed attempts",
     "settings.harvester.start.success": "Harvester successfully started!",
     "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
