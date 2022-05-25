@@ -132,9 +132,8 @@
       },
       {
         "permissionName": "settings.erm-usage.enabled",
-        "displayName": "Settings (eUsage): Can view and edit settings",
+        "displayName": "Settings (eUsage): Can view and edit all settings",
         "subPermissions": [
-          "module.erm-usage.enabled",
           "settings.enabled",
           "aggregatorsettings.collection.get",
           "aggregatorsettings.item.get",
@@ -144,7 +143,12 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "configuration.entries.item.put",
-          "configuration.entries.item.post"
+          "configuration.entries.item.post",
+          "ermusageharvester.impl.get",
+          "ermusageharvester.periodic.get",
+          "ermusageharvester.periodic.post",
+          "ermusageharvester.periodic.delete",
+          "ermusageharvester.start"
         ],
         "visible": false
       },
