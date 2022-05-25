@@ -216,7 +216,7 @@ class PeriodicHarvestingManager extends React.Component {
   getLastMenu() {
     const isEditing = this.state.isEditing;
     return (
-      <IfPermission perm="ermusageharvester.periodic.post">
+      <IfPermission perm="ui-erm-usage.generalSettings.manage">
         <PaneMenu>
           {isEditing ? (
             <IconButton

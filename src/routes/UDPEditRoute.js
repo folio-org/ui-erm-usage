@@ -36,7 +36,7 @@ class UDPEditRoute extends React.Component {
     super(props);
 
     this.state = {
-      hasPerms: props.stripes.hasPerm('usagedataproviders.item.put'),
+      hasPerms: props.stripes.hasPerm('ui-erm-usage.udp.edit'),
     };
   }
 
