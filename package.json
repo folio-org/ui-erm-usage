@@ -150,9 +150,10 @@
         "description": "All permissions of eUsage module",
         "subPermissions": [
           "ui-erm-usage.view",
-          "ui-erm-usage.create",
-          "ui-erm-usage.edit",
-          "ui-erm-usage.delete",
+          "ui-erm-usage.udp.create-edit",
+          "ui-erm-usage.reports.create",
+          "ui-erm-usage.udp.delete",
+          "ui-erm-usage.reports.delete",
           "ui-erm-usage.generalSettings.manage",
           "ui-erm-usage-harvester.start.single"
         ],
@@ -177,11 +178,19 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.create",
-        "displayName": "eUsage: Can create usage data providers and COUNTER reports",
-        "description": "Can create usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.udp.create",
+        "displayName": "eUsage: Can create usage data providers",
+        "description": "Can create usage data providers",
         "subPermissions": [
-          "usagedataproviders.item.post",
+          "usagedataproviders.item.post"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.reports.create",
+        "displayName": "eUsage: Can upload usage reports",
+        "description": "Can upload usage reports",
+        "subPermissions": [
           "counterreports.item.post",
           "customreports.item.post",
           "erm-usage.files.item.post"
@@ -189,11 +198,21 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.edit",
+        "permissionName": "ui-erm-usage.udp.edit",
         "displayName": "eUsage: Can edit usage data providers",
         "description": "Can edit usage data providers",
         "subPermissions": [
           "usagedataproviders.item.put"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.udp.create-edit",
+        "displayName": "eUsage: Can create and edit usage data providers",
+        "description": "Can create and edit usage data providers",
+        "subPermissions": [
+          "ui-erm-usage.udp.create",
+          "ui-erm-usage.udp.edit"
         ],
         "visible": true
       },
