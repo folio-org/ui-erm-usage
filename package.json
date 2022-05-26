@@ -217,11 +217,19 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.delete",
-        "displayName": "eUsage: Can delete usage data providers and COUNTER reports",
-        "description": "Can delete usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.udp.delete",
+        "displayName": "eUsage: Can delete usage data providers",
+        "description": "Can delete usage data providers",
         "subPermissions": [
-          "usagedataproviders.item.delete",
+          "usagedataproviders.item.delete"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage.reports.delete",
+        "displayName": "eUsage: Can delete usage reports",
+        "description": "Can delete usage reports",
+        "subPermissions": [
           "counterreports.item.delete",
           "customreports.item.delete",
           "erm-usage.files.item.delete"
