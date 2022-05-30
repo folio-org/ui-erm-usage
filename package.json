@@ -107,7 +107,8 @@
       "counter-reports": "3.0",
       "custom-reports": "1.0",
       "erm-usage/files": "1.0",
-      "usage-data-providers": "2.7"
+      "usage-data-providers": "2.7",
+      "tags": "1.0"
     },
     "permissionSets": [
       {
@@ -117,7 +118,6 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "tags.collection.get",
-          "note.types.collection.get",
           "ermusageharvester.impl.get"
         ],
         "visible": false
@@ -202,7 +202,8 @@
         "displayName": "eUsage: Can edit usage data providers",
         "description": "Can edit usage data providers",
         "subPermissions": [
-          "usagedataproviders.item.put"
+          "usagedataproviders.item.put",
+          "tags.item.post"
         ],
         "visible": false
       },
