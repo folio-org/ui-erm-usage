@@ -183,7 +183,7 @@ class UDP extends React.Component {
     return (
       <>
         <div>
-          <IfPermission perm="ermusageharvester.start.single">
+          <IfPermission perm="ui-erm-usage-harvester.start.single">
             <Button
               buttonStyle="dropDownItem"
               id="start-harvester-button"

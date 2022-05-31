@@ -107,7 +107,8 @@
       "counter-reports": "3.0",
       "custom-reports": "1.0",
       "erm-usage/files": "1.0",
-      "usage-data-providers": "2.7"
+      "usage-data-providers": "2.7",
+      "tags": "1.0"
     },
     "permissionSets": [
       {
@@ -117,24 +118,14 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "tags.collection.get",
-          "note.types.collection.get",
           "ermusageharvester.impl.get"
         ],
         "visible": false
       },
       {
-        "permissionName": "ui-erm-usage.module.enabled",
-        "displayName": "UI: eUsage module is enabled",
+        "permissionName": "ui-erm-usage.generalSettings.manage",
+        "displayName": "Settings (eUsage): Can view and edit all settings",
         "subPermissions": [
-          "module.erm-usage.enabled"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "settings.erm-usage.enabled",
-        "displayName": "Settings (eUsage): Can view and edit settings",
-        "subPermissions": [
-          "module.erm-usage.enabled",
           "settings.enabled",
           "aggregatorsettings.collection.get",
           "aggregatorsettings.item.get",
@@ -144,15 +135,12 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "configuration.entries.item.put",
-          "configuration.entries.item.post"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage.generalSettings.manage",
-        "displayName": "Settings (eUsage): Can view and edit settings",
-        "subPermissions": [
-          "settings.erm-usage.enabled"
+          "configuration.entries.item.post",
+          "ermusageharvester.impl.get",
+          "ermusageharvester.periodic.get",
+          "ermusageharvester.periodic.post",
+          "ermusageharvester.periodic.delete",
+          "ermusageharvester.start"
         ],
         "visible": true
       },
@@ -161,15 +149,20 @@
         "displayName": "eUsage: All permissions",
         "description": "All permissions of eUsage module",
         "subPermissions": [
-          "ui-erm-usage.view-create-edit-delete",
-          "ui-erm-usage.generalSettings.manage"
+          "ui-erm-usage.view",
+          "ui-erm-usage.udp.create-edit",
+          "ui-erm-usage.reports.create",
+          "ui-erm-usage.udp.delete",
+          "ui-erm-usage.reports.delete",
+          "ui-erm-usage.generalSettings.manage",
+          "ui-erm-usage-harvester.start.single"
         ],
         "visible": true
       },
       {
         "permissionName": "ui-erm-usage.view",
-        "displayName": "eUsage: Can view usage data providers and COUNTER reports",
-        "description": "Can view usage data providers and COUNTER reports",
+        "displayName": "eUsage: Can view usage data providers and view/download usage reports",
+        "description": "Can view usage data providers and view/download usage reports",
         "subPermissions": [
           "module.erm-usage.enabled",
           "usagedataproviders.collection.get",
@@ -185,167 +178,71 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.view-create",
-        "displayName": "eUsage: Can view and create usage data providers and COUNTER reports",
-        "description": "Can view and create usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.udp.create",
+        "displayName": "eUsage: Can create usage data providers",
+        "description": "Can create usage data providers",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "usagedataproviders.collection.get",
-          "usagedataproviders.item.get",
-          "usagedataproviders.item.post",
-          "counterreports.collection.get",
-          "counterreports.item.get",
+          "usagedataproviders.item.post"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.reports.create",
+        "displayName": "eUsage: Can upload usage reports",
+        "description": "Can upload usage reports",
+        "subPermissions": [
           "counterreports.item.post",
-          "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get",
-          "customreports.collection.get",
-          "customreports.item.get",
           "customreports.item.post",
-          "erm-usage.files.item.get",
           "erm-usage.files.item.post"
         ],
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.view-edit",
-        "displayName": "eUsage: Can view and edit usage data providers and COUNTER reports",
-        "description": "Can view and edit usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.udp.edit",
+        "displayName": "eUsage: Can edit usage data providers",
+        "description": "Can edit usage data providers",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "usagedataproviders.collection.get",
-          "usagedataproviders.item.get",
           "usagedataproviders.item.put",
-          "counterreports.collection.get",
-          "counterreports.item.get",
-          "counterreports.item.put",
-          "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get",
-          "customreports.collection.get",
-          "customreports.item.get",
-          "customreports.item.put",
-          "erm-usage.files.item.get"
+          "tags.item.post"
+        ],
+        "visible": false
+      },
+      {
+        "permissionName": "ui-erm-usage.udp.create-edit",
+        "displayName": "eUsage: Can create and edit usage data providers",
+        "description": "Can create and edit usage data providers",
+        "subPermissions": [
+          "ui-erm-usage.udp.create",
+          "ui-erm-usage.udp.edit"
         ],
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.view-create-edit",
-        "displayName": "eUsage: Can view, create and edit usage data providers and COUNTER reports",
-        "description": "Can view, create and edit usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.udp.delete",
+        "displayName": "eUsage: Can delete usage data providers",
+        "description": "Can delete usage data providers",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "usagedataproviders.collection.get",
-          "usagedataproviders.item.get",
-          "usagedataproviders.item.post",
-          "usagedataproviders.item.put",
-          "counterreports.collection.get",
-          "counterreports.item.get",
-          "counterreports.item.post",
-          "counterreports.item.put",
-          "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get",
-          "customreports.collection.get",
-          "customreports.item.get",
-          "customreports.item.post",
-          "customreports.item.put",
-          "erm-usage.files.item.get",
-          "erm-usage.files.item.post"
+          "usagedataproviders.item.delete"
         ],
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage.view-create-edit-delete",
-        "displayName": "eUsage: Can view, create, edit and delete usage data providers and COUNTER reports",
-        "description": "Can view, create, edit and delete usage data providers and COUNTER reports",
+        "permissionName": "ui-erm-usage.reports.delete",
+        "displayName": "eUsage: Can delete usage reports",
+        "description": "Can delete usage reports",
         "subPermissions": [
-          "module.erm-usage.enabled",
-          "usagedataproviders.collection.get",
-          "usagedataproviders.item.get",
-          "usagedataproviders.item.post",
-          "usagedataproviders.item.put",
-          "usagedataproviders.item.delete",
-          "counterreports.collection.get",
-          "counterreports.item.get",
-          "counterreports.item.post",
-          "counterreports.item.put",
           "counterreports.item.delete",
-          "aggregatorsettings.collection.get",
-          "aggregatorsettings.item.get",
-          "customreports.collection.get",
-          "customreports.item.get",
-          "customreports.item.post",
-          "customreports.item.put",
           "customreports.item.delete",
-          "erm-usage.files.item.get",
-          "erm-usage.files.item.post",
           "erm-usage.files.item.delete"
         ],
         "visible": true
       },
       {
         "permissionName": "ui-erm-usage-harvester.start.single",
-        "displayName": "eUsage harvester: Start harvesting for a single provide",
-        "description": "Start harvesting for a single provide",
+        "displayName": "eUsage: Can start harvesting for a single provider",
+        "description": "Can start harvesting for a single provider",
         "subPermissions": [
           "ermusageharvester.start.single"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage-harvester.periodic.post",
-        "displayName": "eUsage harvester: Save harvester periodic setting",
-        "description": "Save harvester periodic setting",
-        "subPermissions": [
-          "ermusageharvester.periodic.post"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage-harvester.periodic.delete",
-        "displayName": "eUsage harvester: Delete harvester periodic setting",
-        "description": "Delete harvester periodic setting",
-        "subPermissions": [
-          "ermusageharvester.periodic.delete"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage-harvester.all",
-        "displayName": "eUsage harvester: All permissions for eUsage harvester module",
-        "description": "All permissions for eUsage harvester module",
-        "subPermissions": [
-          "ermusageharvester.start.single",
-          "ermusageharvester.impl.get",
-          "ermusageharvester.periodic.get",
-          "ermusageharvester.periodic.post",
-          "ermusageharvester.periodic.delete"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage.harvester.all",
-        "displayName": "eUsage harvester: All permissions for eUsage harvester module",
-        "description": "All permissions for eUsage harvester module",
-        "subPermissions": [
-          "ui-erm-usage-harvester.all"
-        ],
-        "visible": true
-      },
-      {
-        "permissionName": "ui-erm-usage-harvester.view",
-        "displayName": "eUsage harvester: Read-only permissions for eUsage harvester module",
-        "description": "Read-only permissions for eUsage harvester module",
-        "subPermissions": [
-          "module.erm-usage.enabled",
-          "ermusageharvester.readonly"
-        ],
-        "visible": false
-      },
-      {
-        "permissionName": "ui-erm-usage.harvester.view",
-        "displayName": "eUsage harvester: Read-only permissions for eUsage harvester module",
-        "description": "Read-only permissions for eUsage harvester module",
-        "subPermissions": [
-          "ui-erm-usage-harvester.view"
         ],
         "visible": true
       }

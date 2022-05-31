@@ -105,7 +105,7 @@ function UDPViewRoute(props) {
   return (
     <>
       <UDP
-        canEdit={stripes.hasPerm('usagedataproviders.item.put')}
+        canEdit={stripes.hasPerm('ui-erm-usage.udp.edit')}
         data={{
           counterReports,
           customReports,

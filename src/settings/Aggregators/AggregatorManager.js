@@ -77,9 +77,9 @@ class AggregatorManager extends React.Component {
           validate={() => {}}
           nameKey="label"
           permissions={{
-            put: 'settings.erm-usage.enabled',
-            post: 'settings.erm-usage.enabled',
-            delete: 'settings.erm-usage.enabled'
+            put: 'ui-erm-usage.generalSettings.manage',
+            post: 'ui-erm-usage.generalSettings.manage',
+            delete: 'ui-erm-usage.generalSettings.manage'
           }}
           aggregators={serviceTypes}
         />

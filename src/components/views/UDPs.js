@@ -209,7 +209,7 @@ class UDPs extends React.Component {
     }
 
     return (
-      <IfPermission perm="usagedataproviders.item.post">
+      <IfPermission perm="ui-erm-usage.udp.create">
         <PaneMenu>
           <FormattedMessage id="ui-erm-usage.udp.form.createUDP">
             {(ariaLabel) => (

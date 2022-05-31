@@ -129,7 +129,7 @@ class PeriodicHarvestingForm extends React.Component {
             </Col>
           </Row>
           <PaneMenu>
-            <IfPermission perm="ermusageharvester.periodic.post">
+            <IfPermission perm="ui-erm-usage.generalSettings.manage">
               <Button
                 id="clickable-delete-config"
                 title="DELETE"

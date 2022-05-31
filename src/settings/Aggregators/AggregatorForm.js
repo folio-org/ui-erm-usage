@@ -153,7 +153,7 @@ class AggregatorForm extends React.Component {
     return (
       <PaneMenu>
         {edit && (
-          <IfPermission perm="settings.erm-usage.enabled">
+          <IfPermission perm="ui-erm-usage.generalSettings.manage">
             <Button
               id="clickable-delete-aggregator"
               buttonStyle="danger"
@@ -305,7 +305,7 @@ class AggregatorForm extends React.Component {
     } = this.props;
     const aggregator = initialValues || {};
     const { aggregatorConfigFields, confirmDelete, sections } = this.state;
-    const disabled = !stripes.hasPerm('settings.erm-usage.enabled');
+    const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
     const name = aggregator.label || '';
 
     const configType = this.getSelectedConfigType();

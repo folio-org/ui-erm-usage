@@ -36,7 +36,7 @@ class UDPCreateRoute extends React.Component {
     super(props);
 
     this.state = {
-      hasPerms: props.stripes.hasPerm('usagedataproviders.item.post'),
+      hasPerms: props.stripes.hasPerm('ui-erm-usage.udp.create'),
     };
   }
 

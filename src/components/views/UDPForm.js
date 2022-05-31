@@ -164,7 +164,7 @@ class UDPForm extends React.Component {
     return (
       <PaneMenu>
         {isEditing && (
-          <IfPermission perm="usagedataproviders.item.delete">
+          <IfPermission perm="ui-erm-usage.udp.delete">
             <Button
               id="clickable-delete-udp"
               title={<FormattedMessage id="ui-erm-usage.general.delete" />}
