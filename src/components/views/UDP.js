@@ -224,52 +224,56 @@ class UDP extends React.Component {
             </Icon>
           </Button>
         </div>
-        <div>
-          <Button
-            buttonStyle="dropDownItem"
-            id="upload-counter-button"
-            marginBottom0
-            onClick={() => {
-              this.setState({ showCounterUpload: true });
-              onToggle();
-            }}
-          >
-            <Icon icon="plus-sign">
-              <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
-            </Icon>
-          </Button>
-        </div>
-        <div>
-          <Button
-            buttonStyle="dropDownItem"
-            id="upload-non-counter-button"
-            marginBottom0
-            onClick={() => {
-              this.setState({ showNonCounterUpload: true });
-              onToggle();
-            }}
-          >
-            <Icon icon="plus-sign">
-              <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
-            </Icon>
-          </Button>
-        </div>
-        <div>
-          <Button
-            id="clickable-delete-reports"
-            buttonStyle="dropDownItem"
-            onClick={() => {
-              onToggle();
-              this.doShowDeleteReports();
-            }}
-            aria-label="Delete reports"
-            marginBottom0
-          >
-            <Icon icon="trash">
-              <FormattedMessage id="ui-erm-usage.statistics.multi.button" />
-            </Icon>
-          </Button>
-        </div>
+        <IfPermission perm="ui-erm-usage.reports.create">
+          <div>
+            <Button
+              buttonStyle="dropDownItem"
+              id="upload-counter-button"
+              marginBottom0
+              onClick={() => {
+                this.setState({ showCounterUpload: true });
+                onToggle();
+              }}
+            >
+              <Icon icon="plus-sign">
+                <FormattedMessage id="ui-erm-usage.statistics.counter.upload" />
+              </Icon>
+            </Button>
+          </div>
+          <div>
+            <Button
+              buttonStyle="dropDownItem"
+              id="upload-non-counter-button"
+              marginBottom0
+              onClick={() => {
+                this.setState({ showNonCounterUpload: true });
+                onToggle();
+              }}
+            >
+              <Icon icon="plus-sign">
+                <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+              </Icon>
+            </Button>
+          </div>
+        </IfPermission>
+        <IfPermission perm="ui-erm-usage.reports.delete">
+          <div>
+            <Button
+              id="clickable-delete-reports"
+              buttonStyle="dropDownItem"
+              onClick={() => {
+                onToggle();
+                this.doShowDeleteReports();
+              }}
+              aria-label="Delete reports"
+              marginBottom0
+            >
+              <Icon icon="trash">
+                <FormattedMessage id="ui-erm-usage.statistics.multi.button" />
+              </Icon>
+            </Button>
+          </div>
+        </IfPermission>
         <CounterUpload
           open={this.state.showCounterUpload}
           onClose={() => this.setState({ showCounterUpload: false })}
