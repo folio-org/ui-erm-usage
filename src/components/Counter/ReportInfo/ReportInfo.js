@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import { IfPermission } from '@folio/stripes/core';
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
@@ -86,13 +87,15 @@ class ReportInfo extends React.Component {
       );
     }
     return (
-      <Button
-        id="delete-report-button"
-        buttonStyle="dropdownItem"
-        onClick={() => this.onClickDeleteReport()}
-      >
-        <Icon icon="trash">{msg}</Icon>
-      </Button>
+      <IfPermission perm="ui-erm-usage.reports.delete">
+        <Button
+          id="delete-report-button"
+          buttonStyle="dropdownItem"
+          onClick={() => this.onClickDeleteReport()}
+        >
+          <Icon icon="trash">{msg}</Icon>
+        </Button>
+      </IfPermission>
     );
   };
 
