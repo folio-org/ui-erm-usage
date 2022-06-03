@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
@@ -35,15 +36,17 @@ function CustomReportInfoFile(props) {
         >
           <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
         </Button>
-        <Button
-          id="delete-custom-report-button"
-          buttonStyle="dropdownItem"
-          onClick={onDelete}
-        >
-          <Icon icon="trash">
-            <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
-          </Icon>
-        </Button>
+        <IfPermission perm="ui-erm-usage.reports.delete">
+          <Button
+            id="delete-custom-report-button"
+            buttonStyle="dropdownItem"
+            onClick={onDelete}
+          >
+            <Icon icon="trash">
+              <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
+            </Icon>
+          </Button>
+        </IfPermission>
       </MenuSection>
     </>
   );

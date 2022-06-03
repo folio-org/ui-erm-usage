@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Icon, MenuSection, TextLink } from '@folio/stripes/components';
+import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
@@ -27,15 +28,17 @@ function CustomReportInfoLink(props) {
         >
           <Icon icon="external-link">{customReport.linkUrl}</Icon>
         </TextLink>
-        <Button
-          id="delete-custom-report-button"
-          buttonStyle="dropdownItem"
-          onClick={onDelete}
-        >
-          <Icon icon="trash">
-            <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
-          </Icon>
-        </Button>
+        <IfPermission perm="ui-erm-usage.reports.delete">
+          <Button
+            id="delete-custom-report-button"
+            buttonStyle="dropdownItem"
+            onClick={onDelete}
+          >
+            <Icon icon="trash">
+              <FormattedMessage id="ui-erm-usage.statistics.custom.delete" />
+            </Icon>
+          </Button>
+        </IfPermission>
       </MenuSection>
     </>
   );

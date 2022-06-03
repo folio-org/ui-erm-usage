@@ -2,6 +2,8 @@ import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
+import { StripesContext } from '@folio/stripes-core/src/StripesContext';
+import { MemoryRouter } from 'react-router-dom';
 
 import '../../../../test/jest/__mock__';
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
@@ -35,13 +37,17 @@ const mutator = {
 
 const renderInfoButton = (stripes) => {
   return renderWithIntl(
-    <InfoButton
-      customReport={customReport}
-      handlers={handlers}
-      mutator={mutator}
-      stripes={stripes}
-      udpLabel={udpLabel}
-    />
+    <StripesContext.Provider value={stripes}>
+      <MemoryRouter>
+        <InfoButton
+          customReport={customReport}
+          handlers={handlers}
+          mutator={mutator}
+          stripes={stripes}
+          udpLabel={udpLabel}
+        />
+      </MemoryRouter>
+    </StripesContext.Provider>
   );
 };
 
@@ -56,42 +62,49 @@ describe('InfoButton', () => {
     renderInfoButton(stripes);
   });
 
-  describe('open info modal', () => {
-    beforeEach(async () => {
-      renderInfoButton(stripes);
-      const iconButton = screen.getByRole('button', {
-        name: 'Open report info for custom report 2020 foo.',
-      });
-      userEvent.click(iconButton);
+  test('has no permission', () => {
+    stripes.hasPerm = () => false;
+    renderInfoButton(stripes);
+    const iconButton = screen.getByRole('button', {
+      name: 'Open report info for custom report 2020 foo.',
     });
+    userEvent.click(iconButton);
+    expect(screen.queryByText('Delete custom report')).not.toBeInTheDocument();
+  });
 
-    test('renders report info', async () => {
-      expect(screen.getByText('American Chemical Society')).toBeVisible();
-
-      const downloadButton = screen.getByRole('button', {
-        name: 'Icon Download file.txt',
-      });
-      expect(downloadButton).toBeInTheDocument();
-
-      userEvent.click(downloadButton);
-      expect(doDownloadFile).toHaveBeenCalled();
-
-      const deleteButton = screen.getByRole('button', {
-        name: 'Icon Delete custom report',
-      });
-      expect(deleteButton).toBeInTheDocument();
-      userEvent.click(deleteButton);
-
-      expect(
-        screen.getByText('Delete non-counter report?')
-      ).toBeInTheDocument();
-
-      const yesButton = screen.getByRole('button', {
-        name: 'Yes',
-      });
-      await userEvent.click(yesButton);
-      await waitForElementToBeRemoved(() => screen.getByText('Delete non-counter report?'));
-      expect(doDeleteReport).toHaveBeenCalled();
+  test('renders report info', async () => {
+    stripes.hasPerm = () => true;
+    renderInfoButton(stripes);
+    const iconButton = screen.getByRole('button', {
+      name: 'Open report info for custom report 2020 foo.',
     });
+    userEvent.click(iconButton);
+
+    expect(screen.getByText('American Chemical Society')).toBeVisible();
+
+    const downloadButton = screen.getByRole('button', {
+      name: 'Icon Download file.txt',
+    });
+    expect(downloadButton).toBeInTheDocument();
+
+    userEvent.click(downloadButton);
+    expect(doDownloadFile).toHaveBeenCalled();
+
+    const deleteButton = screen.getByRole('button', {
+      name: 'Icon Delete custom report',
+    });
+    expect(deleteButton).toBeInTheDocument();
+    userEvent.click(deleteButton);
+
+    expect(
+      screen.getByText('Delete non-counter report?')
+    ).toBeInTheDocument();
+
+    const yesButton = screen.getByRole('button', {
+      name: 'Yes',
+    });
+    await userEvent.click(yesButton);
+    await waitForElementToBeRemoved(() => screen.getByText('Delete non-counter report?'));
+    expect(doDeleteReport).toHaveBeenCalled();
   });
 });
