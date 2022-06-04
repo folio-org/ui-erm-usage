@@ -123,10 +123,18 @@
         "visible": false
       },
       {
+        "permissionName": "settings.erm-usage.enabled",
+        "displayName": "Settings (eUsage): Display list of settings pages",
+        "subPermissions": [
+          "settings.enabled"
+        ],
+        "visible": false
+      },
+      {
         "permissionName": "ui-erm-usage.generalSettings.manage",
         "displayName": "Settings (eUsage): Can view and edit all settings",
         "subPermissions": [
-          "settings.enabled",
+          "settings.erm-usage.enabled",
           "aggregatorsettings.collection.get",
           "aggregatorsettings.item.get",
           "aggregatorsettings.item.post",
