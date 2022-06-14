@@ -67,7 +67,7 @@ class UDPsRoute extends React.Component {
     query: {
       initialValue: {
         query: '',
-        filters: '',
+        filters: 'harvestingStatus.active',
         sort: 'label'
       }
     },
