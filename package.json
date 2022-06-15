@@ -99,7 +99,7 @@
     ],
     "displayName": "ui-erm-usage.meta.title",
     "route": "/eusage",
-    "home": "/eusage",
+    "home": "/eusage?filters=harvestingStatus.active&sort=label",
     "queryResource": "query",
     "okapiInterfaces": {
       "aggregator-settings": "1.2",
