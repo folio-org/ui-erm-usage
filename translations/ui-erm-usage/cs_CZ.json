@@ -258,7 +258,7 @@
     "statistics.harvesting.success": "Harvesting was successfull.",
     "statistics.report.info.maxAttempts": "{current} (Max attempts: {max})",
     "action.refreshStatistics": "Refresh statistics table",
-    "udpHarvestingConfig.deleteThisItem": "Delete this item",
+    "udpHarvestingConfig.deleteThisItem": "Smazat tuto jednotku",
     "udpHarvestingConfig.addReportType": "Add report type",
     "settings.harvester.config.periodic.confirmDelete": "Odstranit konfiguraci pravidelného harvestu?",
     "udp.counterStatistics": "COUNTER statistics",
