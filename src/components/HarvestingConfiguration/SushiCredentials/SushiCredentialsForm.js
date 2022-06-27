@@ -6,13 +6,8 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { notRequired, required } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { useAggregator, values, form } = props;
+  const { useAggregator, form } = props;
   const intl = useIntl();
-
-  const isDisableRequestorId = !!(values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.apiKey);
-
-  const isDisableApiKey = !!(values.harvestingConfig?.reportRelease === 4 ||
-      (values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.requestorId));
 
   return (
     <React.Fragment>
@@ -111,7 +106,6 @@ const SushiCredentialsForm = (props) => {
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
-  values: PropTypes.shape(),
   form: PropTypes.shape(),
   required: PropTypes.bool
 };

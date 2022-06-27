@@ -496,8 +496,7 @@ describe('UDPForm', () => {
       expect(releaseSelectBox.value).toBe(reportRelease.toString());
       expect(reqIdBox).not.toBeDisabled();
       expect(reqIdBox.value).toBe('id1234');
-      expect(apiKeyBox.value).toBe('');
-      expect(apiKeyBox).toBeDisabled();
+      expect(apiKeyBox).not.toBeDisabled();
     };
 
     test('select reportRelease 4', async () => {
@@ -518,13 +517,13 @@ describe('UDPForm', () => {
 
       userEvent.type(reqIdBox, 'a');
       expect(reqIdBox.value).toBe('a');
-      expect(apiKeyBox).toBeDisabled();
+      expect(apiKeyBox).not.toBeDisabled();
       userEvent.clear(reqIdBox);
       expect(apiKeyBox).not.toBeDisabled();
 
       userEvent.type(apiKeyBox, 'a');
       expect(apiKeyBox.value).toBe('a');
-      expect(reqIdBox).toBeDisabled();
+      expect(reqIdBox).not.toBeDisabled();
       userEvent.clear(apiKeyBox);
       expect(reqIdBox).not.toBeDisabled();
     });
