@@ -1,6 +1,6 @@
 {
-    "settings.general": "General",
-    "settings.general.message": "These are your general app settings.",
+    "settings.general": "Obecné",
+    "settings.general.message": "Toto jsou obecná nastavení aplikace.",
     "ui-erm-usage.resultCount": "ResultCount:",
     "resultCount": "{count, number} Records found",
     "erm-usage": "Využití ERM",
@@ -222,7 +222,7 @@
     "general.manualChanges.infoText": "Report data has been edited manually.",
     "general.editReason": "Edit reason:",
     "general.reportTypes": "Report types",
-    "report.upload.editedManually": "Report data has been edited manually",
+    "report.upload.editedManually": "Data zprávy byla upravena ručně",
     "report.upload.editReason": "Edit reason",
     "report.upload.editReason.placeholder": "Enter reason for manual changes",
     "sushiCreds.platform": "Platform",
