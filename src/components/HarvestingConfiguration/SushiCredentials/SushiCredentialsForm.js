@@ -6,8 +6,10 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { notRequired, required } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { useAggregator, form } = props;
+  const { useAggregator, values, form } = props;
   const intl = useIntl();
+
+  const isDisableApiKey = values.harvestingConfig?.reportRelease === 4;
 
   return (
     <React.Fragment>
@@ -51,6 +53,7 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.apiKey',
             })}
             component={TextField}
+            disabled={isDisableApiKey}
             fullWidth
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
@@ -106,6 +109,7 @@ const SushiCredentialsForm = (props) => {
 
 SushiCredentialsForm.propTypes = {
   useAggregator: PropTypes.bool,
+  values: PropTypes.shape(),
   form: PropTypes.shape(),
   required: PropTypes.bool
 };

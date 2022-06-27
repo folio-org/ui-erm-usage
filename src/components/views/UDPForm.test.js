@@ -483,20 +483,16 @@ describe('UDPForm', () => {
     const testSelectReportRelease = (reportRelease) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+      // const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
       const releaseSelectBox = screen.getByLabelText('Report release', { exact: false });
 
       expect(reqIdBox).not.toBeDisabled();
       expect(reqIdBox.value).toBe('id1234');
-      expect(apiKeyBox).not.toBeDisabled();
-      expect(apiKeyBox.value).toBe('key1234');
 
       userEvent.selectOptions(releaseSelectBox, reportRelease.toString());
 
       expect(releaseSelectBox.value).toBe(reportRelease.toString());
-      expect(reqIdBox).not.toBeDisabled();
       expect(reqIdBox.value).toBe('id1234');
-      expect(apiKeyBox).not.toBeDisabled();
     };
 
     test('select reportRelease 4', async () => {
