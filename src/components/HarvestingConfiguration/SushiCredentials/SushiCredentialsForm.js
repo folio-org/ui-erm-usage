@@ -41,11 +41,9 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorId',
             })}
             component={TextField}
-            disabled={isDisableRequestorId}
             fullWidth
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
-              if (isDisableApiKey) form.change('sushiCredentials.apiKey', undefined);
             }}
           />
         </Col>
@@ -58,11 +56,9 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.apiKey',
             })}
             component={TextField}
-            disabled={isDisableApiKey}
             fullWidth
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
-              if (isDisableRequestorId) form.change('sushiCredentials.requestorId', undefined);
             }}
           />
         </Col>
