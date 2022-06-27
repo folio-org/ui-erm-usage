@@ -9,10 +9,7 @@ const SushiCredentialsForm = (props) => {
   const { useAggregator, values, form } = props;
   const intl = useIntl();
 
-  const isDisableRequestorId = !!(values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.apiKey);
-
-  const isDisableApiKey = !!(values.harvestingConfig?.reportRelease === 4 ||
-      (values.harvestingConfig?.reportRelease === 5 && values.sushiCredentials?.requestorId));
+  const isDisableApiKey = values.harvestingConfig?.reportRelease === 4;
 
   return (
     <React.Fragment>
@@ -41,11 +38,9 @@ const SushiCredentialsForm = (props) => {
               id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorId',
             })}
             component={TextField}
-            disabled={isDisableRequestorId}
             fullWidth
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
-              if (isDisableApiKey) form.change('sushiCredentials.apiKey', undefined);
             }}
           />
         </Col>
@@ -62,7 +57,6 @@ const SushiCredentialsForm = (props) => {
             fullWidth
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
-              if (isDisableRequestorId) form.change('sushiCredentials.requestorId', undefined);
             }}
           />
         </Col>
