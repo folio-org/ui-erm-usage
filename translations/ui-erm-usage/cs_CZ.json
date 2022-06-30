@@ -169,7 +169,7 @@
     "harvester.start.inactiveInfo": "Harvestor lze spustit pouze pro poskytovatele údajů o použití se stavem harvestoru \"aktivní\". Zkontrolujte prosím konfiguraci harvestoru.",
     "settings.harvester": "Harvestor",
     "settings.section.display.settings": "Nastavení obrazovky",
-    "settings.section.number.failed": "Number of failed attempts",
+    "settings.section.number.failed": "Počet neúspěšných pokusů",
     "settings.harvester.start.success": "Harvestor byl úspěšně spuštěn!",
     "settings.harvester.start.fail": "Při startu harvestoru se něco pokazilo...",
     "settings.harvester.start.tenant": "Spusťte harvestor pro aktuálního nájemce:",
