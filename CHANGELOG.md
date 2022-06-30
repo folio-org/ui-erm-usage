@@ -1,5 +1,12 @@
 # Change history for ui-erm-usage
 
+## [6.2.0](https://github.com/folio-org/ui-erm-usage/tree/v6.2.0) (2022-06-30)
+* Not possible to set both RequestorId and ApiKey (UIEUS-297)
+* No results displayed on first open (UIEUS-296)
+* Refactor app permissions (UIEUS-292)
+* Action items always visible (UIEUS-295)
+* Replace babel-eslint with @babel/eslint-parser (UIEUS-291)
+
 ## [6.1.1](https://github.com/folio-org/ui-erm-usage/tree/v6.1.1) (2022-03-30)
 * Permission "Settings (eUsage): Can view and edit settings" doesn't allow create/edit Aggregator record (UIEUS-288)
 * An error occurs when trying to save changes to eUsage settings (UIEUS-287)
