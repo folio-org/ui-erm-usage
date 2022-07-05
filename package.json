@@ -16,6 +16,7 @@
     "test:bigtest": "stripes test karma --bundle --karma.singleRun --karma.browsers ChromeDocker --karma.reporters mocha junit --coverage",
     "test:karma": "stripes test karma",
     "lint": "eslint src",
+    "build-mod-descriptor": "stripes mod descriptor --full --strict | jq '.[]' > module-descriptor.json ",
     "formatjs-compile": "formatjs compile-folder --ast --format simple ./translations/ui-erm-usage ./translations/ui-erm-usage/compiled"
   },
   "devDependencies": {
