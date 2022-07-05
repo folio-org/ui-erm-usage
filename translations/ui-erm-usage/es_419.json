@@ -133,7 +133,7 @@
     "report.error.other": "Other",
     "report.error.0": "Info or debug",
     "report.error.1": "Warnings",
-    "report.error.1000": "Service not available",
+    "report.error.1000": "Servicio no disponible",
     "report.error.1010": "Service busy",
     "report.error.1011": "Report queed for processing",
     "report.error.1020": "Client has made too many requests",
