@@ -405,8 +405,8 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Vendor code' })).not.toBeRequired();
 
-      expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
-      expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
+      expect(screen.getByRole('combobox', { name: 'Service type' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: 'Service URL' })).toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
       userEvent.click(screen.getByText('Add report type'));

@@ -203,13 +203,11 @@
 
   "udp.form.placeholder.udpName": "Enter a name to identify the usage data provider",
   "udp.form.placeholder.udpDescription": "Description of the usage data provider",
-  "udp.form.placeholder.harvestingStatus": "Select a harvesting status",
-  "udp.form.placeholder.harvestingVia": "Select how to harvest statistics",
   "udp.form.placeholder.aggregator.select": "Select an aggregator",
   "udp.form.placeholder.aggregator.vendor": "Enter the aggregator's vendor code",
-  "udp.form.placeholder.vendor.apiType": "Select the vendor's API type",
+
   "udp.form.placeholder.vendor.url": "Enter the vendor's serviceURL",
-  "udp.form.placeholder.reportRelease": "Select the report release",
+
   "udp.form.placeholder.sushi.customerId": "Enter the SUSHI customer ID",
   "udp.form.placeholder.sushi.requestorId": "Enter the SUSHI requestor ID",
   "udp.form.placeholder.sushi.apiKey": "Enter the SUSHI API key",

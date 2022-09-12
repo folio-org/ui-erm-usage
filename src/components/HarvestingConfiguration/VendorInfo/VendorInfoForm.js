@@ -24,37 +24,33 @@ class VendorInfoForm extends React.Component {
       <React.Fragment>
         <Col xs={4}>
           <Field
-            label={
-              <FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />
-            }
-            name="harvestingConfig.sushiConfig.serviceType"
-            id="addudp_servicetype"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.vendor.apiType',
-            })}
             component={Select}
             dataOptions={harvesterImpls}
+            defaultValue="cs50"
             disabled={disabled}
+            fullWidth
+            id="addudp_servicetype"
+            key={!disabled && this.props.required ? 1 : 0}
+            label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
+            name="harvestingConfig.sushiConfig.serviceType"
             required={!disabled && this.props.required}
             validate={!disabled && this.props.required ? required : notRequired}
-            key={!disabled && this.props.required ? 1 : 0}
-            fullWidth
           />
         </Col>
         <Col xs={4}>
           <Field
+            component={TextField}
+            disabled={disabled}
+            fullWidth
+            id="addudp_serviceurl"
+            key={!disabled && this.props.required ? 1 : 0}
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="harvestingConfig.sushiConfig.serviceUrl"
-            id="addudp_serviceurl"
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.vendor.url',
             })}
-            component={TextField}
-            disabled={disabled}
             required={!disabled && this.props.required}
             validate={!disabled && this.props.required ? requiredValidateUrl : notRequired}
-            key={!disabled && this.props.required ? 1 : 0}
-            fullWidth
           />
         </Col>
       </React.Fragment>
