@@ -39,6 +39,10 @@ function UDPViewRoute(props) {
     );
   };
 
+  const getLastHarvestingJob = () => {
+    return get(resources, 'harvesterJobs.records[0]', {});
+  };
+
   const getCounterReports = (udpId) => {
     const records = (resources.counterReports || {}).records || null;
     const reports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
@@ -113,6 +117,7 @@ function UDPViewRoute(props) {
           maxFailedAttempts,
           settings,
           usageDataProvider: selectedRecord,
+          lastJob: getLastHarvestingJob(),
         }}
         handlers={{
           ...handlers,
@@ -164,6 +169,7 @@ UDPViewRoute.propTypes = {
     }),
     usageDataProvider: PropTypes.shape(),
     failedAttemptsSettings: PropTypes.shape(),
+    harvesterJobs: PropTypes.shape(),
   }).isRequired,
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
@@ -191,6 +197,16 @@ UDPViewRoute.manifest = Object.freeze({
   harvesterImpls: {
     type: 'okapi',
     path: 'erm-usage-harvester/impl?aggregator=false',
+    throwErrors: false,
+  },
+  harvesterJobs: {
+    type: 'okapi',
+    path: 'erm-usage-harvester/jobs',
+    params: {
+      query: '(providerId==:{id}) sortby finishedAt/sort.descending',
+      limit: '1',
+    },
+    records: 'jobInfos',
     throwErrors: false,
   },
   settings: {
