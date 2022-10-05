@@ -71,6 +71,7 @@ class UDPEditRoute extends React.Component {
   render() {
     const { handlers, resources, stripes } = this.props;
     const harvesterImpls = extractHarvesterImpls(resources);
+    harvesterImpls.push({ value: '', label: '' });
     const aggregators = (resources.aggregators || {}).records || [];
     const udp = get(resources, 'usageDataProvider.records[0]', {});
 
