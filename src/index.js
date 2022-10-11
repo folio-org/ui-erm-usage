@@ -26,6 +26,7 @@ import UDPEditRoute from './routes/UDPEditRoute';
 import NoteCreateRoute from './routes/NoteCreateRoute';
 import NoteEditRoute from './routes/NoteEditRoute';
 import NoteViewRoute from './routes/NoteViewRoute';
+import JobsViewRoute from './routes/JobsViewRoute';
 import Settings from './settings';
 
 class ErmUsage extends React.Component {
@@ -114,6 +115,7 @@ class ErmUsage extends React.Component {
               <Route path={`${path}/notes/:id`} component={NoteViewRoute} />
               <Route path={`${path}/create`} component={UDPCreateRoute} />
               <Route path={`${path}/:id/edit`} component={UDPEditRoute} />
+              <Route path={`${path}/jobs`} component={JobsViewRoute} />
               <Route path={`${path}`} component={UDPsRoute}>
                 <Route path={`${path}/view/:id`} component={UDPViewRoute} />
               </Route>

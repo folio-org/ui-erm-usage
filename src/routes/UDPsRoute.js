@@ -202,6 +202,7 @@ class UDPsRoute extends React.Component {
         searchString={location.search}
         source={this.source}
         history={history}
+        location={location}
       >
         {children}
       </UDPs>
