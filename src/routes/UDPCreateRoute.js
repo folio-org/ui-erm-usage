@@ -62,7 +62,6 @@ class UDPCreateRoute extends React.Component {
   render() {
     const { handlers, resources, stripes } = this.props;
     const harvesterImpls = extractHarvesterImpls(resources);
-    harvesterImpls.push({ value: null, label: '' });
     const aggregators = (resources.aggregators || {}).records || [];
 
     if (!this.state.hasPerms) return <div>No Permission</div>;

@@ -34,7 +34,7 @@ class HarvestingConfigurationForm extends React.Component {
   changeSelectedCounterVersion = (event) => {
     event.preventDefault();
 
-    const val = parseInt(event.target.value, 10);
+    const val = (event.target.value === '') ? undefined : parseInt(event.target.value, 10);
     const selectedReportRelease = get(
       this.props.values,
       'harvestingConfig.reportRelease',
@@ -61,7 +61,7 @@ class HarvestingConfigurationForm extends React.Component {
   changeSelectedHarvestVia = (event) => {
     event.preventDefault();
 
-    this.props.form.change(event.target.name, event.target.value);
+    this.props.form.change(event.target.name, (event.target.value === '') ? undefined : event.target.value);
     this.props.form.resetFieldState('sushiCredentials.customerId');
   };
 
