@@ -57,6 +57,7 @@ const renderUDP = (stripes) => {
           statsReloadCount={0}
           tagsEnabled={false}
           udpReloadCount={0}
+          location
         />
       </MemoryRouter>
     </StripesContext.Provider>

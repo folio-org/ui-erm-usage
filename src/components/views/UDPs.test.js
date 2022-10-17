@@ -44,6 +44,7 @@ const renderUDPs = (stripes, props = {}, udpsData, rerender) => renderWithIntl(
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={history}
           onSearchComplete={onSearchComplete}
+          location
           {...props}
         />
       </ModuleHierarchyProvider>

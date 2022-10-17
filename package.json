@@ -109,7 +109,8 @@
       "custom-reports": "1.0",
       "erm-usage/files": "1.0",
       "usage-data-providers": "2.8",
-      "tags": "1.0"
+      "tags": "1.0",
+      "erm-usage-harvester": "1.3"
     },
     "permissionSets": [
       {
@@ -164,7 +165,8 @@
           "ui-erm-usage.udp.delete",
           "ui-erm-usage.reports.delete",
           "ui-erm-usage.generalSettings.manage",
-          "ui-erm-usage-harvester.start.single"
+          "ui-erm-usage-harvester.start.single",
+          "ui-erm-usage-harvester.jobs.view"
         ],
         "visible": true
       },
@@ -182,7 +184,8 @@
           "aggregatorsettings.item.get",
           "customreports.collection.get",
           "customreports.item.get",
-          "erm-usage.files.item.get"
+          "erm-usage.files.item.get",
+          "ui-erm-usage-harvester.jobs.view"
         ],
         "visible": true
       },
@@ -254,6 +257,15 @@
           "ermusageharvester.start.single"
         ],
         "visible": true
+      },
+      {
+        "permissionName": "ui-erm-usage-harvester.jobs.view",
+        "displayName": "eUsage: Can view harvesting jobs",
+        "description": "Can view harvesting jobs",
+        "subPermissions": [
+          "ermusageharvester.jobs.get"
+        ],
+        "visible": false
       }
     ],
     "icons": [

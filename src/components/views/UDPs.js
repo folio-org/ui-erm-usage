@@ -203,29 +203,41 @@ class UDPs extends React.Component {
     return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
   };
 
-  renderResultsLastMenu() {
-    if (this.props.disableRecordCreation) {
-      return null;
-    }
-
+  renderActionMenu = () => {
+    const { intl, location } = this.props;
     return (
-      <IfPermission perm="ui-erm-usage.udp.create">
-        <PaneMenu>
-          <FormattedMessage id="ui-erm-usage.udp.form.createUDP">
-            {(ariaLabel) => (
-              <Button
-                aria-label={ariaLabel}
-                buttonStyle="primary"
-                id="clickable-new-udp"
-                marginBottom0
-                to={`${urls.udpCreate()}${this.props.searchString}`}
-              >
+      <>
+        <div>
+          <IfPermission perm="ui-erm-usage.udp.create">
+            <Button
+              aria-label={intl.formatMessage({ id: 'ui-erm-usage.udp.form.createUDP' })}
+              buttonStyle="dropDownItem"
+              id="clickable-new-udp"
+              marginBottom0
+              to={`${urls.udpCreate()}${this.props.searchString}`}
+            >
+              <Icon icon="plus-sign">
                 <FormattedMessage id="stripes-smart-components.new" />
-              </Button>
-            )}
-          </FormattedMessage>
-        </PaneMenu>
-      </IfPermission>
+              </Icon>
+            </Button>
+          </IfPermission>
+        </div>
+        <div>
+          <IfPermission perm="ui-erm-usage-harvester.jobs.view">
+            <Button
+              aria-label={intl.formatMessage({ id: 'ui-erm-usage.harvester.jobs.show' })}
+              buttonStyle="dropDownItem"
+              id="clickable-harvester-logs"
+              marginBottom0
+              to={{ pathname: urls.jobsView, search: '?sort=-startedAt', state: { from: location.pathname + location.search } }}
+            >
+              <Icon icon="arrow-right">
+                <FormattedMessage id="ui-erm-usage.harvester.jobs.show" />
+              </Icon>
+            </Button>
+          </IfPermission>
+        </div>
+      </>
     );
   }
 
@@ -343,7 +355,7 @@ class UDPs extends React.Component {
                     appIcon={<AppIcon app="erm-usage" />}
                     defaultWidth="fill"
                     firstMenu={this.renderResultsFirstMenu(activeFilters)}
-                    lastMenu={this.renderResultsLastMenu()}
+                    actionMenu={this.renderActionMenu}
                     padContent={false}
                     paneTitle={
                       <FormattedMessage id="ui-erm-usage.usage-data-providers" />
@@ -389,8 +401,11 @@ UDPs.propTypes = Object.freeze({
   children: PropTypes.object,
   contentRef: PropTypes.object,
   data: PropTypes.shape(),
-  disableRecordCreation: PropTypes.bool,
   history: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+  }).isRequired,
   intl: PropTypes.object,
   onNeedMoreData: PropTypes.func,
   onSelectRow: PropTypes.func,
