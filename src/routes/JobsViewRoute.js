@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
-import { StripesConnectedSource, makeQueryFunction } from '@folio/stripes-smart-components';
+import { StripesConnectedSource, makeQueryFunction } from '@folio/stripes/smart-components';
 import { useState } from 'react';
 import JobsView from '../components/JobsView';
 

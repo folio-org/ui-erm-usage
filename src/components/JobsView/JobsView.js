@@ -5,10 +5,10 @@ import {
   Pane,
   PaneMenu,
   Paneset,
-} from '@folio/stripes-components';
+} from '@folio/stripes/components';
 import {
   SearchAndSortQuery
-} from '@folio/stripes-smart-components';
+} from '@folio/stripes/smart-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
 import { useStripes } from '@folio/stripes/core';
