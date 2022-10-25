@@ -1,5 +1,10 @@
 # Change history for ui-erm-usage
 
+## [6.3.0](https://github.com/folio-org/ui-erm-usage/tree/v6.3.0) (2022-10-25)
+* Add empty values for selectboxes (UIEUS-307)
+* Harvester logs screen (UIEUS-302)
+* Use default values in the Create screen for a new UDP (UIEUS-301)
+
 ## [6.2.0](https://github.com/folio-org/ui-erm-usage/tree/v6.2.0) (2022-06-30)
 * Not possible to set both RequestorId and ApiKey (UIEUS-297)
 * No results displayed on first open (UIEUS-296)
