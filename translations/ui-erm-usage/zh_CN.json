@@ -286,5 +286,16 @@
     "shortcut.copy": "复制",
     "shortcut.cut": "剪切",
     "shortcut.paste": "粘贴",
-    "shortcut.find": "查找"
+    "shortcut.find": "查找",
+    "harvester.jobs.show": "显示收割器日志",
+    "harvester.jobs.paneTitle": "收割任务",
+    "harvester.jobs.filter.type.periodic": "定期",
+    "harvester.jobs.filter.type.tenant": "租户",
+    "harvester.jobs.filter.type.provider": "提供者",
+    "harvester.jobs.refresh": "刷新",
+    "harvester.jobs.column.provider": "提供者/租户",
+    "harvester.jobs.column.type": "类型",
+    "harvester.jobs.column.start": "开始",
+    "harvester.jobs.column.finish": "结束",
+    "harvester.jobs.column.duration": "持续时间"
 }

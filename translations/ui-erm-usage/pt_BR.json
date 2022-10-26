@@ -286,5 +286,16 @@
     "shortcut.copy": "Copiar",
     "shortcut.cut": "Cortar",
     "shortcut.paste": "Colar",
-    "shortcut.find": "Pesquisar"
+    "shortcut.find": "Pesquisar",
+    "harvester.jobs.show": "Mostrar registros (logs) de harvester",
+    "harvester.jobs.paneTitle": "Trabalhos de harvesting",
+    "harvester.jobs.filter.type.periodic": "Periódico",
+    "harvester.jobs.filter.type.tenant": "Inquilino",
+    "harvester.jobs.filter.type.provider": "Fornecedor",
+    "harvester.jobs.refresh": "Atualizar",
+    "harvester.jobs.column.provider": "Provedor / Locatário",
+    "harvester.jobs.column.type": "Tipo",
+    "harvester.jobs.column.start": "Iniciar",
+    "harvester.jobs.column.finish": "Finalizar",
+    "harvester.jobs.column.duration": "Duração"
 }

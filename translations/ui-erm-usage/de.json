@@ -286,5 +286,16 @@
     "shortcut.copy": "Kopieren",
     "shortcut.cut": "Ausschneiden",
     "shortcut.paste": "Einfügen",
-    "shortcut.find": "Finden"
+    "shortcut.find": "Finden",
+    "harvester.jobs.show": "Abrufprotokolle anzeigen",
+    "harvester.jobs.paneTitle": "Abrufe",
+    "harvester.jobs.filter.type.periodic": "Periodisch",
+    "harvester.jobs.filter.type.tenant": "Mandant",
+    "harvester.jobs.filter.type.provider": "Datenquelle",
+    "harvester.jobs.refresh": "Aktualisieren",
+    "harvester.jobs.column.provider": "Datenquelle / Mandant",
+    "harvester.jobs.column.type": "Typ",
+    "harvester.jobs.column.start": "Start",
+    "harvester.jobs.column.finish": "Ende",
+    "harvester.jobs.column.duration": "Dauer"
 }
