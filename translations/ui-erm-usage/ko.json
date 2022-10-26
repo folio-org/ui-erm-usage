@@ -286,5 +286,16 @@
     "shortcut.copy": "복사",
     "shortcut.cut": "자르기",
     "shortcut.paste": "붙여넣기",
-    "shortcut.find": "찾기"
+    "shortcut.find": "찾기",
+    "harvester.jobs.show": "Show harvester logs",
+    "harvester.jobs.paneTitle": "Harvesting jobs",
+    "harvester.jobs.filter.type.periodic": "Periodic",
+    "harvester.jobs.filter.type.tenant": "Tenant",
+    "harvester.jobs.filter.type.provider": "Provider",
+    "harvester.jobs.refresh": "Refresh",
+    "harvester.jobs.column.provider": "Provider / Tenant",
+    "harvester.jobs.column.type": "Type",
+    "harvester.jobs.column.start": "Start",
+    "harvester.jobs.column.finish": "Finish",
+    "harvester.jobs.column.duration": "Duration"
 }

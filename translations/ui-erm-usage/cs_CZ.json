@@ -286,5 +286,16 @@
     "shortcut.copy": "Kopírovat",
     "shortcut.cut": "Střih",
     "shortcut.paste": "Vložit",
-    "shortcut.find": "Najít"
+    "shortcut.find": "Najít",
+    "harvester.jobs.show": "Zobrazit logy harvestoru",
+    "harvester.jobs.paneTitle": "Úlohy harvestu",
+    "harvester.jobs.filter.type.periodic": "Pravidelná",
+    "harvester.jobs.filter.type.tenant": "Nájemce",
+    "harvester.jobs.filter.type.provider": "Poskytovatel",
+    "harvester.jobs.refresh": "Obnovit",
+    "harvester.jobs.column.provider": "Poskytovatel / nájemce",
+    "harvester.jobs.column.type": "Typ",
+    "harvester.jobs.column.start": "Start",
+    "harvester.jobs.column.finish": "Dokončit",
+    "harvester.jobs.column.duration": "Trvání"
 }
