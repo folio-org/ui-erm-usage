@@ -44,7 +44,6 @@ class UDPForm extends React.Component {
         createdDate: PropTypes.string,
       }),
     }),
-    invalid: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
@@ -185,12 +184,11 @@ class UDPForm extends React.Component {
     const {
       handlers: { onClose },
       handleSubmit,
-      invalid,
       pristine,
       submitting,
     } = this.props;
 
-    const disabled = pristine || submitting || invalid;
+    const disabled = pristine || submitting;
 
     const startButton = (
       <Button

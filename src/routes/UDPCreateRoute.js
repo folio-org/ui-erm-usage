@@ -78,6 +78,7 @@ class UDPCreateRoute extends React.Component {
           ...handlers,
           onClose: this.handleClose,
         }}
+        initialValues={{ harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: 5, sushiConfig: { serviceType: 'cs50' } } }}
         isLoading={this.fetchIsPending()}
         onSubmit={this.handleSubmit}
         store={stripes.store}
