@@ -92,6 +92,7 @@ describe('UDP', () => {
 
     test('should render action menu with actions', async () => {
       expect(screen.getByText('Start harvester')).toBeVisible();
+      expect(screen.getByText('Show harvester logs')).toBeVisible();
       expect(screen.getByText('Refresh statistics table')).toBeVisible();
       expect(screen.getByText('Upload COUNTER report')).toBeVisible();
       expect(screen.getByText('Upload non-COUNTER report')).toBeVisible();

@@ -62,6 +62,7 @@ JobsViewRoute.manifest = Object.freeze({
     perRequest: 30,
     GET: {
       params: {
+        providerId: '?{providerId:-}',
         timestamp: '%{timestamp}',
         query: createCQL()
       },

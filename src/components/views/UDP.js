@@ -176,7 +176,7 @@ class UDP extends React.Component {
   };
 
   getActionMenu = () => ({ onToggle }) => {
-    const { canEdit, handlers, data } = this.props;
+    const { canEdit, handlers, data, location } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
     const providerId = get(usageDataProvider, 'id', '');
 
@@ -207,6 +207,20 @@ class UDP extends React.Component {
               onClose={this.closeStartHarvesterModal}
             />
           )}
+        </div>
+        <div>
+          <IfPermission perm="ui-erm-usage-harvester.jobs.view">
+            <Button
+              buttonStyle="dropDownItem"
+              id="clickable-harvester-logs"
+              marginBottom0
+              to={{ pathname: urls.jobsView, search: '?providerId=' + providerId + '&sort=-startedAt', state: { from: location.pathname + location.search } }}
+            >
+              <Icon icon="arrow-right">
+                <FormattedMessage id="ui-erm-usage.harvester.jobs.show" />
+              </Icon>
+            </Button>
+          </IfPermission>
         </div>
         <div>
           <Button
@@ -554,6 +568,10 @@ UDP.propTypes = {
   stripes: PropTypes.object.isRequired,
   tagsEnabled: PropTypes.bool,
   statsReloadCount: PropTypes.number.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string
+  }).isRequired
 };
 
 export default injectIntl(UDP);
