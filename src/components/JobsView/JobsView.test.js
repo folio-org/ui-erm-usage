@@ -48,13 +48,13 @@ describe('JobView component', () => {
     expect(screen.queryByText('The list contains no items')).toBeNull();
 
     expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
-    expect(screen.queryByText('Provider', { exact: true })).toBeInTheDocument();
+    expect(screen.queryAllByText('Provider', { exact: true })).toHaveLength(2); // filter + results
     expect(screen.queryByText('9/28/2022, 11:33:03 AM')).toBeInTheDocument();
     expect(screen.queryByText('9/28/2022, 11:33:04 AM')).toBeInTheDocument();
     expect(screen.queryByText('0m 1s')).toBeInTheDocument();
 
     expect(screen.queryByText('diku')).toBeInTheDocument();
-    expect(screen.queryByText('Tenant', { exact: true })).toBeInTheDocument();
+    expect(screen.queryAllByText('Tenant', { exact: true })).toHaveLength(2); // filter + results
     expect(screen.queryByText('9/28/2022, 10:30:04 AM')).toBeInTheDocument();
     expect(screen.queryByText('9/28/2022, 11:33:05 AM')).toBeInTheDocument();
     expect(screen.queryByText('1h 3m 1s')).toBeInTheDocument();
