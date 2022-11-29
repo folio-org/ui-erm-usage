@@ -7,6 +7,19 @@ import JobsView from '../components/JobsView';
 
 const timestamp = Date.now();
 
+const filterGroups = [
+  {
+    name: 'status',
+    cql: 'status',
+    values: ['scheduled', 'running', 'finished'],
+  },
+  {
+    name: 'type',
+    cql: 'type',
+    values: ['periodic', 'tenant', 'provider'],
+  },
+];
+
 const JobsViewRoute = ({ resources, mutator, stripes }) => {
   const [source] = useState(new StripesConnectedSource(
     { resources, mutator },
@@ -15,7 +28,20 @@ const JobsViewRoute = ({ resources, mutator, stripes }) => {
   ));
   source.update({ resources, mutator }, 'jobs');
 
-  return <JobsView source={source} />;
+  return <JobsView source={source} filterGroups={filterGroups} />;
+};
+
+const createCQL = () => {
+  return (queryParams, pathComponents, resourceValues, logger) => {
+    const tmp = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0)(queryParams, pathComponents, resourceValues, logger);
+    return tmp
+      ? tmp
+        .replace('status==', '')
+        .replace('"scheduled"', 'nextStart=""')
+        .replace('"running"', '(startedAt="" NOT finishedAt="")')
+        .replace('"finished"', 'finishedAt=""')
+      : tmp;
+  };
 };
 
 JobsViewRoute.propTypes = {
@@ -37,7 +63,7 @@ JobsViewRoute.manifest = Object.freeze({
     GET: {
       params: {
         timestamp: '%{timestamp}',
-        query: makeQueryFunction('cql.allRecords=1', '', {}, [], 0),
+        query: createCQL()
       },
       staticFallback: { params: {} }
     }

@@ -6,17 +6,16 @@ import {
   PaneMenu,
   Paneset,
 } from '@folio/stripes/components';
-import {
-  SearchAndSortQuery
-} from '@folio/stripes/smart-components';
+import { SearchAndSortQuery } from '@folio/stripes/smart-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
 import { useStripes } from '@folio/stripes/core';
 import { useHistory, useLocation } from 'react-router';
 import { useState } from 'react';
+import JobsFilter from './JobsFilter';
 import urls from '../../util/urls';
 
-const JobsView = ({ source }) => {
+const JobsView = ({ source, filterGroups }) => {
   const { formatMessage } = useIntl();
   const stripes = useStripes();
   const location = useLocation();
@@ -92,9 +91,20 @@ const JobsView = ({ source }) => {
       {(renderProps) => (
         <Paneset>
           <Pane
+            defaultWidth="20%"
+            paneTitle={
+              <FormattedMessage id="stripes-smart-components.searchAndFilter" />
+            }
+          >
+            <JobsFilter filterGroups={filterGroups} {...renderProps} />
+          </Pane>
+
+          <Pane
             defaultWidth="fill"
             padContent={false}
-            paneTitle={formatMessage({ id: 'ui-erm-usage.harvester.jobs.paneTitle' })}
+            paneTitle={formatMessage({
+              id: 'ui-erm-usage.harvester.jobs.paneTitle',
+            })}
             paneSub={renderResultsPaneSubtitle()}
             lastMenu={
               <PaneMenu>
@@ -134,7 +144,9 @@ const JobsView = ({ source }) => {
                     return stripes.okapi.tenant;
                   }
                 },
-                type: (job) => formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.type.' + job.type }),
+                type: (job) => formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.filter.type.' + job.type,
+                }),
                 startedAt: (job) => (job.nextStart
                   ? getLocaleDate(job.nextStart)
                   : getLocaleDate(job.startedAt)),
@@ -143,11 +155,21 @@ const JobsView = ({ source }) => {
               }}
               contentData={source.records() || []}
               columnMapping={{
-                providerId: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.provider' }),
-                type: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.type' }),
-                startedAt: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.start' }),
-                finishedAt: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.finish' }),
-                duration: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.duration' }),
+                providerId: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.column.provider',
+                }),
+                type: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.column.type',
+                }),
+                startedAt: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.column.start',
+                }),
+                finishedAt: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.column.finish',
+                }),
+                duration: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.column.duration',
+                }),
               }}
               totalCount={source.totalCount() || 0}
               onNeedMoreData={() => {
@@ -170,6 +192,7 @@ const JobsView = ({ source }) => {
 
 JobsView.propTypes = {
   source: PropTypes.object,
+  filterGroups: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default JobsView;
