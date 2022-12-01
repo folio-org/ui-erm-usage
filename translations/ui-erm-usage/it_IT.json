@@ -297,5 +297,10 @@
     "harvester.jobs.column.type": "Tipo",
     "harvester.jobs.column.start": "Inizio",
     "harvester.jobs.column.finish": "Fine",
-    "harvester.jobs.column.duration": "Durata"
+    "harvester.jobs.column.duration": "Durata",
+    "harvester.jobs.filter.type": "Job types",
+    "harvester.jobs.filter.status": "Job status",
+    "harvester.jobs.filter.status.scheduled": "Scheduled",
+    "harvester.jobs.filter.status.running": "Running",
+    "harvester.jobs.filter.status.finished": "Finished"
 }
