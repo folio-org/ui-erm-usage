@@ -297,5 +297,10 @@
     "harvester.jobs.column.type": "类型",
     "harvester.jobs.column.start": "开始",
     "harvester.jobs.column.finish": "结束",
-    "harvester.jobs.column.duration": "持续时间"
+    "harvester.jobs.column.duration": "持续时间",
+    "harvester.jobs.filter.type": "Job types",
+    "harvester.jobs.filter.status": "Job status",
+    "harvester.jobs.filter.status.scheduled": "Scheduled",
+    "harvester.jobs.filter.status.running": "Running",
+    "harvester.jobs.filter.status.finished": "Finished"
 }
