@@ -179,6 +179,7 @@ class UDP extends React.Component {
     const { canEdit, handlers, data, location } = this.props;
     const usageDataProvider = get(data, 'usageDataProvider', {});
     const providerId = get(usageDataProvider, 'id', '');
+    const providerLabel = get(usageDataProvider, 'label', '');
 
     return (
       <>
@@ -214,7 +215,14 @@ class UDP extends React.Component {
               buttonStyle="dropDownItem"
               id="clickable-harvester-logs"
               marginBottom0
-              to={{ pathname: urls.jobsView, search: '?providerId=' + providerId + '&sort=-startedAt', state: { from: location.pathname + location.search } }}
+              to={{
+                pathname: urls.jobsView,
+                search: '?providerId=' + providerId + '&sort=-startedAt',
+                state: {
+                  from: location.pathname + location.search,
+                  provider: { id: providerId, label: providerLabel }
+                },
+              }}
             >
               <Icon icon="arrow-right">
                 <FormattedMessage id="ui-erm-usage.harvester.jobs.show" />

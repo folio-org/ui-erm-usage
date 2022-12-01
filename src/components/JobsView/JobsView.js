@@ -6,24 +6,26 @@ import {
   PaneMenu,
   Paneset,
 } from '@folio/stripes/components';
-import { SearchAndSortQuery } from '@folio/stripes/smart-components';
+import { SearchAndSortQuery, buildUrl } from '@folio/stripes/smart-components';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash';
 import { useStripes } from '@folio/stripes/core';
 import { useHistory, useLocation } from 'react-router';
-import { useState } from 'react';
 import JobsFilter from './JobsFilter';
 import urls from '../../util/urls';
 
 const JobsView = ({ source, filterGroups }) => {
   const { formatMessage } = useIntl();
   const stripes = useStripes();
-  const location = useLocation();
   const history = useHistory();
-  const [fromPath] = useState(() => (location.state?.from ? location.state.from : urls.udps()));
+  const fromPath = get(useLocation().state, 'from', urls.udps());
 
-  const querySetter = ({ nsValues }) => {
-    source.mutator.query.update(nsValues);
+  const querySetter = ({ location: loc, nsValues }) => {
+    const url = buildUrl(loc, nsValues);
+    const { pathname, search } = loc;
+    if (`${pathname}${search}` !== url) {
+      history.push(url, loc.state);
+    }
   };
 
   const queryGetter = () => {
