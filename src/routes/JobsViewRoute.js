@@ -3,22 +3,10 @@ import { stripesConnect } from '@folio/stripes/core';
 import { StripesConnectedSource, makeQueryFunction } from '@folio/stripes/smart-components';
 import { useState } from 'react';
 import JobsView from '../components/JobsView';
+import filterGroups from '../util/data/filterGroupsJobsView';
 
 
 const timestamp = Date.now();
-
-const filterGroups = [
-  {
-    name: 'status',
-    cql: 'status',
-    values: ['scheduled', 'running', 'finished'],
-  },
-  {
-    name: 'type',
-    cql: 'type',
-    values: ['periodic', 'tenant', 'provider'],
-  },
-];
 
 const JobsViewRoute = ({ resources, mutator, stripes }) => {
   const [source] = useState(new StripesConnectedSource(
@@ -62,6 +50,7 @@ JobsViewRoute.manifest = Object.freeze({
     perRequest: 30,
     GET: {
       params: {
+        providerId: '?{providerId:-}',
         timestamp: '%{timestamp}',
         query: createCQL()
       },
