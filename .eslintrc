@@ -9,11 +9,7 @@
       "legacyDecorators": true
     }
   },
-  "plugins": [
-    "babel",
-    "no-only-tests",
-    "react-hooks"
-  ],
+  "plugins": [],
   "root": true,
   "env": {
     "jest": true
