@@ -203,7 +203,7 @@ UDPViewRoute.manifest = Object.freeze({
     type: 'okapi',
     path: 'erm-usage-harvester/jobs',
     params: {
-      query: '(providerId==:{id}) sortby finishedAt/sort.descending',
+      query: '(providerId==:{id} and startedAt="") sortby finishedAt/sort.descending',
       limit: '1',
     },
     records: 'jobInfos',
