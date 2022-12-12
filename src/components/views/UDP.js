@@ -467,6 +467,15 @@ class UDP extends React.Component {
               <Headline size="xx-large" tag="h2">
                 {label}
               </Headline>
+              <ViewMetaData
+                metadata={get(usageDataProvider, 'metadata', {})}
+                stripes={stripes}
+              />
+              <UDPInfoView
+                id="udpInfo"
+                usageDataProvider={usageDataProvider}
+                stripes={stripes}
+              />
               <AccordionStatus ref={this.accordionStatusRef}>
                 <Row end="xs">
                   <Col xs>
@@ -474,15 +483,6 @@ class UDP extends React.Component {
                   </Col>
                 </Row>
                 <AccordionSet initialStatus={this.getInitialAccordionsState()}>
-                  <ViewMetaData
-                    metadata={get(usageDataProvider, 'metadata', {})}
-                    stripes={stripes}
-                  />
-                  <UDPInfoView
-                    id="udpInfo"
-                    usageDataProvider={usageDataProvider}
-                    stripes={stripes}
-                  />
                   <Accordion
                     label={
                       <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />

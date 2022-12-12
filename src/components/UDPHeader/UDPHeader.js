@@ -16,13 +16,11 @@ const UDPHeader = ({ usageDataProvider, lastJob }) => {
   const harvestingStatusOption = harvestingStatusOptions.find(
     (e) => e.value === harvestingStatus
   );
-  const finishedAtLabel = finishedAt ? (
+  const finishedAtLabel =
+    finishedAt &&
     new Date(finishedAt).toLocaleString(stripes.locale, {
       timeZone: stripes.timezone,
-    })
-  ) : (
-    <NoValue />
-  );
+    });
 
   return (
     <div>
@@ -54,7 +52,7 @@ const UDPHeader = ({ usageDataProvider, lastJob }) => {
             label={
               <FormattedMessage id="ui-erm-usage.information.lastJobFinishedAt" />
             }
-            value={finishedAtLabel}
+            value={finishedAtLabel ?? <NoValue />}
           />
         </Col>
       </Row>

@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import moment from 'moment-timezone';
 import {
   Accordion,
   Col,
@@ -13,7 +12,6 @@ import {
 import { AggregatorInfoView } from './AggregatorInfo';
 import { VendorInfoView } from './VendorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
-import harvestingStatusOptions from '../../util/data/harvestingStatusOptions';
 import reportReleaseOptions from '../../util/data/reportReleaseOptions';
 
 class HarvestingConfigurationView extends React.Component {
@@ -56,14 +54,6 @@ class HarvestingConfigurationView extends React.Component {
     }
   };
 
-  renderLastHarvestingDate = (udp) => {
-    if (_.isNil(udp.harvestingDate)) {
-      return <NoValue />;
-    }
-    const date = moment(udp.harvestingDate).local();
-    return date.format('MMM DD YYYY, HH:mm:ss');
-  };
-
   render() {
     const { usageDataProvider, onToggle, sushiCredsOpen } = this.props;
 
@@ -78,18 +68,6 @@ class HarvestingConfigurationView extends React.Component {
     if (!_.isEmpty(reports)) {
       requestedReports = reports.join(', ');
     }
-
-    const hStatus = _.get(
-      usageDataProvider,
-      'harvestingConfig.harvestingStatus',
-      ''
-    );
-    const harvestingStatus = harvestingStatusOptions.find(
-      (e) => e.value === hStatus
-    );
-    const harvestingStatusLabel = (
-      <FormattedMessage id={harvestingStatus.label} />
-    ) ?? <NoValue />;
 
     const counterVersion = _.get(
       usageDataProvider,
@@ -107,34 +85,8 @@ class HarvestingConfigurationView extends React.Component {
       <NoValue />
     );
 
-    const lastHarvesting = this.renderLastHarvestingDate(usageDataProvider);
-
     return (
       <div>
-        <Row>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />
-              }
-              value={harvestingStatusLabel}
-            />
-          </Col>
-          <Col xs={3}>
-            <></>
-          </Col>
-          <Col xs={3}>
-            <></>
-          </Col>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.lastHarvesting" />
-              }
-              value={<div data-test-last-harvesting>{lastHarvesting}</div>}
-            />
-          </Col>
-        </Row>
         {provider}
         <Row>
           <Col xs={3}>
