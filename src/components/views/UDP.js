@@ -22,8 +22,6 @@ import {
   PaneMenu,
   Row,
   Headline,
-  NoValue,
-  KeyValue,
 } from '@folio/stripes/components';
 import {
   NotesSmartAccordion,
