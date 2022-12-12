@@ -21,6 +21,7 @@ import {
   PaneHeaderIconButton,
   PaneMenu,
   Row,
+  Headline,
 } from '@folio/stripes/components';
 import {
   NotesSmartAccordion,
@@ -41,6 +42,7 @@ import DeleteStatisticsModal from '../DeleteStatisticsModal';
 import urls from '../../util/urls';
 import groupReportsPerYear from '../../util/groupReportsPerYear';
 import createStandardReportFormatter from '../Counter/StandardReportFormatter';
+import UDPHeader from '../UDPHeader/UDPHeader';
 
 let callout;
 
@@ -459,6 +461,19 @@ class UDP extends React.Component {
               onClose={handlers.onClose}
             >
               <TitleManager record={label} stripes={stripes} />
+              <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />
+              <Headline size="xx-large" tag="h2">
+                {label}
+              </Headline>
+              <ViewMetaData
+                metadata={get(usageDataProvider, 'metadata', {})}
+                stripes={stripes}
+              />
+              <UDPInfoView
+                id="udpInfo"
+                usageDataProvider={usageDataProvider}
+                stripes={stripes}
+              />
               <AccordionStatus ref={this.accordionStatusRef}>
                 <Row end="xs">
                   <Col xs>
@@ -466,15 +481,6 @@ class UDP extends React.Component {
                   </Col>
                 </Row>
                 <AccordionSet initialStatus={this.getInitialAccordionsState()}>
-                  <ViewMetaData
-                    metadata={get(usageDataProvider, 'metadata', {})}
-                    stripes={stripes}
-                  />
-                  <UDPInfoView
-                    id="udpInfo"
-                    usageDataProvider={usageDataProvider}
-                    stripes={stripes}
-                  />
                   <Accordion
                     label={
                       <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
@@ -555,6 +561,7 @@ UDP.propTypes = {
     maxFailedAttempts: PropTypes.number,
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object,
+    lastJob: PropTypes.object,
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,

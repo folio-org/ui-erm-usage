@@ -65,6 +65,7 @@
   "information.organization": "Organization",
   "information.platform": "Platform",
   "information.harvestingStatus": "Harvesting status",
+  "information.lastJobFinishedAt": "Last harvesting job finished at",
   "information.aggregator": "Aggregator",
   "information.aggregators": "Aggregators",
   "information.latestStatistics": "Latest statistics",

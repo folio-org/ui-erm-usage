@@ -52,8 +52,6 @@ describe('HarvestingConfigurationView', () => {
 
   test('should render HarvestingConfigurationView', async () => {
     await renderHarvestingConfigurationView(stripes);
-    expect(screen.getByText('Harvesting status')).toBeVisible();
-    expect(screen.getByText('Active')).toBeVisible();
     expect(screen.getByText('German National Statistics Server')).toBeVisible();
   });
 
