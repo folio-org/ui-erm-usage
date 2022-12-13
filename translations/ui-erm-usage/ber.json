@@ -302,5 +302,6 @@
     "harvester.jobs.filter.status": "Job status",
     "harvester.jobs.filter.status.scheduled": "Scheduled",
     "harvester.jobs.filter.status.running": "Running",
-    "harvester.jobs.filter.status.finished": "Finished"
+    "harvester.jobs.filter.status.finished": "Finished",
+    "information.lastJobFinishedAt": "Last harvesting job finished at"
 }
