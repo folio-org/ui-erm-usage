@@ -185,7 +185,7 @@
     "settings.harvester.config.periodic.start.time": "Čas zahájení",
     "settings.harvester.config.periodic.periodicInterval": "Pravidelný interval",
     "settings.harvester.config.periodic.lastTriggered": "Naposledy spuštěno v",
-    "settings.harvester.config.periodic.notDefined": "Není nastaveno pravidelné shrabování zdroje, proto není ani povoleno. Klepnutím na + nastavte parametry shrabování.",
+    "settings.harvester.config.periodic.notDefined": "Není nastavený pravidelný harvest, proto není ani povolen. Kliknutím na + nastavte parametry harvestu.",
     "settings.harvester.config.periodic.deleteQuestion": "Opravdu chcete smazat konfiguraci pravidelného harvestu?",
     "statistics.noStats": "Nejsou k dispozici žádné statistiky",
     "statistics.counter.upload": "Nahrát zprávu počítadla",
@@ -302,5 +302,6 @@
     "harvester.jobs.filter.status": "Stav úlohy",
     "harvester.jobs.filter.status.scheduled": "Naplánováno",
     "harvester.jobs.filter.status.running": "Spuštěné",
-    "harvester.jobs.filter.status.finished": "Dokončeno"
+    "harvester.jobs.filter.status.finished": "Dokončeno",
+    "information.lastJobFinishedAt": "Poslední úloha harvestu skončila v"
 }

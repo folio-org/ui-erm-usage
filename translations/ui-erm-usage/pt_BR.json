@@ -298,9 +298,10 @@
     "harvester.jobs.column.start": "Iniciar",
     "harvester.jobs.column.finish": "Finalizar",
     "harvester.jobs.column.duration": "Duração",
-    "harvester.jobs.filter.type": "Job types",
-    "harvester.jobs.filter.status": "Job status",
-    "harvester.jobs.filter.status.scheduled": "Scheduled",
-    "harvester.jobs.filter.status.running": "Running",
-    "harvester.jobs.filter.status.finished": "Finished"
+    "harvester.jobs.filter.type": "Tipos de trabalho",
+    "harvester.jobs.filter.status": "Status do trabalho",
+    "harvester.jobs.filter.status.scheduled": "Agendado",
+    "harvester.jobs.filter.status.running": "Executando",
+    "harvester.jobs.filter.status.finished": "Concluído",
+    "information.lastJobFinishedAt": "Last harvesting job finished at"
 }
