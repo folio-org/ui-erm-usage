@@ -35,7 +35,7 @@ function UDPInfoForm(props) {
                 fullWidth
               />
             </Col>
-            <Col xs={4}>
+            <Col xs={8}>
               <Field
                 label={
                   <FormattedMessage id="ui-erm-usage.general.description" />

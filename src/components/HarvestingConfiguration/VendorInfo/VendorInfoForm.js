@@ -37,7 +37,7 @@ class VendorInfoForm extends React.Component {
             validate={!disabled && this.props.required ? required : notRequired}
           />
         </Col>
-        <Col xs={4}>
+        <Col xs={8}>
           <Field
             component={TextField}
             disabled={disabled}

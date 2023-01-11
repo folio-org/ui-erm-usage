@@ -129,6 +129,13 @@ class HarvestingConfigurationForm extends React.Component {
                     onChange={this.changeSelectedHarvestVia}
                   />
                 </Col>
+                <Col xs={8} className={formCss.centerNote}>
+                  {
+                    <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
+                  }
+                </Col>
+              </Row>
+              <Row>
                 <AggregatorInfoForm
                   aggregators={aggregators}
                   required={isHarvestingStatusActive}
@@ -136,11 +143,6 @@ class HarvestingConfigurationForm extends React.Component {
                 />
               </Row>
               <Row>
-                <Col xs={4}>
-                  {
-                    <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
-                  }
-                </Col>
                 <VendorInfoForm
                   disabled={harvestVia !== 'sushi'}
                   required={isHarvestingStatusActive}
