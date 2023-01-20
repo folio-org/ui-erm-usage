@@ -12,7 +12,7 @@
     "start": "stripes serve",
     "build": "stripes build --output ./output",
     "test": "yarn run test:jest",
-    "test:jest": "jest --ci --coverage --silent",
+    "test:jest": "jest --ci --coverage",
     "lint": "eslint src",
     "build-mod-descriptor": "stripes mod descriptor --full --strict | jq '.[]' > module-descriptor.json ",
     "formatjs-compile": "formatjs compile-folder --ast --format simple ./translations/ui-erm-usage ./translations/ui-erm-usage/compiled"
