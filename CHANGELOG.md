@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 7.0.0 (IN PROGRESS)
+## 7.1.0 (IN PROGRESS)
+
+## [7.0.0](https://github.com/folio-org/ui-erm-usage/tree/v7.0.0) (2023-02-20)
 * Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318)) 
 * Upgrade to Stripes v8 ([UIEUS-317](https://issues.folio.org/browse/UIEUS-317))
 * Re-order fields in UDP create/edit screen ([UIEUS-315](https://issues.folio.org/browse/UIEUS-315))
