@@ -300,7 +300,7 @@
     "harvester.jobs.column.duration": "Trvání",
     "harvester.jobs.filter.type": "Typy úloh",
     "harvester.jobs.filter.status": "Stav úlohy",
-    "harvester.jobs.filter.status.scheduled": "Naplánováno",
+    "harvester.jobs.filter.status.scheduled": "Rozvrženo",
     "harvester.jobs.filter.status.running": "Spuštěné",
     "harvester.jobs.filter.status.finished": "Dokončeno",
     "information.lastJobFinishedAt": "Poslední úloha harvestu skončila v"
