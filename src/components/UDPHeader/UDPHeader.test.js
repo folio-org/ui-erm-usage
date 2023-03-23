@@ -1,7 +1,6 @@
 import React from 'react';
-import { useStripes } from '@folio/stripes/core';
+import { StripesContext, useStripes } from '@folio/stripes/core';
 import { screen } from '@testing-library/react';
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
 import UDPHeader from './UDPHeader';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 

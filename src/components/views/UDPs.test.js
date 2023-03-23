@@ -3,9 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
-import { ModuleHierarchyProvider } from '@folio/stripes-core/src/components/ModuleHierarchy';
-import { useStripes } from '@folio/stripes/core';
+import { ModuleHierarchyProvider, StripesContext, useStripes } from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';

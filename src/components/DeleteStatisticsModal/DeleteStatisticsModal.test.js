@@ -1,8 +1,7 @@
 import React from 'react';
 import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStripes } from '@folio/stripes/core';
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
+import { StripesContext, useStripes } from '@folio/stripes/core';
 import { server, rest } from '../../../test/jest/testServer';
 import renderWithIntl from '../../../test/jest/helpers';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
