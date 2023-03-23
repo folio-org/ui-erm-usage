@@ -3,14 +3,15 @@
 ## 7.1.0 (IN PROGRESS)
 
 ## [7.0.0](https://github.com/folio-org/ui-erm-usage/tree/v7.0.0) (2023-02-20)
-* Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318)) 
+* Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318))
 * Upgrade to Stripes v8 ([UIEUS-317](https://issues.folio.org/browse/UIEUS-317))
 * Re-order fields in UDP create/edit screen ([UIEUS-315](https://issues.folio.org/browse/UIEUS-315))
 * Update overview info shown in UDP details pane ([UIEUS-306](https://issues.folio.org/browse/UIEUS-306))
 * Remove remaining BigTest artifacts ([FAT-89](https://issues.folio.org/browse/FAT-89))
 * Access filtered harvester jobs from UDP details pane ([UIEUS-305](https://issues.folio.org/browse/UIEUS-305))
-* Add filter pane to harvester jobs screen ([UIEUS-303](https://issues.folio.org/browse/UIEUS-303)) 
+* Add filter pane to harvester jobs screen ([UIEUS-303](https://issues.folio.org/browse/UIEUS-303))
 * Activate 'Save & close' button on form change ([UIEUS-310](https://issues.folio.org/browse/UIEUS-310))
+* Avoid private paths in stripes-core imports. Refs ([STFORM-35](https://issues.folio.org/browse/STFORM-35))
 
 ## [6.3.0](https://github.com/folio-org/ui-erm-usage/tree/v6.3.0) (2022-10-25)
 * Add empty values for selectboxes (UIEUS-307)

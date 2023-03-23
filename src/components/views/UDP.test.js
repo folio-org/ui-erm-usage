@@ -1,8 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStripes } from '@folio/stripes/core';
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
+import { useStripes, StripesContext } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers';
 

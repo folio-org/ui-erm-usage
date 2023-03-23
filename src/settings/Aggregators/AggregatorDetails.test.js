@@ -1,8 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
-import { useStripes } from '@folio/stripes/core';
+import { useStripes, StripesContext } from '@folio/stripes/core';
 
 import AggregatorDetails from './AggregatorDetails';
 import renderWithIntl from '../../../test/jest/helpers';
