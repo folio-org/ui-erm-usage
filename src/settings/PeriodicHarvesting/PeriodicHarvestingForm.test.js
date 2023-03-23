@@ -2,8 +2,7 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStripes } from '@folio/stripes/core';
-import { StripesContext } from '@folio/stripes-core/src/StripesContext';
+import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers';
 
