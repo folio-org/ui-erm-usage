@@ -80,6 +80,36 @@ const JobsView = ({ source, filterGroups }) => {
   const sortParam = source.resources.query.sort || '';
   const sortDirection = sortParam.startsWith('-') ? 'descending' : 'ascending';
   const sortOrder = sortParam.replace(/^-/, '').replace(/,.*/, '');
+  const resultsFormatter = {
+    providerId: (job) => {
+      if (job.providerId) {
+        const result = source.resources.udps.records.find(
+          (i) => i.id === job.providerId
+        );
+        return result ? result.label : job.providerId;
+      } else {
+        return stripes.okapi.tenant;
+      }
+    },
+    type: (job) => formatMessage({
+      id: 'ui-erm-usage.harvester.jobs.filter.type.' + job.type,
+    }),
+    startedAt: (job) => (job.nextStart
+      ? getLocaleDate(job.nextStart)
+      : getLocaleDate(job.startedAt)),
+    finishedAt: (job) => getLocaleDate(job.finishedAt),
+    duration: (job) => getDuration(job.startedAt, job.finishedAt),
+    status: (job) => {
+      let status;
+      if (job.finishedAt) {
+        status = 'finished';
+      } else {
+        status = (job.nextStart) ? 'scheduled' : 'running';
+      }
+      return formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.status.' + status });
+    },
+    result: (job) => ((job.result) ? formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.result.' + job.result }) : '')
+  };
 
   return (
     <SearchAndSortQuery
@@ -137,31 +167,7 @@ const JobsView = ({ source, filterGroups }) => {
                 'status',
                 'result'
               ]}
-              formatter={{
-                providerId: (job) => {
-                  if (job.providerId) {
-                    const result = source.resources.udps.records.find(
-                      (i) => i.id === job.providerId
-                    );
-                    return result ? result.label : job.providerId;
-                  } else {
-                    return stripes.okapi.tenant;
-                  }
-                },
-                type: (job) => formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.filter.type.' + job.type,
-                }),
-                startedAt: (job) => (job.nextStart
-                  ? getLocaleDate(job.nextStart)
-                  : getLocaleDate(job.startedAt)),
-                finishedAt: (job) => getLocaleDate(job.finishedAt),
-                duration: (job) => getDuration(job.startedAt, job.finishedAt),
-                status: (job) => {
-                  const status = (job.finishedAt) ? 'finished' : (job.nextStart) ? 'scheduled' : 'running';
-                  return formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.status.' + status });
-                },
-                result: (job) => ((job.result) ? formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.result.' + job.result }) : '')
-              }}
+              formatter={resultsFormatter}
               contentData={source.records() || []}
               columnMapping={{
                 providerId: formatMessage({
