@@ -90,7 +90,7 @@
       "erm-usage/files": "1.0",
       "usage-data-providers": "2.8",
       "tags": "1.0",
-      "erm-usage-harvester": "1.3"
+      "erm-usage-harvester": "1.4"
     },
     "permissionSets": [
       {
