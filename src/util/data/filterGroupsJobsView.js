@@ -5,6 +5,11 @@ const filterGroups = [
     values: ['scheduled', 'running', 'finished'],
   },
   {
+    name: 'result',
+    cql: 'result',
+    values: ['failure', 'success'],
+  },
+  {
     name: 'type',
     cql: 'type',
     values: ['periodic', 'tenant', 'provider'],
