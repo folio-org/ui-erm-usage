@@ -36,7 +36,7 @@ describe('JobFilter component tests', () => {
   test('that UDP accordion is not rendered if no state and no param is provided', () => {
     renderJobFilter();
     expect(screen.queryByText('Usage data provider')).not.toBeInTheDocument();
-    expect(screen.queryByText('Job status')).toBeInTheDocument();
+    expect(screen.queryByText('Running status')).toBeInTheDocument();
     expect(screen.queryByText('Job types')).toBeInTheDocument();
   });
 
@@ -44,7 +44,7 @@ describe('JobFilter component tests', () => {
     renderJobFilter('f3712487-7ca4-4e46-968c-5239ec9da5a1');
     expect(screen.queryByText('Usage data provider')).toBeInTheDocument();
     expect(screen.getByRole('checkbox', { name: /f3712487-7ca4-4e46-968c-5239ec9da5a1/ })).toBeChecked();
-    expect(screen.queryByText('Job status')).toBeInTheDocument();
+    expect(screen.queryByText('Running status')).toBeInTheDocument();
     expect(screen.queryByText('Job types')).toBeInTheDocument();
   });
 

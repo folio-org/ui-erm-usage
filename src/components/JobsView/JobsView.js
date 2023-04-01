@@ -134,6 +134,8 @@ const JobsView = ({ source, filterGroups }) => {
                 'startedAt',
                 'finishedAt',
                 'duration',
+                'status',
+                'result'
               ]}
               formatter={{
                 providerId: (job) => {
@@ -154,6 +156,11 @@ const JobsView = ({ source, filterGroups }) => {
                   : getLocaleDate(job.startedAt)),
                 finishedAt: (job) => getLocaleDate(job.finishedAt),
                 duration: (job) => getDuration(job.startedAt, job.finishedAt),
+                status: (job) => {
+                  const status = (job.finishedAt) ? 'finished' : (job.nextStart) ? 'scheduled' : 'running';
+                  return formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.status.' + status });
+                },
+                result: (job) => ((job.result) ? formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.result.' + job.result }) : '')
               }}
               contentData={source.records() || []}
               columnMapping={{
@@ -171,6 +178,12 @@ const JobsView = ({ source, filterGroups }) => {
                 }),
                 duration: formatMessage({
                   id: 'ui-erm-usage.harvester.jobs.column.duration',
+                }),
+                status: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.filter.status',
+                }),
+                result: formatMessage({
+                  id: 'ui-erm-usage.harvester.jobs.filter.result',
                 }),
               }}
               totalCount={source.totalCount() || 0}

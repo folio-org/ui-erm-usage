@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../test/jest/__mock__';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
@@ -35,7 +35,6 @@ const renderJobView = (jobs) => renderWithIntl(
   </MemoryRouter>
 );
 
-
 describe('JobView component', () => {
   it('should display no results if no job data is provided', () => {
     renderJobView([]);
@@ -43,20 +42,59 @@ describe('JobView component', () => {
   });
 
   it('should display properly formatted results if job data is provided', () => {
+    const expectedRowContent = [
+      [
+        'Provider / Tenant',
+        'Type',
+        'Start',
+        'Finish',
+        'Duration',
+        'Running status',
+        'Result',
+      ],
+      [
+        '4a758550-3b4c-428a-9c62-504e12c5d2ad',
+        'Provider',
+        '9/28/2022, 11:35:00 AM',
+        '',
+        '',
+        'In progress',
+        ''
+      ],
+      [
+        'American Chemical Society',
+        'Provider',
+        '9/28/2022, 11:34:00 AM',
+        '9/28/2022, 11:34:00 AM',
+        '0m 0s',
+        'Finished',
+        'Failure',
+      ],
+      [
+        'American Chemical Society',
+        'Provider',
+        '9/28/2022, 11:33:03 AM',
+        '9/28/2022, 11:33:04 AM',
+        '0m 1s',
+        'Finished',
+        'Success',
+      ],
+      [
+        'diku',
+        'Tenant',
+        '9/28/2022, 10:30:04 AM',
+        '9/28/2022, 11:33:05 AM',
+        '1h 3m 1s',
+        'Finished',
+        'Success',
+      ],
+      ['diku', 'Periodic', '9/29/2022, 10:30:04 AM', '', '', 'Scheduled', ''],
+    ];
+
     renderJobView(jobsFixture);
-
-    expect(screen.queryByText('The list contains no items')).toBeNull();
-
-    expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
-    expect(screen.queryAllByText('Provider', { exact: true })).toHaveLength(2); // filter + results
-    expect(screen.queryByText('9/28/2022, 11:33:03 AM')).toBeInTheDocument();
-    expect(screen.queryByText('9/28/2022, 11:33:04 AM')).toBeInTheDocument();
-    expect(screen.queryByText('0m 1s')).toBeInTheDocument();
-
-    expect(screen.queryByText('diku')).toBeInTheDocument();
-    expect(screen.queryAllByText('Tenant', { exact: true })).toHaveLength(2); // filter + results
-    expect(screen.queryByText('9/28/2022, 10:30:04 AM')).toBeInTheDocument();
-    expect(screen.queryByText('9/28/2022, 11:33:05 AM')).toBeInTheDocument();
-    expect(screen.queryByText('1h 3m 1s')).toBeInTheDocument();
+    const rowContent = screen.getAllByRole('row').map((row) => within(row)
+      .queryAllByRole(/gridcell|button/)
+      .map((e) => e.textContent));
+    expect(rowContent).toEqual(expectedRowContent);
   });
 });
