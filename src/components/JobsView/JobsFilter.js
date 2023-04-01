@@ -103,6 +103,7 @@ const JobsFilter = (props) => {
     <AccordionSet>
       {renderUDPFilter()}
       {renderCheckboxFilter('status')}
+      {renderCheckboxFilter('result')}
       {renderCheckboxFilter('type')}
     </AccordionSet>
   );
