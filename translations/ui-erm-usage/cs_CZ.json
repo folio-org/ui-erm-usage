@@ -299,9 +299,12 @@
     "harvester.jobs.column.finish": "Dokončit",
     "harvester.jobs.column.duration": "Trvání",
     "harvester.jobs.filter.type": "Typy úloh",
-    "harvester.jobs.filter.status": "Stav úlohy",
+    "harvester.jobs.filter.status": "Stav běhu",
     "harvester.jobs.filter.status.scheduled": "Rozvrženo",
-    "harvester.jobs.filter.status.running": "Spuštěné",
+    "harvester.jobs.filter.status.running": "Probíhá",
     "harvester.jobs.filter.status.finished": "Dokončeno",
-    "information.lastJobFinishedAt": "Poslední úloha harvestu skončila v"
+    "information.lastJobFinishedAt": "Poslední úloha harvestu skončila v",
+    "harvester.jobs.filter.result": "Výsledek",
+    "harvester.jobs.filter.result.success": "Úspěch",
+    "harvester.jobs.filter.result.failure": "Selhání"
 }
