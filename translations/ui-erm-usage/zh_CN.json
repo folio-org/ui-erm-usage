@@ -303,5 +303,8 @@
     "harvester.jobs.filter.status.scheduled": "已预定",
     "harvester.jobs.filter.status.running": "运行中",
     "harvester.jobs.filter.status.finished": "已完成",
-    "information.lastJobFinishedAt": "最后的收割任务完成于"
+    "information.lastJobFinishedAt": "最后的收割任务完成于",
+    "harvester.jobs.filter.result": "Result",
+    "harvester.jobs.filter.result.success": "Success",
+    "harvester.jobs.filter.result.failure": "Failure"
 }
