@@ -299,9 +299,12 @@
     "harvester.jobs.column.finish": "Fine",
     "harvester.jobs.column.duration": "Durata",
     "harvester.jobs.filter.type": "Job types",
-    "harvester.jobs.filter.status": "Job status",
+    "harvester.jobs.filter.status": "Running status",
     "harvester.jobs.filter.status.scheduled": "Scheduled",
-    "harvester.jobs.filter.status.running": "Running",
+    "harvester.jobs.filter.status.running": "In progress",
     "harvester.jobs.filter.status.finished": "Finished",
-    "information.lastJobFinishedAt": "Last harvesting job finished at"
+    "information.lastJobFinishedAt": "Last harvesting job finished at",
+    "harvester.jobs.filter.result": "Result",
+    "harvester.jobs.filter.result.success": "Success",
+    "harvester.jobs.filter.result.failure": "Failure"
 }
