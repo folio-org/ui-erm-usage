@@ -299,9 +299,12 @@
     "harvester.jobs.column.finish": "Finalizar",
     "harvester.jobs.column.duration": "Duração",
     "harvester.jobs.filter.type": "Tipos de trabalho",
-    "harvester.jobs.filter.status": "Status do trabalho",
+    "harvester.jobs.filter.status": "Status de execução",
     "harvester.jobs.filter.status.scheduled": "Agendado",
-    "harvester.jobs.filter.status.running": "Executando",
+    "harvester.jobs.filter.status.running": "Em andamento",
     "harvester.jobs.filter.status.finished": "Concluído",
-    "information.lastJobFinishedAt": "Último trabalho de colheita concluído em"
+    "information.lastJobFinishedAt": "Último trabalho de colheita concluído em",
+    "harvester.jobs.filter.result": "Resultado",
+    "harvester.jobs.filter.result.success": "Sucesso",
+    "harvester.jobs.filter.result.failure": "Falha"
 }
