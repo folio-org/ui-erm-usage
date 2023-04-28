@@ -299,12 +299,12 @@
     "harvester.jobs.column.finish": "结束",
     "harvester.jobs.column.duration": "持续时间",
     "harvester.jobs.filter.type": "任务类型",
-    "harvester.jobs.filter.status": "任务状态",
+    "harvester.jobs.filter.status": "运行状态",
     "harvester.jobs.filter.status.scheduled": "已预定",
     "harvester.jobs.filter.status.running": "运行中",
     "harvester.jobs.filter.status.finished": "已完成",
     "information.lastJobFinishedAt": "最后的收割任务完成于",
-    "harvester.jobs.filter.result": "Result",
-    "harvester.jobs.filter.result.success": "Success",
-    "harvester.jobs.filter.result.failure": "Failure"
+    "harvester.jobs.filter.result": "结果",
+    "harvester.jobs.filter.result.success": "成功",
+    "harvester.jobs.filter.result.failure": "失败"
 }
