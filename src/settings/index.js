@@ -7,6 +7,7 @@ import StartHarvester from './StartHarvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
 import DisplaySettings from './DisplaySettings';
 import PeriodicHarvestingManager from './PeriodicHarvesting';
+import HarvesterLogsSettings from './HarvesterLogs';
 
 /*
   STRIPES-NEW-APP
@@ -62,7 +63,12 @@ class ErmUsageSettings extends React.Component {
             route: 'periodic-harvesting',
             label: formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' }),
             component: PeriodicHarvestingManager
-          }
+          },
+          {
+            route: 'harvester-logs',
+            label: formatMessage({ id: 'ui-erm-usage.settings.harvester.logs.title' }),
+            component: HarvesterLogsSettings
+          },
         ]
       }
     ];

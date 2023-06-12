@@ -47,57 +47,62 @@ jest.mock(
       withOkapi: true,
     };
 
+    const stripesConnect = (Component) => ({
+      mutator,
+      resources,
+      stripes,
+      ...rest
+    }) => {
+      if (Component.manifest === null || Component.manifest === undefined) {
+        const fakeStripes = stripes || STRIPES;
+        return <Component {...rest} stripes={fakeStripes} />;
+      }
+      const fakeMutator =
+        mutator ||
+        Object.keys(Component.manifest).reduce((acc, mutatorName) => {
+          const returnValue = Component.manifest[mutatorName].records
+            ? []
+            : {};
+
+          acc[mutatorName] = {
+            GET: jest.fn().mockReturnValue(Promise.resolve(returnValue)),
+            PUT: jest.fn().mockReturnValue(Promise.resolve()),
+            POST: jest.fn().mockReturnValue(Promise.resolve()),
+            DELETE: jest.fn().mockReturnValue(Promise.resolve()),
+            reset: jest.fn(),
+          };
+
+          return acc;
+        }, {});
+
+      const fakeResources =
+        resources ||
+        Object.keys(Component.manifest).reduce((acc, resourceName) => {
+          acc[resourceName] = {
+            records: [],
+            hasLoaded: true,
+          };
+
+          return acc;
+        }, {});
+
+      const fakeStripes = stripes || STRIPES;
+
+      return (
+        <Component
+          {...rest}
+          mutator={fakeMutator}
+          resources={fakeResources}
+          stripes={fakeStripes}
+        />
+      );
+    };
+
+    STRIPES.connect = stripesConnect;
+
     return {
       ...jest.requireActual('@folio/stripes/core'),
-      stripesConnect: (Component) => ({
-        mutator,
-        resources,
-        stripes,
-        ...rest
-      }) => {
-        if (Component.manifest === null || Component.manifest === undefined) {
-          const fakeStripes = stripes || STRIPES;
-          return <Component {...rest} stripes={fakeStripes} />;
-        }
-        const fakeMutator =
-          mutator ||
-          Object.keys(Component.manifest).reduce((acc, mutatorName) => {
-            const returnValue = Component.manifest[mutatorName].records
-              ? []
-              : {};
-
-            acc[mutatorName] = {
-              GET: jest.fn().mockReturnValue(Promise.resolve(returnValue)),
-              PUT: jest.fn().mockReturnValue(Promise.resolve()),
-              POST: jest.fn().mockReturnValue(Promise.resolve()),
-              DELETE: jest.fn().mockReturnValue(Promise.resolve()),
-              reset: jest.fn(),
-            };
-
-            return acc;
-          }, {});
-
-        const fakeResources =
-          resources ||
-          Object.keys(Component.manifest).reduce((acc, resourceName) => {
-            acc[resourceName] = {
-              records: [],
-            };
-
-            return acc;
-          }, {});
-
-        const fakeStripes = stripes || STRIPES;
-
-        return (
-          <Component
-            {...rest}
-            mutator={fakeMutator}
-            resources={fakeResources}
-            stripes={fakeStripes}
-          />
-        );
-      },
+      stripesConnect,
 
       useStripes: () => STRIPES,
 

@@ -288,6 +288,9 @@
   "settings.credentials.download.csv": "Download as CSV",
   "settings.credentials.download.xlsx": "Download as XLSX",
 
+  "settings.harvester.logs.title": "Harvester logs",
+  "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs",
+
   "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
   "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
   "settings.harvester.config.periodic.title": "Periodic harvesting",
