@@ -113,6 +113,7 @@ class PeriodicHarvestingForm extends React.Component {
                 id="periodic-harvesting-interval"
                 component={Select}
                 dataOptions={periodicHarvestingIntervals}
+                initialValue={initialValues.periodicInterval || periodicHarvestingIntervals[0].value}
                 fullWidth
                 validate={required}
               />
