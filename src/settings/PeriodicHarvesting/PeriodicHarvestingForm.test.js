@@ -11,7 +11,7 @@ import periodicHarvestingIntervals from '../../util/data/periodicHarvestingInter
 
 const stubInitialValues = {
   startDate: '2021-01-01',
-  startTime: '2021-01-01T07:00:00+00:00',
+  startTime: '07:00 AM',
   periodicInterval: 'weekly',
 };
 
