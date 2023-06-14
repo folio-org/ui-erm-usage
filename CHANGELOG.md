@@ -1,6 +1,10 @@
 # Change history for ui-erm-usage
 
 ## 7.1.0 (IN PROGRESS)
+* Add settings page for harvester logs ([UIEUS-330](https://issues.folio.org/browse/UIEUS-330))
+* Add 'Running status' and 'Result' information to 'Harvester logs' view and filter ([UIEUS-304](https://issues.folio.org/browse/UIEUS-304))
+* Avoid private paths in stripes-core imports ([UIEUS-322](https://issues.folio.org/browse/UIEUS-322))
+* Fix test warnings 'No metadata' ([UIEUS-320](https://issues.folio.org/browse/UIEUS-320))
 
 ## [7.0.0](https://github.com/folio-org/ui-erm-usage/tree/v7.0.0) (2023-02-20)
 * Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318)) 
