@@ -19,7 +19,7 @@ class PeriodicHarvestingView extends React.Component {
   };
 
   renderDetailView = periodicConfig => {
-    const { locale, timeZone } = this.props.intl;
+    const { formatMessage, locale, timeZone } = this.props.intl;
     const lastTriggeredAt = formatDateTime(periodicConfig.lastTriggeredAt, locale, timeZone);
     const { date, time } = splitDateTime(periodicConfig.startAt, locale, timeZone);
 
@@ -29,7 +29,7 @@ class PeriodicHarvestingView extends React.Component {
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
+                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
                 value={date}
               />
             </Col>
@@ -37,7 +37,7 @@ class PeriodicHarvestingView extends React.Component {
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
                 value={time}
               />
             </Col>
@@ -45,15 +45,15 @@ class PeriodicHarvestingView extends React.Component {
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-                value={periodicConfig.periodicInterval}
+                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
+                value={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + periodicConfig.periodicInterval })}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={8}>
               <KeyValue
-                label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
+                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
                 value={lastTriggeredAt}
               />
             </Col>

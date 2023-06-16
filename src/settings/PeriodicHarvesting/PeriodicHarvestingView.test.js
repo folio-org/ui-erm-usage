@@ -24,7 +24,7 @@ describe('PeriodicHarvestingView', () => {
     renderPeriodicHarvestingView(periodicConfig);
     expect(screen.getByText('05/07/2021')).toBeVisible();
     expect(screen.getByText('12:13 PM')).toBeVisible();
-    expect(screen.getByText('daily')).toBeVisible();
+    expect(screen.getByText('Daily')).toBeVisible();
     expect(screen.getByText('May 7, 2021 12:13 PM')).toBeVisible();
   });
 
