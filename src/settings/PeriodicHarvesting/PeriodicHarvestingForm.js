@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { IfPermission } from '@folio/stripes/core';
 import {
   Button,
@@ -25,6 +25,7 @@ class PeriodicHarvestingForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: PropTypes.shape(),
+    intl: PropTypes.object.isRequired,
     onDelete: PropTypes.func.isRequired,
     timeZone: PropTypes.string.isRequired,
   };
@@ -62,7 +63,7 @@ class PeriodicHarvestingForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, initialValues } = this.props;
+    const { handleSubmit, initialValues, intl: { formatMessage } } = this.props;
     const isConfigEmpty = _.isEmpty(initialValues);
     const lastTriggeredAt = initialValues.lastTriggeredAt
       ? moment(initialValues.lastTriggeredAt).format('LLL')
@@ -77,9 +78,9 @@ class PeriodicHarvestingForm extends React.Component {
                 label={
                   <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />
                 }
-                aria-label={
-                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />
-                }
+                aria-label={formatMessage({
+                  id: 'ui-erm-usage.settings.harvester.config.periodic.start.date',
+                })}
                 name="startDate"
                 id="periodic-harvesting-start"
                 component={Datepicker}
@@ -93,9 +94,9 @@ class PeriodicHarvestingForm extends React.Component {
             <Col xs={8}>
               <Field
                 name="startTime"
-                label={
-                  <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.time" />
-                }
+                label={formatMessage({
+                  id: 'ui-erm-usage.settings.harvester.config.periodic.start.time',
+                })}
                 component={Timepicker}
                 autoComplete="off"
                 timeZone={this.props.timeZone}
@@ -113,6 +114,7 @@ class PeriodicHarvestingForm extends React.Component {
                 id="periodic-harvesting-interval"
                 component={Select}
                 dataOptions={periodicHarvestingIntervals}
+                initialValue={initialValues.periodicInterval || periodicHarvestingIntervals[0].value}
                 fullWidth
                 validate={required}
               />
@@ -180,4 +182,4 @@ export default stripesFinalForm({
     values: true,
     invalid: true,
   },
-})(PeriodicHarvestingForm);
+})(injectIntl(PeriodicHarvestingForm));

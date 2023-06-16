@@ -1,6 +1,7 @@
 # Change history for ui-erm-usage
 
 ## 7.1.0 (IN PROGRESS)
+* Set initialValue for periodic interval field in periodic harvesting settings ([UIEUS-329](https://issues.folio.org/browse/UIEUS-329))
 * Add settings page for harvester logs ([UIEUS-330](https://issues.folio.org/browse/UIEUS-330))
 * Add 'Running status' and 'Result' information to 'Harvester logs' view and filter ([UIEUS-304](https://issues.folio.org/browse/UIEUS-304))
 * Avoid private paths in stripes-core imports ([UIEUS-322](https://issues.folio.org/browse/UIEUS-322))

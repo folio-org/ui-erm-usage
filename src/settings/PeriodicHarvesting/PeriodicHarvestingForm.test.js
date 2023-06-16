@@ -7,10 +7,11 @@ import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
+import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 
 const stubInitialValues = {
   startDate: '2021-01-01',
-  startTime: '2021-01-01T07:00:00+00:00',
+  startTime: '07:00 AM',
   periodicInterval: 'weekly',
 };
 
@@ -44,10 +45,13 @@ describe('PeriodicHarvestingForm', () => {
     stripes = useStripes();
   });
 
-  test('test required fields', () => {
+  test('test required fields and combobox initial value', () => {
     renderPeriodicHarvestingForm(stripes);
     userEvent.click(screen.getByText('Save'));
-    expect(screen.getAllByText('Required')).toHaveLength(3);
+    expect(screen.getAllByText('Required')).toHaveLength(2);
+    expect(screen.getByRole('combobox').value).toBe(
+      periodicHarvestingIntervals[0].value
+    );
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
