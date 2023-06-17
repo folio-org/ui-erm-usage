@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -51,7 +50,7 @@ class PeriodicHarvestingForm extends React.Component {
 
   render() {
     const { handleSubmit, initialValues, intl: { locale, formatMessage, timeZone } } = this.props;
-    const isConfigEmpty = _.isEmpty(initialValues);
+    const isDeleteButtonDisabled = !initialValues.startAt;
     const lastTriggeredAt = formatDateTime(initialValues.lastTriggeredAt, locale, timeZone);
 
     return (
@@ -128,7 +127,7 @@ class PeriodicHarvestingForm extends React.Component {
                 title="DELETE"
                 buttonStyle="danger"
                 onClick={this.beginDelete}
-                disabled={isConfigEmpty}
+                disabled={isDeleteButtonDisabled}
                 marginBottom0
               >
                 <FormattedMessage id="ui-erm-usage.general.delete" />
