@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form } from 'react-final-form';
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
@@ -10,8 +9,8 @@ import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 
 const stubInitialValues = {
-  startDate: '2021-01-01',
-  startTime: '07:00 AM',
+  date: '01/01/2021',
+  time: '7:00 AM',
   periodicInterval: 'weekly',
 };
 
@@ -21,17 +20,10 @@ const renderPeriodicHarvestingForm = (stripes, initialVals = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
-        <Form
+        <PeriodicHarvestingForm
           onSubmit={onSubmit}
-          render={() => (
-            <PeriodicHarvestingForm
-              handleSubmit={jest.fn}
-              onSubmit={onSubmit}
-              onDelete={onDelete}
-              timeZone="UTC"
-              initialValues={initialVals}
-            />
-          )}
+          onDelete={onDelete}
+          initialValues={initialVals}
         />
       </MemoryRouter>
     </StripesContext.Provider>
@@ -59,7 +51,7 @@ describe('PeriodicHarvestingForm', () => {
     renderPeriodicHarvestingForm(stripes);
     userEvent.type(
       screen.getByLabelText('Start date', { exact: false }),
-      '2021-01-01'
+      '01/01/2021'
     );
     userEvent.type(screen.getByText('Start time', { exact: false }), '5:01 AM');
     userEvent.selectOptions(

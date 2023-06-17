@@ -8,7 +8,6 @@ import {
   Col,
   ConfirmationModal,
   Datepicker,
-  IconButton,
   KeyValue,
   PaneMenu,
   Row,
@@ -16,10 +15,10 @@ import {
   Timepicker,
 } from '@folio/stripes/components';
 import { Field } from 'react-final-form';
-import moment from 'moment-timezone';
 import stripesFinalForm from '@folio/stripes/final-form';
 import { required } from '../../util/validate';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
+import { formatDateTime } from '../../util/dateTimeProcessing';
 
 class PeriodicHarvestingForm extends React.Component {
   static propTypes = {
@@ -27,7 +26,6 @@ class PeriodicHarvestingForm extends React.Component {
     initialValues: PropTypes.shape(),
     intl: PropTypes.object.isRequired,
     onDelete: PropTypes.func.isRequired,
-    timeZone: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -51,23 +49,10 @@ class PeriodicHarvestingForm extends React.Component {
     this.setState({ confirmDelete: false });
   };
 
-  getLastMenu() {
-    return (
-      <IconButton
-        icon="times-circle"
-        id="clickable-edit-config"
-        onClick={this.onEndEdit}
-        aria-label="End edit periodic harvesting config"
-      />
-    );
-  }
-
   render() {
-    const { handleSubmit, initialValues, intl: { formatMessage } } = this.props;
+    const { handleSubmit, initialValues, intl: { locale, formatMessage, timeZone } } = this.props;
     const isConfigEmpty = _.isEmpty(initialValues);
-    const lastTriggeredAt = initialValues.lastTriggeredAt
-      ? moment(initialValues.lastTriggeredAt).format('LLL')
-      : '--';
+    const lastTriggeredAt = formatDateTime(initialValues.lastTriggeredAt, locale, timeZone);
 
     return (
       <React.Fragment>
@@ -81,11 +66,10 @@ class PeriodicHarvestingForm extends React.Component {
                 aria-label={formatMessage({
                   id: 'ui-erm-usage.settings.harvester.config.periodic.start.date',
                 })}
-                name="startDate"
+                name="date"
                 id="periodic-harvesting-start"
                 component={Datepicker}
-                dateFormat="YYYY-MM-DD"
-                backendDateStandard="YYYY-MM-DD"
+                outputFormatter={({ value }) => value}
                 validate={required}
               />
             </Col>
@@ -93,13 +77,12 @@ class PeriodicHarvestingForm extends React.Component {
           <Row>
             <Col xs={8}>
               <Field
-                name="startTime"
+                name="time"
                 label={formatMessage({
                   id: 'ui-erm-usage.settings.harvester.config.periodic.start.time',
                 })}
                 component={Timepicker}
-                autoComplete="off"
-                timeZone={this.props.timeZone}
+                outputFormatter={({ value }) => value}
                 validate={required}
               />
             </Col>

@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment-timezone';
 import {
   injectIntl,
   FormattedMessage
@@ -10,20 +10,19 @@ import {
   KeyValue,
   Row,
 } from '@folio/stripes/components';
+import { formatDateTime, splitDateTime } from '../../util/dateTimeProcessing';
 
 class PeriodicHarvestingView extends React.Component {
   static propTypes = {
-    initialValues: PropTypes.shape(),
+    periodicConfig: PropTypes.object,
     intl: PropTypes.object,
-    timeFormat: PropTypes.string,
-    timeZone: PropTypes.string.isRequired
   };
 
-  renderDetailView = values => {
-    const { timeFormat, timeZone } = this.props;
-    const time = moment.tz(values.startAt, timeZone).format(timeFormat);
+  renderDetailView = periodicConfig => {
+    const { locale, timeZone } = this.props.intl;
+    const lastTriggeredAt = formatDateTime(periodicConfig.lastTriggeredAt, locale, timeZone);
+    const { date, time } = splitDateTime(periodicConfig.startAt, locale, timeZone);
 
-    const lastTriggeredAt = values.lastTriggeredAt ? moment(values.lastTriggeredAt).format('LLL') : '--';
     return (
       <React.Fragment>
         <div id="periodic-harvesting-detail-view">
@@ -31,7 +30,7 @@ class PeriodicHarvestingView extends React.Component {
             <Col xs={8}>
               <KeyValue
                 label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
-                value={values.startDate}
+                value={date}
               />
             </Col>
           </Row>
@@ -47,7 +46,7 @@ class PeriodicHarvestingView extends React.Component {
             <Col xs={8}>
               <KeyValue
                 label={this.props.intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-                value={values.periodicInterval}
+                value={periodicConfig.periodicInterval}
               />
             </Col>
           </Row>
@@ -75,11 +74,11 @@ class PeriodicHarvestingView extends React.Component {
   }
 
   render() {
-    const { initialValues } = this.props;
-    if (initialValues.periodicInterval) {
-      return this.renderDetailView(initialValues);
-    } else {
+    const { periodicConfig } = this.props;
+    if (_.isEmpty(periodicConfig)) {
       return this.renderNotDefined();
+    } else {
+      return this.renderDetailView(periodicConfig);
     }
   }
 }
