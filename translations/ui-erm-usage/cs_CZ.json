@@ -306,5 +306,7 @@
     "information.lastJobFinishedAt": "Poslední úloha harvestu skončila v",
     "harvester.jobs.filter.result": "Výsledek",
     "harvester.jobs.filter.result.success": "Úspěch",
-    "harvester.jobs.filter.result.failure": "Selhání"
+    "harvester.jobs.filter.result.failure": "Selhání",
+    "settings.harvester.logs.title": "Harvester logs",
+    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
 }
