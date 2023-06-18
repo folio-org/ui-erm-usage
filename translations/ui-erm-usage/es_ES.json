@@ -306,5 +306,7 @@
     "information.lastJobFinishedAt": "Last harvesting job finished at",
     "harvester.jobs.filter.result": "Result",
     "harvester.jobs.filter.result.success": "Success",
-    "harvester.jobs.filter.result.failure": "Failure"
+    "harvester.jobs.filter.result.failure": "Failure",
+    "settings.harvester.logs.title": "Harvester logs",
+    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
 }

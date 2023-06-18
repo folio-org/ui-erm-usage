@@ -306,5 +306,7 @@
     "information.lastJobFinishedAt": "最后的收割任务完成于",
     "harvester.jobs.filter.result": "结果",
     "harvester.jobs.filter.result.success": "成功",
-    "harvester.jobs.filter.result.failure": "失败"
+    "harvester.jobs.filter.result.failure": "失败",
+    "settings.harvester.logs.title": "Harvester logs",
+    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
 }
