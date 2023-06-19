@@ -8,6 +8,10 @@ import udpsFixture from '../../../test/fixtures/udps';
 import jobsFixture from '../../../test/fixtures/jobs';
 import JobsViewRoute from '../../routes/JobsViewRoute';
 
+jest.mock('./JobsViewResultCell', () => () => (
+  <div>MockedJobsViewResultCell</div>
+));
+
 const renderJobView = (jobs) => renderWithIntl(
   <MemoryRouter>
     <JobsViewRoute
@@ -68,7 +72,7 @@ describe('JobView component', () => {
         '9/28/2022, 11:34:00 AM',
         '0m 0s',
         'Finished',
-        'Failure',
+        'MockedJobsViewResultCell',
       ],
       [
         'American Chemical Society',
@@ -77,7 +81,7 @@ describe('JobView component', () => {
         '9/28/2022, 11:33:04 AM',
         '0m 1s',
         'Finished',
-        'Success',
+        'MockedJobsViewResultCell',
       ],
       [
         'diku',
@@ -86,7 +90,7 @@ describe('JobView component', () => {
         '9/28/2022, 11:33:05 AM',
         '1h 3m 1s',
         'Finished',
-        'Success',
+        'MockedJobsViewResultCell',
       ],
       ['diku', 'Periodic', '9/29/2022, 10:30:04 AM', '', '', 'Scheduled', ''],
     ];

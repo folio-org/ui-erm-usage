@@ -13,38 +13,9 @@ import { useStripes } from '@folio/stripes/core';
 import { useHistory, useLocation } from 'react-router';
 import JobsFilter from './JobsFilter';
 import urls from '../../util/urls';
+import JobsViewResultCell from './JobsViewResultCell';
 
-const JobsView = ({ source, filterGroups }) => {
-  const { formatMessage } = useIntl();
-  const stripes = useStripes();
-  const history = useHistory();
-  const fromPath = get(useLocation().state, 'from', urls.udps());
-
-  const querySetter = ({ location: loc, nsValues }) => {
-    const url = buildUrl(loc, nsValues);
-    const { pathname, search } = loc;
-    if (`${pathname}${search}` !== url) {
-      history.push(url, loc.state);
-    }
-  };
-
-  const queryGetter = () => {
-    return get(source.resources, 'query', {});
-  };
-
-  const renderResultsPaneSubtitle = () => {
-    if (source && source.loaded()) {
-      const count = source.totalCount();
-      return (
-        <FormattedMessage
-          id="stripes-smart-components.searchResultsCountHeader"
-          values={{ count }}
-        />
-      );
-    }
-    return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
-  };
-
+const resultsFormatter = (formatMessage, stripes, source) => {
   const getLocaleDate = (date) => {
     return date
       ? new Date(date).toLocaleString(stripes.locale, {
@@ -77,10 +48,7 @@ const JobsView = ({ source, filterGroups }) => {
     }
   };
 
-  const sortParam = source.resources.query.sort || '';
-  const sortDirection = sortParam.startsWith('-') ? 'descending' : 'ascending';
-  const sortOrder = sortParam.replace(/^-/, '').replace(/,.*/, '');
-  const resultsFormatter = {
+  return {
     providerId: (job) => {
       if (job.providerId) {
         const result = source.resources.udps.records.find(
@@ -104,12 +72,59 @@ const JobsView = ({ source, filterGroups }) => {
       if (job.finishedAt) {
         status = 'finished';
       } else {
-        status = (job.nextStart) ? 'scheduled' : 'running';
+        status = job.nextStart ? 'scheduled' : 'running';
       }
-      return formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.status.' + status });
+      return formatMessage({
+        id: 'ui-erm-usage.harvester.jobs.filter.status.' + status,
+      });
     },
-    result: (job) => ((job.result) ? formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.result.' + job.result }) : '')
+    result: (job) => (job.result ? (
+      <JobsViewResultCell
+        errorMessage={job.errorMessage}
+        text={formatMessage({
+          id: 'ui-erm-usage.harvester.jobs.filter.result.' + job.result,
+        })}
+      />
+    ) : (
+      ''
+    )),
   };
+};
+
+const JobsView = ({ source, filterGroups }) => {
+  const { formatMessage } = useIntl();
+  const stripes = useStripes();
+  const history = useHistory();
+  const fromPath = get(useLocation().state, 'from', urls.udps());
+
+  const querySetter = ({ location: loc, nsValues }) => {
+    const url = buildUrl(loc, nsValues);
+    const { pathname, search } = loc;
+    if (`${pathname}${search}` !== url) {
+      history.push(url, loc.state);
+    }
+  };
+
+  const queryGetter = () => {
+    return get(source.resources, 'query', {});
+  };
+
+  const renderResultsPaneSubtitle = () => {
+    if (source?.loaded()) {
+      const count = source.totalCount();
+      return (
+        <FormattedMessage
+          id="stripes-smart-components.searchResultsCountHeader"
+          values={{ count }}
+        />
+      );
+    }
+    return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
+  };
+
+  const sortParam = source.resources.query.sort || '';
+  const sortDirection = sortParam.startsWith('-') ? 'descending' : 'ascending';
+  const sortOrder = sortParam.replace(/^-/, '').replace(/,.*/, '');
 
   return (
     <SearchAndSortQuery
@@ -167,7 +182,7 @@ const JobsView = ({ source, filterGroups }) => {
                 'status',
                 'result'
               ]}
-              formatter={resultsFormatter}
+              formatter={resultsFormatter(formatMessage, stripes, source)}
               contentData={source.records() || []}
               columnMapping={{
                 providerId: formatMessage({
