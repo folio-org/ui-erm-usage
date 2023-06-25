@@ -307,6 +307,6 @@
     "harvester.jobs.filter.result": "Výsledek",
     "harvester.jobs.filter.result.success": "Úspěch",
     "harvester.jobs.filter.result.failure": "Selhání",
-    "settings.harvester.logs.title": "Harvester logs",
-    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
+    "settings.harvester.logs.title": "Logy harvestoru",
+    "settings.harvester.logs.daysToKeepLogs": "Počet dní pro uchování logů harvestoru"
 }
