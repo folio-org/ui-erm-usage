@@ -25,7 +25,7 @@ const translations = {
 
 // eslint-disable-next-line react/prop-types
 const Intl = ({ children }) => (
-  <IntlProvider locale="en" messages={translations}>
+  <IntlProvider locale="en" timeZone="UTC" messages={translations}>
     {children}
   </IntlProvider>
 );
