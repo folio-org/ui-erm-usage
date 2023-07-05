@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SubmissionError } from 'redux-form';
 import { injectIntl } from 'react-intl';
 import { stripesConnect, IfPermission } from '@folio/stripes/core';
 import {
@@ -49,15 +48,12 @@ class PeriodicHarvestingManager extends React.Component {
       method: 'GET',
     })
       .then((response) => {
-        if (response.status < 400) {
+        if (response.status === 200) {
           return response.json();
         } else if (response.status === 404) {
           return {};
         } else {
-          throw new SubmissionError({
-            identifier: `Error ${response.status} while fetching periodic harvesting configuration`,
-            _error: 'Fetch periodic harvesting configuration failed',
-          });
+          throw this.createErrorFromResponse(response, 'fetch');
         }
       })
       .then((json) => {
@@ -65,9 +61,7 @@ class PeriodicHarvestingManager extends React.Component {
           config: json,
         });
       })
-      .catch((err) => {
-        this.showErrorInfo(`Error: ${err.message}`);
-      });
+      .catch(this.showErrorInfo);
   };
 
   savePeriodicHarvestingConf = (formValues) => {
@@ -90,21 +84,15 @@ class PeriodicHarvestingManager extends React.Component {
       body: JSON.stringify(periodicConfig),
     })
       .then((response) => {
-        if (response.status >= 400) {
-          this.showErrorInfo(response);
-        } else {
+        if (response.status === 201) {
           this.onCloseEdit();
           this.setState({ config: periodicConfig });
-          this.callout.sendCallout({
-            message: this.props.intl.formatMessage({
-              id: 'ui-erm-usage.settings.harvester.config.periodic.saved',
-            }),
-          });
+          this.showSuccessInfo('saved');
+        } else {
+          throw this.createErrorFromResponse(response, 'save');
         }
       })
-      .catch((err) => {
-        this.showErrorInfo(err.message);
-      });
+      .catch(this.showErrorInfo);
   };
 
   deletePeriodicHarvestingConf = () => {
@@ -113,33 +101,50 @@ class PeriodicHarvestingManager extends React.Component {
       method: 'DELETE',
     })
       .then((response) => {
-        if (response.status < 400 || response.status === 404) {
+        if (response.status === 204) {
           this.onCloseEdit();
           this.setState({ config: {} });
-          this.callout.sendCallout({
-            message: this.props.intl.formatMessage({
-              id: 'ui-erm-usage.settings.harvester.config.periodic.deleted',
-            }),
-          });
+          this.showSuccessInfo('deleted');
         } else {
-          this.showErrorInfo(response);
+          throw this.createErrorFromResponse(response, 'delete');
         }
       })
-      .catch((err) => {
-        this.showErrorInfo(err.message);
-      });
+      .catch(this.showErrorInfo);
   };
 
-  showErrorInfo = (response) => {
-    response.then((text) => {
-      const msg = `Error: ${text}`;
-      if (this.callout) {
-        this.callout.sendCallout({
-          type: 'error',
-          message: msg,
-        });
+  createErrorFromResponse = (response, intlTag) => new Error(
+    this.props.intl.formatMessage(
+      {
+        id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}.fail`,
+      },
+      {
+        status: response.status,
+        statusText: response.statusText,
       }
+    )
+  );
+
+  showSuccessInfo = (intlTag) => {
+    if (this.callout) {
+      this.callout.sendCallout({
+        type: 'success',
+        message: this.props.intl.formatMessage({
+          id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}`,
+        }),
+      });
+    }
+  };
+
+  showErrorInfo = (error) => {
+    const prefix = this.props.intl.formatMessage({
+      id: 'ui-erm-usage.general.error2',
     });
+    if (this.callout) {
+      this.callout.sendCallout({
+        type: 'error',
+        message: `${prefix}: ${error.message}`,
+      });
+    }
   };
 
   onCloseEdit = (e) => {

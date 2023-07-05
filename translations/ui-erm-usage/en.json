@@ -51,6 +51,7 @@
   "general.year": "Year",
   "general.fileSize.kb": "Filesize in kB",
   "general.error": "Ooops. Something went wrong...",
+  "general.error2": "Error",
   "general.sure": "Are you sure?",
   "general.unsaved.selections": "There are unsaved selections.",
   "general.keepEditing": "Keep editing",
@@ -291,6 +292,9 @@
   "settings.harvester.logs.title": "Harvester logs",
   "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs",
 
+  "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
+  "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
+  "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
   "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
   "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
   "settings.harvester.config.periodic.title": "Periodic harvesting",
