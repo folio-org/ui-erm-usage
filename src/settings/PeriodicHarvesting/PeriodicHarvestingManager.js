@@ -2,9 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import { stripesConnect, IfPermission } from '@folio/stripes/core';
+import { CalloutContext, stripesConnect, IfPermission } from '@folio/stripes/core';
 import {
-  Callout,
   ConfirmationModal,
   IconButton,
   Pane,
@@ -20,6 +19,8 @@ class PeriodicHarvestingManager extends React.Component {
     intl: PropTypes.object,
     stripes: PropTypes.object,
   };
+
+  static contextType = CalloutContext;
 
   constructor(props) {
     super(props);
@@ -125,26 +126,22 @@ class PeriodicHarvestingManager extends React.Component {
   );
 
   showSuccessInfo = (intlTag) => {
-    if (this.callout) {
-      this.callout.sendCallout({
-        type: 'success',
-        message: this.props.intl.formatMessage({
-          id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}`,
-        }),
-      });
-    }
+    this.context.sendCallout({
+      type: 'success',
+      message: this.props.intl.formatMessage({
+        id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}`,
+      }),
+    });
   };
 
   showErrorInfo = (error) => {
     const prefix = this.props.intl.formatMessage({
       id: 'ui-erm-usage.general.error2',
     });
-    if (this.callout) {
-      this.callout.sendCallout({
-        type: 'error',
-        message: `${prefix}: ${error.message}`,
-      });
-    }
+    this.context.sendCallout({
+      type: 'error',
+      message: `${prefix}: ${error.message}`,
+    });
   };
 
   onCloseEdit = (e) => {
@@ -249,11 +246,6 @@ class PeriodicHarvestingManager extends React.Component {
         >
           {periodicHarvesting}
         </Pane>
-        <Callout
-          ref={(ref) => {
-            this.callout = ref;
-          }}
-        />
         <ConfirmationModal
           open={this.state.confirming}
           heading={this.props.intl.formatMessage({
