@@ -307,6 +307,6 @@
     "harvester.jobs.filter.result": "结果",
     "harvester.jobs.filter.result.success": "成功",
     "harvester.jobs.filter.result.failure": "失败",
-    "settings.harvester.logs.title": "Harvester logs",
-    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
+    "settings.harvester.logs.title": "收割器日志",
+    "settings.harvester.logs.daysToKeepLogs": "保持收割日志的天数"
 }

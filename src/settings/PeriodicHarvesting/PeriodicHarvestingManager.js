@@ -15,6 +15,7 @@ import moment from 'moment-timezone';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 import getLegacyTokenHeader from '../../util/getLegacyTokenHeader';
+import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
 
 class PeriodicHarvestingManager extends React.Component {
   static propTypes = {
@@ -41,38 +42,11 @@ class PeriodicHarvestingManager extends React.Component {
         credentials: 'include',
       }
     );
-
-    this.dateFormat = moment.localeData()._longDateFormat.L;
-    this.timeFormat = moment.localeData()._longDateFormat.LT;
-
-    this.timeZone = props.intl.timeZone;
   }
 
   componentDidMount() {
     this.fetchPeriodicHarvestingConf();
   }
-
-  combineDateTime = (date, time) => {
-    // dont transform date to different timezone
-    const d = moment(date + ' 00:00:00 +0000', ['YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ss.SSSZ']);
-    const t = moment(time, 'HH:mm:ss.SSSZ').tz(this.timeZone);
-
-    t.set('year', d.year());
-    t.set('month', d.month());
-    t.set('date', d.date());
-    return t;
-  };
-
-  splitDateTime = (dateTime) => {
-    const dT = moment(dateTime);
-    const splitted = dT.format('YYYY-MM-DD HH:mm:ss.SSSZZ').split(' ');
-    const date = moment(splitted[0], 'YYYY-MM-DD');
-    const time = moment(splitted[1], 'HH:mm:ss.SSSZZ');
-    return {
-      date: date.format('YYYY-MM-DD'),
-      time: time.format(),
-    };
-  };
 
   fetchPeriodicHarvestingConf = () => {
     fetch(this.okapiUrl + this.endpoint, {
@@ -101,31 +75,31 @@ class PeriodicHarvestingManager extends React.Component {
       });
   };
 
-  savePeriodicHarvestingConf = (data) => {
+  savePeriodicHarvestingConf = (formValues) => {
     const headers = {
       ...this.httpHeaders,
       'content-type': 'application/json',
     };
 
-    const dateTime = this.combineDateTime(data.startDate, data.startTime);
-    data.startDate = dateTime.format();
-    data.startTime = {};
+    const { locale, timeZone } = this.props.intl;
+    const { date, time, periodicInterval } = formValues;
 
-    const { startDate, ...config } = data;
-    const partialConfig = _.omit(config, 'startTime');
-    partialConfig.startAt = startDate;
-    this.setState({ config: partialConfig });
+    const periodicConfig = {
+      startAt: combineDateTime(date, time, locale, timeZone),
+      periodicInterval,
+    };
 
     fetch(this.okapiUrl + this.endpoint, {
       headers,
       method: 'POST',
-      body: JSON.stringify(partialConfig),
+      body: JSON.stringify(periodicConfig),
     })
       .then((response) => {
         if (response.status >= 400) {
           this.showErrorInfo(response);
         } else {
           this.onCloseEdit();
+          this.setState({ config: periodicConfig });
           this.callout.sendCallout({
             message: this.props.intl.formatMessage({
               id: 'ui-erm-usage.settings.harvester.config.periodic.saved',
@@ -207,8 +181,7 @@ class PeriodicHarvestingManager extends React.Component {
   };
 
   getEditIcon = () => {
-    const periodicInterval = _.get(this.state.config, 'periodicInterval', null);
-    if (periodicInterval === null) {
+    if (_.isEmpty(this.state.config)) {
       return 'plus-sign';
     } else {
       return 'edit';
@@ -241,22 +214,14 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   render() {
-    const { stripes } = this.props;
-
-    const initialVals = _.get(this.state, 'config', {}) || {};
-    let dateTime = {
-      date: '1999-01-01',
-      time: '1970-01-01T07:00:00+00:00',
+    const { intl } = this.props;
+    const periodicConfig = this.state.config;
+    const startAt = periodicConfig?.startAt || moment.tz(intl.timeZone).locale(intl.locale).format();
+    const dateTime = splitDateTime(startAt, intl.locale, intl.timeZone);
+    const initialVals = {
+      ...periodicConfig,
+      ...dateTime
     };
-    if (!_.isNil(initialVals) && initialVals.startAt !== '') {
-      dateTime = this.splitDateTime(initialVals.startAt);
-    }
-
-    initialVals.startDate = dateTime.date;
-    const time = moment
-      .tz(dateTime.time, this.timeZone)
-      .format('HH:mm:ss.SSSZZ');
-    initialVals.startTime = time;
 
     const periodicHarvesting = this.state.isEditing ? (
       <PeriodicHarvestingForm
@@ -265,14 +230,10 @@ class PeriodicHarvestingManager extends React.Component {
         onSubmit={(record) => {
           this.savePeriodicHarvestingConf(record);
         }}
-        stripes={stripes}
-        timeZone={this.timeZone}
       />
     ) : (
       <PeriodicHarvestingView
-        initialValues={initialVals}
-        timeFormat={this.timeFormat}
-        timeZone={this.timeZone}
+        periodicConfig={periodicConfig}
       />
     );
 
