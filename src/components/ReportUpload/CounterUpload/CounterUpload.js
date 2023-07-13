@@ -4,6 +4,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import CounterUploadModal from './CounterUploadModal';
+import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
 
 function CounterUpload({
   intl,
@@ -19,8 +20,9 @@ function CounterUpload({
     {},
     {
       'X-Okapi-Tenant': stripes.okapi.tenant,
-      'X-Okapi-Token': stripes.store.getState().okapi.token,
+      ...getLegacyTokenHeader(stripes.okapi),
       'Content-Type': 'application/json',
+      credentials: 'include',
     }
   );
 

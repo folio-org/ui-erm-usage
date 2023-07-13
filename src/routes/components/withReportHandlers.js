@@ -6,6 +6,7 @@ import { Callout } from '@folio/stripes/components';
 import { SubmissionError } from 'redux-form';
 import saveAs from 'file-saver';
 import { saveReport } from '../../util/downloadReport';
+import getLegacyTokenHeader from '../../util/getLegacyTokenHeader';
 
 export default function withReportHandlers(WrappedComponent) {
   function WithReportHandlers(props) {
@@ -14,7 +15,8 @@ export default function withReportHandlers(WrappedComponent) {
     const httpHeaders =
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token
+        ...getLegacyTokenHeader(props.stripes.okapi),
+        credentials: 'include',
       };
 
     const okapiUrl = props.stripes.okapi.url;

@@ -14,6 +14,7 @@ import {
 import moment from 'moment-timezone';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
+import getLegacyTokenHeader from '../../util/getLegacyTokenHeader';
 
 class PeriodicHarvestingManager extends React.Component {
   static propTypes = {
@@ -36,7 +37,8 @@ class PeriodicHarvestingManager extends React.Component {
       {},
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
+        ...getLegacyTokenHeader(props.stripes.okapi),
+        credentials: 'include',
       }
     );
 

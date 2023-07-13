@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NonCounterUploadModal from './NonCounterUploadModal';
+import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
 
 function NonCounterUpload({
   onFail,
@@ -17,8 +18,9 @@ function NonCounterUpload({
       {},
       {
         'X-Okapi-Tenant': stripes.okapi.tenant,
-        'X-Okapi-Token': stripes.store.getState().okapi.token,
+        ...getLegacyTokenHeader(stripes.okapi),
         'Content-Type': 'application/json',
+        credentials: 'include',
       }
     );
     fetch(`${okapiUrl}/custom-reports`, {

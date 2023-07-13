@@ -10,7 +10,7 @@ import {
   IconButton,
   Modal,
 } from '@folio/stripes/components';
-import { getHeaderWithCredentials } from '@folio/stripes/util';
+import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
 
 import CustomReportInfo from '../CustomReportInfo';
 
@@ -19,6 +19,16 @@ function InfoButton(props) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const { customReport } = props;
 
+  const httpHeaders = Object.assign(
+    {},
+    {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      ...getLegacyTokenHeader(props.stripes.okapi),
+      'Content-Type': 'application/json',
+      credentials: 'include',
+    }
+  );
+
   const doDeleteReport = () => {
     props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});
   };
@@ -26,10 +36,7 @@ function InfoButton(props) {
   const doDeleteWithFile = () => {
     fetch(`${props.stripes.okapi.url}/erm-usage/files/${customReport.fileId}`, {
       method: 'DELETE',
-      ...getHeaderWithCredentials({
-        tenant: props.stripes.okapi.tenant,
-        token: props.stripes.store.getState().okapi.token,
-      })
+      headers: httpHeaders,
     })
       .then((response) => {
         if (response.status >= 400) {
