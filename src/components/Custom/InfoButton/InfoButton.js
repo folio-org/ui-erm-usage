@@ -19,15 +19,12 @@ function InfoButton(props) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const { customReport } = props;
 
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      ...getLegacyTokenHeader(props.stripes.okapi),
-      'Content-Type': 'application/json',
-      credentials: 'include',
-    }
-  );
+  const httpHeaders = {
+    'X-Okapi-Tenant': props.stripes.okapi.tenant,
+    ...getLegacyTokenHeader(props.stripes.okapi),
+    'Content-Type': 'application/json',
+    credentials: 'include',
+  };
 
   const doDeleteReport = () => {
     props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});

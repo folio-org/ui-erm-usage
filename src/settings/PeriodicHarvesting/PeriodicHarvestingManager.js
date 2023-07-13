@@ -34,14 +34,11 @@ class PeriodicHarvestingManager extends React.Component {
 
     this.endpoint = '/erm-usage-harvester/periodic';
     this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        ...getLegacyTokenHeader(props.stripes.okapi),
-        credentials: 'include',
-      }
-    );
+    this.httpHeaders = {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      ...getLegacyTokenHeader(props.stripes.okapi),
+      credentials: 'include',
+    };
   }
 
   componentDidMount() {

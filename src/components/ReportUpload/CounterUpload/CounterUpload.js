@@ -16,15 +16,12 @@ function CounterUpload({
   udpId,
 }) {
   const okapiUrl = stripes.okapi.url;
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': stripes.okapi.tenant,
-      ...getLegacyTokenHeader(stripes.okapi),
-      'Content-Type': 'application/json',
-      credentials: 'include',
-    }
-  );
+  const httpHeaders = {
+    'X-Okapi-Tenant': stripes.okapi.tenant,
+    ...getLegacyTokenHeader(stripes.okapi),
+    'Content-Type': 'application/json',
+    credentials: 'include',
+  };
 
   const [selectedFile, setSelectedFile] = useState({});
   const [values, setValues] = useState({});

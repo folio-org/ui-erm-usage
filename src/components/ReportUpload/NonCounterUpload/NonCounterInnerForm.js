@@ -18,15 +18,12 @@ function NonCounterUploadInnerForm(props) {
   const [linkUrl, setLinkUrl] = useState();
 
   const { intl, stripes } = props;
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': stripes.okapi.tenant,
-      ...getLegacyTokenHeader(stripes.okapi),
-      'Content-Type': 'application/octet-stream',
-      credentials: 'include',
-    }
-  );
+  const httpHeaders = {
+    'X-Okapi-Tenant': stripes.okapi.tenant,
+    ...getLegacyTokenHeader(stripes.okapi),
+    'Content-Type': 'application/octet-stream',
+    credentials: 'include',
+  };
   const callout = useContext(CalloutContext);
 
   const handleFail = (msg) => {

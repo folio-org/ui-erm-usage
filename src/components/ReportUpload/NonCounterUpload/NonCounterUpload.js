@@ -14,15 +14,12 @@ function NonCounterUpload({
   const handleNonCounterUpload = (report) => {
     const json = JSON.stringify(report);
     const okapiUrl = stripes.okapi.url;
-    const httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': stripes.okapi.tenant,
-        ...getLegacyTokenHeader(stripes.okapi),
-        'Content-Type': 'application/json',
-        credentials: 'include',
-      }
-    );
+    const httpHeaders = {
+      'X-Okapi-Tenant': stripes.okapi.tenant,
+      ...getLegacyTokenHeader(stripes.okapi),
+      'Content-Type': 'application/json',
+      credentials: 'include',
+    };
     fetch(`${okapiUrl}/custom-reports`, {
       headers: httpHeaders,
       method: 'POST',

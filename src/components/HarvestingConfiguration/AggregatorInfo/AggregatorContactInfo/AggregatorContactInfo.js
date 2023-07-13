@@ -14,15 +14,12 @@ class AggregatorContactInfo extends React.Component {
     super(props);
     this.okapiUrl = props.stripes.okapi.url;
 
-    this.httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        ...getLegacyTokenHeader(props.stripes.okapi),
-        'Content-Type': 'application/json',
-        credentials: 'include',
-      }
-    );
+    this.httpHeaders = {
+      'X-Okapi-Tenant': props.stripes.okapi.tenant,
+      ...getLegacyTokenHeader(props.stripes.okapi),
+      'Content-Type': 'application/json',
+      credentials: 'include',
+    };
 
     this.state = {
       contact: null,
