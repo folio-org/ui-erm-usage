@@ -308,5 +308,8 @@
     "harvester.jobs.filter.result.success": "Úspěch",
     "harvester.jobs.filter.result.failure": "Selhání",
     "settings.harvester.logs.title": "Logy harvestoru",
-    "settings.harvester.logs.daysToKeepLogs": "Počet dní pro uchování logů harvestoru"
+    "settings.harvester.logs.daysToKeepLogs": "Počet dní pro uchování logů harvestoru",
+    "settings.harvester.config.periodic.interval.daily": "Denně",
+    "settings.harvester.config.periodic.interval.weekly": "Týdně",
+    "settings.harvester.config.periodic.interval.monthly": "Měsíčně"
 }

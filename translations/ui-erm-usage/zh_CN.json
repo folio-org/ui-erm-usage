@@ -308,5 +308,8 @@
     "harvester.jobs.filter.result.success": "成功",
     "harvester.jobs.filter.result.failure": "失败",
     "settings.harvester.logs.title": "收割器日志",
-    "settings.harvester.logs.daysToKeepLogs": "保持收割日志的天数"
+    "settings.harvester.logs.daysToKeepLogs": "保持收割日志的天数",
+    "settings.harvester.config.periodic.interval.daily": "Daily",
+    "settings.harvester.config.periodic.interval.weekly": "Weekly",
+    "settings.harvester.config.periodic.interval.monthly": "Monthly"
 }
