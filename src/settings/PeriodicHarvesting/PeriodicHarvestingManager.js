@@ -1,142 +1,78 @@
-import _ from 'lodash';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import React, { useState, useContext, useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import { CalloutContext, IfPermission } from '@folio/stripes/core';
-import {
-  ConfirmationModal,
-  IconButton,
-  Pane,
-  PaneMenu,
-} from '@folio/stripes/components';
-import moment from 'moment-timezone';
+import { ConfirmationModal, IconButton, Pane, PaneMenu } from '@folio/stripes/components';
+import _ from 'lodash';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
-import withPeriodicConfig from '../../util/hooks/withPeriodicConfig';
+import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
 
-class PeriodicHarvestingManager extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object,
-    periodicConfig: PropTypes.object,
-  };
+const PeriodicHarvestingManager = () => {
+  const [config, setConfig] = useState({});
+  const [confirming, setConfirming] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { sendCallout } = useContext(CalloutContext);
+  const { formatMessage, timeZone, locale } = useIntl();
+  const periodicConfig = usePeriodicConfig();
 
-  static contextType = CalloutContext;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      config: {},
-      confirming: false,
-      isEditing: false,
-    };
-  }
-
-  componentDidMount() {
-    this.fetchPeriodicHarvestingConf();
-  }
-
-  fetchPeriodicHarvestingConf = () => {
-    this.props.periodicConfig.fetchConfig()
-      .then((json) => {
-        this.setState({
-          config: json,
-        });
-      })
-      .catch(this.showErrorInfo);
-  };
-
-  savePeriodicHarvestingConf = (formValues) => {
-    const { locale, timeZone } = this.props.intl;
-    const { date, time, periodicInterval } = formValues;
-
-    const periodicConfig = {
-      startAt: combineDateTime(date, time, locale, timeZone),
-      periodicInterval,
-    };
-
-    this.props.periodicConfig.saveConfig(periodicConfig)
-      .then(() => {
-        this.onCloseEdit();
-        this.setState({ config: periodicConfig });
-        this.showSuccessInfo('saved');
-      })
-      .catch(this.showErrorInfo);
-  };
-
-  deletePeriodicHarvestingConf = () => {
-    this.props.periodicConfig.deleteConfig()
-      .then(() => {
-        this.onCloseEdit();
-        this.setState({ config: {} });
-        this.showSuccessInfo('deleted');
-      })
-      .catch(this.showErrorInfo);
-  };
-
-  showSuccessInfo = (intlTag) => {
-    this.context.sendCallout({
+  const showSuccessInfo = (intlTag) => {
+    sendCallout({
       type: 'success',
-      message: this.props.intl.formatMessage({
+      message: formatMessage({
         id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}`,
       }),
     });
   };
 
-  showErrorInfo = (error) => {
-    const prefix = this.props.intl.formatMessage({
-      id: 'ui-erm-usage.general.error2',
-    });
-    this.context.sendCallout({
+  const showErrorInfo = (error) => {
+    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
+    sendCallout({
       type: 'error',
       message: `${prefix}: ${error.message}`,
     });
   };
 
-  onCloseEdit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ isEditing: false });
+  const fetchPeriodicHarvestingConf = () => {
+    periodicConfig.fetchConfig().then(setConfig).catch(showErrorInfo);
   };
 
-  onEdit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ isEditing: true });
+  const savePeriodicHarvestingConf = (formValues) => {
+    const { date, time, periodicInterval } = formValues;
+
+    const periodicConfigData = {
+      startAt: combineDateTime(date, time, locale, timeZone),
+      periodicInterval,
+    };
+
+    periodicConfig
+      .saveConfig(periodicConfigData)
+      .then(() => {
+        setIsEditing(false);
+        setConfig(periodicConfigData);
+        showSuccessInfo('saved');
+      })
+      .catch(showErrorInfo);
   };
 
-  showConfirm = () => {
-    this.setState({
-      confirming: true,
-    });
+  const deletePeriodicHarvestingConf = () => {
+    periodicConfig
+      .deleteConfig()
+      .then(() => {
+        setIsEditing(false);
+        setConfig({});
+        showSuccessInfo('deleted');
+      })
+      .catch(showErrorInfo);
   };
 
-  cancelEditing = () => {
-    this.setState({
-      isEditing: false,
-      confirming: false,
-    });
-  };
+  useEffect(() => {
+    fetchPeriodicHarvestingConf();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  hideConfirm = () => {
-    this.setState({
-      confirming: false,
-    });
-  };
+  const getEditIcon = () => (_.isEmpty(config) ? 'plus-sign' : 'edit');
 
-  getEditIcon = () => {
-    if (_.isEmpty(this.state.config)) {
-      return 'plus-sign';
-    } else {
-      return 'edit';
-    }
-  };
-
-  getLastMenu() {
-    const isEditing = this.state.isEditing;
+  const getLastMenu = () => {
     return (
       <IfPermission perm="ui-erm-usage.generalSettings.manage">
         <PaneMenu>
@@ -144,79 +80,58 @@ class PeriodicHarvestingManager extends React.Component {
             <IconButton
               icon="times"
               id="clickable-close-edit-config"
-              onClick={this.showConfirm}
+              onClick={() => setConfirming(true)}
               aria-label="End Edit Config"
             />
           ) : (
             <IconButton
-              icon={this.getEditIcon()}
+              icon={getEditIcon()}
               id="clickable-open-edit-config"
-              onClick={this.onEdit}
+              onClick={() => setIsEditing(true)}
               aria-label="Start Edit Config"
             />
           )}
         </PaneMenu>
       </IfPermission>
     );
-  }
+  };
 
-  render() {
-    const { intl } = this.props;
-    const periodicConfig = this.state.config;
-    const startAt = periodicConfig?.startAt || moment.tz(intl.timeZone).locale(intl.locale).format();
-    const dateTime = splitDateTime(startAt, intl.locale, intl.timeZone);
-    const initialVals = {
-      ...periodicConfig,
-      ...dateTime
-    };
+  const periodicHarvesting = isEditing ? (
+    <PeriodicHarvestingForm
+      initialValues={{ ...config, ...splitDateTime(config?.startAt, locale, timeZone) }}
+      onDelete={deletePeriodicHarvestingConf}
+      onSubmit={savePeriodicHarvestingConf}
+    />
+  ) : (
+    <PeriodicHarvestingView periodicConfig={config} />
+  );
 
-    const periodicHarvesting = this.state.isEditing ? (
-      <PeriodicHarvestingForm
-        initialValues={initialVals}
-        onDelete={this.deletePeriodicHarvestingConf}
-        onSubmit={(record) => {
-          this.savePeriodicHarvestingConf(record);
+  return (
+    <>
+      <Pane
+        id="periodic-harvesting-pane"
+        defaultWidth="fill"
+        lastMenu={getLastMenu()}
+        paneTitle={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}
+      >
+        {periodicHarvesting}
+      </Pane>
+      <ConfirmationModal
+        open={confirming}
+        heading={formatMessage({ id: 'ui-erm-usage.general.pleaseConfirm' })}
+        message={formatMessage({
+          id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
+        })}
+        confirmLabel={formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
+        onConfirm={() => setConfirming(false)}
+        cancelLabel={formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
+        onCancel={() => {
+          setIsEditing(false);
+          setConfirming(false);
         }}
       />
-    ) : (
-      <PeriodicHarvestingView
-        periodicConfig={periodicConfig}
-      />
-    );
+    </>
+  );
+};
 
-    return (
-      <React.Fragment>
-        <Pane
-          id="periodic-harvesting-pane"
-          defaultWidth="fill"
-          lastMenu={this.getLastMenu()}
-          paneTitle={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.settings.harvester.config.periodic.title',
-          })}
-        >
-          {periodicHarvesting}
-        </Pane>
-        <ConfirmationModal
-          open={this.state.confirming}
-          heading={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.pleaseConfirm',
-          })}
-          message={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
-          })}
-          confirmLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.keepEditing',
-          })}
-          onConfirm={this.hideConfirm}
-          cancelLabel={this.props.intl.formatMessage({
-            id:
-              'ui-erm-usage.general.closeWithoutSave',
-          })}
-          onCancel={this.cancelEditing}
-        />
-      </React.Fragment>
-    );
-  }
-}
-
-export default injectIntl(withPeriodicConfig(PeriodicHarvestingManager));
+export default PeriodicHarvestingManager;
