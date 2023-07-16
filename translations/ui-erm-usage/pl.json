@@ -308,5 +308,8 @@
     "harvester.jobs.filter.result.success": "Success",
     "harvester.jobs.filter.result.failure": "Failure",
     "settings.harvester.logs.title": "Harvester logs",
-    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs"
+    "settings.harvester.logs.daysToKeepLogs": "Number of days to keep harvesting logs",
+    "settings.harvester.config.periodic.interval.daily": "Daily",
+    "settings.harvester.config.periodic.interval.weekly": "Weekly",
+    "settings.harvester.config.periodic.interval.monthly": "Monthly"
 }
