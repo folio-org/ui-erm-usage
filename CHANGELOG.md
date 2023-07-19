@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
 ## 7.1.0 (IN PROGRESS)
+* Fix error handling in PeriodicHarvestingManager ([UIEUS-333](https://issues.folio.org/browse/UIEUS-333))
+* Fix localization issues in periodic harvesting settings ([UIEUS-332](https://issues.folio.org/browse/UIEUS-332))
 * Display error message for failed jobs ([UIEUS-325](https://issues.folio.org/browse/UIEUS-325))
 * Set initialValue for periodic interval field in periodic harvesting settings ([UIEUS-329](https://issues.folio.org/browse/UIEUS-329))
 * Add settings page for harvester logs ([UIEUS-330](https://issues.folio.org/browse/UIEUS-330))
