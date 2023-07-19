@@ -5,7 +5,6 @@ import { ConfirmationModal, IconButton, Pane, PaneMenu } from '@folio/stripes/co
 import _ from 'lodash';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
-import getLegacyTokenHeader from '../../util/getLegacyTokenHeader';
 import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
 import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
 

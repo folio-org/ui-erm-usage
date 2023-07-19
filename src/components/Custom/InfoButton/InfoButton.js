@@ -23,7 +23,6 @@ function InfoButton(props) {
     'X-Okapi-Tenant': props.stripes.okapi.tenant,
     ...getLegacyTokenHeader(props.stripes.okapi),
     'Content-Type': 'application/json',
-    credentials: 'include',
   };
 
   const doDeleteReport = () => {
@@ -34,6 +33,7 @@ function InfoButton(props) {
     fetch(`${props.stripes.okapi.url}/erm-usage/files/${customReport.fileId}`, {
       method: 'DELETE',
       headers: httpHeaders,
+      credentials: 'include',
     })
       .then((response) => {
         if (response.status >= 400) {

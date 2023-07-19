@@ -22,6 +22,7 @@ const assertFetchParameters = (
     },
     method,
     ...additionalParams,
+    credentials: 'include'
   });
 };
 

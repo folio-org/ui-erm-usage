@@ -18,7 +18,6 @@ class AggregatorContactInfo extends React.Component {
       'X-Okapi-Tenant': props.stripes.okapi.tenant,
       ...getLegacyTokenHeader(props.stripes.okapi),
       'Content-Type': 'application/json',
-      credentials: 'include',
     };
 
     this.state = {
@@ -39,6 +38,7 @@ class AggregatorContactInfo extends React.Component {
   fechAggregator = (aggregatorId) => {
     return fetch(`${this.okapiUrl}/aggregator-settings/${aggregatorId}`, {
       headers: this.httpHeaders,
+      credentials: 'include',
     })
       .then((response) => {
         if (!response.ok) {

@@ -1,5 +1,6 @@
 import { useStripes } from '@folio/stripes-core';
 import { useIntl } from 'react-intl';
+import getLegacyTokenHeader from '../getLegacyTokenHeader';
 
 const usePeriodicConfig = () => {
   const path = '/erm-usage-harvester/periodic';
@@ -9,7 +10,7 @@ const usePeriodicConfig = () => {
   const okapiUrl = okapi.url;
   const headers = {
     'X-Okapi-Tenant': okapi.tenant,
-    'X-Okapi-Token': okapi.token,
+    ...getLegacyTokenHeader(okapi),
   };
 
   const createErrorFromResponse = (response, intlTag) => new Error(
@@ -25,6 +26,7 @@ const usePeriodicConfig = () => {
   const fetchConfig = () => {
     return fetch(okapiUrl + path, {
       headers,
+      credentials: 'include',
       method: 'GET',
     }).then((response) => {
       if (response.status === 200) {
@@ -43,6 +45,7 @@ const usePeriodicConfig = () => {
         ...headers,
         'content-type': 'application/json',
       },
+      credentials: 'include',
       method: 'POST',
       body: JSON.stringify(periodicConfig),
     }).then((response) => {
@@ -57,6 +60,7 @@ const usePeriodicConfig = () => {
   const deleteConfig = () => {
     return fetch(okapiUrl + path, {
       headers,
+      credentials: 'include',
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 204) {

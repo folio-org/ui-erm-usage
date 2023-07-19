@@ -25,8 +25,8 @@ class DownloadCredentialsButton extends React.Component {
       'X-Okapi-Tenant': props.stripes.okapi.tenant,
       ...getLegacyTokenHeader(props.stripes.okapi),
       'Content-Type': 'application/json',
-      credentials: 'include',
     };
+    this.credentials = { credentials: 'include' };
   }
 
   onClickDownloadCredentials = (format) => {
@@ -34,7 +34,8 @@ class DownloadCredentialsButton extends React.Component {
       this.props.aggregatorId,
       format,
       this.okapiUrl,
-      this.httpHeaders
+      this.httpHeaders,
+      this.credentials,
     ).catch((err) => {
       this.log(err.message);
     });

@@ -16,7 +16,6 @@ export default function withReportHandlers(WrappedComponent) {
       {
         'X-Okapi-Tenant': props.stripes.okapi.tenant,
         ...getLegacyTokenHeader(props.stripes.okapi),
-        credentials: 'include',
       };
 
     const okapiUrl = props.stripes.okapi.url;
@@ -44,7 +43,10 @@ export default function withReportHandlers(WrappedComponent) {
       );
       return fetch(
         `${okapiUrl}/counter-reports/export/provider/${udpId}/report/${reportType}/version/${version}/from/${start}/to/${end}?format=${format}`,
-        { headers: httpHeaders }
+        {
+          headers: httpHeaders,
+          credentials: 'include',
+        }
       )
         .then((response) => {
           calloutRef.current.removeCallout(calloutID);

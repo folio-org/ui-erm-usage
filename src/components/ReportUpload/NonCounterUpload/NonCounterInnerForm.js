@@ -22,7 +22,6 @@ function NonCounterUploadInnerForm(props) {
     'X-Okapi-Tenant': stripes.okapi.tenant,
     ...getLegacyTokenHeader(stripes.okapi),
     'Content-Type': 'application/octet-stream',
-    credentials: 'include',
   };
   const callout = useContext(CalloutContext);
 
@@ -43,6 +42,7 @@ function NonCounterUploadInnerForm(props) {
       headers: httpHeaders,
       method: 'POST',
       body: file,
+      credentials: 'include',
     })
       .then((response) => {
         setShowUploadModal(false);
