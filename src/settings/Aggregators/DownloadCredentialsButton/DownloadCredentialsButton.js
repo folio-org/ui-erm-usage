@@ -9,7 +9,7 @@ import {
   Icon,
 } from '@folio/stripes/components';
 
-import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../util/createOkapiHeaders';
 import { downloadCredentials } from '../../../util/downloadReport';
 
 class DownloadCredentialsButton extends React.Component {
@@ -22,8 +22,7 @@ class DownloadCredentialsButton extends React.Component {
     super(props);
     this.okapiUrl = props.stripes.okapi.url;
     this.httpHeaders = {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      ...getLegacyTokenHeader(props.stripes.okapi),
+      ...createOkapiHeaders(props.stripes.okapi),
       'Content-Type': 'application/json',
     };
     this.credentials = { credentials: 'include' };

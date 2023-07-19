@@ -8,7 +8,7 @@ import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
 
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
-import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../util/createOkapiHeaders';
 
 function NonCounterUploadInnerForm(props) {
   const [selectedFile, setSelectedFile] = useState();
@@ -19,8 +19,7 @@ function NonCounterUploadInnerForm(props) {
 
   const { intl, stripes } = props;
   const httpHeaders = {
-    'X-Okapi-Tenant': stripes.okapi.tenant,
-    ...getLegacyTokenHeader(stripes.okapi),
+    ...createOkapiHeaders(stripes.okapi),
     'Content-Type': 'application/octet-stream',
   };
   const callout = useContext(CalloutContext);

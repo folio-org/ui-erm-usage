@@ -10,7 +10,7 @@ import {
   IconButton,
   Modal,
 } from '@folio/stripes/components';
-import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../util/createOkapiHeaders';
 
 import CustomReportInfo from '../CustomReportInfo';
 
@@ -20,8 +20,7 @@ function InfoButton(props) {
   const { customReport } = props;
 
   const httpHeaders = {
-    'X-Okapi-Tenant': props.stripes.okapi.tenant,
-    ...getLegacyTokenHeader(props.stripes.okapi),
+    ...createOkapiHeaders(props.stripes.okapi),
     'Content-Type': 'application/json',
   };
 

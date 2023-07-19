@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import CounterUploadModal from './CounterUploadModal';
-import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../util/createOkapiHeaders';
 
 function CounterUpload({
   intl,
@@ -17,10 +17,8 @@ function CounterUpload({
 }) {
   const okapiUrl = stripes.okapi.url;
   const httpHeaders = {
-    'X-Okapi-Tenant': stripes.okapi.tenant,
-    ...getLegacyTokenHeader(stripes.okapi),
+    ...createOkapiHeaders(stripes.okapi),
     'Content-Type': 'application/json',
-    credentials: 'include',
   };
 
   const [selectedFile, setSelectedFile] = useState({});
@@ -57,6 +55,7 @@ function CounterUpload({
         headers: httpHeaders,
         method: 'POST',
         body: json,
+        credentials: 'include',
       }
     )
       .then((response) => {

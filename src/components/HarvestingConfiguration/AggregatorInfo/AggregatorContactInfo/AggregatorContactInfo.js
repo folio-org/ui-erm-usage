@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfoPopover } from '@folio/stripes/components';
-import getLegacyTokenHeader from '../../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../../util/createOkapiHeaders';
 
 class AggregatorContactInfo extends React.Component {
   static propTypes = {
@@ -15,8 +15,7 @@ class AggregatorContactInfo extends React.Component {
     this.okapiUrl = props.stripes.okapi.url;
 
     this.httpHeaders = {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      ...getLegacyTokenHeader(props.stripes.okapi),
+      ...createOkapiHeaders(props.stripes.okapi),
       'Content-Type': 'application/json',
     };
 

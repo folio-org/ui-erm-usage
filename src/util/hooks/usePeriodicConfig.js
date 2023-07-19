@@ -1,6 +1,6 @@
 import { useStripes } from '@folio/stripes-core';
 import { useIntl } from 'react-intl';
-import getLegacyTokenHeader from '../getLegacyTokenHeader';
+import createOkapiHeaders from '../createOkapiHeaders';
 
 const usePeriodicConfig = () => {
   const path = '/erm-usage-harvester/periodic';
@@ -9,8 +9,7 @@ const usePeriodicConfig = () => {
 
   const okapiUrl = okapi.url;
   const headers = {
-    'X-Okapi-Tenant': okapi.tenant,
-    ...getLegacyTokenHeader(okapi),
+    ...createOkapiHeaders(okapi),
   };
 
   const createErrorFromResponse = (response, intlTag) => new Error(

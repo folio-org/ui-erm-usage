@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NonCounterUploadModal from './NonCounterUploadModal';
-import getLegacyTokenHeader from '../../../util/getLegacyTokenHeader';
+import createOkapiHeaders from '../../../util/createOkapiHeaders';
 
 function NonCounterUpload({
   onFail,
@@ -15,15 +15,14 @@ function NonCounterUpload({
     const json = JSON.stringify(report);
     const okapiUrl = stripes.okapi.url;
     const httpHeaders = {
-      'X-Okapi-Tenant': stripes.okapi.tenant,
-      ...getLegacyTokenHeader(stripes.okapi),
+      ...createOkapiHeaders(stripes.okapi),
       'Content-Type': 'application/json',
-      credentials: 'include',
     };
     fetch(`${okapiUrl}/custom-reports`, {
       headers: httpHeaders,
       method: 'POST',
       body: json,
+      credentials: 'include',
     })
       .then((response) => {
         if (response.status >= 400) {
