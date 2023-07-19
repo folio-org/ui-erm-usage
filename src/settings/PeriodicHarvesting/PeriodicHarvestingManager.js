@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import { CalloutContext, stripesConnect, IfPermission } from '@folio/stripes/core';
+import { CalloutContext, IfPermission } from '@folio/stripes/core';
 import {
   ConfirmationModal,
   IconButton,
@@ -13,11 +13,12 @@ import moment from 'moment-timezone';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
+import withPeriodicConfig from '../../util/hooks/withPeriodicConfig';
 
 class PeriodicHarvestingManager extends React.Component {
   static propTypes = {
     intl: PropTypes.object,
-    stripes: PropTypes.object,
+    periodicConfig: PropTypes.object,
   };
 
   static contextType = CalloutContext;
@@ -30,13 +31,6 @@ class PeriodicHarvestingManager extends React.Component {
       confirming: false,
       isEditing: false,
     };
-
-    this.endpoint = '/erm-usage-harvester/periodic';
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-    };
   }
 
   componentDidMount() {
@@ -44,19 +38,7 @@ class PeriodicHarvestingManager extends React.Component {
   }
 
   fetchPeriodicHarvestingConf = () => {
-    fetch(this.okapiUrl + this.endpoint, {
-      headers: this.httpHeaders,
-      method: 'GET',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else if (response.status === 404) {
-          return {};
-        } else {
-          throw this.createErrorFromResponse(response, 'fetch');
-        }
-      })
+    this.props.periodicConfig.fetchConfig()
       .then((json) => {
         this.setState({
           config: json,
@@ -66,11 +48,6 @@ class PeriodicHarvestingManager extends React.Component {
   };
 
   savePeriodicHarvestingConf = (formValues) => {
-    const headers = {
-      ...this.httpHeaders,
-      'content-type': 'application/json',
-    };
-
     const { locale, timeZone } = this.props.intl;
     const { date, time, periodicInterval } = formValues;
 
@@ -79,51 +56,24 @@ class PeriodicHarvestingManager extends React.Component {
       periodicInterval,
     };
 
-    fetch(this.okapiUrl + this.endpoint, {
-      headers,
-      method: 'POST',
-      body: JSON.stringify(periodicConfig),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          this.onCloseEdit();
-          this.setState({ config: periodicConfig });
-          this.showSuccessInfo('saved');
-        } else {
-          throw this.createErrorFromResponse(response, 'save');
-        }
+    this.props.periodicConfig.saveConfig(periodicConfig)
+      .then(() => {
+        this.onCloseEdit();
+        this.setState({ config: periodicConfig });
+        this.showSuccessInfo('saved');
       })
       .catch(this.showErrorInfo);
   };
 
   deletePeriodicHarvestingConf = () => {
-    fetch(this.okapiUrl + this.endpoint, {
-      headers: this.httpHeaders,
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.status === 204) {
-          this.onCloseEdit();
-          this.setState({ config: {} });
-          this.showSuccessInfo('deleted');
-        } else {
-          throw this.createErrorFromResponse(response, 'delete');
-        }
+    this.props.periodicConfig.deleteConfig()
+      .then(() => {
+        this.onCloseEdit();
+        this.setState({ config: {} });
+        this.showSuccessInfo('deleted');
       })
       .catch(this.showErrorInfo);
   };
-
-  createErrorFromResponse = (response, intlTag) => new Error(
-    this.props.intl.formatMessage(
-      {
-        id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}.fail`,
-      },
-      {
-        status: response.status,
-        statusText: response.statusText,
-      }
-    )
-  );
 
   showSuccessInfo = (intlTag) => {
     this.context.sendCallout({
@@ -269,4 +219,4 @@ class PeriodicHarvestingManager extends React.Component {
   }
 }
 
-export default stripesConnect(injectIntl(PeriodicHarvestingManager));
+export default injectIntl(withPeriodicConfig(PeriodicHarvestingManager));
