@@ -1,192 +1,79 @@
+import React, { useState, useContext, useEffect } from 'react';
+import { useIntl } from 'react-intl';
+import { CalloutContext, IfPermission } from '@folio/stripes/core';
+import { ConfirmationModal, IconButton, Pane, PaneMenu } from '@folio/stripes/components';
 import _ from 'lodash';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { SubmissionError } from 'redux-form';
-import { injectIntl } from 'react-intl';
-import { stripesConnect, IfPermission } from '@folio/stripes/core';
-import {
-  Callout,
-  ConfirmationModal,
-  IconButton,
-  Pane,
-  PaneMenu,
-} from '@folio/stripes/components';
-import moment from 'moment-timezone';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 import getLegacyTokenHeader from '../../util/getLegacyTokenHeader';
 import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
+import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
 
-class PeriodicHarvestingManager extends React.Component {
-  static propTypes = {
-    intl: PropTypes.object,
-    stripes: PropTypes.object,
+const PeriodicHarvestingManager = () => {
+  const [config, setConfig] = useState({});
+  const [confirming, setConfirming] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { sendCallout } = useContext(CalloutContext);
+  const { formatMessage, timeZone, locale } = useIntl();
+  const periodicConfig = usePeriodicConfig();
+
+  const showSuccessInfo = (intlTag) => {
+    sendCallout({
+      type: 'success',
+      message: formatMessage({
+        id: `ui-erm-usage.settings.harvester.config.periodic.${intlTag}`,
+      }),
+    });
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      config: {},
-      confirming: false,
-      isEditing: false,
-    };
-
-    this.endpoint = '/erm-usage-harvester/periodic';
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      ...getLegacyTokenHeader(props.stripes.okapi),
-      credentials: 'include',
-    };
-  }
-
-  componentDidMount() {
-    this.fetchPeriodicHarvestingConf();
-  }
-
-  fetchPeriodicHarvestingConf = () => {
-    fetch(this.okapiUrl + this.endpoint, {
-      headers: this.httpHeaders,
-      method: 'GET',
-    })
-      .then((response) => {
-        if (response.status < 400) {
-          return response.json();
-        } else if (response.status === 404) {
-          return {};
-        } else {
-          throw new SubmissionError({
-            identifier: `Error ${response.status} while fetching periodic harvesting configuration`,
-            _error: 'Fetch periodic harvesting configuration failed',
-          });
-        }
-      })
-      .then((json) => {
-        this.setState({
-          config: json,
-        });
-      })
-      .catch((err) => {
-        this.showErrorInfo(`Error: ${err.message}`);
-      });
+  const showErrorInfo = (error) => {
+    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
+    sendCallout({
+      type: 'error',
+      message: `${prefix}: ${error.message}`,
+    });
   };
 
-  savePeriodicHarvestingConf = (formValues) => {
-    const headers = {
-      ...this.httpHeaders,
-      'content-type': 'application/json',
-    };
+  const fetchPeriodicHarvestingConf = () => {
+    periodicConfig.fetchConfig().then(setConfig).catch(showErrorInfo);
+  };
 
-    const { locale, timeZone } = this.props.intl;
+  const savePeriodicHarvestingConf = (formValues) => {
     const { date, time, periodicInterval } = formValues;
 
-    const periodicConfig = {
+    const periodicConfigData = {
       startAt: combineDateTime(date, time, locale, timeZone),
       periodicInterval,
     };
 
-    fetch(this.okapiUrl + this.endpoint, {
-      headers,
-      method: 'POST',
-      body: JSON.stringify(periodicConfig),
-    })
-      .then((response) => {
-        if (response.status >= 400) {
-          this.showErrorInfo(response);
-        } else {
-          this.onCloseEdit();
-          this.setState({ config: periodicConfig });
-          this.callout.sendCallout({
-            message: this.props.intl.formatMessage({
-              id: 'ui-erm-usage.settings.harvester.config.periodic.saved',
-            }),
-          });
-        }
+    periodicConfig
+      .saveConfig(periodicConfigData)
+      .then(() => {
+        setIsEditing(false);
+        setConfig(periodicConfigData);
+        showSuccessInfo('saved');
       })
-      .catch((err) => {
-        this.showErrorInfo(err.message);
-      });
+      .catch(showErrorInfo);
   };
 
-  deletePeriodicHarvestingConf = () => {
-    fetch(this.okapiUrl + this.endpoint, {
-      headers: this.httpHeaders,
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.status < 400 || response.status === 404) {
-          this.onCloseEdit();
-          this.setState({ config: {} });
-          this.callout.sendCallout({
-            message: this.props.intl.formatMessage({
-              id: 'ui-erm-usage.settings.harvester.config.periodic.deleted',
-            }),
-          });
-        } else {
-          this.showErrorInfo(response);
-        }
+  const deletePeriodicHarvestingConf = () => {
+    periodicConfig
+      .deleteConfig()
+      .then(() => {
+        setIsEditing(false);
+        setConfig({});
+        showSuccessInfo('deleted');
       })
-      .catch((err) => {
-        this.showErrorInfo(err.message);
-      });
+      .catch(showErrorInfo);
   };
 
-  showErrorInfo = (response) => {
-    response.then((text) => {
-      const msg = `Error: ${text}`;
-      if (this.callout) {
-        this.callout.sendCallout({
-          type: 'error',
-          message: msg,
-        });
-      }
-    });
-  };
+  useEffect(() => {
+    fetchPeriodicHarvestingConf();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  onCloseEdit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ isEditing: false });
-  };
+  const getEditIcon = () => (_.isEmpty(config) ? 'plus-sign' : 'edit');
 
-  onEdit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    this.setState({ isEditing: true });
-  };
-
-  showConfirm = () => {
-    this.setState({
-      confirming: true,
-    });
-  };
-
-  cancelEditing = () => {
-    this.setState({
-      isEditing: false,
-      confirming: false,
-    });
-  };
-
-  hideConfirm = () => {
-    this.setState({
-      confirming: false,
-    });
-  };
-
-  getEditIcon = () => {
-    if (_.isEmpty(this.state.config)) {
-      return 'plus-sign';
-    } else {
-      return 'edit';
-    }
-  };
-
-  getLastMenu() {
-    const isEditing = this.state.isEditing;
+  const getLastMenu = () => {
     return (
       <IfPermission perm="ui-erm-usage.generalSettings.manage">
         <PaneMenu>
@@ -194,84 +81,58 @@ class PeriodicHarvestingManager extends React.Component {
             <IconButton
               icon="times"
               id="clickable-close-edit-config"
-              onClick={this.showConfirm}
+              onClick={() => setConfirming(true)}
               aria-label="End Edit Config"
             />
           ) : (
             <IconButton
-              icon={this.getEditIcon()}
+              icon={getEditIcon()}
               id="clickable-open-edit-config"
-              onClick={this.onEdit}
+              onClick={() => setIsEditing(true)}
               aria-label="Start Edit Config"
             />
           )}
         </PaneMenu>
       </IfPermission>
     );
-  }
+  };
 
-  render() {
-    const { intl } = this.props;
-    const periodicConfig = this.state.config;
-    const startAt = periodicConfig?.startAt || moment.tz(intl.timeZone).locale(intl.locale).format();
-    const dateTime = splitDateTime(startAt, intl.locale, intl.timeZone);
-    const initialVals = {
-      ...periodicConfig,
-      ...dateTime
-    };
+  const periodicHarvesting = isEditing ? (
+    <PeriodicHarvestingForm
+      initialValues={{ ...config, ...splitDateTime(config?.startAt, locale, timeZone) }}
+      onDelete={deletePeriodicHarvestingConf}
+      onSubmit={savePeriodicHarvestingConf}
+    />
+  ) : (
+    <PeriodicHarvestingView periodicConfig={config} />
+  );
 
-    const periodicHarvesting = this.state.isEditing ? (
-      <PeriodicHarvestingForm
-        initialValues={initialVals}
-        onDelete={this.deletePeriodicHarvestingConf}
-        onSubmit={(record) => {
-          this.savePeriodicHarvestingConf(record);
+  return (
+    <>
+      <Pane
+        id="periodic-harvesting-pane"
+        defaultWidth="fill"
+        lastMenu={getLastMenu()}
+        paneTitle={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}
+      >
+        {periodicHarvesting}
+      </Pane>
+      <ConfirmationModal
+        open={confirming}
+        heading={formatMessage({ id: 'ui-erm-usage.general.pleaseConfirm' })}
+        message={formatMessage({
+          id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
+        })}
+        confirmLabel={formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
+        onConfirm={() => setConfirming(false)}
+        cancelLabel={formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
+        onCancel={() => {
+          setIsEditing(false);
+          setConfirming(false);
         }}
       />
-    ) : (
-      <PeriodicHarvestingView
-        periodicConfig={periodicConfig}
-      />
-    );
+    </>
+  );
+};
 
-    return (
-      <React.Fragment>
-        <Pane
-          id="periodic-harvesting-pane"
-          defaultWidth="fill"
-          lastMenu={this.getLastMenu()}
-          paneTitle={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.settings.harvester.config.periodic.title',
-          })}
-        >
-          {periodicHarvesting}
-        </Pane>
-        <Callout
-          ref={(ref) => {
-            this.callout = ref;
-          }}
-        />
-        <ConfirmationModal
-          open={this.state.confirming}
-          heading={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.pleaseConfirm',
-          })}
-          message={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
-          })}
-          confirmLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.keepEditing',
-          })}
-          onConfirm={this.hideConfirm}
-          cancelLabel={this.props.intl.formatMessage({
-            id:
-              'ui-erm-usage.general.closeWithoutSave',
-          })}
-          onCancel={this.cancelEditing}
-        />
-      </React.Fragment>
-    );
-  }
-}
-
-export default stripesConnect(injectIntl(PeriodicHarvestingManager));
+export default PeriodicHarvestingManager;
