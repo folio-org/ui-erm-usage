@@ -78,6 +78,7 @@ function NonCounterUploadInnerForm(props) {
     fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
       headers: httpHeaders,
       method: 'DELETE',
+      credentials: 'include',
     })
       .then((response) => {
         if (response.ok) {

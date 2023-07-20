@@ -25,7 +25,6 @@ class DownloadCredentialsButton extends React.Component {
       ...createOkapiHeaders(props.stripes.okapi),
       'Content-Type': 'application/json',
     };
-    this.credentials = { credentials: 'include' };
   }
 
   onClickDownloadCredentials = (format) => {
@@ -34,7 +33,6 @@ class DownloadCredentialsButton extends React.Component {
       format,
       this.okapiUrl,
       this.httpHeaders,
-      this.credentials,
     ).catch((err) => {
       this.log(err.message);
     });

@@ -86,6 +86,7 @@ export default function withReportHandlers(WrappedComponent) {
         `${okapiUrl}/counter-reports/export/${reportId}?format=${format}`,
         {
           headers: httpHeaders,
+          credentials: 'include',
         }
       )
         .then((response) => {
@@ -114,6 +115,7 @@ export default function withReportHandlers(WrappedComponent) {
     const downloadReportSingleMonthRaw = (reportId, fileType) => {
       return fetch(`${okapiUrl}/counter-reports/${reportId}/download`, {
         headers: httpHeaders,
+        credentials: 'include',
       })
         .then((response) => {
           if (response.status >= 400) {
@@ -138,6 +140,7 @@ export default function withReportHandlers(WrappedComponent) {
     const downloadErmUsageFile = (fileId, fileName) => {
       return fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
         headers: httpHeaders,
+        credentials: 'include',
       })
         .then((response) => {
           if (response.status >= 400) {

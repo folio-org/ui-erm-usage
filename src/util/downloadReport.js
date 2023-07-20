@@ -10,7 +10,10 @@ const saveReport = (id, reportData, fileType) => {
 const downloadCredentials = (aggregatorId, format, okapiUrl, httpHeaders) => {
   return fetch(
     `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials?format=${format}`,
-    { headers: httpHeaders }
+    {
+      headers: httpHeaders,
+      credentials: 'include',
+    }
   )
     .then((response) => {
       if (response.status >= 400) {
