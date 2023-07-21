@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NonCounterUploadModal from './NonCounterUploadModal';
-import createOkapiHeaders from '../../../util/createOkapiHeaders';
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
 function NonCounterUpload({
   onFail,
@@ -13,16 +13,10 @@ function NonCounterUpload({
 }) {
   const handleNonCounterUpload = (report) => {
     const json = JSON.stringify(report);
-    const okapiUrl = stripes.okapi.url;
-    const httpHeaders = {
-      ...createOkapiHeaders(stripes.okapi),
-      'Content-Type': 'application/json',
-    };
-    fetch(`${okapiUrl}/custom-reports`, {
-      headers: httpHeaders,
+    fetchWithDefaultOptions(stripes.okapi, '/custom-reports', {
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: json,
-      credentials: 'include',
     })
       .then((response) => {
         if (response.status >= 400) {

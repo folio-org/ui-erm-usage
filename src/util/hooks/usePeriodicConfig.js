@@ -1,16 +1,11 @@
 import { useStripes } from '@folio/stripes-core';
 import { useIntl } from 'react-intl';
-import createOkapiHeaders from '../createOkapiHeaders';
+import fetchWithDefaultOptions from '../fetchWithDefaultOptions';
 
 const usePeriodicConfig = () => {
   const path = '/erm-usage-harvester/periodic';
   const { formatMessage } = useIntl();
   const { okapi } = useStripes();
-
-  const okapiUrl = okapi.url;
-  const headers = {
-    ...createOkapiHeaders(okapi),
-  };
 
   const createErrorFromResponse = (response, intlTag) => new Error(
     formatMessage(
@@ -23,11 +18,7 @@ const usePeriodicConfig = () => {
   );
 
   const fetchConfig = () => {
-    return fetch(okapiUrl + path, {
-      headers,
-      credentials: 'include',
-      method: 'GET',
-    }).then((response) => {
+    return fetchWithDefaultOptions(okapi, path).then((response) => {
       if (response.status === 200) {
         return response.json();
       } else if (response.status === 404) {
@@ -39,12 +30,10 @@ const usePeriodicConfig = () => {
   };
 
   const saveConfig = (periodicConfig) => {
-    return fetch(okapiUrl + path, {
+    return fetchWithDefaultOptions(okapi, path, {
       headers: {
-        ...headers,
         'content-type': 'application/json',
       },
-      credentials: 'include',
       method: 'POST',
       body: JSON.stringify(periodicConfig),
     }).then((response) => {
@@ -57,9 +46,7 @@ const usePeriodicConfig = () => {
   };
 
   const deleteConfig = () => {
-    return fetch(okapiUrl + path, {
-      headers,
-      credentials: 'include',
+    return fetchWithDefaultOptions(okapi, path, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 204) {

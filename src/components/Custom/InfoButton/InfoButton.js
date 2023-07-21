@@ -10,29 +10,26 @@ import {
   IconButton,
   Modal,
 } from '@folio/stripes/components';
-import createOkapiHeaders from '../../../util/createOkapiHeaders';
 
 import CustomReportInfo from '../CustomReportInfo';
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
 function InfoButton(props) {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const { customReport } = props;
-
-  const httpHeaders = {
-    ...createOkapiHeaders(props.stripes.okapi),
-    'Content-Type': 'application/json',
-  };
+  const {
+    customReport,
+    stripes: { okapi },
+  } = props;
 
   const doDeleteReport = () => {
     props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});
   };
 
   const doDeleteWithFile = () => {
-    fetch(`${props.stripes.okapi.url}/erm-usage/files/${customReport.fileId}`, {
+    fetchWithDefaultOptions(okapi, `/erm-usage/files/${customReport.fileId}`, {
       method: 'DELETE',
-      headers: httpHeaders,
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
         if (response.status >= 400) {

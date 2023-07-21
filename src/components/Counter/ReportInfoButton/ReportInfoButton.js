@@ -28,7 +28,6 @@ class ReportInfoButton extends React.Component {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
-    this.okapiUrl = props.stripes.okapi.url;
 
     this.state = {
       showDropDown: false,

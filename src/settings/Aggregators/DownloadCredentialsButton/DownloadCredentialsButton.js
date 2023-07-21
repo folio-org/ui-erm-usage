@@ -9,7 +9,6 @@ import {
   Icon,
 } from '@folio/stripes/components';
 
-import createOkapiHeaders from '../../../util/createOkapiHeaders';
 import { downloadCredentials } from '../../../util/downloadReport';
 
 class DownloadCredentialsButton extends React.Component {
@@ -18,21 +17,12 @@ class DownloadCredentialsButton extends React.Component {
     stripes: PropTypes.shape().isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = {
-      ...createOkapiHeaders(props.stripes.okapi),
-      'Content-Type': 'application/json',
-    };
-  }
-
   onClickDownloadCredentials = (format) => {
     downloadCredentials(
       this.props.aggregatorId,
       format,
-      this.okapiUrl,
-      this.httpHeaders,
+      this.props.stripes.okapi,
+      { 'Content-Type': 'application/json' },
     ).catch((err) => {
       this.log(err.message);
     });

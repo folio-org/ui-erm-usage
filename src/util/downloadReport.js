@@ -1,5 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import saveAs from 'file-saver';
+import fetchWithDefaultOptions from './fetchWithDefaultOptions';
 
 const saveReport = (id, reportData, fileType) => {
   const blob = new Blob([reportData], { type: fileType });
@@ -7,12 +8,12 @@ const saveReport = (id, reportData, fileType) => {
   saveAs(blob, fileName);
 };
 
-const downloadCredentials = (aggregatorId, format, okapiUrl, httpHeaders) => {
-  return fetch(
-    `${okapiUrl}/aggregator-settings/${aggregatorId}/exportcredentials?format=${format}`,
+const downloadCredentials = (aggregatorId, format, okapi, httpHeaders) => {
+  return fetchWithDefaultOptions(
+    okapi,
+    `/aggregator-settings/${aggregatorId}/exportcredentials?format=${format}`,
     {
       headers: httpHeaders,
-      credentials: 'include',
     }
   )
     .then((response) => {
