@@ -311,5 +311,9 @@
     "settings.harvester.logs.daysToKeepLogs": "Počet dní pro uchování logů harvestoru",
     "settings.harvester.config.periodic.interval.daily": "Denně",
     "settings.harvester.config.periodic.interval.weekly": "Týdně",
-    "settings.harvester.config.periodic.interval.monthly": "Měsíčně"
+    "settings.harvester.config.periodic.interval.monthly": "Měsíčně",
+    "general.error2": "Error",
+    "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
+    "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
 }

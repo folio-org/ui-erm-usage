@@ -311,5 +311,9 @@
     "settings.harvester.logs.daysToKeepLogs": "Número de dias para manter os logs de harvesting",
     "settings.harvester.config.periodic.interval.daily": "Diário",
     "settings.harvester.config.periodic.interval.weekly": "Semanal",
-    "settings.harvester.config.periodic.interval.monthly": "Mensal"
+    "settings.harvester.config.periodic.interval.monthly": "Mensal",
+    "general.error2": "Erro",
+    "settings.harvester.config.periodic.fetch.fail": "Recebido ''{status} - {statusText}'' ao buscar configuração de coleta periódica",
+    "settings.harvester.config.periodic.save.fail": "Recebido ''{status} - {statusText}'' ao salvar a configuração de coleta periódica",
+    "settings.harvester.config.periodic.delete.fail": "Recebido ''{status} - {statusText}'' ao excluir a configuração de coleta periódica"
 }
