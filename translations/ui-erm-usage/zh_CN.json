@@ -311,5 +311,9 @@
     "settings.harvester.logs.daysToKeepLogs": "保持收割日志的天数",
     "settings.harvester.config.periodic.interval.daily": "Daily",
     "settings.harvester.config.periodic.interval.weekly": "Weekly",
-    "settings.harvester.config.periodic.interval.monthly": "Monthly"
+    "settings.harvester.config.periodic.interval.monthly": "Monthly",
+    "general.error2": "Error",
+    "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
+    "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
 }
