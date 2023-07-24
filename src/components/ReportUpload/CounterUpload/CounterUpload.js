@@ -4,26 +4,9 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import CounterUploadModal from './CounterUploadModal';
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
-function CounterUpload({
-  intl,
-  onClose,
-  onFail,
-  onSuccess,
-  open,
-  stripes,
-  udpId,
-}) {
-  const okapiUrl = stripes.okapi.url;
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': stripes.okapi.tenant,
-      'X-Okapi-Token': stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json',
-    }
-  );
-
+function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
   const [selectedFile, setSelectedFile] = useState({});
   const [values, setValues] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
@@ -52,10 +35,11 @@ function CounterUpload({
 
     setShowInfoModal(true);
     setInfoType(CounterUpload.upload);
-    fetch(
-      `${okapiUrl}/counter-reports/upload/provider/${udpId}?overwrite=${doOverwrite}`,
+    fetchWithDefaultOptions(
+      okapi,
+      `/counter-reports/upload/provider/${udpId}?overwrite=${doOverwrite}`,
       {
-        headers: httpHeaders,
+        headers: { 'Content-Type': 'application/json' },
         method: 'POST',
         body: json,
       }

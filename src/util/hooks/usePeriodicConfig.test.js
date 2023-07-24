@@ -15,14 +15,17 @@ const assertFetchParameters = (
   additionalHeaders = {},
   additionalParams = {}
 ) => {
-  expect(fetch).toHaveBeenCalledWith(expectedUrl, {
-    headers: {
-      ...expectedHeaders,
-      ...additionalHeaders,
-    },
-    method,
-    ...additionalParams,
-  });
+  expect(fetch).toHaveBeenCalledWith(
+    expectedUrl,
+    expect.objectContaining({
+      headers: {
+        ...expectedHeaders,
+        ...additionalHeaders,
+      },
+      method,
+      ...additionalParams,
+    })
+  );
 };
 
 describe('test usePeriodConfig hook', () => {

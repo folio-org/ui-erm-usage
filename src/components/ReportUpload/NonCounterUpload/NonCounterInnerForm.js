@@ -8,6 +8,7 @@ import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
 
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
 function NonCounterUploadInnerForm(props) {
   const [selectedFile, setSelectedFile] = useState();
@@ -16,15 +17,13 @@ function NonCounterUploadInnerForm(props) {
   const [useFile, setUseFile] = useState(true);
   const [linkUrl, setLinkUrl] = useState();
 
-  const { intl, stripes } = props;
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': stripes.okapi.tenant,
-      'X-Okapi-Token': stripes.store.getState().okapi.token,
-      'Content-Type': 'application/octet-stream',
-    }
-  );
+  const {
+    intl,
+    stripes: { okapi },
+  } = props;
+  const headers = {
+    'Content-Type': 'application/octet-stream',
+  };
   const callout = useContext(CalloutContext);
 
   const handleFail = (msg) => {
@@ -39,9 +38,8 @@ function NonCounterUploadInnerForm(props) {
   const doUploadRawFile = (file) => {
     const { mutators, udpId } = props;
     setShowUploadModal(true);
-    const okapiUrl = stripes.okapi.url;
-    fetch(`${okapiUrl}/erm-usage/files`, {
-      headers: httpHeaders,
+    fetchWithDefaultOptions(okapi, '/erm-usage/files', {
+      headers,
       method: 'POST',
       body: file,
     })
@@ -76,9 +74,8 @@ function NonCounterUploadInnerForm(props) {
 
   const doDeleteRawFile = () => {
     const { mutators } = props;
-    const okapiUrl = stripes.okapi.url;
-    fetch(`${okapiUrl}/erm-usage/files/${fileId}`, {
-      headers: httpHeaders,
+    fetchWithDefaultOptions(okapi, `/erm-usage/files/${fileId}`, {
+      headers,
       method: 'DELETE',
     })
       .then((response) => {

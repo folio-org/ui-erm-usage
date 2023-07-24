@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfoPopover } from '@folio/stripes/components';
+import fetchWithDefaultOptions from '../../../../util/fetchWithDefaultOptions';
 
 class AggregatorContactInfo extends React.Component {
   static propTypes = {
@@ -11,15 +12,6 @@ class AggregatorContactInfo extends React.Component {
 
   constructor(props) {
     super(props);
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
 
     this.state = {
       contact: null,
@@ -37,9 +29,13 @@ class AggregatorContactInfo extends React.Component {
   }
 
   fechAggregator = (aggregatorId) => {
-    return fetch(`${this.okapiUrl}/aggregator-settings/${aggregatorId}`, {
-      headers: this.httpHeaders,
-    })
+    return fetchWithDefaultOptions(
+      this.props.stripes.okapi,
+      `/aggregator-settings/${aggregatorId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           return Promise.reject(response);

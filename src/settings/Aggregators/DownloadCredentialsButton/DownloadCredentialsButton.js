@@ -17,25 +17,12 @@ class DownloadCredentialsButton extends React.Component {
     stripes: PropTypes.shape().isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
-  }
-
   onClickDownloadCredentials = (format) => {
     downloadCredentials(
       this.props.aggregatorId,
       format,
-      this.okapiUrl,
-      this.httpHeaders
+      this.props.stripes.okapi,
+      { 'Content-Type': 'application/json' },
     ).catch((err) => {
       this.log(err.message);
     });

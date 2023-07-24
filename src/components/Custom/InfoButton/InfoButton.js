@@ -12,29 +12,24 @@ import {
 } from '@folio/stripes/components';
 
 import CustomReportInfo from '../CustomReportInfo';
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
 function InfoButton(props) {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const { customReport } = props;
-
-  const httpHeaders = Object.assign(
-    {},
-    {
-      'X-Okapi-Tenant': props.stripes.okapi.tenant,
-      'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-      'Content-Type': 'application/json',
-    }
-  );
+  const {
+    customReport,
+    stripes: { okapi },
+  } = props;
 
   const doDeleteReport = () => {
     props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});
   };
 
   const doDeleteWithFile = () => {
-    fetch(`${props.stripes.okapi.url}/erm-usage/files/${customReport.fileId}`, {
+    fetchWithDefaultOptions(okapi, `/erm-usage/files/${customReport.fileId}`, {
       method: 'DELETE',
-      headers: httpHeaders,
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
         if (response.status >= 400) {

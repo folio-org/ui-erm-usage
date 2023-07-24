@@ -28,15 +28,6 @@ class ReportInfoButton extends React.Component {
     super(props);
     const logger = props.stripes.logger;
     this.log = logger.log.bind(logger);
-    this.okapiUrl = props.stripes.okapi.url;
-    this.httpHeaders = Object.assign(
-      {},
-      {
-        'X-Okapi-Tenant': props.stripes.okapi.tenant,
-        'X-Okapi-Token': props.stripes.store.getState().okapi.token,
-        'Content-Type': 'application/json',
-      }
-    );
 
     this.state = {
       showDropDown: false,
