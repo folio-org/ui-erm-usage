@@ -4,6 +4,8 @@ import { get } from 'lodash';
 import { stripesConnect } from '@folio/stripes/core';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, InfoPopover, Modal } from '@folio/stripes/components';
+import { Link } from 'react-router-dom';
+import urls from '../../util/urls';
 
 class StartHarvesterModal extends React.Component {
   static manifest = Object.freeze({
@@ -58,9 +60,18 @@ class StartHarvesterModal extends React.Component {
   };
 
   createSuccessText = (udp) => {
-    return `${this.props.intl.formatMessage({
-      id: 'ui-erm-usage.harvester.start.success.single.udp',
-    })} ${udp.label} !`;
+    return <FormattedMessage
+      id="ui-erm-usage.settings.harvester.start.success"
+      values={{
+        link: (
+          <Link to={urls.jobsView + '?sort=-startedAt'}>
+            <FormattedMessage id="ui-erm-usage.harvester.jobs.paneTitle" />
+          </Link>
+        ),
+        provider: true,
+        name: udp.label
+      }}
+    />;
   };
 
   createFailText = (udp) => {

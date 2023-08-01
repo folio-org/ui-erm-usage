@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Button, Modal, Pane } from '@folio/stripes/components';
+import { Link } from 'react-router-dom';
+import urls from '../../util/urls';
 
 export default class StartHarvester extends React.Component {
   static manifest = Object.freeze({
@@ -30,7 +32,17 @@ export default class StartHarvester extends React.Component {
     };
 
     this.successText = (
-      <FormattedMessage id="ui-erm-usage.settings.harvester.start.success" />
+      <FormattedMessage
+        id="ui-erm-usage.settings.harvester.start.success"
+        values={{
+          link: (
+            <Link to={urls.jobsView + '?sort=-startedAt'}>
+              <FormattedMessage id="ui-erm-usage.harvester.jobs.paneTitle" />
+            </Link>
+          ),
+          provider: false,
+        }}
+      />
     );
     this.failText = (
       <FormattedMessage id="ui-erm-usage.settings.harvester.start.fail" />
