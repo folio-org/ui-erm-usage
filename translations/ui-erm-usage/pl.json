@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "Data końcowa musi być większa niż data początkowa",
     "harvester.start": "Uruchom pobieranie danych",
     "harvester.start.started": "Wystartowało pobieranie danych",
-    "harvester.start.success.single.udp": "Pobieranie danych pomyślnie wystartowało dla",
     "harvester.start.fail.single.udp": "Coś poszło nie tak podczas uruchamiania pobierania danych dla dostawcy danych o użyciu",
     "harvester.start.inactiveInfo": "Pobieranie danych może być uruchomione tylko dla dostawców danych o użyciu z aktywnym statusem pobierania danych. Proszę sprawdzić konfigurację pobierania danych.",
     "settings.harvester": "Pobieranie danych",

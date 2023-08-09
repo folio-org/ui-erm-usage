@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "終止日期必須大於起始日期",
     "harvester.start": "啟動收割器",
     "harvester.start.started": "收割器已启动",
-    "harvester.start.success.single.udp": "收割器成功启动",
     "harvester.start.fail.single.udp": "启动使用数据提供者的收割器时出了点问题",
     "harvester.start.inactiveInfo": "收割器只能针对收割状态为“激活”的使用数据提供者启动。请检查收割配置。",
     "settings.harvester": "收割器",

@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "La date de fin doit être postérieure à la date de début",
     "harvester.start": "Démarrer le moissonnage",
     "harvester.start.started": "Le moissonnage a commencé",
-    "harvester.start.success.single.udp": "Le moissonnage a démarré avec succès pour",
     "harvester.start.fail.single.udp": "Une erreur s'est produite lors du démarrage du moissonnage pour le fournisseur de données d'utilisation",
     "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
     "settings.harvester": "Outil de moissonnage",
