@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "终止日期必须大于起始日期",
     "harvester.start": "启动收割器",
     "harvester.start.started": "收割器已启动",
-    "harvester.start.success.single.udp": "收割器成功启动",
     "harvester.start.fail.single.udp": "启动使用数据提供者的收割器时出了点问题",
     "harvester.start.inactiveInfo": "收割器只能针对收割状态为“激活”的使用数据提供者启动。请检查收割配置。",
     "settings.harvester": "收割器",
@@ -309,11 +308,11 @@
     "harvester.jobs.filter.result.failure": "失败",
     "settings.harvester.logs.title": "收割器日志",
     "settings.harvester.logs.daysToKeepLogs": "保持收割日志的天数",
-    "settings.harvester.config.periodic.interval.daily": "Daily",
-    "settings.harvester.config.periodic.interval.weekly": "Weekly",
-    "settings.harvester.config.periodic.interval.monthly": "Monthly",
-    "general.error2": "Error",
-    "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
-    "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.interval.daily": "每日",
+    "settings.harvester.config.periodic.interval.weekly": "每周",
+    "settings.harvester.config.periodic.interval.monthly": "每月",
+    "general.error2": "错误",
+    "settings.harvester.config.periodic.fetch.fail": "获取定期收割配置时收到“ {status} - {statusText} ”",
+    "settings.harvester.config.periodic.save.fail": "保存定期收割配置时收到“ {status} - {statusText} ”",
+    "settings.harvester.config.periodic.delete.fail": "删除定期收割配置时收到“ {status} - {statusText} ”"
 }

@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "La fecha final debe ser mayor que la fecha inicial",
     "harvester.start": "Arrancar la cosechadora",
     "harvester.start.started": "Arranque de la cosechadora",
-    "harvester.start.success.single.udp": "Cosechadora arrancada con éxito para",
     "harvester.start.fail.single.udp": "Algo ha ido mal al arrancar el recolector de datos de usuario.",
     "harvester.start.inactiveInfo": "El recopilador sólo puede iniciarse para proveedores de datos de uso con el estado de recopilación \"activo\". Comprueba tu configuración de recopilación.",
     "settings.harvester": "Cosechadora",
@@ -313,7 +312,7 @@
     "settings.harvester.config.periodic.interval.weekly": "Semanal",
     "settings.harvester.config.periodic.interval.monthly": "Mensualmente",
     "general.error2": "Error",
-    "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
-    "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.fetch.fail": "Recibido ''{status} - {statusText}'' mientras se buscaba la configuración de recolección periódica.",
+    "settings.harvester.config.periodic.save.fail": "Recibido ''{status} - {statusText}'' al guardar la configuración de recolección periódica",
+    "settings.harvester.config.periodic.delete.fail": "Recibido ''{status} - {statusText}'' al borrar la configuración de recolección periódica"
 }

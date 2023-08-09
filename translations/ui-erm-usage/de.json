@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "Enddatum muss größer als Startdatum sein",
     "harvester.start": "Abruf starten",
     "harvester.start.started": "Abruf gestartet",
-    "harvester.start.success.single.udp": "Abruf erfolgreich gestartet für",
     "harvester.start.fail.single.udp": "Fehler beim Starten des Abrufs für Datenquelle",
     "harvester.start.inactiveInfo": "Der Abruf kann nur für Datenquellen mit dem Abrufstatus \"aktiv\" gestartet werden. Bitte Abrufeinstellungen prüfen.",
     "settings.harvester": "Abruf",

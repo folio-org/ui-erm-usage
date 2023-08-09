@@ -164,7 +164,6 @@
     "errors.endDateMustBeGraterStartDate": "يجب أن يكون تاريخ الانتهاء أكبر من تاريخ البدء",
     "harvester.start": "بدء أداة الحصاد",
     "harvester.start.started": "بدء أداة الحصاد",
-    "harvester.start.success.single.udp": "تم بدء أداة الحصاد بنجاح لـ",
     "harvester.start.fail.single.udp": "لقد حدث خطأ ما أثناء بدء أداة الحصاد لمزود بيانات الاستخدام",
     "harvester.start.inactiveInfo": "لا يمكن بدء تشغيل أداة الحصاد إلا لمزودي بيانات الاستخدام بحالة الحصاد 'نشطة'. يرجى التحقق من تهيئة الحصاد الخاص بك.",
     "settings.harvester": "أداة الحصاد",
