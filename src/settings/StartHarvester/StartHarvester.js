@@ -33,7 +33,7 @@ export default class StartHarvester extends React.Component {
 
     this.successText = (
       <FormattedMessage
-        id="ui-erm-usage.settings.harvester.start.success"
+        id="ui-erm-usage.harvester.start.success"
         values={{
           link: (
             <Link to={urls.jobsView + '?sort=-startedAt'}>

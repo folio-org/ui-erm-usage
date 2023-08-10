@@ -61,7 +61,7 @@ class StartHarvesterModal extends React.Component {
 
   createSuccessText = (udp) => {
     return <FormattedMessage
-      id="ui-erm-usage.settings.harvester.start.success"
+      id="ui-erm-usage.harvester.start.success"
       values={{
         link: (
           <Link to={urls.jobsView + '?sort=-startedAt'}>
