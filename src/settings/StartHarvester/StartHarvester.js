@@ -1,107 +1,50 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Button, Modal, Pane } from '@folio/stripes/components';
-import { Link } from 'react-router-dom';
-import urls from '../../util/urls';
+import { Button, Pane } from '@folio/stripes/components';
+import { useOkapiKy } from '@folio/stripes/core';
+import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
 
-export default class StartHarvester extends React.Component {
-  static manifest = Object.freeze({
-    harvesterStart: {
-      type: 'okapi',
-      fetch: false,
-      accumulate: 'true',
-      GET: {
-        path: 'erm-usage-harvester/start',
-      },
-    },
+const StartHarvester = () => {
+  const ky = useOkapiKy();
+  const [modalState, setModalState] = useState({
+    open: false,
   });
 
-  static propTypes = {
-    mutator: PropTypes.shape({
-      harvesterStart: PropTypes.object,
-    }),
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showInfoModal: false,
-      modalText: '',
-    };
-
-    this.successText = (
-      <FormattedMessage
-        id="ui-erm-usage.harvester.start.success"
-        values={{
-          link: (
-            <Link to={urls.jobsView + '?sort=-startedAt'}>
-              <FormattedMessage id="ui-erm-usage.harvester.jobs.paneTitle" />
-            </Link>
-          ),
-          provider: false,
-        }}
-      />
-    );
-    this.failText = (
-      <FormattedMessage id="ui-erm-usage.settings.harvester.start.fail" />
-    );
-  }
-
-  onClickStartHarvester = () => {
-    this.props.mutator.harvesterStart
-      .GET()
+  const onClickStartHarvester = () => {
+    ky('erm-usage-harvester/start', {
+      method: 'GET',
+      retry: 0,
+    })
       .then(() => {
-        this.setState({
-          showInfoModal: true,
-          modalText: this.successText,
-        });
+        setModalState({ open: true, isSuccess: true });
       })
-      .catch((err) => {
-        const infoText = this.failText + ' ' + err.message;
-        this.setState({
-          showInfoModal: true,
-          modalText: infoText,
-        });
+      .catch((error) => {
+        Promise.resolve(error.response?.text?.() ?? error.message)
+          .catch(() => error.message)
+          .then((errMessage) => setModalState({ open: true, isSuccess: false, errMessage }));
       });
   };
 
-  handleClose = () => {
-    this.setState({ showInfoModal: false });
+  const handleClose = () => {
+    setModalState({ open: false });
   };
 
-  render() {
-    const startHarvesterButton = (
-      <Button id="start-harvester" onClick={() => this.onClickStartHarvester()}>
-        <FormattedMessage id="ui-erm-usage.harvester.start" />
-      </Button>
-    );
+  return (
+    <Pane
+      id="start-harvester-pane"
+      defaultWidth="fill"
+      fluidContentWidth
+      paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}
+    >
+      <div>
+        <FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />
+        <Button id="start-harvester" onClick={() => onClickStartHarvester()}>
+          <FormattedMessage id="ui-erm-usage.harvester.start" />
+        </Button>
+      </div>
+      <HarvesterInfoModal {...modalState} onClose={handleClose} />
+    </Pane>
+  );
+};
 
-    return (
-      <Pane
-        id="start-harvester-pane"
-        defaultWidth="fill"
-        fluidContentWidth
-        paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}
-      >
-        <div>
-          {
-            <FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />
-          }
-          {startHarvesterButton}
-        </div>
-        <Modal
-          closeOnBackgroundClick
-          open={this.state.showInfoModal}
-          label={<FormattedMessage id="ui-erm-usage.harvester.start.started" />}
-        >
-          <div>{this.state.modalText}</div>
-          <Button onClick={this.handleClose}>
-            <FormattedMessage id="ui-erm-usage.general.ok" />
-          </Button>
-        </Modal>
-      </Pane>
-    );
-  }
-}
+export default StartHarvester;
