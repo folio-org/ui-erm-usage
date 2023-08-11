@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { IfPermission, TitleManager, Pluggable } from '@folio/stripes/core';
+import { IfPermission, TitleManager, Pluggable, withOkapiKy } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -32,7 +32,6 @@ import HelperApp from '../HelperApp';
 
 import { UDPInfoView } from '../UDPInfo';
 import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import StartHarvesterModal from '../StartHarvesterModal';
 import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 import CounterStatistics from '../Counter';
@@ -43,6 +42,7 @@ import urls from '../../util/urls';
 import groupReportsPerYear from '../../util/groupReportsPerYear';
 import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 import UDPHeader from '../UDPHeader/UDPHeader';
+import HarvesterInfoModal from '../HarvesterInfoModal/HarvesterInfoModal';
 
 let callout;
 
@@ -54,7 +54,7 @@ class UDP extends React.Component {
     this.state = {
       helperApp: null,
       showDeleteReports: false,
-      showStartHarvesterModal: false,
+      harvesterModalState: {},
       showCounterUpload: false,
       showNonCounterUpload: false,
     };
@@ -169,12 +169,27 @@ class UDP extends React.Component {
     return !this.props.isHarvesterExistent || status === 'inactive';
   };
 
-  openStartHarvesterModal = () => {
-    this.setState({ showStartHarvesterModal: true });
+  openStartHarvesterModal = (udpId) => {
+    this.props
+      .okapiKy(`erm-usage-harvester/start/${udpId}`, {
+        method: 'GET',
+        retry: 0,
+      })
+      .then(() => {
+        this.setState({ harvesterModalState: { open: true, isSuccess: true } });
+        this.reloadUdp();
+      })
+      .catch((error) => {
+        Promise.resolve(error.response?.text?.() ?? error.message)
+          .catch(() => error.message)
+          .then((errMessage) => this.setState({
+            harvesterModalState: { open: true, isSuccess: false, errMessage }
+          }));
+      });
   };
 
   closeStartHarvesterModal = () => {
-    this.setState({ showStartHarvesterModal: false });
+    this.setState({ harvesterModalState: { open: false } });
   };
 
   getActionMenu = () => ({ onToggle }) => {
@@ -193,7 +208,7 @@ class UDP extends React.Component {
               marginBottom0
               disabled={this.isInActive(usageDataProvider)}
               onClick={() => {
-                this.openStartHarvesterModal();
+                this.openStartHarvesterModal(usageDataProvider.id);
                 onToggle();
               }}
             >
@@ -202,14 +217,11 @@ class UDP extends React.Component {
               </Icon>
             </Button>
           </IfPermission>
-          {this.state.showStartHarvesterModal && (
-            <StartHarvesterModal
-              usageDataProvider={usageDataProvider}
-              isHarvesterExistent={this.props.isHarvesterExistent}
-              onReloadUDP={this.reloadUdp}
-              onClose={this.closeStartHarvesterModal}
-            />
-          )}
+          <HarvesterInfoModal
+            {...this.state.harvesterModalState}
+            udpLabel={usageDataProvider.label}
+            onClose={this.closeStartHarvesterModal}
+          />
         </div>
         <div>
           <IfPermission perm="ui-erm-usage-harvester.jobs.view">
@@ -586,7 +598,8 @@ UDP.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
     search: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  okapiKy: PropTypes.func.isRequired,
 };
 
-export default injectIntl(UDP);
+export default injectIntl(withOkapiKy(UDP));

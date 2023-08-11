@@ -253,10 +253,10 @@
   "errors.urlRequired": "Invalid URL: http:// or https:// required!",
 
   "harvester.start": "Start harvester",
+  "harvester.start.failed": "Harvester failed to start",
+  "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}.",
   "harvester.start.started": "Harvester started",
   "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
-  "harvester.start.fail.single.udp": "Something went wrong while starting the harvester for usagedata provider",
-  "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
   "harvester.jobs.show": "Show harvester logs",
   "harvester.jobs.paneTitle": "Harvesting jobs",
   "harvester.jobs.filter.type": "Job types",
@@ -280,7 +280,6 @@
   "settings.harvester": "Harvester",
   "settings.section.display.settings": "Display settings",
   "settings.section.number.failed": "Number of failed attempts",
-  "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
   "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
   "settings.harvester.config": "Harvester configuration",
 
