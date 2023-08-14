@@ -61,49 +61,36 @@ describe('InfoButton', () => {
     renderInfoButton(stripes);
   });
 
-  test('has no permission', () => {
+  test('has no permission', async () => {
     stripes.hasPerm = () => false;
     renderInfoButton(stripes);
-    const iconButton = screen.getByRole('button', {
-      name: 'Open report info for custom report 2020 foo.',
-    });
-    userEvent.click(iconButton);
+    const iconButton = screen.getByRole('button', { name: /report 2020 foo/ });
+    await userEvent.click(iconButton);
     expect(screen.queryByText('Delete custom report')).not.toBeInTheDocument();
   });
 
   test('renders report info', async () => {
     stripes.hasPerm = () => true;
     renderInfoButton(stripes);
-    const iconButton = screen.getByRole('button', {
-      name: 'Open report info for custom report 2020 foo.',
-    });
-    userEvent.click(iconButton);
-
+    const iconButton = screen.getByRole('button', { name: /report 2020 foo/ });
+    await userEvent.click(iconButton);
     expect(screen.getByText('American Chemical Society')).toBeVisible();
 
-    const downloadButton = screen.getByRole('button', {
-      name: 'Icon Download file.txt',
-    });
+    const downloadButton = screen.getByRole('button', { name: 'Icon Download file.txt' });
     expect(downloadButton).toBeInTheDocument();
 
-    userEvent.click(downloadButton);
+    await userEvent.click(downloadButton);
     expect(doDownloadFile).toHaveBeenCalled();
 
-    const deleteButton = screen.getByRole('button', {
-      name: 'Icon Delete custom report',
-    });
+    const deleteButton = screen.getByRole('button', { name: 'Icon Delete custom report' });
     expect(deleteButton).toBeInTheDocument();
-    userEvent.click(deleteButton);
 
-    expect(
-      screen.getByText('Delete non-counter report?')
-    ).toBeInTheDocument();
+    await userEvent.click(deleteButton);
+    expect(screen.getByText('Delete non-counter report?')).toBeInTheDocument();
 
-    const yesButton = screen.getByRole('button', {
-      name: 'Yes',
-    });
+    const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
-    await waitForElementToBeRemoved(() => screen.getByText('Delete non-counter report?'));
+    await waitForElementToBeRemoved(() => screen.queryByText('Delete non-counter report?'));
     expect(doDeleteReport).toHaveBeenCalled();
   });
 });

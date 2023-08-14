@@ -34,12 +34,9 @@ const mutators = {
   },
 };
 
-jest.mock(
-  '../HarvestingConfiguration/AggregatorInfo/AggregatorContactInfo',
-  () => {
-    return () => <span>AggregatorContactInfo</span>;
-  }
-);
+jest.mock('../HarvestingConfiguration/AggregatorInfo/AggregatorContactInfo', () => {
+  return () => <span>AggregatorContactInfo</span>;
+});
 
 const renderUDP = (stripes) => {
   return renderWithIntl(
@@ -56,7 +53,7 @@ const renderUDP = (stripes) => {
           statsReloadCount={0}
           tagsEnabled={false}
           udpReloadCount={0}
-          location
+          location={{}}
         />
       </MemoryRouter>
     </StripesContext.Provider>
@@ -72,10 +69,12 @@ describe('UDP', () => {
 
   test('should render UDP', async () => {
     renderUDP(stripes);
-    await userEvent.click(screen.getByText('Harvesting configuration'));
 
-    // TODO: Harvesting status is always visible. How to test the accordion?
-    expect(screen.getByText('Harvesting status')).toBeVisible();
+    const harvestingAccordion = screen.getByRole('region', { name: /Harvesting configuration/ });
+    expect(harvestingAccordion).not.toHaveClass('expanded');
+
+    await userEvent.click(screen.getByText('Harvesting configuration'));
+    expect(harvestingAccordion).toHaveClass('expanded');
   });
 
   test('should render action menu button', async () => {
@@ -84,9 +83,9 @@ describe('UDP', () => {
   });
 
   describe('test action menu', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       renderUDP(stripes);
-      userEvent.click(screen.getByText('Actions'));
+      await userEvent.click(screen.getByText('Actions'));
     });
 
     test('should render action menu with actions', async () => {
@@ -98,18 +97,14 @@ describe('UDP', () => {
     });
 
     test('click upload counter report', async () => {
-      userEvent.click(await screen.findByText('Upload COUNTER report'));
-      const heading = screen.getByRole('heading', {
-        name: 'Upload COUNTER report',
-      });
+      await userEvent.click(screen.getByText('Upload COUNTER report'));
+      const heading = screen.getByRole('heading', { name: 'Upload COUNTER report' });
       expect(heading).toBeInTheDocument();
     });
 
     test('click upload non-counter report', async () => {
-      userEvent.click(await screen.findByText('Upload non-COUNTER report'));
-      const heading = screen.getByRole('heading', {
-        name: 'Upload non-COUNTER report',
-      });
+      await userEvent.click(screen.getByText('Upload non-COUNTER report'));
+      const heading = screen.getByRole('heading', { name: 'Upload non-COUNTER report' });
       expect(heading).toBeInTheDocument();
     });
   });

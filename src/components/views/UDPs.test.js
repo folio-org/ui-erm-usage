@@ -22,7 +22,7 @@ const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest
 
 // rerender result list for generate correct state and prevState of recordsArePending
 // trigger a new list of results: source isPending has to be TRUE first, than FALSE
-const renderUDPs = (stripes, props = {}, udpsData, rerender) => renderWithIntl(
+const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
   <MemoryRouter>
     <StripesContext.Provider value={stripes}>
       <ModuleHierarchyProvider module="@folio/erm-usage">
@@ -42,7 +42,7 @@ const renderUDPs = (stripes, props = {}, udpsData, rerender) => renderWithIntl(
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={history}
           onSearchComplete={onSearchComplete}
-          location
+          location={{ pathname: '', search: '' }}
           {...props}
         />
       </ModuleHierarchyProvider>
@@ -78,20 +78,16 @@ describe('rerender result list', () => {
   });
 
   describe('trigger search with loading new results', () => {
-    it('should set the focus to the result list', () => {
-      renderWithIntlResult = renderUDPs(
-        stripes,
-        sourcePending,
-        udps,
-      );
+    it('should set the focus to the result list', async () => {
+      renderWithIntlResult = renderUDPs(stripes, sourcePending, udps);
       expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
 
       const searchFieldInput = document.querySelector('#input-udp-search');
-      userEvent.type(searchFieldInput, 'American');
+      await userEvent.type(searchFieldInput, 'American');
 
-      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(document.querySelector('#clickable-search-udps')).toBeEnabled();
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
       renderUDPs(
         stripes,
@@ -101,7 +97,7 @@ describe('rerender result list', () => {
       );
 
       expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
-      expect(screen.queryByText('American Chemical Society')).toBeInTheDocument();
+      expect(screen.getByText('American Chemical Society')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
@@ -142,45 +138,31 @@ describe('UDPs SASQ View', () => {
 
   describe('check filters', () => {
     it('harvesting status filter should be present', () => {
-      expect(
-        document.querySelector('#filter-accordion-harvestingStatus')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#filter-accordion-harvestingStatus')).toBeInTheDocument();
     });
 
     it('harvestVia filter should be present', () => {
-      expect(
-        document.querySelector('#filter-accordion-harvestVia')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#filter-accordion-harvestVia')).toBeInTheDocument();
     });
 
     it('aggregators filter should be present', () => {
-      expect(
-        document.querySelector('#filter-accordion-aggregators')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#filter-accordion-aggregators')).toBeInTheDocument();
     });
 
     it('report types filter should be present', () => {
-      expect(
-        document.querySelector('#clickable-report-types-filter')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#clickable-report-types-filter')).toBeInTheDocument();
     });
 
     it('has failed reports filter should be present', () => {
-      expect(
-        document.querySelector('#filter-accordion-hasFailedReport')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#filter-accordion-hasFailedReport')).toBeInTheDocument();
     });
 
     it('error codes filter should be present', () => {
-      expect(
-        document.querySelector('#clickable-error-codes-filter')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#clickable-error-codes-filter')).toBeInTheDocument();
     });
 
     it('reset all button should be present', () => {
-      expect(
-        document.querySelector('#clickable-reset-all')
-      ).toBeInTheDocument();
+      expect(document.querySelector('#clickable-reset-all')).toBeInTheDocument();
     });
 
     it('search field should be present', () => {
@@ -194,15 +176,15 @@ describe('UDPs SASQ View', () => {
     it('columns of MCL should be present', async () => {
       const searchFieldInput = document.querySelector('#input-udp-search');
       expect(searchFieldInput).toBeInTheDocument();
-      userEvent.type(searchFieldInput, 'American');
+      await userEvent.type(searchFieldInput, 'American');
 
-      expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+      expect(document.querySelector('#clickable-search-udps')).toBeEnabled();
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-      userEvent.click(screen.getByRole('button', { name: 'Search' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
-      expect(screen.queryByText('Provider name')).toBeInTheDocument();
+      expect(screen.getByText('Provider name')).toBeInTheDocument();
       expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
-      expect(screen.queryByText('Latest statistics')).toBeInTheDocument();
+      expect(screen.getByText('Latest statistics')).toBeInTheDocument();
       expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
     });
   });
@@ -233,11 +215,11 @@ describe('UDPs SASQ View - Without results', () => {
   test('enter search string', async () => {
     const searchFieldInput = document.querySelector('#input-udp-search');
     expect(searchFieldInput).toBeInTheDocument();
-    userEvent.type(searchFieldInput, 'American');
+    await userEvent.type(searchFieldInput, 'American');
 
-    expect(document.querySelector('#clickable-search-udps')).not.toBeDisabled();
+    expect(document.querySelector('#clickable-search-udps')).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-    userEvent.click(screen.getByRole('button', { name: 'Search' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
     expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
     expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();

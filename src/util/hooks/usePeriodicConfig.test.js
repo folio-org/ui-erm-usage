@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import usePeriodicConfig from './usePeriodicConfig';
 import Intl from '../../../test/jest/__mock__/intl.mock';
