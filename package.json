@@ -5,9 +5,6 @@
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
   "license": "Apache-2.0",
-  "engines": {
-    "node": ">=6.0.0"
-  },
   "scripts": {
     "start": "stripes serve",
     "build": "stripes build --output ./output",
