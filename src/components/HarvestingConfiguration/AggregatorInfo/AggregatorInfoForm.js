@@ -32,7 +32,7 @@ class AggregatorInfoForm extends React.Component {
     const aggOptions = this.extractAggregatorSelectOptions(aggs);
 
     return (
-      <React.Fragment>
+      <>
         <Col xs={4}>
           <Field
             label={
@@ -67,7 +67,7 @@ class AggregatorInfoForm extends React.Component {
             fullWidth
           />
         </Col>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -462,7 +462,7 @@ class UDP extends React.Component {
           commands={this.shortcuts}
           scope={document.body}
         >
-          <React.Fragment>
+          <>
             <Pane
               id="pane-udpdetails"
               defaultWidth="40%"
@@ -557,7 +557,7 @@ class UDP extends React.Component {
               counterReports={counterReportsPerYear}
               udpLabel={label}
             />
-          </React.Fragment>
+          </>
         </HasCommand>
       );
     }

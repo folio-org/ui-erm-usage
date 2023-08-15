@@ -159,12 +159,12 @@ function DeleteStatistics({
     }
     const newReports = [];
     reports.forEach(r => {
-      const newReport = Object.assign({}, r);
+      const newReport = { ...r };
       const stats = r.stats;
       const newStats = [];
       // need to duplicate each line to display checkboxes
       stats.forEach((s) => {
-        newStats.push(Object.assign({}, s));
+        newStats.push({ ...s });
         const checkBoxes = {
           'report': createCheckBoxEntry(s, 'report'),
           '01': createCheckBoxEntry(s, '01'),

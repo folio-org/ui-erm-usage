@@ -21,7 +21,7 @@ class VendorInfoForm extends React.Component {
     const { disabled, harvesterImpls, intl } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Col xs={4}>
           <Field
             component={Select}
@@ -53,7 +53,7 @@ class VendorInfoForm extends React.Component {
             validate={!disabled && this.props.required ? requiredValidateUrl : notRequired}
           />
         </Col>
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -24,7 +24,7 @@ describe('AggregatorContactInfo', () => {
   test('should render AggregatorContactInfo', async () => {
     renderAggregatorContactInfo(stripes);
     await screen.findByRole('button');
-    userEvent.click(await screen.findByRole('button'));
+    await userEvent.click(await screen.findByRole('button'));
     expect(await screen.findByText('John Doe')).toBeVisible();
   });
 
@@ -39,9 +39,7 @@ describe('AggregatorContactInfo', () => {
     );
     renderAggregatorContactInfo(stripes);
     await screen.findByRole('button');
-    userEvent.click(await screen.findByRole('button'));
-    expect(
-      await screen.findByText(/Error retrieving aggregator info by id/i)
-    ).toBeVisible();
+    await userEvent.click(await screen.findByRole('button'));
+    expect(await screen.findByText(/Error retrieving aggregator info by id/i)).toBeVisible();
   });
 });

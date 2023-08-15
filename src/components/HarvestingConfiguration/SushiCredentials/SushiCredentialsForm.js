@@ -12,7 +12,7 @@ const SushiCredentialsForm = (props) => {
   const isDisableApiKey = values.harvestingConfig?.reportRelease === 4;
 
   return (
-    <React.Fragment>
+    <>
       <Row>
         <Col xs={4}>
           <Field
@@ -103,7 +103,7 @@ const SushiCredentialsForm = (props) => {
           />
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 };
 

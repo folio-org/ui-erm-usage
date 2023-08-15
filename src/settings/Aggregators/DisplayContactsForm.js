@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   FieldArray
 } from 'redux-form';
@@ -9,7 +9,7 @@ import formCss from '../../util/sharedStyles/form.css';
 class DisplayContactsForm extends React.Component {
   render() {
     return (
-      <Fragment>
+      <>
         <div className={formCss.label}>
           <FormattedMessage id="ui-erm-usage.aggregator.config.contacts" />
         </div>
@@ -20,7 +20,7 @@ class DisplayContactsForm extends React.Component {
           id="display_contacts"
           {...this.props}
         />
-      </Fragment>
+      </>
     );
   }
 }

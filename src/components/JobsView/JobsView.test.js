@@ -96,11 +96,9 @@ describe('JobView component', () => {
     ];
 
     renderJobView(jobsFixture);
-    const rowContent = screen.getAllByRole('row').map((row) =>
-      ['columnheader', 'gridcell'].flatMap((role) =>
-        within(row)
-          .queryAllByRole(role)
-          .map((e) => e.textContent)));
+    const rowContent = screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
+      .queryAllByRole(role)
+      .map((e) => e.textContent)));
     expect(rowContent).toEqual(expectedRowContent);
   });
 });

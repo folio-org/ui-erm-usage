@@ -84,14 +84,14 @@ const JobsFilter = (props) => {
       <Accordion
         displayClearButton={!!pathId}
         header={FilterAccordionHeader}
-        id={'filter-accordion-udp'}
-        label={<FormattedMessage id={'ui-erm-usage.usage-data-provider'} />}
+        id="filter-accordion-udp"
+        label={<FormattedMessage id="ui-erm-usage.usage-data-provider" />}
         onClearFilter={toggleUdp}
         separator={false}
       >
         <CheckboxFilter
           dataOptions={dataOptions}
-          name={'udp'}
+          name="udp"
           onChange={toggleUdp}
           selectedValues={pathId ? [pathId] : []}
         />

@@ -104,7 +104,7 @@ class ReportInfoButton extends React.Component {
     const style = this.getButtonStyle(report.failedAttempts);
 
     const confirmMessage = (
-      <React.Fragment>
+      <>
         <span>
           {intl.formatMessage({
             id: 'ui-erm-usage.statistics.delete',
@@ -119,7 +119,7 @@ class ReportInfoButton extends React.Component {
            ${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
            ${report.yearMonth}`}
         </span>
-      </React.Fragment>
+      </>
     );
 
     const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
@@ -139,7 +139,7 @@ class ReportInfoButton extends React.Component {
     );
 
     return (
-      <React.Fragment>
+      <>
         <Button
           bottomMargin0
           aria-label={label}
@@ -185,7 +185,7 @@ class ReportInfoButton extends React.Component {
             id: 'ui-erm-usage.general.no',
           })}
         />
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -34,11 +34,11 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
           }}
-          selectedRecordId={''}
+          selectedRecordId=""
           onNeedMoreData={jest.fn()}
           queryGetter={jest.fn()}
           querySetter={jest.fn()}
-          searchString={'status.active'}
+          searchString="status.active"
           visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={history}
           onSearchComplete={onSearchComplete}

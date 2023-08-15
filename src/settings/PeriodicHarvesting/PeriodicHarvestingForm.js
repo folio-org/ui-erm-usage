@@ -54,7 +54,7 @@ class PeriodicHarvestingForm extends React.Component {
     const lastTriggeredAt = formatDateTime(initialValues.lastTriggeredAt, locale, timeZone);
 
     return (
-      <React.Fragment>
+      <>
         <form id="form-periodic-harvesting" onSubmit={handleSubmit}>
           <Row>
             <Col xs={8}>
@@ -160,7 +160,7 @@ class PeriodicHarvestingForm extends React.Component {
             this.confirmDelete(false);
           }}
         />
-      </React.Fragment>
+      </>
     );
   }
 }
