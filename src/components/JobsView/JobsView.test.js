@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../test/jest/__mock__';
-import { screen, within } from '@testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';

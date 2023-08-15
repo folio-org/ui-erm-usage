@@ -1,6 +1,6 @@
 import { CalloutContext, StripesContext, useStripes } from '@folio/stripes/core';
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import PeriodicHarvestingManager from './PeriodicHarvestingManager';

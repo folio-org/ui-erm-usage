@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import _ from 'lodash';
 import renderWithIntl from '../../../test/jest/helpers';
 import PeriodicHarvestingView from './PeriodicHarvestingView';

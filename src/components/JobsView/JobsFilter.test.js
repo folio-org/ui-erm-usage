@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@folio/jest-config-stripes/testing-library/react';
 import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 

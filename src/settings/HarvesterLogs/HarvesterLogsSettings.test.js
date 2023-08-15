@@ -4,7 +4,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { StripesContext, useStripes } from '@folio/stripes/core';
-import { screen } from '@testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import HarvesterLogsSettings from './HarvesterLogsSettings';
 import { DAYS_TO_KEEP_LOGS } from '../../util/constants';
