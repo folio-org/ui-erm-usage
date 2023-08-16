@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "La fecha final debe ser mayor que la fecha inicial",
     "harvester.start": "Arrancar la cosechadora",
     "harvester.start.started": "Arranque de la cosechadora",
-    "harvester.start.fail.single.udp": "Algo ha ido mal al arrancar el recolector de datos de usuario.",
-    "harvester.start.inactiveInfo": "El recopilador sólo puede iniciarse para proveedores de datos de uso con el estado de recopilación \"activo\". Comprueba tu configuración de recopilación.",
     "settings.harvester": "Cosechadora",
     "settings.section.display.settings": "Configuración de la pantalla",
     "settings.section.number.failed": "Número de intentos fallidos",
-    "settings.harvester.start.success": "¡Cosechadora arrancada con éxito!",
-    "settings.harvester.start.fail": "Algo salió mal al arrancar la cosechadora...",
     "settings.harvester.start.tenant": "Inicie el harvest para el tenant actual:",
     "settings.harvester.config": "Configuración de la cosechadora",
     "settings.credentials.download": "Descargar credenciales",
@@ -314,5 +310,8 @@
     "general.error2": "Error",
     "settings.harvester.config.periodic.fetch.fail": "Recibido ''{status} - {statusText}'' mientras se buscaba la configuración de recolección periódica.",
     "settings.harvester.config.periodic.save.fail": "Recibido ''{status} - {statusText}'' al guardar la configuración de recolección periódica",
-    "settings.harvester.config.periodic.delete.fail": "Recibido ''{status} - {statusText}'' al borrar la configuración de recolección periódica"
+    "settings.harvester.config.periodic.delete.fail": "Recibido ''{status} - {statusText}'' al borrar la configuración de recolección periódica",
+    "harvester.start.success": "Un trabajo de recolección {provider, select, true {for ''{name}''} other {}} ha sido programado con éxito para su ejecución inmediata. Las tareas de recolección suelen tardar algún tiempo en completarse. Puede supervisar el progreso consultando la página {link}.",
+    "harvester.start.failed": "La cosecha no arranca",
+    "harvester.start.failure": "Error al programar un trabajo de recolección{provider, select, true { para ''{name}''} otro {}}."
 }
