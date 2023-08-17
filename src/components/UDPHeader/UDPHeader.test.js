@@ -1,6 +1,6 @@
 import React from 'react';
 import { StripesContext, useStripes } from '@folio/stripes/core';
-import { screen } from '@testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import UDPHeader from './UDPHeader';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 
@@ -19,9 +19,9 @@ describe('UDPHeader', () => {
 
   it('should display labels and no values', () => {
     renderUDPHeader(stripes);
-    expect(screen.queryByText('Latest statistics')).toBeInTheDocument();
-    expect(screen.queryByText('Harvesting status')).toBeInTheDocument();
-    expect(screen.queryByText('Last harvesting job finished at')).toBeInTheDocument();
+    expect(screen.getByText('Latest statistics')).toBeInTheDocument();
+    expect(screen.getByText('Harvesting status')).toBeInTheDocument();
+    expect(screen.getByText('Last harvesting job finished at')).toBeInTheDocument();
     expect(screen.queryAllByText('-')).toHaveLength(3);
   });
 
@@ -34,11 +34,11 @@ describe('UDPHeader', () => {
       },
       { finishedAt: '2022-12-09T21:52:05.933+00:00' }
     );
-    expect(screen.queryByText('Latest statistics')).toBeInTheDocument();
-    expect(screen.queryByText('Harvesting status')).toBeInTheDocument();
-    expect(screen.queryByText('Last harvesting job finished at')).toBeInTheDocument();
-    expect(screen.queryByText('2022-11')).toBeInTheDocument();
-    expect(screen.queryByText('Active')).toBeInTheDocument();
-    expect(screen.queryByText('12/9/2022, 9:52:05 PM')).toBeInTheDocument();
+    expect(screen.getByText('Latest statistics')).toBeInTheDocument();
+    expect(screen.getByText('Harvesting status')).toBeInTheDocument();
+    expect(screen.getByText('Last harvesting job finished at')).toBeInTheDocument();
+    expect(screen.getByText('2022-11')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('12/9/2022, 9:52:05 PM')).toBeInTheDocument();
   });
 });

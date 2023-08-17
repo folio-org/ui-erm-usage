@@ -142,7 +142,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
 
   const reportAccordions = createReportOverviewPerYear();
   return (
-    <React.Fragment>
+    <>
       <Row>
         <Col xs={8}>
           { infoText }
@@ -165,7 +165,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
         </Col>
       </Row>
       <AccordionSet>{reportAccordions}</AccordionSet>
-    </React.Fragment>
+    </>
   );
 }
 

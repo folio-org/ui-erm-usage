@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { Accordion } from '@folio/stripes/components';
 import '../../../test/jest/__mock__';
@@ -65,10 +65,8 @@ describe('CustomStatistics', () => {
   describe('displays file info', () => {
     beforeEach(async () => {
       renderCustomStatistics(stripes);
-      const expandAll = screen.getByRole('button', {
-        name: 'Expand all years',
-      });
-      userEvent.click(expandAll);
+      const expandAll = screen.getByRole('button', { name: 'Expand all years' });
+      await userEvent.click(expandAll);
 
       const reportButton = screen.getByRole('button', {
         name: 'Open report info for custom report 2020 foo.',
@@ -79,14 +77,10 @@ describe('CustomStatistics', () => {
     test('shows correct attributes and executes delete', async () => {
       expect(screen.getByText('American Chemical Society')).toBeVisible();
 
-      const downloadButton = screen.getByRole('button', {
-        name: 'Icon Download file.txt',
-      });
+      const downloadButton = screen.getByRole('button', { name: 'Icon Download file.txt' });
       expect(downloadButton).toBeInTheDocument();
 
-      const deleteButton = screen.getByRole('button', {
-        name: 'Icon Delete custom report',
-      });
+      const deleteButton = screen.getByRole('button', { name: 'Icon Delete custom report' });
       expect(deleteButton).toBeInTheDocument();
     });
   });
@@ -94,10 +88,8 @@ describe('CustomStatistics', () => {
   describe('displays link info', () => {
     beforeEach(async () => {
       renderCustomStatistics(stripes);
-      const expandAll = screen.getByRole('button', {
-        name: 'Expand all years',
-      });
-      userEvent.click(expandAll);
+      const expandAll = screen.getByRole('button', { name: 'Expand all years' });
+      await userEvent.click(expandAll);
 
       const reportButton = screen.getByRole('button', {
         name: 'Open report info for custom report 2020 link.',
@@ -109,9 +101,7 @@ describe('CustomStatistics', () => {
       expect(screen.getByText('American Chemical Society')).toBeVisible();
       expect(screen.getByText('http://www.a.de')).toBeVisible();
 
-      const deleteButton = screen.getByRole('button', {
-        name: 'Icon Delete custom report',
-      });
+      const deleteButton = screen.getByRole('button', { name: 'Icon Delete custom report' });
       expect(deleteButton).toBeInTheDocument();
     });
   });

@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import JobsViewResultCell from './JobsViewResultCell';
 
 const renderComponent = (errorMessage, text) => {
@@ -9,17 +9,17 @@ const renderComponent = (errorMessage, text) => {
 
 describe('JobsViewResultCell', () => {
   test('no error message, no InfoPopover', () => {
-    const { queryByText, queryByRole } = renderComponent('', 'Success');
-    expect(queryByText('Success')).toBeInTheDocument();
-    expect(queryByRole('button')).toBeNull();
+    renderComponent('', 'Success');
+    expect(screen.getByText('Success')).toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
-  test('error message, InfoPopover with error message', () => {
-    const { queryByText, queryByRole } = renderComponent('Error message', 'Failure');
-    expect(queryByText('Failure')).toBeInTheDocument();
-    const infoBtn = queryByRole('button');
+  test('error message, InfoPopover with error message', async () => {
+    renderComponent('Error message', 'Failure');
+    expect(screen.getByText('Failure')).toBeInTheDocument();
+    const infoBtn = screen.queryByRole('button');
     expect(infoBtn).toBeInTheDocument();
-    userEvent.click(infoBtn);
-    expect(queryByText('Error message')).toBeInTheDocument();
+    await userEvent.click(infoBtn);
+    expect(screen.getByText('Error message')).toBeInTheDocument();
   });
 });

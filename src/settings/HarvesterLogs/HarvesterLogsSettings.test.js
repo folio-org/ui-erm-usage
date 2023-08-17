@@ -4,6 +4,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { StripesContext, useStripes } from '@folio/stripes/core';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import HarvesterLogsSettings from './HarvesterLogsSettings';
 import { DAYS_TO_KEEP_LOGS } from '../../util/constants';
@@ -13,9 +14,10 @@ const store = createStore(combineReducers({ form: formReducer }));
 const renderHarvesterLogsSettings = (stripes, resources) => {
   if (resources) {
     stripes.connect =
-      (Component) => ({ ...props }) => {
-        return <Component {...props} mutator={{}} resources={resources} />;
-      };
+      (Component) =>
+        ({ ...props }) => {
+          return <Component {...props} mutator={{}} resources={resources} />;
+        };
   }
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
@@ -40,17 +42,16 @@ describe('Harvester logs settings component', () => {
     const resources = {
       settings: { records: [{ configs: [{ value: '5' }] }], hasLoaded: true },
     };
-    const { getByRole } = renderHarvesterLogsSettings(stripes, resources);
-    expect(getByRole('spinbutton').valueAsNumber).toBe(5);
+    renderHarvesterLogsSettings(stripes, resources);
+    expect(screen.getByRole('spinbutton').valueAsNumber).toBe(5);
   });
 
   it('should render with default value', () => {
-    const { getByRole } = renderHarvesterLogsSettings(stripes);
-    expect(getByRole('heading', { name: 'Harvester logs' })).toBeTruthy();
+    renderHarvesterLogsSettings(stripes);
+    expect(screen.getByRole('heading', { name: 'Harvester logs' })).toBeInTheDocument();
     expect(
-      getByRole('spinbutton', {
-        name: 'Number of days to keep harvesting logs',
-      }).valueAsNumber
+      screen.getByRole('spinbutton', { name: 'Number of days to keep harvesting logs' })
+        .valueAsNumber
     ).toBe(DAYS_TO_KEEP_LOGS);
   });
 });

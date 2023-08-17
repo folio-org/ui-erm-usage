@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { Form } from 'react-final-form';
 import { MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
@@ -57,46 +57,36 @@ describe('AggregatorForm', () => {
   });
 
   describe('test happy path with save', () => {
-    beforeEach(() => {
-      userEvent.type(
-        screen.getByLabelText('Name', { exact: false }),
-        'Agg Name'
-      );
-      userEvent.selectOptions(
-        screen.getByLabelText('Service type', { exact: false }),
-        ['NSS']
-      );
-      userEvent.type(
-        screen.getByLabelText('Service URL', { exact: false }),
-        'http://www.agg.com'
-      );
-      userEvent.selectOptions(screen.getByLabelText('Type*'), ['API']);
+    beforeEach(async () => {
+      await userEvent.type(screen.getByLabelText('Name', { exact: false }), 'Agg Name');
+      await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), ['NSS']);
+      await userEvent.type(screen.getByLabelText('Service URL', { exact: false }), 'http://www.agg.com');
+      await userEvent.selectOptions(screen.getByLabelText('Type*'), ['API']);
     });
 
-    test('Save & close is clicked', () => {
-      userEvent.click(screen.getByText('Save & close'));
+    test('Save & close is clicked', async () => {
+      await userEvent.click(screen.getByText('Save & close'));
       expect(onSubmit).toHaveBeenCalled();
     });
   });
 
   describe('test aggregator configuration', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       const addBtn = screen.getByRole('button', {
         name: 'Add config parameter',
       });
-      userEvent.click(addBtn);
+      await userEvent.click(addBtn);
     });
 
     test('can change config parameters', async () => {
       const keyField = screen.getByLabelText('Key');
-      userEvent.type(keyField, 'key');
+      await userEvent.type(keyField, 'key');
 
       const valueField = screen.getByLabelText('Value');
-      userEvent.type(valueField, 'val');
+      await userEvent.type(valueField, 'val');
+      expect(screen.getByText('Key')).toBeInTheDocument();
 
-      const trashBtn = screen.getByRole('button', {
-        name: 'Delete this item',
-      });
+      const trashBtn = screen.getByRole('button', { name: 'Delete this item' });
       await userEvent.click(trashBtn);
       expect(screen.queryByText('Key')).not.toBeInTheDocument();
     });
@@ -106,29 +96,22 @@ describe('AggregatorForm', () => {
 describe('Delete Aggregator', () => {
   let stripes;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     stripes = useStripes();
     renderAggregratorForm(stripes, aggregator);
 
-    const deleteBtn = screen.getByRole('button', {
-      name: 'Delete',
-    });
-    userEvent.click(deleteBtn);
+    const deleteBtn = screen.getByRole('button', { name: 'Delete' });
+    await userEvent.click(deleteBtn);
   });
 
   test('click cancel', async () => {
-    const cancelBtn = screen.getByRole('button', {
-      name: 'Cancel',
-      id: 'clickable-deleteaggregator-confirmation-cancel',
-    });
+    const cancelBtn = screen.getByRole('button', { name: 'Cancel' });
     await userEvent.click(cancelBtn);
-    await waitForElementToBeRemoved(() => screen.getByText('Delete aggregator'));
+    await waitForElementToBeRemoved(() => screen.queryByText('Delete aggregator'));
   });
 
   test('click submit', async () => {
-    const submitBtn = screen.getByRole('button', {
-      name: 'Submit',
-    });
+    const submitBtn = screen.getByRole('button', { name: 'Submit' });
     await userEvent.click(submitBtn);
     expect(onRemove).toHaveBeenCalled();
   });

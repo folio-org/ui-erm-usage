@@ -247,10 +247,10 @@ class ReportInfo extends React.Component {
     );
 
     return (
-      <React.Fragment>
+      <>
         {headerSection}
         {actionSection}
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -13,7 +13,7 @@ function AggregatorConfigForm({ fields, onAddField, onChange, onRemoveField }) {
   const intl = useIntl();
 
   return (
-    <React.Fragment>
+    <>
       <InfoPopover
         content={`${intl.formatMessage({
           id: 'ui-erm-usage.aggregator.config.popover',
@@ -52,7 +52,7 @@ function AggregatorConfigForm({ fields, onAddField, onChange, onRemoveField }) {
           </Row>
         )}
       />
-    </React.Fragment>
+    </>
   );
 }
 

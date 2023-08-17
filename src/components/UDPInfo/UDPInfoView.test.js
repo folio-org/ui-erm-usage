@@ -1,11 +1,12 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import renderWithIntl from '../../../test/jest/helpers';
 
 import UDPInfoView from './UDPInfoView';
 import udp from '../../../test/fixtures/udp';
 
-const renderUDPInfoView = (usageDataProvider = udp) => renderWithIntl(<UDPInfoView id="udpInfo" usageDataProvider={usageDataProvider} />);
+const renderUDPInfoView = (usageDataProvider = udp) =>
+  renderWithIntl(<UDPInfoView id="udpInfo" usageDataProvider={usageDataProvider} />);
 
 describe('UDPInfoView component', () => {
   it('should display description', () => {
@@ -16,9 +17,9 @@ describe('UDPInfoView component', () => {
   it('should display NoValue as description', () => {
     // eslint-disable-next-line no-unused-vars
     const { description, ...udpNoDesc } = udp;
-    const { container } = renderUDPInfoView(udpNoDesc);
+    renderUDPInfoView(udpNoDesc);
     const desc = screen.queryByText('This is a mock udp');
-    expect(desc).toBeNull();
-    expect(container.querySelector('[data-test-no-value]')).toBeInTheDocument();
+    expect(desc).not.toBeInTheDocument();
+    expect(document.querySelector('[data-test-no-value]')).toBeInTheDocument();
   });
 });

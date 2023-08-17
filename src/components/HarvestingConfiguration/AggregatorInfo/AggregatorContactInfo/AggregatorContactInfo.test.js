@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 
 import { server, rest } from '../../../../../test/jest/testServer';
@@ -24,7 +24,7 @@ describe('AggregatorContactInfo', () => {
   test('should render AggregatorContactInfo', async () => {
     renderAggregatorContactInfo(stripes);
     await screen.findByRole('button');
-    userEvent.click(await screen.findByRole('button'));
+    await userEvent.click(await screen.findByRole('button'));
     expect(await screen.findByText('John Doe')).toBeVisible();
   });
 
@@ -39,9 +39,7 @@ describe('AggregatorContactInfo', () => {
     );
     renderAggregatorContactInfo(stripes);
     await screen.findByRole('button');
-    userEvent.click(await screen.findByRole('button'));
-    expect(
-      await screen.findByText(/Error retrieving aggregator info by id/i)
-    ).toBeVisible();
+    await userEvent.click(await screen.findByRole('button'));
+    expect(await screen.findByText(/Error retrieving aggregator info by id/i)).toBeVisible();
   });
 });

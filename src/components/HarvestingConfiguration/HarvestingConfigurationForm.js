@@ -130,9 +130,7 @@ class HarvestingConfigurationForm extends React.Component {
                   />
                 </Col>
                 <Col xs={8} className={formCss.centerNote}>
-                  {
-                    <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
-                  }
+                  <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
                 </Col>
               </Row>
               <Row>

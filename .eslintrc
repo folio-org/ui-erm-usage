@@ -1,22 +1,12 @@
 {
-  "globals": {
-    "process": true
-  },
   "extends": "@folio/eslint-config-stripes",
   "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "legacyDecorators": true
-    }
-  },
   "plugins": [],
   "root": true,
   "env": {
     "jest": true
   },
   "rules": {
-    "react/jsx-curly-brace-presence": "off",
-    "react/jsx-fragments": "off",
-    "prefer-object-spread": "off"
+    "implicit-arrow-linebreak": "off"
   }
 }

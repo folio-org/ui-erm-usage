@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../test/jest/__mock__';
-import { screen, within } from '@testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
@@ -42,7 +42,7 @@ const renderJobView = (jobs) => renderWithIntl(
 describe('JobView component', () => {
   it('should display no results if no job data is provided', () => {
     renderJobView([]);
-    expect(screen.queryByText('The list contains no items')).toBeInTheDocument();
+    expect(screen.getByText('The list contains no items')).toBeInTheDocument();
   });
 
   it('should display properly formatted results if job data is provided', () => {
@@ -63,7 +63,7 @@ describe('JobView component', () => {
         '',
         '',
         'In progress',
-        ''
+        '',
       ],
       [
         'American Chemical Society',
@@ -96,9 +96,9 @@ describe('JobView component', () => {
     ];
 
     renderJobView(jobsFixture);
-    const rowContent = screen.getAllByRole('row').map((row) => within(row)
-      .queryAllByRole(/gridcell|button/)
-      .map((e) => e.textContent));
+    const rowContent = screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
+      .queryAllByRole(role)
+      .map((e) => e.textContent)));
     expect(rowContent).toEqual(expectedRowContent);
   });
 });

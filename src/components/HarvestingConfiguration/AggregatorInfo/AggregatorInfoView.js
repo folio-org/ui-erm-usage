@@ -23,18 +23,18 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
       {aggregatorName}
     </Link> :
-    <React.Fragment>
+    <>
       {aggregatorName}
-    </React.Fragment>;
+    </>;
   const aggregatorContact = (
     <AggregatorContactInfo aggregatorId={aggregatorId} stripes={stripes} />
   );
   const aggregatorLink = aggregatorId ?
     (
-      <React.Fragment>
+      <>
         {displayAggregationName}
         {aggregatorContact}
-      </React.Fragment>
+      </>
     ) : (
       <NoValue />
     );

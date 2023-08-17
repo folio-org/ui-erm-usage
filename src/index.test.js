@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { useStripes } from '@folio/stripes/core';
@@ -29,15 +29,13 @@ const editRouteProps = {
   },
   resources: {
     aggregators: {},
-    harvesterImpls: { },
-    usageDataProvider: {}
+    harvesterImpls: {},
+    usageDataProvider: {},
   },
 };
 
 const renderWithRouter = (component) => {
-  return act(() => {
-    renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
-  });
+  renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
 };
 
 let stripes;
@@ -59,11 +57,7 @@ describe('index', () => {
 
 describe('AppContextMenu', () => {
   it('should render AppContextMenu', () => {
-    renderWithIntl(
-      <MemoryRouter>
-        <ErmUsage match={match} />
-      </MemoryRouter>
-    );
+    renderWithRouter(<ErmUsage match={match} />);
     expect(screen.getByText('Keyboard shortcuts')).toBeInTheDocument();
     expect(document.querySelector('#keyboard-shortcuts-item')).toBeInTheDocument();
   });

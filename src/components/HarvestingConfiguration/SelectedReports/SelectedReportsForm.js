@@ -63,14 +63,14 @@ class SelectedReportsForm extends React.Component {
     );
 
     return (
-      <React.Fragment>
+      <>
         <div className={formCss.label}>
           <Label required={this.props.required}>
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />
           </Label>
         </div>
         <div className={css.reportListDropdownWrap}>{reportsSelect}</div>
-      </React.Fragment>
+      </>
     );
   }
 }

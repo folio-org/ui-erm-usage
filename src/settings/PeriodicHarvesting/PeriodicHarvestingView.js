@@ -24,7 +24,7 @@ class PeriodicHarvestingView extends React.Component {
     const { date, time } = splitDateTime(periodicConfig.startAt, locale, timeZone);
 
     return (
-      <React.Fragment>
+      <>
         <div id="periodic-harvesting-detail-view">
           <Row>
             <Col xs={8}>
@@ -59,7 +59,7 @@ class PeriodicHarvestingView extends React.Component {
             </Col>
           </Row>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 

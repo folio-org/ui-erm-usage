@@ -60,7 +60,7 @@ class CounterStatistics extends React.Component {
     const { infoText, showMultiMonthDownload } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
             <hr />
@@ -96,7 +96,7 @@ class CounterStatistics extends React.Component {
             </Col>
           </Row>
         )}
-      </React.Fragment>
+      </>
     );
   }
 }

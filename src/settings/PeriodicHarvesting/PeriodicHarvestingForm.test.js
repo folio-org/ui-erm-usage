@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers';
@@ -39,63 +39,56 @@ describe('PeriodicHarvestingForm', () => {
     stripes = useStripes();
   });
 
-  test('test empty inital values', () => {
-    const { getAllByRole, getByRole, getByText, queryAllByText } =
-      renderPeriodicHarvestingForm(stripes);
+  test('test empty inital values', async () => {
+    renderPeriodicHarvestingForm(stripes);
 
-    getAllByRole('textbox').forEach((i) => expect(i.value).toBe(''));
-    expect(getByRole('combobox').value).toBe(
+    screen.getAllByRole('textbox').forEach((i) => expect(i.value).toBe(''));
+    expect(screen.getByRole('combobox').value).toBe(
       periodicHarvestingIntervals[0].value
     );
-    expect(getByText('--')).toBeInTheDocument();
-    expect(getByRole('button', { name: 'Delete' })).toBeDisabled();
+    expect(screen.getByText('--')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeDisabled();
 
-    userEvent.click(getByText('Save'));
-    expect(queryAllByText('Required')).toHaveLength(2);
+    await userEvent.click(screen.getByText('Save'));
+    expect(screen.queryAllByText('Required')).toHaveLength(2);
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
-  test('test non-empty inital values', () => {
-    const {
-      getAllByRole,
-      getByDisplayValue,
-      getByRole,
-      getByText,
-      queryAllByText,
-    } = renderPeriodicHarvestingForm(stripes, stubInitialValues);
+  test('test non-empty inital values', async () => {
+    renderPeriodicHarvestingForm(stripes, stubInitialValues);
 
-    expect(getAllByRole('textbox').map((i) => i.value)).toEqual([
+    expect(screen.getAllByRole('textbox').map((i) => i.value)).toEqual([
       '01/01/2021',
       '7:00 AM',
     ]);
-    expect(getByRole('combobox').value).toBe('weekly');
-    expect(getByDisplayValue('Weekly')).toBeInTheDocument();
-    expect(getByText('January 8, 2021 7:00 AM')).toBeInTheDocument();
-    expect(getByRole('button', { name: 'Delete' })).toBeEnabled();
+    expect(screen.getByRole('combobox').value).toBe('weekly');
+    expect(screen.getByDisplayValue('Weekly')).toBeInTheDocument();
+    expect(screen.getByText('January 8, 2021 7:00 AM')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeEnabled();
 
-    userEvent.click(getByText('Save'));
-    expect(queryAllByText('Required')).toHaveLength(0);
+    await userEvent.click(screen.getByText('Save'));
+    expect(screen.queryByText('Required')).not.toBeInTheDocument();
     expect(onSubmit).toHaveBeenCalled();
   });
 
-  test('test submit to be called', () => {
+  test('test submit to be called', async () => {
     renderPeriodicHarvestingForm(stripes);
-    userEvent.type(
+    await userEvent.type(
       screen.getByLabelText('Start date', { exact: false }),
       '01/01/2021'
     );
-    userEvent.type(screen.getByText('Start time', { exact: false }), '5:01 AM');
-    userEvent.selectOptions(
+    await userEvent.type(screen.getByText('Start time', { exact: false }), '5:01 AM');
+    await userEvent.selectOptions(
       screen.getByLabelText('Periodic interval', { exact: false }),
       ['weekly']
     );
-    userEvent.click(screen.getByText('Save'));
+    await userEvent.click(screen.getByText('Save'));
     expect(onSubmit).toHaveBeenCalled();
   });
 
   test('test cancel delete', async () => {
     renderPeriodicHarvestingForm(stripes, stubInitialValues);
-    userEvent.click(screen.getByText('Delete'));
+    await userEvent.click(screen.getByText('Delete'));
     expect(
       screen.getByText(
         'Do you really want to delete the periodic harvesting config?'
@@ -103,14 +96,14 @@ describe('PeriodicHarvestingForm', () => {
     ).toBeInTheDocument();
     const cancel = screen.getByText('Cancel');
     expect(cancel).toBeInTheDocument();
-    userEvent.click(cancel);
-    await waitForElementToBeRemoved(() => screen.getByText('Cancel'));
+    await userEvent.click(cancel);
+    await waitForElementToBeRemoved(() => screen.queryByText('Cancel'));
     expect(onDelete).not.toHaveBeenCalled();
   });
 
   test('test do delete', async () => {
     renderPeriodicHarvestingForm(stripes, stubInitialValues);
-    userEvent.click(screen.getByText('Delete'));
+    await userEvent.click(screen.getByText('Delete'));
     expect(
       screen.getByText(
         'Do you really want to delete the periodic harvesting config?'
@@ -118,8 +111,8 @@ describe('PeriodicHarvestingForm', () => {
     ).toBeInTheDocument();
     const submit = screen.getByText('Submit');
     expect(submit).toBeInTheDocument();
-    userEvent.click(submit);
-    await waitForElementToBeRemoved(() => screen.getByText('Submit'));
+    await userEvent.click(submit);
+    await waitForElementToBeRemoved(() => screen.queryByText('Submit'));
     expect(onDelete).toHaveBeenCalled();
   });
 });

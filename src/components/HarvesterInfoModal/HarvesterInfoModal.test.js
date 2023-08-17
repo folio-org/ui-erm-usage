@@ -1,4 +1,5 @@
 import { MemoryRouter } from 'react-router-dom';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import HarvesterInfoModal from './HarvesterInfoModal';
 
@@ -22,48 +23,54 @@ describe('HarvesterInfoModal', () => {
   });
 
   test('isSuccess==true, udpLabel', () => {
-    const { getByText, getByRole } = render({
+    render({
       open: true,
       isSuccess: true,
       udpLabel: 'Provider123',
     });
-    expect(getByText('Harvester started')).toBeInTheDocument();
-    expect(getByText(/^A harvesting job for 'Provider123' has been/)).toBeInTheDocument();
-    expect(getByText('Harvesting jobs')).toHaveAttribute('href', '/eusage/jobs?sort=-startedAt');
-    expect(getByRole('button', { name: 'OK' })).toBeInTheDocument();
+    expect(screen.getByText('Harvester started')).toBeInTheDocument();
+    expect(screen.getByText(/^A harvesting job for 'Provider123' has been/)).toBeInTheDocument();
+    expect(screen.getByText('Harvesting jobs')).toHaveAttribute(
+      'href',
+      '/eusage/jobs?sort=-startedAt'
+    );
+    expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
   });
 
   test('isSuccess==true, no udpLabel', () => {
-    const { getByText, getByRole } = render({
+    render({
       open: true,
       isSuccess: true,
     });
-    expect(getByText('Harvester started')).toBeInTheDocument();
-    expect(getByText(/^A harvesting job has been/)).toBeInTheDocument();
-    expect(getByText('Harvesting jobs')).toHaveAttribute('href', '/eusage/jobs?sort=-startedAt');
-    expect(getByRole('button', { name: 'OK' })).toBeInTheDocument();
+    expect(screen.getByText('Harvester started')).toBeInTheDocument();
+    expect(screen.getByText(/^A harvesting job has been/)).toBeInTheDocument();
+    expect(screen.getByText('Harvesting jobs')).toHaveAttribute(
+      'href',
+      '/eusage/jobs?sort=-startedAt'
+    );
+    expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
   });
 
   test('isSuccess==false, udpLabel', () => {
-    const { getByRole, queryByText } = render({
+    render({
       open: true,
       isSuccess: false,
       udpLabel: 'Provider123',
     });
-    expect(queryByText('Harvester failed to start')).toBeInTheDocument();
-    expect(queryByText(/^Failed to schedule .* for 'Provider123'/)).toBeInTheDocument();
-    expect(queryByText('Harvesting jobs')).toBeNull();
-    expect(getByRole('button', { name: 'OK' })).toBeInTheDocument();
+    expect(screen.getByText('Harvester failed to start')).toBeInTheDocument();
+    expect(screen.getByText(/^Failed to schedule .* for 'Provider123'/)).toBeInTheDocument();
+    expect(screen.queryByText('Harvesting jobs')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
   });
 
   test('isSuccess==false, no udpLabel', () => {
-    const { getByRole, queryByText } = render({
+    render({
       open: true,
       isSuccess: false,
     });
-    expect(queryByText('Harvester failed to start')).toBeInTheDocument();
-    expect(queryByText(/^Failed to schedule a harvesting job.$/)).toBeInTheDocument();
-    expect(queryByText('Harvesting jobs')).toBeNull();
-    expect(getByRole('button', { name: 'OK' })).toBeInTheDocument();
+    expect(screen.getByText('Harvester failed to start')).toBeInTheDocument();
+    expect(screen.getByText(/^Failed to schedule a harvesting job.$/)).toBeInTheDocument();
+    expect(screen.queryByText('Harvesting jobs')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
   });
 });
