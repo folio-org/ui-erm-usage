@@ -1,6 +1,9 @@
 # Change history for ui-erm-usage
 
-## 7.1.0 (IN PROGRESS)
+## 8.0.0 (IN PROGRESS)
+
+* Upgrade React to v18 ([UIEUS-337](https://issues.folio.org/browse/UIEUS-337))
+* Fix error handling when starting harvester ([UIEUS-336](https://issues.folio.org/browse/UIEUS-336))
 * Update 'Harvester started' message ([UIEUS-331](https://issues.folio.org/browse/UIEUS-331))
 * Fix error handling in PeriodicHarvestingManager ([UIEUS-333](https://issues.folio.org/browse/UIEUS-333))
 * Fix localization issues in periodic harvesting settings ([UIEUS-332](https://issues.folio.org/browse/UIEUS-332))
