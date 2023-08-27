@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "Data końcowa musi być większa niż data początkowa",
     "harvester.start": "Uruchom pobieranie danych",
     "harvester.start.started": "Wystartowało pobieranie danych",
-    "harvester.start.fail.single.udp": "Coś poszło nie tak podczas uruchamiania pobierania danych dla dostawcy danych o użyciu",
-    "harvester.start.inactiveInfo": "Pobieranie danych może być uruchomione tylko dla dostawców danych o użyciu z aktywnym statusem pobierania danych. Proszę sprawdzić konfigurację pobierania danych.",
     "settings.harvester": "Pobieranie danych",
     "settings.section.display.settings": "Ustawienia wyświetlania",
     "settings.section.number.failed": "Liczba nieudanych prób",
-    "settings.harvester.start.success": "Pobieranie danych pomyślnie uruchomiony!",
-    "settings.harvester.start.fail": "Coś poszło nie tak podczas uruchamiania pobierania danych ...",
     "settings.harvester.start.tenant": "Uruchom pobieranie danych dla bieżącego dzierżawcy:",
     "settings.harvester.config": "Konfiguracja pobierania danych",
     "settings.credentials.download": "Pobierz poświadczenia",
@@ -314,5 +310,8 @@
     "general.error2": "Error",
     "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
     "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
+    "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
+    "harvester.start.failed": "Harvester failed to start",
+    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}."
 }
