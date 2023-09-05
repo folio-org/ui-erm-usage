@@ -3,8 +3,8 @@ import {
   Accordion,
   AccordionSet,
   FilterAccordionHeader,
-} from '@folio/stripes-components';
-import { CheckboxFilter } from '@folio/stripes-smart-components';
+} from '@folio/stripes/components';
+import { CheckboxFilter } from '@folio/stripes/smart-components';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useLocation } from 'react-router';
 

@@ -2,6 +2,7 @@
 
 ## 8.0.0 (IN PROGRESS)
 
+* Prefer @folio/stripes exports to private paths when importing components ([UIEUS-340](https://issues.folio.org/browse/UIEUS-340))
 * Upgrade React to v18 ([UIEUS-337](https://issues.folio.org/browse/UIEUS-337))
 * Fix error handling when starting harvester ([UIEUS-336](https://issues.folio.org/browse/UIEUS-336))
 * Update 'Harvester started' message ([UIEUS-331](https://issues.folio.org/browse/UIEUS-331))

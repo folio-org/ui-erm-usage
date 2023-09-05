@@ -1,4 +1,4 @@
-import { useStripes } from '@folio/stripes-core';
+import { useStripes } from '@folio/stripes/core';
 import { useIntl } from 'react-intl';
 import fetchWithDefaultOptions from '../fetchWithDefaultOptions';
 
