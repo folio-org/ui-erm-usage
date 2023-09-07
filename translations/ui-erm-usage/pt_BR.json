@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "A data de término deve ser posterior à data de início",
     "harvester.start": "Iniciar harvester",
     "harvester.start.started": "Harvester iniciado",
-    "harvester.start.fail.single.udp": "Algo deu errado ao iniciar o harvester para o provedor de dados de uso",
-    "harvester.start.inactiveInfo": "O harvester só pode ser iniciado para provedores de dados de uso com status de harvesting 'ativo'. Verifique sua configuração de harvesting.",
     "settings.harvester": "Harvester",
     "settings.section.display.settings": "Configurações de exibição",
     "settings.section.number.failed": "Número de tentativas fracassadas",
-    "settings.harvester.start.success": "Um trabalho de coleta {provider, select, true {para ''{name}'' } other {}} foi agendado com sucesso para execução imediata. Os trabalhos de coleta geralmente levam algum tempo para serem concluídos. Você pode monitorar o progresso verificando a página {link} .",
-    "settings.harvester.start.fail": "Algo deu errado ao iniciar o harvester ...",
     "settings.harvester.start.tenant": "Iniciar o harvesting para o inquilino atual:",
     "settings.harvester.config": "Configuração do harvester",
     "settings.credentials.download": "Credenciais de download",
@@ -314,5 +310,8 @@
     "general.error2": "Erro",
     "settings.harvester.config.periodic.fetch.fail": "Recebido ''{status} - {statusText}'' ao buscar configuração de coleta periódica",
     "settings.harvester.config.periodic.save.fail": "Recebido ''{status} - {statusText}'' ao salvar a configuração de coleta periódica",
-    "settings.harvester.config.periodic.delete.fail": "Recebido ''{status} - {statusText}'' ao excluir a configuração de coleta periódica"
+    "settings.harvester.config.periodic.delete.fail": "Recebido ''{status} - {statusText}'' ao excluir a configuração de coleta periódica",
+    "harvester.start.success": "Um trabalho de coleta {provider, select, true {para ''{name}'' } other {}} foi agendado com sucesso para execução imediata. Os trabalhos de coleta geralmente levam algum tempo para serem concluídos. Você pode monitorar o progresso verificando a página {link}.",
+    "harvester.start.failed": "A coleta falhou ao iniciar",
+    "harvester.start.failure": "Falha ao agendar um trabalho de coleta {provider, select, true {para '' {name} '' } other {}} ."
 }
