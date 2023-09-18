@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "Datum ukončení musí být větší než datum zahájení",
     "harvester.start": "Spuštění harvestoru",
     "harvester.start.started": "Harvestor spuštěn",
-    "harvester.start.fail.single.udp": "Při spouštění harvestoru pro poskytovatele dat o využití se něco pokazilo",
-    "harvester.start.inactiveInfo": "Harvestor lze spustit pouze pro poskytovatele údajů o využití se stavem harvestoru \"aktivní\". Zkontrolujte prosím konfiguraci harvestoru.",
     "settings.harvester": "Harvestor",
     "settings.section.display.settings": "Nastavení obrazovky",
     "settings.section.number.failed": "Počet neúspěšných pokusů",
-    "settings.harvester.start.success": "Úloha harvestu {provider, select, true {pro ''{name}''} other {}} byla úspěšně naplánována pro okamžité provedení. Úlohy harvestu obvykle trvají nějaký čas k dokončení. Pokrok můžete sledovat na stránce {link}.",
-    "settings.harvester.start.fail": "Při startu harvestoru se něco pokazilo...",
     "settings.harvester.start.tenant": "Spusťte harvestor pro aktuálního nájemce:",
     "settings.harvester.config": "Konfigurace harvestoru",
     "settings.credentials.download": "Stáhnout přihlašovací údaje",
@@ -314,5 +310,8 @@
     "general.error2": "Chyba",
     "settings.harvester.config.periodic.fetch.fail": "Přijato ''{status} - {statusText}'' při načítání konfigurace periodického harvestu",
     "settings.harvester.config.periodic.save.fail": "Přijato ''{status} - {statusText}'' při ukládání konfigurace periodického harvestu",
-    "settings.harvester.config.periodic.delete.fail": "Přijato ''{status} - {statusText}'' při mazání konfigurace periodického harvestu"
+    "settings.harvester.config.periodic.delete.fail": "Přijato ''{status} - {statusText}'' při mazání konfigurace periodického harvestu",
+    "harvester.start.success": "Úloha harvestu {provider, select, true {pro ''{name}''} other {}} byla úspěšně naplánována na okamžité provedení. Úlohy harvestu obvykle trvají nějaký čas. Průběh můžete sledovat na stránce {link}.",
+    "harvester.start.failed": "Harvestor se nepodařilo spustit",
+    "harvester.start.failure": "Nepodařilo se naplánovat úlohu harvestu{provider, select, true { pro ''{name}''} other {}}."
 }
