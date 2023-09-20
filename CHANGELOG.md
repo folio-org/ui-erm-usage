@@ -16,6 +16,7 @@
 * Fix test warnings 'No metadata' ([UIEUS-320](https://issues.folio.org/browse/UIEUS-320))
 * Leverage cookie-based authentication in all API requests. Refs UIEUS-314.
 * *BREAKING* bump `react-intl` to `v6.4.4`. Refs ([UIEUS-342](https://issues.folio.org/browse/UIEUS-342)).
+* Bump `react-dropzone` to `v10.2.2`. Refs ([UIEUS-343](https://issues.folio.org/browse/UIEUS-343)).
 
 ## [7.0.0](https://github.com/folio-org/ui-erm-usage/tree/v7.0.0) (2023-02-20)
 * Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318))
