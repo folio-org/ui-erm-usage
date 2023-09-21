@@ -1,7 +1,6 @@
 # Change history for ui-erm-usage
 
 ## 8.0.0 (IN PROGRESS)
-
 * Prefer @folio/stripes exports to private paths when importing components ([UIEUS-340](https://issues.folio.org/browse/UIEUS-340))
 * Upgrade React to v18 ([UIEUS-337](https://issues.folio.org/browse/UIEUS-337))
 * Fix error handling when starting harvester ([UIEUS-336](https://issues.folio.org/browse/UIEUS-336))
@@ -17,6 +16,7 @@
 * Leverage cookie-based authentication in all API requests. Refs UIEUS-314.
 * *BREAKING* bump `react-intl` to `v6.4.4`. Refs ([UIEUS-342](https://issues.folio.org/browse/UIEUS-342)).
 * Bump `react-dropzone` to `v10.2.2`. Refs ([UIEUS-343](https://issues.folio.org/browse/UIEUS-343)).
+* Fix file open dialog showing twice ([UIEUS-344](https://issues.folio.org/browse/UIEUS-344))
 
 ## [7.0.0](https://github.com/folio-org/ui-erm-usage/tree/v7.0.0) (2023-02-20)
 * Upgrade `react-redux` to v8 ([UIEUS-318](https://issues.folio.org/browse/UIEUS-318))
