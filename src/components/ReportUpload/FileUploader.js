@@ -32,9 +32,9 @@ class FileUploader extends React.Component {
     const style = { ...baseStyle };
     return (
       <div id="upload-file-zone">
-        <Dropzone onDrop={this.onDrop} multiple={false}>
+        <Dropzone noClick onDrop={this.onDrop} multiple={false}>
           {({ getRootProps, getInputProps, open }) => (
-            <div {...getRootProps({ onClick: (evt) => evt.preventDefault() })}>
+            <div {...getRootProps()}>
               <div style={style}>
                 <input {...getInputProps()} data-testid="fileInput" />
                 <FormattedMessage
