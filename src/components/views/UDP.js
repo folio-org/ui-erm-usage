@@ -310,27 +310,6 @@ class UDP extends React.Component {
             </Button>
           </div>
         </IfPermission>
-        <CounterUpload
-          open={this.state.showCounterUpload}
-          onClose={() => this.setState({ showCounterUpload: false })}
-          onFail={this.handleFail}
-          onSuccess={this.handleSuccess}
-          stripes={this.props.stripes}
-          udpId={providerId}
-        />
-        <NonCounterUpload
-          open={this.state.showNonCounterUpload}
-          onClose={() => this.setState({ showNonCounterUpload: false })}
-          onFail={this.handleFail}
-          onSuccess={this.handleSuccess}
-          stripes={this.props.stripes}
-          udpId={providerId}
-        />
-        <Callout
-          ref={(ref) => {
-            callout = ref;
-          }}
-        />
         {canEdit && (
           <div>
             <Button
@@ -556,6 +535,27 @@ class UDP extends React.Component {
               stripes={stripes}
               counterReports={counterReportsPerYear}
               udpLabel={label}
+            />
+            <CounterUpload
+              open={this.state.showCounterUpload}
+              onClose={() => this.setState({ showCounterUpload: false })}
+              onFail={this.handleFail}
+              onSuccess={this.handleSuccess}
+              stripes={this.props.stripes}
+              udpId={providerId}
+            />
+            <NonCounterUpload
+              open={this.state.showNonCounterUpload}
+              onClose={() => this.setState({ showNonCounterUpload: false })}
+              onFail={this.handleFail}
+              onSuccess={this.handleSuccess}
+              stripes={this.props.stripes}
+              udpId={providerId}
+            />
+            <Callout
+              ref={(ref) => {
+                callout = ref;
+              }}
             />
           </>
         </HasCommand>
