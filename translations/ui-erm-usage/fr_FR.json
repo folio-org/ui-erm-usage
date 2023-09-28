@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "La date de fin doit être postérieure à la date de début",
     "harvester.start": "Démarrer le moissonnage",
     "harvester.start.started": "Le moissonnage a commencé",
-    "harvester.start.fail.single.udp": "Une erreur s'est produite lors du démarrage du moissonnage pour le fournisseur de données d'utilisation",
-    "harvester.start.inactiveInfo": "The harvester can only be started for usage data providers with harvesting status 'active'. Please check your harvesting configuration.",
     "settings.harvester": "Outil de moissonnage",
     "settings.section.display.settings": "Paramètres d'affichage",
     "settings.section.number.failed": "Nombre de tentatives infructueuses",
-    "settings.harvester.start.success": "Le moissonnage a démarré avec succès !",
-    "settings.harvester.start.fail": "Une erreur s'est produite lors du démarrage du moissonnage",
     "settings.harvester.start.tenant": "Démarrez la moissonneuse pour l'utilisateur actuel:",
     "settings.harvester.config": "Configuration du moissonnage",
     "settings.credentials.download": "Télécharger les identifiants",
@@ -314,5 +310,8 @@
     "general.error2": "Error",
     "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
     "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
+    "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
+    "harvester.start.failed": "Harvester failed to start",
+    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}."
 }

@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "La data di fine deve essere successiva alla data di inizio.",
     "harvester.start": "Start harvester",
     "harvester.start.started": "Harvester started",
-    "harvester.start.fail.single.udp": "Qualcosa è andato storto durante l'avvio dell'harvester per il fornitore di statistiche d'uso",
-    "harvester.start.inactiveInfo": "L'harvester può essere avviato solo per i fornitori di statistiche d'uso con lo stato di harvesting \"attivo\". Si prega di controllare la configurazione di harvesting.",
     "settings.harvester": "Harvester",
     "settings.section.display.settings": "Impostazioni di visualizzazione",
     "settings.section.number.failed": "Number of failed attempts",
-    "settings.harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
-    "settings.harvester.start.fail": "Something went wrong while starting the harvester...",
     "settings.harvester.start.tenant": "Start the harvester for the current tenant: ",
     "settings.harvester.config": "Harvester configuration",
     "settings.credentials.download": "Download credentials",
@@ -314,5 +310,8 @@
     "general.error2": "Error",
     "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
     "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
+    "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
+    "harvester.start.failed": "Harvester failed to start",
+    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}."
 }

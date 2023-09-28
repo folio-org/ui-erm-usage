@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "終止日期必須大於起始日期",
     "harvester.start": "啟動收割器",
     "harvester.start.started": "收割器已启动",
-    "harvester.start.fail.single.udp": "启动使用数据提供者的收割器时出了点问题",
-    "harvester.start.inactiveInfo": "收割器只能针对收割状态为“激活”的使用数据提供者启动。请检查收割配置。",
     "settings.harvester": "收割器",
     "settings.section.display.settings": "顯示設定",
     "settings.section.number.failed": "嘗試失敗的次數",
-    "settings.harvester.start.success": "收割器成功启动！",
-    "settings.harvester.start.fail": "啟動收割器時發生問題",
     "settings.harvester.start.tenant": "启动当前租户的收割器：",
     "settings.harvester.config": "收割器配置",
     "settings.credentials.download": "下载凭证",
@@ -314,5 +310,8 @@
     "general.error2": "Error",
     "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
     "settings.harvester.config.periodic.save.fail": "Received ''{status} - {statusText}'' while saving periodic harvesting configuration",
-    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration"
+    "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
+    "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
+    "harvester.start.failed": "Harvester failed to start",
+    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}."
 }
