@@ -164,13 +164,9 @@
     "errors.endDateMustBeGraterStartDate": "终止日期必须大于起始日期",
     "harvester.start": "启动收割器",
     "harvester.start.started": "收割器已启动",
-    "harvester.start.fail.single.udp": "启动使用数据提供者的收割器时出了点问题",
-    "harvester.start.inactiveInfo": "收割器只能针对收割状态为“激活”的使用数据提供者启动。请检查收割配置。",
     "settings.harvester": "收割器",
     "settings.section.display.settings": "显示设置",
     "settings.section.number.failed": "失败尝试次数",
-    "settings.harvester.start.success": "收割器成功启动！",
-    "settings.harvester.start.fail": "启动收割器时出了点问题…",
     "settings.harvester.start.tenant": "启动当前租户的收割器：",
     "settings.harvester.config": "收割器配置",
     "settings.credentials.download": "下载凭证",
@@ -314,5 +310,8 @@
     "general.error2": "错误",
     "settings.harvester.config.periodic.fetch.fail": "获取定期收割配置时收到“ {status} - {statusText} ”",
     "settings.harvester.config.periodic.save.fail": "保存定期收割配置时收到“ {status} - {statusText} ”",
-    "settings.harvester.config.periodic.delete.fail": "删除定期收割配置时收到“ {status} - {statusText} ”"
+    "settings.harvester.config.periodic.delete.fail": "删除定期收割配置时收到“ {status} - {statusText} ”",
+    "harvester.start.success": "收割任务{provider, select, true { 为 '' {name} '' } other {}}已成功安排立即执行。收割任务通常需要一些时间才能完成。您可以通过检查{link}页面来监控进度。",
+    "harvester.start.failed": "收割器无法启动",
+    "harvester.start.failure": "无法安排收割任务{provider, select, true { 为 '' {name} '' } other {}} 。"
 }
