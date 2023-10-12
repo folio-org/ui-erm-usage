@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 8.0.0 (IN PROGRESS)
+## 8.1.0 (IN PROGRESS)
+
+## [8.0.0](https://github.com/folio-org/ui-erm-usage/tree/v8.0.0) (2023-10-12)
 * Prefer @folio/stripes exports to private paths when importing components ([UIEUS-340](https://issues.folio.org/browse/UIEUS-340))
 * Upgrade React to v18 ([UIEUS-337](https://issues.folio.org/browse/UIEUS-337))
 * Fix error handling when starting harvester ([UIEUS-336](https://issues.folio.org/browse/UIEUS-336))
