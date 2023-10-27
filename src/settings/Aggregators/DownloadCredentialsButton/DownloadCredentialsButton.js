@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { stripesConnect, stripesShape } from '@folio/stripes/core';
+import { stripesConnect, stripesShape, CalloutContext } from '@folio/stripes/core';
 import {
   Button,
   Dropdown,
@@ -12,6 +12,7 @@ import {
 import { downloadCredentials } from '../../../util/downloadReport';
 
 const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
+  const callout = useContext(CalloutContext);
   const onClickDownloadCredentials = (format) => {
     downloadCredentials(
       aggregatorId,
@@ -19,7 +20,7 @@ const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
       stripes.okapi,
       { 'Content-Type': 'application/json' },
     ).catch((err) => {
-      console.log(err.message);
+      callout.sendCallout({ type: 'error', message: err.message });
     });
   };
 
