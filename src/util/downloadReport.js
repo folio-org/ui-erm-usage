@@ -1,4 +1,3 @@
-import { SubmissionError } from 'redux-form';
 import saveAs from 'file-saver';
 import fetchWithDefaultOptions from './fetchWithDefaultOptions';
 
@@ -17,11 +16,10 @@ const downloadCredentials = (aggregatorId, format, okapi, httpHeaders) => {
     }
   )
     .then((response) => {
-      if (response.status >= 400) {
-        throw new SubmissionError({
-          identifier: `Error ${response.status} retrieving credentials of aggregator`,
-          _error: 'Fetch credentials failed',
-        });
+      if (response.status !== 200) {
+        throw new Error(
+          `Received ${response.status} - ${response.statusText} while fetching credentials`
+        );
       } else {
         if (format === 'csv') {
           return response.text();
@@ -33,7 +31,7 @@ const downloadCredentials = (aggregatorId, format, okapi, httpHeaders) => {
       saveReport(aggregatorId, text, format);
     })
     .catch((err) => {
-      throw new Error('Error while downloading credentials. ' + err.message);
+      throw new Error('Error while downloading credentials: ' + err.message);
     });
 };
 
