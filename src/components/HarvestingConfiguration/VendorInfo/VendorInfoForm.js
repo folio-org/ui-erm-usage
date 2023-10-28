@@ -30,7 +30,7 @@ class VendorInfoForm extends React.Component {
             disabled={disabled}
             fullWidth
             id="addudp_servicetype"
-            key={!disabled && this.props.required ? 1 : 0}
+            data={!disabled && this.props.required ? 1 : 0}
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
             name="harvestingConfig.sushiConfig.serviceType"
             required={!disabled && this.props.required}
@@ -43,7 +43,7 @@ class VendorInfoForm extends React.Component {
             disabled={disabled}
             fullWidth
             id="addudp_serviceurl"
-            key={!disabled && this.props.required ? 1 : 0}
+            data={!disabled && this.props.required ? 1 : 0}
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="harvestingConfig.sushiConfig.serviceUrl"
             placeholder={intl.formatMessage({

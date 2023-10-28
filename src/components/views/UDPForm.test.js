@@ -1,8 +1,6 @@
 import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
@@ -71,33 +69,21 @@ const onDelete = jest.fn();
 const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
-const clearReports = jest.fn();
-const setReportRelease = jest.fn();
 
 const renderUDPForm = (stripes, udp = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
-        <Form
-          mutators={{
-            clearSelectedReports: clearReports,
-            setReportRelease,
-            ...arrayMutators,
+        <UDPForm
+          data={{
+            aggregators: stubAggregators,
+            harvesterImpls: stubHarvesterImpls,
           }}
-          onSubmit={jest.fn}
-          render={() => (
-            <UDPForm
-              data={{
-                aggregators: stubAggregators,
-                harvesterImpls: stubHarvesterImpls,
-              }}
-              handlers={{ onClose, onDelete }}
-              handleSubmit={handleSubmit}
-              initialValues={udp}
-              onSubmit={onSubmit}
-              store={stripes.store}
-            />
-          )}
+          handlers={{ onClose, onDelete }}
+          handleSubmit={handleSubmit}
+          initialValues={udp}
+          onSubmit={onSubmit}
+          store={stripes.store}
         />
       </MemoryRouter>
     </StripesContext.Provider>
