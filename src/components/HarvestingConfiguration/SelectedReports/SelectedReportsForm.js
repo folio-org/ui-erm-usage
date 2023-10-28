@@ -49,7 +49,7 @@ class SelectedReportsForm extends React.Component {
         name="harvestingConfig.requestedReports"
         required={this.props.required}
         validate={this.props.required ? requiredArray : notRequired}
-        key={this.props.required ? 1 : 0}
+        data={this.props.required ? 1 : 0}
       >
         {({ fields }) => (
           <SelectReportType

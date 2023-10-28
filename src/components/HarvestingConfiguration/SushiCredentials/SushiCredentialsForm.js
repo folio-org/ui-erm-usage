@@ -25,7 +25,7 @@ const SushiCredentialsForm = (props) => {
             component={TextField}
             required={!useAggregator && props.required}
             validate={!useAggregator && props.required ? required : notRequired}
-            key={!useAggregator && props.required ? 1 : 0}
+            data={!useAggregator && props.required ? 1 : 0}
             fullWidth
           />
         </Col>
