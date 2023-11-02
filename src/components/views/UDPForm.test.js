@@ -412,6 +412,27 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
     });
 
+    test('saving a named inactive provider', async () => {
+      const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
+      const providerNameTextbox = screen.getByRole('textbox', { name: 'Provider name' });
+      const saveAndCloseButton = screen.getByRole('button', { name: 'Save & close' });
+
+      // status = active && name set
+      await userEvent.selectOptions(harvestingStatusCombobox, ['active']);
+      await userEvent.type(providerNameTextbox, 'FooBar');
+      expect(harvestingStatusCombobox).toHaveValue('active');
+      expect(providerNameTextbox).toHaveValue('FooBar');
+      await userEvent.click(saveAndCloseButton);
+      expect(onSubmit).not.toHaveBeenCalled();
+
+      // status = inactive && name set
+      await userEvent.selectOptions(harvestingStatusCombobox, ['inactive']);
+      expect(harvestingStatusCombobox).toHaveValue('inactive');
+      expect(providerNameTextbox).toHaveValue('FooBar');
+      await userEvent.click(saveAndCloseButton);
+      expect(onSubmit).toHaveBeenCalled();
+    });
+
     describe('test required value of customerId field', () => {
       test('change harvest statistics via from sushi to aggregator', async () => {
         await userEvent.selectOptions(
@@ -450,7 +471,6 @@ describe('UDPForm', () => {
     const testSelectReportRelease = async (reportRelease) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      // const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
       const releaseSelectBox = screen.getByLabelText('Report release', { exact: false });
 
       expect(reqIdBox).toBeEnabled();

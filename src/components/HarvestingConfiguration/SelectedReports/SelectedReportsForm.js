@@ -9,7 +9,7 @@ import counterReports from './data/counterReports';
 import css from './SelectedReportsForm.css';
 
 import SelectReportType from './SelectReportType';
-import { notRequired, requiredArray } from '../../../util/validate';
+import { requiredArray } from '../../../util/validate';
 
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReports.getOptions(), [
@@ -48,8 +48,8 @@ class SelectedReportsForm extends React.Component {
       <FieldArray
         name="harvestingConfig.requestedReports"
         required={this.props.required}
-        validate={this.props.required ? requiredArray : notRequired}
-        data={this.props.required ? 1 : 0}
+        // dont know why, but this seems to work
+        validate={(value) => this.props.required && requiredArray(value)}
       >
         {({ fields }) => (
           <SelectReportType
