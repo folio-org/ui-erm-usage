@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { stripesConnect, stripesShape, CalloutContext } from '@folio/stripes/core';
+import { stripesConnect, CalloutContext } from '@folio/stripes/core';
 import {
   Button,
   Dropdown,
@@ -52,7 +52,9 @@ const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
 
 DownloadCredentialsButton.propTypes = {
   aggregatorId: PropTypes.string.isRequired,
-  stripes: stripesShape.isRequired,
+  stripes: PropTypes.shape({
+    okapi: PropTypes.object.isRequired,
+  }).isRequired,
 };
 
 export default stripesConnect(DownloadCredentialsButton);
