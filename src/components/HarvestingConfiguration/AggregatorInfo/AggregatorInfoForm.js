@@ -48,7 +48,7 @@ class AggregatorInfoForm extends React.Component {
             disabled={disabled}
             required={!disabled && this.props.required}
             validate={!disabled && this.props.required ? required : notRequired}
-            key={!disabled && this.props.required ? 1 : 0}
+            data={!disabled && this.props.required ? 1 : 0}
             fullWidth
           />
         </Col>

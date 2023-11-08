@@ -54,7 +54,7 @@ function SelectReportType(props) {
                   }
                   name={elem}
                   validate={props.required ? required : notRequired}
-                  key={props.required ? 1 : 0}
+                  data={props.required ? 1 : 0}
                 />
               </div>
             </Col>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
@@ -71,33 +69,21 @@ const onDelete = jest.fn();
 const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
-const clearReports = jest.fn();
-const setReportRelease = jest.fn();
 
 const renderUDPForm = (stripes, udp = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
-        <Form
-          mutators={{
-            clearSelectedReports: clearReports,
-            setReportRelease,
-            ...arrayMutators,
+        <UDPForm
+          data={{
+            aggregators: stubAggregators,
+            harvesterImpls: stubHarvesterImpls,
           }}
-          onSubmit={jest.fn}
-          render={() => (
-            <UDPForm
-              data={{
-                aggregators: stubAggregators,
-                harvesterImpls: stubHarvesterImpls,
-              }}
-              handlers={{ onClose, onDelete }}
-              handleSubmit={handleSubmit}
-              initialValues={udp}
-              onSubmit={onSubmit}
-              store={stripes.store}
-            />
-          )}
+          handlers={{ onClose, onDelete }}
+          handleSubmit={handleSubmit}
+          initialValues={udp}
+          onSubmit={onSubmit}
+          store={stripes.store}
         />
       </MemoryRouter>
     </StripesContext.Provider>
@@ -426,6 +412,27 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Requestor mail' })).not.toBeRequired();
     });
 
+    test('saving a named inactive provider', async () => {
+      const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
+      const providerNameTextbox = screen.getByRole('textbox', { name: 'Provider name' });
+      const saveAndCloseButton = screen.getByRole('button', { name: 'Save & close' });
+
+      // status = active && name set
+      await userEvent.selectOptions(harvestingStatusCombobox, ['active']);
+      await userEvent.type(providerNameTextbox, 'FooBar');
+      expect(harvestingStatusCombobox).toHaveValue('active');
+      expect(providerNameTextbox).toHaveValue('FooBar');
+      await userEvent.click(saveAndCloseButton);
+      expect(onSubmit).not.toHaveBeenCalled();
+
+      // status = inactive && name set
+      await userEvent.selectOptions(harvestingStatusCombobox, ['inactive']);
+      expect(harvestingStatusCombobox).toHaveValue('inactive');
+      expect(providerNameTextbox).toHaveValue('FooBar');
+      await userEvent.click(saveAndCloseButton);
+      expect(onSubmit).toHaveBeenCalled();
+    });
+
     describe('test required value of customerId field', () => {
       test('change harvest statistics via from sushi to aggregator', async () => {
         await userEvent.selectOptions(
@@ -464,7 +471,6 @@ describe('UDPForm', () => {
     const testSelectReportRelease = async (reportRelease) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      // const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
       const releaseSelectBox = screen.getByLabelText('Report release', { exact: false });
 
       expect(reqIdBox).toBeEnabled();

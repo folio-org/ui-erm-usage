@@ -17,7 +17,7 @@ const HarvestingStartField = (props) => {
       placeholder="YYYY-MM"
       validate={props.required ? composeValidators(required, yearMonth) : yearMonth}
       required={props.required}
-      key={props.required ? 1 : 0}
+      data={props.required ? 1 : 0}
       fullWidth
     />
   );

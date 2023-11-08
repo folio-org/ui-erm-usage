@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
 ## 8.1.0 (IN PROGRESS)
+* Address test warnings ([UIEUS-321](https://issues.folio.org/browse/UIEUS-321))
+* Fix this.log is not a function error in credentials download ([UIEUS-334](https://issues.folio.org/browse/UIEUS-334))
 
 ## [8.0.0](https://github.com/folio-org/ui-erm-usage/tree/v8.0.0) (2023-10-12)
 * Prefer @folio/stripes exports to private paths when importing components ([UIEUS-340](https://issues.folio.org/browse/UIEUS-340))

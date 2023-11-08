@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
+import { CalloutContext, StripesContext, useStripes } from '@folio/stripes/core';
 
 import AggregatorDetails from './AggregatorDetails';
 import renderWithIntl from '../../../test/jest/helpers';
@@ -18,24 +18,27 @@ const aggregators = [
 
 jest.mock('../../util/downloadReport');
 
-const renderAggregatorDetails = (stripes) => {
+const renderAggregatorDetails = (stripes, sendCallout) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
-      <AggregatorDetails
-        aggregators={aggregators}
-        initialValues={initialValues}
-        stripes={stripes}
-      />
+      <CalloutContext.Provider value={{ sendCallout }}>
+        <AggregatorDetails
+          aggregators={aggregators}
+          initialValues={initialValues}
+          stripes={stripes}
+        />
+      </CalloutContext.Provider>
     </StripesContext.Provider>
   );
 };
 
 describe('AggregatorDetails', () => {
   let stripes;
+  const sendCalloutMock = jest.fn();
 
   beforeEach(() => {
     stripes = useStripes();
-    renderAggregatorDetails(stripes);
+    renderAggregatorDetails(stripes, sendCalloutMock);
   });
 
   test('should render AggregatorDetails', () => {
@@ -61,6 +64,16 @@ describe('AggregatorDetails', () => {
       await userEvent.click(downloadXLSXButton);
 
       expect(downloadCredentials).toHaveBeenCalled();
+    });
+
+    test('error is displayed in callout', async () => {
+      const errMsg = 'Some error happened';
+      downloadCredentials.mockImplementation(() =>
+        Promise.reject(new Error(errMsg)));
+      const downloadCSVButton = screen.getByText('Download as CSV');
+      await userEvent.click(downloadCSVButton);
+
+      expect(sendCalloutMock).toHaveBeenCalledWith({ type: 'error', message: errMsg });
     });
   });
 });

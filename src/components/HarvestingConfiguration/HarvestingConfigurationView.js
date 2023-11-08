@@ -16,21 +16,13 @@ import reportReleaseOptions from '../../util/data/reportReleaseOptions';
 
 class HarvestingConfigurationView extends React.Component {
   static propTypes = {
-    intl: PropTypes.object,
     usageDataProvider: PropTypes.object.isRequired,
-    stripes: PropTypes.shape({
-      connect: PropTypes.func.isRequired,
-    }).isRequired,
+    stripes: PropTypes.object.isRequired,
     sushiCredsOpen: PropTypes.bool,
     onToggle: PropTypes.func,
     settings: PropTypes.arrayOf(PropTypes.object).isRequired,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   };
-
-  constructor(props) {
-    super(props);
-    this.timeZone = props.intl.timeZone;
-  }
 
   createProvider = (udp) => {
     const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
