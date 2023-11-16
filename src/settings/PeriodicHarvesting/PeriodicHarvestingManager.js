@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { CalloutContext, IfPermission } from '@folio/stripes/core';
-import { ConfirmationModal, IconButton, Pane, PaneMenu } from '@folio/stripes/components';
+import { ConfirmationModal, IconButton, Pane, PaneHeader, PaneMenu } from '@folio/stripes/components';
 import _ from 'lodash';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
@@ -96,6 +96,15 @@ const PeriodicHarvestingManager = () => {
     );
   };
 
+  const renderPeriodicHarvestingPaneHeader = () => {
+    return (
+      <PaneHeader
+        lastMenu={getLastMenu()}
+        paneTitle={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}
+      />
+    );
+  };
+
   const periodicHarvesting = isEditing ? (
     <PeriodicHarvestingForm
       initialValues={{ ...config, ...splitDateTime(config?.startAt, locale, timeZone) }}
@@ -111,8 +120,7 @@ const PeriodicHarvestingManager = () => {
       <Pane
         id="periodic-harvesting-pane"
         defaultWidth="fill"
-        lastMenu={getLastMenu()}
-        paneTitle={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' })}
+        renderHeader={renderPeriodicHarvestingPaneHeader}
       >
         {periodicHarvesting}
       </Pane>

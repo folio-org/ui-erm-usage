@@ -13,6 +13,7 @@ import {
   IconButton,
   Pane,
   PaneFooter,
+  PaneHeader,
   PaneMenu,
   Paneset,
   Row,
@@ -146,7 +147,7 @@ class UDPForm extends React.Component {
             <IconButton
               id="clickable-close-udp-form-x"
               onClick={onClose}
-              ariaLabel={ariaLabel}
+              aria-label={ariaLabel}
               icon="times"
             />
           )}
@@ -249,6 +250,14 @@ class UDPForm extends React.Component {
     );
   };
 
+  renderFormPaneHeader = () => (
+    <PaneHeader
+      firstMenu={this.renderFirstMenu()}
+      lastMenu={this.renderLastMenu()}
+      paneTitle={this.props.initialValues.id ? this.props.initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
+    />
+  );
+
   render() {
     const {
       initialValues,
@@ -257,14 +266,7 @@ class UDPForm extends React.Component {
     } = this.props;
     const { confirmDelete, sections } = this.state;
     const udp = initialValues || {};
-    const paneTitle = initialValues.id ? (
-      initialValues.label
-    ) : (
-      <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />
-    );
 
-    const firstMenu = this.renderFirstMenu();
-    const lastMenu = this.renderLastMenu();
     const footer = this.renderPaneFooter();
 
     return (
@@ -278,10 +280,8 @@ class UDPForm extends React.Component {
           <Paneset isRoot>
             <Pane
               defaultWidth="100%"
-              firstMenu={firstMenu}
               footer={footer}
-              lastMenu={lastMenu}
-              paneTitle={paneTitle}
+              renderHeader={this.renderFormPaneHeader}
             >
               <div className={css.UDPFormContent}>
                 <AccordionSet>
