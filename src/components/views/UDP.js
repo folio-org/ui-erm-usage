@@ -156,7 +156,7 @@ class UDP extends React.Component {
                   this.showHelperApp('tags');
                 }}
                 badgeCount={tags.length}
-                ariaLabel={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
+                aria-label={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
               />
             )}
           </FormattedMessage>
