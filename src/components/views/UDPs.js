@@ -18,6 +18,7 @@ import {
   HasCommand,
   Icon,
   NoValue,
+  PaneHeader,
   PaneMenu,
   Paneset,
   SearchField,
@@ -241,6 +242,33 @@ class UDPs extends React.Component {
     );
   }
 
+  renderFilterPaneHeader = () => {
+    return (
+      <PaneHeader
+        lastMenu={
+          <PaneMenu>
+            <CollapseFilterPaneButton onClick={this.toggleFilterPane} />
+          </PaneMenu>
+        }
+        paneTitle={<FormattedMessage id="stripes-smart-components.searchAndFilter" />}
+      />
+    );
+  };
+
+  renderResultsPaneHeader = (activeFilters, source) => {
+    return (
+      <PaneHeader
+        appIcon={<AppIcon app="erm-usage" />}
+        firstMenu={this.renderResultsFirstMenu(activeFilters)}
+        actionMenu={this.renderActionMenu}
+        id="pane-list-udps"
+        paneTitle={<FormattedMessage id="ui-erm-usage.usage-data-providers" />}
+        paneTitleRef={this.resultsPaneTitleRef}
+        paneSub={this.renderResultsPaneSubtitle(source)}
+      />
+    );
+  };
+
   render() {
     const {
       children,
@@ -291,16 +319,7 @@ class UDPs extends React.Component {
                   {this.state.filterPaneIsVisible && (
                     <Pane
                       defaultWidth="20%"
-                      lastMenu={
-                        <PaneMenu>
-                          <CollapseFilterPaneButton
-                            onClick={this.toggleFilterPane}
-                          />
-                        </PaneMenu>
-                      }
-                      paneTitle={
-                        <FormattedMessage id="stripes-smart-components.searchAndFilter" />
-                      }
+                      renderHeader={this.renderFilterPaneHeader}
                     >
                       <form
                         onSubmit={e => this.handleSubmitSearch(e, onSubmitSearch)}
@@ -352,17 +371,10 @@ class UDPs extends React.Component {
                     </Pane>
                   )}
                   <Pane
-                    appIcon={<AppIcon app="erm-usage" />}
                     defaultWidth="fill"
-                    firstMenu={this.renderResultsFirstMenu(activeFilters)}
-                    actionMenu={this.renderActionMenu}
                     padContent={false}
-                    paneTitle={
-                      <FormattedMessage id="ui-erm-usage.usage-data-providers" />
-                    }
-                    paneTitleRef={this.resultsPaneTitleRef}
-                    paneSub={this.renderResultsPaneSubtitle(source)}
                     id="pane-list-udps"
+                    renderHeader={() => this.renderResultsPaneHeader(activeFilters, source)}
                   >
                     <MultiColumnList
                       autosize

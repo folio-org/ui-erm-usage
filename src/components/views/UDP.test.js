@@ -94,6 +94,7 @@ describe('UDP', () => {
       expect(screen.getByText('Refresh statistics table')).toBeVisible();
       expect(screen.getByText('Upload COUNTER report')).toBeVisible();
       expect(screen.getByText('Upload non-COUNTER report')).toBeVisible();
+      expect(screen.getByText('Delete reports')).toBeVisible();
     });
 
     test('click upload counter report', async () => {
@@ -105,6 +106,12 @@ describe('UDP', () => {
     test('click upload non-counter report', async () => {
       await userEvent.click(screen.getByText('Upload non-COUNTER report'));
       const heading = screen.getByRole('heading', { name: 'Upload non-COUNTER report' });
+      expect(heading).toBeInTheDocument();
+    });
+
+    test('click delete reports', async () => {
+      await userEvent.click(screen.getByText('Delete reports'));
+      const heading = screen.getByRole('heading', { name: 'Delete multiple reports' });
       expect(heading).toBeInTheDocument();
     });
   });

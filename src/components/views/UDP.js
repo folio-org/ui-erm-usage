@@ -18,6 +18,7 @@ import {
   Icon,
   Layout,
   Pane,
+  PaneHeader,
   PaneHeaderIconButton,
   PaneMenu,
   Row,
@@ -155,7 +156,7 @@ class UDP extends React.Component {
                   this.showHelperApp('tags');
                 }}
                 badgeCount={tags.length}
-                ariaLabel={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
+                aria-label={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
               />
             )}
           </FormattedMessage>
@@ -354,14 +355,20 @@ class UDP extends React.Component {
     },
   ];
 
+  renderLoadingPaneHeader = () => (
+    <PaneHeader
+      dismissible
+      onClose={this.props.handlers.onClose}
+      paneTitle={<span data-test-collection-header-title>loading</span>}
+    />
+  );
+
   renderLoadingPane = () => {
     return (
       <Pane
         defaultWidth="40%"
-        dismissible
         id="pane-collectiondetails"
-        onClose={this.props.handlers.onClose}
-        paneTitle={<span data-test-collection-header-title>loading</span>}
+        renderHeader={() => this.renderLoadingPaneHeader()}
       >
         <Layout className="marginTop1">
           <Icon icon="spinner-ellipsis" width="10px" />
@@ -418,6 +425,16 @@ class UDP extends React.Component {
     }
   }
 
+  renderDetailPaneHeader = (usageDataProvider, label) => (
+    <PaneHeader
+      actionMenu={this.getActionMenu()}
+      dismissible
+      lastMenu={this.renderDetailMenu(usageDataProvider)}
+      onClose={this.props.handlers.onClose}
+      paneTitle={<span data-test-header-title>{label}</span>}
+    />
+  );
+
   render() {
     const { data, isLoading, isStatsLoading, handlers, stripes } = this.props;
 
@@ -425,8 +442,6 @@ class UDP extends React.Component {
 
     const usageDataProvider = get(data, 'usageDataProvider', {});
     if (isLoading) return this.renderLoadingPane();
-
-    const detailMenu = this.renderDetailMenu(usageDataProvider);
 
     const label = get(usageDataProvider, 'label', 'No LABEL');
     const providerId = get(usageDataProvider, 'id', '');
@@ -445,11 +460,7 @@ class UDP extends React.Component {
             <Pane
               id="pane-udpdetails"
               defaultWidth="40%"
-              paneTitle={<span data-test-header-title>{label}</span>}
-              actionMenu={this.getActionMenu()}
-              lastMenu={detailMenu}
-              dismissible
-              onClose={handlers.onClose}
+              renderHeader={() => this.renderDetailPaneHeader(usageDataProvider, label)}
             >
               <TitleManager record={label} stripes={stripes} />
               <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />

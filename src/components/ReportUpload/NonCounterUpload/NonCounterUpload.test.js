@@ -60,7 +60,7 @@ describe('NonCounterUpload', () => {
       const saveButton = screen.getByRole('button', { name: 'Save' });
       await waitFor(() => expect(saveButton).toBeEnabled());
       await userEvent.click(saveButton);
-      expect(onSuccess).toBeCalled();
+      expect(onSuccess).toHaveBeenCalled();
     });
 
     test('upload link', async () => {
@@ -83,7 +83,7 @@ describe('NonCounterUpload', () => {
       const saveButton = screen.getByRole('button', { name: 'Save' });
       await waitFor(() => expect(saveButton).toBeEnabled());
       await userEvent.click(saveButton);
-      expect(onSuccess).toBeCalled();
+      expect(onSuccess).toHaveBeenCalled();
     });
   });
 });

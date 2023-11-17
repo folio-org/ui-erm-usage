@@ -13,6 +13,7 @@ import {
   IconButton,
   Pane,
   PaneFooter,
+  PaneHeader,
   PaneMenu,
   Paneset,
   Row,
@@ -295,6 +296,14 @@ class AggregatorForm extends React.Component {
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
   }
 
+  renderFormPaneHeader = () => (
+    <PaneHeader
+      firstMenu={this.getFirstMenu()}
+      lastMenu={this.getLastMenu()}
+      paneTitle={this.renderPaneTitle()}
+    />
+  );
+
   render() {
     const {
       stripes,
@@ -331,10 +340,8 @@ class AggregatorForm extends React.Component {
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
-            firstMenu={this.getFirstMenu()}
             footer={this.getPaneFooter()}
-            lastMenu={this.getLastMenu()}
-            paneTitle={this.renderPaneTitle()}
+            renderHeader={this.renderFormPaneHeader}
           >
             <div className={css.AggregatorFormContent}>
               <AccordionSet id="aggregator-form-accordion-set">

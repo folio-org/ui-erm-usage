@@ -3,6 +3,7 @@ import {
   Button,
   MultiColumnList,
   Pane,
+  PaneHeader,
   PaneMenu,
   Paneset,
 } from '@folio/stripes/components';
@@ -122,6 +123,36 @@ const JobsView = ({ source, filterGroups }) => {
     return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
   };
 
+  const renderFilterPaneHeader = () => {
+    return (
+      <PaneHeader paneTitle={<FormattedMessage id="stripes-smart-components.searchAndFilter" />} />
+    );
+  };
+
+  const renderResultsPaneHeader = () => {
+    return (
+      <PaneHeader
+        dismissible
+        lastMenu={
+          <PaneMenu>
+            <Button
+              buttonStyle="primary"
+              marginBottom0
+              onClick={() => {
+                source.mutator.timestamp.replace(Date.now());
+              }}
+            >
+              {formatMessage({ id: 'ui-erm-usage.harvester.jobs.refresh' })}
+            </Button>
+          </PaneMenu>
+        }
+        onClose={() => history.push(fromPath)}
+        paneSub={renderResultsPaneSubtitle()}
+        paneTitle={<FormattedMessage id="ui-erm-usage.harvester.jobs.paneTitle" />}
+      />
+    );
+  };
+
   const sortParam = source.resources.query.sort || '';
   const sortDirection = sortParam.startsWith('-') ? 'descending' : 'ascending';
   const sortOrder = sortParam.replace(/^-/, '').replace(/,.*/, '');
@@ -139,9 +170,7 @@ const JobsView = ({ source, filterGroups }) => {
         <Paneset>
           <Pane
             defaultWidth="20%"
-            paneTitle={
-              <FormattedMessage id="stripes-smart-components.searchAndFilter" />
-            }
+            renderHeader={renderFilterPaneHeader}
           >
             <JobsFilter filterGroups={filterGroups} {...renderProps} />
           </Pane>
@@ -149,25 +178,7 @@ const JobsView = ({ source, filterGroups }) => {
           <Pane
             defaultWidth="fill"
             padContent={false}
-            paneTitle={formatMessage({
-              id: 'ui-erm-usage.harvester.jobs.paneTitle',
-            })}
-            paneSub={renderResultsPaneSubtitle()}
-            lastMenu={
-              <PaneMenu>
-                <Button
-                  buttonStyle="primary"
-                  marginBottom0
-                  onClick={() => {
-                    source.mutator.timestamp.replace(Date.now());
-                  }}
-                >
-                  {formatMessage({ id: 'ui-erm-usage.harvester.jobs.refresh' })}
-                </Button>
-              </PaneMenu>
-            }
-            dismissible
-            onClose={() => history.push(fromPath)}
+            renderHeader={renderResultsPaneHeader}
           >
             <MultiColumnList
               autoSize

@@ -81,6 +81,6 @@ describe('CounterUpload', () => {
     );
     const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
-    expect(onSuccess).toBeCalled();
+    expect(onSuccess).toHaveBeenCalled();
   });
 });

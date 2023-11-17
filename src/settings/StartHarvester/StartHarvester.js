@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Button, Pane } from '@folio/stripes/components';
+import { Button, Pane, PaneHeader } from '@folio/stripes/components';
 import { useOkapiKy } from '@folio/stripes/core';
 import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
 
@@ -29,12 +29,18 @@ const StartHarvester = () => {
     setModalState({ open: false });
   };
 
+  const renderStartHarvestingPaneHeader = () => {
+    return (
+      <PaneHeader paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />} />
+    );
+  };
+
   return (
     <Pane
       id="start-harvester-pane"
       defaultWidth="fill"
       fluidContentWidth
-      paneTitle={<FormattedMessage id="ui-erm-usage.harvester.start" />}
+      renderHeader={renderStartHarvestingPaneHeader}
     >
       <div>
         <FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" />
