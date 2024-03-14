@@ -185,7 +185,6 @@
   "report.error.3080": "Limit requested greater than maximum server limit",
 
   "udp.form.cancel": "Cancel",
-  "udp.form.saveAndClose": "Save & close",
   "udp.form.close": "Close new usage data provider Dialog",
   "udp.form.createUDP": "Create usage data provider",
   "udp.form.udpInfo.title": "Usage data provider information",
