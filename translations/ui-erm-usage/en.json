@@ -9,18 +9,6 @@
   "usage-data-providers": "Usage data providers",
   "usage-data-provider-pluralizable": "{count} {count, plural, one {usage-data-provider} other {usage-data-providers}}",
   "appMenu.keyboardShortcuts": "Keyboard shortcuts",
-  "shortcut.createRecord": "Create a new record",
-  "shortcut.editRecord": "Edit a record",
-  "shortcut.saveRecord": "Save a record",
-  "shortcut.expandCollapse": "Expand or collapse an accordion",
-  "shortcut.expandAll": "Expand all accordions",
-  "shortcut.collapseAll": "Collapse all accordions",
-  "shortcut.goToSearchFilter": "Go to Search & Filter pane",
-  "shortcut.closeModal": "Close a modal or pop-up",
-  "shortcut.copy": "Copy",
-  "shortcut.cut": "Cut",
-  "shortcut.paste": "Paste",
-  "shortcut.find": "Find",
 
   "meta.title": "eUsage",
 
@@ -185,7 +173,6 @@
   "report.error.3080": "Limit requested greater than maximum server limit",
 
   "udp.form.cancel": "Cancel",
-  "udp.form.saveAndClose": "Save & close",
   "udp.form.close": "Close new usage data provider Dialog",
   "udp.form.createUDP": "Create usage data provider",
   "udp.form.udpInfo.title": "Usage data provider information",
@@ -239,7 +226,6 @@
   "aggregator.config.popover": "For German National Statistic Server specify the keys:",
   "aggregator.config.addParam": "Add config parameter",
 
-  "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
   "aggregator.form.delete.confirm.title": "Delete aggregator",
   "aggregator.form.newAggregator": "New aggregator",

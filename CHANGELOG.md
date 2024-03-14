@@ -2,6 +2,7 @@
 
 ## 8.1.0 (IN PROGRESS)
 * Remove deprecated pane properties ([UIEUS-349](https://issues.folio.org/browse/UIEUS-349))
+* Use translation keys of stripes-components ([UIEUS-351](https://folio-org.atlassian.net/browse/UIEUS-351))
 
 ## [8.0.1](https://github.com/folio-org/ui-erm-usage/tree/v8.0.1) (2023-11-08)
 * Address test warnings ([UIEUS-321](https://issues.folio.org/browse/UIEUS-321))

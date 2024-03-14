@@ -213,7 +213,7 @@ class UDPForm extends React.Component {
         onClick={handleSubmit}
         disabled={disabled}
       >
-        <FormattedMessage id="ui-erm-usage.udp.form.saveAndClose" />
+        <FormattedMessage id="stripes-components.saveAndClose" />
       </Button>
     );
 
