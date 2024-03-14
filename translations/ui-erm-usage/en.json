@@ -226,7 +226,6 @@
   "aggregator.config.popover": "For German National Statistic Server specify the keys:",
   "aggregator.config.addParam": "Add config parameter",
 
-  "aggregator.form.saveAndClose": "Save and close",
   "aggregator.form.create": "Create aggregator",
   "aggregator.form.delete.confirm.title": "Delete aggregator",
   "aggregator.form.newAggregator": "New aggregator",
