@@ -4,32 +4,32 @@ import { FormattedMessage } from 'react-intl';
 const commands = [
   {
     name: 'new',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.createRecord" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.createRecord" />),
     shortcut: 'alt+n'
   },
   {
     name: 'edit',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.editRecord" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.editRecord" />),
     shortcut: 'mod+alt+e'
   },
   {
     name: 'save',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.saveRecord" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.saveRecord" />),
     shortcut: 'mod+s'
   },
   {
     name: 'expandAllSections',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.expandAll" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.expandAll" />),
     shortcut: 'mod+alt+b'
   },
   {
     name: 'collapseAllSections',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.collapseAll" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.collapseAll" />),
     shortcut: 'mod+alt+g'
   },
   {
     name: 'search',
-    label: (<FormattedMessage id="ui-erm-usage.shortcut.goToSearchFilter" />),
+    label: (<FormattedMessage id="stripes-component.shortcut.goToSearchFilter" />),
     shortcut: 'mod+alt+h'
   }
 ];
