@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 8.1.0 (IN PROGRESS)
+## 8.2.0 (IN PROGRESS)
+
+## 8.1.0 (2024-03-20)
 * Remove deprecated pane properties ([UIEUS-349](https://issues.folio.org/browse/UIEUS-349))
 * Use translation keys of stripes-components ([UIEUS-351](https://folio-org.atlassian.net/browse/UIEUS-351))
 
