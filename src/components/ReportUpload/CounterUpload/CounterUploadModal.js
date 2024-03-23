@@ -24,21 +24,9 @@ function CounterUploadModal({
   selectedFile,
   setSelectedFile,
 }) {
-  const getBase64 = (file, cb) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      cb(reader.result);
-    };
-  };
-
   const selectFile = (acceptedFiles, changeFormFn) => {
     const currentFile = acceptedFiles[0];
-
-    getBase64(currentFile, (result) => {
-      changeFormFn('contents.data', result);
-    });
-
+    changeFormFn('file', currentFile);
     setSelectedFile(currentFile);
   };
 
@@ -77,21 +65,13 @@ function CounterUploadModal({
   return (
     <Form
       onSubmit={onSubmit}
-      mutators={{
-        setData: (args, state, utils) => {
-          utils.changeValue(state, 'contents.data', () => args[1]);
-        },
-      }}
       validate={(values) => {
         const errors = {};
-        if (!values.contents) {
-          errors.contents = 'Required';
+        if (!values.file) {
+          errors.file = 'Required';
         }
-        if (values.reportMetadata) {
-          const md = values.reportMetadata;
-          if (md.reportEditedManually && !md.editReason) {
-            errors.reportMetadata = 'Required';
-          }
+        if (values.reportEditedManually && !values.editReason) {
+          errors.editReason = 'Required';
         }
         return errors;
       }}
@@ -111,12 +91,8 @@ function CounterUploadModal({
                 <Col xs={8}>
                   <Row>
                     <KeyValue
-                      label={
-                        <FormattedMessage id="ui-erm-usage.general.info" />
-                      }
-                      value={
-                        <FormattedMessage id="ui-erm-usage.report.upload.info" />
-                      }
+                      label={<FormattedMessage id="ui-erm-usage.general.info" />}
+                      value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
                     />
                   </Row>
                   <Row>
@@ -131,9 +107,7 @@ function CounterUploadModal({
                     <Col xs={12}>
                       <KeyValue
                         label="SELECTED FILE"
-                        value={
-                          _.isNil(selectedFile) ? 'Required' : selectedFile.name
-                        }
+                        value={_.isNil(selectedFile) ? 'Required' : selectedFile.name}
                       />
                     </Col>
                   </Row>
@@ -144,38 +118,24 @@ function CounterUploadModal({
                       component={Checkbox}
                       id="addcounterreport_reportEditedManually"
                       initialValue={false}
-                      label={
-                        <FormattedMessage id="ui-erm-usage.report.upload.editedManually" />
-                      }
-                      name="reportMetadata.reportEditedManually"
+                      label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
+                      name="reportEditedManually"
                       type="checkbox"
                     />
                   </Row>
                   <Row style={{ marginTop: '15px' }}>
                     <Field
                       component={TextField}
-                      disabled={
-                        !isReportEditedManually(
-                          form.getFieldState(
-                            'reportMetadata.reportEditedManually'
-                          )
-                        )
-                      }
+                      disabled={form.getFieldState('reportEditedManually')?.value === false}
                       fullWidth
                       initialValue=""
                       id="addcounterreport_editReason"
-                      label={
-                        <FormattedMessage id="ui-erm-usage.report.upload.editReason" />
-                      }
-                      name="reportMetadata.editReason"
+                      label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
+                      name="editReason"
                       placeholder={intl.formatMessage({
                         id: 'ui-erm-usage.report.upload.editReason.placeholder',
                       })}
-                      required={isReportEditedManually(
-                        form.getFieldState(
-                          'reportMetadata.reportEditedManually'
-                        )
-                      )}
+                      required={isReportEditedManually(form.getFieldState('reportEditedManually'))}
                     />
                   </Row>
                 </Col>
@@ -193,9 +153,6 @@ CounterUploadModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  mutators: PropTypes.shape({
-    setContent: PropTypes.func,
-  }),
   selectedFile: PropTypes.shape().isRequired,
   setSelectedFile: PropTypes.func.isRequired,
 };

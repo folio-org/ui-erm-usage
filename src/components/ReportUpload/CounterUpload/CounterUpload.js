@@ -29,19 +29,21 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
     });
   };
 
-  const doUpload = async (report, doOverwrite) => {
-    setValues(report);
-    const json = JSON.stringify(report);
-
+  const doUpload = async (formValues, doOverwrite) => {
+    setValues(formValues);
     setShowInfoModal(true);
     setInfoType(CounterUpload.upload);
+
+    const formData = new FormData();
+    formData.append('file', formValues.file);
+    formData.append('reportEditedManually', formValues.reportEditedManually);
+    formData.append('editReason', formValues.editReason);
     fetchWithDefaultOptions(
       okapi,
-      `/counter-reports/upload/provider/${udpId}?overwrite=${doOverwrite}`,
+      `/counter-reports/multipartupload/provider/${udpId}?overwrite=${doOverwrite}`,
       {
-        headers: { 'Content-Type': 'application/json' },
         method: 'POST',
-        body: json,
+        body: formData,
       }
     )
       .then((response) => {
@@ -65,8 +67,8 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
       });
   };
 
-  const uploadFile = (report) => {
-    return doUpload(report, false);
+  const uploadFile = (formValues) => {
+    return doUpload(formValues, false);
   };
 
   const uploadFileForceOverwrite = () => {

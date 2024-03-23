@@ -53,7 +53,7 @@ describe('CounterUpload', () => {
   test('upload counter report', async () => {
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/upload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
         (req, res, ctx) => {
           return res(ctx.status(500), ctx.body('Report already existing'));
         }
@@ -73,7 +73,7 @@ describe('CounterUpload', () => {
 
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/upload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
         (req, res, ctx) => {
           return res(ctx.text('success'));
         }
