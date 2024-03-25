@@ -1,38 +1,39 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import CounterUploadModal from './CounterUploadModal';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
-function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
-  const [selectedFile, setSelectedFile] = useState({});
+function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
   const [values, setValues] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [infoType, setInfoType] = useState('');
+  const intl = useIntl();
 
   const closeInfoModal = () => {
     setShowInfoModal(false);
     setInfoType('');
   };
 
-  const showErrorInfo = (response) => {
-    response.text().then((text) => {
-      if (text.includes('Report already existing')) {
-        setShowInfoModal(true);
-        setInfoType(CounterUpload.overwrite);
-      } else {
-        closeInfoModal();
-        onFail(text);
-      }
-    });
+  const openInfoModal = (type) => {
+    setShowInfoModal(true);
+    setInfoType(type);
   };
 
-  const doUpload = async (formValues, doOverwrite) => {
+  const showErrorInfo = (msg) => {
+    if (msg.includes('Report already existing')) {
+      openInfoModal(CounterUpload.overwrite);
+    } else {
+      closeInfoModal();
+      onFail(msg);
+    }
+  };
+
+  const doUpload = (formValues, doOverwrite) => {
     setValues(formValues);
-    setShowInfoModal(true);
-    setInfoType(CounterUpload.upload);
+    openInfoModal(CounterUpload.upload);
 
     const formData = new FormData();
     formData.append('file', formValues.file);
@@ -47,23 +48,18 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
       }
     )
       .then((response) => {
-        if (response.status >= 400) {
-          showErrorInfo(response);
-          return Promise.resolve(true);
+        if (!response.ok) {
+          return response.text().then((text) => {
+            throw new Error(text);
+          });
         } else {
-          setShowInfoModal(false);
-          setSelectedFile({});
-          onSuccess(
-            intl.formatMessage({
-              id: 'ui-erm-usage.report.upload.completed',
-            })
-          );
-          return Promise.resolve(true);
+          onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
+          closeInfoModal();
+          return response;
         }
       })
       .catch((err) => {
-        closeInfoModal();
-        onFail(err.message);
+        showErrorInfo(err.message);
       });
   };
 
@@ -75,7 +71,7 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
     return doUpload(values, true);
   };
 
-  const cancleUpload = () => {
+  const cancelUpload = () => {
     closeInfoModal();
   };
 
@@ -89,7 +85,7 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
           <Button id="overwriteYes" onClick={uploadFileForceOverwrite}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button id="overwriteNo" onClick={cancleUpload}>
+          <Button id="overwriteNo" onClick={cancelUpload}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
@@ -115,19 +111,12 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
 
   return (
     <>
-      <CounterUploadModal
-        open={open}
-        onClose={onClose}
-        onSubmit={uploadFile}
-        selectedFile={selectedFile}
-        setSelectedFile={setSelectedFile}
-      />
+      <CounterUploadModal open={open} onClose={onClose} onSubmit={uploadFile} />
       <Modal
         open={showInfoModal}
         label={intl.formatMessage({
           id: 'ui-erm-usage.report.upload.modal.label',
         })}
-        id="counterReportExists"
       >
         {showInfoModal && renderInfo()}
       </Modal>
@@ -143,12 +132,8 @@ CounterUpload.propTypes = {
   onFail: PropTypes.func,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  intl: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  mutators: PropTypes.shape({
-    setContent: PropTypes.func,
-  }),
 };
 
-export default injectIntl(CounterUpload);
+export default CounterUpload;

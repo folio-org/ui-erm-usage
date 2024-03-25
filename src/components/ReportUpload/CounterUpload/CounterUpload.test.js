@@ -38,9 +38,7 @@ describe('CounterUpload', () => {
   });
 
   test('select file button is rendered', () => {
-    const selectFile = screen.getByRole('button', {
-      name: 'Or select file for counter report upload',
-    });
+    const selectFile = screen.getByRole('button', { name: 'or select file' });
     expect(selectFile).toBeInTheDocument();
   });
 

@@ -101,10 +101,9 @@ function NonCounterUploadInnerForm(props) {
       });
   };
 
-  const handleSelectFile = (acceptedFiles) => {
-    const currentFile = acceptedFiles[0];
-    setSelectedFile(currentFile);
-    doUploadRawFile(currentFile);
+  const handleSelectFile = (acceptedFile) => {
+    setSelectedFile(acceptedFile);
+    doUploadRawFile(acceptedFile);
   };
 
   const handleLinkUrlChange = (e) => {
@@ -140,66 +139,64 @@ function NonCounterUploadInnerForm(props) {
   };
 
   return (
-    <>
-      <Row>
-        <Col xs={12} md={12}>
-          <Row>
-            <Col xs={10}>
-              <Field
-                autoFocus
-                component={TextField}
-                data-test-custom-report-year
-                id="custom-report-year"
-                label={<FormattedMessage id="ui-erm-usage.general.year" />}
-                name="year"
-                placeholder="YYYY"
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={10}>
-              <Field
-                component={TextField}
-                data-test-custom-report-note
-                id="custom-report-note"
-                label={<FormattedMessage id="ui-erm-usage.general.note" />}
-                name="note"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={10}>
-              <RadioButton
-                checked={useFile}
-                id="custom-report-file-radio"
-                inline
-                onChange={() => {
-                  setUseFile(!useFile);
-                }}
-                label={
-                  <FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />
+    <Row>
+      <Col xs={12} md={12}>
+        <Row>
+          <Col xs={10}>
+            <Field
+              autoFocus
+              component={TextField}
+              data-test-custom-report-year
+              id="custom-report-year"
+              label={<FormattedMessage id="ui-erm-usage.general.year" />}
+              name="year"
+              placeholder="YYYY"
+              required
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={10}>
+            <Field
+              component={TextField}
+              data-test-custom-report-note
+              id="custom-report-note"
+              label={<FormattedMessage id="ui-erm-usage.general.note" />}
+              name="note"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={10}>
+            <RadioButton
+              checked={useFile}
+              id="custom-report-file-radio"
+              inline
+              onChange={() => {
+                setUseFile(!useFile);
+              }}
+              label={
+                <FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />
                 }
-              />
-              <RadioButton
-                checked={!useFile}
-                id="custom-report-link-radio"
-                inline
-                onChange={() => {
-                  setUseFile(!useFile);
-                }}
-                label={
-                  <FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />
+            />
+            <RadioButton
+              checked={!useFile}
+              id="custom-report-link-radio"
+              inline
+              onChange={() => {
+                setUseFile(!useFile);
+              }}
+              label={
+                <FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />
                 }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={10}>{renderLinkOrFile()}</Col>
-          </Row>
-        </Col>
-      </Row>
-    </>
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={10}>{renderLinkOrFile()}</Col>
+        </Row>
+      </Col>
+    </Row>
   );
 }
 

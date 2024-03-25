@@ -2,25 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import _ from 'lodash';
-import {
-  Button,
-  Col,
-  Icon,
-  KeyValue,
-  Loading,
-  Label,
-  Row,
-} from '@folio/stripes/components';
+import { Button, Col, Icon, KeyValue, Loading, Label, Row } from '@folio/stripes/components';
 
+import { Field } from 'react-final-form';
 import FileUploader from '../FileUploader';
 
 function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, file }) {
   const renderSelectedFile = () => {
     let downloadButton = '';
     if (_.isNil(file) || _.isNil(fileId)) {
-      downloadButton = (
-        <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />
-      );
+      downloadButton = <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />;
     } else {
       downloadButton = (
         <Button
@@ -64,7 +55,16 @@ function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, fil
       </Row>
       <Row>
         <Col xs={10}>
-          <FileUploader onSelectFile={onSelectFile} selectedFile={file} />
+          <Field name="file">
+            {({ input: { onChange } }) => (
+              <FileUploader
+                onChange={(e) => {
+                  onChange(e);
+                  onSelectFile(e);
+                }}
+              />
+            )}
+          </Field>
         </Col>
       </Row>
       <Row>

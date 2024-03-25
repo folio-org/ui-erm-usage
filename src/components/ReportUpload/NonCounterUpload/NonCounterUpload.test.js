@@ -41,7 +41,7 @@ describe('NonCounterUpload', () => {
 
     test('select file button is rendered', () => {
       const selectFile = screen.getByRole('button', {
-        name: 'Or select file for counter report upload',
+        name: 'or select file',
       });
       expect(selectFile).toBeInTheDocument();
     });
