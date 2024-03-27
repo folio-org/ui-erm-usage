@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
-import CounterUploadModal from './CounterUploadModal';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import CounterUploadModal from './CounterUploadModal';
 
 function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
-  const [values, setValues] = useState({});
+  const [formState, setFormState] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [infoType, setInfoType] = useState('');
   const intl = useIntl();
@@ -31,48 +32,50 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     }
   };
 
-  const doUpload = (formValues, doOverwrite) => {
-    setValues(formValues);
-    openInfoModal(CounterUpload.upload);
+  useEffect(() => {
+    const { values, form, overwrite } = formState;
 
-    const formData = new FormData();
-    formData.append('file', formValues.file);
-    formData.append('reportEditedManually', formValues.reportEditedManually);
-    formData.append('editReason', formValues.editReason);
-    fetchWithDefaultOptions(
-      okapi,
-      `/counter-reports/multipartupload/provider/${udpId}?overwrite=${doOverwrite}`,
-      {
-        method: 'POST',
-        body: formData,
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(text);
-          });
-        } else {
+    const doUpload = () => {
+      openInfoModal(CounterUpload.upload);
+
+      const formData = new FormData();
+      formData.append('file', values.file);
+      formData.append('reportEditedManually', values.reportEditedManually);
+      formData.append('editReason', values.editReason);
+      fetchWithDefaultOptions(
+        okapi,
+        `/counter-reports/multipartupload/provider/${udpId}?overwrite=${overwrite || false}`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => { // NOSONAR
+              throw new Error(text);
+            });
+          } else {
+            return response;
+          }
+        })
+        .then(() => {
           onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
           closeInfoModal();
-          return response;
-        }
-      })
-      .catch((err) => {
-        showErrorInfo(err.message);
-      });
-  };
+          form.reset();
+        })
+        .catch((err) => {
+          showErrorInfo(err.message);
+        });
+    };
 
-  const uploadFile = (formValues) => {
-    return doUpload(formValues, false);
-  };
+    if (values && form) {
+      doUpload();
+    }
+  }, [formState]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const uploadFileForceOverwrite = () => {
-    return doUpload(values, true);
-  };
-
-  const cancelUpload = () => {
-    closeInfoModal();
+  const handleSubmit = (values, form) => {
+    setFormState({ values, form });
   };
 
   const renderInfo = () => {
@@ -82,10 +85,10 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
           <div>
             <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
           </div>
-          <Button id="overwriteYes" onClick={uploadFileForceOverwrite}>
+          <Button id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button id="overwriteNo" onClick={cancelUpload}>
+          <Button id="overwriteNo" onClick={closeInfoModal}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
@@ -111,7 +114,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
 
   return (
     <>
-      <CounterUploadModal open={open} onClose={onClose} onSubmit={uploadFile} />
+      <CounterUploadModal open={open} onClose={onClose} onSubmit={handleSubmit} />
       <Modal
         open={showInfoModal}
         label={intl.formatMessage({

@@ -49,7 +49,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
     <Form
       onSubmit={onSubmit}
       validate={validateFormValues}
-      render={({ handleSubmit, form }) => (
+      render={({ handleSubmit, form, values }) => (
         <Modal
           closeOnBackgroundClick
           footer={footer(form.getState().valid, handleSubmit, form.reset)}
@@ -76,7 +76,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
               </Row>
               <Row>
                 <Col xs={12}>
-                  <KeyValue label="SELECTED FILE" value={form.getFieldState('file')?.value?.path} />
+                  <KeyValue label="SELECTED FILE" value={values.file?.path} />
                 </Col>
               </Row>
             </Col>
@@ -94,7 +94,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
               <Row style={{ marginTop: '15px' }}>
                 <Field
                   component={TextField}
-                  disabled={form.getFieldState('reportEditedManually')?.value === false}
+                  disabled={values.reportEditedManually?.value === false}
                   fullWidth
                   initialValue=""
                   id="addcounterreport_editReason"
@@ -103,7 +103,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
                   placeholder={intl.formatMessage({
                     id: 'ui-erm-usage.report.upload.editReason.placeholder',
                   })}
-                  required={form.getFieldState('reportEditedManually')?.value === true}
+                  required={values.reportEditedManually?.value === true}
                 />
               </Row>
             </Col>
