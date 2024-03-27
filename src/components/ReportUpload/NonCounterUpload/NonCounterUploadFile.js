@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
 import _ from 'lodash';
-import { Button, Col, Icon, KeyValue, Loading, Label, Row } from '@folio/stripes/components';
+import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { Field } from 'react-final-form';
+import { Button, Col, Icon, KeyValue, Label, Loading, Row } from '@folio/stripes/components';
+
 import FileUploader from '../FileUploader';
 
 function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, file }) {
@@ -55,16 +54,11 @@ function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, fil
       </Row>
       <Row>
         <Col xs={10}>
-          <Field name="file">
-            {({ input: { onChange } }) => (
-              <FileUploader
-                onChange={(e) => {
-                  onChange(e);
-                  onSelectFile(e);
-                }}
-              />
-            )}
-          </Field>
+          <FileUploader
+            onChange={(e) => {
+              onSelectFile(e);
+            }}
+          />
         </Col>
       </Row>
       <Row>
