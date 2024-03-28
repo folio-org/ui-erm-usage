@@ -25,31 +25,29 @@ function NonCounterUploadModal(props) {
   );
 
   return (
-    <>
-      <form
-        data-test-custom-report-form-page
-        id="form-custom-report"
-        onSubmit={props.handleSubmit}
-      >
-        <Modal
-          id="upload-non-counter-modal"
-          closeOnBackgroundClick
-          footer={renderFooter(props.handleSubmit)}
-          open={props.open}
-          label={
-            <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
+    <form
+      data-test-custom-report-form-page
+      id="form-custom-report"
+      onSubmit={props.handleSubmit}
+    >
+      <Modal
+        id="upload-non-counter-modal"
+        closeOnBackgroundClick
+        footer={renderFooter(props.handleSubmit)}
+        open={props.open}
+        label={
+          <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
           }
-        >
-          <div className="upload-non-counter-modal">
-            <NonCounterInnerForm
-              mutators={props.form.mutators}
-              udpId={props.udpId}
-              stripes={props.stripes}
-            />
-          </div>
-        </Modal>
-      </form>
-    </>
+      >
+        <div className="upload-non-counter-modal">
+          <NonCounterInnerForm
+            mutators={props.form.mutators}
+            udpId={props.udpId}
+            stripes={props.stripes}
+          />
+        </div>
+      </Modal>
+    </form>
   );
 }
 

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -16,48 +15,16 @@ import {
 } from '@folio/stripes/components';
 import FileUploader from '../FileUploader';
 
-function CounterUploadModal({
-  intl,
-  onClose,
-  onSubmit,
-  open,
-  selectedFile,
-  setSelectedFile,
-}) {
-  const getBase64 = (file, cb) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      cb(reader.result);
-    };
-  };
-
-  const selectFile = (acceptedFiles, changeFormFn) => {
-    const currentFile = acceptedFiles[0];
-
-    getBase64(currentFile, (result) => {
-      changeFormFn('contents.data', result);
-    });
-
-    setSelectedFile(currentFile);
-  };
-
-  const footer = (isValid, handleSubmit, onReset) => {
+function CounterUploadModal({ intl, onClose, onSubmit, open }) {
+  const footer = (isValid, handleSubmit, handleReset) => {
     return (
       <ModalFooter>
-        <Button
-          buttonStyle="primary"
-          disabled={!isValid}
-          id="save-counter-button"
-          onClick={(report) => handleSubmit(report, onReset).then(() => { onReset(); })}
-        >
+        <Button buttonStyle="primary" disabled={!isValid} onClick={handleSubmit}>
           <FormattedMessage id="ui-erm-usage.general.save" />
         </Button>
         <Button
-          id="cancel-upload-counter-report"
           onClick={() => {
-            onReset();
-            setSelectedFile({});
+            handleReset();
             onClose();
           }}
         >
@@ -67,122 +34,81 @@ function CounterUploadModal({
     );
   };
 
-  const isReportEditedManually = (isEditedManually) => {
-    if (_.isNil(isEditedManually)) {
-      return false;
+  const validateFormValues = (values) => {
+    const errors = {};
+    if (!values.file) {
+      errors.file = 'Required';
     }
-    return isEditedManually.value;
+    if (values.reportEditedManually && !values.editReason) {
+      errors.editReason = 'Required';
+    }
+    return errors;
   };
 
   return (
     <Form
       onSubmit={onSubmit}
-      mutators={{
-        setData: (args, state, utils) => {
-          utils.changeValue(state, 'contents.data', () => args[1]);
-        },
-      }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.contents) {
-          errors.contents = 'Required';
-        }
-        if (values.reportMetadata) {
-          const md = values.reportMetadata;
-          if (md.reportEditedManually && !md.editReason) {
-            errors.reportMetadata = 'Required';
-          }
-        }
-        return errors;
-      }}
-      render={({ handleSubmit, form }) => (
-        <form data-test-counter-report-form-page id="form-counter-report">
-          <Modal
-            closeOnBackgroundClick
-            footer={footer(form.getState().valid, handleSubmit, form.reset)}
-            id="upload-counter-modal"
-            open={open}
-            label={intl.formatMessage({
-              id: 'ui-erm-usage.statistics.counter.upload',
-            })}
-          >
-            <div className="upload-counter-modal-div">
+      validate={validateFormValues}
+      render={({ handleSubmit, form, values }) => (
+        <Modal
+          closeOnBackgroundClick
+          footer={footer(form.getState().valid, handleSubmit, form.reset)}
+          id="upload-counter-modal"
+          open={open}
+          label={intl.formatMessage({
+            id: 'ui-erm-usage.statistics.counter.upload',
+          })}
+        >
+          <Row>
+            <Col xs={8}>
               <Row>
-                <Col xs={8}>
-                  <Row>
-                    <KeyValue
-                      label={
-                        <FormattedMessage id="ui-erm-usage.general.info" />
-                      }
-                      value={
-                        <FormattedMessage id="ui-erm-usage.report.upload.info" />
-                      }
-                    />
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
-                      <FileUploader
-                        onSelectFile={(e) => selectFile(e, form.change)}
-                        selectedFile={selectedFile}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={12}>
-                      <KeyValue
-                        label="SELECTED FILE"
-                        value={
-                          _.isNil(selectedFile) ? 'Required' : selectedFile.name
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-                <Col xs={4}>
-                  <Row style={{ marginTop: '25px' }}>
-                    <Field
-                      component={Checkbox}
-                      id="addcounterreport_reportEditedManually"
-                      initialValue={false}
-                      label={
-                        <FormattedMessage id="ui-erm-usage.report.upload.editedManually" />
-                      }
-                      name="reportMetadata.reportEditedManually"
-                      type="checkbox"
-                    />
-                  </Row>
-                  <Row style={{ marginTop: '15px' }}>
-                    <Field
-                      component={TextField}
-                      disabled={
-                        !isReportEditedManually(
-                          form.getFieldState(
-                            'reportMetadata.reportEditedManually'
-                          )
-                        )
-                      }
-                      fullWidth
-                      initialValue=""
-                      id="addcounterreport_editReason"
-                      label={
-                        <FormattedMessage id="ui-erm-usage.report.upload.editReason" />
-                      }
-                      name="reportMetadata.editReason"
-                      placeholder={intl.formatMessage({
-                        id: 'ui-erm-usage.report.upload.editReason.placeholder',
-                      })}
-                      required={isReportEditedManually(
-                        form.getFieldState(
-                          'reportMetadata.reportEditedManually'
-                        )
-                      )}
-                    />
-                  </Row>
+                <KeyValue
+                  label={<FormattedMessage id="ui-erm-usage.general.info" />}
+                  value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+                />
+              </Row>
+              <Row>
+                <Col xs={12}>
+                  <Field name="file">
+                    {({ input: { onChange } }) => <FileUploader onChange={onChange} />}
+                  </Field>
                 </Col>
               </Row>
-            </div>
-          </Modal>
-        </form>
+              <Row>
+                <Col xs={12}>
+                  <KeyValue label="SELECTED FILE" value={values.file?.path} />
+                </Col>
+              </Row>
+            </Col>
+            <Col xs={4}>
+              <Row style={{ marginTop: '25px' }}>
+                <Field
+                  component={Checkbox}
+                  id="addcounterreport_reportEditedManually"
+                  initialValue={false}
+                  label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
+                  name="reportEditedManually"
+                  type="checkbox"
+                />
+              </Row>
+              <Row style={{ marginTop: '15px' }}>
+                <Field
+                  component={TextField}
+                  disabled={values.reportEditedManually?.value === false}
+                  fullWidth
+                  initialValue=""
+                  id="addcounterreport_editReason"
+                  label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
+                  name="editReason"
+                  placeholder={intl.formatMessage({
+                    id: 'ui-erm-usage.report.upload.editReason.placeholder',
+                  })}
+                  required={values.reportEditedManually?.value === true}
+                />
+              </Row>
+            </Col>
+          </Row>
+        </Modal>
       )}
     />
   );
@@ -193,11 +119,6 @@ CounterUploadModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  mutators: PropTypes.shape({
-    setContent: PropTypes.func,
-  }),
-  selectedFile: PropTypes.shape().isRequired,
-  setSelectedFile: PropTypes.func.isRequired,
 };
 
 export default injectIntl(stripesConnect(CounterUploadModal));

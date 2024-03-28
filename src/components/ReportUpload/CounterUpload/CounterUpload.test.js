@@ -38,9 +38,7 @@ describe('CounterUpload', () => {
   });
 
   test('select file button is rendered', () => {
-    const selectFile = screen.getByRole('button', {
-      name: 'Or select file for counter report upload',
-    });
+    const selectFile = screen.getByRole('button', { name: 'or select file' });
     expect(selectFile).toBeInTheDocument();
   });
 
@@ -53,7 +51,7 @@ describe('CounterUpload', () => {
   test('upload counter report', async () => {
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/upload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
         (req, res, ctx) => {
           return res(ctx.status(500), ctx.body('Report already existing'));
         }
@@ -73,7 +71,7 @@ describe('CounterUpload', () => {
 
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/upload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
         (req, res, ctx) => {
           return res(ctx.text('success'));
         }

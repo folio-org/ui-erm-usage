@@ -1,80 +1,81 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, Loading, Modal } from '@folio/stripes/components';
 
-import CounterUploadModal from './CounterUploadModal';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import CounterUploadModal from './CounterUploadModal';
 
-function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
-  const [selectedFile, setSelectedFile] = useState({});
-  const [values, setValues] = useState({});
+function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
+  const [formState, setFormState] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [infoType, setInfoType] = useState('');
+  const intl = useIntl();
 
   const closeInfoModal = () => {
     setShowInfoModal(false);
     setInfoType('');
   };
 
-  const showErrorInfo = (response) => {
-    response.text().then((text) => {
-      if (text.includes('Report already existing')) {
-        setShowInfoModal(true);
-        setInfoType(CounterUpload.overwrite);
-      } else {
-        closeInfoModal();
-        onFail(text);
-      }
-    });
-  };
-
-  const doUpload = async (report, doOverwrite) => {
-    setValues(report);
-    const json = JSON.stringify(report);
-
+  const openInfoModal = (type) => {
     setShowInfoModal(true);
-    setInfoType(CounterUpload.upload);
-    fetchWithDefaultOptions(
-      okapi,
-      `/counter-reports/upload/provider/${udpId}?overwrite=${doOverwrite}`,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: json,
-      }
-    )
-      .then((response) => {
-        if (response.status >= 400) {
-          showErrorInfo(response);
-          return Promise.resolve(true);
-        } else {
-          setShowInfoModal(false);
-          setSelectedFile({});
-          onSuccess(
-            intl.formatMessage({
-              id: 'ui-erm-usage.report.upload.completed',
-            })
-          );
-          return Promise.resolve(true);
+    setInfoType(type);
+  };
+
+  const showErrorInfo = (msg) => {
+    if (msg.includes('Report already existing')) {
+      openInfoModal(CounterUpload.overwrite);
+    } else {
+      closeInfoModal();
+      onFail(msg);
+    }
+  };
+
+  useEffect(() => {
+    const { values, form, overwrite } = formState;
+
+    const doUpload = () => {
+      openInfoModal(CounterUpload.upload);
+
+      const formData = new FormData();
+      formData.append('file', values.file);
+      formData.append('reportEditedManually', values.reportEditedManually);
+      formData.append('editReason', values.editReason);
+      fetchWithDefaultOptions(
+        okapi,
+        `/counter-reports/multipartupload/provider/${udpId}?overwrite=${overwrite || false}`,
+        {
+          method: 'POST',
+          body: formData,
         }
-      })
-      .catch((err) => {
-        closeInfoModal();
-        onFail(err.message);
-      });
-  };
+      )
+        .then((response) => {
+          if (!response.ok) {
+            return response.text().then((text) => { // NOSONAR
+              throw new Error(text);
+            });
+          } else {
+            return response;
+          }
+        })
+        .then(() => {
+          onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
+          closeInfoModal();
+          form.reset();
+        })
+        .catch((err) => {
+          showErrorInfo(err.message);
+        });
+    };
 
-  const uploadFile = (report) => {
-    return doUpload(report, false);
-  };
+    if (values && form) {
+      doUpload();
+    }
+  }, [formState]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const uploadFileForceOverwrite = () => {
-    return doUpload(values, true);
-  };
-
-  const cancleUpload = () => {
-    closeInfoModal();
+  const handleSubmit = (values, form) => {
+    setFormState({ values, form });
   };
 
   const renderInfo = () => {
@@ -84,10 +85,10 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
           <div>
             <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
           </div>
-          <Button id="overwriteYes" onClick={uploadFileForceOverwrite}>
+          <Button id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
           </Button>
-          <Button id="overwriteNo" onClick={cancleUpload}>
+          <Button id="overwriteNo" onClick={closeInfoModal}>
             <FormattedMessage id="ui-erm-usage.general.no" />
           </Button>
         </>
@@ -113,19 +114,12 @@ function CounterUpload({ intl, onClose, onFail, onSuccess, open, stripes: { okap
 
   return (
     <>
-      <CounterUploadModal
-        open={open}
-        onClose={onClose}
-        onSubmit={uploadFile}
-        selectedFile={selectedFile}
-        setSelectedFile={setSelectedFile}
-      />
+      <CounterUploadModal open={open} onClose={onClose} onSubmit={handleSubmit} />
       <Modal
         open={showInfoModal}
         label={intl.formatMessage({
           id: 'ui-erm-usage.report.upload.modal.label',
         })}
-        id="counterReportExists"
       >
         {showInfoModal && renderInfo()}
       </Modal>
@@ -141,12 +135,8 @@ CounterUpload.propTypes = {
   onFail: PropTypes.func,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  intl: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  mutators: PropTypes.shape({
-    setContent: PropTypes.func,
-  }),
 };
 
-export default injectIntl(CounterUpload);
+export default CounterUpload;
