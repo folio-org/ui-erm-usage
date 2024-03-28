@@ -1,8 +1,10 @@
 # Change history for ui-erm-usage
 
-## 8.2.0 (IN PROGRESS)
+## 9.0.0 (IN PROGRESS)
+* *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
+  * Dropped support for `counter-reports < 3.2` interface
 
-## 8.1.0 (2024-03-20)
+## [8.1.0](https://github.com/folio-org/ui-erm-usage/releases/tag/v8.1.0) (2024-03-20)
 * Remove deprecated pane properties ([UIEUS-349](https://issues.folio.org/browse/UIEUS-349))
 * Use translation keys of stripes-components ([UIEUS-351](https://folio-org.atlassian.net/browse/UIEUS-351))
 
