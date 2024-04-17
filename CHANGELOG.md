@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 9.0.0 (IN PROGRESS)
+## 9.1.0 (IN PROGRESS)
+
+## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
   * Dropped support for `counter-reports < 3.2` interface
 
