@@ -6,7 +6,7 @@ import { useStripes } from '@folio/stripes/core';
 import harvestingStatusOptions from '../../util/data/harvestingStatusOptions';
 import css from './UDPHeader.css';
 
-const UDPHeader = ({ usageDataProvider, lastJob }) => {
+const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} }) => {
   const stripes = useStripes();
   const {
     latestReport,
@@ -58,13 +58,6 @@ const UDPHeader = ({ usageDataProvider, lastJob }) => {
       </Row>
     </div>
   );
-};
-
-UDPHeader.defaultProps = {
-  usageDataProvider: {
-    harvestingConfig: {},
-  },
-  lastJob: {},
 };
 
 UDPHeader.propTypes = {

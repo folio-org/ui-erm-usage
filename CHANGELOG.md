@@ -1,6 +1,7 @@
 # Change history for ui-erm-usage
 
 ## 9.1.0 (IN PROGRESS)
+* React v19: refactor away from default props for functional components ([UIEUS-355](https://folio-org.atlassian.net/browse/UIEUS-355))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))

@@ -28,10 +28,6 @@ class CounterStatistics extends React.Component {
     }).isRequired,
   };
 
-  static defaultProps = {
-    infoText: <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />
-  }
-
   constructor(props) {
     super(props);
     this.downloadableReports = this.calcDownloadableReportTypes();
@@ -57,7 +53,10 @@ class CounterStatistics extends React.Component {
   };
 
   render() {
-    const { infoText, showMultiMonthDownload } = this.props;
+    const {
+      infoText = <FormattedMessage id="ui-erm-usage.reportOverview.infoText" />,
+      showMultiMonthDownload,
+    } = this.props;
 
     return (
       <>

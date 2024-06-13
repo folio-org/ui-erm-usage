@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { memo } from 'react';
 import styles from './JobsView.css';
 
-const JobsViewResultCell = ({ errorMessage, text }) => {
+const JobsViewResultCell = ({ errorMessage = '', text }) => {
   const textWithInfo = (
     <span className={styles.alignCentered}>
       {text}
@@ -17,10 +17,6 @@ const JobsViewResultCell = ({ errorMessage, text }) => {
 JobsViewResultCell.propTypes = {
   errorMessage: PropTypes.string,
   text: PropTypes.string.isRequired
-};
-
-JobsViewResultCell.defaultProps = {
-  errorMessage: ''
 };
 
 export default memo(JobsViewResultCell);
