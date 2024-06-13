@@ -273,7 +273,7 @@ class UDPs extends React.Component {
     const {
       children,
       contentRef,
-      data = {},
+      data,
       intl,
       onNeedMoreData,
       onSelectRow,

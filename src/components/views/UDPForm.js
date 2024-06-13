@@ -53,6 +53,10 @@ class UDPForm extends React.Component {
     submitting: PropTypes.bool,
   };
 
+  static defaultProps = {
+    initialValues: {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -153,7 +157,7 @@ class UDPForm extends React.Component {
   }
 
   renderLastMenu() {
-    const { initialValues = {} } = this.props;
+    const { initialValues } = this.props;
     const { confirmDelete } = this.state;
     const isEditing = initialValues && initialValues.id;
 
@@ -247,19 +251,18 @@ class UDPForm extends React.Component {
   };
 
   renderFormPaneHeader = () => {
-    const { initialValues = {} } = this.props;
     return (
       <PaneHeader
         firstMenu={this.renderFirstMenu()}
         lastMenu={this.renderLastMenu()}
-        paneTitle={initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
+        paneTitle={this.props.initialValues.id ? this.props.initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
       />
     );
   };
 
   render() {
     const {
-      initialValues = {},
+      initialValues,
       handleSubmit,
       data: { aggregators, harvesterImpls },
     } = this.props;

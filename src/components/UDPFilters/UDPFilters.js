@@ -69,6 +69,10 @@ class UDPFilters extends React.Component {
     intl: PropTypes.object
   });
 
+  static defaultProps = {
+    activeFilters: {}
+  };
+
   static getDerivedStateFromProps(props, state) {
     const newState = {};
     const arr = [];
@@ -118,7 +122,7 @@ class UDPFilters extends React.Component {
   };
 
   renderCheckboxFilter = (key, closedByDefault = false) => {
-    const { activeFilters = {} } = this.props;
+    const { activeFilters } = this.props;
     const groupFilters = activeFilters[key] || [];
 
     return (
@@ -149,7 +153,7 @@ class UDPFilters extends React.Component {
   };
 
   renderTagsFilter = () => {
-    const { activeFilters = {} } = this.props;
+    const { activeFilters } = this.props;
     const tagFilters = activeFilters.tags || [];
 
     return (
@@ -181,7 +185,7 @@ class UDPFilters extends React.Component {
   };
 
   renderErrorCodesFilter = () => {
-    const { activeFilters = {} } = this.props;
+    const { activeFilters } = this.props;
     const errorCodesFilters = activeFilters.errorCodes || [];
 
     return (
@@ -213,7 +217,7 @@ class UDPFilters extends React.Component {
   };
 
   renderReportTypesFiler = () => {
-    const { activeFilters = {} } = this.props;
+    const { activeFilters } = this.props;
     const reportTypesFilters = activeFilters.reportTypes || [];
 
     return (
