@@ -250,15 +250,13 @@ class UDPForm extends React.Component {
     );
   };
 
-  renderFormPaneHeader = () => {
-    return (
-      <PaneHeader
-        firstMenu={this.renderFirstMenu()}
-        lastMenu={this.renderLastMenu()}
-        paneTitle={this.props.initialValues.id ? this.props.initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
-      />
-    );
-  };
+  renderFormPaneHeader = () => (
+    <PaneHeader
+      firstMenu={this.renderFirstMenu()}
+      lastMenu={this.renderLastMenu()}
+      paneTitle={this.props.initialValues.id ? this.props.initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
+    />
+  );
 
   render() {
     const {
