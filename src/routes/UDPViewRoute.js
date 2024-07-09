@@ -14,7 +14,7 @@ import { MAX_FAILED_ATTEMPTS } from '../util/constants';
 
 function UDPViewRoute(props) {
   const {
-    handlers,
+    handlers = {},
     mutator,
     resources,
     stripes,
@@ -183,10 +183,6 @@ UDPViewRoute.propTypes = {
     store: PropTypes.object.isRequired,
   }).isRequired,
   tagsEnabled: PropTypes.bool,
-};
-
-UDPViewRoute.defaultProps = {
-  handlers: {},
 };
 
 UDPViewRoute.manifest = Object.freeze({

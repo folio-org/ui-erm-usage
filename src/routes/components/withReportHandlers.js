@@ -124,7 +124,7 @@ export default function withReportHandlers(WrappedComponent) {
         });
     };
 
-    const { handlers, ...rest } = props;
+    const { handlers = {}, ...rest } = props;
 
     return (
       <>
@@ -153,10 +153,6 @@ export default function withReportHandlers(WrappedComponent) {
       store: PropTypes.object.isRequired,
     }).isRequired,
     intl: PropTypes.object,
-  };
-
-  WithReportHandlers.defaultProps = {
-    handlers: {},
   };
 
   return withStripes(injectIntl(WithReportHandlers));
