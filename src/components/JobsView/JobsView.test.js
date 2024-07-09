@@ -26,6 +26,7 @@ const renderJobView = (jobs) => renderWithIntl(
         },
         jobs: {
           hasLoaded: true,
+          isPending: false,
           records: jobs,
           other: {
             totalRecords: jobs.length,
