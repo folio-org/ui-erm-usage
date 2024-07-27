@@ -21,7 +21,7 @@
     "aggregatorInfo.aggregatorName": "Nom de l'agrégateur",
     "aggregatorInfo.vendorCode": "Code fournisseur",
     "vendorInfo.serviceType": "Type de service",
-    "vendorInfo.serviceUrl": "URL du Service",
+    "vendorInfo.serviceUrl": "URL du service",
     "sushiCreds.customerId": "ID client",
     "sushiCreds.requestorId": "ID du demandeur",
     "sushiCreds.apiKey": "Clé API",
