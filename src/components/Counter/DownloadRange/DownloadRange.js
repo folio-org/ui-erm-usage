@@ -1,7 +1,8 @@
-import _ from 'lodash';
-import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { get, isEmpty } from 'lodash';
+import { useState, useEffect, useRef } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -11,6 +12,7 @@ import {
   Select,
   TextField,
 } from '@folio/stripes/components';
+
 import { isYearMonth } from '../../../util/validate';
 import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
@@ -25,7 +27,7 @@ function DownloadRange(props) {
   const [exportFormat, setExportFormat] = useState(exportFormats[0].value);
 
   useEffect(() => {
-    setReportType(_.get(props.downloadableReports, '[0]', ''));
+    setReportType(get(props.downloadableReports, '[0]', ''));
   }, [props.downloadableReports]);
 
   const validate = (s, e) => {
@@ -62,9 +64,9 @@ function DownloadRange(props) {
 
   const hasError = () => {
     const result =
-      (_.isEmpty(start) && _.isEmpty(end)) ||
-      !_.isEmpty(startError) ||
-      !_.isEmpty(endError);
+      (isEmpty(start) && isEmpty(end)) ||
+      !isEmpty(startError) ||
+      !isEmpty(endError);
     return result;
   };
 
@@ -103,7 +105,7 @@ function DownloadRange(props) {
   };
 
   const doDownload = () => {
-    if (!_.isEmpty(start) && !_.isEmpty(end)) {
+    if (!isEmpty(start) && !isEmpty(end)) {
       props.handlers.onDownloadReportMultiMonth(
         props.udpId,
         reportType.value,

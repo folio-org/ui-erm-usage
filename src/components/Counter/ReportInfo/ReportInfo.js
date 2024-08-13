@@ -1,39 +1,23 @@
-import { get } from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
+
 import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
-class ReportInfo extends React.Component {
-  onClickDownloadRawReport = (release) => {
-    const fileType = this.getFileType(release);
-    this.props.downloadRawReport(fileType);
-  };
-
-  onClickDownloadReport = (format) => {
-    this.props.downloadReport(format);
-  };
-
-  onClickDeleteReport = () => {
-    this.props.deleteReport();
-  };
-
-  isDownloadable = (reportName) => {
-    const result = reportDownloadTypes.find((e) => e.value === reportName);
-    return result !== undefined;
-  };
-
-  isCSVPossible = (report) => {
-    if (!report.failedReason && this.isDownloadable(report.reportName)) {
-      return true;
-    }
-    return false;
-  };
-
-  getFileType = (release) => {
+const ReportInfo = ({
+  report,
+  deleteReport,
+  downloadRawReport,
+  downloadReport,
+  retryThreshold,
+  intl,
+  udpLabel,
+}) => {
+  const getFileType = (release) => {
     if (release === '4') {
       return 'xml';
     } else if (release === '5') {
@@ -43,12 +27,37 @@ class ReportInfo extends React.Component {
     }
   };
 
-  renderCSVDownloadButton = (report) => {
-    if (this.isCSVPossible(report)) {
+  const onClickDownloadRawReport = (release) => {
+    const fileType = getFileType(release);
+    downloadRawReport(fileType);
+  };
+
+  const onClickDownloadReport = (format) => {
+    downloadReport(format);
+  };
+
+  const onClickDeleteReport = () => {
+    deleteReport();
+  };
+
+  const isDownloadable = (reportName) => {
+    const result = reportDownloadTypes.find((e) => e.value === reportName);
+    return result !== undefined;
+  };
+
+  const isCSVPossible = (rep) => {
+    if (!rep.failedReason && isDownloadable(rep.reportName)) {
+      return true;
+    }
+    return false;
+  };
+
+  const renderCSVDownloadButton = (rep) => {
+    if (isCSVPossible(rep)) {
       return (
         <Button
           buttonStyle="dropdownItem"
-          onClick={() => this.onClickDownloadReport('csv')}
+          onClick={() => onClickDownloadReport('csv')}
         >
           <Icon icon="arrow-down">
             <FormattedMessage id="ui-erm-usage.report.action.download.csv" />
@@ -60,12 +69,12 @@ class ReportInfo extends React.Component {
     }
   };
 
-  renderXLSXDownloadButton = (report) => {
-    if (this.isCSVPossible(report)) {
+  const renderXLSXDownloadButton = (rep) => {
+    if (isCSVPossible(rep)) {
       return (
         <Button
           buttonStyle="dropdownItem"
-          onClick={() => this.onClickDownloadReport('xlsx')}
+          onClick={() => onClickDownloadReport('xlsx')}
         >
           <Icon icon="arrow-down">
             <FormattedMessage id="ui-erm-usage.report.action.download.xlsx" />
@@ -77,7 +86,7 @@ class ReportInfo extends React.Component {
     }
   };
 
-  renderDeleteButton = (failInfo) => {
+  const renderDeleteButton = (failInfo) => {
     let msg = (
       <FormattedMessage id="ui-erm-usage.report.action.general.delete.report" />
     );
@@ -91,7 +100,7 @@ class ReportInfo extends React.Component {
         <Button
           id="delete-report-button"
           buttonStyle="dropdownItem"
-          onClick={() => this.onClickDeleteReport()}
+          onClick={() => onClickDeleteReport()}
         >
           <Icon icon="trash">{msg}</Icon>
         </Button>
@@ -99,31 +108,29 @@ class ReportInfo extends React.Component {
     );
   };
 
-  renderRawDownloadButton = (report) => {
-    if (report.failedReason) {
+  const renderRawDownloadButton = (rep) => {
+    if (rep.failedReason) {
       return null;
     }
-    const filetype = this.getFileType(report.release).toUpperCase();
+    const filetype = getFileType(rep.release).toUpperCase();
     return (
       <Button
         id="download-json-xml-button"
         buttonStyle="dropdownItem"
-        onClick={() => this.onClickDownloadRawReport(report.release)}
+        onClick={() => onClickDownloadRawReport(rep.release)}
       >
         <Icon icon="arrow-down">
           <FormattedMessage
             id="ui-erm-usage.report.action.download.jsonxml"
-            values={{
-              filetype,
-            }}
+            values={{ filetype }}
           />
         </Icon>
       </Button>
     );
   };
 
-  manualEditedText() {
-    const editReason = ` ${get(this.props.report, 'editReason', '-')}`;
+  const manualEditedText = () => {
+    const editReason = ` ${get(report, 'editReason', '-')}`;
     return (
       <>
         <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
@@ -132,10 +139,9 @@ class ReportInfo extends React.Component {
         {editReason}
       </>
     );
-  }
+  };
 
-  translateErrorCodes = (val) => {
-    const { intl } = this.props;
+  const translateErrorCodes = (val) => {
     let label;
     if (isSushiWarningCode(val)) {
       label = `${intl.formatMessage({
@@ -152,108 +158,104 @@ class ReportInfo extends React.Component {
     })}: ${label}`;
   };
 
-  adaptSushiFailedInfo(failedReason) {
+  const adaptSushiFailedInfo = (failedReason) => {
     const matchResult = failedReason.match('(?:Number=|"Code": ?)([0-9]{1,4})');
-    return (matchResult !== null) ? this.translateErrorCodes(matchResult[1]) : failedReason;
-  }
+    return (matchResult !== null) ? translateErrorCodes(matchResult[1]) : failedReason;
+  };
 
-  render() {
-    const { intl, report, retryThreshold } = this.props;
+  const failInfo = !report.failedReason ? null : (
+    <KeyValue
+      data-test-report-failed-reason
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.general.info',
+      })}
+      value={adaptSushiFailedInfo(report.failedReason)}
+    />
+  );
 
-    const failInfo = !report.failedReason ? null : (
+  const failedAttempts = !report.failedAttempts ? null : (
+    <KeyValue
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.report.action.failedAttempts',
+      })}
+      value={intl.formatMessage(
+        {
+          id: 'ui-erm-usage.statistics.report.info.maxAttempts',
+        },
+        {
+          current: report.failedAttempts,
+          max: retryThreshold,
+        }
+      )}
+    />
+  );
+
+  const displayManualEdited = report.reportEditedManually ? (
+    <KeyValue
+      data-test-custom-reports-edited-manually
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.general.manualChanges',
+      })}
+      value={manualEditedText()}
+    />
+  ) : (
+    ''
+  );
+
+  const headerSection = (
+    <MenuSection
+      id="menu-actions"
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.general.report',
+      })}
+      labelTag="h3"
+    >
+      <KeyValue label="Usage data provider" value={udpLabel} />
       <KeyValue
-        data-test-report-failed-reason
         label={intl.formatMessage({
-          id: 'ui-erm-usage.general.info',
+          id: 'ui-erm-usage.general.type',
         })}
-        value={this.adaptSushiFailedInfo(report.failedReason)}
+        value={report.reportName}
       />
-    );
-
-    const failedAttempts = !report.failedAttempts ? null : (
       <KeyValue
         label={intl.formatMessage({
-          id: 'ui-erm-usage.report.action.failedAttempts',
+          id: 'ui-erm-usage.general.date',
         })}
-        value={intl.formatMessage(
-          {
-            id: 'ui-erm-usage.statistics.report.info.maxAttempts',
-          },
-          {
-            current: report.failedAttempts,
-            max: retryThreshold,
-          }
-        )}
+        value={report.yearMonth}
       />
-    );
+      {displayManualEdited}
+      {failInfo}
+      {failedAttempts}
+    </MenuSection>
+  );
 
-    const displayManualEdited = report.reportEditedManually ? (
-      <KeyValue
-        data-test-custom-reports-edited-manually
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.manualChanges',
-        })}
-        value={this.manualEditedText()}
-      />
-    ) : (
-      ''
-    );
+  const rawDownloadButton = renderRawDownloadButton(report);
 
-    const headerSection = (
-      <MenuSection
-        id="menu-actions"
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.report',
-        })}
-        labelTag="h3"
-      >
-        <KeyValue label="Usage data provider" value={this.props.udpLabel} />
-        <KeyValue
-          label={intl.formatMessage({
-            id: 'ui-erm-usage.general.type',
-          })}
-          value={report.reportName}
-        />
-        <KeyValue
-          label={intl.formatMessage({
-            id: 'ui-erm-usage.general.date',
-          })}
-          value={report.yearMonth}
-        />
-        {displayManualEdited}
-        {failInfo}
-        {failedAttempts}
-      </MenuSection>
-    );
+  const csvDownloadButton = renderCSVDownloadButton(report);
+  const xslxDownloadButton = renderXLSXDownloadButton(report);
 
-    const rawDownloadButton = this.renderRawDownloadButton(report);
+  const actionSection = (
+    <MenuSection
+      id="menu-actions"
+      label={intl.formatMessage({
+        id: 'ui-erm-usage.general.actions',
+      })}
+      labelTag="h3"
+    >
+      {renderDeleteButton(failInfo)}
+      {rawDownloadButton}
+      {csvDownloadButton}
+      {xslxDownloadButton}
+    </MenuSection>
+  );
 
-    const csvDownloadButton = this.renderCSVDownloadButton(report);
-    const xslxDownloadButton = this.renderXLSXDownloadButton(report);
-
-    const actionSection = (
-      <MenuSection
-        id="menu-actions"
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.actions',
-        })}
-        labelTag="h3"
-      >
-        {this.renderDeleteButton(failInfo)}
-        {rawDownloadButton}
-        {csvDownloadButton}
-        {xslxDownloadButton}
-      </MenuSection>
-    );
-
-    return (
-      <>
-        {headerSection}
-        {actionSection}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {headerSection}
+      {actionSection}
+    </>
+  );
+};
 
 ReportInfo.propTypes = {
   report: PropTypes.object,
