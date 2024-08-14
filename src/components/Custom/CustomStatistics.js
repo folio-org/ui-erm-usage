@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+
 import {
   Accordion,
   AccordionSet,
@@ -10,8 +11,8 @@ import {
   MultiColumnList,
   Row,
 } from '@folio/stripes/components';
-import InfoButton from './InfoButton';
 
+import InfoButton from './InfoButton';
 import css from './CustomStatistics.css';
 
 function CustomStatistics(props) {

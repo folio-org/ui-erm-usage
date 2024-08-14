@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import React from 'react';
+import { isNil } from 'lodash';
 import PropTypes from 'prop-types';
 
 import CustomReportInfoFile from './CustomReportInfoFile';
@@ -8,7 +7,7 @@ import CustomReportInfoLink from './CustomReportInfoLink';
 function CustomReportInfo(props) {
   const { customReport, handlers, onDelete, udpLabel } = props;
 
-  if (!_.isNil(customReport.fileId)) {
+  if (!isNil(customReport.fileId)) {
     return (
       <CustomReportInfoFile
         customReport={customReport}

@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { KeyValue, MenuSection } from '@folio/stripes/components';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 
