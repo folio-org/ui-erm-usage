@@ -1,8 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Col, Row, TextField } from '@folio/stripes/components';
+
 import { notRequired, required } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {

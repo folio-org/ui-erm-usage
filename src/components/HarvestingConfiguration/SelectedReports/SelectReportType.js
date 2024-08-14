@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
+
 import {
   Button,
   Col,
