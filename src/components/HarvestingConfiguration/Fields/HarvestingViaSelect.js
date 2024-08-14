@@ -1,7 +1,7 @@
-import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
+
 import { Select } from '@folio/stripes/components';
 
 import { required, notRequired } from '../../../util/validate';

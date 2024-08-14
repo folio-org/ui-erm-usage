@@ -136,7 +136,7 @@ class HarvestingConfigurationForm extends React.Component {
               <Row>
                 <AggregatorInfoForm
                   aggregators={aggregators}
-                  required={isHarvestingStatusActive}
+                  isRequired={isHarvestingStatusActive}
                   disabled={harvestVia !== 'aggregator'}
                 />
               </Row>

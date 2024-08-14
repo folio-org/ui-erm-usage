@@ -1,18 +1,19 @@
-import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+
 import { Row, Col, KeyValue, NoValue } from '@folio/stripes/components';
+
 import AggregatorContactInfo from './AggregatorContactInfo';
 
 const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
-  const aggregatorId = _.get(
+  const aggregatorId = get(
     usageDataProvider,
     'harvestingConfig.aggregator.id',
     ''
   );
-  const aggregatorName = _.get(
+  const aggregatorName = get(
     usageDataProvider,
     'harvestingConfig.aggregator.name',
     ''

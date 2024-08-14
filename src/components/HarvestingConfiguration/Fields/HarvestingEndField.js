@@ -1,16 +1,9 @@
-import React from 'react';
-import {
-  Field,
-} from 'react-final-form';
-import {
-  FormattedMessage
-} from 'react-intl';
-import {
-  TextField
-} from '@folio/stripes/components';
-import {
-  yearMonth
-} from '../../../util/validate';
+import { Field } from 'react-final-form';
+import { FormattedMessage } from 'react-intl';
+
+import { TextField } from '@folio/stripes/components';
+
+import { yearMonth } from '../../../util/validate';
 
 const HarvestingEndField = () => (
   <Field
