@@ -1,5 +1,5 @@
-import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { noop } from 'lodash';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -27,72 +27,81 @@ import {
 import UDPFilters from '../UDPFilters/UDPFilters';
 import urls from '../../util/urls';
 
-class UDPs extends React.Component {
-  constructor(props) {
-    super(props);
-    this.resultsPaneTitleRef = createRef();
-  }
+const UDPs = ({
+  children,
+  contentRef,
+  data = {},
+  history,
+  location,
+  intl,
+  onNeedMoreData,
+  onSelectRow,
+  queryGetter,
+  querySetter,
+  searchField,
+  searchString = '',
+  selectedRecordId,
+  source,
+  syncToLocationSearch = true,
+  visibleColumns = ['label', 'harvestingStatus', 'latestStats', 'aggregator'],
+}) => {
+  const resultsPaneTitleRef = useRef();
 
-  state = {
-    filterPaneIsVisible: true,
-    recordsArePending: true,
-    searchPending: false,
-  };
+  const [filterPaneIsVisible, setFilterPaneIsVisible] = useState(true);
+  const [recordsArePending, setRecordsArePending] = useState(true);
+  const [searchPending, setSearchPending] = useState(false);
 
-  static getDerivedStateFromProps(props) {
-    return {
-      recordsArePending: props.source?.pending() ?? true
-    };
-  }
+  useEffect(() => {
+    setRecordsArePending(source?.pending() ?? true);
+  }, [source]);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.searchPending &&
-      prevState.recordsArePending === true
-      && this.state.recordsArePending === false
-    ) {
-      this.onSearchComplete();
-    }
-  }
+  const onSearchComplete = () => {
+    const hasResults = !!(source?.totalCount() ?? 0);
 
-  handleSubmitSearch = (e, onSubmitSearch) => {
-    this.setState({ searchPending: true });
-
-    onSubmitSearch(e);
-  }
-
-  onSearchComplete = () => {
-    const hasResults = !!(this.props.source?.totalCount() ?? 0);
-
-    this.setState({ searchPending: false });
+    setSearchPending(false);
 
     // Focus the pane header if we have results to minimize tabbing distance
     if (
       hasResults &&
-      this.resultsPaneTitleRef.current) {
-      this.resultsPaneTitleRef.current.focus();
+      resultsPaneTitleRef.current) {
+      resultsPaneTitleRef.current.focus();
     }
-  }
+  };
 
-  columnMapping = {
+  useEffect(() => {
+    if (searchPending && recordsArePending === false) {
+      onSearchComplete();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchPending, recordsArePending]);
+
+  const handleSubmitSearch = (e, onSubmitSearch) => {
+    setSearchPending(true);
+
+    onSubmitSearch(e);
+  };
+
+  const columnMapping = {
     label: <FormattedMessage id="ui-erm-usage.information.providerName" />,
-    harvestingStatus: (
-      <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />
-    ),
-    latestStats: (
-      <FormattedMessage id="ui-erm-usage.information.latestStatistics" />
-    ),
+    harvestingStatus: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
+    latestStats: <FormattedMessage id="ui-erm-usage.information.latestStatistics" />,
     aggregator: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
   };
 
-  columnWidths = {
+  const columnWidths = {
     label: 300,
     harvestingStatus: 150,
     latestStats: 150,
     aggregator: 200,
   };
 
-  formatter = {
+  const getAggregatorName = (udp) => {
+    return (udp.harvestingConfig.harvestVia === 'aggregator' && udp.harvestingConfig.aggregator) ?
+      udp.harvestingConfig.aggregator.name :
+      <NoValue />;
+  };
+
+  const formatter = {
     label: (udp) => udp.label,
     harvestingStatus: (udp) => (
       <FormattedMessage
@@ -100,18 +109,22 @@ class UDPs extends React.Component {
       />
     ),
     latestStats: (udp) => udp.latestReport,
-    aggregator: (udp) => this.getAggregatorName(udp),
+    aggregator: (udp) => getAggregatorName(udp),
   };
 
-  rowFormatter = (row) => {
+  const rowURL = (id) => {
+    return `${urls.udpView(id)}${searchString}`;
+  };
+
+  const rowFormatter = (row) => {
     const { rowClass, rowData, rowIndex, rowProps = {}, cells } = row;
     let RowComponent;
 
-    if (this.props.onSelectRow) {
+    if (onSelectRow) {
       RowComponent = 'div';
     } else {
       RowComponent = Link;
-      rowProps.to = this.rowURL(rowData.id);
+      rowProps.to = rowURL(rowData.id);
     }
 
     return (
@@ -128,42 +141,30 @@ class UDPs extends React.Component {
     );
   };
 
-  rowURL = (id) => {
-    return `${urls.udpView(id)}${this.props.searchString}`;
+  const toggleFilterPane = () => {
+    setFilterPaneIsVisible(curState => !curState);
   };
 
-  toggleFilterPane = () => {
-    this.setState((curState) => ({
-      filterPaneIsVisible: !curState.filterPaneIsVisible,
-    }));
+  const createNewUdp = () => {
+    history.push(`${urls.udpCreate()}${searchString}`);
   };
 
-  createNewUdp = () => {
-    this.props.history.push(`${urls.udpCreate()}${this.props.searchString}`);
-  }
-
-  shortcuts = [
+  const shortcuts = [
     {
       name: 'new',
-      handler: this.createNewUdp,
+      handler: createNewUdp,
     },
   ];
 
-  getAggregatorName = (udp) => {
-    return (udp.harvestingConfig.harvestVia === 'aggregator' && udp.harvestingConfig.aggregator) ?
-      udp.harvestingConfig.aggregator.name :
-      <NoValue />;
-  };
-
-  renderIsEmptyMessage = (query, source) => {
-    if (!source) {
+  const renderIsEmptyMessage = (query, result) => {
+    if (!result) {
       return 'no source yet';
     }
 
     return (
       <div data-test-udps-no-results-message>
         <NoResultsMessage
-          source={source}
+          source={result}
           searchTerm={query.query || ''}
           filterPaneIsVisible
           toggleFilterPane={noop}
@@ -172,8 +173,7 @@ class UDPs extends React.Component {
     );
   };
 
-  renderResultsFirstMenu = (filters) => {
-    const { filterPaneIsVisible } = this.state;
+  const renderResultsFirstMenu = (filters) => {
     const filterCount =
       filters.string !== '' ? filters.string.split(',').length : 0;
     if (filterPaneIsVisible) {
@@ -184,15 +184,15 @@ class UDPs extends React.Component {
       <PaneMenu>
         <ExpandFilterPaneButton
           filterCount={filterCount}
-          onClick={this.toggleFilterPane}
+          onClick={toggleFilterPane}
         />
       </PaneMenu>
     );
   };
 
-  renderResultsPaneSubtitle = (source) => {
-    if (source && source.loaded()) {
-      const count = source.totalCount();
+  const renderResultsPaneSubtitle = (result) => {
+    if (result && result.loaded()) {
+      const count = result.totalCount();
       return (
         <FormattedMessage
           id="stripes-smart-components.searchResultsCountHeader"
@@ -204,8 +204,7 @@ class UDPs extends React.Component {
     return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
   };
 
-  renderActionMenu = () => {
-    const { intl, location } = this.props;
+  const renderActionMenu = () => {
     return (
       <>
         <div>
@@ -215,7 +214,7 @@ class UDPs extends React.Component {
               buttonStyle="dropDownItem"
               id="clickable-new-udp"
               marginBottom0
-              to={`${urls.udpCreate()}${this.props.searchString}`}
+              to={`${urls.udpCreate()}${searchString}`}
             >
               <Icon icon="plus-sign">
                 <FormattedMessage id="stripes-smart-components.new" />
@@ -240,14 +239,14 @@ class UDPs extends React.Component {
         </div>
       </>
     );
-  }
+  };
 
-  renderFilterPaneHeader = () => {
+  const renderFilterPaneHeader = () => {
     return (
       <PaneHeader
         lastMenu={
           <PaneMenu>
-            <CollapseFilterPaneButton onClick={this.toggleFilterPane} />
+            <CollapseFilterPaneButton onClick={toggleFilterPane} />
           </PaneMenu>
         }
         paneTitle={<FormattedMessage id="stripes-smart-components.searchAndFilter" />}
@@ -255,159 +254,142 @@ class UDPs extends React.Component {
     );
   };
 
-  renderResultsPaneHeader = (activeFilters, source) => {
+  const renderResultsPaneHeader = (activeFilters, result) => {
     return (
       <PaneHeader
         appIcon={<AppIcon app="erm-usage" />}
-        firstMenu={this.renderResultsFirstMenu(activeFilters)}
-        actionMenu={this.renderActionMenu}
+        firstMenu={renderResultsFirstMenu(activeFilters)}
+        actionMenu={renderActionMenu}
         id="pane-list-udps"
         paneTitle={<FormattedMessage id="ui-erm-usage.usage-data-providers" />}
-        paneTitleRef={this.resultsPaneTitleRef}
-        paneSub={this.renderResultsPaneSubtitle(source)}
+        paneTitleRef={resultsPaneTitleRef}
+        paneSub={renderResultsPaneSubtitle(result)}
       />
     );
   };
 
-  render() {
-    const {
-      children,
-      contentRef,
-      data,
-      intl,
-      onNeedMoreData,
-      onSelectRow,
-      queryGetter,
-      querySetter,
-      selectedRecordId,
-      source,
-      syncToLocationSearch,
-      visibleColumns,
-    } = this.props;
+  const query = queryGetter() || {};
+  const count = source ? source.totalCount() : 0;
+  const sortOrder = query.sort || '';
 
-    const query = queryGetter() || {};
-    const count = source ? source.totalCount() : 0;
-    const sortOrder = query.sort || '';
-
-    return (
-      <HasCommand commands={this.shortcuts}>
-        <div data-test-udp-instances ref={contentRef}>
-          <SearchAndSortQuery
-            initialFilterState={{
-              harvestingStatus: ['active'],
-            }}
-            initialSearchState={{ query: '' }}
-            initialSortState={{ sort: 'label' }}
-            queryGetter={queryGetter}
-            querySetter={querySetter}
-            syncToLocationSearch={syncToLocationSearch}
-          >
-            {({
-              searchValue,
-              getSearchHandlers,
-              onSubmitSearch,
-              onSort,
-              getFilterHandlers,
-              activeFilters,
-              filterChanged,
-              searchChanged,
-              resetAll,
-            }) => {
-              const disableReset = () => !filterChanged && !searchChanged;
-              return (
-                <Paneset id="udps-paneset">
-                  {this.state.filterPaneIsVisible && (
-                    <Pane
-                      defaultWidth="20%"
-                      renderHeader={this.renderFilterPaneHeader}
-                    >
-                      <form
-                        onSubmit={e => this.handleSubmitSearch(e, onSubmitSearch)}
-                      >
-                        <div>
-                          <SearchField
-                            ariaLabel={intl.formatMessage({
-                              id: 'ui-erm-usage.udp.searchInputLabel',
-                            })}
-                            autoFocus
-                            data-test-udp-search-input
-                            id="input-udp-search"
-                            inputRef={this.searchField}
-                            name="query"
-                            onChange={getSearchHandlers().query}
-                            onClear={getSearchHandlers().reset}
-                            value={searchValue.query}
-                          />
-                          <Button
-                            buttonStyle="primary"
-                            disabled={
-                              !searchValue.query || searchValue.query === ''
-                            }
-                            fullWidth
-                            id="clickable-search-udps"
-                            type="submit"
-                          >
-                            <FormattedMessage id="stripes-smart-components.search" />
-                          </Button>
-                        </div>
-                        <div>
-                          <Button
-                            buttonStyle="none"
-                            id="clickable-reset-all"
-                            disabled={disableReset()}
-                            onClick={resetAll}
-                          >
-                            <Icon icon="times-circle-solid">
-                              <FormattedMessage id="stripes-smart-components.resetAll" />
-                            </Icon>
-                          </Button>
-                        </div>
-                      </form>
-                      <UDPFilters
-                        activeFilters={activeFilters.state}
-                        data={data}
-                        filterHandlers={getFilterHandlers()}
-                      />
-                    </Pane>
-                  )}
+  return (
+    <HasCommand commands={shortcuts}>
+      <div data-test-udp-instances ref={contentRef}>
+        <SearchAndSortQuery
+          initialFilterState={{
+            harvestingStatus: ['active'],
+          }}
+          initialSearchState={{ query: '' }}
+          initialSortState={{ sort: 'label' }}
+          queryGetter={queryGetter}
+          querySetter={querySetter}
+          syncToLocationSearch={syncToLocationSearch}
+        >
+          {({
+            searchValue,
+            getSearchHandlers,
+            onSubmitSearch,
+            onSort,
+            getFilterHandlers,
+            activeFilters,
+            filterChanged,
+            searchChanged,
+            resetAll,
+          }) => {
+            const disableReset = () => !filterChanged && !searchChanged;
+            return (
+              <Paneset id="udps-paneset">
+                {filterPaneIsVisible && (
                   <Pane
-                    defaultWidth="fill"
-                    padContent={false}
-                    id="pane-list-udps"
-                    renderHeader={() => this.renderResultsPaneHeader(activeFilters, source)}
+                    defaultWidth="20%"
+                    renderHeader={renderFilterPaneHeader}
                   >
-                    <MultiColumnList
-                      autosize
-                      columnMapping={this.columnMapping}
-                      columnWidths={this.columnWidths}
-                      contentData={data.udps}
-                      formatter={this.formatter}
-                      id="list-udps"
-                      isEmptyMessage={this.renderIsEmptyMessage(query, source)}
-                      onHeaderClick={onSort}
-                      onNeedMoreData={onNeedMoreData}
-                      isSelected={({ item }) => item.id === selectedRecordId}
-                      onRowClick={onSelectRow}
-                      rowFormatter={this.rowFormatter}
-                      sortDirection={
-                        sortOrder.startsWith('-') ? 'descending' : 'ascending'
-                      }
-                      sortOrder={sortOrder.replace(/^-/, '').replace(/,.*/, '')}
-                      totalCount={count}
-                      virtualize
-                      visibleColumns={visibleColumns}
+                    <form
+                      onSubmit={e => handleSubmitSearch(e, onSubmitSearch)}
+                    >
+                      <div>
+                        <SearchField
+                          ariaLabel={intl.formatMessage({
+                            id: 'ui-erm-usage.udp.searchInputLabel',
+                          })}
+                          autoFocus
+                          data-test-udp-search-input
+                          id="input-udp-search"
+                          inputRef={searchField}
+                          name="query"
+                          onChange={getSearchHandlers().query}
+                          onClear={getSearchHandlers().reset}
+                          value={searchValue.query}
+                        />
+                        <Button
+                          buttonStyle="primary"
+                          disabled={
+                            !searchValue.query || searchValue.query === ''
+                          }
+                          fullWidth
+                          id="clickable-search-udps"
+                          type="submit"
+                        >
+                          <FormattedMessage id="stripes-smart-components.search" />
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          buttonStyle="none"
+                          id="clickable-reset-all"
+                          disabled={disableReset()}
+                          onClick={resetAll}
+                        >
+                          <Icon icon="times-circle-solid">
+                            <FormattedMessage id="stripes-smart-components.resetAll" />
+                          </Icon>
+                        </Button>
+                      </div>
+                    </form>
+                    <UDPFilters
+                      activeFilters={activeFilters.state}
+                      data={data}
+                      filterHandlers={getFilterHandlers()}
                     />
                   </Pane>
-                  {children}
-                </Paneset>
-              );
-            }}
-          </SearchAndSortQuery>
-        </div>
-      </HasCommand>
-    );
-  }
-}
+                )}
+                <Pane
+                  defaultWidth="fill"
+                  padContent={false}
+                  id="pane-list-udps"
+                  renderHeader={() => renderResultsPaneHeader(activeFilters, source)}
+                >
+                  <MultiColumnList
+                    autosize
+                    columnMapping={columnMapping}
+                    columnWidths={columnWidths}
+                    contentData={data.udps}
+                    formatter={formatter}
+                    id="list-udps"
+                    isEmptyMessage={renderIsEmptyMessage(query, source)}
+                    onHeaderClick={onSort}
+                    onNeedMoreData={onNeedMoreData}
+                    isSelected={({ item }) => item.id === selectedRecordId}
+                    onRowClick={onSelectRow}
+                    rowFormatter={rowFormatter}
+                    sortDirection={
+                      sortOrder.startsWith('-') ? 'descending' : 'ascending'
+                    }
+                    sortOrder={sortOrder.replace(/^-/, '').replace(/,.*/, '')}
+                    totalCount={count}
+                    virtualize
+                    visibleColumns={visibleColumns}
+                  />
+                </Pane>
+                {children}
+              </Paneset>
+            );
+          }}
+        </SearchAndSortQuery>
+      </div>
+    </HasCommand>
+  );
+};
 
 UDPs.propTypes = Object.freeze({
   children: PropTypes.object,
@@ -423,6 +405,7 @@ UDPs.propTypes = Object.freeze({
   onSelectRow: PropTypes.func,
   queryGetter: PropTypes.func.isRequired,
   querySetter: PropTypes.func.isRequired,
+  searchField: PropTypes.object,
   searchString: PropTypes.string,
   selectedRecordId: PropTypes.string,
   source: PropTypes.shape({
@@ -433,12 +416,5 @@ UDPs.propTypes = Object.freeze({
   syncToLocationSearch: PropTypes.bool,
   visibleColumns: PropTypes.arrayOf(PropTypes.string),
 });
-
-UDPs.defaultProps = {
-  data: {},
-  searchString: '',
-  syncToLocationSearch: true,
-  visibleColumns: ['label', 'harvestingStatus', 'latestStats', 'aggregator'],
-};
 
 export default injectIntl(UDPs);

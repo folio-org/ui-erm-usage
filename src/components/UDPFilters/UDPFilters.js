@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { find, get, isEmpty } from 'lodash';
 
@@ -16,35 +16,27 @@ import {
 import filterGroups from '../../util/data/filterGroups';
 import isSushiWarningCode from '../../util/isSushiWarningCode';
 
-class UDPFilters extends React.Component {
-  static isFilterDefinedLocally = filter => {
+const UDPFilters = ({
+  activeFilters = {},
+  data,
+  filterHandlers,
+  intl,
+}) => {
+  const [filterState, setFilterState] = useState({
+    harvestingStatus: [],
+    harvestVia: [],
+    aggregators: [],
+    hasFailedReport: [],
+    tags: [],
+    errorCodes: [],
+    reportTypes: [],
+  });
+
+  const isFilterDefinedLocally = filter => {
     return filter && !isEmpty(filter.values);
   };
 
-  static getRemoteDefinedFilterVals = (data, intl, filterName) => {
-    const inputVals = data[`${filterName}`] || [];
-    if (filterName === 'errorCodes') {
-      // we need to translate numeric error codes to human readable text...
-      return inputVals.map(entry => {
-        return UDPFilters.translateErrorCodesFilterValues(entry, intl);
-      });
-    } else {
-      return inputVals.map(entry => {
-        const val = get(entry, 'label', entry);
-        return {
-          label: val,
-          value: val
-        };
-      });
-    }
-  };
-
-  static isWarningCode = code => {
-    const val = parseInt(code, 10);
-    return val >= 1 && val <= 999;
-  };
-
-  static translateErrorCodesFilterValues = (entry, intl) => {
+  const translateErrorCodesFilterValues = (entry) => {
     const val = get(entry, 'label', entry);
     let label;
     if (isSushiWarningCode(val)) {
@@ -62,18 +54,25 @@ class UDPFilters extends React.Component {
     };
   };
 
-  static propTypes = Object.freeze({
-    activeFilters: PropTypes.object,
-    data: PropTypes.object.isRequired,
-    filterHandlers: PropTypes.object,
-    intl: PropTypes.object
-  });
-
-  static defaultProps = {
-    activeFilters: {}
+  const getRemoteDefinedFilterVals = (filterData, filterName) => {
+    const inputVals = filterData[`${filterName}`] || [];
+    if (filterName === 'errorCodes') {
+      // we need to translate numeric error codes to human readable text...
+      return inputVals.map(entry => {
+        return translateErrorCodesFilterValues(entry);
+      });
+    } else {
+      return inputVals.map(entry => {
+        const val = get(entry, 'label', entry);
+        return {
+          label: val,
+          value: val
+        };
+      });
+    }
   };
 
-  static getDerivedStateFromProps(props, state) {
+  useEffect(() => {
     const newState = {};
     const arr = [];
 
@@ -81,7 +80,7 @@ class UDPFilters extends React.Component {
       const filterName = filter.name;
       const currentFilter = find(filterGroups, { name: filterName });
       let newValues = {};
-      if (UDPFilters.isFilterDefinedLocally(currentFilter)) {
+      if (isFilterDefinedLocally(currentFilter)) {
         newValues = currentFilter.values.map(key => {
           return {
             value: key.cql,
@@ -89,40 +88,23 @@ class UDPFilters extends React.Component {
           };
         });
       } else {
-        newValues = UDPFilters.getRemoteDefinedFilterVals(
-          props.data,
-          props.intl,
-          filterName
-        );
+        newValues = getRemoteDefinedFilterVals(data, filterName);
       }
 
       arr[filterName] = newValues;
 
-      if (
-        state[filterName] &&
-        arr[filterName].length !== state[filterName].length
-      ) {
+      if (filterState[filterName] && arr[filterName].length !== filterState[filterName].length) {
         newState[filterName] = arr[filterName];
       }
     });
 
-    if (Object.keys(newState).length) return newState;
+    if (Object.keys(newState).length) {
+      setFilterState(prevState => ({ ...prevState, ...newState }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, filterState]);
 
-    return null;
-  }
-
-  state = {
-    harvestingStatus: [],
-    harvestVia: [],
-    aggregators: [],
-    hasFailedReport: [],
-    tags: [],
-    errorCodes: [],
-    reportTypes: []
-  };
-
-  renderCheckboxFilter = (key, closedByDefault = false) => {
-    const { activeFilters } = this.props;
+  const renderCheckboxFilter = (key, closedByDefault = false) => {
     const groupFilters = activeFilters[key] || [];
 
     return (
@@ -133,15 +115,15 @@ class UDPFilters extends React.Component {
         id={`filter-accordion-${key}`}
         label={<FormattedMessage id={`ui-erm-usage.information.${key}`} />}
         onClearFilter={() => {
-          this.props.filterHandlers.clearGroup(key);
+          filterHandlers.clearGroup(key);
         }}
         separator={false}
       >
         <CheckboxFilter
-          dataOptions={this.state[key]}
+          dataOptions={filterState[key]}
           name={key}
           onChange={group => {
-            this.props.filterHandlers.state({
+            filterHandlers.state({
               ...activeFilters,
               [group.name]: group.values
             });
@@ -152,8 +134,7 @@ class UDPFilters extends React.Component {
     );
   };
 
-  renderTagsFilter = () => {
-    const { activeFilters } = this.props;
+  const renderTagsFilter = () => {
     const tagFilters = activeFilters.tags || [];
 
     return (
@@ -164,16 +145,16 @@ class UDPFilters extends React.Component {
         header={FilterAccordionHeader}
         label={<FormattedMessage id="ui-erm-usage.general.tags" />}
         onClearFilter={() => {
-          this.props.filterHandlers.clearGroup('tags');
+          filterHandlers.clearGroup('tags');
         }}
         separator={false}
       >
         <MultiSelectionFilter
           ariaLabelledBy="clickable-tags-filter"
-          dataOptions={this.state.tags}
+          dataOptions={filterState.tags}
           id="tags-filter"
           name="tags"
-          onChange={e => this.props.filterHandlers.state({
+          onChange={e => filterHandlers.state({
             ...activeFilters,
             tags: e.values
           })
@@ -184,8 +165,7 @@ class UDPFilters extends React.Component {
     );
   };
 
-  renderErrorCodesFilter = () => {
-    const { activeFilters } = this.props;
+  const renderErrorCodesFilter = () => {
     const errorCodesFilters = activeFilters.errorCodes || [];
 
     return (
@@ -196,16 +176,16 @@ class UDPFilters extends React.Component {
         header={FilterAccordionHeader}
         label={<FormattedMessage id="ui-erm-usage.general.errorCodes" />}
         onClearFilter={() => {
-          this.props.filterHandlers.clearGroup('errorCodes');
+          filterHandlers.clearGroup('errorCodes');
         }}
         separator={false}
       >
         <MultiSelectionFilter
           ariaLabelledBy="clickable-error-codes-filter"
-          dataOptions={this.state.errorCodes}
+          dataOptions={filterState.errorCodes}
           id="error-codes-filter"
           name="errorCodes"
-          onChange={e => this.props.filterHandlers.state({
+          onChange={e => filterHandlers.state({
             ...activeFilters,
             errorCodes: e.values
           })
@@ -216,8 +196,7 @@ class UDPFilters extends React.Component {
     );
   };
 
-  renderReportTypesFiler = () => {
-    const { activeFilters } = this.props;
+  const renderReportTypesFiler = () => {
     const reportTypesFilters = activeFilters.reportTypes || [];
 
     return (
@@ -228,16 +207,16 @@ class UDPFilters extends React.Component {
         header={FilterAccordionHeader}
         label={<FormattedMessage id="ui-erm-usage.general.reportTypes" />}
         onClearFilter={() => {
-          this.props.filterHandlers.clearGroup('reportTypes');
+          filterHandlers.clearGroup('reportTypes');
         }}
         separator={false}
       >
         <MultiSelectionFilter
           ariaLabelledBy="clickable-report-types-filter"
-          dataOptions={this.state.reportTypes}
+          dataOptions={filterState.reportTypes}
           id="report-types-filter"
           name="reportTypes"
-          onChange={e => this.props.filterHandlers.state({
+          onChange={e => filterHandlers.state({
             ...activeFilters,
             reportTypes: e.values
           })
@@ -246,21 +225,26 @@ class UDPFilters extends React.Component {
         />
       </Accordion>
     );
-  }
+  };
 
-  render() {
-    return (
-      <AccordionSet>
-        {this.renderCheckboxFilter('harvestingStatus')}
-        {this.renderCheckboxFilter('harvestVia')}
-        {this.renderCheckboxFilter('aggregators', true)}
-        {this.renderReportTypesFiler()}
-        {this.renderCheckboxFilter('hasFailedReport', true)}
-        {this.renderTagsFilter()}
-        {this.renderErrorCodesFilter()}
-      </AccordionSet>
-    );
-  }
-}
+  return (
+    <AccordionSet>
+      {renderCheckboxFilter('harvestingStatus')}
+      {renderCheckboxFilter('harvestVia')}
+      {renderCheckboxFilter('aggregators', true)}
+      {renderReportTypesFiler()}
+      {renderCheckboxFilter('hasFailedReport', true)}
+      {renderTagsFilter()}
+      {renderErrorCodesFilter()}
+    </AccordionSet>
+  );
+};
+
+UDPFilters.propTypes = {
+  activeFilters: PropTypes.object,
+  data: PropTypes.object.isRequired,
+  filterHandlers: PropTypes.object,
+  intl: PropTypes.object
+};
 
 export default injectIntl(UDPFilters);

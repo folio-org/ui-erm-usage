@@ -1,7 +1,8 @@
-import React from 'react';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { cloneDeep } from 'lodash';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import {
   AccordionSet,
   Button,
@@ -28,125 +29,81 @@ import { endDate } from '../../util/validate';
 
 import css from './UDPForm.css';
 
-class UDPForm extends React.Component {
-  static propTypes = {
-    data: PropTypes.shape({
-      aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
-      harvesterImpls: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
-    handlers: PropTypes.shape({
-      onClose: PropTypes.func.isRequired,
-      onDelete: PropTypes.func,
-    }),
-    initialValues: PropTypes.shape({
-      id: PropTypes.string,
-      label: PropTypes.string,
-      metadata: PropTypes.shape({
-        createdDate: PropTypes.string,
-      }),
-    }),
-    handleSubmit: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool,
-    onSubmit: PropTypes.func.isRequired,
-    pristine: PropTypes.bool,
-    store: PropTypes.object.isRequired,
-    submitting: PropTypes.bool,
+const UDPForm = ({
+  data,
+  handlers,
+  initialValues = {},
+  handleSubmit,
+  onSubmit,
+  pristine,
+  submitting,
+  ...props
+}) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [sections, setSections] = useState({
+    editUDPInfo: true,
+    editHarvestingConfig: true,
+    editNotes: false,
+  });
+
+  const toggleAllSections = (expand) => {
+    setSections(curState => expandAllFunction(curState, expand));
   };
 
-  static defaultProps = {
-    initialValues: {},
+  const expandAllSections = (e) => {
+    e.preventDefault();
+    toggleAllSections(true);
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      confirmDelete: false,
-      sections: {
-        editUDPInfo: true,
-        editHarvestingConfig: true,
-        editNotes: false,
-      },
-    };
-
-    this.shortcuts = [
-      {
-        name: 'save',
-        handler: this.handleSaveKeyCommand
-      },
-      {
-        name: 'expandAllSections',
-        handler: this.expandAllSections,
-      },
-      {
-        name: 'collapseAllSections',
-        handler: this.collapseAllSections,
-      }
-    ];
-
-    this.handleExpandAll = this.handleExpandAll.bind(this);
-  }
-
-  toggleAllSections = (expand) => {
-    this.setState((curState) => {
-      const newSections = expandAllFunction(curState.sections, expand);
-
-      return {
-        sections: newSections
-      };
-    });
-  }
-
-  expandAllSections = (e) => {
+  const collapseAllSections = (e) => {
     e.preventDefault();
-    this.toggleAllSections(true);
-  }
-
-  collapseAllSections = (e) => {
-    e.preventDefault();
-    this.toggleAllSections(false);
-  }
-
-  handleSaveKeyCommand = (e) => {
-    e.preventDefault();
-    this.executeSave();
+    toggleAllSections(false);
   };
 
-  executeSave() {
-    const { handleSubmit, onSubmit } = this.props;
-
+  const executeSave = () => {
     handleSubmit(onSubmit);
-  }
-
-  getFormName() {
-    return 'form-udProvider';
-  }
-
-  beginDelete = () => {
-    this.setState({
-      confirmDelete: true,
-    });
   };
 
-  confirmDelete = (confirmation) => {
+  const handleSaveKeyCommand = (e) => {
+    e.preventDefault();
+    executeSave();
+  };
+
+  const shortcuts = [
+    {
+      name: 'save',
+      handler: handleSaveKeyCommand
+    },
+    {
+      name: 'expandAllSections',
+      handler: expandAllSections,
+    },
+    {
+      name: 'collapseAllSections',
+      handler: collapseAllSections,
+    }
+  ];
+
+  const beginDelete = () => {
+    setConfirmDelete(true);
+  };
+
+  const doConfirmDelete = (confirmation) => {
     if (confirmation) {
-      this.props.handlers.onDelete(this.props.initialValues.id);
+      handlers.onDelete(initialValues.id);
     } else {
-      this.setState({ confirmDelete: false });
+      setConfirmDelete(false);
     }
   };
 
-  renderFirstMenu() {
-    const {
-      handlers: { onClose },
-    } = this.props;
+  const renderFirstMenu = () => {
     return (
       <PaneMenu>
         <FormattedMessage id="ui-erm-usage.udp.form.close">
           {([ariaLabel]) => (
             <IconButton
               id="clickable-close-udp-form-x"
-              onClick={onClose}
+              onClick={handlers.onClose}
               aria-label={ariaLabel}
               icon="times"
             />
@@ -154,11 +111,9 @@ class UDPForm extends React.Component {
         </FormattedMessage>
       </PaneMenu>
     );
-  }
+  };
 
-  renderLastMenu() {
-    const { initialValues } = this.props;
-    const { confirmDelete } = this.state;
+  const renderLastMenu = () => {
     const isEditing = initialValues && initialValues.id;
 
     return (
@@ -169,7 +124,7 @@ class UDPForm extends React.Component {
               id="clickable-delete-udp"
               title={<FormattedMessage id="ui-erm-usage.general.delete" />}
               buttonStyle="danger"
-              onClick={this.beginDelete}
+              onClick={beginDelete}
               disabled={confirmDelete}
               marginBottom0
             >
@@ -179,16 +134,9 @@ class UDPForm extends React.Component {
         )}
       </PaneMenu>
     );
-  }
+  };
 
-  renderPaneFooter() {
-    const {
-      handlers: { onClose },
-      handleSubmit,
-      pristine,
-      submitting,
-    } = this.props;
-
+  const renderPaneFooter = () => {
     const disabled = pristine || submitting;
 
     const startButton = (
@@ -197,7 +145,7 @@ class UDPForm extends React.Component {
         marginBottom0
         id="clickable-close-udp-form"
         buttonStyle="default mega"
-        onClick={onClose}
+        onClick={handlers.onClose}
       >
         <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
       </Button>
@@ -218,123 +166,131 @@ class UDPForm extends React.Component {
     );
 
     return <PaneFooter renderStart={startButton} renderEnd={endButton} />;
-  }
+  };
 
-  handleExpandAll(sections) {
-    this.setState({ sections });
-  }
+  const handleExpandAll = (secs) => {
+    setSections(secs);
+  };
 
-  handleKeyDown(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
-  }
-
-  handleSectionToggle = ({ id }) => {
-    this.setState((state) => {
-      const newState = _.cloneDeep(state);
-      newState.sections[id] = !newState.sections[id];
+  const handleSectionToggle = ({ id }) => {
+    setSections(state => {
+      const newState = cloneDeep(state);
+      newState[id] = !newState[id];
       return newState;
     });
   };
 
-  getConfirmationMessage = (udp) => {
+  const getConfirmationMessage = (udp) => {
     const name = udp.label || '';
     return (
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
-        values={{
-          name,
-        }}
+        values={{ name }}
       />
     );
   };
 
-  renderFormPaneHeader = () => (
+  const renderFormPaneHeader = () => (
     <PaneHeader
-      firstMenu={this.renderFirstMenu()}
-      lastMenu={this.renderLastMenu()}
-      paneTitle={this.props.initialValues.id ? this.props.initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
+      firstMenu={renderFirstMenu()}
+      lastMenu={renderLastMenu()}
+      paneTitle={initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
     />
   );
 
-  render() {
-    const {
-      initialValues,
-      handleSubmit,
-      data: { aggregators, harvesterImpls },
-    } = this.props;
-    const { confirmDelete, sections } = this.state;
-    const udp = initialValues || {};
+  const udp = initialValues || {};
 
-    const footer = this.renderPaneFooter();
+  const footer = renderPaneFooter();
 
-    return (
-      <HasCommand commands={this.shortcuts}>
-        <form
-          className={css.UDPFormRoot}
-          id="form-udp"
-          onSubmit={handleSubmit}
-          data-test-form-page
-        >
-          <Paneset isRoot>
-            <Pane
-              defaultWidth="100%"
-              footer={footer}
-              renderHeader={this.renderFormPaneHeader}
-            >
-              <div className={css.UDPFormContent}>
-                <AccordionSet>
-                  <Row end="xs">
-                    <Col xs>
-                      <ExpandAllButton
-                        id="clickable-expand-all"
-                        accordionStatus={sections}
-                        onToggle={this.handleExpandAll}
-                      />
-                    </Col>
-                  </Row>
-                  {initialValues.metadata &&
-                    initialValues.metadata.createdDate && (
-                      <ViewMetaData metadata={initialValues.metadata} />
-                  )}
-                  <UDPInfoForm
-                    accordionId="editUDPInfo"
-                    expanded={sections.editUDPInfo}
-                    onToggle={this.handleSectionToggle}
-                    {...this.props}
-                  />
-                  <HarvestingConfigurationForm
-                    accordionId="editHarvestingConfig"
-                    aggregators={aggregators}
-                    expanded={sections.editHarvestingConfig}
-                    onToggle={this.handleSectionToggle}
-                    harvesterImplementations={harvesterImpls}
-                    {...this.props}
-                  />
-                </AccordionSet>
-                <ConfirmationModal
-                  id="delete-udp-confirmation"
-                  open={confirmDelete}
-                  heading={
-                    <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
-                  }
-                  message={this.getConfirmationMessage(udp)}
-                  onConfirm={() => {
-                    this.confirmDelete(true);
-                  }}
-                  onCancel={() => {
-                    this.confirmDelete(false);
-                  }}
+  return (
+    <HasCommand commands={shortcuts}>
+      <form
+        className={css.UDPFormRoot}
+        id="form-udp"
+        onSubmit={handleSubmit}
+        data-test-form-page
+      >
+        <Paneset isRoot>
+          <Pane
+            defaultWidth="100%"
+            footer={footer}
+            renderHeader={renderFormPaneHeader}
+          >
+            <div className={css.UDPFormContent}>
+              <AccordionSet>
+                <Row end="xs">
+                  <Col xs>
+                    <ExpandAllButton
+                      id="clickable-expand-all"
+                      accordionStatus={sections}
+                      onToggle={handleExpandAll}
+                    />
+                  </Col>
+                </Row>
+                {initialValues.metadata &&
+                  initialValues.metadata.createdDate && (
+                    <ViewMetaData metadata={initialValues.metadata} />
+                )}
+                <UDPInfoForm
+                  accordionId="editUDPInfo"
+                  expanded={sections.editUDPInfo}
+                  onToggle={handleSectionToggle}
+                  {...props}
                 />
-              </div>
-            </Pane>
-          </Paneset>
-        </form>
-      </HasCommand>
-    );
-  }
-}
+                <HarvestingConfigurationForm
+                  accordionId="editHarvestingConfig"
+                  aggregators={data.aggregators}
+                  expanded={sections.editHarvestingConfig}
+                  onToggle={handleSectionToggle}
+                  harvesterImplementations={data.harvesterImpls}
+                  {...props}
+                />
+              </AccordionSet>
+              <ConfirmationModal
+                id="delete-udp-confirmation"
+                open={confirmDelete}
+                heading={
+                  <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
+                }
+                message={getConfirmationMessage(udp)}
+                onConfirm={() => {
+                  doConfirmDelete(true);
+                }}
+                onCancel={() => {
+                  doConfirmDelete(false);
+                }}
+              />
+            </div>
+          </Pane>
+        </Paneset>
+      </form>
+    </HasCommand>
+  );
+};
+
+UDPForm.propTypes = {
+  data: PropTypes.shape({
+    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
+    harvesterImpls: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  handlers: PropTypes.shape({
+    onClose: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+  }),
+  initialValues: PropTypes.shape({
+    id: PropTypes.string,
+    label: PropTypes.string,
+    metadata: PropTypes.shape({
+      createdDate: PropTypes.string,
+    }),
+  }),
+  handleSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool,
+  store: PropTypes.object.isRequired,
+  submitting: PropTypes.bool,
+};
 
 export default stripesFinalForm({
   navigationCheck: true,

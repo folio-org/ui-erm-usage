@@ -1,8 +1,9 @@
-import React from 'react';
 import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
 import { FormattedMessage } from 'react-intl';
 import { PropTypes } from 'prop-types';
+
 import { useStripes } from '@folio/stripes/core';
+
 import harvestingStatusOptions from '../../util/data/harvestingStatusOptions';
 import css from './UDPHeader.css';
 

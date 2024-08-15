@@ -199,6 +199,7 @@ class UDPsRoute extends React.Component {
         onNeedMoreData={this.handleNeedMoreData}
         queryGetter={this.queryGetter}
         querySetter={this.querySetter}
+        searchField={this.searchField}
         searchString={location.search}
         source={this.source}
         history={history}
