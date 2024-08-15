@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 const required = value => {

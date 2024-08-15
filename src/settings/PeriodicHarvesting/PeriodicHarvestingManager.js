@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { CalloutContext, IfPermission } from '@folio/stripes/core';
 import { ConfirmationModal, IconButton, Pane, PaneHeader, PaneMenu } from '@folio/stripes/components';

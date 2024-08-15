@@ -15,7 +15,7 @@ import { formatDateTime, splitDateTime } from '../../util/dateTimeProcessing';
 
 const PeriodicHarvestingView = ({
   periodicConfig,
-  intl
+  intl,
 }) => {
   const renderDetailView = (perConf) => {
     const { formatMessage, locale, timeZone } = intl;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
@@ -29,109 +29,100 @@ import NoteViewRoute from './routes/NoteViewRoute';
 import JobsViewRoute from './routes/JobsViewRoute';
 import Settings from './settings';
 
-class ErmUsage extends React.Component {
-  static propTypes = {
-    history: PropTypes.object,
-    match: ReactRouterPropTypes.match.isRequired,
-    showSettings: PropTypes.bool
-  };
+const ErmUsage = ({
+  history,
+  match,
+  showSettings,
+  ...props
+}) => {
+  const [showKeyboardShortcutsModal, setShowKeyboardShortcutsModal] = useState(false);
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showKeyboardShortcutsModal: false,
-    };
-  }
-
-  focusSearchField = () => {
-    const { history } = this.props;
+  const focusSearchField = () => {
     const el = document.getElementById('input-udp-search');
     if (el) {
       el.focus();
     } else {
       history.push(pkg.stripes.home);
     }
-  }
+  };
 
-  checkScope = () => {
+  const checkScope = () => {
     return document.body.contains(document.activeElement);
-  }
+  };
 
-  shortcuts = [
+  const shortcuts = [
     {
       name: 'search',
-      handler: this.focusSearchField
+      handler: focusSearchField
     }
   ];
 
-  shortcutModalToggle(handleToggle) {
-    handleToggle();
-    this.changeKeyboardShortcutsModal(true);
-  }
-
-  changeKeyboardShortcutsModal = (modalState) => {
-    this.setState({ showKeyboardShortcutsModal: modalState });
+  const changeKeyboardShortcutsModal = (modalState) => {
+    setShowKeyboardShortcutsModal(modalState);
   };
 
-  render() {
-    const {
-      showSettings,
-      match: { path }
-    } = this.props;
+  const shortcutModalToggle = (handleToggle) => {
+    handleToggle();
+    changeKeyboardShortcutsModal(true);
+  };
 
-    this.shortcutScope = document.body;
-    const allCommands = commands.concat(commandsGeneral);
+  const shortcutScope = document.body;
+  const allCommands = commands.concat(commandsGeneral);
 
-    if (showSettings) {
-      return <Settings {...this.props} />;
-    }
-
-    return (
-      <>
-        <CommandList commands={allCommands}>
-          <HasCommand
-            commands={this.shortcuts}
-            isWithinScope={this.checkScope}
-            scope={this.shortcutScope}
-          >
-            <AppContextMenu>
-              {(handleToggle) => (
-                <NavList>
-                  <NavListSection>
-                    <NavListItem
-                      id="keyboard-shortcuts-item"
-                      onClick={() => { this.shortcutModalToggle(handleToggle); }}
-                    >
-                      <FormattedMessage id="ui-erm-usage.appMenu.keyboardShortcuts" />
-                    </NavListItem>
-                  </NavListSection>
-                </NavList>
-              )}
-            </AppContextMenu>
-            <Switch>
-              <Route path={`${path}/notes/create`} component={NoteCreateRoute} />
-              <Route path={`${path}/notes/:id/edit`} component={NoteEditRoute} />
-              <Route path={`${path}/notes/:id`} component={NoteViewRoute} />
-              <Route path={`${path}/create`} component={UDPCreateRoute} />
-              <Route path={`${path}/:id/edit`} component={UDPEditRoute} />
-              <Route path={`${path}/jobs`} component={JobsViewRoute} />
-              <Route path={`${path}`} component={UDPsRoute}>
-                <Route path={`${path}/view/:id`} component={UDPViewRoute} />
-              </Route>
-            </Switch>
-          </HasCommand>
-        </CommandList>
-        { this.state.showKeyboardShortcutsModal && (
-          <KeyboardShortcutsModal
-            open
-            onClose={() => { this.changeKeyboardShortcutsModal(false); }}
-            allCommands={commands.concat(commandsGeneral)}
-          />
-        )}
-      </>
-    );
+  if (showSettings) {
+    return <Settings match={match} {...props} />;
   }
-}
+
+  return (
+    <>
+      <CommandList commands={allCommands}>
+        <HasCommand
+          commands={shortcuts}
+          isWithinScope={checkScope}
+          scope={shortcutScope}
+        >
+          <AppContextMenu>
+            {(handleToggle) => (
+              <NavList>
+                <NavListSection>
+                  <NavListItem
+                    id="keyboard-shortcuts-item"
+                    onClick={() => { shortcutModalToggle(handleToggle); }}
+                  >
+                    <FormattedMessage id="ui-erm-usage.appMenu.keyboardShortcuts" />
+                  </NavListItem>
+                </NavListSection>
+              </NavList>
+            )}
+          </AppContextMenu>
+          <Switch>
+            <Route path={`${match.path}/notes/create`} component={NoteCreateRoute} />
+            <Route path={`${match.path}/notes/:id/edit`} component={NoteEditRoute} />
+            <Route path={`${match.path}/notes/:id`} component={NoteViewRoute} />
+            <Route path={`${match.path}/create`} component={UDPCreateRoute} />
+            <Route path={`${match.path}/:id/edit`} component={UDPEditRoute} />
+            <Route path={`${match.path}/jobs`} component={JobsViewRoute} />
+            <Route path={`${match.path}`} component={UDPsRoute}>
+              <Route path={`${match.path}/view/:id`} component={UDPViewRoute} />
+            </Route>
+          </Switch>
+        </HasCommand>
+      </CommandList>
+      { showKeyboardShortcutsModal && (
+        <KeyboardShortcutsModal
+          open
+          onClose={() => { changeKeyboardShortcutsModal(false); }}
+          allCommands={commands.concat(commandsGeneral)}
+        />
+      )}
+    </>
+  );
+};
+
+ErmUsage.propTypes = {
+  history: PropTypes.object,
+  match: ReactRouterPropTypes.match.isRequired,
+  showSettings: PropTypes.bool
+};
 
 export default ErmUsage;

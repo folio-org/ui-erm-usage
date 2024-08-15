@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../test/jest/__mock__';
 import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
