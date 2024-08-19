@@ -46,6 +46,14 @@ describe('AggregatorDetails', () => {
     expect(screen.getByText('http://aggregagtor.de')).toBeVisible();
   });
 
+  test('should render Expand all', async () => {
+    expect(screen.getByText('Collapse all')).toBeVisible();
+    await userEvent.click(screen.getByText('Collapse all'));
+    expect(screen.getByText('Expand all')).toBeVisible();
+    await userEvent.click(screen.getByText('Expand all'));
+    expect(screen.getByText('Collapse all')).toBeVisible();
+  });
+
   describe('download credentials', () => {
     beforeEach(() => {
       downloadCredentials.mockImplementation(() => Promise.resolve());
