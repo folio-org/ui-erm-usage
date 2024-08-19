@@ -96,6 +96,12 @@ describe('UDP', () => {
       expect(screen.getByText('Delete reports')).toBeVisible();
     });
 
+    test('should render Expand all', async () => {
+      expect(screen.getByText('Expand all')).toBeVisible();
+      await userEvent.click(screen.getByText('Expand all'));
+      expect(screen.getByText('Collapse all')).toBeVisible();
+    });
+
     test('click upload counter report', async () => {
       await userEvent.click(screen.getByText('Upload COUNTER report'));
       const heading = screen.getByRole('heading', { name: 'Upload COUNTER report' });

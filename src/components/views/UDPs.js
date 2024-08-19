@@ -158,7 +158,7 @@ const UDPs = ({
 
   const renderIsEmptyMessage = (query, result) => {
     if (!result) {
-      return 'no source yet';
+      return <FormattedMessage id="ui-erm-usage.noSourceYet" />;
     }
 
     return (
