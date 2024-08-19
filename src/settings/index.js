@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
+
 import { Settings } from '@folio/stripes/smart-components';
+
 import MaxFailedAttempts from './MaxFailedAttempts';
 import StartHarvester from './StartHarvester';
 import AggregatorManager from './Aggregators/AggregatorManager';

@@ -1,7 +1,9 @@
-import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
+import { autofill, change, getFormValues, Field } from 'redux-form';
+import { useState } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
+
 import {
   Accordion,
   AccordionSet,
@@ -22,84 +24,31 @@ import {
 } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 import stripesForm from '@folio/stripes/form';
-import { autofill, change, getFormValues, Field } from 'redux-form';
+
 import DisplayContactsForm from './DisplayContactsForm';
 import { required, mail } from '../../util/validate';
 import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
-class AggregatorForm extends React.Component {
-  static propTypes = {
-    stripes: PropTypes.shape({
-      hasPerm: PropTypes.func.isRequired,
-      connect: PropTypes.func.isRequired,
-      store: PropTypes.shape({
-        dispatch: PropTypes.func.isRequired,
-        getState: PropTypes.func.isRequired,
-      }),
-    }).isRequired,
-    initialValues: PropTypes.object,
-    invalid: PropTypes.bool,
-    intl: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
-    onSave: PropTypes.func,
-    onCancel: PropTypes.func,
-    onRemove: PropTypes.func,
-    pristine: PropTypes.bool,
-    submitting: PropTypes.bool,
-    aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
-  };
+const AggregatorForm = ({
+  stripes,
+  initialValues,
+  invalid,
+  intl,
+  handleSubmit,
+  onSave,
+  onCancel,
+  onRemove,
+  pristine,
+  submitting,
+  aggregators,
+  ...props
+}) => {
+  const aggregator = initialValues || {};
 
-  constructor(props) {
-    super(props);
-
-    this.save = this.save.bind(this);
-    this.beginDelete = this.beginDelete.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
-    this.handleExpandAll = this.handleExpandAll.bind(this);
-    this.handleSectionToggle = this.handleSectionToggle.bind(this);
-
-    const { initialValues } = this.props;
-    const aggregator = initialValues || {};
-    const initialAggConfig = this.parseInitialAggConfig(aggregator);
-
-    this.state = {
-      aggregatorConfigFields: initialAggConfig,
-      confirmDelete: false,
-      sections: {
-        generalSection: true,
-        accountConfig: true,
-        aggregatorConfig: true,
-      },
-    };
-  }
-
-  getCurrentValues() {
-    const { store } = this.props.stripes;
-    const state = store.getState();
-    return getFormValues('aggreagtorForm')(state) || {};
-  }
-
-  hasConfigType(values) {
-    return (
-      !_.isEmpty(values) &&
-      !_.isEmpty(values.accountConfig) &&
-      !_.isEmpty(values.accountConfig.configType)
-    );
-  }
-
-  getSelectedConfigType() {
-    const currentVals = this.getCurrentValues();
-    if (this.hasConfigType(currentVals)) {
-      return currentVals.accountConfig.configType;
-    } else {
-      return null;
-    }
-  }
-
-  parseInitialAggConfig = (initialValues) => {
-    const { aggregatorConfig } = initialValues;
+  const parseInitialAggConfig = () => {
+    const { aggregatorConfig } = aggregator;
     if (_.isNil(aggregatorConfig)) {
       return [];
     }
@@ -114,41 +63,68 @@ class AggregatorForm extends React.Component {
     });
   };
 
-  save(data) {
-    this.props.onSave(data);
-  }
+  const initialAggConfig = parseInitialAggConfig();
 
-  beginDelete() {
-    this.setState({
-      confirmDelete: true,
-    });
-  }
+  const [aggregatorConfigFields, setAggregatorConfigFields] = useState(initialAggConfig);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [sections, setSections] = useState({
+    generalSection: true,
+    accountConfig: true,
+    aggregatorConfig: true,
+  });
 
-  confirmDelete(confirmation) {
-    const aggregator = this.props.initialValues;
-    if (confirmation) {
-      this.props.onRemove(aggregator);
+  const getCurrentValues = () => {
+    const state = stripes.store.getState();
+    return getFormValues('aggreagtorForm')(state) || {};
+  };
+
+  const hasConfigType = (values) => {
+    return (
+      !_.isEmpty(values) &&
+      !_.isEmpty(values.accountConfig) &&
+      !_.isEmpty(values.accountConfig.configType)
+    );
+  };
+
+  const getSelectedConfigType = () => {
+    const currentVals = getCurrentValues();
+    if (hasConfigType(currentVals)) {
+      return currentVals.accountConfig.configType;
     } else {
-      this.setState({ confirmDelete: false });
+      return null;
     }
-  }
+  };
 
-  getFirstMenu() {
+  const save = (data) => {
+    onSave(data);
+  };
+
+  const beginDelete = () => {
+    setConfirmDelete(true);
+  };
+
+  const doConfirmDelete = (confirmation) => {
+    if (confirmation) {
+      onRemove(initialValues);
+    } else {
+      setConfirmDelete(false);
+    }
+  };
+
+  const getFirstMenu = () => {
     return (
       <PaneMenu>
         <IconButton
           id="clickable-close-service-point"
-          onClick={this.props.onCancel}
+          onClick={onCancel}
           icon="times"
           aria-label="Cancel"
         />
       </PaneMenu>
     );
-  }
+  };
 
-  getLastMenu() {
-    const { initialValues } = this.props;
-    const { confirmDelete } = this.state;
+  const getLastMenu = () => {
     const edit = initialValues && initialValues.id;
 
     return (
@@ -158,7 +134,7 @@ class AggregatorForm extends React.Component {
             <Button
               id="clickable-delete-aggregator"
               buttonStyle="danger"
-              onClick={this.beginDelete}
+              onClick={beginDelete}
               disabled={confirmDelete}
               marginBottom0
             >
@@ -168,11 +144,9 @@ class AggregatorForm extends React.Component {
         )}
       </PaneMenu>
     );
-  }
+  };
 
-  getPaneFooter() {
-    const { pristine, submitting, invalid, onCancel } = this.props;
-
+  const getPaneFooter = () => {
     const disabled = pristine || submitting || invalid;
 
     const startButton = (
@@ -201,295 +175,261 @@ class AggregatorForm extends React.Component {
     );
 
     return <PaneFooter renderStart={startButton} renderEnd={endButton} />;
-  }
+  };
 
-  handleSectionToggle({ id }) {
-    this.setState((curState) => {
-      const newState = _.cloneDeep(curState);
-      newState.sections[id] = !newState.sections[id];
-      return newState;
-    });
-  }
-
-  handleExpandAll(sections) {
-    this.setState((curState) => {
-      const newState = _.cloneDeep(curState);
-      newState.sections = sections;
-      return newState;
-    });
-  }
-
-  handleAddConfigField = () => {
-    this.setState(({ aggregatorConfigFields }) => ({
-      aggregatorConfigFields: aggregatorConfigFields.concat({}),
+  const handleSectionToggle = ({ id }) => {
+    setSections((curState) => ({
+      ...curState,
+      [id]: !curState[id]
     }));
   };
 
-  handleRemoveConfigField = (index) => {
-    const currentConf = this.state.aggregatorConfigFields[index];
-    this.setState(
-      ({ aggregatorConfigFields }) => ({
-        aggregatorConfigFields: [
-          ...aggregatorConfigFields.slice(0, index),
-          ...aggregatorConfigFields.slice(index + 1),
-        ],
-      }),
-      () => {
-        this.props.stripes.store.dispatch(
-          autofill(
-            'aggreagtorForm',
-            `aggregatorConfig.${currentConf.key}`,
-            undefined
-          )
-        );
-      }
+  const handleExpandAll = (secs) => {
+    setSections(secs);
+  };
+
+  const handleAddConfigField = () => {
+    setAggregatorConfigFields((fields) => fields.concat({}));
+  };
+
+  const handleRemoveConfigField = (index) => {
+    const currentConf = aggregatorConfigFields[index];
+    setAggregatorConfigFields((fileds) => [
+      ...fileds.slice(0, index),
+      ...fileds.slice(index + 1),
+    ]);
+
+    stripes.store.dispatch(
+      autofill(
+        'aggreagtorForm',
+        `aggregatorConfig.${currentConf.key}`,
+        undefined
+      )
     );
   };
 
-  handleConfigFieldChange = (fieldName, index, value, fields) => {
+  const handleConfigFieldChange = (fieldName, index, value, fields) => {
     fields[index][fieldName] = value;
     return fields;
   };
 
-  handleConfigChange = (field, index, e) => {
-    const val = e === undefined ? 'e' : e.target.value;
-    this.setState(
-      (prevState) => ({
-        aggregatorConfigFields: this.handleConfigFieldChange(
-          field,
-          index,
-          val,
-          prevState.aggregatorConfigFields
-        ),
-      }),
-      () => {
-        this.updateForm();
-      }
-    );
+  const changeFormValue = (key, value) => {
+    stripes.store.dispatch(change('aggreagtorForm', key, value));
   };
 
-  updateForm = () => {
-    const { aggregatorConfigFields } = this.state;
+  const updateForm = () => {
     aggregatorConfigFields.forEach((entry) => {
       const k = `aggregatorConfig.${entry.key}`;
-      this.changeFormValue(k, entry.value);
+      changeFormValue(k, entry.value);
     });
   };
 
-  changeFormValue = (key, value) => {
-    this.props.stripes.store.dispatch(change('aggreagtorForm', key, value));
+  const handleConfigChange = (field, index, e) => {
+    const val = e === undefined ? 'e' : e.target.value;
+    setAggregatorConfigFields((prevFields) => {
+      const newFields = handleConfigFieldChange(field, index, val, prevFields);
+      updateForm(newFields);
+      return newFields;
+    });
   };
 
-  renderPaneTitle() {
-    const { initialValues } = this.props;
-    const aggregator = initialValues || {};
+  const renderPaneTitle = () => {
+    const agg = initialValues || {};
 
-    if (aggregator.id) {
+    if (agg.id) {
       return (
         <div>
           <Icon size="small" icon="edit" />
-          <span>{`Edit: ${aggregator.label}`}</span>
+          <span>{`Edit: ${agg.label}`}</span>
         </div>
       );
     }
 
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
-  }
+  };
 
-  renderFormPaneHeader = () => (
+  const renderFormPaneHeader = () => (
     <PaneHeader
-      firstMenu={this.getFirstMenu()}
-      lastMenu={this.getLastMenu()}
-      paneTitle={this.renderPaneTitle()}
+      firstMenu={getFirstMenu()}
+      lastMenu={getLastMenu()}
+      paneTitle={renderPaneTitle()}
     />
   );
 
-  render() {
-    const {
-      stripes,
-      handleSubmit,
-      initialValues,
-      aggregators,
-      intl,
-    } = this.props;
-    const aggregator = initialValues || {};
-    const { aggregatorConfigFields, confirmDelete, sections } = this.state;
-    const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
-    const name = aggregator.label || '';
+  const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
+  const name = aggregator.label || '';
 
-    const configType = this.getSelectedConfigType();
-    const configTypeIsMail = configType === 'Mail';
+  const configType = getSelectedConfigType();
+  const configTypeIsMail = configType === 'Mail';
 
-    const configMailValidate = configTypeIsMail ? [mail, required] : [mail];
+  const configMailValidate = configTypeIsMail ? [mail, required] : [mail];
 
-    const confirmationMessage = (
-      <FormattedMessage
-        id="ui-erm-usage.form.delete.confirm.message"
-        values={{
-          name,
-        }}
-      />
-    );
+  const confirmationMessage = (
+    <FormattedMessage
+      id="ui-erm-usage.form.delete.confirm.message"
+      values={{ name }}
+    />
+  );
 
-    return (
-      <form
-        id="form-aggregator-setting"
-        className={css.AggregatorFormRoot}
-        onSubmit={handleSubmit(this.save)}
-      >
-        <Paneset isRoot>
-          <Pane
-            defaultWidth="100%"
-            footer={this.getPaneFooter()}
-            renderHeader={this.renderFormPaneHeader}
-          >
-            <div className={css.AggregatorFormContent}>
-              <AccordionSet id="aggregator-form-accordion-set">
-                <Row end="xs">
-                  <Col xs>
-                    <ExpandAllButton
-                      accordionStatus={sections}
-                      onToggle={this.handleExpandAll}
+  return (
+    <form
+      id="form-aggregator-setting"
+      className={css.AggregatorFormRoot}
+      onSubmit={handleSubmit(save)}
+    >
+      <Paneset isRoot>
+        <Pane
+          defaultWidth="100%"
+          footer={getPaneFooter()}
+          renderHeader={renderFormPaneHeader}
+        >
+          <div className={css.AggregatorFormContent}>
+            <AccordionSet id="aggregator-form-accordion-set">
+              <Row end="xs">
+                <Col xs>
+                  <ExpandAllButton
+                    accordionStatus={sections}
+                    onToggle={handleExpandAll}
+                  />
+                </Col>
+              </Row>
+              <Accordion
+                open={sections.generalSection}
+                id="generalSection"
+                onToggle={handleSectionToggle}
+                label={<FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />}
+              >
+                <Row>
+                  <Col xs={8}>
+                    <Field
+                      label={<FormattedMessage id="ui-erm-usage.aggregator.name" />}
+                      name="label"
+                      id="input-aggregator-label"
+                      component={TextField}
+                      fullWidth
+                      disabled={disabled}
+                      required
+                      validate={[required]}
+                    />
+                    <Field
+                      label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}
+                      name="serviceType"
+                      id="input-aggregator-service-type"
+                      placeholder={intl.formatMessage({
+                        id: 'ui-erm-usage.aggregator.form.placeholder.serviceType',
+                      })}
+                      component={Select}
+                      dataOptions={aggregators}
+                      fullWidth
+                      required
+                      validate={[required]}
+                    />
+                    <Field
+                      label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />}
+                      name="serviceUrl"
+                      id="input-aggregator-service-url"
+                      component={TextField}
+                      fullWidth
+                      disabled={disabled}
+                      required
+                      validate={[required]}
                     />
                   </Col>
                 </Row>
-                <Accordion
-                  open={sections.generalSection}
-                  id="generalSection"
-                  onToggle={this.handleSectionToggle}
-                  label={
-                    <FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />
-                  }
-                >
-                  <Row>
-                    <Col xs={8}>
-                      <Field
-                        label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.name" />
-                        }
-                        name="label"
-                        id="input-aggregator-label"
-                        component={TextField}
-                        fullWidth
-                        disabled={disabled}
-                        required
-                        validate={[required]}
-                      />
-                      <Field
-                        label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.serviceType" />
-                        }
-                        name="serviceType"
-                        id="input-aggregator-service-type"
-                        placeholder={intl.formatMessage({
-                          id:
-                            'ui-erm-usage.aggregator.form.placeholder.serviceType',
-                        })}
-                        component={Select}
-                        dataOptions={aggregators}
-                        fullWidth
-                        required
-                        validate={[required]}
-                      />
-                      <Field
-                        label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />
-                        }
-                        name="serviceUrl"
-                        id="input-aggregator-service-url"
-                        component={TextField}
-                        fullWidth
-                        disabled={disabled}
-                        required
-                        validate={[required]}
-                      />
-                    </Col>
-                  </Row>
-                </Accordion>
+              </Accordion>
 
-                <Accordion
-                  open={sections.aggregatorConfig}
-                  id="aggregatorConfig-form"
-                  onToggle={this.handleSectionToggle}
-                  label={
-                    <FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />
-                  }
-                >
-                  <AggregatorConfigForm
-                    fields={aggregatorConfigFields}
-                    onAddField={this.handleAddConfigField}
-                    onChange={this.handleConfigChange}
-                    onRemoveField={this.handleRemoveConfigField}
-                    stripes={stripes}
-                  />
-                </Accordion>
+              <Accordion
+                open={sections.aggregatorConfig}
+                id="aggregatorConfig-form"
+                onToggle={handleSectionToggle}
+                label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
+              >
+                <AggregatorConfigForm
+                  fields={aggregatorConfigFields}
+                  onAddField={handleAddConfigField}
+                  onChange={handleConfigChange}
+                  onRemoveField={handleRemoveConfigField}
+                  stripes={stripes}
+                />
+              </Accordion>
 
-                <Accordion
-                  open={sections.accountConfig}
-                  id="accountConfig-form"
-                  onToggle={this.handleSectionToggle}
-                  label={
-                    <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />
-                  }
-                >
-                  <Row>
-                    <Col xs={8}>
-                      <Field
-                        label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />
-                        }
-                        name="accountConfig.configType"
-                        id="input-aggregator-account-type"
-                        placeholder={intl.formatMessage({
-                          id:
-                            'ui-erm-usage.aggregator.form.placeholder.configType',
-                        })}
-                        component={Select}
-                        dataOptions={aggregatorAccountConfigTypes}
-                        fullWidth
-                        disabled={disabled}
-                        required
-                        validate={[required]}
-                      />
-                      <Field
-                        label={
-                          <FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />
-                        }
-                        name="accountConfig.configMail"
-                        id="input-aggregator-config-mail"
-                        component={TextField}
-                        fullWidth
-                        disabled={disabled}
-                        required={configTypeIsMail}
-                        validate={configMailValidate}
-                      />
-                      <DisplayContactsForm {...this.props} />
-                    </Col>
-                  </Row>
-                </Accordion>
-              </AccordionSet>
+              <Accordion
+                open={sections.accountConfig}
+                id="accountConfig-form"
+                onToggle={handleSectionToggle}
+                label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
+              >
+                <Row>
+                  <Col xs={8}>
+                    <Field
+                      label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />}
+                      name="accountConfig.configType"
+                      id="input-aggregator-account-type"
+                      placeholder={intl.formatMessage({
+                        id: 'ui-erm-usage.aggregator.form.placeholder.configType',
+                      })}
+                      component={Select}
+                      dataOptions={aggregatorAccountConfigTypes}
+                      fullWidth
+                      disabled={disabled}
+                      required
+                      validate={[required]}
+                    />
+                    <Field
+                      label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />}
+                      name="accountConfig.configMail"
+                      id="input-aggregator-config-mail"
+                      component={TextField}
+                      fullWidth
+                      disabled={disabled}
+                      required={configTypeIsMail}
+                      validate={configMailValidate}
+                    />
+                    <DisplayContactsForm {...props} />
+                  </Col>
+                </Row>
+              </Accordion>
+            </AccordionSet>
 
-              <ConfirmationModal
-                id="deleteaggregator-confirmation"
-                open={confirmDelete}
-                heading={
-                  <FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />
-                }
-                message={confirmationMessage}
-                onConfirm={() => {
-                  this.confirmDelete(true);
-                }}
-                onCancel={() => {
-                  this.confirmDelete(false);
-                }}
-              />
-            </div>
-          </Pane>
-        </Paneset>
-      </form>
-    );
-  }
-}
+            <ConfirmationModal
+              id="deleteaggregator-confirmation"
+              open={confirmDelete}
+              heading={<FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />}
+              message={confirmationMessage}
+              onConfirm={() => {
+                doConfirmDelete(true);
+              }}
+              onCancel={() => {
+                doConfirmDelete(false);
+              }}
+            />
+          </div>
+        </Pane>
+      </Paneset>
+    </form>
+  );
+};
+
+AggregatorForm.propTypes = {
+  stripes: PropTypes.shape({
+    hasPerm: PropTypes.func.isRequired,
+    connect: PropTypes.func.isRequired,
+    store: PropTypes.shape({
+      dispatch: PropTypes.func.isRequired,
+      getState: PropTypes.func.isRequired,
+    }),
+  }).isRequired,
+  initialValues: PropTypes.object,
+  invalid: PropTypes.bool,
+  intl: PropTypes.object,
+  handleSubmit: PropTypes.func.isRequired,
+  onSave: PropTypes.func,
+  onCancel: PropTypes.func,
+  onRemove: PropTypes.func,
+  pristine: PropTypes.bool,
+  submitting: PropTypes.bool,
+  aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default injectIntl(
   stripesForm({

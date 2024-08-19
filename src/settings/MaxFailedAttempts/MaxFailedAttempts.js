@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import { Col, Row, TextField } from '@folio/stripes/components';
 import { Field } from 'redux-form';
+import { FormattedMessage } from 'react-intl';
+
+import { Col, Row, TextField } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
+
 import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
 
 class MaxFailedAttempts extends React.Component {

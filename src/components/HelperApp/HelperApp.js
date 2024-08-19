@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+
 import { Tags } from '@folio/stripes/smart-components';
 import { withStripes, stripesConnect } from '@folio/stripes/core';
 

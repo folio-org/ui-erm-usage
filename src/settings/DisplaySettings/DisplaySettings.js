@@ -1,12 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Field } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
+
 import {
   Row,
   Col,
   Checkbox,
 } from '@folio/stripes/components';
-import { Field } from 'redux-form';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
 class DisplaySettings extends React.Component {
