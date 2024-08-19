@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { CalloutContext, IfPermission } from '@folio/stripes/core';
 import { ConfirmationModal, IconButton, Pane, PaneHeader, PaneMenu } from '@folio/stripes/components';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
@@ -70,7 +70,7 @@ const PeriodicHarvestingManager = () => {
     fetchPeriodicHarvestingConf();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getEditIcon = () => (_.isEmpty(config) ? 'plus-sign' : 'edit');
+  const getEditIcon = () => (isEmpty(config) ? 'plus-sign' : 'edit');
 
   const getLastMenu = () => {
     return (

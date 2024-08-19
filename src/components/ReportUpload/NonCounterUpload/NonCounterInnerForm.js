@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-import _ from 'lodash';
+import { isNil } from 'lodash';
 import { CalloutContext } from '@folio/stripes/core';
 import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
 
@@ -109,7 +109,7 @@ function NonCounterUploadInnerForm(props) {
   const handleLinkUrlChange = (e) => {
     const { mutators, udpId } = props;
     const value = e.target.value;
-    if (!_.isNil(fileId)) {
+    if (!isNil(fileId)) {
       doDeleteRawFile();
     }
     setLinkUrl(value);

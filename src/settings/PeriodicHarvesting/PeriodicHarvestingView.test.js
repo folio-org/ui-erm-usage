@@ -1,5 +1,5 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import _ from 'lodash';
+import { omit } from 'lodash';
 import renderWithIntl from '../../../test/jest/helpers';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 
@@ -28,7 +28,7 @@ describe('PeriodicHarvestingView', () => {
   });
 
   test('missing lastTriggeredAt is rendered correctly', () => {
-    renderPeriodicHarvestingView(_.omit(periodicConfig, 'lastTriggeredAt'));
+    renderPeriodicHarvestingView(omit(periodicConfig, 'lastTriggeredAt'));
     expect(screen.getByText('--')).toBeVisible();
   });
 

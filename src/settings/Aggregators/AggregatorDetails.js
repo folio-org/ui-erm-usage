@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isEmpty, get } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -58,7 +58,7 @@ const AggregatorDetails = ({
   const serviceType = aggregators.find((e) => e.value === sType);
   const serviceTypeLabel = serviceType?.label ?? <NoValue />;
 
-  const currentConfTypeValue = _.get(
+  const currentConfTypeValue = get(
     aggregator,
     'accountConfig.configType',
     ''
@@ -69,7 +69,7 @@ const AggregatorDetails = ({
   const configTypeLabel = configType.label ?? <NoValue />;
 
   const settings = (resources.settings || {}).records || [];
-  const hideValues = !_.isEmpty(settings) && settings[0].value === 'true';
+  const hideValues = !isEmpty(settings) && settings[0].value === 'true';
 
   const config = aggregator.aggregatorConfig;
 

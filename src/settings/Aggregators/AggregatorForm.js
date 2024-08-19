@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import { autofill, change, getFormValues, Field } from 'redux-form';
 import { useState } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -49,7 +49,7 @@ const AggregatorForm = ({
 
   const parseInitialAggConfig = () => {
     const { aggregatorConfig } = aggregator;
-    if (_.isNil(aggregatorConfig)) {
+    if (isNil(aggregatorConfig)) {
       return [];
     }
 
@@ -80,9 +80,9 @@ const AggregatorForm = ({
 
   const hasConfigType = (values) => {
     return (
-      !_.isEmpty(values) &&
-      !_.isEmpty(values.accountConfig) &&
-      !_.isEmpty(values.accountConfig.configType)
+      !isEmpty(values) &&
+      !isEmpty(values.accountConfig) &&
+      !isEmpty(values.accountConfig.configType)
     );
   };
 
