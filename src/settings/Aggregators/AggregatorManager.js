@@ -13,10 +13,7 @@ const AggregatorManager = ({
   mutator,
   ...props
 }) => {
-  const entryList = sortBy(
-    (resources.entries || {}).records || [],
-    ['label']
-  );
+  const entryList = sortBy(resources?.entries?.records || [], ['label']);
 
   const records = (resources.aggregatorImpls || {}).records || [];
   const implementations = records.length ? records[0].implementations : [];

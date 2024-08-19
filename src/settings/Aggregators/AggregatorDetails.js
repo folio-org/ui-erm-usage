@@ -68,7 +68,7 @@ const AggregatorDetails = ({
   );
   const configTypeLabel = configType.label ?? <NoValue />;
 
-  const settings = (resources.settings || {}).records || [];
+  const settings = resources?.settings?.records || [];
   const hideValues = !isEmpty(settings) && settings[0].value === 'true';
 
   const config = aggregator.aggregatorConfig;

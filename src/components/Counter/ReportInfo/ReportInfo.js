@@ -45,12 +45,7 @@ const ReportInfo = ({
     return result !== undefined;
   };
 
-  const isCSVPossible = (rep) => {
-    if (!rep.failedReason && isDownloadable(rep.reportName)) {
-      return true;
-    }
-    return false;
-  };
+  const isCSVPossible = (rep) => !rep.failedReason && isDownloadable(rep.reportName);
 
   const renderCSVDownloadButton = (rep) => {
     if (isCSVPossible(rep)) {

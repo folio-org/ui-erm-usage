@@ -228,7 +228,7 @@ const AggregatorForm = ({
     const val = e === undefined ? 'e' : e.target.value;
     setAggregatorConfigFields((prevFields) => {
       const newFields = handleConfigFieldChange(field, index, val, prevFields);
-      updateForm(newFields);
+      updateForm();
       return newFields;
     });
   };

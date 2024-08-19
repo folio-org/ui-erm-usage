@@ -391,7 +391,7 @@ const UDPs = ({
   );
 };
 
-UDPs.propTypes = Object.freeze({
+UDPs.propTypes = {
   children: PropTypes.object,
   contentRef: PropTypes.object,
   data: PropTypes.shape(),
@@ -415,6 +415,6 @@ UDPs.propTypes = Object.freeze({
   }),
   syncToLocationSearch: PropTypes.bool,
   visibleColumns: PropTypes.arrayOf(PropTypes.string),
-});
+};
 
 export default injectIntl(UDPs);
