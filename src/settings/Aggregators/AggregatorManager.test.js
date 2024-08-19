@@ -1,5 +1,4 @@
-import { screen } from '@testing-library/react';
-
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { EntryManager } from '@folio/stripes/smart-components';
 
 import AggregatorManager from './AggregatorManager';
