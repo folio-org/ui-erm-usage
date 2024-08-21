@@ -1,7 +1,8 @@
-import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import { cloneDeep, groupBy, has, keys } from 'lodash';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+
 import {
   Accordion,
   AccordionSet,
@@ -10,18 +11,18 @@ import {
   MultiColumnList,
   Row,
 } from '@folio/stripes/components';
-import InfoButton from './InfoButton';
 
+import InfoButton from './InfoButton';
 import css from './CustomStatistics.css';
 
 function CustomStatistics(props) {
   const [yearAccordions, setYearAccordions] = useState({});
 
   useEffect(() => {
-    const py = _.groupBy(props.customReports, (r) => r.year);
-    const keys = _.keys(py);
+    const py = groupBy(props.customReports, (r) => r.year);
+    const groupedKeys = keys(py);
     const yearAccs = {};
-    keys.forEach((y) => {
+    groupedKeys.forEach((y) => {
       const tmp = {};
       tmp[y] = false;
       yearAccs[y] = false;
@@ -34,10 +35,10 @@ function CustomStatistics(props) {
 
   const { handlers, stripes, udpLabel } = props;
 
-  const groupReportsByYear = (reports) => _.groupBy(reports, (r) => r.year);
+  const groupReportsByYear = (reports) => groupBy(reports, (r) => r.year);
 
   const perYear = groupReportsByYear(props.customReports);
-  const dataPerYear = _.keys(perYear)
+  const dataPerYear = keys(perYear)
     .sort()
     .map((y) => {
       const data = perYear[y];
@@ -48,8 +49,8 @@ function CustomStatistics(props) {
     });
 
   const handleAccordionToggle = ({ id }) => {
-    const tmpAccs = _.cloneDeep(yearAccordions);
-    if (!_.has(tmpAccs, id)) tmpAccs[id] = true;
+    const tmpAccs = cloneDeep(yearAccordions);
+    if (!has(tmpAccs, id)) tmpAccs[id] = true;
     tmpAccs[id] = !tmpAccs[id];
     setYearAccordions(tmpAccs);
   };

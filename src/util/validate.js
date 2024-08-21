@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import React from 'react';
+import { get } from 'lodash';
 import { FormattedMessage } from 'react-intl';
 
 const required = value => {
@@ -43,8 +42,8 @@ const endDate = values => {
   }
 
   const errors = {};
-  const start = _.get(values, 'harvestingConfig.harvestingStart', '');
-  const end = _.get(values, 'harvestingConfig.harvestingEnd', '');
+  const start = get(values, 'harvestingConfig.harvestingStart', '');
+  const end = get(values, 'harvestingConfig.harvestingEnd', '');
   if (new Date(end) < new Date(start)) {
     errors.harvestingConfig = {};
     errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;

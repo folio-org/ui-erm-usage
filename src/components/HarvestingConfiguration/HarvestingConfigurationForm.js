@@ -1,13 +1,15 @@
-import { get, isEmpty } from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { get, isEmpty } from 'lodash';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import {
   Accordion,
   Col,
   ConfirmationModal,
   Row,
 } from '@folio/stripes/components';
+
 import formCss from '../../util/sharedStyles/form.css';
 import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from './AggregatorInfo';
@@ -21,196 +23,161 @@ import {
   ReportReleaseSelect,
 } from './Fields';
 
-class HarvestingConfigurationForm extends React.Component {
-  constructor(props) {
-    super(props);
+const HarvestingConfigurationForm = ({
+  accordionId,
+  aggregators,
+  expanded,
+  harvesterImplementations,
+  initialValues,
+  form,
+  onToggle,
+  values,
+}) => {
+  const [confirmClear, setConfirmClear] = useState(false);
+  const [selectedReportRelease, setSelectedReportRelease] = useState('');
 
-    this.state = {
-      confirmClear: false,
-      selectedReportRelease: '',
-    };
-  }
-
-  changeSelectedCounterVersion = (event) => {
+  const changeSelectedCounterVersion = (event) => {
     event.preventDefault();
 
     const val = (event.target.value === '') ? undefined : parseInt(event.target.value, 10);
-    const selectedReportRelease = get(
-      this.props.values,
-      'harvestingConfig.reportRelease',
-      ''
-    );
-    if (selectedReportRelease !== val) {
-      const requestedReports = get(
-        this.props.values,
-        'harvestingConfig.requestedReports',
-        []
-      );
+    const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', '');
+    if (selectedReportReleaseValues !== val) {
+      const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
       if (!isEmpty(requestedReports)) {
-        this.setState({ confirmClear: true, selectedReportRelease: val });
+        setConfirmClear(true);
+        setSelectedReportRelease(val);
       } else {
-        this.props.form.mutators.setReportRelease({}, val);
+        form.mutators.setReportRelease({}, val);
       }
-      if ((val === 4 && this.props.values.sushiCredentials?.apiKey) ||
-        (val === 5 && this.props.values.sushiCredentials?.apiKey && this.props.values.sushiCredentials?.requestorId)) {
-        this.props.form.change('sushiCredentials.apiKey', undefined);
+      if ((val === 4 && values.sushiCredentials?.apiKey) ||
+        (val === 5 && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
+        form.change('sushiCredentials.apiKey', undefined);
       }
     }
   };
 
-  changeSelectedHarvestVia = (event) => {
+  const changeSelectedHarvestVia = (event) => {
     event.preventDefault();
 
-    this.props.form.change(event.target.name, (event.target.value === '') ? undefined : event.target.value);
-    this.props.form.resetFieldState('sushiCredentials.customerId');
+    form.change(event.target.name, (event.target.value === '') ? undefined : event.target.value);
+    form.resetFieldState('sushiCredentials.customerId');
   };
 
-  confirmClearReports = (confirmation) => {
+  const confirmClearReports = (confirmation) => {
     if (confirmation) {
-      this.props.form.mutators.clearSelectedReports({}, this.props.values);
-      this.props.form.mutators.setReportRelease(
-        {},
-        this.state.selectedReportRelease
-      );
-      setTimeout(() => {
-        this.forceUpdate();
-      });
+      form.mutators.clearSelectedReports({}, values);
+      form.mutators.setReportRelease({}, selectedReportRelease);
     }
-    this.setState({ confirmClear: false });
+    setConfirmClear(false);
   };
 
-  render() {
-    const {
-      aggregators,
-      expanded,
-      accordionId,
-      harvesterImplementations,
-      initialValues,
-      values,
-    } = this.props;
-    const { confirmClear } = this.state;
-    const onToggleAccordion = this.props.onToggle;
-    const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
-    const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
-    const reportRelease = get(values, 'harvestingConfig.reportRelease', null);
-    const requestedReports = get(
-      values,
-      'harvestingConfig.requestedReports',
-      []
-    );
+  const onToggleAccordion = onToggle;
+  const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
+  const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
+  const reportRelease = get(values, 'harvestingConfig.reportRelease', null);
+  const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
-    const confirmationMessage = (
-      <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
-    );
+  const confirmationMessage = (
+    <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
+  );
 
-    return (
-      <Accordion
-        label={
-          <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-        }
-        open={expanded}
-        id={accordionId}
-        onToggle={onToggleAccordion}
-      >
-        <Row>
-          <Col xs>
-            <section className={formCss.separator}>
-              <Row>
-                <Col xs={4}>
-                  <HarvestingStatusSelect />
-                </Col>
-              </Row>
-            </section>
-            <section className={formCss.separator}>
-              <Row>
-                <Col xs={4}>
-                  <HarvestingViaSelect
-                    required={isHarvestingStatusActive}
-                    onChange={this.changeSelectedHarvestVia}
-                  />
-                </Col>
-                <Col xs={8} className={formCss.centerNote}>
-                  <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
-                </Col>
-              </Row>
-              <Row>
-                <AggregatorInfoForm
-                  aggregators={aggregators}
+  return (
+    <Accordion
+      label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
+      open={expanded}
+      id={accordionId}
+      onToggle={onToggleAccordion}
+    >
+      <Row>
+        <Col xs>
+          <section className={formCss.separator}>
+            <Row>
+              <Col xs={4}>
+                <HarvestingStatusSelect />
+              </Col>
+            </Row>
+          </section>
+          <section className={formCss.separator}>
+            <Row>
+              <Col xs={4}>
+                <HarvestingViaSelect
                   required={isHarvestingStatusActive}
-                  disabled={harvestVia !== 'aggregator'}
+                  onChange={changeSelectedHarvestVia}
                 />
-              </Row>
-              <Row>
-                <VendorInfoForm
-                  disabled={harvestVia !== 'sushi'}
-                  required={isHarvestingStatusActive}
-                  harvesterImpls={harvesterImplementations}
-                />
-              </Row>
-            </section>
-            <section className={formCss.separator}>
-              <Row>
-                <Col xs={4}>
-                  <ReportReleaseSelect
-                    id="addudp_reportrelease"
-                    required={isHarvestingStatusActive}
-                    onChange={this.changeSelectedCounterVersion}
-                  />
-                </Col>
-                <Col xs={8}>
-                  <SelectedReportsForm
-                    initialValues={initialValues}
-                    counterVersion={reportRelease}
-                    required={isHarvestingStatusActive}
-                    selectedReports={requestedReports}
-                  />
-                </Col>
-              </Row>
-            </section>
-            <section className={formCss.separator}>
-              <Row>
-                <Col xs={4}>
-                  <HarvestingStartField
-                    required={isHarvestingStatusActive}
-                  />
-                </Col>
-                <Col xs={4}>
-                  <HarvestingEndField />
-                </Col>
-              </Row>
-            </section>
-            <section className={formCss.separator}>
-              <SushiCredentialsForm
-                useAggregator={harvestVia === 'aggregator'}
-                form={this.props.form}
-                values={values}
-                required={isHarvestingStatusActive}
+              </Col>
+              <Col xs={8} className={formCss.centerNote}>
+                <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
+              </Col>
+            </Row>
+            <Row>
+              <AggregatorInfoForm
+                aggregators={aggregators}
+                isRequired={isHarvestingStatusActive}
+                disabled={harvestVia !== 'aggregator'}
               />
-            </section>
-          </Col>
-        </Row>
+            </Row>
+            <Row>
+              <VendorInfoForm
+                disabled={harvestVia !== 'sushi'}
+                isRequired={isHarvestingStatusActive}
+                harvesterImpls={harvesterImplementations}
+              />
+            </Row>
+          </section>
+          <section className={formCss.separator}>
+            <Row>
+              <Col xs={4}>
+                <ReportReleaseSelect
+                  id="addudp_reportrelease"
+                  required={isHarvestingStatusActive}
+                  onChange={changeSelectedCounterVersion}
+                />
+              </Col>
+              <Col xs={8}>
+                <SelectedReportsForm
+                  initialValues={initialValues}
+                  counterVersion={reportRelease}
+                  required={isHarvestingStatusActive}
+                  selectedReports={requestedReports}
+                />
+              </Col>
+            </Row>
+          </section>
+          <section className={formCss.separator}>
+            <Row>
+              <Col xs={4}>
+                <HarvestingStartField
+                  required={isHarvestingStatusActive}
+                />
+              </Col>
+              <Col xs={4}>
+                <HarvestingEndField />
+              </Col>
+            </Row>
+          </section>
+          <section className={formCss.separator}>
+            <SushiCredentialsForm
+              useAggregator={harvestVia === 'aggregator'}
+              form={form}
+              values={values}
+              required={isHarvestingStatusActive}
+            />
+          </section>
+        </Col>
+      </Row>
 
-        <ConfirmationModal
-          id="clear-report-selection-confirmation"
-          open={confirmClear}
-          heading={
-            <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />
-          }
-          message={confirmationMessage}
-          onConfirm={() => {
-            this.confirmClearReports(true);
-          }}
-          onCancel={() => {
-            this.confirmClearReports(false);
-          }}
-          confirmLabel={
-            <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />
-          }
-        />
-      </Accordion>
-    );
-  }
-}
+      <ConfirmationModal
+        id="clear-report-selection-confirmation"
+        open={confirmClear}
+        heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
+        message={confirmationMessage}
+        onConfirm={() => { confirmClearReports(true); }}
+        onCancel={() => { confirmClearReports(false); }}
+        confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />}
+      />
+    </Accordion>
+  );
+};
 
 HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,

@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { get, isEmpty } from 'lodash';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import {
   Accordion,
   Col,
@@ -9,23 +9,22 @@ import {
   NoValue,
   Row,
 } from '@folio/stripes/components';
+
 import { AggregatorInfoView } from './AggregatorInfo';
 import { VendorInfoView } from './VendorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import reportReleaseOptions from '../../util/data/reportReleaseOptions';
 
-class HarvestingConfigurationView extends React.Component {
-  static propTypes = {
-    usageDataProvider: PropTypes.object.isRequired,
-    stripes: PropTypes.object.isRequired,
-    sushiCredsOpen: PropTypes.bool,
-    onToggle: PropTypes.func,
-    settings: PropTypes.arrayOf(PropTypes.object).isRequired,
-    harvesterImpls: PropTypes.arrayOf(PropTypes.object),
-  };
-
-  createProvider = (udp) => {
-    const harvestVia = _.get(udp, 'harvestingConfig.harvestVia');
+const HarvestingConfigurationView = ({
+  usageDataProvider,
+  stripes,
+  sushiCredsOpen,
+  onToggle,
+  settings,
+  harvesterImpls,
+}) => {
+  const createProvider = (udp) => {
+    const harvestVia = get(udp, 'harvestingConfig.harvestVia');
     if (!harvestVia) {
       return null;
     }
@@ -33,103 +32,87 @@ class HarvestingConfigurationView extends React.Component {
       return (
         <AggregatorInfoView
           usageDataProvider={udp}
-          stripes={this.props.stripes}
+          stripes={stripes}
         />
       );
     } else {
       return (
         <VendorInfoView
           usageDataProvider={udp}
-          harvesterImpls={this.props.harvesterImpls}
+          harvesterImpls={harvesterImpls}
         />
       );
     }
   };
 
-  render() {
-    const { usageDataProvider, onToggle, sushiCredsOpen } = this.props;
+  const provider = createProvider(usageDataProvider);
+  const reports = get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
+  let requestedReports = '';
 
-    const provider = this.createProvider(usageDataProvider);
-
-    const reports = _.get(
-      usageDataProvider,
-      'harvestingConfig.requestedReports',
-      []
-    ).sort();
-    let requestedReports = '';
-    if (!_.isEmpty(reports)) {
-      requestedReports = reports.join(', ');
-    }
-
-    const counterVersion = _.get(
-      usageDataProvider,
-      'harvestingConfig.reportRelease',
-      ''
-    );
-    const reportRelease = reportReleaseOptions.find(
-      (e) => e.value === counterVersion
-    );
-    const reportReleaseLabel = reportRelease?.label ?? <NoValue />;
-
-    const harvestingStart = usageDataProvider.harvestingConfig
-      ?.harvestingStart ?? <NoValue />;
-    const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? (
-      <NoValue />
-    );
-
-    return (
-      <div>
-        {provider}
-        <Row>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />
-              }
-              value={reportReleaseLabel}
-            />
-          </Col>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />
-              }
-              value={requestedReports}
-            />
-          </Col>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />
-              }
-              value={harvestingStart}
-            />
-          </Col>
-          <Col xs={3}>
-            <KeyValue
-              label={
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />
-              }
-              value={harvestingEnd}
-            />
-          </Col>
-        </Row>
-        <Accordion
-          open={sushiCredsOpen}
-          onToggle={onToggle}
-          label={
-            <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />
-          }
-          id="sushiCredsAccordion"
-        >
-          <SushiCredentialsView
-            usageDataProvider={usageDataProvider}
-            settings={this.props.settings}
-          />
-        </Accordion>
-      </div>
-    );
+  if (!isEmpty(reports)) {
+    requestedReports = reports.join(', ');
   }
-}
+
+  const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
+  const reportRelease = reportReleaseOptions.find(
+    (e) => e.value === counterVersion
+  );
+  const reportReleaseLabel = reportRelease?.label ?? <NoValue />;
+
+  const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
+  const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;
+
+  return (
+    <div>
+      {provider}
+      <Row>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
+            value={reportReleaseLabel}
+          />
+        </Col>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />}
+            value={requestedReports}
+          />
+        </Col>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />}
+            value={harvestingStart}
+          />
+        </Col>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
+            value={harvestingEnd}
+          />
+        </Col>
+      </Row>
+      <Accordion
+        open={sushiCredsOpen}
+        onToggle={onToggle}
+        label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />}
+        id="sushiCredsAccordion"
+      >
+        <SushiCredentialsView
+          usageDataProvider={usageDataProvider}
+          settings={settings}
+        />
+      </Accordion>
+    </div>
+  );
+};
+
+HarvestingConfigurationView.propTypes = {
+  usageDataProvider: PropTypes.object.isRequired,
+  stripes: PropTypes.object.isRequired,
+  sushiCredsOpen: PropTypes.bool,
+  onToggle: PropTypes.func,
+  settings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+};
 
 export default injectIntl(HarvestingConfigurationView);

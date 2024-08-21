@@ -1,4 +1,3 @@
-import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import componentsTranslations from '@folio/stripes-components/translations/stripes-components/en';

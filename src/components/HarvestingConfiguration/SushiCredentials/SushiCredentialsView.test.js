@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import renderWithIntl from '../../../../test/jest/helpers';
 

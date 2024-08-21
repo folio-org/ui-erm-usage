@@ -1,4 +1,3 @@
-import React from 'react';
 import ReportInfoButton from './ReportInfoButton';
 
 const createReportInfoButton = (id, report, handlers, maxFailed, stripes, udpLabel) => (

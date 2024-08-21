@@ -1,8 +1,9 @@
-import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
+
 import { TextField } from '@folio/stripes/components';
+
 import { composeValidators, required, yearMonth } from '../../../util/validate';
 
 const HarvestingStartField = (props) => {

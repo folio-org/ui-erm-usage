@@ -1,8 +1,9 @@
-import _ from 'lodash';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { isNil } from 'lodash';
+import { useState } from 'react';
 import { SubmissionError } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
+
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -47,7 +48,7 @@ function InfoButton(props) {
   };
 
   const doDelete = () => {
-    if (!_.isNil(customReport.fileId)) {
+    if (!isNil(customReport.fileId)) {
       doDeleteWithFile();
     } else {
       doDeleteReport();

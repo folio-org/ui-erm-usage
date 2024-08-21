@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import NonCounterUploadModal from './NonCounterUploadModal';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';

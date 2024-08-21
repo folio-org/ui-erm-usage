@@ -1,8 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Accordion, Col, Row, TextField } from '@folio/stripes/components';
+
 import { required } from '../../util/validate';
 
 function UDPInfoForm(props) {

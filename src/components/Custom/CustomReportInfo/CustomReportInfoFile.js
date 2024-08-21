@@ -1,6 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 

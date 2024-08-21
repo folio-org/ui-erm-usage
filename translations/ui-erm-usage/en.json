@@ -9,6 +9,7 @@
   "usage-data-providers": "Usage data providers",
   "usage-data-provider-pluralizable": "{count} {count, plural, one {usage-data-provider} other {usage-data-providers}}",
   "appMenu.keyboardShortcuts": "Keyboard shortcuts",
+  "noSourceYet": "No source yet",
 
   "meta.title": "eUsage",
 

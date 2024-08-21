@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
@@ -95,6 +94,12 @@ describe('UDP', () => {
       expect(screen.getByText('Upload COUNTER report')).toBeVisible();
       expect(screen.getByText('Upload non-COUNTER report')).toBeVisible();
       expect(screen.getByText('Delete reports')).toBeVisible();
+    });
+
+    test('should render Expand all', async () => {
+      expect(screen.getByText('Expand all')).toBeVisible();
+      await userEvent.click(screen.getByText('Expand all'));
+      expect(screen.getByText('Collapse all')).toBeVisible();
     });
 
     test('click upload counter report', async () => {

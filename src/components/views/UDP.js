@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import { useState, useRef } from 'react';
 import { get, isEmpty } from 'lodash';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -47,39 +47,52 @@ import HarvesterInfoModal from '../HarvesterInfoModal/HarvesterInfoModal';
 
 let callout;
 
-class UDP extends React.Component {
-  constructor(props) {
-    super(props);
-    this.accordionStatusRef = React.createRef();
+const UDP = ({
+  canEdit,
+  data,
+  handlers,
+  intl,
+  isHarvesterExistent,
+  isLoading,
+  isStatsLoading,
+  mutator,
+  udpReloadCount,
+  stripes,
+  tagsEnabled,
+  statsReloadCount,
+  location,
+  okapiKy,
+}) => {
+  const accordionStatusRef = useRef();
+  callout = useRef();
 
-    this.state = {
-      helperApp: null,
-      showDeleteReports: false,
-      harvesterModalState: {},
-      showCounterUpload: false,
-      showNonCounterUpload: false,
-    };
+  const [helperApp, setHelperApp] = useState(null);
+  const [showDeleteReports, setShowDeleteReports] = useState(null);
+  const [harvesterModalState, setHarvesterModalState] = useState({});
+  const [showCounterUpload, setShowCounterUpload] = useState(false);
+  const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
 
-    callout = React.createRef();
-  }
+  const reloadStatistics = () => {
+    const oldCount = statsReloadCount;
+    mutator.statsReloadToggle.replace(oldCount + 1);
+  };
 
-  handleSuccess = (msg) => {
-    const success = this.props.intl.formatMessage({
+  const handleSuccess = (msg) => {
+    const success = intl.formatMessage({
       id: 'ui-erm-usage.report.upload.success',
     });
     callout.sendCallout({
       message: `${success} ${msg}`,
     });
-    this.setState({
-      showCounterUpload: false,
-      showNonCounterUpload: false,
-      showDeleteReports: false,
-    });
-    this.reloadStatistics();
+
+    setShowCounterUpload(false);
+    setShowNonCounterUpload(false);
+    setShowDeleteReports(false);
+    reloadStatistics();
   };
 
-  handleFail = (msg) => {
-    const failText = this.props.intl.formatMessage({
+  const handleFail = (msg) => {
+    const failText = intl.formatMessage({
       id: 'ui-erm-usage.report.upload.failed',
     });
     callout.sendCallout({
@@ -87,14 +100,13 @@ class UDP extends React.Component {
       message: `${failText} ${msg}`,
       timeout: 0,
     });
-    this.setState({
-      showCounterUpload: false,
-      showNonCounterUpload: false,
-      showDeleteReports: false,
-    });
+
+    setShowCounterUpload(false);
+    setShowNonCounterUpload(false);
+    setShowDeleteReports(false);
   };
 
-  getInitialAccordionsState = () => {
+  const getInitialAccordionsState = () => {
     return {
       harvestingAccordion: false,
       sushiCredsAccordion: false,
@@ -105,43 +117,28 @@ class UDP extends React.Component {
     };
   };
 
-  showHelperApp = (helperName) => {
-    this.setState({
-      helperApp: helperName,
-    });
+  const showHelperApp = (helperName) => {
+    setHelperApp(helperName);
   };
 
-  closeHelperApp = () => {
-    this.setState({
-      helperApp: null,
-    });
+  const closeHelperApp = () => {
+    setHelperApp(null);
   };
 
-  reloadUdp = () => {
-    const oldCount = this.props.udpReloadCount;
-    this.props.mutator.udpReloadToggle.replace(oldCount + 1);
+  const reloadUdp = () => {
+    const oldCount = udpReloadCount;
+    mutator.udpReloadToggle.replace(oldCount + 1);
   };
 
-  reloadStatistics = () => {
-    const oldCount = this.props.statsReloadCount;
-    this.props.mutator.statsReloadToggle.replace(oldCount + 1);
+  const doShowDeleteReports = () => {
+    setShowDeleteReports(true);
   };
 
-  doShowDeleteReports = () => {
-    this.setState({
-      showDeleteReports: true,
-    });
+  const doCloseDeleteReports = () => {
+    setShowDeleteReports(false);
   };
 
-  doCloseDeleteReports = () => {
-    this.setState({
-      showDeleteReports: false,
-    });
-  };
-
-  renderDetailMenu = (udp) => {
-    const { tagsEnabled } = this.props;
-
+  const renderDetailMenu = (udp) => {
     const tags = ((udp && udp.tags) || {}).tagList || [];
 
     return (
@@ -153,7 +150,7 @@ class UDP extends React.Component {
                 icon="tag"
                 id="clickable-show-tags"
                 onClick={() => {
-                  this.showHelperApp('tags');
+                  showHelperApp('tags');
                 }}
                 badgeCount={tags.length}
                 aria-label={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
@@ -165,36 +162,33 @@ class UDP extends React.Component {
     );
   };
 
-  isInActive = (udp) => {
+  const isInActive = (udp) => {
     const status = get(udp, 'harvestingConfig.harvestingStatus', 'inactive');
-    return !this.props.isHarvesterExistent || status === 'inactive';
+    return !isHarvesterExistent || status === 'inactive';
   };
 
-  openStartHarvesterModal = (udpId) => {
-    this.props
-      .okapiKy(`erm-usage-harvester/start/${udpId}`, {
-        method: 'GET',
-        retry: 0,
-      })
+  const openStartHarvesterModal = (udpId) => {
+    okapiKy(`erm-usage-harvester/start/${udpId}`, {
+      method: 'GET',
+      retry: 0,
+    })
       .then(() => {
-        this.setState({ harvesterModalState: { open: true, isSuccess: true } });
-        this.reloadUdp();
+        setHarvesterModalState({ open: true, isSuccess: true });
+        reloadUdp();
       })
       .catch((error) => {
         Promise.resolve(error.response?.text?.() ?? error.message)
           .catch(() => error.message)
-          .then((errMessage) => this.setState({
-            harvesterModalState: { open: true, isSuccess: false, errMessage }
-          }));
+          .then((errMessage) => setHarvesterModalState({ open: true, isSuccess: false, errMessage }));
       });
   };
 
-  closeStartHarvesterModal = () => {
-    this.setState({ harvesterModalState: { open: false } });
+  const closeStartHarvesterModal = () => {
+    setHarvesterModalState({ open: false });
   };
 
-  getActionMenu = () => ({ onToggle }) => {
-    const { canEdit, handlers, data, location } = this.props;
+  // eslint-disable-next-line react/prop-types
+  const getActionMenu = () => ({ onToggle }) => {
     const usageDataProvider = get(data, 'usageDataProvider', {});
     const providerId = get(usageDataProvider, 'id', '');
     const providerLabel = get(usageDataProvider, 'label', '');
@@ -207,9 +201,9 @@ class UDP extends React.Component {
               buttonStyle="dropDownItem"
               id="start-harvester-button"
               marginBottom0
-              disabled={this.isInActive(usageDataProvider)}
+              disabled={isInActive(usageDataProvider)}
               onClick={() => {
-                this.openStartHarvesterModal(usageDataProvider.id);
+                openStartHarvesterModal(usageDataProvider.id);
                 onToggle();
               }}
             >
@@ -219,9 +213,9 @@ class UDP extends React.Component {
             </Button>
           </IfPermission>
           <HarvesterInfoModal
-            {...this.state.harvesterModalState}
+            {...harvesterModalState}
             udpLabel={usageDataProvider.label}
-            onClose={this.closeStartHarvesterModal}
+            onClose={closeStartHarvesterModal}
           />
         </div>
         <div>
@@ -251,7 +245,7 @@ class UDP extends React.Component {
             buttonStyle="dropDownItem"
             onClick={() => {
               onToggle();
-              this.reloadStatistics();
+              reloadStatistics();
             }}
             aria-label="Edit usage data provider"
             marginBottom0
@@ -268,7 +262,7 @@ class UDP extends React.Component {
               id="upload-counter-button"
               marginBottom0
               onClick={() => {
-                this.setState({ showCounterUpload: true });
+                setShowCounterUpload(true);
                 onToggle();
               }}
             >
@@ -283,7 +277,7 @@ class UDP extends React.Component {
               id="upload-non-counter-button"
               marginBottom0
               onClick={() => {
-                this.setState({ showNonCounterUpload: true });
+                setShowNonCounterUpload(true);
                 onToggle();
               }}
             >
@@ -300,7 +294,7 @@ class UDP extends React.Component {
               buttonStyle="dropDownItem"
               onClick={() => {
                 onToggle();
-                this.doShowDeleteReports();
+                doShowDeleteReports();
               }}
               aria-label="Delete reports"
               marginBottom0
@@ -330,45 +324,46 @@ class UDP extends React.Component {
     );
   };
 
-  handleEdit = () => {
-    if (this.props.canEdit) {
-      this.props.handlers.onEdit();
+  const handleEdit = () => {
+    if (canEdit) {
+      handlers.onEdit();
     }
   };
 
-  shortcuts = [
+  const shortcuts = [
     {
       name: 'edit',
-      handler: this.handleEdit,
+      handler: handleEdit,
     },
     {
       name: 'expandAllSections',
-      handler: (e) => expandAllSections(e, this.accordionStatusRef),
+      handler: (e) => expandAllSections(e, accordionStatusRef),
     },
     {
       name: 'collapseAllSections',
-      handler: (e) => collapseAllSections(e, this.accordionStatusRef),
+      handler: (e) => collapseAllSections(e, accordionStatusRef),
     },
     {
       name: 'close',
-      handler: () => this.handleCloseModal(),
+      handler: () => handlers.onClose(),
+      shortcut: 'esc',
     },
   ];
 
-  renderLoadingPaneHeader = () => (
+  const renderLoadingPaneHeader = () => (
     <PaneHeader
       dismissible
-      onClose={this.props.handlers.onClose}
+      onClose={handlers.onClose}
       paneTitle={<span data-test-collection-header-title>loading</span>}
     />
   );
 
-  renderLoadingPane = () => {
+  const renderLoadingPane = () => {
     return (
       <Pane
         defaultWidth="40%"
         id="pane-collectiondetails"
-        renderHeader={() => this.renderLoadingPaneHeader()}
+        renderHeader={() => renderLoadingPaneHeader()}
       >
         <Layout className="marginTop1">
           <Icon icon="spinner-ellipsis" width="10px" />
@@ -377,9 +372,8 @@ class UDP extends React.Component {
     );
   };
 
-  getCounterStatistics(reports, label, providerId, maxFailedAttempts) {
-    const { data, handlers, stripes } = this.props;
-    if (this.props.isStatsLoading) {
+  const getCounterStatistics = (reports, label, providerId, maxFailedAttempts) => {
+    if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
     if (data.counterReports.length > 0) {
@@ -403,11 +397,10 @@ class UDP extends React.Component {
     } else {
       return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
     }
-  }
+  };
 
-  getCustomStatistics(label, providerId) {
-    const { data, handlers, stripes } = this.props;
-    if (this.props.isStatsLoading) {
+  const getCustomStatistics = (label, providerId) => {
+    if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
     if (data.customReports.length > 0) {
@@ -423,157 +416,151 @@ class UDP extends React.Component {
     } else {
       return <FormattedMessage id="ui-erm-usage.statistics.noStats" />;
     }
-  }
+  };
 
-  renderDetailPaneHeader = (usageDataProvider, label) => (
+  const renderDetailPaneHeader = (usageDataProvider, label) => (
     <PaneHeader
-      actionMenu={this.getActionMenu()}
+      actionMenu={getActionMenu()}
       dismissible
-      lastMenu={this.renderDetailMenu(usageDataProvider)}
-      onClose={this.props.handlers.onClose}
+      lastMenu={renderDetailMenu(usageDataProvider)}
+      onClose={handlers.onClose}
       paneTitle={<span data-test-header-title>{label}</span>}
     />
   );
 
-  render() {
-    const { data, isLoading, isStatsLoading, handlers, stripes } = this.props;
+  const usageDataProvider = get(data, 'usageDataProvider', {});
+  if (isLoading) return renderLoadingPane();
 
-    const { helperApp } = this.state;
+  const label = get(usageDataProvider, 'label', 'No LABEL');
+  const providerId = get(usageDataProvider, 'id', '');
+  const counterReportsPerYear = groupReportsPerYear(data.counterReports);
+  const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
 
-    const usageDataProvider = get(data, 'usageDataProvider', {});
-    if (isLoading) return this.renderLoadingPane();
-
-    const label = get(usageDataProvider, 'label', 'No LABEL');
-    const providerId = get(usageDataProvider, 'id', '');
-    const counterReportsPerYear = groupReportsPerYear(data.counterReports);
-    const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
-
-    if (isEmpty(usageDataProvider)) {
-      return <div id="pane-udpdetails">Loading...</div>;
-    } else {
-      return (
-        <HasCommand
-          commands={this.shortcuts}
-          scope={document.body}
-        >
-          <>
-            <Pane
-              id="pane-udpdetails"
-              defaultWidth="40%"
-              renderHeader={() => this.renderDetailPaneHeader(usageDataProvider, label)}
-            >
-              <TitleManager record={label} stripes={stripes} />
-              <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />
-              <Headline size="xx-large" tag="h2">
-                {label}
-              </Headline>
-              <ViewMetaData
-                metadata={get(usageDataProvider, 'metadata', {})}
-                stripes={stripes}
-              />
-              <UDPInfoView
-                id="udpInfo"
-                usageDataProvider={usageDataProvider}
-                stripes={stripes}
-              />
-              <AccordionStatus ref={this.accordionStatusRef}>
-                <Row end="xs">
-                  <Col xs>
-                    <ExpandAllButton id="clickable-expand-all-view" />
-                  </Col>
-                </Row>
-                <AccordionSet initialStatus={this.getInitialAccordionsState()}>
-                  <Accordion
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-                    }
-                    id="harvestingAccordion"
-                  >
-                    <HarvestingConfigurationView
-                      usageDataProvider={usageDataProvider}
-                      stripes={stripes}
-                      settings={data.settings}
-                      harvesterImpls={data.harvesterImpls}
-                    />
-                  </Accordion>
-                  <Pluggable type="ui-agreements-extension" data={{ op: 'match-names', data }} />
-                  <Accordion
-                    id="counterStatisticsAccordion"
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udp.counterStatistics" />
-                    }
-                  >
-                    {this.getCounterStatistics(
-                      counterReportsPerYear,
-                      label,
-                      providerId,
-                      maxFailedAttempts
-                    )}
-                  </Accordion>
-                  <Accordion
-                    id="nonCounterStatisticsAccordion"
-                    label={
-                      <FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />
-                    }
-                  >
-                    {this.getCustomStatistics(label, providerId)}
-                  </Accordion>
-                  <NotesSmartAccordion
-                    id="notesAccordion"
-                    domainName="erm-usage"
-                    entityId={usageDataProvider.id}
-                    entityName={usageDataProvider.label}
-                    entityType="erm-usage-data-provider"
-                    pathToNoteCreate={urls.noteCreate()}
-                    pathToNoteDetails={urls.notes()}
-                    stripes={stripes}
-                  />
-                </AccordionSet>
-              </AccordionStatus>
-            </Pane>
-            {helperApp && (
-              <HelperApp appName={helperApp} onClose={this.closeHelperApp} />
-            )}
-            <DeleteStatisticsModal
-              handlers={handlers}
-              isStatsLoading={isStatsLoading}
-              maxFailedAttempts={maxFailedAttempts}
-              onCloseModal={this.doCloseDeleteReports}
-              open={this.state.showDeleteReports}
-              onFail={this.handleFail}
-              onSuccess={this.handleSuccess}
-              providerId={providerId}
+  if (isEmpty(usageDataProvider)) {
+    return <div id="pane-udpdetails">Loading...</div>;
+  } else {
+    return (
+      <HasCommand
+        commands={shortcuts}
+        scope={document.body}
+      >
+        <>
+          <Pane
+            id="pane-udpdetails"
+            defaultWidth="40%"
+            renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
+          >
+            <TitleManager record={label} stripes={stripes} />
+            <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />
+            <Headline size="xx-large" tag="h2">
+              {label}
+            </Headline>
+            <ViewMetaData
+              metadata={get(usageDataProvider, 'metadata', {})}
               stripes={stripes}
-              counterReports={counterReportsPerYear}
-              udpLabel={label}
             />
-            <CounterUpload
-              open={this.state.showCounterUpload}
-              onClose={() => this.setState({ showCounterUpload: false })}
-              onFail={this.handleFail}
-              onSuccess={this.handleSuccess}
-              stripes={this.props.stripes}
-              udpId={providerId}
+            <UDPInfoView
+              id="udpInfo"
+              usageDataProvider={usageDataProvider}
+              stripes={stripes}
             />
-            <NonCounterUpload
-              open={this.state.showNonCounterUpload}
-              onClose={() => this.setState({ showNonCounterUpload: false })}
-              onFail={this.handleFail}
-              onSuccess={this.handleSuccess}
-              stripes={this.props.stripes}
-              udpId={providerId}
-            />
-            <Callout
-              ref={(ref) => {
-                callout = ref;
-              }}
-            />
-          </>
-        </HasCommand>
-      );
-    }
+            <AccordionStatus ref={accordionStatusRef}>
+              <Row end="xs">
+                <Col xs>
+                  <ExpandAllButton id="clickable-expand-all-view" />
+                </Col>
+              </Row>
+              <AccordionSet initialStatus={getInitialAccordionsState()}>
+                <Accordion
+                  label={
+                    <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
+                  }
+                  id="harvestingAccordion"
+                >
+                  <HarvestingConfigurationView
+                    usageDataProvider={usageDataProvider}
+                    stripes={stripes}
+                    settings={data.settings}
+                    harvesterImpls={data.harvesterImpls}
+                  />
+                </Accordion>
+                <Pluggable type="ui-agreements-extension" data={{ op: 'match-names', data }} />
+                <Accordion
+                  id="counterStatisticsAccordion"
+                  label={
+                    <FormattedMessage id="ui-erm-usage.udp.counterStatistics" />
+                  }
+                >
+                  {getCounterStatistics(
+                    counterReportsPerYear,
+                    label,
+                    providerId,
+                    maxFailedAttempts
+                  )}
+                </Accordion>
+                <Accordion
+                  id="nonCounterStatisticsAccordion"
+                  label={
+                    <FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />
+                  }
+                >
+                  {getCustomStatistics(label, providerId)}
+                </Accordion>
+                <NotesSmartAccordion
+                  id="notesAccordion"
+                  domainName="erm-usage"
+                  entityId={usageDataProvider.id}
+                  entityName={usageDataProvider.label}
+                  entityType="erm-usage-data-provider"
+                  pathToNoteCreate={urls.noteCreate()}
+                  pathToNoteDetails={urls.notes()}
+                  stripes={stripes}
+                />
+              </AccordionSet>
+            </AccordionStatus>
+          </Pane>
+          {helperApp && (
+            <HelperApp appName={helperApp} onClose={closeHelperApp} />
+          )}
+          <DeleteStatisticsModal
+            handlers={handlers}
+            isStatsLoading={isStatsLoading}
+            maxFailedAttempts={maxFailedAttempts}
+            onCloseModal={doCloseDeleteReports}
+            open={showDeleteReports}
+            onFail={handleFail}
+            onSuccess={handleSuccess}
+            providerId={providerId}
+            stripes={stripes}
+            counterReports={counterReportsPerYear}
+            udpLabel={label}
+          />
+          <CounterUpload
+            open={showCounterUpload}
+            onClose={() => setShowCounterUpload(false)}
+            onFail={handleFail}
+            onSuccess={handleSuccess}
+            stripes={stripes}
+            udpId={providerId}
+          />
+          <NonCounterUpload
+            open={showNonCounterUpload}
+            onClose={() => setShowNonCounterUpload(false)}
+            onFail={handleFail}
+            onSuccess={handleSuccess}
+            stripes={stripes}
+            udpId={providerId}
+          />
+          <Callout
+            ref={(ref) => {
+              callout = ref;
+            }}
+          />
+        </>
+      </HasCommand>
+    );
   }
-}
+};
 
 UDP.propTypes = {
   canEdit: PropTypes.bool,

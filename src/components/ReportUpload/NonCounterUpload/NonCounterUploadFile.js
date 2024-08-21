@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isNil } from 'lodash';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -9,7 +9,7 @@ import FileUploader from '../FileUploader';
 function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, file }) {
   const renderSelectedFile = () => {
     let downloadButton = '';
-    if (_.isNil(file) || _.isNil(fileId)) {
+    if (isNil(file) || isNil(fileId)) {
       downloadButton = <FormattedMessage id="ui-erm-usage.statistics.custom.selectFileFirst" />;
     } else {
       downloadButton = (

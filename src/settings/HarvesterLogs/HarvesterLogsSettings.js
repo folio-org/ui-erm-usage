@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useStripes } from '@folio/stripes/core';
 import { ConfigManager } from '@folio/stripes/smart-components';
 import { FormattedMessage } from 'react-intl';

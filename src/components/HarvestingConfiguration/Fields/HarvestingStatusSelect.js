@@ -1,9 +1,9 @@
-import React from 'react';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
-import { Select } from '@folio/stripes/components';
-import { required } from '../../../util/validate';
 
+import { Select } from '@folio/stripes/components';
+
+import { required } from '../../../util/validate';
 import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions';
 import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
 

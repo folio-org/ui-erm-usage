@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'compose-function';
 import { get, isEmpty } from 'lodash';

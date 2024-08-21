@@ -1,27 +1,26 @@
-import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 import {
   injectIntl,
   FormattedMessage
 } from 'react-intl';
+
 import {
   Col,
   KeyValue,
   Row,
 } from '@folio/stripes/components';
+
 import { formatDateTime, splitDateTime } from '../../util/dateTimeProcessing';
 
-class PeriodicHarvestingView extends React.Component {
-  static propTypes = {
-    periodicConfig: PropTypes.object,
-    intl: PropTypes.object,
-  };
-
-  renderDetailView = periodicConfig => {
-    const { formatMessage, locale, timeZone } = this.props.intl;
-    const lastTriggeredAt = formatDateTime(periodicConfig.lastTriggeredAt, locale, timeZone);
-    const { date, time } = splitDateTime(periodicConfig.startAt, locale, timeZone);
+const PeriodicHarvestingView = ({
+  periodicConfig,
+  intl,
+}) => {
+  const renderDetailView = (perConf) => {
+    const { formatMessage, locale, timeZone } = intl;
+    const lastTriggeredAt = formatDateTime(perConf.lastTriggeredAt, locale, timeZone);
+    const { date, time } = splitDateTime(perConf.startAt, locale, timeZone);
 
     return (
       <>
@@ -46,7 +45,7 @@ class PeriodicHarvestingView extends React.Component {
             <Col xs={8}>
               <KeyValue
                 label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-                value={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + periodicConfig.periodicInterval })}
+                value={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + perConf.periodicInterval })}
               />
             </Col>
           </Row>
@@ -61,26 +60,26 @@ class PeriodicHarvestingView extends React.Component {
         </div>
       </>
     );
-  }
+  };
 
-  renderNotDefined = () => {
+  const renderNotDefined = () => {
     return (
       <div id="periodic-harvesting-config-not-defined">
-        <FormattedMessage
-          id="ui-erm-usage.settings.harvester.config.periodic.notDefined"
-        />
+        <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.notDefined" />
       </div>
     );
-  }
+  };
 
-  render() {
-    const { periodicConfig } = this.props;
-    if (_.isEmpty(periodicConfig)) {
-      return this.renderNotDefined();
-    } else {
-      return this.renderDetailView(periodicConfig);
-    }
+  if (isEmpty(periodicConfig)) {
+    return renderNotDefined();
+  } else {
+    return renderDetailView(periodicConfig);
   }
-}
+};
+
+PeriodicHarvestingView.propTypes = {
+  periodicConfig: PropTypes.object,
+  intl: PropTypes.object,
+};
 
 export default injectIntl(PeriodicHarvestingView);

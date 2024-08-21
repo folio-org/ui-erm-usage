@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { isNil } from 'lodash';
+
 import {
   Accordion,
   AccordionSet,
@@ -11,6 +11,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
+
 import CounterStatistics from '../../Counter';
 import ReportInfoButton from '../../Counter/ReportInfoButton';
 import css from '../../Counter/CounterStatistics.css';

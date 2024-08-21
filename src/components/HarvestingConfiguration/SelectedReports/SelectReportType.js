@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { cloneDeep, findIndex, isEmpty } from 'lodash';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
+
 import {
   Button,
   Col,
@@ -16,11 +16,11 @@ import css from './SelectReportType.css';
 import { notRequired, required } from '../../../util/validate';
 
 const omitUsedOptions = (list, usedValues, id) => {
-  const unUsedValues = _.cloneDeep(list);
-  if (!_.isEmpty(usedValues)) {
+  const unUsedValues = cloneDeep(list);
+  if (!isEmpty(usedValues)) {
     usedValues.forEach((item, index) => {
       if (id !== index) {
-        const usedValueIndex = _.findIndex(unUsedValues, (v) => {
+        const usedValueIndex = findIndex(unUsedValues, (v) => {
           return v.label === item;
         });
         if (usedValueIndex !== -1) {

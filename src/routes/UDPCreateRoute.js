@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+
 import { stripesConnect } from '@folio/stripes/core';
 import { LoadingPane } from '@folio/stripes/components';
 
@@ -8,84 +8,75 @@ import extractHarvesterImpls from '../util/harvesterImpls';
 
 import urls from '../util/urls';
 
-class UDPCreateRoute extends React.Component {
-  static manifest = Object.freeze({
-    aggregators: {
-      type: 'okapi',
-      path: 'aggregator-settings',
-      shouldRefresh: () => false,
-    },
-    harvesterImpls: {
-      type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=false',
-      shouldRefresh: () => false,
-    },
-    usageDataProviders: {
-      type: 'okapi',
-      path: 'usage-data-providers',
-      fetch: false,
-      shouldRefresh: () => false,
-    },
-  });
+const UDPCreateRoute = ({
+  handlers = {},
+  history,
+  location,
+  mutator,
+  resources,
+  stripes,
+}) => {
+  const hasPerms = stripes.hasPerm('ui-erm-usage.udp.create');
 
-  static defaultProps = {
-    handlers: {},
+  const handleClose = () => {
+    history.push(`${urls.udps()}${location.search}`);
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      hasPerms: props.stripes.hasPerm('ui-erm-usage.udp.create'),
-    };
-  }
-
-  handleClose = () => {
-    const { location } = this.props;
-    this.props.history.push(`${urls.udps()}${location.search}`);
-  };
-
-  handleSubmit = (udp) => {
-    const { history, location, mutator } = this.props;
-
+  const handleSubmit = (udp) => {
     mutator.usageDataProviders.POST(udp).then(({ id }) => {
       history.push(`${urls.udpView(id)}${location.search}`);
     });
   };
 
-  fetchIsPending = () => {
-    return Object.values(this.props.resources)
+  const fetchIsPending = () => {
+    return Object.values(resources)
       .filter((r) => r && r.resource !== 'usageDataProviders')
       .some((r) => r.isPending);
   };
 
-  render() {
-    const { handlers, resources, stripes } = this.props;
-    const harvesterImpls = extractHarvesterImpls(resources);
-    const aggregators = (resources.aggregators || {}).records || [];
+  const harvesterImpls = extractHarvesterImpls(resources);
+  const aggregators = (resources.aggregators || {}).records || [];
 
-    if (!this.state.hasPerms) return <div>No Permission</div>;
-    if (this.fetchIsPending()) {
-      return <LoadingPane onClose={this.handleClose} />;
-    }
-    return (
-      <UDPForm
-        data={{
-          aggregators,
-          harvesterImpls,
-        }}
-        handlers={{
-          ...handlers,
-          onClose: this.handleClose,
-        }}
-        initialValues={{ harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: 5, sushiConfig: { serviceType: 'cs50' } } }}
-        isLoading={this.fetchIsPending()}
-        onSubmit={this.handleSubmit}
-        store={stripes.store}
-      />
-    );
+  if (!hasPerms) return <div>No Permission</div>;
+  if (fetchIsPending()) {
+    return <LoadingPane onClose={handleClose} />;
   }
-}
+  return (
+    <UDPForm
+      data={{
+        aggregators,
+        harvesterImpls,
+      }}
+      handlers={{
+        ...handlers,
+        onClose: handleClose,
+      }}
+      initialValues={{ harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: 5, sushiConfig: { serviceType: 'cs50' } } }}
+      isLoading={fetchIsPending()}
+      onSubmit={handleSubmit}
+      store={stripes.store}
+    />
+  );
+};
+
+UDPCreateRoute.manifest = Object.freeze({
+  aggregators: {
+    type: 'okapi',
+    path: 'aggregator-settings',
+    shouldRefresh: () => false,
+  },
+  harvesterImpls: {
+    type: 'okapi',
+    path: 'erm-usage-harvester/impl?aggregator=false',
+    shouldRefresh: () => false,
+  },
+  usageDataProviders: {
+    type: 'okapi',
+    path: 'usage-data-providers',
+    fetch: false,
+    shouldRefresh: () => false,
+  },
+});
 
 UDPCreateRoute.propTypes = {
   handlers: PropTypes.object,

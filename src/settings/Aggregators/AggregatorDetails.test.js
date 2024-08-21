@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { CalloutContext, StripesContext, useStripes } from '@folio/stripes/core';
@@ -45,6 +44,14 @@ describe('AggregatorDetails', () => {
     expect(screen.getByText('Aggregator Test')).toBeVisible();
     expect(screen.getByText('Nationaler Statistikserver')).toBeVisible();
     expect(screen.getByText('http://aggregagtor.de')).toBeVisible();
+  });
+
+  test('should render Expand all', async () => {
+    expect(screen.getByText('Collapse all')).toBeVisible();
+    await userEvent.click(screen.getByText('Collapse all'));
+    expect(screen.getByText('Expand all')).toBeVisible();
+    await userEvent.click(screen.getByText('Expand all'));
+    expect(screen.getByText('Collapse all')).toBeVisible();
   });
 
   describe('download credentials', () => {

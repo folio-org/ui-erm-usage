@@ -1,7 +1,8 @@
-import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
+import { isNil } from 'lodash';
+import { useState } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -12,183 +13,182 @@ import {
 
 import ReportInfo from '../ReportInfo';
 
-class ReportInfoButton extends React.Component {
-  static manifest = Object.freeze({
-    counterReports: {
-      type: 'okapi',
-      fetch: false,
-      accumulate: 'true',
-      DELETE: {
-        path: 'counter-reports',
-      },
-    },
-  });
+const ReportInfoButton = ({
+  stripes,
+  report,
+  mutator,
+  intl,
+  maxFailedAttempts,
+  udpLabel,
+  handlers,
+}) => {
+  const [showDropDown, setShowDropDown] = useState();
+  const [showConfirmDelete, setShowConfirmDelete] = useState();
 
-  constructor(props) {
-    super(props);
-    const logger = props.stripes.logger;
-    this.log = logger.log.bind(logger);
+  const log = stripes.logger.log.bind(stripes.logger);
 
-    this.state = {
-      showDropDown: false,
-      showConfirmDelete: false,
-    };
-  }
-
-  getButtonStyle = (failedAttempts) => {
+  const getButtonStyle = (failedAttempts) => {
     if (!failedAttempts) {
       return 'success slim';
-    } else if (failedAttempts < this.props.maxFailedAttempts) {
+    } else if (failedAttempts < maxFailedAttempts) {
       return 'warning slim';
     } else {
       return 'danger slim';
     }
   };
 
-  getButtonIcon = (failedAttempts) => {
+  const getButtonIcon = (failedAttempts) => {
     if (!failedAttempts) {
       return <Icon icon="check-circle" />;
-    } else if (failedAttempts < this.props.maxFailedAttempts) {
+    } else if (failedAttempts < maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
     } else {
       return <Icon icon="times-circle" />;
     }
   };
 
-  downloadRawReport = (fileType) => {
-    this.setState(() => ({ showDropDown: false }));
-    const id = this.props.report.id;
-    this.props.handlers.onDownloadReportSingleMonthRaw(id, fileType);
+  const downloadRawReport = (fileType) => {
+    setShowDropDown(false);
+    const id = report.id;
+    handlers.onDownloadReportSingleMonthRaw(id, fileType);
   };
 
-  downloadReport = (format) => {
-    this.setState(() => ({ showDropDown: false }));
-    const id = this.props.report.id;
-    this.props.handlers.onDownloadReportSingleMonth(id, format);
+  const downloadReport = (format) => {
+    setShowDropDown(false);
+    const id = report.id;
+    handlers.onDownloadReportSingleMonth(id, format);
   };
 
-  deleteReport = () => {
-    this.setState({
-      showConfirmDelete: true,
-      showDropDown: false,
-    });
+  const deleteReport = () => {
+    setShowConfirmDelete(true);
+    setShowDropDown(false);
   };
 
-  doDelete = () => {
-    const { report } = this.props;
-    this.props.mutator.counterReports
+  const doDelete = () => {
+    mutator.counterReports
       .DELETE({ id: report.id })
       .then(() => {})
       .catch((err) => {
-        const infoText = this.failText + ' ' + err.message;
-        this.log('Delete of counter report failed: ' + infoText);
+        const failText = intl.formatMessage({
+          id: 'ui-erm-usage.report.upload.failed',
+        });
+        const infoText = failText + ' ' + err.message;
+        log('Delete of counter report failed: ' + infoText);
       });
-    this.setState(() => ({ showConfirmDelete: false }));
+    setShowConfirmDelete(false);
   };
 
-  hideConfirm = () => {
-    this.setState({ showConfirmDelete: false });
+  const hideConfirm = () => {
+    setShowConfirmDelete(false);
   };
 
-  handleClose = () => {
-    this.setState({ showDropDown: false });
+  const handleClose = () => {
+    setShowDropDown(false);
   };
 
-  render() {
-    const { intl, report } = this.props;
-    if (_.isNil(report)) {
-      return null;
-    }
-
-    const icon = this.getButtonIcon(report.failedAttempts);
-    const style = this.getButtonStyle(report.failedAttempts);
-
-    const confirmMessage = (
-      <>
-        <span>
-          {intl.formatMessage({
-            id: 'ui-erm-usage.statistics.delete',
-          })}
-          <br />
-        </span>
-        <span>
-          {`${intl.formatMessage({
-            id: 'ui-erm-usage.reportOverview.reportType',
-          })}:
-           ${report.reportName} --
-           ${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
-           ${report.yearMonth}`}
-        </span>
-      </>
-    );
-
-    const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
-    const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
-    const failedInfo = report.failedAttempts
-      ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
-      : intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.success' });
-    const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
-    const reportInfoClassName = report.failedAttempts
-      ? 'report-info-failed'
-      : 'report-info-valid';
-
-    const footer = (
-      <Button id="close-report-info-button" onClick={this.handleClose}>
-        Close
-      </Button>
-    );
-
-    return (
-      <>
-        <Button
-          bottomMargin0
-          aria-label={label}
-          id={buttonId}
-          data-testid={buttonId}
-          buttonStyle={style}
-          aria-haspopup="true"
-          onClick={() => this.setState((state) => ({ showDropDown: !state.showDropDown }))}
-        >
-          {icon}
-        </Button>
-        <Modal
-          id={dropdownId}
-          closeOnBackgroundClick
-          data-test-counter-report-info
-          open={this.state.showDropDown}
-          label="Report info"
-          footer={footer}
-        >
-          <div id="report-info" className={reportInfoClassName}>
-            <ReportInfo
-              report={report}
-              deleteReport={this.deleteReport}
-              downloadRawReport={this.downloadRawReport}
-              downloadReport={this.downloadReport}
-              retryThreshold={this.props.maxFailedAttempts}
-              udpLabel={this.props.udpLabel}
-            />
-          </div>
-        </Modal>
-        <ConfirmationModal
-          open={this.state.showConfirmDelete}
-          heading={
-            <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
-          }
-          message={confirmMessage}
-          onConfirm={this.doDelete}
-          confirmLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.yes',
-          })}
-          onCancel={this.hideConfirm}
-          cancelLabel={this.props.intl.formatMessage({
-            id: 'ui-erm-usage.general.no',
-          })}
-        />
-      </>
-    );
+  if (isNil(report)) {
+    return null;
   }
-}
+
+  const icon = getButtonIcon(report.failedAttempts);
+  const style = getButtonStyle(report.failedAttempts);
+
+  const confirmMessage = (
+    <>
+      <span>
+        {intl.formatMessage({
+          id: 'ui-erm-usage.statistics.delete',
+        })}
+        <br />
+      </span>
+      <span>
+        {`${intl.formatMessage({
+          id: 'ui-erm-usage.reportOverview.reportType',
+        })}:
+          ${report.reportName} --
+          ${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
+          ${report.yearMonth}`}
+      </span>
+    </>
+  );
+
+  const buttonId = `clickable-download-stats-by-id-${report.reportName}-${report.yearMonth}`;
+  const dropdownId = `report-info-${report.reportName}-${report.yearMonth}`;
+  const failedInfo = report.failedAttempts
+    ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
+    : intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.success' });
+  const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
+  const reportInfoClassName = report.failedAttempts
+    ? 'report-info-failed'
+    : 'report-info-valid';
+
+  const footer = (
+    <Button id="close-report-info-button" onClick={handleClose}>
+      Close
+    </Button>
+  );
+
+  return (
+    <>
+      <Button
+        bottomMargin0
+        aria-label={label}
+        id={buttonId}
+        data-testid={buttonId}
+        buttonStyle={style}
+        aria-haspopup="true"
+        onClick={() => setShowDropDown(curState => !curState)}
+      >
+        {icon}
+      </Button>
+      <Modal
+        id={dropdownId}
+        closeOnBackgroundClick
+        data-test-counter-report-info
+        open={showDropDown}
+        label="Report info"
+        footer={footer}
+      >
+        <div id="report-info" className={reportInfoClassName}>
+          <ReportInfo
+            report={report}
+            deleteReport={deleteReport}
+            downloadRawReport={downloadRawReport}
+            downloadReport={downloadReport}
+            retryThreshold={maxFailedAttempts}
+            udpLabel={udpLabel}
+          />
+        </div>
+      </Modal>
+      <ConfirmationModal
+        open={showConfirmDelete}
+        heading={
+          <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
+        }
+        message={confirmMessage}
+        onConfirm={doDelete}
+        confirmLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.yes',
+        })}
+        onCancel={hideConfirm}
+        cancelLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.no',
+        })}
+      />
+    </>
+  );
+};
+
+ReportInfoButton.manifest = Object.freeze({
+  counterReports: {
+    type: 'okapi',
+    fetch: false,
+    accumulate: 'true',
+    DELETE: {
+      path: 'counter-reports',
+    },
+  },
+});
 
 ReportInfoButton.propTypes = {
   stripes: PropTypes.shape().isRequired,

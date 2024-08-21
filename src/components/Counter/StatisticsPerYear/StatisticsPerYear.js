@@ -1,7 +1,8 @@
-import { cloneDeep, has, isEmpty, keys } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { cloneDeep, has, isEmpty, keys } from 'lodash';
+import { useEffect, useRef, useState } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import {
   Accordion,
   AccordionSet,
