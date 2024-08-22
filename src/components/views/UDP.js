@@ -449,6 +449,7 @@ const UDP = ({
             id="pane-udpdetails"
             defaultWidth="40%"
             renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
+            style={{ paddingRight: '15px' }}
           >
             <TitleManager record={label} stripes={stripes} />
             <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />

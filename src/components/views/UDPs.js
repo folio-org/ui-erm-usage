@@ -302,6 +302,7 @@ const UDPs = ({
                 {filterPaneIsVisible && (
                   <Pane
                     defaultWidth="20%"
+                    id="pane-filter-udps"
                     renderHeader={renderFilterPaneHeader}
                   >
                     <form
