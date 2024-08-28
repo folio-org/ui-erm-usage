@@ -50,13 +50,6 @@ const ErmUsage = ({
     return document.body.contains(document.activeElement);
   };
 
-  const shortcuts = [
-    {
-      name: 'search',
-      handler: focusSearchField
-    }
-  ];
-
   const changeKeyboardShortcutsModal = (modalState) => {
     setShowKeyboardShortcutsModal(modalState);
   };
@@ -65,6 +58,17 @@ const ErmUsage = ({
     handleToggle();
     changeKeyboardShortcutsModal(true);
   };
+
+  const shortcuts = [
+    {
+      name: 'search',
+      handler: focusSearchField
+    },
+    {
+      name: 'openShortcutModal',
+      handler: changeKeyboardShortcutsModal
+    },
+  ];
 
   const shortcutScope = document.body;
   const allCommands = commands.concat(commandsGeneral);
