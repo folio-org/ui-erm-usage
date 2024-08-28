@@ -18,7 +18,6 @@ import {
 
 import pkg from '../package';
 import commands from './commands';
-import commandsGeneral from './commandsGeneral';
 import UDPsRoute from './routes/UDPsRoute';
 import UDPViewRoute from './routes/UDPViewRoute';
 import UDPCreateRoute from './routes/UDPCreateRoute';
@@ -71,7 +70,6 @@ const ErmUsage = ({
   ];
 
   const shortcutScope = document.body;
-  const allCommands = commands.concat(commandsGeneral);
 
   if (showSettings) {
     return <Settings match={match} {...props} />;
@@ -79,7 +77,7 @@ const ErmUsage = ({
 
   return (
     <>
-      <CommandList commands={allCommands}>
+      <CommandList commands={commands}>
         <HasCommand
           commands={shortcuts}
           isWithinScope={checkScope}
@@ -116,7 +114,7 @@ const ErmUsage = ({
         <KeyboardShortcutsModal
           open
           onClose={() => { changeKeyboardShortcutsModal(false); }}
-          allCommands={commands.concat(commandsGeneral)}
+          allCommands={commands}
         />
       )}
     </>

@@ -35,7 +35,12 @@ const commands = [
     name: 'openShortcutModal',
     label: (<FormattedMessage id="stripes-components.shortcut.openShortcutModal" />),
     shortcut: 'mod+alt+k',
-  }
+  },
+  {
+    name: 'expandCollapse',
+    label: (<FormattedMessage id="stripes-components.shortcut.expandOrCollapse" />),
+    shortcut: 'spacebar'
+  },
 ];
 
 export default commands;
