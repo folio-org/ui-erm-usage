@@ -356,6 +356,7 @@ const UDPs = ({
                 )}
                 <Pane
                   defaultWidth="fill"
+                  noOverflow
                   padContent={false}
                   id="pane-list-udps"
                   renderHeader={() => renderResultsPaneHeader(activeFilters, source)}
