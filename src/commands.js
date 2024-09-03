@@ -30,7 +30,17 @@ const commands = [
     name: 'search',
     label: (<FormattedMessage id="stripes-components.shortcut.goToSearchFilter" />),
     shortcut: 'mod+alt+h'
-  }
+  },
+  {
+    name: 'openShortcutModal',
+    label: (<FormattedMessage id="stripes-components.shortcut.openShortcutModal" />),
+    shortcut: 'mod+alt+k',
+  },
+  {
+    name: 'expandCollapse',
+    label: (<FormattedMessage id="stripes-components.shortcut.expandOrCollapse" />),
+    shortcut: 'spacebar'
+  },
 ];
 
 export default commands;

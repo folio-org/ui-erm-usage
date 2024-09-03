@@ -5,6 +5,8 @@
 * React v19: refactor away from default props for functional components ([UIEUS-355](https://folio-org.atlassian.net/browse/UIEUS-355))
 * Use erm-usage-files interface id that is valid for Eureka platform ([APPDESCRIP-28](https://folio-org.atlassian.net/browse/APPDESCRIP-28))
 * Use functional components instead of class components ([UIEUS-362](https://folio-org.atlassian.net/browse/UIEUS-362))
+* Display the overview of keyboard shortcuts using the combination Ctrl+Alt+k ([UIEUS-364](https://folio-org.atlassian.net/browse/UIEUS-364))
+* Repeated fields in overview for keyboard shortcuts ([UIEUS-365](https://folio-org.atlassian.net/browse/UIEUS-365))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
