@@ -39,7 +39,7 @@ const HarvestingConfigurationForm = ({
   const changeSelectedCounterVersion = (event) => {
     event.preventDefault();
 
-    const val = (event.target.value === '') ? undefined : parseInt(event.target.value, 10);
+    const val = (event.target.value === '') ? undefined : event.target.value;
     const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', '');
     if (selectedReportReleaseValues !== val) {
       const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
@@ -49,8 +49,8 @@ const HarvestingConfigurationForm = ({
       } else {
         form.mutators.setReportRelease({}, val);
       }
-      if ((val === 4 && values.sushiCredentials?.apiKey) ||
-        (val === 5 && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
+      if ((val === '4' && values.sushiCredentials?.apiKey) ||
+        (val === '5' && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
         form.change('sushiCredentials.apiKey', undefined);
       }
     }
@@ -74,7 +74,7 @@ const HarvestingConfigurationForm = ({
   const onToggleAccordion = onToggle;
   const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
   const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
-  const reportRelease = get(values, 'harvestingConfig.reportRelease', null);
+  const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
   const confirmationMessage = (

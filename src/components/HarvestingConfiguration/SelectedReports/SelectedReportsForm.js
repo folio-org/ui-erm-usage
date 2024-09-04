@@ -14,7 +14,7 @@ import { requiredArray } from '../../../util/validate';
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReports.getOptions(), [
     'counterVersion',
-    '' + counterVersion,
+    counterVersion,
   ]);
 };
 
