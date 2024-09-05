@@ -40,7 +40,7 @@ const HarvestingConfigurationForm = ({
     event.preventDefault();
 
     const val = (event.target.value === '') ? undefined : event.target.value;
-    const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', '');
+    const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', null);
     if (selectedReportReleaseValues !== val) {
       const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
       if (!isEmpty(requestedReports)) {

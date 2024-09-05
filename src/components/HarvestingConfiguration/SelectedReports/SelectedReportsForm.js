@@ -36,9 +36,7 @@ class SelectedReportsForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.counterVersion !== prevProps.counterVersion) {
-      const counterReportsForVersion = _.isNaN(Number(this.props.counterVersion))
-        ? []
-        : getCounterReportsForVersion(this.props.counterVersion);
+      const counterReportsForVersion = getCounterReportsForVersion(this.props.counterVersion);
       this.counterReportsCurrentVersion = counterReportsForVersion;
     }
   }
