@@ -7,7 +7,6 @@
 * Use functional components instead of class components ([UIEUS-362](https://folio-org.atlassian.net/browse/UIEUS-362))
 * Display the overview of keyboard shortcuts using the combination Ctrl+Alt+k ([UIEUS-364](https://folio-org.atlassian.net/browse/UIEUS-364))
 * Repeated fields in overview for keyboard shortcuts ([UIEUS-365](https://folio-org.atlassian.net/browse/UIEUS-365))
-* Update to usage-data-providers 3.0 ([UIEUS-370](https://folio-org.atlassian.net/browse/UIEUS-370))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))

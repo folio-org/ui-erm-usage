@@ -10,7 +10,7 @@ const SushiCredentialsForm = (props) => {
   const { useAggregator, values, form } = props;
   const intl = useIntl();
 
-  const isDisableApiKey = values.harvestingConfig?.reportRelease === '4';
+  const isDisableApiKey = values.harvestingConfig?.reportRelease === 4;
 
   return (
     <>
