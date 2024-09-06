@@ -10,7 +10,7 @@ const udp = {
       name: 'German National Statistics Server',
       vendorCode: 'ACSO',
     },
-    reportRelease: '5',
+    reportRelease: 5,
     requestedReports: ['IR', 'TR'],
     harvestingStart: '2019-01',
   },
