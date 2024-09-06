@@ -14,13 +14,13 @@ import { requiredArray } from '../../../util/validate';
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReports.getOptions(), [
     'counterVersion',
-    '' + counterVersion,
+    counterVersion,
   ]);
 };
 
 class SelectedReportsForm extends React.Component {
   static propTypes = {
-    counterVersion: PropTypes.number,
+    counterVersion: PropTypes.string,
     selectedReports: PropTypes.arrayOf(PropTypes.string),
     required: PropTypes.bool
   };
@@ -36,9 +36,7 @@ class SelectedReportsForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.counterVersion !== prevProps.counterVersion) {
-      const counterReportsForVersion = _.isNaN(this.props.counterVersion)
-        ? []
-        : getCounterReportsForVersion(this.props.counterVersion);
+      const counterReportsForVersion = getCounterReportsForVersion(this.props.counterVersion);
       this.counterReportsCurrentVersion = counterReportsForVersion;
     }
   }

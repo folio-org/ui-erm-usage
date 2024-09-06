@@ -12,7 +12,7 @@ const ReportReleaseSelect = (props) => {
     <Field
       component={Select}
       dataOptions={reportReleaseOptions}
-      defaultValue={5}
+      defaultValue="5"
       fullWidth
       id={props.id}
       data={props.required ? 1 : 0}
