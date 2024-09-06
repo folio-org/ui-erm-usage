@@ -50,7 +50,7 @@ const initialUdp = {
       serviceType: 'cs41',
       serviceUrl: 'http://usage.udp.com/SushiServer',
     },
-    reportRelease: 4,
+    reportRelease: '4',
     requestedReports: ['DR1'],
     harvestingStart: '2018-01',
   },
@@ -475,22 +475,22 @@ describe('UDPForm', () => {
       expect(reqIdBox).toBeEnabled();
       expect(reqIdBox).toHaveValue('id1234');
 
-      await userEvent.selectOptions(releaseSelectBox, reportRelease.toString());
+      await userEvent.selectOptions(releaseSelectBox, reportRelease);
 
-      expect(releaseSelectBox.value).toBe(reportRelease.toString());
+      expect(releaseSelectBox.value).toBe(reportRelease);
       expect(reqIdBox).toHaveValue('id1234');
     };
 
     test('select reportRelease 4', async () => {
-      testSelectReportRelease(4);
+      testSelectReportRelease('4');
     });
 
     test('select reportRelease 5', async () => {
-      testSelectReportRelease(5);
+      testSelectReportRelease('5');
     });
 
     test('change reqId and apiKey with reportRelease 5 selected', async () => {
-      renderUDPForm(stripes, { harvestingConfig: { reportRelease: 5 } });
+      renderUDPForm(stripes, { harvestingConfig: { reportRelease: '5' } });
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
       const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
 
