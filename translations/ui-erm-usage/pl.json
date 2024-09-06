@@ -19,7 +19,7 @@
     "udpHarvestingConfig.harvestingEnd": "Koniec pobierania danych",
     "udpHarvestingConfig.sushiCredentials": "Poświadczenia SUSHI",
     "aggregatorInfo.aggregatorName": "Nazwa agregatora",
-    "aggregatorInfo.vendorCode": "Kod sprzedawcy",
+    "aggregatorInfo.vendorCode": "Kod dostawcy",
     "vendorInfo.serviceType": "Rodzaj usługi",
     "vendorInfo.serviceUrl": "Adres URL usługi",
     "sushiCreds.customerId": "ID klienta",
@@ -45,7 +45,7 @@
     "udp.form.udpInfo.title": "Informacje dostawcy o użyciu danych",
     "udp.form.udpInfo.providerName": "Nazwa dostawcy",
     "udp.form.harvestingConfig.harvestViaAggregator": "Pobierz dane statystyczne przez",
-    "udp.form.harvestingConfig.vendorCode": "Kod sprzedawcy",
+    "udp.form.harvestingConfig.vendorCode": "Kod dostawcy",
     "udp.form.harvestingConfig.noAggInfoText": "Określ odpowiedni „rodzaj usługi” odpowiedni dla „agregator” na podstawie wyboru „pobieranie danych za pośrednictwem”",
     "udp.form.selectedReports.clearModalHeading": "Wyczyść wybór raportu",
     "udp.form.selectedReports.confirmClearMessage": "Czy chcesz wyczyścić wybrane raporty przy zmianie wersji COUNTER?",
@@ -299,5 +299,6 @@
     "settings.harvester.config.periodic.delete.fail": "Received ''{status} - {statusText}'' while deleting periodic harvesting configuration",
     "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
     "harvester.start.failed": "Harvester failed to start",
-    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}."
+    "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}.",
+    "noSourceYet": "No source yet"
 }
