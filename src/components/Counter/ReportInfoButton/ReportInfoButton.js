@@ -22,8 +22,8 @@ const ReportInfoButton = ({
   udpLabel,
   handlers,
 }) => {
-  const [showDropDown, setShowDropDown] = useState();
-  const [showConfirmDelete, setShowConfirmDelete] = useState();
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const log = stripes.logger.log.bind(stripes.logger);
 
