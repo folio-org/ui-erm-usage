@@ -299,5 +299,6 @@
     "settings.harvester.config.periodic.delete.fail": "Recebido ''{status} - {statusText}'' ao excluir a configuração de coleta periódica",
     "harvester.start.success": "Um trabalho de coleta {provider, select, true {para ''{name}'' } other {}} foi agendado com sucesso para execução imediata. Os trabalhos de coleta geralmente levam algum tempo para serem concluídos. Você pode monitorar o progresso verificando a página {link}.",
     "harvester.start.failed": "A coleta falhou ao iniciar",
-    "harvester.start.failure": "Falha ao agendar um trabalho de coleta {provider, select, true {para '' {name} '' } other {}} ."
+    "harvester.start.failure": "Falha ao agendar um trabalho de coleta {provider, select, true {para '' {name} '' } other {}} .",
+    "noSourceYet": "Nenhuma fonte ainda"
 }
