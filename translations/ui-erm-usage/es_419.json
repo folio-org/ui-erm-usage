@@ -299,5 +299,6 @@
     "settings.harvester.config.periodic.delete.fail": "Recibido ''{status} - {statusText}'' al borrar la configuración de recolección periódica",
     "harvester.start.success": "Un trabajo de recolección {provider, select, true {for ''{name}''} other {}} ha sido programado con éxito para su ejecución inmediata. Las tareas de recolección suelen tardar algún tiempo en completarse. Puede supervisar el progreso consultando la página {link}.",
     "harvester.start.failed": "La cosecha no arranca",
-    "harvester.start.failure": "Error al programar un trabajo de recolección {provider, select, true { para ''{name}''} other {}}."
+    "harvester.start.failure": "Error al programar un trabajo de recolección {provider, select, true { para ''{name}''} other {}}.",
+    "noSourceYet": "No source yet"
 }

@@ -299,5 +299,6 @@
     "settings.harvester.config.periodic.delete.fail": "刪除定期擷取設定時收到“ {status} - {statusText} ”",
     "harvester.start.success": "資料擷取作業{provider, select, true { for '' {name} '' } other {}}已成功安排立即執行。擷取工作通常需要一些時間才能完成。您可以透過檢查{link}頁面來監控進度。",
     "harvester.start.failed": "擷取器無法啟動",
-    "harvester.start.failure": "無法排程擷取作業{provider, select, true { 為 '' {name} '' } other {}} 。"
+    "harvester.start.failure": "無法排程擷取作業{provider, select, true { 為 '' {name} '' } other {}} 。",
+    "noSourceYet": "No source yet"
 }

@@ -299,5 +299,6 @@
     "settings.harvester.config.periodic.delete.fail": "Přijato ''{status} - {statusText}'' při mazání konfigurace periodického harvestu",
     "harvester.start.success": "Úloha harvestu {provider, select, true {pro ''{name}''} other {}} byla úspěšně naplánována na okamžité provedení. Úlohy harvestu obvykle trvají nějaký čas. Průběh můžete sledovat na stránce {link}.",
     "harvester.start.failed": "Harvestor se nepodařilo spustit",
-    "harvester.start.failure": "Nepodařilo se naplánovat úlohu harvestu{provider, select, true { pro ''{name}''} other {}}."
+    "harvester.start.failure": "Nepodařilo se naplánovat úlohu harvestu{provider, select, true { pro ''{name}''} other {}}.",
+    "noSourceYet": "Zatím žádný zdroj"
 }
