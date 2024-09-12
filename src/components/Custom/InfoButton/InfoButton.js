@@ -105,9 +105,7 @@ function InfoButton(props) {
       </Modal>
       <ConfirmationModal
         open={showConfirmDelete}
-        heading={
-          <FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />
-        }
+        heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete.nonCounter" />}
         message={deleteConfirmMsg}
         onConfirm={doDelete}
         confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}

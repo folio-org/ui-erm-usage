@@ -106,7 +106,8 @@
   "reportOverview.month.12": "Dec",
   "reportOverview.report": "Report",
 
-  "reportOverview.confirmDelete": "Delete non-counter report?",
+  "reportOverview.confirmDelete.counter": "Delete Counter report?",
+  "reportOverview.confirmDelete.nonCounter": "Delete non-counter report?",
   "reportOverview.deleteTemplateMessage": "{name} will be removed from non-counter reports.",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
