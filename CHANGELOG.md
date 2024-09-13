@@ -8,6 +8,7 @@
 * Display the overview of keyboard shortcuts using the combination Ctrl+Alt+k ([UIEUS-364](https://folio-org.atlassian.net/browse/UIEUS-364))
 * Repeated fields in overview for keyboard shortcuts ([UIEUS-365](https://folio-org.atlassian.net/browse/UIEUS-365))
 * The open props in ReportInfoButton should not be undefined ([UIEUS-372](https://folio-org.atlassian.net/browse/UIEUS-372))
+* Update to usage-data-providers 3.0 ([UIEUS-370](https://folio-org.atlassian.net/browse/UIEUS-370))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
