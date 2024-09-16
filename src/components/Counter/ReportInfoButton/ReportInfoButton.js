@@ -162,7 +162,7 @@ const ReportInfoButton = ({
       </Modal>
       <ConfirmationModal
         open={showConfirmDelete}
-        heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete.counter" />}
+        heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDelete" />}
         message={confirmMessage}
         onConfirm={doDelete}
         confirmLabel={intl.formatMessage({
