@@ -85,11 +85,11 @@ describe('InfoButton', () => {
     expect(deleteButton).toBeInTheDocument();
 
     await userEvent.click(deleteButton);
-    expect(screen.getByText('Delete non-counter report?')).toBeInTheDocument();
+    expect(screen.getByText('Delete report?')).toBeInTheDocument();
 
     const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
-    await waitForElementToBeRemoved(() => screen.queryByText('Delete non-counter report?'));
+    await waitForElementToBeRemoved(() => screen.queryByText('Delete report?'));
     expect(doDeleteReport).toHaveBeenCalled();
   });
 });
