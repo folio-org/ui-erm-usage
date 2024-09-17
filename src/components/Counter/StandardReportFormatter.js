@@ -13,6 +13,7 @@ const createReportInfoButton = (id, report, handlers, maxFailed, stripes, udpLab
 const createReportFormatter = (handlers, maxFailed, stripes, udpLabel) => {
   return {
     'report': (report) => report.report,
+    'release': (report) => report.release,
     '01': (report) => createReportInfoButton('01', report, handlers, maxFailed, stripes, udpLabel),
     '02': (report) => createReportInfoButton('02', report, handlers, maxFailed, stripes, udpLabel),
     '03': (report) => createReportInfoButton('03', report, handlers, maxFailed, stripes, udpLabel),
