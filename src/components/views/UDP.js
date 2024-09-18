@@ -40,7 +40,7 @@ import CustomStatistics from '../Custom';
 import DeleteStatisticsModal from '../DeleteStatisticsModal';
 
 import urls from '../../util/urls';
-import groupReportsPerYear from '../../util/groupReportsPerYear';
+import groupByRelease from '../../util/groupByRelease';
 import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 import UDPHeader from '../UDPHeader/UDPHeader';
 import HarvesterInfoModal from '../HarvesterInfoModal/HarvesterInfoModal';
@@ -433,7 +433,7 @@ const UDP = ({
 
   const label = get(usageDataProvider, 'label', 'No LABEL');
   const providerId = get(usageDataProvider, 'id', '');
-  const counterReportsPerYear = groupReportsPerYear(data.counterReports);
+  const counterReportsByRelease = groupByRelease(data.counterReports);
   const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
 
   if (isEmpty(usageDataProvider)) {
@@ -492,7 +492,7 @@ const UDP = ({
                   }
                 >
                   {getCounterStatistics(
-                    counterReportsPerYear,
+                    counterReportsByRelease,
                     label,
                     providerId,
                     maxFailedAttempts
@@ -532,7 +532,7 @@ const UDP = ({
             onSuccess={handleSuccess}
             providerId={providerId}
             stripes={stripes}
-            counterReports={counterReportsPerYear}
+            counterReports={counterReportsByRelease}
             udpLabel={label}
           />
           <CounterUpload
