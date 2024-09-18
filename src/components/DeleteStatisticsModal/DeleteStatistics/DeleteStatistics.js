@@ -99,6 +99,7 @@ function DeleteStatistics({
 
   const reportFormatter = {
     'report': (report) => renderReportName(report),
+    'release': report => report.release,
     '01': (report) => {
       return renderReportNew(report, '01');
     },
