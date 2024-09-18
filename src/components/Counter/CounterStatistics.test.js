@@ -132,7 +132,7 @@ describe('CounterStatistics', () => {
     expect(screen.getByText('2019')).toBeInTheDocument();
   });
 
-  test('should render UDP', () => {
+  it('should render table with report for 2019', () => {
     renderCounterStatistics(stripes);
 
     const accordion2019 = screen.getByText('2019');
@@ -147,7 +147,6 @@ describe('CounterStatistics', () => {
     const headers = within(section2019).getAllByRole('columnheader');
     const expectedLabels = ['Report', 'Version', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // Check each header's text content
     headers.forEach((header, index) => {
       expect(header).toHaveTextContent(expectedLabels[index]);
     });
