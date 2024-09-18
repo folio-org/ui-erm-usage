@@ -18,6 +18,39 @@ const renderReportPerYear = (reports) => {
   return o;
 };
 
+const groupReportByRelease = (data) => {
+  const transformed = [];
+
+  data.forEach((item) => {
+    const releases = {};
+
+    Object.keys(item).forEach((key) => {
+      if (key === 'report') return;
+
+      const reportItem = item[key];
+
+      if (!reportItem) return;
+
+      const release = reportItem.release;
+
+      if (!releases[release]) {
+        releases[release] = {
+          report: item.report,
+          release,
+        };
+      }
+
+      releases[release][key] = reportItem;
+    });
+
+    Object.values(releases).forEach((releaseGroup) => {
+      transformed.push(releaseGroup);
+    });
+  });
+
+  return transformed;
+};
+
 const groupPerYear = (stats) => {
   return stats.map((statsPerYear) => {
     const y = statsPerYear.year;
@@ -25,9 +58,11 @@ const groupPerYear = (stats) => {
     const renderedStats = statsPerYear.reportsPerType.map((reportsTyped) => {
       return renderReportPerYear(reportsTyped.counterReports);
     });
+
+    const groupByRelease = groupReportByRelease(renderedStats);
     return {
       year,
-      stats: renderedStats,
+      stats: groupByRelease,
     };
   });
 };

@@ -40,38 +40,6 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
     setYearAccordions(tmpAccs);
   };
 
-  const groupByRelease = (data) => {
-    const transformed = [];
-
-    data.forEach((item) => {
-      const releases = {};
-
-      Object.keys(item).forEach((key) => {
-        if (key === 'report') return;
-
-        const reportItem = item[key];
-
-        if (!reportItem) return;
-
-        const release = reportItem.release;
-
-        if (!releases[release]) {
-          releases[release] = {
-            report: item.report,
-            release: release,
-          };
-        }
-
-        releases[release][key] = reportItem;
-      });
-
-      Object.values(releases).forEach((releaseGroup) => {
-        transformed.push(releaseGroup);
-      });
-    });
-    return transformed;
-  };
-
   const createReportOverviewPerYear = () => {
     const visibleColumns = [
       'report',
@@ -110,7 +78,6 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       const y = statsPerYear.year;
       const year = y.toString();
       const reps = statsPerYear.stats;
-      const reportsGroupedByRelease = groupByRelease(reps);
 
       return (
         <Accordion
@@ -121,7 +88,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
           onToggle={handleAccordionToggle}
         >
           <MultiColumnList
-            contentData={reportsGroupedByRelease}
+            contentData={reps}
             visibleColumns={visibleColumns}
             columnWidths={columnWidths}
             interactive={false}
