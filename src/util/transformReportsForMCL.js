@@ -1,4 +1,4 @@
-const groupByRelease = (counterReportsPerYear) => {
+const transformReportsForMCL = (counterReportsPerYear) => {
   return counterReportsPerYear.map(({ year, reportsPerType }) => {
     const stats = reportsPerType.flatMap(({ reportType, counterReports }) => {
       const reportsByRelease = counterReports.reduce((releaseAcc, report) => {
@@ -26,4 +26,4 @@ const groupByRelease = (counterReportsPerYear) => {
   });
 };
 
-export default groupByRelease;
+export default transformReportsForMCL;

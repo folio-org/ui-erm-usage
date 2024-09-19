@@ -40,7 +40,7 @@ import CustomStatistics from '../Custom';
 import DeleteStatisticsModal from '../DeleteStatisticsModal';
 
 import urls from '../../util/urls';
-import groupByRelease from '../../util/groupByRelease';
+import transformReportsForMCL from '../../util/transformReportsForMCL';
 import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 import UDPHeader from '../UDPHeader/UDPHeader';
 import HarvesterInfoModal from '../HarvesterInfoModal/HarvesterInfoModal';
@@ -433,7 +433,7 @@ const UDP = ({
 
   const label = get(usageDataProvider, 'label', 'No LABEL');
   const providerId = get(usageDataProvider, 'id', '');
-  const counterReportsByRelease = groupByRelease(data.counterReports);
+  const counterReportsByRelease = transformReportsForMCL(data.counterReports);
   const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
 
   if (isEmpty(usageDataProvider)) {
