@@ -150,29 +150,29 @@ describe('UDPForm', () => {
     });
 
     test('should switch between counter 4 and 5 reports', async () => {
-      expect(screen.getByText('Counter 4')).toBeInTheDocument();
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
-      await userEvent.click(await screen.findByText('Add report type'));
+      expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+      await userEvent.click(await screen.getByText('Add report type'));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
 
       await userEvent.click(await screen.findByText('BR1'));
-      expect(screen.getAllByText('BR1').length).toEqual(1);
+      expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 5']);
-      expect(screen.getByText('Clear report selection')).toBeVisible();
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 5']);
+      expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
-      await userEvent.click(await screen.findByText('Clear reports'));
-      await userEvent.click(await screen.findByText('Add report type'));
+      await userEvent.click(await screen.getByRole('button', { name: 'Clear reports' }));
+      await userEvent.click(await screen.getByText('Add report type'));
 
       const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButtonNew).toBeInTheDocument();
       await userEvent.click(reportTypeButtonNew);
-      await userEvent.click(await screen.findByText('PR'));
-      expect(screen.getAllByText('PR').length).toEqual(1);
-      expect(screen.queryAllByText('BR1').length).toEqual(0);
+      await userEvent.click(await screen.getByText('PR'));
+      expect(screen.getByText('PR')).toBeInTheDocument();
+      expect(screen.queryByText('BR1')).not.toBeInTheDocument();
     });
   });
 
@@ -224,22 +224,11 @@ describe('UDPForm', () => {
     });
 
     test('happy path', async () => {
-      await userEvent.type(
-        screen.getByLabelText('Provider name', { exact: false }),
-        'FooBar'
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['aggregator']
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Aggregator', { exact: false }), [
-        '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
-      ]);
-
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
+      await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
       await userEvent.click(await screen.findByText('Add report type'));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
@@ -248,7 +237,7 @@ describe('UDPForm', () => {
       await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.findByText('BR1'));
 
-      const startInput = screen.getByLabelText('Harvesting start', { exact: false });
+      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-01');
 
       await userEvent.click(await screen.findByText('Save & close'));
@@ -269,7 +258,7 @@ describe('UDPForm', () => {
     test('click cancel delete', async () => {
       await userEvent.click(await screen.findByText('Delete'));
 
-      const deleteModalText = screen.getByText('Delete usage data Provider');
+      const deleteModalText = screen.getByRole('heading', { name: 'Delete usage data Provider' });
       expect(deleteModalText).toBeInTheDocument();
 
       const cancelButton = document.querySelector('#clickable-delete-udp-confirmation-cancel');
@@ -295,44 +284,23 @@ describe('UDPForm', () => {
     });
 
     test('form is invalid when changing from sushi to aggregator', async () => {
-      await userEvent.type(
-        screen.getByLabelText('Provider name', { exact: false }), 'FooBar'
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']
-      );
-      await userEvent.selectOptions(
-        screen.getByLabelText('Service type', { exact: false }), ['cs41']
-      );
-      await userEvent.type(
-        screen.getByLabelText('Service URL', { exact: false }), 'http://abc'
-      );
+      await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['cs41']);
+      await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
 
       expect(screen.getByText('Counter 4')).toBeInTheDocument();
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
-      await userEvent.click(await screen.findByText('Add report type'));
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+      await userEvent.click(await screen.getByText('Add report type'));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
-      await userEvent.click(await screen.findByText('BR1'));
-
-      await userEvent.type(
-        screen.getByLabelText('Harvesting start', { exact: false }),
-        '2020-01'
-      );
-
-      await userEvent.type(
-        screen.getByLabelText('Customer ID', { exact: false }),
-        'MyCustomerID'
-      );
-
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['aggregator']
-      );
-
+      await userEvent.click(await screen.getByText('BR1'));
+      await userEvent.type(screen.getByRole('textbox', { name: /harvesting start/i }), '2020-01');
+      await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
       await userEvent.click(await screen.findByText('Save & close'));
       expect(onSubmit).not.toHaveBeenCalled();
     });
@@ -344,9 +312,7 @@ describe('UDPForm', () => {
     });
 
     test('harvesting status is active', async () => {
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
 
       expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();

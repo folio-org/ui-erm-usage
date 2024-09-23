@@ -169,7 +169,7 @@ describe('DeleteStatisticsModal', () => {
     });
 
     test('click cancel', async () => {
-      const heading = screen.queryByRole('heading', { name: 'Are you sure to delete multiple reports?' });
+      const heading = screen.getByRole('heading', { name: 'Are you sure to delete multiple reports?' });
       expect(heading).toBeVisible();
 
       const cancelButton = document.querySelector('#clickable-delete-multi-statistics-confirmation-cancel');
@@ -178,7 +178,7 @@ describe('DeleteStatisticsModal', () => {
     });
 
     test('click delete', async () => {
-      const heading = screen.queryByRole('heading', {
+      const heading = screen.getByRole('heading', {
         name: 'Are you sure to delete multiple reports?',
       });
       expect(heading).toBeVisible();

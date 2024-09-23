@@ -56,10 +56,6 @@ describe('InfoButton', () => {
     stripes = useStripes();
   });
 
-  test('should render InfoButton', () => {
-    renderInfoButton(stripes);
-  });
-
   test('has no permission', async () => {
     stripes.hasPerm = () => false;
     renderInfoButton(stripes);
@@ -85,7 +81,7 @@ describe('InfoButton', () => {
     expect(deleteButton).toBeInTheDocument();
 
     await userEvent.click(deleteButton);
-    const deleteReport = screen.getByText('Delete report?');
+    const deleteReport = screen.getByRole('heading', { name: 'Delete report?' });
     expect(deleteReport).toBeInTheDocument();
 
     const yesButton = screen.getByRole('button', { name: 'Yes' });
