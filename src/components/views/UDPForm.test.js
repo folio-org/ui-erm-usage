@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -146,29 +146,32 @@ describe('UDPForm', () => {
 
   describe('test report release and selected reports options', () => {
     beforeEach(() => {
-      renderUDPForm(stripes);
+      renderUDPForm(stripes, {});
     });
 
     test('should switch between counter 4 and 5 reports', async () => {
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
+      expect(screen.getByText('Counter 4')).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
       await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
-      await userEvent.click(await screen.findByText('BR1'));
-      expect(screen.getAllByText('BR1').length).toEqual(2);
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '5',
-      ]);
+      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
+
+      await userEvent.click(await screen.findByText('BR1'));
+      expect(screen.getAllByText('BR1').length).toEqual(1);
+
+      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 5']);
       expect(screen.getByText('Clear report selection')).toBeVisible();
 
       await userEvent.click(await screen.findByText('Clear reports'));
       await userEvent.click(await screen.findByText('Add report type'));
 
-      await userEvent.click(await screen.findByText('Report type'));
+      const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
+      expect(reportTypeButtonNew).toBeInTheDocument();
+      await userEvent.click(reportTypeButtonNew);
       await userEvent.click(await screen.findByText('PR'));
-      expect(screen.getAllByText('PR').length).toEqual(2);
+      expect(screen.getAllByText('PR').length).toEqual(1);
       expect(screen.queryAllByText('BR1').length).toEqual(0);
     });
   });
@@ -222,9 +225,7 @@ describe('UDPForm', () => {
 
     test('happy path', async () => {
       await userEvent.type(
-        screen.getByLabelText('Provider name', {
-          exact: false,
-        }),
+        screen.getByLabelText('Provider name', { exact: false }),
         'FooBar'
       );
       await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
@@ -238,15 +239,16 @@ describe('UDPForm', () => {
         '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
       ]);
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
+      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
       await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
+
+      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.findByText('BR1'));
-      const startInput = screen.getByLabelText('Harvesting start', {
-        exact: false,
-      });
+
+      const startInput = screen.getByLabelText('Harvesting start', { exact: false });
       await userEvent.type(startInput, '2020-01');
 
       await userEvent.click(await screen.findByText('Save & close'));
@@ -266,12 +268,13 @@ describe('UDPForm', () => {
 
     test('click cancel delete', async () => {
       await userEvent.click(await screen.findByText('Delete'));
-      const cancel = screen.findByRole('button', {
-        name: 'Cancel',
-        id: 'clickable-delete-udp-confirmation-cancel',
-      });
-      await userEvent.click(await cancel);
-      await waitForElementToBeRemoved(() => screen.queryByText('Delete usage data Provider'));
+
+      const deleteModalText = screen.getByText('Delete usage data Provider');
+      expect(deleteModalText).toBeInTheDocument();
+
+      const cancelButton = document.querySelector('#clickable-delete-udp-confirmation-cancel');
+      await userEvent.click(await cancelButton);
+      expect(deleteModalText).not.toBeInTheDocument();
       expect(onDelete).not.toHaveBeenCalled();
     });
 
@@ -293,46 +296,35 @@ describe('UDPForm', () => {
 
     test('form is invalid when changing from sushi to aggregator', async () => {
       await userEvent.type(
-        screen.getByLabelText('Provider name', {
-          exact: false,
-        }),
-        'FooBar'
+        screen.getByLabelText('Provider name', { exact: false }), 'FooBar'
       );
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
+      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['active']);
       await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['sushi']
+        screen.getByLabelText('Harvest statistics via', { exact: false }), ['sushi']
       );
-      await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), [
-        'cs41',
-      ]);
+      await userEvent.selectOptions(
+        screen.getByLabelText('Service type', { exact: false }), ['cs41']
+      );
       await userEvent.type(
-        screen.getByLabelText('Service URL', {
-          exact: false,
-        }),
-        'http://abc'
+        screen.getByLabelText('Service URL', { exact: false }), 'http://abc'
       );
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
+      expect(screen.getByText('Counter 4')).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), ['Counter 4']);
       await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
+
+      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.findByText('BR1'));
 
       await userEvent.type(
-        screen.getByLabelText('Harvesting start', {
-          exact: false,
-        }),
+        screen.getByLabelText('Harvesting start', { exact: false }),
         '2020-01'
       );
 
       await userEvent.type(
-        screen.getByLabelText('Customer ID', {
-          exact: false,
-        }),
+        screen.getByLabelText('Customer ID', { exact: false }),
         'MyCustomerID'
       );
 
