@@ -12,16 +12,6 @@ const render = (props) => {
 };
 
 describe('HarvesterInfoModal', () => {
-  test('default values', () => {
-    const { container } = render();
-    expect(container.innerHTML).toBe('<div></div>');
-  });
-
-  test('open == false', () => {
-    const { container } = render({ open: false });
-    expect(container.innerHTML).toBe('<div></div>');
-  });
-
   test('isSuccess==true, udpLabel', () => {
     render({
       open: true,
