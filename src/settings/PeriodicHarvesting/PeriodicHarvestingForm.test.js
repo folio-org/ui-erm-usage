@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -88,15 +88,11 @@ describe('PeriodicHarvestingForm', () => {
   test('test cancel delete', async () => {
     renderPeriodicHarvestingForm(stripes, stubInitialValues);
     await userEvent.click(screen.getByText('Delete'));
-    expect(
-      screen.getByText(
-        'Do you really want to delete the periodic harvesting config?'
-      )
-    ).toBeInTheDocument();
-    const cancel = screen.getByText('Cancel');
-    expect(cancel).toBeInTheDocument();
-    await userEvent.click(cancel);
-    await waitForElementToBeRemoved(() => screen.queryByText('Cancel'));
+    expect(screen.getByText('Do you really want to delete the periodic harvesting config?')).toBeInTheDocument();
+    const cancelButton = screen.getByText('Cancel');
+    expect(cancelButton).toBeInTheDocument();
+    await userEvent.click(cancelButton);
+    expect(cancelButton).not.toBeInTheDocument();
     expect(onDelete).not.toHaveBeenCalled();
   });
 
@@ -108,10 +104,10 @@ describe('PeriodicHarvestingForm', () => {
         'Do you really want to delete the periodic harvesting config?'
       )
     ).toBeInTheDocument();
-    const submit = screen.getByText('Submit');
-    expect(submit).toBeInTheDocument();
-    await userEvent.click(submit);
-    await waitForElementToBeRemoved(() => screen.queryByText('Submit'));
+    const submitButton = screen.getByText('Submit');
+    expect(submitButton).toBeInTheDocument();
+    await userEvent.click(submitButton);
+    expect(submitButton).not.toBeInTheDocument();
     expect(onDelete).toHaveBeenCalled();
   });
 });

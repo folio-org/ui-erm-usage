@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { Form } from 'react-final-form';
 import { MemoryRouter } from 'react-router-dom';
@@ -104,9 +104,12 @@ describe('Delete Aggregator', () => {
   });
 
   test('click cancel', async () => {
-    const cancelBtn = screen.getByRole('button', { name: 'Cancel' });
-    await userEvent.click(cancelBtn);
-    await waitForElementToBeRemoved(() => screen.queryByText('Delete aggregator'));
+    const deleteModalText = screen.queryByText('Delete aggregator');
+    expect(deleteModalText).toBeInTheDocument();
+
+    const cancelButton = document.querySelector('#clickable-deleteaggregator-confirmation-cancel');
+    await userEvent.click(cancelButton);
+    expect(deleteModalText).not.toBeInTheDocument();
   });
 
   test('click submit', async () => {
