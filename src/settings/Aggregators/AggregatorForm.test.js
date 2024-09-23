@@ -104,7 +104,7 @@ describe('Delete Aggregator', () => {
   });
 
   test('click cancel', async () => {
-    const deleteModalText = screen.queryByText('Delete aggregator');
+    const deleteModalText = screen.getByRole('heading', { name: 'Delete aggregator' });
     expect(deleteModalText).toBeInTheDocument();
 
     const cancelButton = document.querySelector('#clickable-deleteaggregator-confirmation-cancel');

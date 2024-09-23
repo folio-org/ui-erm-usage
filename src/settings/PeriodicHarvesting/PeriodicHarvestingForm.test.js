@@ -81,15 +81,15 @@ describe('PeriodicHarvestingForm', () => {
       screen.getByLabelText('Periodic interval', { exact: false }),
       ['weekly']
     );
-    await userEvent.click(screen.getByText('Save'));
+    await userEvent.click(screen.getByRole('button', { name: 'Save' }));
     expect(onSubmit).toHaveBeenCalled();
   });
 
   test('test cancel delete', async () => {
     renderPeriodicHarvestingForm(stripes, stubInitialValues);
-    await userEvent.click(screen.getByText('Delete'));
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
     expect(screen.getByText('Do you really want to delete the periodic harvesting config?')).toBeInTheDocument();
-    const cancelButton = screen.getByText('Cancel');
+    const cancelButton = screen.getByRole('button', { name: 'Cancel' });
     expect(cancelButton).toBeInTheDocument();
     await userEvent.click(cancelButton);
     expect(cancelButton).not.toBeInTheDocument();
@@ -98,13 +98,9 @@ describe('PeriodicHarvestingForm', () => {
 
   test('test do delete', async () => {
     renderPeriodicHarvestingForm(stripes, stubInitialValues);
-    await userEvent.click(screen.getByText('Delete'));
-    expect(
-      screen.getByText(
-        'Do you really want to delete the periodic harvesting config?'
-      )
-    ).toBeInTheDocument();
-    const submitButton = screen.getByText('Submit');
+    await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(screen.getByText('Do you really want to delete the periodic harvesting config?')).toBeInTheDocument();
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
     expect(submitButton).toBeInTheDocument();
     await userEvent.click(submitButton);
     expect(submitButton).not.toBeInTheDocument();
