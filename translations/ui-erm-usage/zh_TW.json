@@ -99,7 +99,6 @@
     "information.harvestVia": "資料擷取藉由",
     "udp.searchInputLabel": "搜尋使用資料提供者",
     "udpHarvestingConfig.lastHarvesting": "上次資料擷取",
-    "reportOverview.confirmDelete": "刪除非計數器報告？",
     "reportOverview.reportType": "報告類型",
     "reportOverview.reportDate": "報告類型",
     "reportOverview.reportsPerYear": "按年份分組的報告",
@@ -300,5 +299,6 @@
     "harvester.start.success": "資料擷取作業{provider, select, true { for '' {name} '' } other {}}已成功安排立即執行。擷取工作通常需要一些時間才能完成。您可以透過檢查{link}頁面來監控進度。",
     "harvester.start.failed": "擷取器無法啟動",
     "harvester.start.failure": "無法排程擷取作業{provider, select, true { 為 '' {name} '' } other {}} 。",
-    "noSourceYet": "No source yet"
+    "noSourceYet": "No source yet",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }

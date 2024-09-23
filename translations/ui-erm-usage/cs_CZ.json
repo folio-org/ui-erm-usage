@@ -99,7 +99,6 @@
     "information.harvestVia": "Harvest pomocí",
     "udp.searchInputLabel": "Vyhledejte poskytovatele údajů o využití",
     "udpHarvestingConfig.lastHarvesting": "Poslední harvest",
-    "reportOverview.confirmDelete": "Smazat mimo-pultový výstup?",
     "reportOverview.reportType": "Typ výstupu",
     "reportOverview.reportDate": "Datum výstupu",
     "reportOverview.reportsPerYear": "Výstupy seskupené podle roku",
@@ -300,5 +299,6 @@
     "harvester.start.success": "Úloha harvestu {provider, select, true {pro ''{name}''} other {}} byla úspěšně naplánována na okamžité provedení. Úlohy harvestu obvykle trvají nějaký čas. Průběh můžete sledovat na stránce {link}.",
     "harvester.start.failed": "Harvestor se nepodařilo spustit",
     "harvester.start.failure": "Nepodařilo se naplánovat úlohu harvestu{provider, select, true { pro ''{name}''} other {}}.",
-    "noSourceYet": "Zatím žádný zdroj"
+    "noSourceYet": "Zatím žádný zdroj",
+    "reportOverview.confirmDeleteReport": "Smazat výstup?"
 }

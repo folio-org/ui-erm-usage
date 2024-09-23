@@ -99,7 +99,6 @@
     "information.harvestVia": "Moissonnage via",
     "udp.searchInputLabel": "Rechercher des fournisseurs de données d'utilisation",
     "udpHarvestingConfig.lastHarvesting": "Dernier moissonnage",
-    "reportOverview.confirmDelete": "Supprimer le rapport non-Counter ?",
     "reportOverview.reportType": "Type de rapport",
     "reportOverview.reportDate": "Date du rapport",
     "reportOverview.reportsPerYear": "Rapports regroupés par année",
@@ -300,5 +299,6 @@
     "harvester.start.success": "A harvesting job {provider, select, true {for ''{name}''} other {}} has been successfully scheduled for immediate execution. Harvesting jobs usually take some time to complete. You can monitor the progress by checking the {link} page.",
     "harvester.start.failed": "Harvester failed to start",
     "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}.",
-    "noSourceYet": "No source yet"
+    "noSourceYet": "No source yet",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }

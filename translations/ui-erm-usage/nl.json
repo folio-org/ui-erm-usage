@@ -99,7 +99,6 @@
     "information.harvestVia": "Harvest via",
     "udp.searchInputLabel": "Leverancier gebruiksdata zoeken",
     "udpHarvestingConfig.lastHarvesting": "Laatste harvesting",
-    "reportOverview.confirmDelete": "Non-COUNTER-rapport verwijderen?",
     "reportOverview.reportType": "Rapporttype",
     "reportOverview.reportDate": "Rapportdatum",
     "reportOverview.reportsPerYear": "Rapporten gegroepeerd per jaar",
@@ -300,5 +299,6 @@
     "harvester.start.success": "Een harvestingtaak {provider, select, true {for ''{name}''} other {}} is succesvol gepland voor onmiddellijke uitvoering. Harvestingtaken nemen gewoonlijk enige tijd in beslag. U kunt de voortgang volgen door de {link} pagina te controleren.",
     "harvester.start.failed": "Harvester niet gestart",
     "harvester.start.failure": "Plannen van een harvestingtaak {provider, select, true {for ''{name}''} other {}} mislukt.",
-    "noSourceYet": "Nog geen bron"
+    "noSourceYet": "Nog geen bron",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }

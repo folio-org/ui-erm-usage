@@ -99,7 +99,6 @@
     "information.harvestVia": "Cosecha vía",
     "udp.searchInputLabel": "Buscar proveedores de datos de uso",
     "udpHarvestingConfig.lastHarvesting": "Última cosecha",
-    "reportOverview.confirmDelete": "¿Borrar informe no contable?",
     "reportOverview.reportType": "Tipo de informe",
     "reportOverview.reportDate": "Fecha del informe",
     "reportOverview.reportsPerYear": "Informes agrupados por año",
@@ -300,5 +299,6 @@
     "harvester.start.success": "Un trabajo de recolección {provider, select, true {for ''{name}''} other {}} ha sido programado con éxito para su ejecución inmediata. Las tareas de recolección suelen tardar algún tiempo en completarse. Puede supervisar el progreso consultando la página {link}.",
     "harvester.start.failed": "La cosecha no arranca",
     "harvester.start.failure": "Error al programar un trabajo de recolección {provider, select, true { para ''{name}''} other {}}.",
-    "noSourceYet": "No source yet"
+    "noSourceYet": "No source yet",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }

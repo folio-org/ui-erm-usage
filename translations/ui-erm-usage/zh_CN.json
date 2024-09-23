@@ -99,7 +99,6 @@
     "information.harvestVia": "通过收割",
     "udp.searchInputLabel": "搜索使用数据提供者",
     "udpHarvestingConfig.lastHarvesting": "上次收割",
-    "reportOverview.confirmDelete": "删除非counter报告？",
     "reportOverview.reportType": "报告类型",
     "reportOverview.reportDate": "报告日期",
     "reportOverview.reportsPerYear": "按年份分组的报告",
@@ -300,5 +299,6 @@
     "harvester.start.success": "收割任务{provider, select, true { 为 '' {name} '' } other {}}已成功安排立即执行。收割任务通常需要一些时间才能完成。您可以通过检查{link}页面来监控进度。",
     "harvester.start.failed": "收割器无法启动",
     "harvester.start.failure": "无法安排收割任务{provider, select, true { 为 '' {name} '' } other {}} 。",
-    "noSourceYet": "No source yet"
+    "noSourceYet": "No source yet",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }

@@ -99,7 +99,6 @@
     "information.harvestVia": "Harvest via",
     "udp.searchInputLabel": "Pesquisar provedores de dados de uso",
     "udpHarvestingConfig.lastHarvesting": "Último harvesting",
-    "reportOverview.confirmDelete": "Excluir relatório não-counter?",
     "reportOverview.reportType": "Tipo de relatório",
     "reportOverview.reportDate": "Data do relatório",
     "reportOverview.reportsPerYear": "Relatórios agrupados por ano",
@@ -300,5 +299,6 @@
     "harvester.start.success": "Um trabalho de coleta {provider, select, true {para ''{name}'' } other {}} foi agendado com sucesso para execução imediata. Os trabalhos de coleta geralmente levam algum tempo para serem concluídos. Você pode monitorar o progresso verificando a página {link}.",
     "harvester.start.failed": "A coleta falhou ao iniciar",
     "harvester.start.failure": "Falha ao agendar um trabalho de coleta {provider, select, true {para '' {name} '' } other {}} .",
-    "noSourceYet": "Nenhuma fonte ainda"
+    "noSourceYet": "Nenhuma fonte ainda",
+    "reportOverview.confirmDeleteReport": "Excluir relatório?"
 }

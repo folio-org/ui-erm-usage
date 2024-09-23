@@ -99,7 +99,6 @@
     "information.harvestVia": "ハーベストの経由",
     "udp.searchInputLabel": "統計データプロバイダーの検索",
     "udpHarvestingConfig.lastHarvesting": "最新ハーベスト",
-    "reportOverview.confirmDelete": "COUNTER以外のレポートを削除しますか？",
     "reportOverview.reportType": "レポートタイプ",
     "reportOverview.reportDate": "Report date",
     "reportOverview.reportsPerYear": "年別にグループ化されたレポート",
@@ -300,5 +299,6 @@
     "harvester.start.success": "ハーベストジョブ{provider, select, true { for '' {name} '' } other {}}が即時実行用に正常にスケジュールされました。ハーベストジョブは通常、完了するまでに時間がかかります。 {link}ページを確認することで進行状況を監視できます。",
     "harvester.start.failed": "ハーベスターの開始に失敗",
     "harvester.start.failure": "ハーベストジョブ{provider, select, true { for '' {name} '' } other {}}のスケジュールに失敗しました",
-    "noSourceYet": "No source yet"
+    "noSourceYet": "No source yet",
+    "reportOverview.confirmDeleteReport": "Delete report?"
 }
