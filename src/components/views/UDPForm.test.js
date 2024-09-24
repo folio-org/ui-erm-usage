@@ -1,4 +1,4 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -238,10 +238,13 @@ describe('UDPForm', () => {
     test('click cancel delete', async () => {
       await userEvent.click(await screen.findByText('Delete'));
 
-      const deleteModalText = screen.getByRole('heading', { name: 'Delete usage data Provider' });
+      const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+      expect(deleteModal).toBeVisible();
+
+      const deleteModalText = within(deleteModal).getByRole('heading', { name: 'Delete usage data Provider' });
       expect(deleteModalText).toBeInTheDocument();
 
-      const cancelButton = document.querySelector('#clickable-delete-udp-confirmation-cancel');
+      const cancelButton = within(deleteModal).getByRole('button', { name: 'Cancel' });
       await userEvent.click(cancelButton);
       expect(deleteModalText).not.toBeInTheDocument();
       expect(onDelete).not.toHaveBeenCalled();
