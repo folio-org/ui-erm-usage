@@ -146,33 +146,33 @@ describe('UDPForm', () => {
 
   describe('test report release and selected reports options', () => {
     beforeEach(() => {
-      renderUDPForm(stripes, {});
+      renderUDPForm(stripes);
     });
 
     test('should switch between counter 4 and 5 reports', async () => {
       expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
-      await userEvent.click(await screen.getByText('Add report type'));
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
-      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+      const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
 
-      await userEvent.click(await screen.findByText('BR1'));
+      await userEvent.click(await screen.getByRole('option', { name: /BR1/ }));
       expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 5']);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
       await userEvent.click(await screen.getByRole('button', { name: 'Clear reports' }));
-      await userEvent.click(await screen.getByText('Add report type'));
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButtonNew).toBeInTheDocument();
       await userEvent.click(reportTypeButtonNew);
-      await userEvent.click(await screen.getByText('PR'));
-      expect(screen.getByText('PR')).toBeInTheDocument();
-      expect(screen.queryByText('BR1')).not.toBeInTheDocument();
+      await userEvent.click(await screen.getByRole('option', { name: /PR/ }));
+      expect(screen.getByLabelText('PR')).toBeInTheDocument();
+      expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
     });
   });
 
@@ -262,7 +262,7 @@ describe('UDPForm', () => {
       expect(deleteModalText).toBeInTheDocument();
 
       const cancelButton = document.querySelector('#clickable-delete-udp-confirmation-cancel');
-      await userEvent.click(await cancelButton);
+      await userEvent.click(cancelButton);
       expect(deleteModalText).not.toBeInTheDocument();
       expect(onDelete).not.toHaveBeenCalled();
     });
@@ -292,7 +292,7 @@ describe('UDPForm', () => {
 
       expect(screen.getByText('Counter 4')).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
-      await userEvent.click(await screen.getByText('Add report type'));
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButton).toBeInTheDocument();
@@ -325,7 +325,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Service URL' })).toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
-      await userEvent.click(screen.getByText('Add report type'));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).toHaveClass('hasError');
 
@@ -355,7 +355,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).not.toBeRequired();
-      await userEvent.click(screen.getByText('Add report type'));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).not.toHaveClass('hasError');
 
