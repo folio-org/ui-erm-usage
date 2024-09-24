@@ -12,6 +12,16 @@ const render = (props) => {
 };
 
 describe('HarvesterInfoModal', () => {
+  test('default values', () => {
+    render();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  test('open == false', () => {
+    render({ open: false });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   test('isSuccess==true, udpLabel', () => {
     render({
       open: true,
