@@ -118,17 +118,10 @@ describe('UDPForm', () => {
   describe('test harvestVia options', () => {
     beforeEach(async () => {
       renderUDPForm(stripes);
-      // await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-      //   'active',
-      // ]);
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
     });
 
     test('should enable aggregator options', async () => {
-      // await userEvent.selectOptions(
-      //   screen.getByLabelText('Harvest statistics via', { exact: false }),
-      //   ['aggregator']
-      // );
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
 
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).toBeEnabled();
@@ -136,10 +129,6 @@ describe('UDPForm', () => {
     });
 
     test('should enable sushi options', async () => {
-      // await userEvent.selectOptions(
-      //   screen.getByLabelText('Harvest statistics via', { exact: false }),
-      //   ['sushi']
-      // );
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
 
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).toBeDisabled();
@@ -185,9 +174,6 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start invalid format', async () => {
-      // const startInput = screen.getByLabelText('Harvesting start', {
-      //   exact: false,
-      // });
       const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-ab');
       await userEvent.tab();
@@ -195,9 +181,6 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start valid format', async () => {
-      // const startInput = screen.getByLabelText('Harvesting start', {
-      //   exact: false,
-      // });
       const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-01');
       await userEvent.tab();
@@ -205,15 +188,9 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start < end is invalid', async () => {
-      // const startInput = screen.getByLabelText('Harvesting start', {
-      //   exact: false,
-      // });
       const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-02');
 
-      // const endInput = screen.getByLabelText('Harvesting end', {
-      //   exact: false,
-      // });
       const endInput = screen.getByRole('textbox', { name: /harvesting end/i });
       await userEvent.type(endInput, '2020-01');
       await userEvent.tab();

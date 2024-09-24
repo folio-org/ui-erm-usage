@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { server, rest } from '../../../test/jest/testServer';
@@ -172,8 +172,12 @@ describe('DeleteStatisticsModal', () => {
       const heading = screen.getByRole('heading', { name: 'Are you sure to delete multiple reports?' });
       expect(heading).toBeVisible();
 
-      const cancelButton = document.querySelector('#clickable-delete-multi-statistics-confirmation-cancel');
+      const confirmationModal = screen.getByRole('dialog', { name: /The selected/ });
+      expect(confirmationModal).toBeVisible();
+
+      const cancelButton = within(confirmationModal).getByRole('button', { name: 'Cancel' });
       await userEvent.click(cancelButton);
+
       expect(heading).not.toBeVisible();
     });
 
