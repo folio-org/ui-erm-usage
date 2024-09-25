@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { server, rest } from '../../../test/jest/testServer';
@@ -169,20 +169,20 @@ describe('DeleteStatisticsModal', () => {
     });
 
     test('click cancel', async () => {
-      const heading = screen.queryByRole('heading', {
-        name: 'Are you sure to delete multiple reports?',
-      });
+      const heading = screen.getByRole('heading', { name: 'Are you sure to delete multiple reports?' });
       expect(heading).toBeVisible();
 
-      const cancel = screen.getByRole('button', {
-        name: 'Cancel',
-      });
-      await userEvent.click(cancel);
-      await waitFor(() => expect(heading).not.toBeVisible());
+      const confirmationModal = screen.getByRole('dialog', { name: /The selected/ });
+      expect(confirmationModal).toBeVisible();
+
+      const cancelButton = within(confirmationModal).getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      expect(heading).not.toBeVisible();
     });
 
     test('click delete', async () => {
-      const heading = screen.queryByRole('heading', {
+      const heading = screen.getByRole('heading', {
         name: 'Are you sure to delete multiple reports?',
       });
       expect(heading).toBeVisible();
