@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -118,26 +118,18 @@ describe('UDPForm', () => {
   describe('test harvestVia options', () => {
     beforeEach(async () => {
       renderUDPForm(stripes);
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
     });
 
     test('should enable aggregator options', async () => {
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['aggregator']
-      );
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
 
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).toBeEnabled();
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeDisabled();
     });
 
     test('should enable sushi options', async () => {
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['sushi']
-      );
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
 
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).toBeDisabled();
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeEnabled();
@@ -150,26 +142,29 @@ describe('UDPForm', () => {
     });
 
     test('should switch between counter 4 and 5 reports', async () => {
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
-      await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
-      await userEvent.click(await screen.findByText('BR1'));
-      expect(screen.getAllByText('BR1').length).toEqual(2);
+      expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '5',
-      ]);
-      expect(screen.getByText('Clear report selection')).toBeVisible();
+      const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
 
-      await userEvent.click(await screen.findByText('Clear reports'));
-      await userEvent.click(await screen.findByText('Add report type'));
+      await userEvent.click(await screen.getByRole('option', { name: /BR1/ }));
+      expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
-      await userEvent.click(await screen.findByText('Report type'));
-      await userEvent.click(await screen.findByText('PR'));
-      expect(screen.getAllByText('PR').length).toEqual(2);
-      expect(screen.queryAllByText('BR1').length).toEqual(0);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 5']);
+      expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
+
+      await userEvent.click(await screen.getByRole('button', { name: 'Clear reports' }));
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
+
+      const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
+      expect(reportTypeButtonNew).toBeInTheDocument();
+      await userEvent.click(reportTypeButtonNew);
+      await userEvent.click(await screen.getByRole('option', { name: /PR/ }));
+      expect(screen.getByLabelText('PR')).toBeInTheDocument();
+      expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
     });
   });
 
@@ -179,39 +174,27 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start invalid format', async () => {
-      const startInput = screen.getByLabelText('Harvesting start', {
-        exact: false,
-      });
+      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-ab');
       await userEvent.tab();
       expect(screen.getByText('Date invalid', { exact: false })).toBeInTheDocument();
     });
 
     test('harvesting start valid format', async () => {
-      const startInput = screen.getByLabelText('Harvesting start', {
-        exact: false,
-      });
+      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-01');
       await userEvent.tab();
       expect(screen.queryByText('Date invalid', { exact: false })).not.toBeInTheDocument();
     });
 
     test('harvesting start < end is invalid', async () => {
-      const startInput = screen.getByLabelText('Harvesting start', {
-        exact: false,
-      });
+      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-02');
 
-      const endInput = screen.getByLabelText('Harvesting end', {
-        exact: false,
-      });
+      const endInput = screen.getByRole('textbox', { name: /harvesting end/i });
       await userEvent.type(endInput, '2020-01');
       await userEvent.tab();
-      expect(
-        screen.getByText('End date must be greater than start date', {
-          exact: false,
-        })
-      ).toBeInTheDocument();
+      expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();
     });
   });
 
@@ -221,35 +204,23 @@ describe('UDPForm', () => {
     });
 
     test('happy path', async () => {
-      await userEvent.type(
-        screen.getByLabelText('Provider name', {
-          exact: false,
-        }),
-        'FooBar'
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['aggregator']
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Aggregator', { exact: false }), [
-        '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
-      ]);
+      await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
-      await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
+      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.findByText('BR1'));
-      const startInput = screen.getByLabelText('Harvesting start', {
-        exact: false,
-      });
+
+      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
       await userEvent.type(startInput, '2020-01');
 
-      await userEvent.click(await screen.findByText('Save & close'));
+      await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
       expect(onSubmit).toHaveBeenCalled();
     });
   });
@@ -261,26 +232,27 @@ describe('UDPForm', () => {
 
     test('delete modal is shown', async () => {
       await userEvent.click(await screen.findByText('Delete'));
-      expect(screen.getByText('Delete usage data Provider')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Delete usage data Provider/ })).toBeInTheDocument();
     });
 
     test('click cancel delete', async () => {
       await userEvent.click(await screen.findByText('Delete'));
-      const cancel = screen.findByRole('button', {
-        name: 'Cancel',
-        id: 'clickable-delete-udp-confirmation-cancel',
-      });
-      await userEvent.click(await cancel);
-      await waitForElementToBeRemoved(() => screen.queryByText('Delete usage data Provider'));
+
+      const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+      expect(deleteModal).toBeVisible();
+
+      const deleteModalText = within(deleteModal).getByRole('heading', { name: 'Delete usage data Provider' });
+      expect(deleteModalText).toBeInTheDocument();
+
+      const cancelButton = within(deleteModal).getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+      expect(deleteModalText).not.toBeInTheDocument();
       expect(onDelete).not.toHaveBeenCalled();
     });
 
     test('click submit delete', async () => {
       await userEvent.click(await screen.findByText('Delete'));
-      const submit = screen.getByRole('button', {
-        name: 'Submit',
-        id: 'clickable-delete-udp-confirmation-confirm',
-      });
+      const submit = screen.getByRole('button', { name: 'Submit', id: 'clickable-delete-udp-confirmation-confirm' });
       await userEvent.click(submit);
       expect(onDelete).toHaveBeenCalled();
     });
@@ -292,56 +264,24 @@ describe('UDPForm', () => {
     });
 
     test('form is invalid when changing from sushi to aggregator', async () => {
-      await userEvent.type(
-        screen.getByLabelText('Provider name', {
-          exact: false,
-        }),
-        'FooBar'
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['sushi']
-      );
-      await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), [
-        'cs41',
-      ]);
-      await userEvent.type(
-        screen.getByLabelText('Service URL', {
-          exact: false,
-        }),
-        'http://abc'
-      );
+      await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['cs41']);
+      await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
 
-      await userEvent.selectOptions(screen.getByLabelText('Report release', { exact: false }), [
-        '4',
-      ]);
-      await userEvent.click(await screen.findByText('Add report type'));
-      await userEvent.click(await screen.findByText('Report type'));
-      await userEvent.click(await screen.findByText('BR1'));
+      expect(screen.getByText('Counter 4')).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
-      await userEvent.type(
-        screen.getByLabelText('Harvesting start', {
-          exact: false,
-        }),
-        '2020-01'
-      );
-
-      await userEvent.type(
-        screen.getByLabelText('Customer ID', {
-          exact: false,
-        }),
-        'MyCustomerID'
-      );
-
-      await userEvent.selectOptions(
-        screen.getByLabelText('Harvest statistics via', { exact: false }),
-        ['aggregator']
-      );
-
-      await userEvent.click(await screen.findByText('Save & close'));
+      const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
+      expect(reportTypeButton).toBeInTheDocument();
+      await userEvent.click(reportTypeButton);
+      await userEvent.click(await screen.getByText('BR1'));
+      await userEvent.type(screen.getByRole('textbox', { name: /harvesting start/i }), '2020-01');
+      await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
+      await userEvent.click(await screen.getByRole('button', { name: 'Save & close' }));
       expect(onSubmit).not.toHaveBeenCalled();
     });
   });
@@ -352,9 +292,7 @@ describe('UDPForm', () => {
     });
 
     test('harvesting status is active', async () => {
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'active',
-      ]);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
 
       expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
@@ -367,7 +305,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Service URL' })).toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
-      await userEvent.click(screen.getByText('Add report type'));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).toHaveClass('hasError');
 
@@ -397,7 +335,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).not.toBeRequired();
-      await userEvent.click(screen.getByText('Add report type'));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).not.toHaveClass('hasError');
 
@@ -434,24 +372,15 @@ describe('UDPForm', () => {
 
     describe('test required value of customerId field', () => {
       test('change harvest statistics via from sushi to aggregator', async () => {
-        await userEvent.selectOptions(
-          screen.getByLabelText('Harvesting status', { exact: false }),
-          ['active']
-        );
-        await userEvent.selectOptions(
-          screen.getByLabelText('Harvest statistics via', { exact: false }),
-          ['sushi']
-        );
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
         await userEvent.click(screen.getByRole('textbox', { name: 'Customer ID' }));
         await userEvent.click(screen.getByRole('textbox', { name: 'Platform' }));
 
         expect(screen.getByText('Required')).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
 
-        await userEvent.selectOptions(
-          screen.getByLabelText('Harvest statistics via', { exact: false }),
-          ['aggregator']
-        );
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
         expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
         expect(screen.queryByText('Required')).not.toBeInTheDocument();
       });
@@ -470,7 +399,7 @@ describe('UDPForm', () => {
     const testSelectReportRelease = async (reportRelease) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      const releaseSelectBox = screen.getByLabelText('Report release', { exact: false });
+      const releaseSelectBox = screen.getByRole('combobox', { name: /report release/i });
 
       expect(reqIdBox).toBeEnabled();
       expect(reqIdBox).toHaveValue('id1234');

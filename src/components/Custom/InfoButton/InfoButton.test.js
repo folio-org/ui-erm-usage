@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@folio/jest-config-stripes/testing-library/react';
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -56,10 +56,6 @@ describe('InfoButton', () => {
     stripes = useStripes();
   });
 
-  test('should render InfoButton', () => {
-    renderInfoButton(stripes);
-  });
-
   test('has no permission', async () => {
     stripes.hasPerm = () => false;
     renderInfoButton(stripes);
@@ -85,11 +81,12 @@ describe('InfoButton', () => {
     expect(deleteButton).toBeInTheDocument();
 
     await userEvent.click(deleteButton);
-    expect(screen.getByText('Delete report?')).toBeInTheDocument();
+    const deleteReport = screen.getByRole('heading', { name: 'Delete report?' });
+    expect(deleteReport).toBeInTheDocument();
 
     const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
-    await waitForElementToBeRemoved(() => screen.queryByText('Delete report?'));
+    expect(deleteReport).not.toBeInTheDocument();
     expect(doDeleteReport).toHaveBeenCalled();
   });
 });

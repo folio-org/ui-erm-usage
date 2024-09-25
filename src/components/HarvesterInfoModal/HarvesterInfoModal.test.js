@@ -13,13 +13,13 @@ const render = (props) => {
 
 describe('HarvesterInfoModal', () => {
   test('default values', () => {
-    const { container } = render();
-    expect(container.innerHTML).toBe('<div></div>');
+    render();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   test('open == false', () => {
-    const { container } = render({ open: false });
-    expect(container.innerHTML).toBe('<div></div>');
+    render({ open: false });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   test('isSuccess==true, udpLabel', () => {
