@@ -57,6 +57,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       '11',
       '12',
     ];
+
     const columnWidths = {
       'report': '65px',
       'release': '70px',
@@ -72,6 +73,22 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       '10': '50px',
       '11': '50px',
       '12': '50px',
+    };
+
+    const generateColumnMappings = () => {
+      const mappings = {};
+
+      visibleColumns.forEach((column) => {
+        if (column === 'report') {
+          mappings[column] = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.report' });
+        } else if (column === 'release') {
+          mappings[column] = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.version' });
+        } else {
+          mappings[column] = intl.formatMessage({ id: `ui-erm-usage.reportOverview.month.${column}` });
+        }
+      });
+
+      return mappings;
     };
 
     return reports.map((statsPerYear) => {
@@ -93,50 +110,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
             columnWidths={columnWidths}
             interactive={false}
             formatter={reportFormatter}
-            columnMapping={{
-              'report': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.report',
-              }),
-              'release': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.version',
-              }),
-              '01': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.01',
-              }),
-              '02': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.02',
-              }),
-              '03': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.03',
-              }),
-              '04': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.04',
-              }),
-              '05': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.05',
-              }),
-              '06': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.06',
-              }),
-              '07': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.07',
-              }),
-              '08': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.08',
-              }),
-              '09': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.09',
-              }),
-              '10': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.10',
-              }),
-              '11': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.11',
-              }),
-              '12': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.12',
-              }),
-            }}
+            columnMapping={generateColumnMappings()}
           />
         </Accordion>
       );
