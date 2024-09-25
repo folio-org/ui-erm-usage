@@ -10,21 +10,20 @@ const createReportInfoButton = (id, report, handlers, maxFailed, stripes, udpLab
   />
 );
 
+const generateMonthFormatters = (handlers, maxFailed, stripes, udpLabel) => {
+  const monthFormatter = {};
+  for (let i = 1; i <= 12; i++) {
+    const month = i.toString().padStart(2, '0');
+    monthFormatter[month] = (report) => createReportInfoButton(month, report, handlers, maxFailed, stripes, udpLabel);
+  }
+  return monthFormatter;
+};
+
 const createReportFormatter = (handlers, maxFailed, stripes, udpLabel) => {
   return {
     'report': (report) => report.report,
-    '01': (report) => createReportInfoButton('01', report, handlers, maxFailed, stripes, udpLabel),
-    '02': (report) => createReportInfoButton('02', report, handlers, maxFailed, stripes, udpLabel),
-    '03': (report) => createReportInfoButton('03', report, handlers, maxFailed, stripes, udpLabel),
-    '04': (report) => createReportInfoButton('04', report, handlers, maxFailed, stripes, udpLabel),
-    '05': (report) => createReportInfoButton('05', report, handlers, maxFailed, stripes, udpLabel),
-    '06': (report) => createReportInfoButton('06', report, handlers, maxFailed, stripes, udpLabel),
-    '07': (report) => createReportInfoButton('07', report, handlers, maxFailed, stripes, udpLabel),
-    '08': (report) => createReportInfoButton('08', report, handlers, maxFailed, stripes, udpLabel),
-    '09': (report) => createReportInfoButton('09', report, handlers, maxFailed, stripes, udpLabel),
-    '10': (report) => createReportInfoButton('10', report, handlers, maxFailed, stripes, udpLabel),
-    '11': (report) => createReportInfoButton('11', report, handlers, maxFailed, stripes, udpLabel),
-    '12': (report) => createReportInfoButton('12', report, handlers, maxFailed, stripes, udpLabel)
+    'release': (report) => report.release,
+    ...generateMonthFormatters(handlers, maxFailed, stripes, udpLabel),
   };
 };
 

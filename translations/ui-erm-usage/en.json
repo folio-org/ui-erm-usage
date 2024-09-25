@@ -105,6 +105,7 @@
   "reportOverview.month.11": "Nov",
   "reportOverview.month.12": "Dec",
   "reportOverview.report": "Report",
+  "reportOverview.release": "Release",
 
   "reportOverview.confirmDeleteReport": "Delete report?",
   "reportOverview.deleteTemplateMessage": "{name} will be removed from non-counter reports.",

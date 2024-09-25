@@ -43,6 +43,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
   const createReportOverviewPerYear = () => {
     const visibleColumns = [
       'report',
+      'release',
       '01',
       '02',
       '03',
@@ -56,8 +57,10 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       '11',
       '12',
     ];
+
     const columnWidths = {
       'report': '65px',
+      'release': '70px',
       '01': '50px',
       '02': '50px',
       '03': '50px',
@@ -72,10 +75,25 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       '12': '50px',
     };
 
+    const generateColumnMappings = () => {
+      const mappings = {};
+
+      visibleColumns.forEach((column) => {
+        if (column === 'report' || column === 'release') {
+          mappings[column] = intl.formatMessage({ id: `ui-erm-usage.reportOverview.${column}` });
+        } else {
+          mappings[column] = intl.formatMessage({ id: `ui-erm-usage.reportOverview.month.${column}` });
+        }
+      });
+
+      return mappings;
+    };
+
     return reports.map((statsPerYear) => {
       const y = statsPerYear.year;
       const year = y.toString();
       const reps = statsPerYear.stats;
+
       return (
         <Accordion
           id={year}
@@ -90,47 +108,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
             columnWidths={columnWidths}
             interactive={false}
             formatter={reportFormatter}
-            columnMapping={{
-              'report': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.report',
-              }),
-              '01': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.01',
-              }),
-              '02': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.02',
-              }),
-              '03': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.03',
-              }),
-              '04': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.04',
-              }),
-              '05': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.05',
-              }),
-              '06': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.06',
-              }),
-              '07': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.07',
-              }),
-              '08': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.08',
-              }),
-              '09': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.09',
-              }),
-              '10': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.10',
-              }),
-              '11': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.11',
-              }),
-              '12': intl.formatMessage({
-                id: 'ui-erm-usage.reportOverview.month.12',
-              }),
-            }}
+            columnMapping={generateColumnMappings()}
           />
         </Accordion>
       );
@@ -156,12 +134,8 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
             id="expand-all-counter-report-years"
             onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
-            expandLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
-            }
-            collapseLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
-            }
+            expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
+            collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
           />
         </Col>
       </Row>
