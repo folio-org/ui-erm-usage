@@ -10,6 +10,7 @@
 * The open props in ReportInfoButton should not be undefined ([UIEUS-372](https://folio-org.atlassian.net/browse/UIEUS-372))
 * Update to usage-data-providers 3.0 ([UIEUS-370](https://folio-org.atlassian.net/browse/UIEUS-370))
 * Correct heading when confirming deletion of a single counter report ([UIEUS-376](https://folio-org.atlassian.net/browse/UIEUS-376))
+* COUNTER statistics: Show the COUNTER release version for reports in an additional column ([UIEUS-368](https://folio-org.atlassian.net/browse/UIEUS-368))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
