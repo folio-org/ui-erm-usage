@@ -145,7 +145,7 @@ describe('CounterStatistics', () => {
     expect(text).toBeInTheDocument();
 
     const headers = within(section2019).getAllByRole('columnheader');
-    const expectedLabels = ['Report', 'Version', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const expectedLabels = ['Report', 'Release', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     headers.forEach((header, index) => {
       expect(header).toHaveTextContent(expectedLabels[index]);

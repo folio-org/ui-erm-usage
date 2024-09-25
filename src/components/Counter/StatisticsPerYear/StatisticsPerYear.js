@@ -79,10 +79,8 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       const mappings = {};
 
       visibleColumns.forEach((column) => {
-        if (column === 'report') {
-          mappings[column] = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.report' });
-        } else if (column === 'release') {
-          mappings[column] = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.version' });
+        if (column === 'report' || column === 'release') {
+          mappings[column] = intl.formatMessage({ id: `ui-erm-usage.reportOverview.${column}` });
         } else {
           mappings[column] = intl.formatMessage({ id: `ui-erm-usage.reportOverview.month.${column}` });
         }
@@ -136,12 +134,8 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
             id="expand-all-counter-report-years"
             onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
-            expandLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
-            }
-            collapseLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
-            }
+            expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
+            collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
           />
         </Col>
       </Row>
