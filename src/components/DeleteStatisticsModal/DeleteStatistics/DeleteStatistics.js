@@ -97,45 +97,19 @@ function DeleteStatistics({
     return report.report;
   };
 
+  const generateMonthFormatters = () => {
+    const monthFormatter = {};
+    for (let i = 1; i <= 12; i++) {
+      const month = i.toString().padStart(2, '0'); // Pads single-digit months with leading zero
+      monthFormatter[month] = (report) => renderReportNew(report, month);
+    }
+    return monthFormatter;
+  };
+
   const reportFormatter = {
     'report': (report) => renderReportName(report),
     'release': report => report.release,
-    '01': (report) => {
-      return renderReportNew(report, '01');
-    },
-    '02': (report) => {
-      return renderReportNew(report, '02');
-    },
-    '03': (report) => {
-      return renderReportNew(report, '03');
-    },
-    '04': (report) => {
-      return renderReportNew(report, '04');
-    },
-    '05': (report) => {
-      return renderReportNew(report, '05');
-    },
-    '06': (report) => {
-      return renderReportNew(report, '06');
-    },
-    '07': (report) => {
-      return renderReportNew(report, '07');
-    },
-    '08': (report) => {
-      return renderReportNew(report, '08');
-    },
-    '09': (report) => {
-      return renderReportNew(report, '09');
-    },
-    '10': (report) => {
-      return renderReportNew(report, '10');
-    },
-    '11': (report) => {
-      return renderReportNew(report, '11');
-    },
-    '12': (report) => {
-      return renderReportNew(report, '12');
-    },
+    ...generateMonthFormatters()
   };
 
   const createCheckBoxEntry = (stat, key) => {
