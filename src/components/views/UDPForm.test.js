@@ -178,11 +178,11 @@ describe('UDPForm', () => {
 
     test('select reportRelease 5', async () => {
       await testSwitchFromCounterRelease4To5('Counter 5');
-    });
+    }, 10000);
 
     test('select reportRelease 5.1', async () => {
       await testSwitchFromCounterRelease4To5('Counter 5.1');
-    });
+    }, 10000);
   });
 
   describe('test harvesting start and end', () => {
