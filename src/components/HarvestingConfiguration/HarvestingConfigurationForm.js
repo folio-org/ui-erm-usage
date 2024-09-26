@@ -50,7 +50,7 @@ const HarvestingConfigurationForm = ({
         form.mutators.setReportRelease({}, val);
       }
       if ((val === '4' && values.sushiCredentials?.apiKey) ||
-        (val === '5' && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
+        ((val === '5' || val === '5.1') && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
         form.change('sushiCredentials.apiKey', undefined);
       }
     }

@@ -135,6 +135,26 @@ export const data = [
     name: 'TR',
     code: 'tr',
     counterVersion: '5'
+  },
+  {
+    name: 'DR',
+    code: 'dr',
+    counterVersion: '5.1'
+  },
+  {
+    name: 'IR',
+    code: 'ir',
+    counterVersion: '5.1'
+  },
+  {
+    name: 'PR',
+    code: 'pr',
+    counterVersion: '5.1'
+  },
+  {
+    name: 'TR',
+    code: 'tr',
+    counterVersion: '5.1'
   }
 ];
 
