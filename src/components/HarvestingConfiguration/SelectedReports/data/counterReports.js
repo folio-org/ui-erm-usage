@@ -12,7 +12,7 @@ function generateCounterData() {
     names.forEach(name => {
       dataArray.push({
         name,
-        code: name.toLowerCase().replace(' ', /_/g),
+        code: name.toLowerCase().replace(/ /g, '_'),
         counterVersion: version,
       });
     });
