@@ -158,6 +158,31 @@ export const data = [
   }
 ];
 
+const rawCounterReportMapping = {
+  '4': ['jr1', 'jr1_goa', 'jr1_a', 'jr2', 'jr3', 'jr3_mobile', 'jr4', 'jr5', 'db1', 'db2', 'pr1', 'br1', 'br2', 'br3', 'br4', 'br5', 'br7', 'mr1', 'mr1_mobile', 'tr1', 'tr2', 'tr3', 'tr3_mobile'],
+  '5': ['dr', 'ir', 'pr', 'tr'],
+  '5.1': ['dr', 'ir', 'pr', 'tr'],
+};
+
+function generateCounterData() {
+  const dataArray = [];
+
+  Object.keys(rawCounterReportMapping).forEach(version => {
+    const codes = rawCounterReportMapping[version];
+    codes.forEach(code => {
+      dataArray.push({
+        name: code.toUpperCase().replace(/_/g, ' '),
+        code,
+        counterVersion: version
+      });
+    });
+  });
+
+  return dataArray;
+}
+
+const counterReportMapping = generateCounterData();
+
 const sortReports = (a, b) => {
   if (a.label > b.label) {
     return 1;
@@ -169,23 +194,13 @@ const sortReports = (a, b) => {
 };
 
 const counterReports = {
-
-  selectedOptions: selected => data.map(
-    r => ({
-      label: r.name,
-      value: r.name,
-      selected: r.name === selected
-    })
-  ).sort(sortReports),
-
-  getOptions: () => data.map(
+  getOptions: () => counterReportMapping.map(
     r => ({
       label: r.name,
       value: r.name,
       counterVersion: r.counterVersion,
     })
   ).sort(sortReports),
-
 };
 
 export default counterReports;
