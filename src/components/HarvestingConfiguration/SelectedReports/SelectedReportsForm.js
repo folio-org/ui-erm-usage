@@ -5,17 +5,14 @@ import { FormattedMessage } from 'react-intl';
 import { FieldArray } from 'react-final-form-arrays';
 import { Label } from '@folio/stripes/components';
 import formCss from '../../../util/sharedStyles/form.css';
-import counterReports from './data/counterReports';
+import counterReportMapping from './data/counterReports';
 import css from './SelectedReportsForm.css';
 
 import SelectReportType from './SelectReportType';
 import { requiredArray } from '../../../util/validate';
 
 const getCounterReportsForVersion = (counterVersion) => {
-  return _.filter(counterReports.getOptions(), [
-    'counterVersion',
-    counterVersion,
-  ]);
+  return _.filter(counterReportMapping, ['counterVersion', counterVersion]);
 };
 
 class SelectedReportsForm extends React.Component {
@@ -27,17 +24,13 @@ class SelectedReportsForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.counterReports = counterReports.getOptions();
-    this.counterReportsForVersion = getCounterReportsForVersion(
-      props.counterVersion
-    );
-    this.counterReportsCurrentVersion = this.counterReportsForVersion;
+
+    this.counterReportsCurrentVersion = getCounterReportsForVersion(props.counterVersion);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.counterVersion !== prevProps.counterVersion) {
-      const counterReportsForVersion = getCounterReportsForVersion(this.props.counterVersion);
-      this.counterReportsCurrentVersion = counterReportsForVersion;
+      this.counterReportsCurrentVersion = getCounterReportsForVersion(this.props.counterVersion);
     }
   }
 
