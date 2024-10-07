@@ -138,22 +138,26 @@ describe('UDPForm', () => {
 
   describe('test report release and selected reports options', () => {
     beforeEach(() => {
-      renderUDPForm(stripes);
+      renderUDPForm(stripes, {});
     });
 
-    test('should switch between counter 4 and 5 reports', async () => {
-      expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const testSwitchFromCounterRelease4To5 = async (reportRelease) => {
+      expect(await screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
       await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
 
-      const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
+      const reportTypeButton = await screen.getByRole('button', { name: /Report type/ });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
 
       await userEvent.click(await screen.getByRole('option', { name: /BR1/ }));
       expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 5']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), [reportRelease]);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
       await userEvent.click(await screen.getByRole('button', { name: 'Clear reports' }));
@@ -162,10 +166,23 @@ describe('UDPForm', () => {
       const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButtonNew).toBeInTheDocument();
       await userEvent.click(reportTypeButtonNew);
+      expect(screen.getByRole('option', { name: /DR/ })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /IR/ })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /PR/ })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /TR/ })).toBeInTheDocument();
       await userEvent.click(await screen.getByRole('option', { name: /PR/ }));
       expect(screen.getByLabelText('PR')).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: /BR1/ })).not.toBeInTheDocument();
       expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
-    });
+    };
+
+    test('select reportRelease 5', async () => {
+      await testSwitchFromCounterRelease4To5('Counter 5');
+    }, 10000);
+
+    test('select reportRelease 5.1', async () => {
+      await testSwitchFromCounterRelease4To5('Counter 5.1');
+    }, 10000);
   });
 
   describe('test harvesting start and end', () => {
@@ -416,6 +433,10 @@ describe('UDPForm', () => {
 
     test('select reportRelease 5', async () => {
       testSelectReportRelease('5');
+    });
+
+    test('select reportRelease 5.1', async () => {
+      testSelectReportRelease('5.1');
     });
 
     test('change reqId and apiKey with reportRelease 5 selected', async () => {

@@ -1,171 +1,26 @@
-
-export const data = [
-  {
-    name: 'JR1',
-    code: 'jr1',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR1 GOA',
-    code: 'jr1_goa',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR1a',
-    code: 'jr1_a',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR2',
-    code: 'jr2',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR3',
-    code: 'jr3',
-    counterVersion: '4'
-  },
-
-  {
-    name: 'JR3 Mobile',
-    code: 'jr3_mobile',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR4',
-    code: 'jr4',
-    counterVersion: '4'
-  },
-  {
-    name: 'JR5',
-    code: 'jr5',
-    counterVersion: '4'
-  },
-  {
-    name: 'DB1',
-    code: 'db1',
-    counterVersion: '4'
-  },
-  {
-    name: 'DB2',
-    code: 'db2',
-    counterVersion: '4'
-  },
-  {
-    name: 'PR1',
-    code: 'pr1',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR1',
-    code: 'br1',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR2',
-    code: 'br2',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR3',
-    code: 'br3',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR4',
-    code: 'br4',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR5',
-    code: 'br5',
-    counterVersion: '4'
-  },
-  {
-    name: 'BR7',
-    code: 'br7',
-    counterVersion: '4'
-  },
-  {
-    name: 'MR1',
-    code: 'mr1',
-    counterVersion: '4'
-  },
-  {
-    name: 'MR1 Mobile',
-    code: 'mr1_mobile',
-    counterVersion: '4'
-  },
-  {
-    name: 'TR1',
-    code: 'tr1',
-    counterVersion: '4'
-  },
-  {
-    name: 'TR2',
-    code: 'tr2',
-    counterVersion: '4'
-  },
-  {
-    name: 'TR3',
-    code: 'tr3',
-    counterVersion: '4'
-  },
-  {
-    name: 'TR3 Mobile',
-    code: 'tr3_mobile',
-    counterVersion: '4'
-  },
-  {
-    name: 'DR',
-    code: 'dr',
-    counterVersion: '5'
-  },
-  {
-    name: 'IR',
-    code: 'ir',
-    counterVersion: '5'
-  },
-  {
-    name: 'PR',
-    code: 'pr',
-    counterVersion: '5'
-  },
-  {
-    name: 'TR',
-    code: 'tr',
-    counterVersion: '5'
-  }
-];
-
-const sortReports = (a, b) => {
-  if (a.label > b.label) {
-    return 1;
-  }
-  if (a.label < b.label) {
-    return -1;
-  }
-  return 0;
+const rawCounterReportMapping = {
+  '4': ['BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR7', 'DB1', 'DB2', 'JR1', 'JR1 GOA', 'JR1a', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5', 'MR1', 'MR1 Mobile', 'PR1', 'TR1', 'TR2', 'TR3', 'TR3 Mobile'],
+  '5': ['DR', 'IR', 'PR', 'TR'],
+  '5.1': ['DR', 'IR', 'PR', 'TR'],
 };
 
-const counterReports = {
+function generateCounterData() {
+  const dataArray = [];
 
-  selectedOptions: selected => data.map(
-    r => ({
-      label: r.name,
-      value: r.name,
-      selected: r.name === selected
-    })
-  ).sort(sortReports),
+  Object.keys(rawCounterReportMapping).forEach(version => {
+    const names = rawCounterReportMapping[version];
+    names.forEach(name => {
+      dataArray.push({
+        label: name,
+        value: name,
+        counterVersion: version,
+      });
+    });
+  });
 
-  getOptions: () => data.map(
-    r => ({
-      label: r.name,
-      value: r.name,
-      counterVersion: r.counterVersion,
-    })
-  ).sort(sortReports),
+  return dataArray;
+}
 
-};
+const counterReportMapping = generateCounterData();
 
-export default counterReports;
+export default counterReportMapping;

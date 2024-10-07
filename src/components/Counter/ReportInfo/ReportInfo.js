@@ -20,7 +20,7 @@ const ReportInfo = ({
   const getFileType = (release) => {
     if (release === '4') {
       return 'xml';
-    } else if (release === '5') {
+    } else if (release === '5' || release === '5.1') {
       return 'json';
     } else {
       return 'unknown';
