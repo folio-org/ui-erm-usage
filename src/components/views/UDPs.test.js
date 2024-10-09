@@ -1,4 +1,4 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -32,6 +32,7 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
             tags: [],
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
+            reportReleases: ['5.0', '4'],
           }}
           selectedRecordId=""
           onNeedMoreData={jest.fn()}
@@ -136,28 +137,36 @@ describe('UDPs SASQ View', () => {
   });
 
   describe('check filters', () => {
-    it('harvesting status filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-harvestingStatus')).toBeInTheDocument();
+    it('should be present the harvesting status filter', () => {
+      expect(screen.getByRole('button', { name: 'Harvesting status filter list' })).toBeInTheDocument();
     });
 
-    it('harvestVia filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-harvestVia')).toBeInTheDocument();
+    it('should be present the harvestVia filter', () => {
+      expect(screen.getByRole('button', { name: 'Harvest via filter list' })).toBeInTheDocument();
     });
 
-    it('aggregators filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-aggregators')).toBeInTheDocument();
+    it('should be present the aggregators filter', () => {
+      expect(screen.getByRole('button', { name: 'Aggregators filter list' })).toBeInTheDocument();
     });
 
-    it('report types filter should be present', () => {
-      expect(document.querySelector('#clickable-report-types-filter')).toBeInTheDocument();
+    it('should be present the report types filter', () => {
+      expect(screen.getByRole('button', { name: 'Report types filter list' })).toBeInTheDocument();
     });
 
-    it('has failed reports filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-hasFailedReport')).toBeInTheDocument();
+    it('should be present the report releases filter', () => {
+      expect(screen.getByRole('button', { name: 'Report releases filter list' })).toBeInTheDocument();
     });
 
-    it('error codes filter should be present', () => {
-      expect(document.querySelector('#clickable-error-codes-filter')).toBeInTheDocument();
+    it('should be present the has failed reports filter', () => {
+      expect(screen.getByRole('button', { name: 'Has failed report(s) filter list' })).toBeInTheDocument();
+    });
+
+    it('should be present the tags filter', () => {
+      expect(screen.getByRole('button', { name: 'Tags filter list' })).toBeInTheDocument();
+    });
+
+    it('should be present the error codes filter', () => {
+      expect(screen.getByRole('button', { name: 'Error codes filter list' })).toBeInTheDocument();
     });
 
     it('reset all button should be present', () => {
@@ -170,6 +179,35 @@ describe('UDPs SASQ View', () => {
 
     it('submit button should be present', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
+    });
+
+    test('select and clear report release filter values', async () => {
+      const reportReleaseAccordion = screen.getByRole('button', { name: 'Report releases filter list' });
+      expect(reportReleaseAccordion).toBeInTheDocument();
+      await userEvent.click(reportReleaseAccordion);
+
+      const multiselects = screen.getAllByLabelText('open menu');
+      const multiselectReportReleases = multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-reportReleases');
+      expect(multiselectReportReleases).toBeInTheDocument();
+      await userEvent.click(multiselectReportReleases);
+
+      const listboxes = screen.getAllByRole('listbox');
+      const reportReleasesList = listboxes.find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-reportReleases');
+      expect(within(reportReleasesList).getByRole('option', { name: /5.0/ })).toBeInTheDocument();
+      expect(within(reportReleasesList).getByRole('option', { name: /4/ })).toBeInTheDocument();
+      await userEvent.click(within(reportReleasesList).getByRole('option', { name: /4/ }));
+
+      const searchboxes = screen.getAllByRole('searchbox');
+      const searchboxReportReleases = searchboxes.find(btn => btn.getAttribute('aria-describedby') === 'multi-describe-control-filter-reportReleases');
+      expect(searchboxReportReleases).toBeInTheDocument();
+      expect(within(searchboxReportReleases).getByText('4')).toBeInTheDocument();
+      expect(within(searchboxReportReleases).queryByText('5.0')).not.toBeInTheDocument();
+
+      const clearReportReleasesButton = screen.getByRole('button', { name: /Clear selected Report releases filters/i });
+      expect(clearReportReleasesButton).toBeInTheDocument();
+      await userEvent.click(clearReportReleasesButton);
+
+      expect(within(searchboxReportReleases).queryByText('4')).not.toBeInTheDocument();
     });
 
     it('columns of MCL should be present', async () => {

@@ -55,6 +55,13 @@ const filterGroups = [
     cql: 'reportTypes',
     operator: '=',
     values: [],
+  },
+  {
+    label: 'Report Releases',
+    name: 'reportReleases',
+    cql: 'reportReleases',
+    operator: '=',
+    values: [],
   }
 ];
 

@@ -13,6 +13,7 @@
 * COUNTER statistics: Show the COUNTER release version for reports in an additional column ([UIEUS-368](https://folio-org.atlassian.net/browse/UIEUS-368))
 * Leverage `yarn.lock` ([UIEUS-377](https://folio-org.atlassian.net/browse/UIEUS-377))
 * COUNTER 5.1 Support: Harvesting configuration for usage data providers ([UIEUS-357](https://folio-org.atlassian.net/browse/UIEUS-357))
+* Add filter for COUNTER report release ([UIEUS-374](https://folio-org.atlassian.net/browse/UIEUS-374))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
