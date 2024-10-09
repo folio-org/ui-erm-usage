@@ -1,4 +1,4 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -32,6 +32,7 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
             tags: [],
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
+            reportReleases: ['5.0', '4'],
           }}
           selectedRecordId=""
           onNeedMoreData={jest.fn()}
@@ -153,7 +154,7 @@ describe('UDPs SASQ View', () => {
     });
 
     it('should be present the report releases filter', () => {
-      expect(screen.getByRole('button', { name: 'Report Releases filter list' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Report releases filter list' })).toBeInTheDocument();
     });
 
     it('should be present the has failed reports filter', () => {
@@ -178,6 +179,35 @@ describe('UDPs SASQ View', () => {
 
     it('submit button should be present', () => {
       expect(document.querySelector('#clickable-search-udps')).toBeInTheDocument();
+    });
+
+    test('select and clear report release filter values', async () => {
+      const reportReleaseAccordion = screen.getByRole('button', { name: 'Report releases filter list' });
+      expect(reportReleaseAccordion).toBeInTheDocument();
+      await userEvent.click(reportReleaseAccordion);
+
+      const multiselects = screen.getAllByLabelText('open menu');
+      const multiselectReportReleases = multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-reportReleases');
+      expect(multiselectReportReleases).toBeInTheDocument();
+      await userEvent.click(multiselectReportReleases);
+
+      const listboxes = screen.getAllByRole('listbox');
+      const reportReleasesList = listboxes.find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-reportReleases');
+      expect(within(reportReleasesList).getByRole('option', { name: /5.0/ })).toBeInTheDocument();
+      expect(within(reportReleasesList).getByRole('option', { name: /4/ })).toBeInTheDocument();
+      await userEvent.click(within(reportReleasesList).getByRole('option', { name: /4/ }));
+
+      const searchboxes = screen.getAllByRole('searchbox');
+      const searchboxReportReleases = searchboxes.find(btn => btn.getAttribute('aria-describedby') === 'multi-describe-control-filter-reportReleases');
+      expect(searchboxReportReleases).toBeInTheDocument();
+      expect(within(searchboxReportReleases).getByText('4')).toBeInTheDocument();
+      expect(within(searchboxReportReleases).queryByText('5.0')).not.toBeInTheDocument();
+
+      const clearReportReleasesButton = screen.getByRole('button', { name: /Clear selected Report releases filters/i });
+      expect(clearReportReleasesButton).toBeInTheDocument();
+      await userEvent.click(clearReportReleasesButton);
+
+      expect(within(searchboxReportReleases).queryByText('4')).not.toBeInTheDocument();
     });
 
     it('columns of MCL should be present', async () => {
