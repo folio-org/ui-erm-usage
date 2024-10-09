@@ -30,6 +30,7 @@ const UDPFilters = ({
     tags: [],
     errorCodes: [],
     reportTypes: [],
+    reportReleases: [],
   });
 
   const isFilterDefinedLocally = filter => {
@@ -134,94 +135,31 @@ const UDPFilters = ({
     );
   };
 
-  const renderTagsFilter = () => {
-    const tagFilters = activeFilters.tags || [];
+  const renderMultiSelectionFilter = (key, closedByDefault = true) => {
+    const groupFilters = activeFilters[key] || [];
 
     return (
       <Accordion
-        closedByDefault
-        id="clickable-tags-filter"
-        displayClearButton={tagFilters.length > 0}
+        closedByDefault={closedByDefault}
+        displayClearButton={groupFilters.length > 0}
         header={FilterAccordionHeader}
-        label={<FormattedMessage id="ui-erm-usage.general.tags" />}
-        onClearFilter={() => {
-          filterHandlers.clearGroup('tags');
-        }}
+        id={`filter-accordion-${key}`}
+        label={<FormattedMessage id={`ui-erm-usage.general.${key}`} />}
+        onClearFilter={() => { filterHandlers.clearGroup(key); }}
         separator={false}
       >
         <MultiSelectionFilter
-          ariaLabelledBy="clickable-tags-filter"
-          dataOptions={filterState.tags}
-          id="tags-filter"
-          name="tags"
-          onChange={e => filterHandlers.state({
-            ...activeFilters,
-            tags: e.values
-          })
-          }
-          selectedValues={tagFilters}
-        />
-      </Accordion>
-    );
-  };
-
-  const renderErrorCodesFilter = () => {
-    const errorCodesFilters = activeFilters.errorCodes || [];
-
-    return (
-      <Accordion
-        closedByDefault
-        id="clickable-error-codes-filter"
-        displayClearButton={errorCodesFilters.length > 0}
-        header={FilterAccordionHeader}
-        label={<FormattedMessage id="ui-erm-usage.general.errorCodes" />}
-        onClearFilter={() => {
-          filterHandlers.clearGroup('errorCodes');
-        }}
-        separator={false}
-      >
-        <MultiSelectionFilter
-          ariaLabelledBy="clickable-error-codes-filter"
-          dataOptions={filterState.errorCodes}
-          id="error-codes-filter"
-          name="errorCodes"
-          onChange={e => filterHandlers.state({
-            ...activeFilters,
-            errorCodes: e.values
-          })
-          }
-          selectedValues={errorCodesFilters}
-        />
-      </Accordion>
-    );
-  };
-
-  const renderReportTypesFiler = () => {
-    const reportTypesFilters = activeFilters.reportTypes || [];
-
-    return (
-      <Accordion
-        closedByDefault
-        id="clickable-report-types-filter"
-        displayClearButton={reportTypesFilters.length > 0}
-        header={FilterAccordionHeader}
-        label={<FormattedMessage id="ui-erm-usage.general.reportTypes" />}
-        onClearFilter={() => {
-          filterHandlers.clearGroup('reportTypes');
-        }}
-        separator={false}
-      >
-        <MultiSelectionFilter
-          ariaLabelledBy="clickable-report-types-filter"
-          dataOptions={filterState.reportTypes}
-          id="report-types-filter"
-          name="reportTypes"
-          onChange={e => filterHandlers.state({
-            ...activeFilters,
-            reportTypes: e.values
-          })
-          }
-          selectedValues={reportTypesFilters}
+          ariaLabelledBy={`clickable-filter-${key}`}
+          dataOptions={filterState[key]}
+          id={`filter-${key}`}
+          name={key}
+          onChange={group => {
+            filterHandlers.state({
+              ...activeFilters,
+              [group.name]: group.values
+            });
+          }}
+          selectedValues={groupFilters}
         />
       </Accordion>
     );
@@ -232,10 +170,11 @@ const UDPFilters = ({
       {renderCheckboxFilter('harvestingStatus')}
       {renderCheckboxFilter('harvestVia')}
       {renderCheckboxFilter('aggregators', true)}
-      {renderReportTypesFiler()}
+      {renderMultiSelectionFilter('reportTypes')}
+      {renderMultiSelectionFilter('reportReleases')}
       {renderCheckboxFilter('hasFailedReport', true)}
-      {renderTagsFilter()}
-      {renderErrorCodesFilter()}
+      {renderMultiSelectionFilter('tags')}
+      {renderMultiSelectionFilter('errorCodes')}
     </AccordionSet>
   );
 };

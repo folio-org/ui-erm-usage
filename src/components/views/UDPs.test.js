@@ -136,28 +136,36 @@ describe('UDPs SASQ View', () => {
   });
 
   describe('check filters', () => {
-    it('harvesting status filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-harvestingStatus')).toBeInTheDocument();
+    it('should be present the harvesting status filter', () => {
+      expect(screen.getByRole('button', { name: 'Harvesting status filter list' })).toBeInTheDocument();
     });
 
-    it('harvestVia filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-harvestVia')).toBeInTheDocument();
+    it('should be present the harvestVia filter', () => {
+      expect(screen.getByRole('button', { name: 'Harvest via filter list' })).toBeInTheDocument();
     });
 
-    it('aggregators filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-aggregators')).toBeInTheDocument();
+    it('should be present the aggregators filter', () => {
+      expect(screen.getByRole('button', { name: 'Aggregators filter list' })).toBeInTheDocument();
     });
 
-    it('report types filter should be present', () => {
-      expect(document.querySelector('#clickable-report-types-filter')).toBeInTheDocument();
+    it('should be present the report types filter', () => {
+      expect(screen.getByRole('button', { name: 'Report types filter list' })).toBeInTheDocument();
     });
 
-    it('has failed reports filter should be present', () => {
-      expect(document.querySelector('#filter-accordion-hasFailedReport')).toBeInTheDocument();
+    it('should be present the report releases filter', () => {
+      expect(screen.getByRole('button', { name: 'Report Releases filter list' })).toBeInTheDocument();
     });
 
-    it('error codes filter should be present', () => {
-      expect(document.querySelector('#clickable-error-codes-filter')).toBeInTheDocument();
+    it('should be present the has failed reports filter', () => {
+      expect(screen.getByRole('button', { name: 'Has failed report(s) filter list' })).toBeInTheDocument();
+    });
+
+    it('should be present the tags filter', () => {
+      expect(screen.getByRole('button', { name: 'Tags filter list' })).toBeInTheDocument();
+    });
+
+    it('should be present the error codes filter', () => {
+      expect(screen.getByRole('button', { name: 'Error codes filter list' })).toBeInTheDocument();
     });
 
     it('reset all button should be present', () => {
