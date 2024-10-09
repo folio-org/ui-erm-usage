@@ -299,7 +299,7 @@
     "harvester.start.success": "收割任务{provider, select, true { 为 '' {name} '' } other {}}已成功安排立即执行。收割任务通常需要一些时间才能完成。您可以通过检查{link}页面来监控进度。",
     "harvester.start.failed": "收割器无法启动",
     "harvester.start.failure": "无法安排收割任务{provider, select, true { 为 '' {name} '' } other {}} 。",
-    "noSourceYet": "No source yet",
-    "reportOverview.confirmDeleteReport": "Delete report?",
-    "reportOverview.release": "Release"
+    "noSourceYet": "尚无来源",
+    "reportOverview.confirmDeleteReport": "删除報告？",
+    "reportOverview.release": "发布"
 }
