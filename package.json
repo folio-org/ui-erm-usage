@@ -72,7 +72,7 @@
     "okapiInterfaces": {
       "aggregator-settings": "1.2",
       "configuration": "2.0",
-      "counter-reports": "3.2",
+      "counter-reports": "4.0",
       "custom-reports": "1.0",
       "erm-usage-files": "1.0",
       "usage-data-providers": "3.0",
