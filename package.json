@@ -70,7 +70,7 @@
     "home": "/eusage?filters=harvestingStatus.active&sort=label",
     "queryResource": "query",
     "okapiInterfaces": {
-      "aggregator-settings": "1.2",
+      "aggregator-settings": "2.0",
       "configuration": "2.0",
       "counter-reports": "4.0",
       "custom-reports": "1.0",
@@ -105,6 +105,7 @@
         "subPermissions": [
           "settings.erm-usage.enabled",
           "aggregatorsettings.collection.get",
+          "aggregatorsettings.exportcredentials.item.get",
           "aggregatorsettings.item.get",
           "aggregatorsettings.item.post",
           "aggregatorsettings.item.put",
@@ -146,7 +147,14 @@
           "usagedataproviders.collection.get",
           "usagedataproviders.item.get",
           "counterreports.collection.get",
+          "counterreports.download.item.get",
+          "counterreports.errorcodes.collection.get",
+          "counterreports.export.collection.get",
+          "counterreports.export.item.get",
           "counterreports.item.get",
+          "counterreports.reportreleases.collection.get",
+          "counterreports.reporttypes.collection.get",
+          "counterreports.sorted.collection.get",
           "aggregatorsettings.collection.get",
           "aggregatorsettings.item.get",
           "customreports.collection.get",
@@ -170,7 +178,7 @@
         "displayName": "eUsage: Can upload usage reports",
         "description": "Can upload usage reports",
         "subPermissions": [
-          "counterreports.item.post",
+          "counterreports.upload.item.post",
           "customreports.item.post",
           "erm-usage.files.item.post"
         ],
@@ -210,6 +218,7 @@
         "displayName": "eUsage: Can delete usage reports",
         "description": "Can delete usage reports",
         "subPermissions": [
+          "counterreports.collection.delete",
           "counterreports.item.delete",
           "customreports.item.delete",
           "erm-usage.files.item.delete"
