@@ -77,7 +77,7 @@
       "erm-usage-files": "1.0",
       "usage-data-providers": "3.0",
       "tags": "1.0",
-      "erm-usage-harvester": "1.4"
+      "erm-usage-harvester": "2.0"
     },
     "permissionSets": [
       {
@@ -118,7 +118,7 @@
           "ermusageharvester.periodic.get",
           "ermusageharvester.periodic.post",
           "ermusageharvester.periodic.delete",
-          "ermusageharvester.start"
+          "ermusageharvester.start-all.get"
         ],
         "visible": true
       },
@@ -230,7 +230,7 @@
         "displayName": "eUsage: Can start harvesting for a single provider",
         "description": "Can start harvesting for a single provider",
         "subPermissions": [
-          "ermusageharvester.start.single"
+          "ermusageharvester.start-single.get"
         ],
         "visible": true
       },
