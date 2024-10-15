@@ -16,6 +16,7 @@
 * Add filter for COUNTER report release ([UIEUS-374](https://folio-org.atlassian.net/browse/UIEUS-374))
 * Fix GitHub Actions workflow not running for tags ([FOLIO-4086](https://folio-org.atlassian.net/browse/FOLIO-4086))
 * Update `counter-reports` interface to 4.0 ([UIEUS-378](https://folio-org.atlassian.net/browse/UIEUS-378))
+* Adjust permissions and update `aggregator-settings` interface to 2.0 ([UIEUS-379](https://folio-org.atlassian.net/browse/UIEUS-379))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
