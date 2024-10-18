@@ -301,5 +301,6 @@
     "harvester.start.failure": "Nepodařilo se naplánovat úlohu harvestu{provider, select, true { pro ''{name}''} other {}}.",
     "noSourceYet": "Zatím žádný zdroj",
     "reportOverview.confirmDeleteReport": "Smazat výstup?",
-    "reportOverview.release": "Vydání"
+    "reportOverview.release": "Vydání",
+    "general.reportReleases": "Report releases"
 }

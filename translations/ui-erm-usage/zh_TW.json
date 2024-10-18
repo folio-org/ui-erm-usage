@@ -301,5 +301,6 @@
     "harvester.start.failure": "無法排程擷取作業{provider, select, true { 為 '' {name} '' } other {}} 。",
     "noSourceYet": "No source yet",
     "reportOverview.confirmDeleteReport": "Delete report?",
-    "reportOverview.release": "Release"
+    "reportOverview.release": "Release",
+    "general.reportReleases": "Report releases"
 }

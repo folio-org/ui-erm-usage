@@ -301,5 +301,6 @@
     "harvester.start.failure": "ハーベストジョブ{provider, select, true { for '' {name} '' } other {}}のスケジュールに失敗しました",
     "noSourceYet": "No source yet",
     "reportOverview.confirmDeleteReport": "レポートを削除しますか?",
-    "reportOverview.release": "Release"
+    "reportOverview.release": "Release",
+    "general.reportReleases": "Report releases"
 }

@@ -202,7 +202,7 @@
     "permission.harvester.all": "Harvester do Uso eletrônico: Todas as permissões para o módulo Harvester do Uso eletrônico",
     "permission.harvester.view": "Harvester do Uso eletrônico: Permissões somente leitura para o módulo Harvester do Uso eletrônico",
     "general.cancel": "Cancelar",
-    "reportOverview.deleteTemplateMessage": "{nome} será removido dos relatórios não-contáveis.",
+    "reportOverview.deleteTemplateMessage": "{name} será removido dos relatórios não-contáveis.",
     "report.delete.failed": "Falhou ...",
     "errors.urlRequired": "URL inválido: http:// ou https:// obrigatório!",
     "statistics.custom.selectFileUpload": "Selecione arquivo para carregar",
@@ -301,5 +301,6 @@
     "harvester.start.failure": "Falha ao agendar um trabalho de coleta {provider, select, true {para '' {name} '' } other {}} .",
     "noSourceYet": "Nenhuma fonte ainda",
     "reportOverview.confirmDeleteReport": "Excluir relatório?",
-    "reportOverview.release": "Liberar"
+    "reportOverview.release": "Liberar",
+    "general.reportReleases": "Lançamentos de relatórios"
 }

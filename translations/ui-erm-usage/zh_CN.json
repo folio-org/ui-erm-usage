@@ -301,5 +301,6 @@
     "harvester.start.failure": "无法安排收割任务{provider, select, true { 为 '' {name} '' } other {}} 。",
     "noSourceYet": "尚无来源",
     "reportOverview.confirmDeleteReport": "删除報告？",
-    "reportOverview.release": "发布"
+    "reportOverview.release": "发布",
+    "general.reportReleases": "Report releases"
 }
