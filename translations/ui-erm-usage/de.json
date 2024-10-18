@@ -301,5 +301,6 @@
     "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}.",
     "noSourceYet": "No source yet",
     "reportOverview.confirmDeleteReport": "Delete report?",
-    "reportOverview.release": "Release"
+    "reportOverview.release": "Release",
+    "general.reportReleases": "Berichtsversion"
 }

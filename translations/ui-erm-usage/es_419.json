@@ -301,5 +301,6 @@
     "harvester.start.failure": "Error al programar un trabajo de recolección {provider, select, true { para ''{name}''} other {}}.",
     "noSourceYet": "No source yet",
     "reportOverview.confirmDeleteReport": "Delete report?",
-    "reportOverview.release": "Release"
+    "reportOverview.release": "Release",
+    "general.reportReleases": "Report releases"
 }
