@@ -18,6 +18,7 @@
 * Update `counter-reports` interface to 4.0 ([UIEUS-378](https://folio-org.atlassian.net/browse/UIEUS-378))
 * Adjust permissions and update `aggregator-settings` interface to 2.0 ([UIEUS-379](https://folio-org.atlassian.net/browse/UIEUS-379))
 * Adjust permissions and update to `interface erm-usage-harvester 2.0` ([UIEUS-380](https://folio-org.atlassian.net/browse/UIEUS-380))
+* Add support for interface `custom-reports 2.0` ([UIEUS-381](https://folio-org.atlassian.net/browse/UIEUS-381))
 
 ## [9.0.0](https://github.com/folio-org/ui-erm-usage/tree/v9.0.0) (2024-04-17)
 * *BREAKING* Use `multipart/form-data` to upload COUNTER reports ([UIEUS-353](https://folio-org.atlassian.net/browse/UIEUS-353))
