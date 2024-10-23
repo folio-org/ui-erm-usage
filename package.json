@@ -73,7 +73,7 @@
       "aggregator-settings": "2.0",
       "configuration": "2.0",
       "counter-reports": "4.0",
-      "custom-reports": "1.0",
+      "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
       "usage-data-providers": "3.0",
       "tags": "1.0",
