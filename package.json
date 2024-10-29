@@ -19,7 +19,7 @@
     "@folio/eslint-config-stripes": "^7.0.0",
     "@folio/jest-config-stripes": "^2.0.0",
     "@folio/stripes": "^9.2.0",
-    "@folio/stripes-cli": "^3.0.0",
+    "@folio/stripes-cli": "^3.2.0",
     "@folio/stripes-components": "^12.2.0",
     "@folio/stripes-core": "^10.2.0",
     "@folio/stripes-final-form": "^8.1.0",

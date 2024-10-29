@@ -1413,7 +1413,7 @@
     jest-location-mock "^1.0.9"
     jsdom "^22.1.0"
 
-"@folio/stripes-cli@^3.0.0":
+"@folio/stripes-cli@^3.2.0":
   version "3.2.0"
   resolved "https://repository.folio.org/repository/npm-folio/@folio/stripes-cli/-/stripes-cli-3.2.0.tgz#fbb05f206d99637810ba32290d254f74fd14aa4d"
   integrity sha512-1WVYs7a3lcfg3sNV4WbFaY0ebhip7lGtwOiEpJPeRrxlFvrXcC0OMX79CH1r6dsU4fZ5y4/V8xk+8pm5BTCeYA==
