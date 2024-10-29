@@ -324,6 +324,8 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+      // click somewhere outside of the selection list to close the menu without choosing any report
+      await userEvent.click(screen.getByRole('heading', { name: 'Create usage data provider' }));
       expect(screen.getByRole('button', { name: 'Report type' })).toHaveClass('hasError');
 
       expect(screen.getByRole('textbox', { name: 'Harvesting start' })).toBeRequired();
