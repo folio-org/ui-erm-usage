@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 10.0.0 (IN PROGRESS)
+## 10.1.0 (IN PROGRESS)
+
+## [10.0.0](https://github.com/folio-org/ui-erm-usage/tree/v10.0.0) (2024-10-29)
 * Fix bug in JobView test ([UIEUS-360](https://folio-org.atlassian.net/browse/UIEUS-360))
 * React v19: refactor away from default props for functional components ([UIEUS-355](https://folio-org.atlassian.net/browse/UIEUS-355))
 * Use erm-usage-files interface id that is valid for Eureka platform ([APPDESCRIP-28](https://folio-org.atlassian.net/browse/APPDESCRIP-28))
