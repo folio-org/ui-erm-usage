@@ -23,10 +23,10 @@ const CounterStatistics = ({
     const reportNamesNew = reports
       .flatMap((c) => c.stats)
       .filter((cr) => !cr.failedAttempts || cr.failedAttempts === 0)
-      .map((cr) => (cr.release === '5' || cr.release === '5.0') ? `${cr.report} (${cr.release})` : cr.report)
+      .map((cr) => (cr.release === '5' ? `${cr.report} (${cr.release})` : cr.report));
     const available = new Set(reportNamesNew);
     const intersection = new Set(
-      reportDownloadTypes.filter((y) => available.has(y.value.split('_')[0]))
+      reportDownloadTypes.filter((y) => available.has(y.label.split('_')[0]))
     );
     return sortBy([...intersection], ['label']);
   };
