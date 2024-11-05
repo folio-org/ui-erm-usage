@@ -1,6 +1,7 @@
 # Change history for ui-erm-usage
 
 ## 10.1.0 (IN PROGRESS)
+* Change of report type options within the multi-month COUNTER statistics download feature ([UIEUS-369] (https://folio-org.atlassian.net/browse/UIEUS-369))
 
 ## [10.0.0](https://github.com/folio-org/ui-erm-usage/tree/v10.0.0) (2024-10-29)
 * Fix bug in JobView test ([UIEUS-360](https://folio-org.atlassian.net/browse/UIEUS-360))
