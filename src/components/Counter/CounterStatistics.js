@@ -7,7 +7,7 @@ import { AccordionSet, Col, Row } from '@folio/stripes/components';
 
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import reportDownloadTypes from '../../util/data/reportDownloadTypes';
+import downloadCounterReportTypeMapping from '../../util/data/downloadReportTypesOptions';
 import css from './CounterStatistics.css';
 
 const CounterStatistics = ({
@@ -22,11 +22,15 @@ const CounterStatistics = ({
   const calcDownloadableReportTypes = () => {
     const reportNamesNew = reports
       .flatMap((c) => c.stats)
-      .filter((cr) => !cr.failedAttempts || cr.failedAttempts === 0)
-      .map((cr) => ((cr.release === '5' || cr.release === '5.1') ? `${cr.report} (${cr.release})` : cr.report));
+      .filter((cr) => {
+        return Object.values(cr).every(
+          (monthData) => monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0)
+        );
+      })
+      .map((cr) => `${cr.report} (${cr.release})`);
     const available = new Set(reportNamesNew);
     const intersection = new Set(
-      reportDownloadTypes.filter((y) => available.has(y.label.split('_')[0]))
+      downloadCounterReportTypeMapping.filter((y) => available.has(y.label.split('_')[0]))
     );
     return sortBy([...intersection], ['label']);
   };

@@ -52,8 +52,6 @@ const reports = [
         '11': {
           id: 'dbda8610-e1d1-4f40-bcfe-d5de351d7242',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
-          failedAttempts: 2,
-          failedReason: 'Error getting report: Could not send Message., HTTP response 503: Service Unavailable',
           release: '4',
           reportName: 'BR1',
           yearMonth: '2018-11',
@@ -92,8 +90,6 @@ const reports = [
         '06': {
           id: '8dfeb1b3-1cf9-4a75-8ff6-628e2d0eddc2',
           downloadTime: '2024-09-09T17:17:00.700+00:00',
-          failedAttempts: 2,
-          failedReason: 'Error getting report: Could not send Message.',
           release: '5',
           reportName: 'TR',
           yearMonth: '2019-06',
@@ -171,7 +167,7 @@ describe('CounterStatistics', () => {
     expect(within(section2019).getByText(/5/)).toBeInTheDocument();
   });
 
-  it('should be visible download for multiple months with report version behind report type for 5 and 5.1', () => {
+  it('should be visible download for multiple months with report version behind report, but no failed reports', () => {
     renderCounterStatistics(stripes);
 
     expect(screen.getByText('Download reports for multiple months')).toBeInTheDocument();
@@ -179,7 +175,9 @@ describe('CounterStatistics', () => {
     const reportTypeSelectBox = screen.getByRole('combobox', { name: 'Report type' });
     expect(reportTypeSelectBox).toBeInTheDocument();
     userEvent.click(reportTypeSelectBox);
-    expect(screen.getByRole('option', { name: 'BR1' })).toBeInTheDocument();
+
+    expect(screen.queryByRole('option', { name: 'BR1 (4.1)' })).not.toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'BR1 (4)' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'TR (5)' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'TR (5.1)' })).toBeInTheDocument();
   });

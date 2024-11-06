@@ -5,7 +5,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
-import reportDownloadTypes from '../../../util/data/reportDownloadTypes';
+import downloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
 const ReportInfo = ({
@@ -41,7 +41,7 @@ const ReportInfo = ({
   };
 
   const isDownloadable = (reportName) => {
-    const result = reportDownloadTypes.find((e) => e.value === reportName);
+    const result = downloadCounterReportTypeMapping.find((e) => e.value === reportName);
     return result !== undefined;
   };
 
