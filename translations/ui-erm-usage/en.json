@@ -326,16 +326,19 @@
   "statistics.multi.delete.confirmation": "The selected <strong>{count} {count, plural, one {report} other {reports}}</strong> will be <strong>deleted</strong>.",
   "statistics.multi.delete.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info. Select checkboxes to select reports for deletion.",
 
-  "permission.module.enabled": "UI: eUsage module is enabled",
-  "permission.generalSettings.manage": "Settings (eUsage): Can view and edit settings",
+  "permission.module.erm-usage.enabled": "UI: eUsage module is enabled",
+  "permission.settings.erm-usage.enabled": "Settings (eUsage): Display list of settings pages",
+  "permission.generalSettings.manage": "Settings (eUsage): Can view and edit all settings",
   "permission.all": "eUsage: All permissions",
-  "permission.view": "eUsage: Can view usage data providers and usage reports",
-  "permission.view-create": "eUsage: Can view and create usage data providers and usage reports",
-  "permission.view-edit": "eUsage: Can view and edit usage data providers and usage reports",
-  "permission.view-create-edit": "eUsage: Can view, create and edit usage data providers and usage reports",
-  "permission.view-create-edit-delete": "eUsage: Can view, create, edit and delete usage data providers and usage reports",
-  "permission.harvester.all": "eUsage harvester: All permissions for eUsage harvester module",
-  "permission.harvester.view": "eUsage harvester: Read-only permissions for eUsage harvester module",
+  "permission.view": "eUsage: Can view usage data providers and view/download usage reports",
+  "permission.udp.create": "eUsage: Can create usage data providers",
+  "permission.reports.create": "eUsage: Can upload usage reports",
+  "permission.udp.edit": "eUsage: Can edit usage data providers",
+  "permission.udp.create-edit": "eUsage: Can create and edit usage data providers",
+  "permission.udp.delete": "eUsage: Can delete usage data providers",
+  "permission.reports.delete": "eUsage: Can delete usage reports",
+  "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
+  "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
   
   "showTags": "Show tags"
 }

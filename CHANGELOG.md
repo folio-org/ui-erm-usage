@@ -1,6 +1,7 @@
 # Change history for ui-erm-usage
 
 ## 10.1.0 (IN PROGRESS)
+* Update translation for permission ([UIEUS-385](https://folio-org.atlassian.net/browse/UIEUS-385))
 
 ## [10.0.0](https://github.com/folio-org/ui-erm-usage/tree/v10.0.0) (2024-10-29)
 * Fix bug in JobView test ([UIEUS-360](https://folio-org.atlassian.net/browse/UIEUS-360))
