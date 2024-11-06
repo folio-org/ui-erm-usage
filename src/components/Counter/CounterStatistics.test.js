@@ -46,7 +46,7 @@ const reports = [
           id: 'bf4ffe1b-d9f5-4054-ba1f-2ea590a4b822',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           release: '4',
-          reportName: 'DR1',
+          reportName: 'BR1',
           yearMonth: '2018-10',
         },
         '11': {
@@ -55,10 +55,10 @@ const reports = [
           failedAttempts: 2,
           failedReason: 'Error getting report: Could not send Message., HTTP response 503: Service Unavailable',
           release: '4',
-          reportName: 'DR1',
+          reportName: 'BR1',
           yearMonth: '2018-11',
         },
-        report: 'DR1',
+        report: 'BR1',
         release: '4',
       },
       {
@@ -66,7 +66,7 @@ const reports = [
           id: 'bf4ffe1b-d9f5-4054-ba1f-2ea590a4b822',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           release: '4.1',
-          reportName: 'DR1',
+          reportName: 'BR1',
           yearMonth: '2018-10',
         },
         '11': {
@@ -75,10 +75,10 @@ const reports = [
           failedAttempts: 2,
           failedReason: 'Error getting report: Could not send Message., HTTP response 503: Service Unavailable',
           release: '4.1',
-          reportName: 'DR1',
+          reportName: 'BR1',
           yearMonth: '2018-11',
         },
-        report: 'DR1',
+        report: 'BR1',
         release: '4.1',
       }
     ]
@@ -88,15 +88,31 @@ const reports = [
     stats: [
       {
         report: 'TR',
-        release: '5.0',
+        release: '5',
         '06': {
           id: '8dfeb1b3-1cf9-4a75-8ff6-628e2d0eddc2',
           downloadTime: '2024-09-09T17:17:00.700+00:00',
           failedAttempts: 2,
           failedReason: 'Error getting report: Could not send Message.',
-          release: '5.0',
+          release: '5',
           reportName: 'TR',
           yearMonth: '2019-06',
+        }
+      }
+    ]
+  },
+  {
+    year: '2020',
+    stats: [
+      {
+        report: 'TR',
+        release: '5.1',
+        '06': {
+          id: '8dfeb1b3-1cf9-4a75-8ff6-628e2d0eddc2',
+          downloadTime: '2024-10-09T17:17:00.700+00:00',
+          release: '5.1',
+          reportName: 'TR',
+          yearMonth: '2020-06',
         }
       }
     ]
@@ -113,7 +129,7 @@ const renderCounterStatistics = (stripes) => {
         reports={reports}
         handlers={handlers}
         reportFormatter={mockReportFormatter}
-        showMultiMonthDownload={false}
+        showMultiMonthDownload
       />
     </Accordion>
   );
@@ -152,6 +168,19 @@ describe('CounterStatistics', () => {
     });
 
     expect(within(section2019).getByText(/TR/)).toBeInTheDocument();
-    expect(within(section2019).getByText(/5.0/)).toBeInTheDocument();
+    expect(within(section2019).getByText(/5/)).toBeInTheDocument();
+  });
+
+  it('should be visible download for multiple months with report version behind report type for 5 and 5.1', () => {
+    renderCounterStatistics(stripes);
+
+    expect(screen.getByText('Download reports for multiple months')).toBeInTheDocument();
+
+    const reportTypeSelectBox = screen.getByRole('combobox', { name: 'Report type' });
+    expect(reportTypeSelectBox).toBeInTheDocument();
+    userEvent.click(reportTypeSelectBox);
+    expect(screen.getByRole('option', { name: 'BR1' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'TR (5)' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'TR (5.1)' })).toBeInTheDocument();
   });
 });
