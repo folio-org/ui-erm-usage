@@ -7,7 +7,7 @@ import { AccordionSet, Col, Row } from '@folio/stripes/components';
 
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import downloadCounterReportTypeMapping from '../../util/data/downloadReportTypesOptions';
+import { rawDownloadCounterReportTypeMapping } from '../../util/data/downloadReportTypesOptions';
 import css from './CounterStatistics.css';
 
 const CounterStatistics = ({
@@ -19,20 +19,40 @@ const CounterStatistics = ({
   showMultiMonthDownload,
   stripes,
 }) => {
+  const getSubReports = (release, report) => {
+    const subReports = rawDownloadCounterReportTypeMapping[Math.trunc(release)][report];
+
+    const subReportLabels = subReports.map((subReport) => ({
+      value: subReport,
+      label: `${subReport} (${release})`,
+    }));
+
+    return subReportLabels;
+  };
+
   const calcDownloadableReportTypes = () => {
     const reportNamesNew = reports
       .flatMap((c) => c.stats)
       .filter((cr) => {
-        return Object.values(cr).every(
-          (monthData) => monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0)
-        );
+        return Object.values(cr).every((monthData) => {
+          // skip 'report' and 'release'
+          if (monthData && typeof monthData === 'string') {
+            return true;
+          }
+          return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
+        });
       })
-      .map((cr) => `${cr.report} (${cr.release})`);
-    const available = new Set(reportNamesNew);
-    const intersection = new Set(
-      downloadCounterReportTypeMapping.filter((y) => available.has(y.label.split('_')[0]))
-    );
-    return sortBy([...intersection], ['label']);
+      .map((cr) => getSubReports(cr.release, cr.report)).flat();
+
+    if (reportNamesNew.length === 0) {
+      return null;
+    } else {
+      const deduplicatedReportNames = reportNamesNew.filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.label === item.label)
+      );
+      return sortBy(deduplicatedReportNames, ['label']);
+    }
   };
 
   const [downloadableReports, setDownloadableReports] = useState(calcDownloadableReportTypes());

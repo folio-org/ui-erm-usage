@@ -5,7 +5,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
-import downloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
+import { rawDownloadCounterReportTypeMapping } from '../../../util/data/downloadReportTypesOptions';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
 const ReportInfo = ({
@@ -40,12 +40,11 @@ const ReportInfo = ({
     deleteReport();
   };
 
-  const isDownloadable = (reportName) => {
-    const result = downloadCounterReportTypeMapping.find((e) => e.value === reportName);
-    return result !== undefined;
+  const isDownloadable = (release, reportName) => {
+    return rawDownloadCounterReportTypeMapping[release] && rawDownloadCounterReportTypeMapping[release][reportName] !== undefined;
   };
 
-  const isCSVPossible = (rep) => !rep.failedReason && isDownloadable(rep.reportName);
+  const isCSVPossible = (rep) => !rep.failedReason && isDownloadable(rep.release, rep.reportName);
 
   const renderCSVDownloadButton = (rep) => {
     if (isCSVPossible(rep)) {
