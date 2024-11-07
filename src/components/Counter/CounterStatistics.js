@@ -7,7 +7,7 @@ import { AccordionSet, Col, Row } from '@folio/stripes/components';
 
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import { rawDownloadCounterReportTypeMapping } from '../../util/data/downloadReportTypesOptions';
+import { getAvailableReports, getDownloadCounterReportTypes } from './utils';
 import css from './CounterStatistics.css';
 
 const CounterStatistics = ({
@@ -19,33 +19,6 @@ const CounterStatistics = ({
   showMultiMonthDownload,
   stripes,
 }) => {
-  const getDownloadCounterReportTypes = (release, report) => {
-    const subReports = rawDownloadCounterReportTypeMapping[Math.trunc(release)][report];
-
-    const subReportLabels = subReports.map((subReport) => ({
-      value: subReport,
-      label: `${subReport} (${release})`,
-      release,
-    }));
-
-    return subReportLabels;
-  };
-
-  const getAvailableReports = (reportData) => {
-    const availableReports = reportData
-      .flatMap((c) => c.stats)
-      .filter((cr) => {
-        return Object.values(cr).every((monthData) => {
-          // skip 'report' and 'release'
-          if (monthData && typeof monthData === 'string') {
-            return true;
-          }
-          return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
-        });
-      });
-    return availableReports;
-  };
-
   const calcDownloadableReportTypes = () => {
     const availableReports = getAvailableReports(reports);
     const reportNamesNew = availableReports.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
