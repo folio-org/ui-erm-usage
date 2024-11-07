@@ -19,7 +19,7 @@ const CounterStatistics = ({
   showMultiMonthDownload,
   stripes,
 }) => {
-  const getSubReports = (release, report) => {
+  const getDownloadCounterReportTypes = (release, report) => {
     const subReports = rawDownloadCounterReportTypeMapping[Math.trunc(release)][report];
 
     const subReportLabels = subReports.map((subReport) => ({
@@ -31,8 +31,8 @@ const CounterStatistics = ({
     return subReportLabels;
   };
 
-  const calcDownloadableReportTypes = () => {
-    const reportNamesNew = reports
+  const getAvailableReports = (reportData) => {
+    const availableReports = reportData
       .flatMap((c) => c.stats)
       .filter((cr) => {
         return Object.values(cr).every((monthData) => {
@@ -42,8 +42,13 @@ const CounterStatistics = ({
           }
           return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
         });
-      })
-      .map((cr) => getSubReports(cr.release, cr.report)).flat();
+      });
+    return availableReports;
+  };
+
+  const calcDownloadableReportTypes = () => {
+    const availableReports = getAvailableReports(reports);
+    const reportNamesNew = availableReports.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
 
     if (reportNamesNew.length === 0) {
       return null;
