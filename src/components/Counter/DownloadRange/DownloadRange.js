@@ -101,7 +101,7 @@ function DownloadRange(props) {
       return 0;
     }
 
-    return downloadableReports[index].version;
+    return downloadableReports[index].release;
   };
 
   const doDownload = () => {

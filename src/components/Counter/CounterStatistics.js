@@ -25,6 +25,7 @@ const CounterStatistics = ({
     const subReportLabels = subReports.map((subReport) => ({
       value: subReport,
       label: `${subReport} (${release})`,
+      release,
     }));
 
     return subReportLabels;
