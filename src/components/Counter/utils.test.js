@@ -1,4 +1,4 @@
-import { getDownloadCounterReportTypes } from './utils';
+import { getAvailableReports, getDownloadCounterReportTypes } from './utils';
 
 describe('getDownloadCounterReportTypes', () => {
   it('should return correct values for release 4 and report JR1', () => {
@@ -24,5 +24,74 @@ describe('getDownloadCounterReportTypes', () => {
 
   it('should return empty array for undefined reports', () => {
     expect(getDownloadCounterReportTypes('1', 'DR')).toEqual([]);
+  });
+});
+
+describe('getAvailableReports', () => {
+  const reports = [
+    {
+      year: 2018,
+      stats: [
+        {
+          report: 'TR',
+          release: '5',
+          '01': {},
+          '02': {},
+        },
+        {
+          report: 'JR1',
+          release: '4',
+          '01': {},
+          '02': {},
+        },
+      ],
+    },
+    {
+      year: 2019,
+      stats: [
+        {
+          report: 'TR',
+          release: '5.1',
+          '01': {},
+          '02': {
+            failedAttempts: 1,
+          },
+        },
+        {
+          report: 'PR',
+          release: '5.1',
+          '01': {
+            failedAttempts: 1,
+          },
+          '02': {
+            failedAttempts: 1,
+          },
+        },
+      ],
+    },
+  ];
+
+  it('should return an array of available reports', () => {
+    const expected = [
+      {
+        report: 'TR',
+        release: '5',
+        '01': {},
+        '02': {},
+      },
+      {
+        report: 'JR1',
+        release: '4',
+        '01': {},
+        '02': {},
+      },
+      {
+        report: 'TR',
+        release: '5.1',
+        '01': {},
+      },
+    ];
+    const result = getAvailableReports(reports);
+    expect(result).toEqual(expected);
   });
 });
