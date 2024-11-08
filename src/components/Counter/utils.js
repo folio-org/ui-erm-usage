@@ -17,10 +17,10 @@ export const getAvailableReports = reports => {
     .flatMap(c => c.stats)
     .filter(cr => {
       return Object.values(cr).some(monthData => {
-        return (
-          typeof monthData === 'object' &&
-          (!monthData.failedAttempts || monthData.failedAttempts === 0)
-        );
+        if (monthData && typeof monthData === 'string') {
+          return false;
+        }
+        return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
       });
     })
     .map(cr => ({ report: cr.report, release: cr.release }));
