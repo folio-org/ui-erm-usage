@@ -17,7 +17,6 @@ const CounterStatistics = ({
   reportFormatter,
   reports,
   showMultiMonthDownload,
-  stripes,
 }) => {
   const calcDownloadableReportTypes = () => {
     const availableReports = getAvailableReports(reports);
@@ -70,7 +69,6 @@ const CounterStatistics = ({
           </Col>
           <Col xs={12}>
             <DownloadRange
-              stripes={stripes}
               udpId={providerId}
               downloadableReports={downloadableReports}
               handlers={handlers}
@@ -89,16 +87,6 @@ CounterStatistics.propTypes = {
   reportFormatter: PropTypes.shape({}).isRequired,
   reports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   showMultiMonthDownload: PropTypes.bool,
-  stripes: PropTypes.shape({
-    connect: PropTypes.func,
-    okapi: PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      tenant: PropTypes.string.isRequired,
-    }).isRequired,
-    store: PropTypes.shape({
-      getState: PropTypes.func,
-    }),
-  }).isRequired,
 };
 
 export default CounterStatistics;

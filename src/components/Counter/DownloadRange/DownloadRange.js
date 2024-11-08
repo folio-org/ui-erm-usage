@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { get, isEmpty } from 'lodash';
-import { useState, useEffect, useRef } from 'react';
+import { isEmpty } from 'lodash';
+import { useState, useRef } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
 import { stripesConnect } from '@folio/stripes/core';
@@ -17,30 +17,31 @@ import { isYearMonth } from '../../../util/validate';
 import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
 
-function DownloadRange(props) {
+function DownloadRange({
+  downloadableReports,
+  handlers,
+  intl,
+  udpId,
+}) {
   const calloutRef = useRef();
   const [start, setStart] = useState('');
   const [startError, setStartError] = useState(null);
   const [end, setEnd] = useState('');
   const [endError, setEndError] = useState(null);
-  const [reportType, setReportType] = useState('');
+  const [selectedReport, setSelectedReport] = useState(downloadableReports[0] || {});
   const [exportFormat, setExportFormat] = useState(exportFormats[0].value);
-
-  useEffect(() => {
-    setReportType(get(props.downloadableReports, '[0]', ''));
-  }, [props.downloadableReports]);
 
   const validate = (s, e) => {
     if (!isYearMonth(s)) {
       setStartError(
-        props.intl.formatMessage({
+        intl.formatMessage({
           id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
         })
       );
     }
     if (!isYearMonth(e)) {
       setEndError(
-        props.intl.formatMessage({
+        intl.formatMessage({
           id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
         })
       );
@@ -49,7 +50,7 @@ function DownloadRange(props) {
     if (isYearMonth(s) && isYearMonth(e)) {
       if (s > e) {
         setEndError(
-          props.intl.formatMessage({
+          intl.formatMessage({
             id:
               'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart',
           })
@@ -94,22 +95,12 @@ function DownloadRange(props) {
     setEndError(null);
   };
 
-  const getCounterVersion = (rType) => {
-    const { downloadableReports } = props;
-    const index = downloadableReports.findIndex((r) => r.value === rType.value);
-    if (index === -1) {
-      return 0;
-    }
-
-    return downloadableReports[index].release;
-  };
-
   const doDownload = () => {
     if (!isEmpty(start) && !isEmpty(end)) {
-      props.handlers.onDownloadReportMultiMonth(
-        props.udpId,
-        reportType.value,
-        getCounterVersion(reportType),
+      handlers.onDownloadReportMultiMonth(
+        udpId,
+        selectedReport.value,
+        selectedReport.release,
         start,
         end,
         exportFormat
@@ -118,7 +109,7 @@ function DownloadRange(props) {
   };
 
   const onSelectReportType = (e) => {
-    setReportType(e.target);
+    setSelectedReport(downloadableReports[e.target.selectedIndex]);
   };
 
   const onSelectExportFormat = (e) => {
@@ -173,7 +164,7 @@ function DownloadRange(props) {
               <Select
                 label={label}
                 name="downloadMultiMonths.reportType"
-                dataOptions={props.downloadableReports}
+                dataOptions={downloadableReports}
                 onChange={onSelectReportType}
               />
             )}
@@ -210,11 +201,11 @@ function DownloadRange(props) {
 
 DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
-  udpId: PropTypes.string.isRequired,
-  intl: PropTypes.object,
   handlers: PropTypes.shape({
     onDownloadReportMultiMonth: PropTypes.func.isRequired,
   }).isRequired,
+  intl: PropTypes.object,
+  udpId: PropTypes.string.isRequired,
 };
 
 export default stripesConnect(injectIntl(DownloadRange));
