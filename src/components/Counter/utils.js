@@ -12,17 +12,16 @@ export const getDownloadCounterReportTypes = (release, report) => {
   return reportTypeObject;
 };
 
-export const getAvailableReports = (reports) => {
-  const availableReports = reports
-    .flatMap((c) => c.stats)
-    .filter((cr) => {
-      return Object.values(cr).every((monthData) => {
-        // skip 'report' and 'release'
-        if (monthData && typeof monthData === 'string') {
-          return true;
-        }
-        return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
+export const getAvailableReports = reports => {
+  return reports
+    .flatMap(c => c.stats)
+    .filter(cr => {
+      return Object.values(cr).some(monthData => {
+        return (
+          typeof monthData === 'object' &&
+          (!monthData.failedAttempts || monthData.failedAttempts === 0)
+        );
       });
-    });
-  return availableReports;
+    })
+    .map(cr => ({ report: cr.report, release: cr.release }));
 };

@@ -76,19 +76,14 @@ describe('getAvailableReports', () => {
       {
         report: 'TR',
         release: '5',
-        '01': {},
-        '02': {},
       },
       {
         report: 'JR1',
         release: '4',
-        '01': {},
-        '02': {},
       },
       {
         report: 'TR',
         release: '5.1',
-        '01': {},
       },
     ];
     const result = getAvailableReports(reports);
