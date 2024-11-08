@@ -8,18 +8,18 @@ const downloadableReports = [
   {
     value: 'DR',
     label: 'DR',
-    version: 5,
+    release: '5',
   },
   {
     value: 'JR1',
     label: 'JR1',
-    version: 4,
+    release: '4',
   },
 ];
 
-const onDownload = jest.fn();
+const downloadReportMultipleMonths = jest.fn();
 const handlers = {
-  onDownloadReportMultiMonth: onDownload,
+  onDownloadReportMultiMonth: downloadReportMultipleMonths,
 };
 
 const renderDownloadRange = () => {
@@ -37,7 +37,7 @@ describe('DownloadRange', () => {
     renderDownloadRange();
   });
 
-  test('happy path', async () => {
+  test('downloadReportMultipleMonths', async () => {
     const startInput = screen.getByLabelText('Start (Year-Month)', { exact: false });
     await userEvent.type(startInput, '2020-01');
     const endInput = screen.getByLabelText('End (Year-Month)', { exact: false });
@@ -51,6 +51,15 @@ describe('DownloadRange', () => {
 
     const downloadBtn = screen.getByRole('button', { name: 'Download' });
     await userEvent.click(downloadBtn);
-    expect(onDownload).toHaveBeenCalled();
+    expect(downloadReportMultipleMonths).toHaveBeenCalled();
+
+    expect(downloadReportMultipleMonths).toHaveBeenCalledWith(
+      'e67924ee-aa00-454e-8fd0-c3f81339d20e',
+      'DR',
+      '5',
+      '2020-01',
+      '2020-02',
+      'csv',
+    );
   });
 });
