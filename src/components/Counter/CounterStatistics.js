@@ -25,7 +25,7 @@ const CounterStatistics = ({
     if (reportNamesNew?.length === 0) {
       return null;
     } else {
-      return sortBy(reportNamesNew, ['label']);
+      return sortBy(reportNamesNew, ['release', 'label']);
     }
   };
 

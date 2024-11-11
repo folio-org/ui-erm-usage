@@ -168,6 +168,22 @@ describe('CounterStatistics', () => {
   });
 
   it('should be visible download for multiple months with report version behind report, but no failed reports', () => {
+    const expectedOptionStrings = [
+      'BR1 (4)',
+      'TR (5)',
+      'TR_B1 (5)',
+      'TR_B3 (5)',
+      'TR_J1 (5)',
+      'TR_J3 (5)',
+      'TR_J4 (5)',
+      'TR (5.1)',
+      'TR_B1 (5.1)',
+      'TR_B3 (5.1)',
+      'TR_J1 (5.1)',
+      'TR_J3 (5.1)',
+      'TR_J4 (5.1)',
+    ];
+
     renderCounterStatistics(stripes);
 
     expect(screen.getByText('Download reports for multiple months')).toBeInTheDocument();
@@ -176,9 +192,10 @@ describe('CounterStatistics', () => {
     expect(reportTypeSelectBox).toBeInTheDocument();
     userEvent.click(reportTypeSelectBox);
 
-    expect(screen.queryByRole('option', { name: 'BR1 (4.1)' })).not.toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'BR1 (4)' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'TR (5)' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'TR (5.1)' })).toBeInTheDocument();
+    const optionStrings = within(reportTypeSelectBox)
+      .getAllByRole('option')
+      .map(option => option.textContent);
+
+    expect(optionStrings).toEqual(expectedOptionStrings);
   });
 });
