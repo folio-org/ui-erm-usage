@@ -33,14 +33,14 @@ describe('getAvailableReports', () => {
       year: 2018,
       stats: [
         {
-          report: 'TR',
-          release: '5',
+          report: 'JR1',
+          release: '4',
           '01': {},
           '02': {},
         },
         {
-          report: 'JR1',
-          release: '4',
+          report: 'TR',
+          release: '5',
           '01': {},
           '02': {},
         },
@@ -49,6 +49,12 @@ describe('getAvailableReports', () => {
     {
       year: 2019,
       stats: [
+        {
+          report: 'JR1',
+          release: '4',
+          '01': {},
+          '02': {},
+        },
         {
           report: 'TR',
           release: '5.1',
@@ -74,12 +80,12 @@ describe('getAvailableReports', () => {
   it('should return an array of available reports', () => {
     const expected = [
       {
-        report: 'TR',
-        release: '5',
-      },
-      {
         report: 'JR1',
         release: '4',
+      },
+      {
+        report: 'TR',
+        release: '5',
       },
       {
         report: 'TR',

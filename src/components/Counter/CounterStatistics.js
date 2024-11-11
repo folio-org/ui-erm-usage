@@ -20,16 +20,12 @@ const CounterStatistics = ({
 }) => {
   const calcDownloadableReportTypes = () => {
     const availableReports = getAvailableReports(reports);
-    const reportNamesNew = availableReports.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
+    const reportNamesNew = availableReports?.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
 
-    if (reportNamesNew.length === 0) {
+    if (reportNamesNew?.length === 0) {
       return null;
     } else {
-      const deduplicatedReportNames = reportNamesNew.filter(
-        (item, index, self) =>
-          index === self.findIndex((t) => t.label === item.label)
-      );
-      return sortBy(deduplicatedReportNames, ['label']);
+      return sortBy(reportNamesNew, ['label']);
     }
   };
 

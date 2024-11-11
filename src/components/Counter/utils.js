@@ -1,3 +1,5 @@
+import { isEqual, uniqWith } from 'lodash';
+
 import { rawDownloadCounterReportTypeMapping } from '../../util/data/downloadReportTypesOptions';
 
 export const getDownloadCounterReportTypes = (release, report) => {
@@ -13,7 +15,7 @@ export const getDownloadCounterReportTypes = (release, report) => {
 };
 
 export const getAvailableReports = reports => {
-  return reports
+  const availableReports = reports
     .flatMap(c => c.stats)
     .filter(cr => {
       return Object.values(cr).some(monthData => {
@@ -24,4 +26,10 @@ export const getAvailableReports = reports => {
       });
     })
     .map(cr => ({ report: cr.report, release: cr.release }));
+
+  if (availableReports.length === 0) {
+    return null;
+  } else {
+    return uniqWith(availableReports, isEqual);
+  }
 };
