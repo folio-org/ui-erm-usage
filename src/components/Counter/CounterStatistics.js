@@ -63,7 +63,7 @@ const CounterStatistics = ({
             <DownloadRange
               udpId={providerId}
               downloadableReports={downloadableReports}
-              handlers={handlers}
+              onDownloadReportMultiMonth={handlers.onDownloadReportMultiMonth}
             />
           </Col>
         </Row>
@@ -73,7 +73,9 @@ const CounterStatistics = ({
 };
 
 CounterStatistics.propTypes = {
-  handlers: PropTypes.shape({}),
+  handlers: PropTypes.shape({
+    onDownloadReportMultiMonth: PropTypes.func,
+  }).isRequired,
   infoText: PropTypes.node,
   providerId: PropTypes.string.isRequired,
   reportFormatter: PropTypes.shape({}).isRequired,

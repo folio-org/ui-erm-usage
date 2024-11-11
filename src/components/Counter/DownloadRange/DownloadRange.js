@@ -19,8 +19,8 @@ import css from './DownloadRange.css';
 
 function DownloadRange({
   downloadableReports,
-  handlers,
   intl,
+  onDownloadReportMultiMonth,
   udpId,
 }) {
   const calloutRef = useRef();
@@ -97,7 +97,7 @@ function DownloadRange({
 
   const doDownload = () => {
     if (!isEmpty(start) && !isEmpty(end)) {
-      handlers.onDownloadReportMultiMonth(
+      onDownloadReportMultiMonth(
         udpId,
         selectedReport.value,
         selectedReport.release,
@@ -201,10 +201,8 @@ function DownloadRange({
 
 DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
-  handlers: PropTypes.shape({
-    onDownloadReportMultiMonth: PropTypes.func,
-  }).isRequired,
   intl: PropTypes.object,
+  onDownloadReportMultiMonth: PropTypes.func.isRequired,
   udpId: PropTypes.string.isRequired,
 };
 

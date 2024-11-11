@@ -5,7 +5,7 @@ const release5Options = {
   'TR': ['TR', 'TR_J1', 'TR_J3', 'TR_J4', 'TR_B1', 'TR_B3'],
 };
 
-export const rawDownloadCounterReportTypeMapping = {
+const rawDownloadCounterReportTypeMapping = {
   '4': {
     'JR1': ['JR1'],
     'DB1': ['DB1'],
@@ -16,3 +16,5 @@ export const rawDownloadCounterReportTypeMapping = {
   '5': release5Options,
   '5.1': release5Options,
 };
+
+export default rawDownloadCounterReportTypeMapping;

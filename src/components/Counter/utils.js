@@ -1,6 +1,6 @@
 import { isEqual, uniqWith } from 'lodash';
 
-import { rawDownloadCounterReportTypeMapping } from '../../util/data/downloadReportTypesOptions';
+import rawDownloadCounterReportTypeMapping from '../../util/data/downloadReportTypesOptions';
 
 export const getDownloadCounterReportTypes = (release, report) => {
   const reportTypes = rawDownloadCounterReportTypeMapping[release]?.[report] || [];

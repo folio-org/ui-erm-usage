@@ -22,17 +22,14 @@ const downloadableReports = [
   },
 ];
 
-const downloadReportMultipleMonths = jest.fn();
-const handlers = {
-  onDownloadReportMultiMonth: downloadReportMultipleMonths,
-};
+const onDownloadReportMultiMonth = jest.fn();
 
 const renderDownloadRange = () => {
   return renderWithIntl(
     <DownloadRange
       downloadableReports={downloadableReports}
       udpId="e67924ee-aa00-454e-8fd0-c3f81339d20e"
-      handlers={handlers}
+      onDownloadReportMultiMonth={onDownloadReportMultiMonth}
     />
   );
 };
@@ -56,9 +53,9 @@ describe('DownloadRange', () => {
 
     const downloadBtn = screen.getByRole('button', { name: 'Download' });
     await userEvent.click(downloadBtn);
-    expect(downloadReportMultipleMonths).toHaveBeenCalled();
+    expect(onDownloadReportMultiMonth).toHaveBeenCalled();
 
-    expect(downloadReportMultipleMonths).toHaveBeenCalledWith(
+    expect(onDownloadReportMultiMonth).toHaveBeenCalledWith(
       'e67924ee-aa00-454e-8fd0-c3f81339d20e',
       'DR',
       '5',
@@ -82,9 +79,9 @@ describe('DownloadRange', () => {
 
     const downloadBtn = screen.getByRole('button', { name: 'Download' });
     await userEvent.click(downloadBtn);
-    expect(downloadReportMultipleMonths).toHaveBeenCalled();
+    expect(onDownloadReportMultiMonth).toHaveBeenCalled();
 
-    expect(downloadReportMultipleMonths).toHaveBeenCalledWith(
+    expect(onDownloadReportMultiMonth).toHaveBeenCalledWith(
       'e67924ee-aa00-454e-8fd0-c3f81339d20e',
       'TR',
       '5.1',
