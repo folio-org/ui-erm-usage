@@ -27,9 +27,5 @@ export const getAvailableReports = reports => {
     })
     .map(cr => ({ report: cr.report, release: cr.release }));
 
-  if (availableReports.length === 0) {
-    return null;
-  } else {
-    return uniqWith(availableReports, isEqual);
-  }
+  return uniqWith(availableReports, isEqual);
 };

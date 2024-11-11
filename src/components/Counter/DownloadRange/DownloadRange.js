@@ -202,7 +202,7 @@ function DownloadRange({
 DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,
   handlers: PropTypes.shape({
-    onDownloadReportMultiMonth: PropTypes.func.isRequired,
+    onDownloadReportMultiMonth: PropTypes.func,
   }).isRequired,
   intl: PropTypes.object,
   udpId: PropTypes.string.isRequired,

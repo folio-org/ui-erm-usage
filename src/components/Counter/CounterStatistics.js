@@ -22,11 +22,7 @@ const CounterStatistics = ({
     const availableReports = getAvailableReports(reports);
     const reportNamesNew = availableReports?.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
 
-    if (reportNamesNew?.length === 0) {
-      return null;
-    } else {
-      return sortBy(reportNamesNew, ['release', 'label']);
-    }
+    return sortBy(reportNamesNew, ['release', 'label']);
   };
 
   const [downloadableReports, setDownloadableReports] = useState(calcDownloadableReportTypes());
