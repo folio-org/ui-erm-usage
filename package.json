@@ -226,7 +226,10 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage-harvester.start.single",
+        "permissionName": "ui-erm-usage.harvester.start.single",
+        "replaces": [
+          "ui-erm-usage-harvester.start.single"
+        ],
         "displayName": "eUsage: Can start harvesting for a single provider",
         "description": "Can start harvesting for a single provider",
         "subPermissions": [
@@ -235,7 +238,10 @@
         "visible": true
       },
       {
-        "permissionName": "ui-erm-usage-harvester.jobs.view",
+        "permissionName": "ui-erm-usage.harvester.jobs.view",
+        "replaces": [
+          "ui-erm-usage-harvester.jobs.view"
+        ],
         "displayName": "eUsage: Can view harvesting jobs",
         "description": "Can view harvesting jobs",
         "subPermissions": [
