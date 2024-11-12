@@ -75,7 +75,7 @@
       "counter-reports": "4.0",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
-      "usage-data-providers": "3.0",
+      "usage-data-providers": "3.1",
       "tags": "1.0",
       "erm-usage-harvester": "2.0"
     },
