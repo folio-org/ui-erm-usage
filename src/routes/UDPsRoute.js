@@ -28,7 +28,7 @@ class UDPsRoute extends React.Component {
         params: {
           query: makeQueryFunction(
             'cql.allRecords=1',
-            '(label="%{query.query}*" or harvestingConfig.aggregator.name="%{query.query}*")',
+            '(keywords all "%{query.query}*")',
             {
               label: 'label',
               harvestingStatus: 'harvestingConfig.harvestingStatus',
