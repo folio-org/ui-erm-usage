@@ -98,6 +98,24 @@ const reports = [
     ]
   },
   {
+    year: '2021',
+    stats: [
+      {
+        report: 'PR',
+        release: '5',
+        '01': {
+          id: '8dfeb1b3-1cf9-4a75-8ff6-628e2d0eddc2',
+          downloadTime: '2024-09-09T17:17:00.700+00:00',
+          failedAttempts: 2,
+          failedReason: 'Error getting report: Could not send Message., HTTP response 503: Service Unavailable',
+          release: '5',
+          reportName: 'PR',
+          yearMonth: '2021-01',
+        }
+      }
+    ]
+  },
+  {
     year: '2020',
     stats: [
       {
@@ -167,7 +185,7 @@ describe('CounterStatistics', () => {
     expect(within(section2019).getByText(/5/)).toBeInTheDocument();
   });
 
-  it('should be visible download for multiple months with report version behind report, but no failed reports', () => {
+  it('should be visible download for multiple months with report version behind report, but without failed reports', () => {
     const expectedOptionStrings = [
       'BR1 (4)',
       'TR (5)',
