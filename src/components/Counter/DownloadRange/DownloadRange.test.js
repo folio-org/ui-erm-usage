@@ -6,28 +6,30 @@ import DownloadRange from './DownloadRange';
 
 const downloadableReports = [
   {
-    value: 'DR',
-    label: 'DR',
-    version: 5,
-  },
-  {
     value: 'JR1',
     label: 'JR1',
-    version: 4,
+    release: '4',
+  },
+  {
+    value: 'DR',
+    label: 'DR',
+    release: '5',
+  },
+  {
+    value: 'TR',
+    label: 'TR',
+    release: '5.1',
   },
 ];
 
-const onDownload = jest.fn();
-const handlers = {
-  onDownloadReportMultiMonth: onDownload,
-};
+const onDownloadReportMultiMonth = jest.fn();
 
 const renderDownloadRange = () => {
   return renderWithIntl(
     <DownloadRange
       downloadableReports={downloadableReports}
       udpId="e67924ee-aa00-454e-8fd0-c3f81339d20e"
-      handlers={handlers}
+      onDownloadReportMultiMonth={onDownloadReportMultiMonth}
     />
   );
 };
@@ -37,7 +39,7 @@ describe('DownloadRange', () => {
     renderDownloadRange();
   });
 
-  test('happy path', async () => {
+  test('downloadReportMultipleMonths DR (5)', async () => {
     const startInput = screen.getByLabelText('Start (Year-Month)', { exact: false });
     await userEvent.type(startInput, '2020-01');
     const endInput = screen.getByLabelText('End (Year-Month)', { exact: false });
@@ -51,6 +53,41 @@ describe('DownloadRange', () => {
 
     const downloadBtn = screen.getByRole('button', { name: 'Download' });
     await userEvent.click(downloadBtn);
-    expect(onDownload).toHaveBeenCalled();
+    expect(onDownloadReportMultiMonth).toHaveBeenCalled();
+
+    expect(onDownloadReportMultiMonth).toHaveBeenCalledWith(
+      'e67924ee-aa00-454e-8fd0-c3f81339d20e',
+      'DR',
+      '5',
+      '2020-01',
+      '2020-02',
+      'csv',
+    );
+  });
+
+  test('downloadReportMultipleMonths TR (5.1)', async () => {
+    const startInput = screen.getByLabelText('Start (Year-Month)', { exact: false });
+    await userEvent.type(startInput, '2020-01');
+    const endInput = screen.getByLabelText('End (Year-Month)', { exact: false });
+    await userEvent.type(endInput, '2020-02');
+
+    const reportTypeSelect = screen.getByLabelText('Report type', { exact: false });
+    await userEvent.selectOptions(reportTypeSelect, ['TR']);
+
+    const dataTypeSelect = screen.getByLabelText('Data type', { exact: false });
+    await userEvent.selectOptions(dataTypeSelect, ['XLSX']);
+
+    const downloadBtn = screen.getByRole('button', { name: 'Download' });
+    await userEvent.click(downloadBtn);
+    expect(onDownloadReportMultiMonth).toHaveBeenCalled();
+
+    expect(onDownloadReportMultiMonth).toHaveBeenCalledWith(
+      'e67924ee-aa00-454e-8fd0-c3f81339d20e',
+      'TR',
+      '5.1',
+      '2020-01',
+      '2020-02',
+      'xlsx',
+    );
   });
 });

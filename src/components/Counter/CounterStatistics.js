@@ -7,7 +7,7 @@ import { AccordionSet, Col, Row } from '@folio/stripes/components';
 
 import StatisticsPerYear from './StatisticsPerYear';
 import DownloadRange from './DownloadRange';
-import reportDownloadTypes from '../../util/data/reportDownloadTypes';
+import { getAvailableReports, getDownloadCounterReportTypes } from './utils';
 import css from './CounterStatistics.css';
 
 const CounterStatistics = ({
@@ -17,18 +17,12 @@ const CounterStatistics = ({
   reportFormatter,
   reports,
   showMultiMonthDownload,
-  stripes,
 }) => {
   const calcDownloadableReportTypes = () => {
-    const reportNamesNew = reports
-      .flatMap((c) => c.stats)
-      .filter((cr) => !cr.failedAttempts || cr.failedAttempts === 0)
-      .map((cr) => cr.report);
-    const available = new Set(reportNamesNew);
-    const intersection = new Set(
-      reportDownloadTypes.filter((y) => available.has(y.value.split('_')[0]))
-    );
-    return sortBy([...intersection], ['label']);
+    const availableReports = getAvailableReports(reports);
+    const reportNamesNew = availableReports?.map((cr) => getDownloadCounterReportTypes(cr.release, cr.report)).flat();
+
+    return sortBy(reportNamesNew, ['release', 'label']);
   };
 
   const [downloadableReports, setDownloadableReports] = useState(calcDownloadableReportTypes());
@@ -67,10 +61,9 @@ const CounterStatistics = ({
           </Col>
           <Col xs={12}>
             <DownloadRange
-              stripes={stripes}
               udpId={providerId}
               downloadableReports={downloadableReports}
-              handlers={handlers}
+              onDownloadReportMultiMonth={handlers.onDownloadReportMultiMonth}
             />
           </Col>
         </Row>
@@ -80,22 +73,14 @@ const CounterStatistics = ({
 };
 
 CounterStatistics.propTypes = {
-  handlers: PropTypes.shape({}),
+  handlers: PropTypes.shape({
+    onDownloadReportMultiMonth: PropTypes.func,
+  }).isRequired,
   infoText: PropTypes.node,
   providerId: PropTypes.string.isRequired,
   reportFormatter: PropTypes.shape({}).isRequired,
   reports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   showMultiMonthDownload: PropTypes.bool,
-  stripes: PropTypes.shape({
-    connect: PropTypes.func,
-    okapi: PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      tenant: PropTypes.string.isRequired,
-    }).isRequired,
-    store: PropTypes.shape({
-      getState: PropTypes.func,
-    }),
-  }).isRequired,
 };
 
 export default CounterStatistics;
