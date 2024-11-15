@@ -240,6 +240,7 @@
   "errors.dateInvalid": "Date invalid",
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
   "errors.urlRequired": "Invalid URL: http:// or https:// required!",
+  "errors.enterValidUrl": "Please enter a valid URL",
 
   "harvester.start": "Start harvester",
   "harvester.start.failed": "Harvester failed to start",
@@ -308,7 +309,7 @@
   "statistics.custom.selectFileFirst": "Select file first",
   "statistics.custom.selectedFile": "Selected file",
   "statistics.custom.selectFileUpload": "Select file to upload",
-  "statistics.custom.linkUrl": "Link URL",
+  "statistics.custom.linkUrlFilePath": "Link URL / File path",
   "statistics.custom.uploadFile": "Upload file",
   "statistics.custom.linkFile": "Link file",
   "statistics.custom.delete": "Delete custom report",
