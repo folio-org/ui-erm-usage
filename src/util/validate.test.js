@@ -13,16 +13,8 @@ describe('isValidUrl function', () => {
       { input: '', expected: false },
     ];
 
-    const results = urls.map(({ input }) => ({
-      input,
-      result: isValidUrl(input),
-    }));
-
-    const expectedResults = urls.map(({ input, expected }) => ({
-      input,
-      result: expected,
-    }));
-
-    expect(results).toEqual(expectedResults);
+    urls.forEach(({ input, expected }) => {
+      expect(isValidUrl(input)).toBe(expected);
+    });
   });
 });
