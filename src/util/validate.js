@@ -62,6 +62,7 @@ const composeValidators = (...validators) => value => validators.reduce((error, 
 
 const isValidUrl = (url) => {
   try {
+    // eslint-disable-next-line no-new
     new URL(url);
     return true;
   } catch (error) {
