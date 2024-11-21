@@ -1,24 +1,21 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { isValidUrl } from './validate';
 
-import { isValidURL } from './validate';
-
-describe('isValidURL function', () => {
+describe('isValidUrl function', () => {
   test('validates URLs correctly', () => {
     const urls = [
-      { input: 'https://example.com', expected: undefined },
-      { input: 'http://example.com', expected: undefined },
-      { input: 'file://localhost/path/to/file', expected: undefined },
-      { input: 'file://127.0.0.1/path/to/file', expected: undefined },
-      { input: 'ftp://user:pass@example.com/file.txt', expected: undefined },
-      { input: 'ftp://127.0.0.1/file.txt', expected: undefined },
-      { input: 'invalid-example-url', expected: <FormattedMessage id="ui-erm-usage.errors.enterValidUrl" /> },
-      { input: '', expected: <FormattedMessage id="ui-erm-usage.errors.enterValidUrl" /> },
+      { input: 'https://example.com', expected: true },
+      { input: 'http://example.com', expected: true },
+      { input: 'file://localhost/path/to/file', expected: true },
+      { input: 'file://127.0.0.1/path/to/file', expected: true },
+      { input: 'ftp://user:pass@example.com/file.txt', expected: true },
+      { input: 'ftp://127.0.0.1/file.txt', expected: true },
+      { input: 'invalid-example-url', expected: false },
+      { input: '', expected: false },
     ];
 
     const results = urls.map(({ input }) => ({
       input,
-      result: isValidURL(input),
+      result: isValidUrl(input),
     }));
 
     const expectedResults = urls.map(({ input, expected }) => ({

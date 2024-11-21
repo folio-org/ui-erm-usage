@@ -60,14 +60,12 @@ const isYearMonth = value => {
 
 const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
 
-const isValidURL = (url) => {
-  let validUrl;
+const isValidUrl = (url) => {
   try {
-    // eslint-disable-next-line no-unused-vars
-    validUrl = new URL(url);
-    return undefined;
+    new URL(url);
+    return true;
   } catch (error) {
-    return <FormattedMessage id="ui-erm-usage.errors.enterValidUrl" />;
+    return false;
   }
 };
 
@@ -80,7 +78,7 @@ const requiredValidateUrl = value => {
 export {
   composeValidators,
   endDate,
-  isValidURL,
+  isValidUrl,
   isYearMonth,
   mail,
   notRequired,

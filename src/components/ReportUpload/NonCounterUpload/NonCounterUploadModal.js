@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+
 import stripesFinalForm from '@folio/stripes/final-form';
 import { Button, Modal, ModalFooter } from '@folio/stripes/components';
+
 import NonCounterInnerForm from './NonCounterInnerForm';
+import { isValidUrl } from '../../../util/validate';
 
 function NonCounterUploadModal(props) {
   const { invalid, onClose } = props;
@@ -96,6 +99,8 @@ export default stripesFinalForm({
     if (!values.fileId && !values.linkUrl) {
       errors.fileId = 'Required';
       errors.linkUrl = 'Required';
+    } else if (values.linkUrl && !isValidUrl(values.linkUrl)) {
+      errors.linkUrl = 'Invalid format';
     }
     if (!values.year) {
       errors.year = 'Required';
