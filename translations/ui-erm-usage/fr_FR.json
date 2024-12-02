@@ -199,7 +199,6 @@
     "report.delete.failed": "Échec...",
     "errors.urlRequired": "URL invalide: http: // ou https: // requis!",
     "statistics.custom.selectFileUpload": "Sélectionnez le fichier à télécharger",
-    "statistics.custom.linkUrl": "URL du lien",
     "statistics.custom.uploadFile": "Télécharger le fichier",
     "statistics.custom.linkFile": "Link file",
     "statistics.custom.delete": "Supprimer le rapport personnalisé",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "eUsage: Can delete usage data providers",
     "permission.reports.delete": "eUsage: Can delete usage reports",
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
-    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs"
+    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }

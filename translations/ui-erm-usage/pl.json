@@ -199,7 +199,6 @@
     "report.delete.failed": "Niepowodzenie ...",
     "errors.urlRequired": "Nieprawidłowy adres URL: wymagany jest http:// lub https://!",
     "statistics.custom.selectFileUpload": "Wybierz plik do przesłania",
-    "statistics.custom.linkUrl": "URL linku",
     "statistics.custom.uploadFile": "Prześlij plik",
     "statistics.custom.linkFile": "Połącz plik",
     "statistics.custom.delete": "Usuń raport niestandardowy",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "e-Użycie: można usuwać dostawców danych o użyciu",
     "permission.reports.delete": "e-Użycie: można usuwać reporty użycia",
     "permission.harvester.start.single": "e-Użycie: można rozpocząć harvesting dla pojedynczego dostawcy",
-    "permission.harvester.jobs.view": "e-Użycie: można wyświetlać zadania o harvestingu"
+    "permission.harvester.jobs.view": "e-Użycie: można wyświetlać zadania o harvestingu",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }
