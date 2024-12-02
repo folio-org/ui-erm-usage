@@ -4,6 +4,7 @@
 * Use keywords search for UDPs search, requires interface `usage-data-providers 3.1` ([UIEUS-386](https://folio-org.atlassian.net/browse/UIEUS-386))
 * Update translation for permission ([UIEUS-385](https://folio-org.atlassian.net/browse/UIEUS-385))
 * Change of report type options within the multi-month COUNTER statistics download feature ([UIEUS-369] (https://folio-org.atlassian.net/browse/UIEUS-369))
+* File path support for non-COUNTER reports ([UIEUS-356](https://folio-org.atlassian.net/browse/UIEUS-356))
 
 ## [10.0.0](https://github.com/folio-org/ui-erm-usage/tree/v10.0.0) (2024-10-29)
 * Fix bug in JobView test ([UIEUS-360](https://folio-org.atlassian.net/browse/UIEUS-360))

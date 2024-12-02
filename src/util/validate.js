@@ -60,11 +60,14 @@ const isYearMonth = value => {
 
 const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
 
-const validateUrl = value => {
-  const urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,})/;
-
-  if (!value || urlRegex.test(value)) return undefined;
-  return <FormattedMessage id="ui-erm-usage.errors.urlRequired" />;
+const isValidUrl = (url) => {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
 
 const requiredValidateUrl = value => {
@@ -76,12 +79,12 @@ const requiredValidateUrl = value => {
 export {
   composeValidators,
   endDate,
+  isValidUrl,
   isYearMonth,
   mail,
   notRequired,
   required,
   requiredArray,
-  validateUrl,
   yearMonth,
   requiredValidateUrl,
 };
