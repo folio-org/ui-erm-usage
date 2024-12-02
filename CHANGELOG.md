@@ -2,6 +2,9 @@
 
 ## 10.1.0 (IN PROGRESS)
 
+## [10.0.1](https://github.com/folio-org/ui-erm-usage/tree/v10.0.1) (2024-12-02)
+* Update translation for permission ([UIEUS-385](https://folio-org.atlassian.net/browse/UIEUS-385))
+
 ## [10.0.0](https://github.com/folio-org/ui-erm-usage/tree/v10.0.0) (2024-10-29)
 * Fix bug in JobView test ([UIEUS-360](https://folio-org.atlassian.net/browse/UIEUS-360))
 * React v19: refactor away from default props for functional components ([UIEUS-355](https://folio-org.atlassian.net/browse/UIEUS-355))
