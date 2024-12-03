@@ -199,7 +199,6 @@
     "report.delete.failed": "실패",
     "errors.urlRequired": "잘못된 URL: http:// 또는 https:// 필요!",
     "statistics.custom.selectFileUpload": "업로드할 파일 선택",
-    "statistics.custom.linkUrl": "링크 URL",
     "statistics.custom.uploadFile": "파일 업로드",
     "statistics.custom.linkFile": "링크 파일",
     "statistics.custom.delete": "맞춤 보고서 삭제",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "eUsage: Can delete usage data providers",
     "permission.reports.delete": "eUsage: Can delete usage reports",
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
-    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs"
+    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }

@@ -199,7 +199,6 @@
     "report.delete.failed": "失敗...",
     "errors.urlRequired": "無効な URL: http:// または https:// を含む有効なURLが必要です",
     "statistics.custom.selectFileUpload": "アップロードするファイルの選択",
-    "statistics.custom.linkUrl": "リンクURL",
     "statistics.custom.uploadFile": "ファイルのアップロード",
     "statistics.custom.linkFile": "Link file",
     "statistics.custom.delete": "カスタムレポートの削除",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "eUsage: Can delete usage data providers",
     "permission.reports.delete": "eUsage: Can delete usage reports",
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
-    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs"
+    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }

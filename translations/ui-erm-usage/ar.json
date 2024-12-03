@@ -199,7 +199,6 @@
     "report.delete.failed": "فشل...",
     "errors.urlRequired": "عنوان URL غير صالح: مطلوب http:// أو https://!",
     "statistics.custom.selectFileUpload": "اختر ملف للتحميل",
-    "statistics.custom.linkUrl": "URL الرابط",
     "statistics.custom.uploadFile": "تحميل ملف",
     "statistics.custom.linkFile": "ربط ملف",
     "statistics.custom.delete": "حذف التقرير المخصص",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "eUsage: Can delete usage data providers",
     "permission.reports.delete": "eUsage: Can delete usage reports",
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
-    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs"
+    "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }

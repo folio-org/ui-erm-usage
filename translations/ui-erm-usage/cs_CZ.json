@@ -199,7 +199,6 @@
     "report.delete.failed": "Nepodařilo se...",
     "errors.urlRequired": "Neplatná URL: http:// nebo https:// je povinné!",
     "statistics.custom.selectFileUpload": "Vybrat soubor k nahrání",
-    "statistics.custom.linkUrl": "URL odkazu",
     "statistics.custom.uploadFile": "Nahrát soubor",
     "statistics.custom.linkFile": "Odkaz na soubor",
     "statistics.custom.delete": "Smazat vlastní výstup",
@@ -305,5 +304,7 @@
     "permission.udp.delete": "eStatistiky: Může smazat poskytovatele dat o využití",
     "permission.reports.delete": "eStatistiky: Může smazat zprávy o využití",
     "permission.harvester.start.single": "eStatistiky: Může zahájit harvest pro jednoho poskytovatele",
-    "permission.harvester.jobs.view": "eStatistiky: Může zobrazit úlohy harvestu"
+    "permission.harvester.jobs.view": "eStatistiky: Může zobrazit úlohy harvestu",
+    "errors.enterValidUrl": "Please enter a valid URL",
+    "statistics.custom.linkUrlFilePath": "Link URL / File path"
 }
