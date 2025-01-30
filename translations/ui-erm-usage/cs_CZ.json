@@ -294,7 +294,7 @@
     "noSourceYet": "Zatím žádný zdroj",
     "reportOverview.confirmDeleteReport": "Smazat výstup?",
     "reportOverview.release": "Vydání",
-    "general.reportReleases": "Výstup o vydání",
+    "general.reportReleases": "Hlásit vydání",
     "permission.module.erm-usage.enabled": "UI: Modul eStatistiky je povolen",
     "permission.settings.erm-usage.enabled": "Nastavení (eStatistiky): Zobrazit seznam stránek nastavení",
     "permission.udp.create": "eStatistiky: Může vytvářet poskytovatele dat o využití",
