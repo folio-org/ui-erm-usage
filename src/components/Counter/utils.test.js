@@ -18,6 +18,7 @@ describe('getDownloadCounterReportTypes', () => {
     const expectedValues = [
       { value: 'DR', label: 'DR (5.1)', release: '5.1' },
       { value: 'DR_D1', label: 'DR_D1 (5.1)', release: '5.1' },
+      { value: 'DR_D2', label: 'DR_D2 (5.1)', release: '5.1' },
     ];
     expect(getDownloadCounterReportTypes('5.1', 'DR')).toEqual(expectedValues);
   });
