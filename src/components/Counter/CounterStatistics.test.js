@@ -196,8 +196,10 @@ describe('CounterStatistics', () => {
       'TR_J4 (5)',
       'TR (5.1)',
       'TR_B1 (5.1)',
+      'TR_B2 (5.1)',
       'TR_B3 (5.1)',
       'TR_J1 (5.1)',
+      'TR_J2 (5.1)',
       'TR_J3 (5.1)',
       'TR_J4 (5.1)',
     ];
