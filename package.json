@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "10.0.1",
+  "version": "11.0.0",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -12,7 +12,7 @@
     "test:jest": "jest --ci --coverage",
     "lint": "eslint src",
     "build-mod-descriptor": "stripes mod descriptor --full --strict | jq '.[]' > module-descriptor.json ",
-    "formatjs-compile": "formatjs compile-folder --ast --format simple ./translations/ui-erm-usage ./translations/ui-erm-usage/compiled"
+    "formatjs-compile": "stripes translate compile"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
@@ -25,13 +25,12 @@
     "@folio/stripes-final-form": "^8.1.0",
     "@folio/stripes-logger": "^1.0.0",
     "@folio/stripes-smart-components": "^9.2.1",
-    "@formatjs/cli": "^6.1.3",
     "eslint": "^7.32.0",
     "isomorphic-fetch": "^3.0.0",
     "msw": "^0.26.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-intl": "^6.4.4",
+    "react-intl": "^7.1.5",
     "react-redux": "^8.0.5",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.0"
@@ -54,7 +53,7 @@
     "@folio/stripes": "^9.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-intl": "^6.4.4",
+    "react-intl": "^7.1.5",
     "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

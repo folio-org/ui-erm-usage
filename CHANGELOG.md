@@ -1,10 +1,11 @@
 # Change history for ui-erm-usage
 
-## 10.1.0 (IN PROGRESS)
+## 11.0.0 (IN PROGRESS)
 * Use keywords search for UDPs search, requires interface `usage-data-providers 3.1` ([UIEUS-386](https://folio-org.atlassian.net/browse/UIEUS-386))
 * Change of report type options within the multi-month COUNTER statistics download feature ([UIEUS-369] (https://folio-org.atlassian.net/browse/UIEUS-369))
 * File path support for non-COUNTER reports ([UIEUS-356](https://folio-org.atlassian.net/browse/UIEUS-356))
 * COUNTER 5.1 Support: Download stored COUNTER 5.1 reports as CSV and XSLX ([UIEUS-359](https://folio-org.atlassian.net/browse/UIEUS-359))
+* Migrate react-intl to v7 ([UIEUS-393](https://folio-org.atlassian.net/browse/UIEUS-393))
 
 ## [10.0.1](https://github.com/folio-org/ui-erm-usage/tree/v10.0.1) (2024-12-02)
 * Update translation for permission ([UIEUS-385](https://folio-org.atlassian.net/browse/UIEUS-385))
