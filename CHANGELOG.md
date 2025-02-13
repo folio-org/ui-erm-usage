@@ -6,6 +6,7 @@
 * File path support for non-COUNTER reports ([UIEUS-356](https://folio-org.atlassian.net/browse/UIEUS-356))
 * COUNTER 5.1 Support: Download stored COUNTER 5.1 reports as CSV and XSLX ([UIEUS-359](https://folio-org.atlassian.net/browse/UIEUS-359))
 * Migrate react-intl to v7 ([UIEUS-393](https://folio-org.atlassian.net/browse/UIEUS-393))
+* Migrate stripes dependencies to their Sunflower versions ([UIEUS-392](https://folio-org.atlassian.net/browse/UIEUS-392))
 
 ## [10.0.1](https://github.com/folio-org/ui-erm-usage/tree/v10.0.1) (2024-12-02)
 * Update translation for permission ([UIEUS-385](https://folio-org.atlassian.net/browse/UIEUS-385))
