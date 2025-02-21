@@ -8,7 +8,7 @@ const release50Options = {
 const release51Options = {
   'DR': ['DR', 'DR_D1', 'DR_D2'],
   'IR': ['IR', 'IR_A1', 'IR_M1'],
-  'PR': ['PR', 'PR_1'],
+  'PR': ['PR', 'PR_P1'],
   'TR': ['TR', 'TR_J1', 'TR_J2', 'TR_J3', 'TR_J4', 'TR_B1', 'TR_B2', 'TR_B3'],
 };
 
