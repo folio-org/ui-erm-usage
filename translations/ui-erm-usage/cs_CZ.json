@@ -306,5 +306,5 @@
     "permission.harvester.start.single": "eStatistiky: Může zahájit harvest pro jednoho poskytovatele",
     "permission.harvester.jobs.view": "eStatistiky: Může zobrazit úlohy harvestu",
     "errors.enterValidUrl": "Zadejte prosím platnou adresu URL",
-    "statistics.custom.linkUrlFilePath": "Link URL / File path"
+    "statistics.custom.linkUrlFilePath": "URL odkazu / cesta k souboru"
 }
