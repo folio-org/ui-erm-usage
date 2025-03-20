@@ -127,7 +127,7 @@
     "report.upload.upload": "Carregar",
     "report.upload.dropFile": "Solte o arquivo aqui",
     "report.upload.selectFile": "ou selecione o arquivo",
-    "report.upload.info": "É possível carregar estatísticas de uso Counter 4 (XML & CSV) ou Counter 5 (JSON & CSV)",
+    "report.upload.info": "É possível carregar estatísticas de uso Counter 4 (XML e CSV) ou Counter 5 (JSON e CSV) ou Counter 5.1 (JSON)",
     "report.error.other": "Outros",
     "report.error.0": "Informações ou depuração",
     "report.error.1": "Avisos",
