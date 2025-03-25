@@ -38,7 +38,9 @@ const ReportInfoButton = ({
   };
 
   const getButtonIcon = (failedAttempts) => {
-    if (!failedAttempts) {
+    if (report?.reportEditedManually) {
+      return <Icon icon="edit" />;
+    } else if (!failedAttempts) {
       return <Icon icon="check-circle" />;
     } else if (failedAttempts < maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
