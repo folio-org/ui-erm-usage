@@ -37,10 +37,12 @@ const ReportInfoButton = ({
     }
   };
 
-  const getButtonIcon = (failedAttempts) => {
-    if (!failedAttempts) {
+  const getButtonIcon = () => {
+    if (!report.failedAttempts && report?.reportEditedManually) {
+      return <Icon icon="edit" />;
+    } else if (!report.failedAttempts) {
       return <Icon icon="check-circle" />;
-    } else if (failedAttempts < maxFailedAttempts) {
+    } else if (report.failedAttempts < maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
     } else {
       return <Icon icon="times-circle" />;
@@ -90,7 +92,7 @@ const ReportInfoButton = ({
     return null;
   }
 
-  const icon = getButtonIcon(report.failedAttempts);
+  const icon = getButtonIcon();
   const style = getButtonStyle(report.failedAttempts);
 
   const confirmMessage = (

@@ -1,6 +1,7 @@
 # Change history for ui-erm-usage
 
 ## 11.1.0 (IN PROGRESS)
+* Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
 
 ## [11.0.0](https://github.com/folio-org/ui-erm-usage/tree/v11.0.0) (2025-03-12)
 * Use keywords search for UDPs search, requires interface `usage-data-providers 3.1` ([UIEUS-386](https://folio-org.atlassian.net/browse/UIEUS-386))
