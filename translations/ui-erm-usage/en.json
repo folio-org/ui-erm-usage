@@ -166,6 +166,7 @@
   "report.error.3020": "Invalid date arguments",
   "report.error.3030": "No usage available for requested dates",
   "report.error.3031": "Usage Not Ready for Requested Dates",
+  "report.error.3032": "Usage No Longer Available for Requested Dates",
   "report.error.3040": "Partial data returned",
   "report.error.3050": "Parameter not recognized in this context",
   "report.error.3060": "Invalid ReportFilter value",
