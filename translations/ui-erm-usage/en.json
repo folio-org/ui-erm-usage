@@ -85,6 +85,12 @@
 
   "vendorInfo.serviceType": "Service type",
   "vendorInfo.serviceUrl": "Service URL",
+  "vendorInfo.serviceStatus": "Service status",
+  "vendorInfo.checkStatus": "Check status",
+  "vendorInfo.checkStatus.active": "Active",
+  "vendorInfo.checkStatus.inactive": "Inactive",
+  "vendorInfo.checkStatus.noConnection": "Can not connect",
+  "vendorInfo.checkStatus.notSupported": "Status check not supported for selected service type",
 
   "sushiCreds.customerId": "Customer ID",
   "sushiCreds.requestorId": "Requestor ID",
