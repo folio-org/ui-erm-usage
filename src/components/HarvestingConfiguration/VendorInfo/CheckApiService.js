@@ -11,7 +11,8 @@ import {
 import useServiceStatus from './useServiceStatus';
 
 const CheckApiService = ({ serviceUrl, serviceType }) => {
-  const { status, fetchStatus, isLoading, error } = useServiceStatus(serviceUrl);
+  const checkURL = `${serviceUrl}${serviceType === 'cs51' ? '/r51' : ''}/status`;
+  const { status, fetchStatus, isLoading, error } = useServiceStatus(checkURL);
   const isNotCounter5 = serviceType !== 'cs50' && serviceType !== 'cs51';
   let label = '-';
   if (status === true) {

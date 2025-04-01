@@ -1,33 +1,30 @@
-import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { useOkapiKy } from '@folio/stripes/core';
 
 const useServiceStatus = (url) => {
-  const [status, setStatus] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const ky = useOkapiKy();
 
-  const fetchStatus = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (Array.isArray(data) && data.length > 0 && data[0].Service_Active !== undefined) {
-        setStatus(data[0].Service_Active);
-      } else {
-        setError('Invalid response');
+  const { data, error, isLoading, refetch } = useQuery(
+    ['serviceStatus', url],
+    async () => {
+      const response = await ky.get(url, { credentials: 'omit', prefixUrl: '' }).json();
+      if (Array.isArray(response) && response.length > 0 && response[0].Service_Active !== undefined) {
+        return response[0].Service_Active;
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      throw new Error('Invalid response');
+    },
+    {
+      enabled: false,
+      retry: false,
+      refetchOnWindowFocus: false,
     }
-  };
+  );
 
   return {
+    status: data,
     error,
-    fetchStatus,
     isLoading,
-    status,
+    fetchStatus: refetch,
   };
 };
 
