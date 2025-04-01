@@ -9,7 +9,10 @@ import UDP from '../components/views/UDP';
 import withReportHandlers from './components/withReportHandlers';
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
-import { MAX_FAILED_ATTEMPTS } from '../util/constants';
+import {
+  MAX_FAILED_ATTEMPTS,
+  MOD_SETTINGS
+} from '../util/constants';
 
 function UDPViewRoute(props) {
   const {
@@ -206,9 +209,10 @@ UDPViewRoute.manifest = Object.freeze({
   },
   settings: {
     type: 'okapi',
-    records: 'configs',
+    records: 'items',
     path:
-      'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+      `settings/entries?query=(scope==${MOD_SETTINGS.SCOPE} and ` +
+      `key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
   },
   counterReports: {
     type: 'okapi',

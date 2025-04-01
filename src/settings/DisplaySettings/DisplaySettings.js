@@ -10,6 +10,10 @@ import {
 } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
+import { MOD_SETTINGS } from '../../util/constants';
+
+const { SCOPE, CONFIG_NAMES: { HIDE_CREDENTIALS } } = MOD_SETTINGS;
+
 class DisplaySettings extends React.Component {
   static propTypes = {
     label: PropTypes.string,
@@ -23,28 +27,21 @@ class DisplaySettings extends React.Component {
     this.configManager = props.stripes.connect(ConfigManager);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getInitialValues(settings) {
-    const value = settings.length && settings[0].value === 'true';
-    return { hide_credentials: value };
-  }
-
   render() {
     const { label } = this.props;
     return (
       <this.configManager
-        getInitialValues={this.getInitialValues}
         label={label}
-        moduleName="ERM-USAGE"
-        configName="hide_credentials"
+        scope={SCOPE}
+        configName={HIDE_CREDENTIALS}
       >
         <Row>
           <Col xs={12}>
             <Field
               component={Checkbox}
               type="checkbox"
-              id="hide_credentials"
-              name="hide_credentials"
+              id={HIDE_CREDENTIALS}
+              name={HIDE_CREDENTIALS}
               label={<FormattedMessage id="ui-erm-usage.settings.hideCredentials" />}
             />
           </Col>

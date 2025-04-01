@@ -87,7 +87,9 @@
           "configuration.entries.collection.get",
           "configuration.entries.item.get",
           "tags.collection.get",
-          "ermusageharvester.impl.get"
+          "ermusageharvester.impl.get",
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
       },
@@ -95,7 +97,9 @@
         "permissionName": "settings.erm-usage.enabled",
         "displayName": "Settings (eUsage): Display list of settings pages",
         "subPermissions": [
-          "settings.enabled"
+          "settings.enabled",
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
       },
@@ -118,7 +122,10 @@
           "ermusageharvester.periodic.get",
           "ermusageharvester.periodic.post",
           "ermusageharvester.periodic.delete",
-          "ermusageharvester.start-all.get"
+          "ermusageharvester.start-all.get",
+          "mod-settings.entries.item.post",
+          "mod-settings.entries.item.put",
+          "mod-settings.global.write.ui-erm-usage"
         ],
         "visible": true
       },

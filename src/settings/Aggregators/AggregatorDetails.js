@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { isEmpty, get } from 'lodash';
+import { get } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,6 +14,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
+import { MOD_SETTINGS } from '../../util/constants';
 import DownloadCredentialsButton from './DownloadCredentialsButton';
 import { AggregatorConfigView } from './AggregatorConfig';
 
@@ -69,7 +70,7 @@ const AggregatorDetails = ({
   const configTypeLabel = configType.label ?? <NoValue />;
 
   const settings = resources?.settings?.records || [];
-  const hideValues = !isEmpty(settings) && settings[0].value === 'true';
+  const hideValues = settings[0]?.value === true;
 
   const config = aggregator.aggregatorConfig;
 
@@ -163,8 +164,10 @@ const AggregatorDetails = ({
 AggregatorDetails.manifest = Object.freeze({
   settings: {
     type: 'okapi',
-    records: 'configs',
-    path: 'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    records: 'items',
+    path:
+      `settings/entries?query=(scope==${MOD_SETTINGS.SCOPE} and ` +
+      `key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
   },
 });
 
