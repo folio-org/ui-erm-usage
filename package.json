@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -75,6 +75,7 @@
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
       "usage-data-providers": "3.1",
+      "settings": "1.2",
       "tags": "1.0",
       "erm-usage-harvester": "2.0"
     },
