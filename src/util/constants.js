@@ -3,6 +3,7 @@ export const MAX_FAILED_ATTEMPTS = 5;
 export const DAYS_TO_KEEP_LOGS = 60;
 
 export const MOD_SETTINGS = {
+  BASE_PATH: 'settings/entries',
   RECORD_NAME: 'items',
   SCOPES: {
     EUSAGE: 'ui-erm-usage',

@@ -212,9 +212,10 @@ UDPViewRoute.manifest = Object.freeze({
   settings: {
     type: 'okapi',
     records: MOD_SETTINGS.RECORD_NAME,
-    path:
-      `settings/entries?query=(scope==${SCOPES.EUSAGE} and ` +
-      `key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
+    path: MOD_SETTINGS.BASE_PATH,
+    params: {
+      query: `(scope==${SCOPES.EUSAGE} and key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
+    }
   },
   counterReports: {
     type: 'okapi',
@@ -228,9 +229,10 @@ UDPViewRoute.manifest = Object.freeze({
   failedAttemptsSettings: {
     type: 'okapi',
     records: MOD_SETTINGS.RECORD_NAME,
-    path:
-      `settings/entries?query=(scope=${SCOPES.HARVESTER} and ` +
-      `key=${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
+    path: MOD_SETTINGS.BASE_PATH,
+    params: {
+      query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
+    }
   },
   statsReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.
