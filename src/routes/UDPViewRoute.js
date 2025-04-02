@@ -211,7 +211,7 @@ UDPViewRoute.manifest = Object.freeze({
   },
   settings: {
     type: 'okapi',
-    records: 'items',
+    records: MOD_SETTINGS.RECORD_NAME,
     path:
       `settings/entries?query=(scope==${SCOPES.EUSAGE} and ` +
       `key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
@@ -227,7 +227,7 @@ UDPViewRoute.manifest = Object.freeze({
   },
   failedAttemptsSettings: {
     type: 'okapi',
-    records: 'items',
+    records: MOD_SETTINGS.RECORD_NAME,
     path:
       `settings/entries?query=(scope=${SCOPES.HARVESTER} and ` +
       `key=${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,

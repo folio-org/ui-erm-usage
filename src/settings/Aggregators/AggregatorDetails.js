@@ -164,7 +164,7 @@ const AggregatorDetails = ({
 AggregatorDetails.manifest = Object.freeze({
   settings: {
     type: 'okapi',
-    records: 'items',
+    records: MOD_SETTINGS.RECORD_NAME,
     path:
       `settings/entries?query=(scope==${MOD_SETTINGS.SCOPES.EUSAGE} and ` +
       `key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
