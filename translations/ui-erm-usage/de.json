@@ -306,5 +306,8 @@
     "permission.harvester.start.single": "eUsage: Kann den Harvester bei einzelnen Datennutzungsanbietern starten",
     "permission.harvester.jobs.view": "eUsage: Kann die Harvesting jobs anzeigen",
     "errors.enterValidUrl": "Please enter a valid URL",
-    "statistics.custom.linkUrlFilePath": "Link URL / File path"
+    "statistics.custom.linkUrlFilePath": "Link URL / File path",
+    "report.error.2011": "Global Reports werden nicht unterstützt",
+    "report.error.3032": "Nutzungsdaten für angefragten Zeitraum nicht mehr verfügbar",
+    "report.error.3063": "Components werden nicht unterstützt"
 }
