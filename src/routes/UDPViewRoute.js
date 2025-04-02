@@ -14,6 +14,8 @@ import {
   MOD_SETTINGS
 } from '../util/constants';
 
+const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
+
 function UDPViewRoute(props) {
   const {
     handlers = {},
@@ -211,8 +213,8 @@ UDPViewRoute.manifest = Object.freeze({
     type: 'okapi',
     records: 'items',
     path:
-      `settings/entries?query=(scope==${MOD_SETTINGS.SCOPE} and ` +
-      `key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
+      `settings/entries?query=(scope==${SCOPES.EUSAGE} and ` +
+      `key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
   },
   counterReports: {
     type: 'okapi',
@@ -225,9 +227,10 @@ UDPViewRoute.manifest = Object.freeze({
   },
   failedAttemptsSettings: {
     type: 'okapi',
-    records: 'configs',
+    records: 'items',
     path:
-      'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
+      `settings/entries?query=(scope=${SCOPES.HARVESTER} and ` +
+      `key=${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
   },
   statsReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.

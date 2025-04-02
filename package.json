@@ -89,6 +89,7 @@
           "tags.collection.get",
           "ermusageharvester.impl.get",
           "mod-settings.entries.collection.get",
+          "mod-settings.global.read.mod-erm-usage-harvester",
           "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
@@ -99,6 +100,7 @@
         "subPermissions": [
           "settings.enabled",
           "mod-settings.entries.collection.get",
+          "mod-settings.global.read.mod-erm-usage-harvester",
           "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
@@ -125,6 +127,7 @@
           "ermusageharvester.start-all.get",
           "mod-settings.entries.item.post",
           "mod-settings.entries.item.put",
+          "mod-settings.global.write.mod-erm-usage-harvester",
           "mod-settings.global.write.ui-erm-usage"
         ],
         "visible": true

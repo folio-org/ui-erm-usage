@@ -166,7 +166,7 @@ AggregatorDetails.manifest = Object.freeze({
     type: 'okapi',
     records: 'items',
     path:
-      `settings/entries?query=(scope==${MOD_SETTINGS.SCOPE} and ` +
+      `settings/entries?query=(scope==${MOD_SETTINGS.SCOPES.EUSAGE} and ` +
       `key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
   },
 });

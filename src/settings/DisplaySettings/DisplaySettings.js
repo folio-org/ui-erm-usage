@@ -12,7 +12,7 @@ import { ConfigManager } from '@folio/stripes/smart-components';
 
 import { MOD_SETTINGS } from '../../util/constants';
 
-const { SCOPE, CONFIG_NAMES: { HIDE_CREDENTIALS } } = MOD_SETTINGS;
+const { SCOPES, CONFIG_NAMES: { HIDE_CREDENTIALS } } = MOD_SETTINGS;
 
 class DisplaySettings extends React.Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class DisplaySettings extends React.Component {
     return (
       <this.configManager
         label={label}
-        scope={SCOPE}
+        scope={SCOPES.EUSAGE}
         configName={HIDE_CREDENTIALS}
       >
         <Row>
