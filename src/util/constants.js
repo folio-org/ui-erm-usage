@@ -8,6 +8,7 @@ export const MOD_SETTINGS = {
     HARVESTER: 'mod-erm-usage-harvester'
   },
   CONFIG_NAMES: {
+    DAYS_TO_KEEP_LOGS: 'days_to_keep_logs',
     HIDE_CREDENTIALS: 'hide_credentials',
     MAX_FAILED_ATTEMPTS:'max_failed_attempts',
   },
