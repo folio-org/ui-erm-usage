@@ -70,7 +70,6 @@
     "queryResource": "query",
     "okapiInterfaces": {
       "aggregator-settings": "2.0",
-      "configuration": "2.0",
       "counter-reports": "4.0",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
@@ -84,8 +83,6 @@
         "permissionName": "module.erm-usage.enabled",
         "displayName": "UI: eUsage module is enabled",
         "subPermissions": [
-          "configuration.entries.collection.get",
-          "configuration.entries.item.get",
           "tags.collection.get",
           "ermusageharvester.impl.get",
           "mod-settings.entries.collection.get",
@@ -116,10 +113,6 @@
           "aggregatorsettings.item.post",
           "aggregatorsettings.item.put",
           "aggregatorsettings.item.delete",
-          "configuration.entries.collection.get",
-          "configuration.entries.item.get",
-          "configuration.entries.item.put",
-          "configuration.entries.item.post",
           "ermusageharvester.impl.get",
           "ermusageharvester.periodic.get",
           "ermusageharvester.periodic.post",
