@@ -3,6 +3,10 @@ import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
 import '../../../../test/jest/__mock__';
 import renderWithIntl from '../../../../test/jest/helpers';
+import {
+  CS4,
+  CS50,
+} from '../../../util/constants';
 import CheckApiService from './CheckApiService';
 import useServiceStatus from './useServiceStatus';
 
@@ -25,7 +29,7 @@ describe('CheckApiService', () => {
       status: null,
     });
 
-    renderCheckApiService('cs50');
+    renderCheckApiService(CS50);
 
     expect(screen.getByText(/.../i)).toBeInTheDocument();
   });
@@ -38,7 +42,7 @@ describe('CheckApiService', () => {
       status: true,
     });
 
-    renderCheckApiService('cs50');
+    renderCheckApiService(CS50);
 
     expect(screen.getByText('Active')).toBeInTheDocument();
   });
@@ -51,7 +55,7 @@ describe('CheckApiService', () => {
       status: false,
     });
 
-    renderCheckApiService('cs50');
+    renderCheckApiService(CS50);
 
     expect(screen.getByText('Inactive')).toBeInTheDocument();
   });
@@ -64,7 +68,7 @@ describe('CheckApiService', () => {
       status: null,
     });
 
-    renderCheckApiService('cs50');
+    renderCheckApiService(CS50);
 
     expect(screen.getByText('Can not connect')).toBeInTheDocument();
   });
@@ -77,7 +81,7 @@ describe('CheckApiService', () => {
       status: null,
     });
 
-    renderCheckApiService('cs4');
+    renderCheckApiService(CS4);
 
     expect(screen.getByRole('button', { name: 'Check status' })).toBeDisabled();
     expect(screen.getByText('Status check not supported for selected service type')).toBeInTheDocument();
@@ -93,7 +97,7 @@ describe('CheckApiService', () => {
       status: null,
     });
 
-    renderCheckApiService('cs50');
+    renderCheckApiService(CS50);
 
     const button = screen.getByRole('button', { name: 'Check status' });
     expect(button).toBeEnabled();

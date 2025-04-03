@@ -8,12 +8,15 @@ import {
   Loading,
 } from '@folio/stripes/components';
 
+import {
+  CS50,
+  CS51,
+} from '../../../util/constants';
 import useServiceStatus from './useServiceStatus';
 
 const CheckApiService = ({ serviceUrl, serviceType }) => {
-  const checkURL = `${serviceUrl}${serviceType === 'cs51' ? '/r51' : ''}/status`;
-  const { status, fetchStatus, isLoading, error } = useServiceStatus(checkURL);
-  const isNotCounter5 = serviceType !== 'cs50' && serviceType !== 'cs51';
+  const { status, fetchStatus, isLoading, error } = useServiceStatus(serviceUrl, serviceType);
+  const isNotCounter5 = serviceType !== CS50 && serviceType !== CS51;
   let label = '-';
   if (status === true) {
     label = <FormattedMessage id="ui-erm-usage.vendorInfo.checkStatus.active" />;
