@@ -306,5 +306,8 @@
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
     "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
     "errors.enterValidUrl": "Please enter a valid URL",
-    "statistics.custom.linkUrlFilePath": "Link URL / File path"
+    "statistics.custom.linkUrlFilePath": "Link URL / File path",
+    "report.error.2011": "التقارير العامة غير مدعومة",
+    "report.error.3032": "لم يعد الاستخدام متاحاً للتواريخ المطلوبة",
+    "report.error.3063": "المكونات غير مدعومة"
 }

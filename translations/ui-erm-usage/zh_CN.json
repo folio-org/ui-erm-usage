@@ -306,5 +306,8 @@
     "permission.harvester.start.single": "电子使用 : 可以开始为单个提供者进行收割",
     "permission.harvester.jobs.view": "电子使用 : 可以查看收割任务",
     "errors.enterValidUrl": "请输入有效网址",
-    "statistics.custom.linkUrlFilePath": "链接 URL / 文件路径"
+    "statistics.custom.linkUrlFilePath": "链接 URL / 文件路径",
+    "report.error.2011": "Global Reports Not Supported",
+    "report.error.3032": "Usage No Longer Available for Requested Dates",
+    "report.error.3063": "Components Not Supported"
 }

@@ -306,5 +306,8 @@
     "permission.harvester.start.single": "e-Użycie: można rozpocząć harvesting dla pojedynczego dostawcy",
     "permission.harvester.jobs.view": "e-Użycie: można wyświetlać zadania o harvestingu",
     "errors.enterValidUrl": "Please enter a valid URL",
-    "statistics.custom.linkUrlFilePath": "Link URL / File path"
+    "statistics.custom.linkUrlFilePath": "Link URL / File path",
+    "report.error.2011": "Global Reports Not Supported",
+    "report.error.3032": "Usage No Longer Available for Requested Dates",
+    "report.error.3063": "Components Not Supported"
 }
