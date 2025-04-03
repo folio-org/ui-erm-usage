@@ -152,18 +152,23 @@ const ReportInfo = ({
     })}: ${label}`;
   };
 
-  const adaptSushiFailedInfo = (failedReason) => {
+  const adaptSushiAndHtmlFailedInfo = (failedReason) => {
     const matchResult = failedReason.match('(?:Number=|"Code": ?)([0-9]{1,4})');
-    return (matchResult !== null) ? translateErrorCodes(matchResult[1]) : failedReason;
+
+    if (matchResult !== null) {
+      return translateErrorCodes(matchResult[1]);
+    } else if (failedReason.includes('<html')) {
+      const htmlError = <details><summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>{failedReason}</details>;
+      return htmlError;
+    } else {
+      return failedReason;
+    }
   };
 
   const failInfo = !report.failedReason ? null : (
     <KeyValue
-      data-test-report-failed-reason
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.general.info',
-      })}
-      value={adaptSushiFailedInfo(report.failedReason)}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.info' })}
+      value={adaptSushiAndHtmlFailedInfo(report.failedReason)}
     />
   );
 
