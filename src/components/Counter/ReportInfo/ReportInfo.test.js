@@ -83,4 +83,9 @@ describe('ReportInfo.js', () => {
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
   });
+
+  test('failedReason with HTML-tag', () => {
+    render(stripes, '<html lang=`en`>');
+    expect(screen.getByText('An error has occured')).toBeInTheDocument();
+  });
 });
