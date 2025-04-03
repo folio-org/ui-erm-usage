@@ -155,6 +155,7 @@
   "report.upload.editReason": "Edit reason",
   "report.upload.editReason.placeholder": "Enter reason for manual changes",
 
+  "report.error.htmlResponse": "An error has occured",
   "report.error.sushiException": "SUSHI exception",
   "report.error.other": "Other",
   "report.error.0": "Info or debug",
