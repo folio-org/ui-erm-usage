@@ -127,7 +127,7 @@
     "report.upload.upload": "Nahrát",
     "report.upload.dropFile": "Přetáhněte soubor sem",
     "report.upload.selectFile": "nebo vybrat soubor",
-    "report.upload.info": "Je možné nahrát statistiky využití Pult 4 (XML & CSV) nebo Pult 5 (JSON & CSV)",
+    "report.upload.info": "Je možné nahrát statistiky využití Pult 4 (XML & CSV), nebo Pult 5 (JSON & CSV), nebo Pult 5.1 (JSON)",
     "report.error.other": "Ostatní",
     "report.error.0": "Informace nebo ladění",
     "report.error.1": "Varování",
@@ -306,5 +306,8 @@
     "permission.harvester.start.single": "eStatistiky: Může zahájit harvest pro jednoho poskytovatele",
     "permission.harvester.jobs.view": "eStatistiky: Může zobrazit úlohy harvestu",
     "errors.enterValidUrl": "Zadejte prosím platnou adresu URL",
-    "statistics.custom.linkUrlFilePath": "URL odkazu / cesta k souboru"
+    "statistics.custom.linkUrlFilePath": "URL odkazu / cesta k souboru",
+    "report.error.2011": "Globální výstup Nepodporován",
+    "report.error.3032": "Použití Již Není k Dispozici pro Požadovaná Data",
+    "report.error.3063": "Komponenty Nepodporovány"
 }
