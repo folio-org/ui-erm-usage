@@ -1,6 +1,6 @@
 {
   "name": "@folio/erm-usage",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "description": "eUsage Module",
   "main": "src/index.js",
   "repository": "folio-org/ui-erm-usage",
@@ -70,11 +70,11 @@
     "queryResource": "query",
     "okapiInterfaces": {
       "aggregator-settings": "2.0",
-      "configuration": "2.0",
       "counter-reports": "4.0",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
       "usage-data-providers": "3.1",
+      "settings": "1.2",
       "tags": "1.0",
       "erm-usage-harvester": "2.0"
     },
@@ -83,10 +83,11 @@
         "permissionName": "module.erm-usage.enabled",
         "displayName": "UI: eUsage module is enabled",
         "subPermissions": [
-          "configuration.entries.collection.get",
-          "configuration.entries.item.get",
           "tags.collection.get",
-          "ermusageharvester.impl.get"
+          "ermusageharvester.impl.get",
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.mod-erm-usage-harvester",
+          "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
       },
@@ -94,7 +95,10 @@
         "permissionName": "settings.erm-usage.enabled",
         "displayName": "Settings (eUsage): Display list of settings pages",
         "subPermissions": [
-          "settings.enabled"
+          "settings.enabled",
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.mod-erm-usage-harvester",
+          "mod-settings.global.read.ui-erm-usage"
         ],
         "visible": false
       },
@@ -109,15 +113,15 @@
           "aggregatorsettings.item.post",
           "aggregatorsettings.item.put",
           "aggregatorsettings.item.delete",
-          "configuration.entries.collection.get",
-          "configuration.entries.item.get",
-          "configuration.entries.item.put",
-          "configuration.entries.item.post",
           "ermusageharvester.impl.get",
           "ermusageharvester.periodic.get",
           "ermusageharvester.periodic.post",
           "ermusageharvester.periodic.delete",
-          "ermusageharvester.start-all.get"
+          "ermusageharvester.start-all.get",
+          "mod-settings.entries.item.post",
+          "mod-settings.entries.item.put",
+          "mod-settings.global.write.mod-erm-usage-harvester",
+          "mod-settings.global.write.ui-erm-usage"
         ],
         "visible": true
       },

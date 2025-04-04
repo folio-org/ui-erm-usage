@@ -7,7 +7,7 @@ const SushiCredentialsView = ({
   usageDataProvider,
   settings,
 }) => {
-  const hideCredentials = settings.length && JSON.parse(settings[0].value);
+  const hideCredentials = settings[0]?.value === true;
 
   const cId = usageDataProvider.sushiCredentials?.customerId ?? <NoValue />;
   const customerId = hideCredentials ? '*'.repeat(cId.length) : cId;

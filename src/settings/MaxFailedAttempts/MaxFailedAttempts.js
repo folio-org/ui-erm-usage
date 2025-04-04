@@ -6,7 +6,12 @@ import { FormattedMessage } from 'react-intl';
 import { Col, Row, TextField } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
-import { MAX_FAILED_ATTEMPTS } from '../../util/constants';
+import {
+  MAX_FAILED_ATTEMPTS,
+  MOD_SETTINGS
+} from '../../util/constants';
+
+const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
 
 class MaxFailedAttempts extends React.Component {
   static propTypes = {
@@ -18,17 +23,7 @@ class MaxFailedAttempts extends React.Component {
     this.configManager = props.stripes.connect(ConfigManager);
   }
 
-  getInitialValues = (settings) => {
-    let loadedValues = {};
-    let value;
-    try {
-      value = settings.length === 0 ? MAX_FAILED_ATTEMPTS : settings[0].value;
-      loadedValues = {
-        maxFailedAttempts: value,
-      };
-    } catch (e) {} // eslint-disable-line no-empty
-    return loadedValues;
-  };
+  getInitialValues = (settings) => ({ [CONFIG_NAMES.MAX_FAILED_ATTEMPTS]: settings[0]?.value || MAX_FAILED_ATTEMPTS });
 
   render() {
     return (
@@ -41,8 +36,8 @@ class MaxFailedAttempts extends React.Component {
           label={
             <FormattedMessage id="ui-erm-usage.settings.harvester.config" />
           }
-          moduleName="ERM-USAGE-HARVESTER"
-          configName="maxFailedAttempts"
+          scope={SCOPES.HARVESTER}
+          configName={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
         >
           <div data-test-settings-harvester-config>
             <Row>
@@ -50,8 +45,8 @@ class MaxFailedAttempts extends React.Component {
                 <Field
                   component={TextField}
                   type="number"
-                  id="maxFailedAttempts"
-                  name="maxFailedAttempts"
+                  id={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
+                  name={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
                   label={
                     <FormattedMessage id="ui-erm-usage.settings.section.number.failed" />
                   }

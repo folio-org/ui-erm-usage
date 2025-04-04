@@ -9,7 +9,12 @@ import UDP from '../components/views/UDP';
 import withReportHandlers from './components/withReportHandlers';
 import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
-import { MAX_FAILED_ATTEMPTS } from '../util/constants';
+import {
+  MAX_FAILED_ATTEMPTS,
+  MOD_SETTINGS
+} from '../util/constants';
+
+const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
 
 function UDPViewRoute(props) {
   const {
@@ -206,9 +211,11 @@ UDPViewRoute.manifest = Object.freeze({
   },
   settings: {
     type: 'okapi',
-    records: 'configs',
-    path:
-      'configurations/entries?query=(module==ERM-USAGE and configName==hide_credentials)',
+    records: MOD_SETTINGS.RECORD_NAME,
+    path: MOD_SETTINGS.BASE_PATH,
+    params: {
+      query: `(scope==${SCOPES.EUSAGE} and key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
+    }
   },
   counterReports: {
     type: 'okapi',
@@ -221,9 +228,11 @@ UDPViewRoute.manifest = Object.freeze({
   },
   failedAttemptsSettings: {
     type: 'okapi',
-    records: 'configs',
-    path:
-      'configurations/entries?query=(module=ERM-USAGE-HARVESTER and configName=maxFailedAttempts)',
+    records: MOD_SETTINGS.RECORD_NAME,
+    path: MOD_SETTINGS.BASE_PATH,
+    params: {
+      query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
+    }
   },
   statsReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.
