@@ -25,7 +25,7 @@ describe('DisplaySettings', () => {
   beforeEach(() => {
     renderWithIntl(withReduxForm(<DisplaySettings label="Test Label" stripes={useStripes()} />));
   });
-  it('should render correctly', () => {
+  it('should call ConfigManager with correct arguments', () => {
     expect(ConfigManager).toHaveBeenCalledWith(
       expect.objectContaining({
         label: 'Test Label',
@@ -36,7 +36,7 @@ describe('DisplaySettings', () => {
     );
   });
 
-  it('should call ConfigManager with correct arguments', () => {
+  it('should render correctly', () => {
     expect(screen.getByText('ConfigManager')).toBeInTheDocument();
     const checkbox = screen.getByRole('checkbox', { name: 'Hide sushi credentials in detail views' });
     expect(checkbox).toBeInTheDocument();
