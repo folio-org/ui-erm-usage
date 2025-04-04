@@ -39,7 +39,7 @@ describe('Harvester logs settings component', () => {
 
   it('should render with value from resources', () => {
     const resources = {
-      settings: { records: [{ configs: [{ value: '5' }] }], hasLoaded: true },
+      settings: { records: [{ items: [{ value: '5' }] }], hasLoaded: true },
     };
     renderHarvesterLogsSettings(stripes, resources);
     expect(screen.getByRole('spinbutton').valueAsNumber).toBe(5);
