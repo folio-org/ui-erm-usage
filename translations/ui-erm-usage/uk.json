@@ -305,6 +305,9 @@
     "permission.reports.delete": "eUsage: Can delete usage reports",
     "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
     "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
-    "errors.enterValidUrl": "Please enter a valid URL",
-    "statistics.custom.linkUrlFilePath": "Link URL / File path"
+    "errors.enterValidUrl": "Будь ласка, введіть дійсну URL-адресу",
+    "statistics.custom.linkUrlFilePath": "URL-адреса посилання / Шлях до файлу",
+    "report.error.2011": "Глобальні звіти не підтримуються",
+    "report.error.3032": "Використання більше не доступне для запитуваних дат",
+    "report.error.3063": "Компоненти не підтримуються"
 }
