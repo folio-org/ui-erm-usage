@@ -59,14 +59,17 @@ describe('AggregatorForm', () => {
   });
 
   test('Save & close is enabled and clicked', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
+
     await userEvent.type(screen.getByLabelText('Name', { exact: false }), 'Agg Name');
     await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), ['NSS']);
     await userEvent.type(screen.getByLabelText('Service URL', { exact: false }), 'http://www.agg.com');
     await userEvent.selectOptions(screen.getByLabelText('Type*'), ['API']);
 
-    expect(screen.getByRole('button', { name: 'Save & close' })).toBeEnabled();
+    expect(saveButton).toBeEnabled();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Save & close' }));
+    await userEvent.click(saveButton);
     expect(onSubmit).toHaveBeenCalled();
   });
 
