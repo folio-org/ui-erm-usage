@@ -1,14 +1,13 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { combineReducers, createStore } from 'redux';
-import { reducer } from 'redux-form';
-import { Provider } from 'react-redux';
 import { StripesContext, useStripes } from '@folio/stripes/core';
+
+import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
 import aggregator from '../../../test/fixtures/aggregator';
-
 import '../../../test/jest/__mock__';
 
 const aggregators = [
@@ -18,31 +17,23 @@ const aggregators = [
   },
 ];
 
-const store = createStore(
-  combineReducers({
-    form: reducer,
-  })
-);
-
 const onSubmit = jest.fn();
 const onRemove = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
-  return renderWithIntl(
-    <Provider store={store}>
-      <MemoryRouter>
-        <StripesContext.Provider value={stripes}>
-          <AggregatorForm
-            aggregators={aggregators}
-            onSave={onSubmit}
-            initialValues={initialValues}
-            onRemove={onRemove}
-            stripes={stripes}
-          />
-        </StripesContext.Provider>
-      </MemoryRouter>
-    </Provider>
-  );
+  return renderWithIntl(withReduxForm(
+    <MemoryRouter>
+      <StripesContext.Provider value={stripes}>
+        <AggregatorForm
+          aggregators={aggregators}
+          onSave={onSubmit}
+          initialValues={initialValues}
+          onRemove={onRemove}
+          stripes={stripes}
+        />
+      </StripesContext.Provider>
+    </MemoryRouter>
+  ));
 };
 
 describe('AggregatorForm', () => {
