@@ -81,7 +81,7 @@ AggregatorManager.propTypes = {
       DELETE: PropTypes.func
     })
   }).isRequired,
-  stripes: PropTypes.shape().isRequired,
+  stripes: PropTypes.shape(),
 };
 
 export default AggregatorManager;
