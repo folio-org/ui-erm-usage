@@ -6,6 +6,7 @@
 * NFR: Improvement of the report info when HTTP status codes occured ([UIEUS-367](https://folio-org.atlassian.net/browse/UIEUS-367))
 * *BREAKING* Migrate settings from `mod-configuration` to `mod-settings` ([UIEUS-387](https://folio-org.atlassian.net/browse/UIEUS-387))
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
+* Check necessary props ([UIEUS-412](https://folio-org.atlassian.net/browse/UIEUS-412))
 
 ## [11.0.0](https://github.com/folio-org/ui-erm-usage/tree/v11.0.0) (2025-03-12)
 * Use keywords search for UDPs search, requires interface `usage-data-providers 3.1` ([UIEUS-386](https://folio-org.atlassian.net/browse/UIEUS-386))

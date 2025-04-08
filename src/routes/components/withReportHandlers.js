@@ -147,7 +147,7 @@ export default function withReportHandlers(WrappedComponent) {
     stripes: PropTypes.shape({
       okapi: PropTypes.shape({
         tenant: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
+        token: PropTypes.string,
         url: PropTypes.string,
       }).isRequired,
       store: PropTypes.object.isRequired,

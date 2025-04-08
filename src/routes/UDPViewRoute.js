@@ -181,7 +181,7 @@ UDPViewRoute.propTypes = {
     logger: PropTypes.shape().isRequired,
     okapi: PropTypes.shape({
       tenant: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
+      token: PropTypes.string,
       url: PropTypes.string.isRequired,
     }).isRequired,
     store: PropTypes.object.isRequired,
