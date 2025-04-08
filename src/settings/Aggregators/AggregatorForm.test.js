@@ -1,14 +1,13 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { Form } from 'react-final-form';
-import { MemoryRouter } from 'react-router-dom';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 import { StripesContext, useStripes } from '@folio/stripes/core';
+
+import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
 import aggregator from '../../../test/fixtures/aggregator';
-
 import '../../../test/jest/__mock__';
 
 const aggregators = [
@@ -17,36 +16,31 @@ const aggregators = [
     label: 'Nationaler Statistikserver',
   },
 ];
+
 const onSubmit = jest.fn();
 const onRemove = jest.fn();
+
 const renderAggregratorForm = (stripes, initialValues = {}) => {
-  return renderWithIntl(
-    <Provider store={createStore(() => {})}>
-      <MemoryRouter>
-        <StripesContext.Provider value={stripes}>
-          <Form
-            onSubmit={jest.fn}
-            render={() => (
-              <AggregatorForm
-                aggregators={aggregators}
-                handleSubmit={onSubmit}
-                initialValues={initialValues}
-                onRemove={onRemove}
-                store={stripes.store}
-                stripes={stripes}
-              />
-            )}
-          />
-        </StripesContext.Provider>
-      </MemoryRouter>
-    </Provider>
-  );
+  return renderWithIntl(withReduxForm(
+    <MemoryRouter>
+      <StripesContext.Provider value={stripes}>
+        <AggregatorForm
+          aggregators={aggregators}
+          onSave={onSubmit}
+          initialValues={initialValues}
+          onRemove={onRemove}
+          stripes={stripes}
+        />
+      </StripesContext.Provider>
+    </MemoryRouter>
+  ));
 };
 
 describe('AggregatorForm', () => {
   let stripes;
 
   beforeEach(() => {
+    onSubmit.mockClear();
     stripes = useStripes();
     renderAggregratorForm(stripes);
   });
@@ -55,40 +49,35 @@ describe('AggregatorForm', () => {
     expect(screen.getByText('Name')).toBeVisible();
   });
 
-  describe('test happy path with save', () => {
-    beforeEach(async () => {
-      await userEvent.type(screen.getByLabelText('Name', { exact: false }), 'Agg Name');
-      await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), ['NSS']);
-      await userEvent.type(screen.getByLabelText('Service URL', { exact: false }), 'http://www.agg.com');
-      await userEvent.selectOptions(screen.getByLabelText('Type*'), ['API']);
-    });
+  test('Save & close is enabled and clicked', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
 
-    test('Save & close is clicked', async () => {
-      await userEvent.click(screen.getByText('Save & close'));
-      expect(onSubmit).toHaveBeenCalled();
-    });
+    await userEvent.type(screen.getByLabelText('Name', { exact: false }), 'Agg Name');
+    await userEvent.selectOptions(screen.getByLabelText('Service type', { exact: false }), ['NSS']);
+    await userEvent.type(screen.getByLabelText('Service URL', { exact: false }), 'http://www.agg.com');
+    await userEvent.selectOptions(screen.getByLabelText('Type*'), ['API']);
+
+    expect(saveButton).toBeEnabled();
+
+    await userEvent.click(saveButton);
+    expect(onSubmit).toHaveBeenCalled();
   });
 
-  describe('test aggregator configuration', () => {
-    beforeEach(async () => {
-      const addBtn = screen.getByRole('button', {
-        name: 'Add config parameter',
-      });
-      await userEvent.click(addBtn);
-    });
+  test('can change aggregator configuration parameters', async () => {
+    const addBtn = screen.getByRole('button', { name: 'Add config parameter' });
+    await userEvent.click(addBtn);
 
-    test('can change config parameters', async () => {
-      const keyField = screen.getByLabelText('Key');
-      await userEvent.type(keyField, 'key');
+    const keyField = screen.getByLabelText('Key');
+    await userEvent.type(keyField, 'key');
 
-      const valueField = screen.getByLabelText('Value');
-      await userEvent.type(valueField, 'val');
-      expect(screen.getByText('Key')).toBeInTheDocument();
+    const valueField = screen.getByLabelText('Value');
+    await userEvent.type(valueField, 'val');
+    expect(screen.getByText('Key')).toBeInTheDocument();
 
-      const trashBtn = screen.getByRole('button', { name: 'Delete this item' });
-      await userEvent.click(trashBtn);
-      expect(screen.queryByText('Key')).not.toBeInTheDocument();
-    });
+    const trashBtn = screen.getByRole('button', { name: 'Delete this item' });
+    await userEvent.click(trashBtn);
+    expect(screen.queryByText('Key')).not.toBeInTheDocument();
   });
 });
 

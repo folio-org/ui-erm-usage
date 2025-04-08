@@ -43,7 +43,6 @@ const AggregatorForm = ({
   pristine,
   submitting,
   aggregators,
-  ...props
 }) => {
   const aggregator = initialValues || {};
 
@@ -75,7 +74,7 @@ const AggregatorForm = ({
 
   const getCurrentValues = () => {
     const state = stripes.store.getState();
-    return getFormValues('aggreagtorForm')(state) || {};
+    return getFormValues('aggregatorForm')(state) || {};
   };
 
   const hasConfigType = (values) => {
@@ -201,7 +200,7 @@ const AggregatorForm = ({
 
     stripes.store.dispatch(
       autofill(
-        'aggreagtorForm',
+        'aggregatorForm',
         `aggregatorConfig.${currentConf.key}`,
         undefined
       )
@@ -214,7 +213,7 @@ const AggregatorForm = ({
   };
 
   const changeFormValue = (key, value) => {
-    stripes.store.dispatch(change('aggreagtorForm', key, value));
+    stripes.store.dispatch(change('aggregatorForm', key, value));
   };
 
   const updateForm = () => {
@@ -385,7 +384,7 @@ const AggregatorForm = ({
                       required={configTypeIsMail}
                       validate={configMailValidate}
                     />
-                    <DisplayContactsForm {...props} />
+                    <DisplayContactsForm />
                   </Col>
                 </Row>
               </Accordion>
@@ -433,7 +432,7 @@ AggregatorForm.propTypes = {
 
 export default injectIntl(
   stripesForm({
-    form: 'aggreagtorForm',
+    form: 'aggregatorForm',
     navigationCheck: true,
     enableReinitialize: true,
   })(AggregatorForm)

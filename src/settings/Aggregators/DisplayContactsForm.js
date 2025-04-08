@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import DisplayContact from './DisplayContact';
 import formCss from '../../util/sharedStyles/form.css';
 
-const DisplayContactsForm = ({ ...props }) => {
+const DisplayContactsForm = () => {
   return (
     <>
       <div className={formCss.label}>
@@ -15,7 +15,6 @@ const DisplayContactsForm = ({ ...props }) => {
         name="accountConfig.displayContact"
         label="Displaycontact"
         id="display_contacts"
-        {...props}
       />
     </>
   );
