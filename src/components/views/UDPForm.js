@@ -31,13 +31,14 @@ import css from './UDPForm.css';
 
 const UDPForm = ({
   data,
+  form,
   handlers,
   initialValues = {},
   handleSubmit,
   onSubmit,
   pristine,
   submitting,
-  ...props
+  values,
 }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
@@ -114,7 +115,7 @@ const UDPForm = ({
   };
 
   const renderLastMenu = () => {
-    const isEditing = initialValues && initialValues.id;
+    const isEditing = initialValues?.id;
 
     return (
       <PaneMenu>
@@ -227,23 +228,23 @@ const UDPForm = ({
                     />
                   </Col>
                 </Row>
-                {initialValues.metadata &&
-                  initialValues.metadata.createdDate && (
-                    <ViewMetaData metadata={initialValues.metadata} />
+                {initialValues.metadata?.createdDate && (
+                  <ViewMetaData metadata={initialValues.metadata} />
                 )}
                 <UDPInfoForm
                   accordionId="editUDPInfo"
                   expanded={sections.editUDPInfo}
                   onToggle={handleSectionToggle}
-                  {...props}
                 />
                 <HarvestingConfigurationForm
                   accordionId="editHarvestingConfig"
                   aggregators={data.aggregators}
                   expanded={sections.editHarvestingConfig}
-                  onToggle={handleSectionToggle}
+                  form={form}
                   harvesterImplementations={data.harvesterImpls}
-                  {...props}
+                  initialValues={initialValues}
+                  onToggle={handleSectionToggle}
+                  values={values}
                 />
               </AccordionSet>
               <ConfirmationModal
@@ -273,6 +274,14 @@ UDPForm.propTypes = {
     aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
+  form: PropTypes.shape({
+    change: PropTypes.func,
+    resetFieldState: PropTypes.func,
+    mutators: PropTypes.shape({
+      clearSelectedReports: PropTypes.func,
+      setReportRelease: PropTypes.func,
+    }),
+  }),
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
@@ -285,11 +294,10 @@ UDPForm.propTypes = {
     }),
   }),
   handleSubmit: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool,
-  store: PropTypes.object.isRequired,
   submitting: PropTypes.bool,
+  values: PropTypes.shape(),
 };
 
 export default stripesFinalForm({

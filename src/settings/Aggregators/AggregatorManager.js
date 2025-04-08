@@ -11,11 +11,11 @@ const AggregatorManager = ({
   label,
   resources,
   mutator,
-  ...props
+  stripes,
 }) => {
   const entryList = sortBy(resources?.entries?.records || [], ['label']);
 
-  const records = (resources.aggregatorImpls || {}).records || [];
+  const records = resources.aggregatorImpls?.records ?? [];
   const implementations = records.length ? records[0].implementations : [];
   const serviceTypes = implementations.map(i => ({
     value: i.type,
@@ -28,7 +28,6 @@ const AggregatorManager = ({
       style={{ flex: '0 0 50%', left: '0px' }}
     >
       <EntryManager
-        {...props}
         parentMutator={mutator}
         entryList={entryList}
         detailComponent={AggregatorDetails}
@@ -42,6 +41,7 @@ const AggregatorManager = ({
           delete: 'ui-erm-usage.generalSettings.manage'
         }}
         aggregators={serviceTypes}
+        stripes={stripes}
       />
     </div>
   );
@@ -81,6 +81,7 @@ AggregatorManager.propTypes = {
       DELETE: PropTypes.func
     })
   }).isRequired,
+  stripes: PropTypes.shape(),
 };
 
 export default AggregatorManager;

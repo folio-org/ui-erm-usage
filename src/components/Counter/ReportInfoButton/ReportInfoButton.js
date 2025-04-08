@@ -198,8 +198,8 @@ ReportInfoButton.propTypes = {
     csvReports: PropTypes.object,
   }),
   intl: PropTypes.object,
-  maxFailedAttempts: PropTypes.number.isRequired,
-  udpLabel: PropTypes.string.isRequired,
+  maxFailedAttempts: PropTypes.number,
+  udpLabel: PropTypes.string,
   handlers: PropTypes.shape({
     onDownloadReportSingleMonth: PropTypes.func,
     onDownloadReportSingleMonthRaw: PropTypes.func,
