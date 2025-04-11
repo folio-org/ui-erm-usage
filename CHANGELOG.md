@@ -2,11 +2,14 @@
 
 ## 12.0.0 (IN PROGRESS)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
-* Add translations for sushi exception codes 2011, 3032, 3063 ([UIEUS-406](https://folio-org.atlassian.net/browse/UIEUS-406))
 * NFR: Improvement of the report info when HTTP status codes occured ([UIEUS-367](https://folio-org.atlassian.net/browse/UIEUS-367))
 * *BREAKING* Migrate settings from `mod-configuration` to `mod-settings` ([UIEUS-387](https://folio-org.atlassian.net/browse/UIEUS-387))
-* Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
 * Check necessary props ([UIEUS-412](https://folio-org.atlassian.net/browse/UIEUS-412))
+
+## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
+* Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
+* Add translations for sushi exception codes 2011, 3032, 3063 ([UIEUS-406](https://folio-org.atlassian.net/browse/UIEUS-406))
+* Update translation strings
 
 ## [11.0.0](https://github.com/folio-org/ui-erm-usage/tree/v11.0.0) (2025-03-12)
 * Use keywords search for UDPs search, requires interface `usage-data-providers 3.1` ([UIEUS-386](https://folio-org.atlassian.net/browse/UIEUS-386))
