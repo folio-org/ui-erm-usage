@@ -307,7 +307,8 @@
     "permission.harvester.jobs.view": "e-Użycie: można wyświetlać zadania o harvestingu",
     "errors.enterValidUrl": "Please enter a valid URL",
     "statistics.custom.linkUrlFilePath": "Link URL / File path",
-    "report.error.2011": "Global Reports Not Supported",
-    "report.error.3032": "Usage No Longer Available for Requested Dates",
-    "report.error.3063": "Components Not Supported"
+    "report.error.2011": "Raporty globalne nie są obsługiwane",
+    "report.error.3032": "Użycie nie jest już dostępne dla żądanych dat",
+    "report.error.3063": "Komponenty nie są obsługiwane",
+    "report.error.htmlResponse": "Wystąpił błąd"
 }

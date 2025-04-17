@@ -127,7 +127,7 @@
     "report.upload.upload": "上传",
     "report.upload.dropFile": "将文件在此放置",
     "report.upload.selectFile": "或选择文件",
-    "report.upload.info": "可以上传Counter 4 : XML＆CSV ) 或Counter 5 : JSON＆CSV ) 使用统计",
+    "report.upload.info": "可以上传 Counter 4 (XML 和 CSV) 或 Counter 5 (JSON 和 CSV) 或 Counter 5.1 (JSON) 使用情况统计数据",
     "report.error.other": "其他",
     "report.error.0": "信息或调试",
     "report.error.1": "警告",
@@ -307,7 +307,8 @@
     "permission.harvester.jobs.view": "电子使用 : 可以查看收割任务",
     "errors.enterValidUrl": "请输入有效网址",
     "statistics.custom.linkUrlFilePath": "链接 URL / 文件路径",
-    "report.error.2011": "Global Reports Not Supported",
-    "report.error.3032": "Usage No Longer Available for Requested Dates",
-    "report.error.3063": "Components Not Supported"
+    "report.error.2011": "不支持全局报告",
+    "report.error.3032": "请求日期的使用情况不再提供",
+    "report.error.3063": "不支持的组件",
+    "report.error.htmlResponse": "An error has occured"
 }

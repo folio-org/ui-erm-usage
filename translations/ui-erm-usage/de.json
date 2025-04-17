@@ -309,5 +309,6 @@
     "statistics.custom.linkUrlFilePath": "Link URL / File path",
     "report.error.2011": "Global Reports werden nicht unterstützt",
     "report.error.3032": "Nutzungsdaten für angefragten Zeitraum nicht mehr verfügbar",
-    "report.error.3063": "Components werden nicht unterstützt"
+    "report.error.3063": "Components werden nicht unterstützt",
+    "report.error.htmlResponse": "An error has occured"
 }

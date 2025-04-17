@@ -309,5 +309,6 @@
     "statistics.custom.linkUrlFilePath": "URL do link / Caminho do arquivo",
     "report.error.2011": "Relatórios globais não suportados",
     "report.error.3032": "O uso não está mais disponível para as datas solicitadas",
-    "report.error.3063": "Componentes não suportados"
+    "report.error.3063": "Componentes não suportados",
+    "report.error.htmlResponse": "Ocorreu um erro"
 }
