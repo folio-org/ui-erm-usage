@@ -5,6 +5,7 @@ const filterGroups = [
     label: 'Harvesting status',
     name: 'harvestingStatus',
     cql: 'harvestingConfig.harvestingStatus',
+    operator: '=',
     values: [
       { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
       { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' }
@@ -14,6 +15,7 @@ const filterGroups = [
     label: 'Harvest via',
     name: 'harvestVia',
     cql: 'harvestingConfig.harvestVia',
+    operator: '=',
     values: [
       { name: 'Sushi', cql: 'sushi' },
       { name: 'Aggregator', cql: 'aggregator' }
@@ -23,6 +25,7 @@ const filterGroups = [
     label: 'Aggregators',
     name: 'aggregators',
     cql: 'harvestingConfig.aggregator.name',
+    operator: '=',
     values: [],
     restrictWhenAllSelected: true
   },
@@ -30,6 +33,7 @@ const filterGroups = [
     label: 'Has failed reports',
     name: 'hasFailedReport',
     cql: 'hasFailedReport',
+    operator: '=',
     values: [
       { name: <FormattedMessage id="ui-erm-usage.general.yes" />, cql: 'yes' },
       { name: <FormattedMessage id="ui-erm-usage.general.no" />, cql: 'no' }
