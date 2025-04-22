@@ -4,14 +4,14 @@ import { FormattedMessage } from 'react-intl';
 import { Select } from '@folio/stripes/components';
 
 import { required } from '../../../util/validate';
-import harvestingStatusOptions from '../../../util/data/harvestingStatusOptions';
+import statusOptions from '../../../util/data/statusOptions';
 import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
 
 const HarvestingStatusSelect = () => {
   return (
     <Field
       component={Select}
-      dataOptions={useTranslateLabels(harvestingStatusOptions)}
+      dataOptions={useTranslateLabels(statusOptions)}
       defaultValue="active"
       fullWidth
       id="addudp_harvestingstatus"

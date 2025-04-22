@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 
 import { useStripes } from '@folio/stripes/core';
 
-import harvestingStatusOptions from '../../util/data/harvestingStatusOptions';
+import statusOptions from '../../util/data/statusOptions';
 import css from './UDPHeader.css';
 
 const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} }) => {
@@ -12,10 +12,14 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
   const {
     latestReport,
     harvestingConfig: { harvestingStatus },
+    status,
   } = usageDataProvider;
   const { finishedAt } = lastJob;
-  const harvestingStatusOption = harvestingStatusOptions.find(
+  const harvestingStatusOption = statusOptions.find(
     (e) => e.value === harvestingStatus
+  );
+  const providerStatusOption = statusOptions.find(
+    (e) => e.value === status
   );
   const finishedAtLabel =
     finishedAt &&
@@ -26,7 +30,15 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
   return (
     <div>
       <Row className={css.udpHeader}>
-        <Col xs={4}>
+        <Col xs={3}>
+          <KeyValue
+            label={<FormattedMessage id="ui-erm-usage.information.providerStatus" />}
+            value={
+              status ? <FormattedMessage id={providerStatusOption.label} /> : <NoValue />
+            }
+          />
+        </Col>
+        <Col xs={3}>
           <KeyValue
             label={
               <FormattedMessage id="ui-erm-usage.information.latestStatistics" />
@@ -34,7 +46,7 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
             value={latestReport ?? <NoValue />}
           />
         </Col>
-        <Col xs={4}>
+        <Col xs={3}>
           <KeyValue
             label={
               <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />
@@ -48,7 +60,7 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
             }
           />
         </Col>
-        <Col xs={4}>
+        <Col xs={3}>
           <KeyValue
             label={
               <FormattedMessage id="ui-erm-usage.information.lastJobFinishedAt" />
@@ -67,6 +79,7 @@ UDPHeader.propTypes = {
     harvestingConfig: PropTypes.shape({
       harvestingStatus: PropTypes.string,
     }),
+    status: PropTypes.string,
   }),
   lastJob: PropTypes.shape({
     finishedAt: PropTypes.string,

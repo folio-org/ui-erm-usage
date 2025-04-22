@@ -18,10 +18,11 @@ describe('UDPHeader', () => {
 
   it('should display labels and no values', () => {
     renderUDPHeader(stripes);
+    expect(screen.getByText('Provider status')).toBeInTheDocument();
     expect(screen.getByText('Latest statistics')).toBeInTheDocument();
     expect(screen.getByText('Harvesting status')).toBeInTheDocument();
     expect(screen.getByText('Last harvesting job finished at')).toBeInTheDocument();
-    expect(screen.queryAllByText('-')).toHaveLength(3);
+    expect(screen.queryAllByText('-')).toHaveLength(4);
   });
 
   it('should display labels and values', () => {
@@ -30,6 +31,7 @@ describe('UDPHeader', () => {
       {
         latestReport: '2022-11',
         harvestingConfig: { harvestingStatus: 'active' },
+        status: 'active',
       },
       { finishedAt: '2022-12-09T21:52:05.933+00:00' }
     );
@@ -37,7 +39,7 @@ describe('UDPHeader', () => {
     expect(screen.getByText('Harvesting status')).toBeInTheDocument();
     expect(screen.getByText('Last harvesting job finished at')).toBeInTheDocument();
     expect(screen.getByText('2022-11')).toBeInTheDocument();
-    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.queryAllByText('Active')).toHaveLength(2);
     expect(screen.getByText('12/9/2022, 9:52:05 PM')).toBeInTheDocument();
   });
 });
