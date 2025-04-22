@@ -222,6 +222,7 @@ describe('UDPForm', () => {
 
     test('happy path', async () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /provider status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']);
