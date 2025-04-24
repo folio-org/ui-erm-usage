@@ -278,6 +278,7 @@ const UDPs = ({
         <SearchAndSortQuery
           initialFilterState={{
             harvestingStatus: ['active'],
+            status:['active'],
           }}
           initialSearchState={{ query: '' }}
           initialSortState={{ sort: 'label' }}
