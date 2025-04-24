@@ -64,7 +64,7 @@ function UDPInfoForm(props) {
             dataOptions={useTranslateLabels(statusOptions)}
             defaultValue="active"
             id="addudp_providerstatus"
-            label={<FormattedMessage id="ui-erm-usage.information.providerStatus" />}
+            label={<FormattedMessage id="ui-erm-usage.information.status" />}
             name="status"
             required
             validate={required}

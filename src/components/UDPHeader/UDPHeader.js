@@ -32,7 +32,7 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
       <Row className={css.udpHeader}>
         <Col xs={3}>
           <KeyValue
-            label={<FormattedMessage id="ui-erm-usage.information.providerStatus" />}
+            label={<FormattedMessage id="ui-erm-usage.information.status" />}
             value={
               status ? <FormattedMessage id={providerStatusOption.label} /> : <NoValue />
             }

@@ -7,6 +7,7 @@
 * Check necessary props ([UIEUS-412](https://folio-org.atlassian.net/browse/UIEUS-412))
 * Change filters to trigger a full-text search ([UIEUS-414](https://folio-org.atlassian.net/browse/UIEUS-414))
 * Status active or inactive for UDP data records ([UIEUS-390](https://folio-org.atlassian.net/browse/UIEUS-390))
+* Add filter for status of UDP data record ([UIEUS-391](https://folio-org.atlassian.net/browse/UIEUS-391))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
