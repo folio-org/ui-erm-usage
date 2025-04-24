@@ -31,6 +31,7 @@ const UDPFilters = ({
     errorCodes: [],
     reportTypes: [],
     reportReleases: [],
+    status: [],
   });
 
   const isFilterDefinedLocally = filter => {
@@ -167,6 +168,7 @@ const UDPFilters = ({
 
   return (
     <AccordionSet>
+      {renderCheckboxFilter('status')}
       {renderCheckboxFilter('harvestingStatus')}
       {renderCheckboxFilter('harvestVia')}
       {renderCheckboxFilter('aggregators', true)}

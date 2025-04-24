@@ -66,7 +66,17 @@ const filterGroups = [
     cql: 'reportReleases',
     operator: '=',
     values: [],
-  }
+  },
+  {
+    label: 'Provider status',
+    name: 'status',
+    cql: 'status',
+    operator: '=',
+    values: [
+      { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
+      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' }
+    ]
+  },
 ];
 
 export default filterGroups;

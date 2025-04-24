@@ -137,6 +137,10 @@ describe('UDPs SASQ View', () => {
   });
 
   describe('check filters', () => {
+    it('should be present the provider status filter', () => {
+      expect(screen.getByRole('button', { name: 'Provider status filter list' })).toBeInTheDocument();
+    });
+
     it('should be present the harvesting status filter', () => {
       expect(screen.getByRole('button', { name: 'Harvesting status filter list' })).toBeInTheDocument();
     });

@@ -53,7 +53,7 @@
   "general.status.active": "Active",
 
   "information.providerName": "Provider name",
-  "information.providerStatus": "Provider status",
+  "information.status": "Provider status",
   "information.organization": "Organization",
   "information.platform": "Platform",
   "information.harvestingStatus": "Harvesting status",
