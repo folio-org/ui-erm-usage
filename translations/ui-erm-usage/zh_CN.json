@@ -310,5 +310,6 @@
     "report.error.2011": "不支持全局报告",
     "report.error.3032": "请求日期的使用情况不再提供",
     "report.error.3063": "不支持的组件",
-    "report.error.htmlResponse": "An error has occured"
+    "report.error.htmlResponse": "An error has occured",
+    "information.status": "Provider status"
 }

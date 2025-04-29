@@ -310,5 +310,6 @@
     "report.error.2011": "Globální výstup Nepodporován",
     "report.error.3032": "Použití Již Není k Dispozici pro Požadovaná Data",
     "report.error.3063": "Komponenty Nepodporovány",
-    "report.error.htmlResponse": "Došlo k chybě"
+    "report.error.htmlResponse": "Došlo k chybě",
+    "information.status": "Stav poskytovatele"
 }

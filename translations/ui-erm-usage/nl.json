@@ -307,8 +307,9 @@
     "permission.harvester.jobs.view": "eUsage: Kan harvest jobs bekijken",
     "errors.enterValidUrl": "URL",
     "statistics.custom.linkUrlFilePath": "Link URL / File path",
-    "report.error.2011": "Global Reports Not Supported",
-    "report.error.3032": "Usage No Longer Available for Requested Dates",
-    "report.error.3063": "Components Not Supported",
-    "report.error.htmlResponse": "An error has occured"
+    "report.error.2011": "Globale Rapporten Niet Ondersteund",
+    "report.error.3032": "Gebruik niet langer Beschikbaar voor Aangevraagde Data",
+    "report.error.3063": "Niet ondersteunde onderdelen",
+    "report.error.htmlResponse": "Er is een fout opgetreden",
+    "information.status": "Status Leverancier"
 }
