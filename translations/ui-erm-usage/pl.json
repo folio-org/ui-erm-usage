@@ -310,5 +310,6 @@
     "report.error.2011": "Raporty globalne nie są obsługiwane",
     "report.error.3032": "Użycie nie jest już dostępne dla żądanych dat",
     "report.error.3063": "Komponenty nie są obsługiwane",
-    "report.error.htmlResponse": "Wystąpił błąd"
+    "report.error.htmlResponse": "Wystąpił błąd",
+    "information.status": "Provider status"
 }

@@ -310,5 +310,6 @@
     "report.error.2011": "Global Reports Not Supported",
     "report.error.3032": "Usage No Longer Available for Requested Dates",
     "report.error.3063": "Components Not Supported",
-    "report.error.htmlResponse": "An error has occured"
+    "report.error.htmlResponse": "An error has occured",
+    "information.status": "Provider status"
 }
