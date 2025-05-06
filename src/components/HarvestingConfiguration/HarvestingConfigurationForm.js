@@ -116,13 +116,19 @@ const HarvestingConfigurationForm = ({
                 disabled={harvestVia !== 'aggregator'}
               />
             </Row>
-            <Row>
-              <VendorInfoForm
-                disabled={harvestVia !== 'sushi'}
-                isRequired={isHarvestingStatusActive}
-                harvesterImpls={harvesterImplementations}
-              />
-            </Row>
+            <VendorInfoForm
+              disabled={harvestVia !== 'sushi'}
+              isRequired={isHarvestingStatusActive}
+              harvesterImpls={harvesterImplementations}
+            />
+          </section>
+          <section className={formCss.separator}>
+            <SushiCredentialsForm
+              useAggregator={harvestVia === 'aggregator'}
+              form={form}
+              values={values}
+              required={isHarvestingStatusActive}
+            />
           </section>
           <section className={formCss.separator}>
             <Row>
@@ -154,14 +160,6 @@ const HarvestingConfigurationForm = ({
                 <HarvestingEndField />
               </Col>
             </Row>
-          </section>
-          <section className={formCss.separator}>
-            <SushiCredentialsForm
-              useAggregator={harvestVia === 'aggregator'}
-              form={form}
-              values={values}
-              required={isHarvestingStatusActive}
-            />
           </section>
         </Col>
       </Row>
