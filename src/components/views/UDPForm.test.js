@@ -370,11 +370,13 @@ describe('UDPForm', () => {
     });
 
     test('saving a named inactive provider', async () => {
+      const providerStatusCombobox = screen.getByRole('combobox', { name: 'Provider status' });
       const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
       const providerNameTextbox = screen.getByRole('textbox', { name: 'Provider name' });
       const saveAndCloseButton = screen.getByRole('button', { name: 'Save & close' });
 
       // status = active && name set
+      await userEvent.selectOptions(providerStatusCombobox, ['active']);
       await userEvent.selectOptions(harvestingStatusCombobox, ['active']);
       await userEvent.type(providerNameTextbox, 'FooBar');
       expect(harvestingStatusCombobox).toHaveValue('active');

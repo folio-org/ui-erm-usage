@@ -234,7 +234,9 @@ const UDPForm = ({
                 <UDPInfoForm
                   accordionId="editUDPInfo"
                   expanded={sections.editUDPInfo}
+                  form={form}
                   onToggle={handleSectionToggle}
+                  values={values}
                 />
                 <HarvestingConfigurationForm
                   accordionId="editHarvestingConfig"

@@ -74,6 +74,7 @@ const HarvestingConfigurationForm = ({
   const onToggleAccordion = onToggle;
   const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
   const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
+  const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
   const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
@@ -93,7 +94,9 @@ const HarvestingConfigurationForm = ({
           <section className={formCss.separator}>
             <Row>
               <Col xs={4}>
-                <HarvestingStatusSelect />
+                <HarvestingStatusSelect
+                  isProviderStatusInactive={isProviderStatusInactive}
+                />
               </Col>
             </Row>
           </section>

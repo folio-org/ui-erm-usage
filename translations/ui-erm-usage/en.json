@@ -185,6 +185,9 @@
   "udp.form.createUDP": "Create usage data provider",
   "udp.form.udpInfo.title": "Usage data provider information",
   "udp.form.udpInfo.providerName": "Provider name",
+  "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+  "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+  "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
 
   "udp.form.harvestingConfig.harvestViaAggregator": "Harvest statistics via",
   "udp.form.harvestingConfig.vendorCode": "Vendor code",
