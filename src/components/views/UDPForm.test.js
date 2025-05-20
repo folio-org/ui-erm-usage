@@ -43,6 +43,7 @@ const stubHarvesterImpls = [
 const initialUdp = {
   id: '0ba00047-b6cb-417a-a735-e2c1e45e30f1',
   label: 'Usage data provider',
+  status: 'active',
   harvestingConfig: {
     harvestingStatus: 'active',
     harvestVia: 'sushi',
@@ -463,6 +464,47 @@ describe('UDPForm', () => {
       expect(reqIdBox).toBeEnabled();
       await userEvent.clear(apiKeyBox);
       expect(reqIdBox).toBeEnabled();
+    });
+  });
+
+  describe('set provider status inactive if harvester status is active', () => {
+    beforeEach(async () => {
+      renderUDPForm(stripes, initialUdp);
+
+      const providerStatusCombobox = screen.getByRole('combobox', { name: 'Provider status' });
+      await userEvent.selectOptions(providerStatusCombobox, ['inactive']);
+    });
+
+    it('should open modal with headline, message and buttons', async () => {
+      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
+      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).toBeInTheDocument();
+
+      const cancelButton = within(changeStatusModal).getByRole('button', { name: 'Cancel' });
+      const confirmButton = within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
+      expect(cancelButton).toBeInTheDocument();
+      expect(confirmButton).toBeInTheDocument();
+    });
+
+    test('clicking cancel should close the modal and set both status to active ', async () => {
+      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
+      const cancelButton = within(changeStatusModal).getByRole('button', { name: 'Cancel' });
+      await userEvent.click(cancelButton);
+
+      expect(screen.getByRole('combobox', { name: 'Provider status' })).toHaveValue('active');
+      expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toHaveValue('active');
+      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).not.toBeInTheDocument();
+    });
+
+    test('clicking confirm should close the modal, set both status to inactive and disable harvester select box', async () => {
+      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
+      const confirmButton = within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
+      const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
+      await userEvent.click(confirmButton);
+
+      expect(screen.getByRole('combobox', { name: 'Provider status' })).toHaveValue('inactive');
+      expect(harvestingStatusCombobox).toHaveValue('inactive');
+      expect(harvestingStatusCombobox).toBeDisabled();
+      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).not.toBeInTheDocument();
     });
   });
 });
