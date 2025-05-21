@@ -8,12 +8,12 @@ import { required } from '../../../util/validate';
 import statusOptions from '../../../util/data/statusOptions';
 import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
 
-const HarvestingStatusSelect = ({ isProviderStatusInactive }) => {
+const HarvestingStatusSelect = ({ disabled }) => {
   return (
     <Field
       component={Select}
       dataOptions={useTranslateLabels(statusOptions)}
-      disabled={isProviderStatusInactive}
+      disabled={disabled}
       fullWidth
       id="addudp_harvestingstatus"
       label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
@@ -25,7 +25,7 @@ const HarvestingStatusSelect = ({ isProviderStatusInactive }) => {
 };
 
 HarvestingStatusSelect.propTypes = {
-  isProviderStatusInactive: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default HarvestingStatusSelect;

@@ -95,7 +95,7 @@ const HarvestingConfigurationForm = ({
             <Row>
               <Col xs={4}>
                 <HarvestingStatusSelect
-                  isProviderStatusInactive={isProviderStatusInactive}
+                  disabled={isProviderStatusInactive}
                 />
               </Col>
             </Row>
