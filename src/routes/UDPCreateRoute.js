@@ -51,7 +51,12 @@ const UDPCreateRoute = ({
         ...handlers,
         onClose: handleClose,
       }}
-      initialValues={{ harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5', sushiConfig: { serviceType: 'cs50' } } }}
+      initialValues={
+        {
+          status: 'active',
+          harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5', sushiConfig: { serviceType: 'cs50' } }
+        }
+      }
       isLoading={fetchIsPending()}
       onSubmit={handleSubmit}
       store={stripes.store}
