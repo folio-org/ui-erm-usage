@@ -311,5 +311,8 @@
     "report.error.3032": "لم يعد الاستخدام متاحاً للتواريخ المطلوبة",
     "report.error.3063": "المكونات غير مدعومة",
     "report.error.htmlResponse": "لقد حدث خطأ",
-    "information.status": "حالة مقدم الخدمة"
+    "information.status": "حالة مقدم الخدمة",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }

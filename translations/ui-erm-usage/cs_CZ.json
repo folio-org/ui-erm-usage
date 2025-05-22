@@ -311,5 +311,8 @@
     "report.error.3032": "Použití Již Není k Dispozici pro Požadovaná Data",
     "report.error.3063": "Komponenty Nepodporovány",
     "report.error.htmlResponse": "Došlo k chybě",
-    "information.status": "Stav poskytovatele"
+    "information.status": "Stav poskytovatele",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }

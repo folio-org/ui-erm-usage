@@ -311,5 +311,8 @@
     "report.error.3032": "Gebruik niet langer Beschikbaar voor Aangevraagde Data",
     "report.error.3063": "Niet ondersteunde onderdelen",
     "report.error.htmlResponse": "Er is een fout opgetreden",
-    "information.status": "Status Leverancier"
+    "information.status": "Status Leverancier",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }

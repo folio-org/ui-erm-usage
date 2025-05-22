@@ -311,5 +311,8 @@
     "report.error.3032": "Використання більше не доступне для запитуваних дат",
     "report.error.3063": "Компоненти не підтримуються",
     "report.error.htmlResponse": "Сталася помилка",
-    "information.status": "Provider status"
+    "information.status": "Provider status",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }
