@@ -311,5 +311,8 @@
     "report.error.3032": "请求日期的使用情况不再提供",
     "report.error.3063": "不支持的组件",
     "report.error.htmlResponse": "An error has occured",
-    "information.status": "Provider status"
+    "information.status": "Provider status",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }

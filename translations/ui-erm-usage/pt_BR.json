@@ -311,5 +311,8 @@
     "report.error.3032": "O uso não está mais disponível para as datas solicitadas",
     "report.error.3063": "Componentes não suportados",
     "report.error.htmlResponse": "Ocorreu um erro",
-    "information.status": "Status do provedor"
+    "information.status": "Status do provedor",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }

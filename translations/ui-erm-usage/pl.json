@@ -294,7 +294,7 @@
     "noSourceYet": "Brak źródła",
     "reportOverview.confirmDeleteReport": "Usunąć raport?",
     "reportOverview.release": "Release",
-    "general.reportReleases": "Report releases",
+    "general.reportReleases": "Raportuj wydania",
     "permission.module.erm-usage.enabled": "UI: moduł e-Użycia jest włączony",
     "permission.settings.erm-usage.enabled": "Ustawienia (e-Użycie): wyświetlanie stron z listami ustawień",
     "permission.udp.create": "e-Użycie: można tworzyć dostawców danych o użyciu",
@@ -311,5 +311,8 @@
     "report.error.3032": "Użycie nie jest już dostępne dla żądanych dat",
     "report.error.3063": "Komponenty nie są obsługiwane",
     "report.error.htmlResponse": "Wystąpił błąd",
-    "information.status": "Provider status"
+    "information.status": "Provider status",
+    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
+    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
 }
