@@ -312,7 +312,7 @@
     "report.error.3063": "Niet ondersteunde onderdelen",
     "report.error.htmlResponse": "Er is een fout opgetreden",
     "information.status": "Status Leverancier",
-    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
-    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.changeStatusHeading": "Verandering van status Harvesting?",
+    "udp.form.udpInfo.changeStatusMessage": "De status Harvesting is nog steeds actief, hoewel de status Leverancier op inactief is gezet.",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Harvesting status op inactief zetten"
 }
