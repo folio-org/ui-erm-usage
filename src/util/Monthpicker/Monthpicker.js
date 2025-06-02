@@ -23,7 +23,7 @@ const Monthpicker = ({
   input,
   meta,
   isRequired,
-  label,
+  textLabel,
   dateFormat,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -31,7 +31,6 @@ const Monthpicker = ({
   const lastValidYearRef = useRef(null);
   const container = useRef(null);
   const intl = useIntl();
-  const textLabel = intl.formatMessage({ id: label });
 
   const isValidYear = (year) => {
     return Number.isInteger(year) && year >= 1000 && year <= 9999;
@@ -136,7 +135,7 @@ const Monthpicker = ({
     <div ref={container}>
       <TextField
         endControl={renderEndElement()}
-        error={meta.touched && meta.error}
+        error={meta.touched ? meta.error : undefined}
         label={textLabel}
         name={input.name}
         onBlur={input.onBlur}
@@ -228,7 +227,7 @@ Monthpicker.propTypes = {
   dateFormat: PropTypes.string,
   input: PropTypes.object,
   isRequired: PropTypes.bool,
-  label: PropTypes.string,
+  textLabel: PropTypes.string,
   meta: PropTypes.object,
 };
 
