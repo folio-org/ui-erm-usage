@@ -82,6 +82,8 @@ const Monthpicker = ({
   };
 
   const months = getLocalizedMonthAbbreviations();
+  const calendarLabel = intl.formatMessage({ id: 'stripes-components.Datepicker.calendar' });
+  const calendarRoledescription = intl.formatMessage({ id: 'ui-erm-usage.monthpicker.calenderRole' });
 
   const formatYearMonth = (year, monthIndex) => {
     return dateFormat
@@ -98,6 +100,14 @@ const Monthpicker = ({
     const formatted = formatYearMonth(year, monthIndex);
     input.onChange(formatted);
     setShowCalendar(false);
+  };
+
+  const handleYearChange = (e) => {
+    const parsed = parseInt(e.target.value, 10);
+    if (isValidYear(parsed)) {
+      setCalendarDate(prev => ({ ...prev, year: parsed }));
+      lastValidYearRef.current = parsed;
+    }
   };
 
   const decrementYear = () => {
@@ -149,8 +159,10 @@ const Monthpicker = ({
 
   const renderCalendar = () => (
     <div
+      aria-label={calendarLabel}
+      aria-roledescription={calendarRoledescription}
       className={css.calendar}
-      role="dialog"
+      role="application"
     >
       <div className={css.calendarHeader}>
         <FormattedMessage id="stripes-components.goToPreviousYear">
@@ -172,13 +184,7 @@ const Monthpicker = ({
                 type="number"
                 placeholder={yearPlaceholder}
                 value={calendarDate?.year ?? new Date().getFullYear()}
-                onChange={e => {
-                  const parsed = parseInt(e.target.value, 10);
-                  if (isValidYear(parsed)) {
-                    setCalendarDate(prev => ({ ...prev, year: parsed }));
-                    lastValidYearRef.current = parsed;
-                  }
-                }}
+                onChange={e => handleYearChange(e)}
               />
             )}
           </FormattedMessage>
@@ -199,7 +205,7 @@ const Monthpicker = ({
         {months.map((month, index) => (
           <Button
             buttonStyle={index === calendarDate?.month ? 'primary' : ''}
-            key={index}
+            key={month}
             onClick={() => handleMonthSelect(index)}
           >
             {month}
