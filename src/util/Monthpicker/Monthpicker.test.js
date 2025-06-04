@@ -1,5 +1,4 @@
 import {
-  fireEvent,
   screen,
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
@@ -95,7 +94,8 @@ describe('Monthpicker', () => {
 
     // use spinbutton for input with type="number"
     const yearInput = screen.getByRole('spinbutton', { name: 'year' });
-    fireEvent.change(yearInput, { target: { value: '2025' } });
+    await userEvent.clear(yearInput);
+    await userEvent.type(yearInput, '2025');
 
     expect(yearInput.value).toBe('2025');
   });
