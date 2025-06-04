@@ -82,8 +82,6 @@ const Monthpicker = ({
   };
 
   const months = getLocalizedMonthAbbreviations();
-  const calendarLabel = intl.formatMessage({ id: 'stripes-components.Datepicker.calendar' });
-  const calendarRoledescription = intl.formatMessage({ id: 'ui-erm-usage.monthpicker.calenderRole' });
 
   const formatYearMonth = (year, monthIndex) => {
     return dateFormat
@@ -159,12 +157,16 @@ const Monthpicker = ({
 
   const renderCalendar = () => (
     <div
-      aria-label={calendarLabel}
-      aria-roledescription={calendarRoledescription}
+      aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
+      aria-roledescription={intl.formatMessage({ id: 'stripes-components.Datepicker.calendar' })}
       className={css.calendar}
-      role="application"
+      role="dialog"
     >
-      <div className={css.calendarHeader}>
+      <div
+        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearSelection' })}
+        className={css.calendarHeader}
+        role="group"
+      >
         <FormattedMessage id="stripes-components.goToPreviousYear">
           {([ariaLabel]) => (
             <IconButton
@@ -201,15 +203,23 @@ const Monthpicker = ({
         </FormattedMessage>
       </div>
 
-      <div className={css.calendarMonths}>
+      <div
+        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.monthSelection' })}
+        className={css.calendarMonths}
+        role="grid"
+      >
         {months.map((month, index) => (
-          <Button
-            buttonStyle={index === calendarDate?.month ? 'primary' : ''}
-            key={month}
-            onClick={() => handleMonthSelect(index)}
-          >
-            {month}
-          </Button>
+          <div role="row" key={month}>
+            <div role="gridcell">
+              <Button
+                aria-selected={index === calendarDate?.month}
+                buttonStyle={index === calendarDate?.month ? 'primary' : ''}
+                onClick={() => handleMonthSelect(index)}
+              >
+                {month}
+              </Button>
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -349,7 +349,9 @@
   "permission.harvester.start.single": "eUsage: Can start harvesting for a single provider",
   "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
   
-  "monthpicker.calenderRole": "monthpicker",
+  "monthpicker.monthSelection": "Monatsauswahl",
+  "monthpicker.yearMonthSelection": "Jahr- und Monatsauswahl",
+  "monthpicker.yearSelection": "Jahresauswahl",
 
   "showTags": "Show tags"
 }

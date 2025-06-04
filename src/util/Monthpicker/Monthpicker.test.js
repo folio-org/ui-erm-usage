@@ -44,7 +44,7 @@ describe('Monthpicker', () => {
     const toggleButton = screen.getByRole('button', { name: /calendar/i });
     await userEvent.click(toggleButton);
 
-    expect(screen.getByRole('application')).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('should show all months as buttos', async () => {
