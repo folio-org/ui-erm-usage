@@ -24,3 +24,11 @@
 .centerNote {
   margin-top: 2em;
 }
+
+.marginTop {
+  margin-top: 1em;
+}
+
+.centered {
+  margin: auto;
+}

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Field, Form } from 'react-final-form';
+
 import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
@@ -9,10 +10,11 @@ import {
   KeyValue,
   Modal,
   ModalFooter,
-  Row,
   TextField,
 } from '@folio/stripes/components';
+
 import FileUploader from '../FileUploader';
+import formCss from '../../../util/sharedStyles/form.css';
 
 function CounterUploadModal({ intl, onClose, onSubmit, open }) {
   const footer = (isValid, handleSubmit, handleReset) => {
@@ -54,59 +56,50 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
           footer={footer(form.getState().valid, handleSubmit, form.reset)}
           id="upload-counter-modal"
           open={open}
-          label={intl.formatMessage({
-            id: 'ui-erm-usage.statistics.counter.upload',
-          })}
+          label={intl.formatMessage({ id: 'ui-erm-usage.statistics.counter.upload' })}
         >
-          <Row>
-            <Col xs={8}>
-              <Row>
-                <KeyValue
-                  label={<FormattedMessage id="ui-erm-usage.general.info" />}
-                  value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
-                />
-              </Row>
-              <Row>
-                <Col xs={12}>
-                  <Field name="file">
-                    {({ input: { onChange } }) => <FileUploader onChange={onChange} />}
-                  </Field>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12}>
-                  <KeyValue label="SELECTED FILE" value={values.file?.path} />
-                </Col>
-              </Row>
+          <p>
+            <KeyValue
+              label={<FormattedMessage id="ui-erm-usage.general.info" />}
+              value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
+            />
+          </p>
+          <p>
+            <Col xs={8} className={formCss.centered}>
+              <Field name="file">
+                {({ input: { onChange } }) => <FileUploader onChange={onChange} />}
+              </Field>
             </Col>
-            <Col xs={4}>
-              <Row style={{ marginTop: '25px' }}>
-                <Field
-                  component={Checkbox}
-                  id="addcounterreport_reportEditedManually"
-                  initialValue={false}
-                  label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
-                  name="reportEditedManually"
-                  type="checkbox"
-                />
-              </Row>
-              <Row style={{ marginTop: '15px' }}>
-                <Field
-                  component={TextField}
-                  disabled={values.reportEditedManually?.value === false}
-                  fullWidth
-                  initialValue=""
-                  id="addcounterreport_editReason"
-                  label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
-                  name="editReason"
-                  placeholder={intl.formatMessage({
-                    id: 'ui-erm-usage.report.upload.editReason.placeholder',
-                  })}
-                  required={values.reportEditedManually?.value === true}
-                />
-              </Row>
-            </Col>
-          </Row>
+          </p>
+          <p className={formCss.marginTop}>
+            <KeyValue
+              label={<FormattedMessage id="ui-erm-usage.statistics.selectedFile" />}
+              value={values.file?.path}
+            />
+          </p>
+          <p className={formCss.marginTop}>
+            <Field
+              component={Checkbox}
+              id="addcounterreport_reportEditedManually"
+              initialValue={false}
+              label={<FormattedMessage id="ui-erm-usage.report.upload.editedManually" />}
+              name="reportEditedManually"
+              type="checkbox"
+            />
+          </p>
+          <p className={formCss.marginTop}>
+            <Field
+              component={TextField}
+              disabled={values.reportEditedManually?.value === false}
+              fullWidth
+              initialValue=""
+              id="addcounterreport_editReason"
+              label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
+              name="editReason"
+              placeholder={intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
+              required={values.reportEditedManually?.value === true}
+            />
+          </p>
         </Modal>
       )}
     />

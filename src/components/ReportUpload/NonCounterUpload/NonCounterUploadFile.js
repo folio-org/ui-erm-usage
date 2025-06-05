@@ -26,7 +26,7 @@ function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, fil
       <KeyValue
         label={
           <Label required>
-            <FormattedMessage id="ui-erm-usage.statistics.custom.selectedFile" />
+            <FormattedMessage id="ui-erm-usage.statistics.selectedFile" />
           </Label>
         }
         value={downloadButton}
