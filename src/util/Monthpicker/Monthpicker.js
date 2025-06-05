@@ -158,7 +158,6 @@ const Monthpicker = ({
   const renderCalendar = () => (
     <div
       aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
-      aria-roledescription={intl.formatMessage({ id: 'stripes-components.Datepicker.calendar' })}
       className={css.calendar}
       role="dialog"
     >
@@ -212,7 +211,8 @@ const Monthpicker = ({
           <div role="row" key={month}>
             <div role="gridcell">
               <Button
-                aria-selected={index === calendarDate?.month}
+                aria-label={index === calendarDate?.month ? `${month} selected` : month}
+                aria-pressed={index === calendarDate?.month}
                 buttonStyle={index === calendarDate?.month ? 'primary' : ''}
                 onClick={() => handleMonthSelect(index)}
               >
