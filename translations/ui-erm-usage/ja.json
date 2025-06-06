@@ -187,7 +187,6 @@
     "statistics.custom.info": "カスタムレポート情報",
     "statistics.custom.info.detail": "詳細情報",
     "statistics.custom.selectFileFirst": "最初にファイルを選択",
-    "statistics.custom.selectedFile": "選択済ファイル",
     "showTags": "タグを表示",
     "general.error": "問題が発生しました",
     "statistics.counter.upload.wait": "レポートをアップロードしています。お待ちください。",
@@ -314,5 +313,6 @@
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

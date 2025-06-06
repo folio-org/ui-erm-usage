@@ -187,7 +187,6 @@
     "statistics.custom.info": "Información personalizada",
     "statistics.custom.info.detail": "Información detallada",
     "statistics.custom.selectFileFirst": "Seleccione primero el archivo",
-    "statistics.custom.selectedFile": "Fichero seleccionado",
     "showTags": "Mostrar etiquetas",
     "general.error": "Ooops. Algo salió mal...",
     "statistics.counter.upload.wait": "Cargando informe. ¡Por favor, espere!",
@@ -314,5 +313,6 @@
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

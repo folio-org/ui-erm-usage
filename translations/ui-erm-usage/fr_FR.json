@@ -127,7 +127,7 @@
     "report.upload.upload": "Télécharger",
     "report.upload.dropFile": "Déposer le fichier ici",
     "report.upload.selectFile": "ou sélectionnez un fichier",
-    "report.upload.info": "It is possible to upload Counter 4 (XML & CSV) or Counter 5 (JSON & CSV) or Counter 5.1 (JSON) usage statistics",
+    "report.upload.info": "It is possible to upload usage statistics for<ul><li>Counter 4 (XML, CSV)</li><li>Counter 5 (JSON, CSV)</li><li>Counter 5.1 (JSON, CSV, TSV, XLSX)</li></ul>",
     "report.error.other": "Autre",
     "report.error.0": "Info ou débogage",
     "report.error.1": "Avertissements",
@@ -187,7 +187,6 @@
     "statistics.custom.info": "Informations sur le rapport personnalisé",
     "statistics.custom.info.detail": "Informations détaillées",
     "statistics.custom.selectFileFirst": "Sélectionnez d'abord le fichier",
-    "statistics.custom.selectedFile": "Fichier sélectionné",
     "showTags": "Afficher les mots-clés",
     "general.error": "Oups. Une erreur s'est produite ...",
     "statistics.counter.upload.wait": "Chargement du rapport. Merci de patienter.",
@@ -314,5 +313,6 @@
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

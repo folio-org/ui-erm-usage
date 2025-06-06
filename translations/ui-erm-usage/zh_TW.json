@@ -187,7 +187,6 @@
     "statistics.custom.info": "自訂報告資訊",
     "statistics.custom.info.detail": "詳細資訊",
     "statistics.custom.selectFileFirst": "先選擇檔案",
-    "statistics.custom.selectedFile": "選定的檔案",
     "showTags": "顯示標籤",
     "general.error": "發生了一些問題 (°ロ°) !",
     "statistics.counter.upload.wait": "正在上傳報告。請稍等！",
@@ -314,5 +313,6 @@
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }
