@@ -187,7 +187,6 @@
     "statistics.custom.info": "بيانات التقرير المخصص",
     "statistics.custom.info.detail": "معلومات تفصيلية",
     "statistics.custom.selectFileFirst": "حدد الملف أولاً",
-    "statistics.custom.selectedFile": "الملف المحدد",
     "showTags": "عرض الوسوم",
     "general.error": "عفواً، لقد حدث خطأ ما...",
     "statistics.counter.upload.wait": "جاري تحميل التقرير. برجاء الانتظار!",
@@ -314,5 +313,6 @@
     "information.status": "حالة مقدم الخدمة",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

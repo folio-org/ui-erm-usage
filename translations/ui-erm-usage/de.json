@@ -127,7 +127,7 @@
     "report.upload.upload": "Hochladen:",
     "report.upload.dropFile": "Datei hier ablegen",
     "report.upload.selectFile": "oder Datei auswählen",
-    "report.upload.info": "Berichte können als COUNTER 4 (XML & CSV) oder COUNTER 5 (JSON & CSV) hochgeladen werden.",
+    "report.upload.info": "Es ist möglich, Nutzungsstatistiken hochzuladen für<ul><li>Counter 4 (XML, CSV)</li><li>Counter 5 (JSON, CSV)</li><li>Counter 5.1 (JSON, CSV, TSV, XLSX)</li></ul>",
     "report.error.other": "Andere",
     "report.error.0": "Info oder Fehlersuche",
     "report.error.1": "Warnungen",
@@ -187,7 +187,6 @@
     "statistics.custom.info": "Information zu benutzerdefiniertem Bericht",
     "statistics.custom.info.detail": "Detailinformationen",
     "statistics.custom.selectFileFirst": "Datei zuerst auswählen",
-    "statistics.custom.selectedFile": "Ausgewählte Datei",
     "showTags": "Tags anzeigen",
     "general.error": "Ein Fehler ist aufgetreten.",
     "statistics.counter.upload.wait": "Report wird hochgeladen. Bitte warten!",
@@ -310,9 +309,10 @@
     "report.error.2011": "Global Reports werden nicht unterstützt",
     "report.error.3032": "Nutzungsdaten für angefragten Zeitraum nicht mehr verfügbar",
     "report.error.3063": "Components werden nicht unterstützt",
-    "report.error.htmlResponse": "An error has occured",
+    "report.error.htmlResponse": "Es ist ein Fehler aufgetreten",
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

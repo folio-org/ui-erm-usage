@@ -187,7 +187,6 @@
     "statistics.custom.info": "맞춤 보고서 정보",
     "statistics.custom.info.detail": "상세 정보",
     "statistics.custom.selectFileFirst": "먼저 파일 선택",
-    "statistics.custom.selectedFile": "선택한 파일",
     "showTags": "태그 표시",
     "general.error": "죄송합니다. 문제가 발생했습니다 ...",
     "statistics.counter.upload.wait": "보고서 업로드 중. 기다려주세요!",
@@ -314,5 +313,6 @@
     "information.status": "Provider status",
     "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
     "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
+    "statistics.selectedFile": "Selected file"
 }

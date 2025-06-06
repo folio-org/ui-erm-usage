@@ -187,7 +187,6 @@
     "statistics.custom.info": "自定义报告信息",
     "statistics.custom.info.detail": "详细信息",
     "statistics.custom.selectFileFirst": "先选择文件",
-    "statistics.custom.selectedFile": "所选文件",
     "showTags": "显示标签",
     "general.error": "哎呀出问题了...",
     "statistics.counter.upload.wait": "正在上传报告。请稍候！",
@@ -310,9 +309,10 @@
     "report.error.2011": "不支持全局报告",
     "report.error.3032": "请求日期的使用情况不再提供",
     "report.error.3063": "不支持的组件",
-    "report.error.htmlResponse": "An error has occured",
-    "information.status": "Provider status",
-    "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
-    "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive"
+    "report.error.htmlResponse": "发生错误",
+    "information.status": "提供商状态",
+    "udp.form.udpInfo.changeStatusHeading": "收割状况是否改变？",
+    "udp.form.udpInfo.changeStatusMessage": "尽管提供者状态已设置为非激活，但收割状态仍为激活。",
+    "udp.form.udpInfo.setHarvestingStatusInactive": "将收割状态设置为未激活",
+    "statistics.selectedFile": "Selected file"
 }

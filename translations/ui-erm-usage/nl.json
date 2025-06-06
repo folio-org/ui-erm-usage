@@ -187,7 +187,6 @@
     "statistics.custom.info": "Informatie over maatwerkrapport",
     "statistics.custom.info.detail": "Detailinfo",
     "statistics.custom.selectFileFirst": "Selecteer eerst een bestand",
-    "statistics.custom.selectedFile": "Geselecteerd bestand",
     "showTags": "Tags tonen",
     "general.error": "Oeps. Er ging iets mis...",
     "statistics.counter.upload.wait": "Rapport uploaden. Even geduld a.u.b.",
@@ -314,5 +313,6 @@
     "information.status": "Status Leverancier",
     "udp.form.udpInfo.changeStatusHeading": "Verandering van status Harvesting?",
     "udp.form.udpInfo.changeStatusMessage": "De status Harvesting is nog steeds actief, hoewel de status Leverancier op inactief is gezet.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Harvesting status op inactief zetten"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Harvesting status op inactief zetten",
+    "statistics.selectedFile": "Selected file"
 }
