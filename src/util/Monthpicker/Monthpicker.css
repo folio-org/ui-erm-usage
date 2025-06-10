@@ -1,0 +1,44 @@
+.calendar {
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid #bcbcbc;
+  padding: var(--gutter-static);
+  box-shadow: var(--shadow);
+  z-index: 9999;
+  pointer-events: all;
+  width: 300px;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 14px;
+}
+
+.marginBottom {
+  margin-bottom: 1rem;
+}
+
+.calendarMonths {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  max-width: 300px;
+
+  button {
+    font-weight: 600;
+    margin-left: 0 !important;
+    text-align: center;
+    width: 100%;
+
+    &:active,
+    &:hover,
+    &:focus,
+    &:target  {
+      text-decoration: none;
+    }
+  }
+}
