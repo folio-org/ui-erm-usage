@@ -172,8 +172,9 @@ const Monthpicker = ({
       <div
         aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
         className={css.calendar}
-        // Popper component requires a 'div', which is why 'dialog' can not be used here and the 'role' is set instead
-        role="dialog" // eslint-disable-line
+        // Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead
+        // eslint-disable-next-line
+        role="dialog"
       >
         <fieldset className={css.calendarHeader}>
           <legend className="sr-only">
