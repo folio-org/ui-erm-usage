@@ -12,6 +12,7 @@ import {
 import {
   Button,
   Col,
+  HasCommand,
   IconButton,
   Popper,
   TextField,
@@ -130,6 +131,14 @@ const Monthpicker = ({
     setShowCalendar(cur => !cur);
   };
 
+  const shortcuts = [
+    {
+      name: 'close',
+      handler: () => setShowCalendar(false),
+      shortcut: 'esc',
+    },
+  ];
+
   const renderEndElement = () => (
     <IconButton
       aria-haspopup="true"
@@ -156,73 +165,81 @@ const Monthpicker = ({
     </div>;
 
   const renderCalendar = () => (
-    <div
-      aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
-      className={css.calendar}
-      role="dialog"
+    <HasCommand
+      commands={shortcuts}
+      scope={document.body}
     >
       <div
-        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearSelection' })}
-        className={css.calendarHeader}
-        role="group"
+        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
+        className={css.calendar}
+        // Popper component requires a 'div', which is why 'dialog' can not be used here and the 'role' is set instead
+        role="dialog" // eslint-disable-line
       >
-        <FormattedMessage id="stripes-components.goToPreviousYear">
-          {([ariaLabel]) => (
-            <IconButton
-              aria-label={ariaLabel}
-              className={css.marginBottom}
-              icon="chevron-double-left"
-              onClick={decrementYear}
-            />
-          )}
-        </FormattedMessage>
-        <Col xs={4}>
-          <FormattedMessage id="stripes-components.Datepicker.yearControl">
+        <fieldset className={css.calendarHeader}>
+          <legend className="sr-only">
+            {intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearSelection' })}
+          </legend>
+          <FormattedMessage id="stripes-components.goToPreviousYear">
             {([ariaLabel]) => (
-              <TextField
+              <IconButton
                 aria-label={ariaLabel}
-                hasClearIcon={false}
-                type="number"
-                placeholder={yearPlaceholder}
-                value={calendarDate?.year ?? new Date().getFullYear()}
-                onChange={e => handleYearChange(e)}
+                className={css.marginBottom}
+                icon="chevron-double-left"
+                onClick={decrementYear}
               />
             )}
           </FormattedMessage>
-        </Col>
-        <FormattedMessage id="stripes-components.goToNextYear">
-          {([ariaLabel]) => (
-            <IconButton
-              aria-label={ariaLabel}
-              className={css.marginBottom}
-              icon="chevron-double-right"
-              onClick={incrementYear}
-            />
-          )}
-        </FormattedMessage>
-      </div>
+          <Col xs={4}>
+            <FormattedMessage id="stripes-components.Datepicker.yearControl">
+              {([ariaLabel]) => (
+                <TextField
+                  aria-label={ariaLabel}
+                  hasClearIcon={false}
+                  type="number"
+                  placeholder={yearPlaceholder}
+                  value={calendarDate?.year ?? new Date().getFullYear()}
+                  onChange={e => handleYearChange(e)}
+                />
+              )}
+            </FormattedMessage>
+          </Col>
+          <FormattedMessage id="stripes-components.goToNextYear">
+            {([ariaLabel]) => (
+              <IconButton
+                aria-label={ariaLabel}
+                className={css.marginBottom}
+                icon="chevron-double-right"
+                onClick={incrementYear}
+              />
+            )}
+          </FormattedMessage>
+        </fieldset>
 
-      <div
-        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.monthSelection' })}
-        className={css.calendarMonths}
-        role="grid"
-      >
-        {months.map((month, index) => (
-          <div role="row" key={month}>
-            <div role="gridcell">
-              <Button
-                aria-label={index === calendarDate?.month ? `${month} selected` : month}
-                aria-pressed={index === calendarDate?.month}
-                buttonStyle={index === calendarDate?.month ? 'primary' : ''}
-                onClick={() => handleMonthSelect(index)}
-              >
-                {month}
-              </Button>
+        <div
+          aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.monthSelection' })}
+          className={css.calendarMonths}
+          role="grid"
+        >
+          {months.map((month, index) => (
+            // using table is not wanted here, instead using 'row' and 'gridcell' and set a role
+            // eslint-disable-next-line
+            <div role="row" key={month}>
+              {/* eslint-disable-next-line */}
+              <div role="gridcell">
+                <Button
+                  aria-label={index === calendarDate?.month ? `${month} selected` : month}
+                  aria-pressed={index === calendarDate?.month}
+                  buttonStyle={index === calendarDate?.month ? 'primary' : ''}
+                  onClick={() => handleMonthSelect(index)}
+                >
+                  {month}
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </HasCommand>
   );
 
   return (
