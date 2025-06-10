@@ -187,7 +187,6 @@
     "statistics.custom.info": "Informacje o raporcie niestandardowym",
     "statistics.custom.info.detail": "Szczegółowe informacje",
     "statistics.custom.selectFileFirst": "Najpierw wybierz plik",
-    "statistics.custom.selectedFile": "Wybrany plik",
     "showTags": "Pokaż etykiety",
     "general.error": "Ups. Coś poszło nie tak...",
     "statistics.counter.upload.wait": "Przesyłanie raportu. Proszę czekać!",
@@ -314,5 +313,6 @@
     "information.status": "Status dostawcy",
     "udp.form.udpInfo.changeStatusHeading": "Zmienić status harvestingu?",
     "udp.form.udpInfo.changeStatusMessage": "Status harvestingu jest nadal aktywny, chociaż status dostawcy został ustawiony na nieaktywny.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Ustaw status harvestingu na nieaktywny"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Ustaw status harvestingu na nieaktywny",
+    "statistics.selectedFile": "Selected file"
 }

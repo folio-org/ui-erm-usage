@@ -187,7 +187,6 @@
     "statistics.custom.info": "Informace o vlastním výstupu",
     "statistics.custom.info.detail": "Detailní informace",
     "statistics.custom.selectFileFirst": "Nejprve vybrat soubor",
-    "statistics.custom.selectedFile": "Vybraný soubor",
     "showTags": "Zobrazit štítky",
     "general.error": "Jejda. Něco se pokazilo...",
     "statistics.counter.upload.wait": "Nahrávání výstupu. Počkejte prosím!",
@@ -314,5 +313,6 @@
     "information.status": "Stav poskytovatele",
     "udp.form.udpInfo.changeStatusHeading": "Změna stavu harvestu?",
     "udp.form.udpInfo.changeStatusMessage": "Stav harvestu je stále aktivní, ačkoli stav poskytovatele byl nastaven jako neaktivní.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Nastavit stav harvestu jako neaktivní"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Nastavit stav harvestu jako neaktivní",
+    "statistics.selectedFile": "Selected file"
 }

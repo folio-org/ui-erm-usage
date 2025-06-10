@@ -127,7 +127,7 @@
     "report.upload.upload": "Carregar",
     "report.upload.dropFile": "Solte o arquivo aqui",
     "report.upload.selectFile": "ou selecione o arquivo",
-    "report.upload.info": "É possível carregar estatísticas de uso Counter 4 (XML e CSV) ou Counter 5 (JSON e CSV) ou Counter 5.1 (JSON)",
+    "report.upload.info": "É possível fazer upload de estatísticas de uso para<ul><li> Counter 4 (XML, CSV)</li><li> Counter 5 (JSON, CSV)</li><li> Counter 5.1 (JSON, CSV, TSV, XLSX)</li></ul>",
     "report.error.other": "Outros",
     "report.error.0": "Informações ou depuração",
     "report.error.1": "Avisos",
@@ -187,7 +187,6 @@
     "statistics.custom.info": "Informação de relatório personalizado",
     "statistics.custom.info.detail": "Informações detalhadas",
     "statistics.custom.selectFileFirst": "Selecione o arquivo primeiro",
-    "statistics.custom.selectedFile": "Arquivo selecionado",
     "showTags": "Mostrar tags",
     "general.error": "Ops. Algo deu errado...",
     "statistics.counter.upload.wait": "Carregando relatório. Por favor aguarde!",
@@ -314,5 +313,6 @@
     "information.status": "Status do provedor",
     "udp.form.udpInfo.changeStatusHeading": "Mudar status de harvesting?",
     "udp.form.udpInfo.changeStatusMessage": "O status do harvesting ainda está ativo, embora o status do provedor tenha sido definido como inativo.",
-    "udp.form.udpInfo.setHarvestingStatusInactive": "Definir o status do harvesting como inativo"
+    "udp.form.udpInfo.setHarvestingStatusInactive": "Definir o status do harvesting como inativo",
+    "statistics.selectedFile": "Arquivo selecionado"
 }
