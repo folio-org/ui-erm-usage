@@ -23,11 +23,11 @@ import css from './Monthpicker.css';
 
 const Monthpicker = ({
   backendDateFormat = 'YYYY-MM',
-  input,
-  meta,
-  isRequired,
-  textLabel,
   dateFormat,
+  input,
+  isRequired,
+  meta,
+  textLabel = '',
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
@@ -169,8 +169,6 @@ const Monthpicker = ({
     />
   );
 
-  // TODO: README schreiben!
-  // TODO: backend format formatieren speichern mit minus
   const content =
     <div ref={container}>
       <TextField
@@ -283,11 +281,12 @@ const Monthpicker = ({
 };
 
 Monthpicker.propTypes = {
+  backendDateFormat: PropTypes.string,
   dateFormat: PropTypes.string,
   input: PropTypes.object,
   isRequired: PropTypes.bool,
-  textLabel: PropTypes.object,
   meta: PropTypes.object,
+  textLabel: PropTypes.string,
 };
 
 export default Monthpicker;

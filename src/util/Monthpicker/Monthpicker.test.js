@@ -101,11 +101,13 @@ describe('Monthpicker', () => {
   });
 
   it('should increment and decrement year', async () => {
+    const onChange = jest.fn();
+
     renderMonthpicker({
       input: {
         name: 'test-monthpicker',
         value: '2023-04',
-        onChange: jest.fn(),
+        onChange,
         onBlur: jest.fn(),
         onFocus: jest.fn(),
       },
@@ -121,10 +123,10 @@ describe('Monthpicker', () => {
     const prevYearBtn = screen.getByRole('button', { name: 'Go to previous year' });
 
     await userEvent.click(nextYearBtn);
-    expect(yearInput.value).toBe('2024');
+    expect(onChange).toHaveBeenCalledWith('2024-04');
 
     await userEvent.click(prevYearBtn);
-    expect(yearInput.value).toBe('2023');
+    expect(onChange).toHaveBeenCalledWith('2023-04');
   });
 
   it('should show error message if meta has an error and touched is true', () => {
