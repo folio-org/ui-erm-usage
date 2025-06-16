@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -21,6 +22,7 @@ import {
 import css from './Monthpicker.css';
 
 const Monthpicker = ({
+  backendDateFormat = 'YYYY-MM',
   input,
   meta,
   isRequired,
@@ -28,13 +30,30 @@ const Monthpicker = ({
   dateFormat,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [calendarDate, setCalendarDate] = useState(null);
-  const lastValidYearRef = useRef(null);
+  const lastValidDateRef = useRef({ year: null, month: null });
   const container = useRef(null);
   const intl = useIntl();
 
+  const resolvedDateFormat = useMemo(() => {
+    return dateFormat ?? new Intl.DateTimeFormat(intl.locale, {
+      year: 'numeric',
+      month: '2-digit',
+    }).format(new Date());
+  }, [dateFormat, intl.locale]);
+
   const isValidYear = (year) => {
-    return Number.isInteger(year) && year >= 1000 && year <= 9999;
+    const num = Number(year);
+    return Number.isInteger(num) && num >= 1000 && num <= 9999;
+  };
+
+  const isValidMonth = (month) => {
+    const monthIndex = month - 1;
+    return !Number.isNaN(monthIndex) && monthIndex >= 0 && monthIndex <= 11;
+  };
+
+  const ensureValidMonth = (month) => {
+    if (isValidMonth(month)) return month;
+    return new Date().getMonth() + 1;
   };
 
   const ensureValidYear = (year) => {
@@ -42,37 +61,52 @@ const Monthpicker = ({
     return new Date().getFullYear();
   };
 
-  const getYearAndMonthFromInput = (value) => {
-    const today = new Date();
-    const [rawYear, rawMonth] = (value || '').split('-');
-    const year = parseInt(rawYear, 10);
-    const month = parseInt(rawMonth, 10) - 1;
+  const extractYearAndMonth = (inputValue, format) => {
+    // allowed separator between year and month
+    const separators = ['-', '.', '/'];
+    const separator = separators.find(sep => format.includes(sep));
+    if (!separator) {
+      throw new Error('unknown separator');
+    }
+
+    const formatParts = format.split(separator);
+    const inputParts = inputValue.split(separator);
+
+    let year;
+    let month;
+
+    formatParts.forEach((part, index) => {
+      if (part.includes('Y')) {
+        year = inputParts[index];
+        if (part === 'YY' && year.length === 2) {
+          year = parseInt(year, 10) >= 50 ? '19' + year : '20' + year;
+        }
+      } else if (part.includes('M')) {
+        month = inputParts[index];
+      }
+    });
+
+    lastValidDateRef.current = { year: parseInt(year, 10), month: parseInt(month, 10) };
 
     return {
-      year: isValidYear(year) ? year : today.getFullYear(),
-      month: !Number.isNaN(month) && month >= 0 && month <= 11 ? month : today.getMonth(),
+      year: parseInt(year, 10),
+      month: parseInt(month, 10),
     };
   };
 
-  const extractYearPlaceholders = (format) => {
-    const yearMatch = format.match(/Y+/);
-    return {
-      yearPlaceholder: yearMatch ? yearMatch[0] : 'YYYY',
-    };
+  const buildDateString = (year, monthIndex, format) => {
+    return format
+      .replace(/Y+/, ensureValidYear(year).toString())
+      .replace(/M+/, (monthIndex).toString().padStart(2, '0'));
   };
-
-  const { yearPlaceholder } = extractYearPlaceholders(dateFormat);
 
   // set calendarDate and lastValidYearRef if the input is changing of if the calender just opened
   useEffect(() => {
-    if (showCalendar) {
-      const { year, month } = getYearAndMonthFromInput(input.value);
-      setCalendarDate({ year, month });
+    const { year, month } = extractYearAndMonth(input.value, resolvedDateFormat);
+    const validYear = ensureValidYear(year);
+    const validMonth = ensureValidMonth(month);
 
-      if (isValidYear(year)) {
-        lastValidYearRef.current = year;
-      }
-    }
+    lastValidDateRef.current = { year: validYear, month: validMonth };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showCalendar, input.value]);
 
@@ -82,49 +116,36 @@ const Monthpicker = ({
     });
   };
 
-  const months = getLocalizedMonthAbbreviations();
-
-  const formatYearMonth = (year, monthIndex) => {
-    return dateFormat
-      .replace(/Y+/, ensureValidYear(year).toString())
-      .replace(/M+/, (monthIndex + 1).toString().padStart(2, '0'));
-  };
-
   const handleMonthSelect = (monthIndex) => {
-    // use the last valid year, if calendarDate.year is not valid or null
-    const year = isValidYear(calendarDate?.year)
-      ? calendarDate.year
-      : (lastValidYearRef.current ?? new Date().getFullYear());
+    const year = (lastValidDateRef.current.year ?? new Date().getFullYear());
+    const backendFormatted = buildDateString(year, monthIndex + 1, backendDateFormat);
+    input.onChange(backendFormatted);
 
-    const formatted = formatYearMonth(year, monthIndex);
-    input.onChange(formatted);
     setShowCalendar(false);
+
+    lastValidDateRef.current = { year, month: monthIndex };
   };
 
   const handleYearChange = (e) => {
-    const parsed = parseInt(e.target.value, 10);
-    if (isValidYear(parsed)) {
-      setCalendarDate(prev => ({ ...prev, year: parsed }));
-      lastValidYearRef.current = parsed;
-    }
+    lastValidDateRef.current = { ...lastValidDateRef.current, year: ensureValidYear(e.target.value) };
   };
 
   const decrementYear = () => {
-    setCalendarDate(prev => {
-      const currentYear = isValidYear(prev?.year) ? prev.year : (lastValidYearRef.current ?? new Date().getFullYear());
-      const newYear = currentYear - 1;
-      lastValidYearRef.current = newYear;
-      return { ...prev, year: newYear };
-    });
+    const newYear = lastValidDateRef.current?.year - 1;
+    const currentMonth = lastValidDateRef.current?.month;
+    lastValidDateRef.current = { month: currentMonth, year: newYear };
+
+    const newValue = buildDateString(newYear, currentMonth, resolvedDateFormat);
+    input.onChange(newValue);
   };
 
   const incrementYear = () => {
-    setCalendarDate(prev => {
-      const currentYear = isValidYear(prev?.year) ? prev.year : (lastValidYearRef.current ?? new Date().getFullYear());
-      const newYear = currentYear + 1;
-      lastValidYearRef.current = newYear;
-      return { ...prev, year: newYear };
-    });
+    const newYear = lastValidDateRef.current?.year + 1;
+    const currentMonth = lastValidDateRef.current?.month;
+    lastValidDateRef.current = { month: currentMonth, year: newYear };
+
+    const newValue = buildDateString(newYear, currentMonth, resolvedDateFormat);
+    input.onChange(newValue);
   };
 
   const toggleCalendar = () => {
@@ -148,6 +169,8 @@ const Monthpicker = ({
     />
   );
 
+  // TODO: README schreiben!
+  // TODO: backend format formatieren speichern mit minus
   const content =
     <div ref={container}>
       <TextField
@@ -158,11 +181,13 @@ const Monthpicker = ({
         onBlur={input.onBlur}
         onChange={input.onChange}
         onFocus={input.onFocus}
-        placeholder={dateFormat}
+        placeholder={resolvedDateFormat}
         required={isRequired}
-        value={input.value}
+        value={input.value ?? buildDateString(lastValidDateRef.current?.year, lastValidDateRef.current?.month, resolvedDateFormat)}
       />
     </div>;
+
+  const months = getLocalizedMonthAbbreviations();
 
   const renderCalendar = () => (
     <HasCommand
@@ -197,8 +222,8 @@ const Monthpicker = ({
                   aria-label={ariaLabel}
                   hasClearIcon={false}
                   type="number"
-                  placeholder={yearPlaceholder}
-                  value={calendarDate?.year ?? new Date().getFullYear()}
+                  placeholder={(resolvedDateFormat.match(/Y+/) || [])[0]}
+                  value={lastValidDateRef.current?.year}
                   onChange={e => handleYearChange(e)}
                 />
               )}
@@ -221,19 +246,19 @@ const Monthpicker = ({
           className={css.calendarMonths}
           role="grid"
         >
-          {months.map((month, index) => (
+          {months.map((monthButton, index) => (
             // using table is not wanted here, instead using 'row' and 'gridcell' and set a role
             // eslint-disable-next-line
-            <div role="row" key={month}>
+            <div role="row" key={monthButton}>
               {/* eslint-disable-next-line */}
               <div role="gridcell">
                 <Button
-                  aria-label={index === calendarDate?.month ? `${month} selected` : month}
-                  aria-pressed={index === calendarDate?.month}
-                  buttonStyle={index === calendarDate?.month ? 'primary' : ''}
+                  aria-label={index + 1 === lastValidDateRef.current.month ? `${monthButton} selected` : monthButton}
+                  aria-pressed={index + 1 === lastValidDateRef.current.month}
+                  buttonStyle={index + 1 === lastValidDateRef.current.month ? 'primary' : ''}
                   onClick={() => handleMonthSelect(index)}
                 >
-                  {month}
+                  {monthButton}
                 </Button>
               </div>
             </div>
@@ -261,7 +286,7 @@ Monthpicker.propTypes = {
   dateFormat: PropTypes.string,
   input: PropTypes.object,
   isRequired: PropTypes.bool,
-  textLabel: PropTypes.string,
+  textLabel: PropTypes.object,
   meta: PropTypes.object,
 };
 
