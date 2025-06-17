@@ -350,6 +350,7 @@
   "permission.harvester.jobs.view": "eUsage: Can view harvesting jobs",
   
   "monthpicker.monthSelection": "Month selection",
+  "monthpicker.yearMonthInput": "Year and month input",
   "monthpicker.yearMonthSelection": "Calender: Year and month selection",
   "monthpicker.yearSelection": "Year selection",
 

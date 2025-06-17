@@ -21,7 +21,7 @@ const defaultProps = {
   },
   textLabel: 'Test label',
   isRequired: false,
-  dateFormat: 'YYYY-MM',
+  dateFormat: 'yyyy-MM',
 };
 
 const renderMonthpicker = (props = {}) => {
@@ -34,8 +34,8 @@ describe('Monthpicker', () => {
   it('should render input field with correct placeholder', () => {
     renderMonthpicker();
 
-    expect(screen.getByRole('textbox', { name: 'Test label' })).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('YYYY-MM')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Year and month input' })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('yyyy-MM')).toBeInTheDocument();
   });
 
   it('should display dialog if calendar icon is clicked', async () => {
@@ -138,5 +138,48 @@ describe('Monthpicker', () => {
     });
 
     expect(screen.getByText('Invalid date')).toBeInTheDocument();
+  });
+
+  describe('Monthpicker - input format + locale handling', () => {
+    const inputs = [
+      ['de-DE', '06.2000'],
+      ['en-US', '06/2000'],
+      ['zh-CN', '2000年06月'],
+      ['de-DE', '2000-06'],
+      ['de-DE', '13.2000'],     // ungültig
+    ];
+
+    const fallbackYear = new Date().getFullYear();
+
+    test.each(inputs)(
+      'should handle locale %s with value %s',
+      async (locale, value) => {
+        renderMonthpicker({
+          input: {
+            name: 'test-monthpicker',
+            value,
+            onChange: jest.fn(),
+            onBlur: jest.fn(),
+            onFocus: jest.fn(),
+          },
+          intl: { locale },
+        });
+
+        const input = screen.getByLabelText('Year and month input');
+
+        expect(input).toBeInTheDocument();
+
+        if (value === '13.2000') {
+          // invalid date: fallback to current year and month
+          expect(input).toHaveValue(value);
+
+          await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+          const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+          expect(yearInput.value).toBe(String(fallbackYear));
+        } else {
+          expect(input).toHaveValue(value);
+        }
+      }
+    );
   });
 });

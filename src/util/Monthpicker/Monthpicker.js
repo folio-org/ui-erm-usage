@@ -9,6 +9,7 @@ import {
   useIntl,
   FormattedMessage,
 } from 'react-intl';
+import { DateTime } from 'luxon';
 
 import {
   Button,
@@ -22,7 +23,7 @@ import {
 import css from './Monthpicker.css';
 
 const Monthpicker = ({
-  backendDateFormat = 'YYYY-MM',
+  backendDateFormat = 'yyyy-MM',
   dateFormat,
   input,
   isRequired,
@@ -34,81 +35,73 @@ const Monthpicker = ({
   const container = useRef(null);
   const intl = useIntl();
 
-  const resolvedDateFormat = useMemo(() => {
-    return dateFormat ?? new Intl.DateTimeFormat(intl.locale, {
+  const normalizeLuxonFormat = (format) => {
+    return format
+      .replace(/Y/g, 'y')
+      .replace(/m/g, 'M');
+  };
+
+  const getDateFormatFromLocale = (locale) => {
+    const parts = new Intl.DateTimeFormat(locale, {
       year: 'numeric',
       month: '2-digit',
-    }).format(new Date());
-  }, [dateFormat, intl.locale]);
+    }).formatToParts(new Date());
+
+    return parts
+      .map((part) => {
+        if (part.type === 'month') return 'MM';
+        if (part.type === 'year') return 'yyyy';
+        return part.value;
+      })
+      .join('');
+  };
+
+  const resolvedDateFormat = useMemo(() => {
+    const localDate = getDateFormatFromLocale(intl.locale);
+    return normalizeLuxonFormat(dateFormat ?? localDate);
+  }, [dateFormat]);
+
+  const resolvedBackendDateFormat = normalizeLuxonFormat(backendDateFormat);
 
   const isValidYear = (year) => {
     const num = Number(year);
     return Number.isInteger(num) && num >= 1000 && num <= 9999;
   };
 
-  const isValidMonth = (month) => {
-    const monthIndex = month - 1;
-    return !Number.isNaN(monthIndex) && monthIndex >= 0 && monthIndex <= 11;
-  };
+  // const isValidMonth = (month) => {
+  //   const monthIndex = month - 1;
+  //   return !Number.isNaN(monthIndex) && monthIndex >= 0 && monthIndex <= 11;
+  // };
 
-  const ensureValidMonth = (month) => {
-    if (isValidMonth(month)) return month;
-    return new Date().getMonth() + 1;
-  };
+  // const ensureValidMonth = (month) => {
+  //   if (isValidMonth(month)) return month;
+  //   return new Date().getMonth() + 1;
+  // };
 
   const ensureValidYear = (year) => {
     if (isValidYear(year)) return year;
     return new Date().getFullYear();
   };
 
-  const extractYearAndMonth = (inputValue, format) => {
-    // allowed separator between year and month
-    const separators = ['-', '.', '/'];
-    const separator = separators.find(sep => format.includes(sep));
-    if (!separator) {
-      throw new Error('unknown separator');
-    }
-
-    const formatParts = format.split(separator);
-    const inputParts = inputValue.split(separator);
-
-    let year;
-    let month;
-
-    formatParts.forEach((part, index) => {
-      if (part.includes('Y')) {
-        year = inputParts[index];
-        if (part === 'YY' && year.length === 2) {
-          year = parseInt(year, 10) >= 50 ? '19' + year : '20' + year;
-        }
-      } else if (part.includes('M')) {
-        month = inputParts[index];
-      }
-    });
-
-    lastValidDateRef.current = { year: parseInt(year, 10), month: parseInt(month, 10) };
-
-    return {
-      year: parseInt(year, 10),
-      month: parseInt(month, 10),
-    };
+  const buildDateString = (year, month, format) => {
+    const dt = DateTime.fromObject({ year: ensureValidYear(year), month });
+    return dt.toFormat(format);
   };
 
-  const buildDateString = (year, monthIndex, format) => {
-    return format
-      .replace(/Y+/, ensureValidYear(year).toString())
-      .replace(/M+/, (monthIndex).toString().padStart(2, '0'));
-  };
-
-  // set calendarDate and lastValidYearRef if the input is changing of if the calender just opened
   useEffect(() => {
-    const { year, month } = extractYearAndMonth(input.value, resolvedDateFormat);
-    const validYear = ensureValidYear(year);
-    const validMonth = ensureValidMonth(month);
+    const backendFormat = normalizeLuxonFormat(backendDateFormat);
+    const dt = DateTime.fromFormat(input?.value, backendFormat);
 
-    lastValidDateRef.current = { year: validYear, month: validMonth };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showCalendar, input.value]);
+    if (dt.isValid) {
+      lastValidDateRef.current = {
+        year: dt.year,
+        month: dt.month
+      };
+    } else if (!lastValidDateRef.current.year || !lastValidDateRef.current.month) {
+      const now = DateTime.local();
+      lastValidDateRef.current = { year: now.year, month: now.month };
+    }
+  }, [input?.value, backendDateFormat]);
 
   const getLocalizedMonthAbbreviations = () => {
     return Array.from({ length: 12 }, (_, i) => {
@@ -116,14 +109,24 @@ const Monthpicker = ({
     });
   };
 
+  const fromBackendFormat = (backendValue) => {
+    const dt = DateTime.fromFormat(backendValue, resolvedBackendDateFormat);
+    return dt.isValid ? dt.toFormat(resolvedDateFormat) : backendValue;
+  };
+
+  const toBackendFormat = (inputValue) => {
+    const dt = DateTime.fromFormat(inputValue, resolvedDateFormat);
+    return dt.isValid ? dt.toFormat(resolvedBackendDateFormat) : inputValue;
+  };
+
   const handleMonthSelect = (monthIndex) => {
-    const year = (lastValidDateRef.current.year ?? new Date().getFullYear());
-    const backendFormatted = buildDateString(year, monthIndex + 1, backendDateFormat);
-    input.onChange(backendFormatted);
+    const year = lastValidDateRef.current.year ?? new Date().getFullYear();
+    const dt = DateTime.fromObject({ year, month: monthIndex + 1 });
+    input.onChange(dt.toFormat(resolvedBackendDateFormat));
 
     setShowCalendar(false);
 
-    lastValidDateRef.current = { year, month: monthIndex };
+    lastValidDateRef.current = { year, month: monthIndex + 1 };
   };
 
   const handleYearChange = (e) => {
@@ -172,16 +175,17 @@ const Monthpicker = ({
   const content =
     <div ref={container}>
       <TextField
+        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
         endControl={renderEndElement()}
         error={meta.touched ? meta.error : undefined}
         label={textLabel}
         name={input.name}
         onBlur={input.onBlur}
-        onChange={input.onChange}
+        onChange={(e) => input.onChange(toBackendFormat(e.target.value))}
         onFocus={input.onFocus}
         placeholder={resolvedDateFormat}
         required={isRequired}
-        value={input.value ?? buildDateString(lastValidDateRef.current?.year, lastValidDateRef.current?.month, resolvedDateFormat)}
+        value={fromBackendFormat(input.value)}
       />
     </div>;
 
@@ -220,7 +224,7 @@ const Monthpicker = ({
                   aria-label={ariaLabel}
                   hasClearIcon={false}
                   type="number"
-                  placeholder={(resolvedDateFormat.match(/Y+/) || [])[0]}
+                  placeholder={(resolvedDateFormat.match(/y+/) || [])[0]}
                   value={lastValidDateRef.current?.year}
                   onChange={e => handleYearChange(e)}
                 />
