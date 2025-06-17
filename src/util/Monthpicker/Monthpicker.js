@@ -59,7 +59,7 @@ const Monthpicker = ({
   const resolvedDateFormat = useMemo(() => {
     const localDate = getDateFormatFromLocale(intl.locale);
     return normalizeLuxonFormat(dateFormat ?? localDate);
-  }, [dateFormat]);
+  }, [dateFormat, intl.locale]);
 
   const resolvedBackendDateFormat = normalizeLuxonFormat(backendDateFormat);
 

@@ -140,46 +140,59 @@ describe('Monthpicker', () => {
     expect(screen.getByText('Invalid date')).toBeInTheDocument();
   });
 
-  describe('Monthpicker - input format + locale handling', () => {
-    const inputs = [
-      ['de-DE', '06.2000'],
+  describe('Monthpicker - check input and format', () => {
+    const validInputs = [
       ['en-US', '06/2000'],
-      ['zh-CN', '2000年06月'],
       ['de-DE', '2000-06'],
-      ['de-DE', '13.2000'],     // ungültig
+    ];
+
+    test.each(validInputs)('should accept valid input', async (locale, value) => {
+      renderMonthpicker({
+        input: {
+          name: 'test-monthpicker',
+          value,
+          onChange: jest.fn(),
+          onBlur: jest.fn(),
+          onFocus: jest.fn(),
+        },
+        intl: { locale },
+      });
+
+      const input = screen.getByLabelText('Year and month input');
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveValue(value);
+    });
+
+    const invalidInputs = [
+      ['de-DE', '06.2000'],
+      ['zh-CN', '2000年06月'],
+      ['de-DE', '13.2000'],
     ];
 
     const fallbackYear = new Date().getFullYear();
+    // const fallbackMonth = String(new Date().getMonth() + 1).padStart(2, '0');
 
-    test.each(inputs)(
-      'should handle locale %s with value %s',
-      async (locale, value) => {
-        renderMonthpicker({
-          input: {
-            name: 'test-monthpicker',
-            value,
-            onChange: jest.fn(),
-            onBlur: jest.fn(),
-            onFocus: jest.fn(),
-          },
-          intl: { locale },
-        });
+    test.each(invalidInputs)('should fallback to current year for invalid input', async (locale, value) => {
+      renderMonthpicker({
+        input: {
+          name: 'test-monthpicker',
+          value,
+          onChange: jest.fn(),
+          onBlur: jest.fn(),
+          onFocus: jest.fn(),
+        },
+        intl: { locale },
+      });
 
-        const input = screen.getByLabelText('Year and month input');
+      const input = screen.getByLabelText('Year and month input');
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveValue(value);
 
-        expect(input).toBeInTheDocument();
+      // invalid date: fallback to current year and month
+      await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
 
-        if (value === '13.2000') {
-          // invalid date: fallback to current year and month
-          expect(input).toHaveValue(value);
-
-          await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
-          const yearInput = screen.getByRole('spinbutton', { name: 'year' });
-          expect(yearInput.value).toBe(String(fallbackYear));
-        } else {
-          expect(input).toHaveValue(value);
-        }
-      }
-    );
+      const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+      expect(yearInput.value).toBe(String(fallbackYear));
+    });
   });
 });
