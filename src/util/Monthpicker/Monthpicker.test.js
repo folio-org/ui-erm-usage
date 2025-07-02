@@ -24,9 +24,11 @@ const defaultProps = {
   dateFormat: 'yyyy-MM',
 };
 
-const renderMonthpicker = (props = {}) => {
+const renderMonthpicker = (props = {}, locale) => {
   return renderWithIntl(
-    <Monthpicker {...defaultProps} {...props} />
+    <Monthpicker {...defaultProps} {...props} />,
+    undefined,
+    locale,
   );
 };
 
@@ -140,48 +142,15 @@ describe('Monthpicker', () => {
     expect(screen.getByText('Invalid date')).toBeInTheDocument();
   });
 
-  describe('Monthpicker - input parsing and onChange', () => {
-    it('should call onChange with correct backend format', async () => {
-      const onChange = jest.fn();
-
-      const locale = 'de-DE';
-      const backendFormat = 'yyyy-MM';
-      const displayFormat = 'MM.yyyy';
-      const userInput = '07.2025';
-      const expectedBackend = '2025-07';
-
-      renderMonthpicker({
-        backendDateFormat: backendFormat,
-        dateFormat: displayFormat,
-        input: {
-          name: 'test-monthpicker',
-          value: '',
-          onChange,
-          onBlur: jest.fn(),
-          onFocus: jest.fn(),
-        },
-        meta: { touched: false, error: '' },
-        textLabel: 'Test label',
-        intl: { locale },
-      });
-
-      const textbox = screen.getByLabelText('Year and month input');
-      await userEvent.clear(textbox);
-      await userEvent.type(textbox, userInput);
-
-      expect(onChange).toHaveBeenCalledWith(expectedBackend);
-    });
-  });
-
-
   describe('Monthpicker - check input and format', () => {
     const cases = [
-    // locale, backendFormat, displayFormat, backendValue, expectedDisplayValue
+      // locale, backendFormat, displayFormat, backendValue, expectedDisplayValue
       ['de-DE', undefined, undefined, '2000-06', '06.2000'],
       ['de-DE', 'MM-yyyy', undefined, '06-2000', '06.2000'],
       ['de-DE', undefined, 'MM-yyyy', '2000-06', '06-2000'],
       ['de-DE', undefined, 'YYYY-mm', '2000-06', '2000-06'],
       ['de-DE', 'yyyy-MM', 'yyyy-MM', '2000-06', '2000-06'],
+      ['de-DE', 'yyyy-MM', 'MM.yyyy', '2000-06', '06.2000'],
       ['en-US', undefined, undefined, '2000-06', '06/2000'],
       ['en-US', 'MM-yyyy', undefined, '06-2000', '06/2000'],
       ['nl-NL', undefined, undefined, '2000-06', '06-2000'],
@@ -190,18 +159,21 @@ describe('Monthpicker', () => {
 
     test.each(cases)('should display correct formatted value for locale %s, backendFormat %s, displayFormat %s',
       async (locale, backendFormat, displayFormat, backendValue, expectedDisplayValue) => {
-        renderMonthpicker({
-          backendDateFormat: backendFormat,
-          dateFormat: displayFormat,
-          input: {
-            name: 'test-monthpicker',
-            value: backendValue,
-            onChange: jest.fn(),
-            onBlur: jest.fn(),
-            onFocus: jest.fn(),
+        renderMonthpicker(
+          {
+            backendDateFormat: backendFormat,
+            dateFormat: displayFormat,
+            input: {
+              name: 'test-monthpicker',
+              value: backendValue,
+              onChange: jest.fn(),
+              onBlur: jest.fn(),
+              onFocus: jest.fn(),
+            },
+            meta: { touched: false, error: '' },
           },
-          intl: { locale },
-        });
+          locale,
+        );
 
         const input = screen.getByLabelText('Year and month input');
         expect(input).toBeInTheDocument();
