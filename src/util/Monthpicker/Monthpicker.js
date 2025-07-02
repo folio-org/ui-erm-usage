@@ -116,7 +116,7 @@ const Monthpicker = ({
 
   const toBackendFormat = (inputValue) => {
     const dt = DateTime.fromFormat(inputValue, resolvedDateFormat);
-    return dt.isValid ? dt.toFormat(resolvedBackendDateFormat) : inputValue;
+    return dt.toFormat(resolvedBackendDateFormat);
   };
 
   const handleMonthSelect = (monthIndex) => {
@@ -138,7 +138,7 @@ const Monthpicker = ({
     const currentMonth = lastValidDateRef.current?.month;
     lastValidDateRef.current = { month: currentMonth, year: newYear };
 
-    const newValue = buildDateString(newYear, currentMonth, resolvedDateFormat);
+    const newValue = buildDateString(newYear, currentMonth, resolvedBackendDateFormat);
     input.onChange(newValue);
   };
 
@@ -147,7 +147,7 @@ const Monthpicker = ({
     const currentMonth = lastValidDateRef.current?.month;
     lastValidDateRef.current = { month: currentMonth, year: newYear };
 
-    const newValue = buildDateString(newYear, currentMonth, resolvedDateFormat);
+    const newValue = buildDateString(newYear, currentMonth, resolvedBackendDateFormat);
     input.onChange(newValue);
   };
 

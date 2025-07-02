@@ -140,59 +140,72 @@ describe('Monthpicker', () => {
     expect(screen.getByText('Invalid date')).toBeInTheDocument();
   });
 
+  describe('Monthpicker - input parsing and onChange', () => {
+    it('should call onChange with correct backend format', async () => {
+      const onChange = jest.fn();
+
+      const locale = 'de-DE';
+      const backendFormat = 'yyyy-MM';
+      const displayFormat = 'MM.yyyy';
+      const userInput = '07.2025';
+      const expectedBackend = '2025-07';
+
+      renderMonthpicker({
+        backendDateFormat: backendFormat,
+        dateFormat: displayFormat,
+        input: {
+          name: 'test-monthpicker',
+          value: '',
+          onChange,
+          onBlur: jest.fn(),
+          onFocus: jest.fn(),
+        },
+        meta: { touched: false, error: '' },
+        textLabel: 'Test label',
+        intl: { locale },
+      });
+
+      const textbox = screen.getByLabelText('Year and month input');
+      await userEvent.clear(textbox);
+      await userEvent.type(textbox, userInput);
+
+      expect(onChange).toHaveBeenCalledWith(expectedBackend);
+    });
+  });
+
+
   describe('Monthpicker - check input and format', () => {
-    const validInputs = [
-      ['en-US', '06/2000'],
-      ['de-DE', '2000-06'],
+    const cases = [
+    // locale, backendFormat, displayFormat, backendValue, expectedDisplayValue
+      ['de-DE', undefined, undefined, '2000-06', '06.2000'],
+      ['de-DE', 'MM-yyyy', undefined, '06-2000', '06.2000'],
+      ['de-DE', undefined, 'MM-yyyy', '2000-06', '06-2000'],
+      ['de-DE', undefined, 'YYYY-mm', '2000-06', '2000-06'],
+      ['de-DE', 'yyyy-MM', 'yyyy-MM', '2000-06', '2000-06'],
+      ['en-US', undefined, undefined, '2000-06', '06/2000'],
+      ['en-US', 'MM-yyyy', undefined, '06-2000', '06/2000'],
+      ['nl-NL', undefined, undefined, '2000-06', '06-2000'],
+      ['nl-NL', 'MM-yyyy', undefined, '06-2000', '06-2000'],
     ];
 
-    test.each(validInputs)('should accept valid input', async (locale, value) => {
-      renderMonthpicker({
-        input: {
-          name: 'test-monthpicker',
-          value,
-          onChange: jest.fn(),
-          onBlur: jest.fn(),
-          onFocus: jest.fn(),
-        },
-        intl: { locale },
+    test.each(cases)('should display correct formatted value for locale %s, backendFormat %s, displayFormat %s',
+      async (locale, backendFormat, displayFormat, backendValue, expectedDisplayValue) => {
+        renderMonthpicker({
+          backendDateFormat: backendFormat,
+          dateFormat: displayFormat,
+          input: {
+            name: 'test-monthpicker',
+            value: backendValue,
+            onChange: jest.fn(),
+            onBlur: jest.fn(),
+            onFocus: jest.fn(),
+          },
+          intl: { locale },
+        });
+
+        const input = screen.getByLabelText('Year and month input');
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveValue(expectedDisplayValue);
       });
-
-      const input = screen.getByLabelText('Year and month input');
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveValue(value);
-    });
-
-    const invalidInputs = [
-      ['de-DE', '06.2000'],
-      ['zh-CN', '2000年06月'],
-      ['de-DE', '13.2000'],
-    ];
-
-    const fallbackYear = new Date().getFullYear();
-    // const fallbackMonth = String(new Date().getMonth() + 1).padStart(2, '0');
-
-    test.each(invalidInputs)('should fallback to current year for invalid input', async (locale, value) => {
-      renderMonthpicker({
-        input: {
-          name: 'test-monthpicker',
-          value,
-          onChange: jest.fn(),
-          onBlur: jest.fn(),
-          onFocus: jest.fn(),
-        },
-        intl: { locale },
-      });
-
-      const input = screen.getByLabelText('Year and month input');
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveValue(value);
-
-      // invalid date: fallback to current year and month
-      await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
-
-      const yearInput = screen.getByRole('spinbutton', { name: 'year' });
-      expect(yearInput.value).toBe(String(fallbackYear));
-    });
   });
 });
