@@ -180,4 +180,40 @@ describe('Monthpicker', () => {
         expect(input).toHaveValue(expectedDisplayValue);
       });
   });
+
+  describe('Monthpicker - check input for invalid values', () => {
+    const invalidInputs = [
+      // locale, backendFormat, displayFormat, backendValue, expectedDisplayValue
+      ['de-DE', 'yyyy-MM', undefined, 'aa.bbbb', '06#2000'],
+      ['de-DE', 'MM-yyyy', undefined, '06-20', '06.2000'],
+      ['de-DE', 'MM-yyyy', 'MM.YYYY', '2000-06', '2000-06'],
+    ];
+
+    const fallbackYear = new Date().getFullYear();
+
+    test.each(invalidInputs)('should fallback to current year',
+      async (locale, backendFormat, displayFormat, backendValue) => {
+        renderMonthpicker(
+          {
+            backendDateFormat: backendFormat,
+            dateFormat: displayFormat,
+            input: {
+              name: 'test-monthpicker',
+              value: backendValue,
+              onChange: jest.fn(),
+              onBlur: jest.fn(),
+              onFocus: jest.fn(),
+            },
+            meta: { touched: false, error: '' },
+          },
+          locale,
+        );
+
+        // invalid date: fallback to current year and month
+        await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+
+        const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+        expect(yearInput.value).toBe(String(fallbackYear));
+      });
+  });
 });
