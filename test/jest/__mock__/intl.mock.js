@@ -20,11 +20,21 @@ const translations = {
   ...prefixKeys(componentsTranslations, 'stripes-components'),
   ...prefixKeys(smartComponentsTranslations, 'stripes-smart-components'),
   ...prefixKeys(stripesCoreTranslations, 'stripes-core'),
+
+  // en: {
+  //   ...prefixKeys(ermUsageTranslations, 'ui-erm-usage'),
+  //   ...prefixKeys(componentsTranslations, 'stripes-components'),
+  //   ...prefixKeys(smartComponentsTranslations, 'stripes-smart-components'),
+  //   ...prefixKeys(stripesCoreTranslations, 'stripes-core'),
+  // },
+  // // Beispiel: weitere Sprachen später ergänzen
+  // de: {}, // <- leere Fallbacks oder echte deutsche Übersetzungen
+  // nl: {}, // <- optional
 };
 
 // eslint-disable-next-line react/prop-types
-const Intl = ({ children }) => (
-  <IntlProvider locale="en" timeZone="UTC" messages={translations}>
+const Intl = ({ children, locale = 'en' }) => (
+  <IntlProvider locale={locale} timeZone="UTC" messages={translations}>
     {children}
   </IntlProvider>
 );
