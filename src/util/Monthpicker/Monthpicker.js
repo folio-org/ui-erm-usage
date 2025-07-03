@@ -109,14 +109,9 @@ const Monthpicker = ({
     });
   };
 
-  const fromBackendFormat = (backendValue) => {
-    const dt = DateTime.fromFormat(backendValue, resolvedBackendDateFormat);
-    return dt.isValid ? dt.toFormat(resolvedDateFormat) : null;
-  };
-
-  const toBackendFormat = (inputValue) => {
-    const dt = DateTime.fromFormat(inputValue, resolvedDateFormat);
-    return dt.isValid ? dt.toFormat(resolvedBackendDateFormat) : null;
+  const convertDateFormat = (inputValue, fromFormat, toFormat) => {
+    const dt = DateTime.fromFormat(inputValue, fromFormat);
+    return dt.isValid ? dt.toFormat(toFormat) : null;
   };
 
   const handleMonthSelect = (monthIndex) => {
@@ -181,11 +176,11 @@ const Monthpicker = ({
         label={textLabel}
         name={input.name}
         onBlur={input.onBlur}
-        onChange={(e) => input.onChange(toBackendFormat(e.target.value))}
+        onChange={(e) => input.onChange(convertDateFormat(e.target.value, resolvedDateFormat, resolvedBackendDateFormat))}
         onFocus={input.onFocus}
         placeholder={resolvedDateFormat}
         required={isRequired}
-        value={fromBackendFormat(input.value)}
+        value={convertDateFormat(input.value, resolvedBackendDateFormat, resolvedDateFormat)}
       />
     </div>;
 
