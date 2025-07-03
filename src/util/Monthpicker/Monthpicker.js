@@ -116,7 +116,7 @@ const Monthpicker = ({
 
   const toBackendFormat = (inputValue) => {
     const dt = DateTime.fromFormat(inputValue, resolvedDateFormat);
-    return dt.toFormat(resolvedBackendDateFormat);
+    return dt.isValid ? dt.toFormat(resolvedBackendDateFormat) : null;
   };
 
   const handleMonthSelect = (monthIndex) => {
