@@ -68,16 +68,6 @@ const Monthpicker = ({
     return Number.isInteger(num) && num >= 1000 && num <= 9999;
   };
 
-  // const isValidMonth = (month) => {
-  //   const monthIndex = month - 1;
-  //   return !Number.isNaN(monthIndex) && monthIndex >= 0 && monthIndex <= 11;
-  // };
-
-  // const ensureValidMonth = (month) => {
-  //   if (isValidMonth(month)) return month;
-  //   return new Date().getMonth() + 1;
-  // };
-
   const ensureValidYear = (year) => {
     if (isValidYear(year)) return year;
     return new Date().getFullYear();
@@ -111,7 +101,7 @@ const Monthpicker = ({
 
   const convertDateFormat = (inputValue, fromFormat, toFormat) => {
     const dt = DateTime.fromFormat(inputValue, fromFormat);
-    return dt.isValid ? dt.toFormat(toFormat) : null;
+    return dt.isValid ? dt.toFormat(toFormat) : '';
   };
 
   const handleMonthSelect = (monthIndex) => {

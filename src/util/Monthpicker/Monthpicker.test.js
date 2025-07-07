@@ -183,10 +183,10 @@ describe('Monthpicker', () => {
 
   describe('Monthpicker - check input for invalid values', () => {
     const invalidInputs = [
-      // locale, backendFormat, displayFormat, backendValue, expectedDisplayValue
-      ['de-DE', 'yyyy-MM', undefined, 'aa.bbbb', '06#2000'],
-      ['de-DE', 'MM-yyyy', undefined, '06-20', '06.2000'],
-      ['de-DE', 'MM-yyyy', 'MM.YYYY', '2000-06', '2000-06'],
+      // locale, backendFormat, displayFormat, backendValue
+      ['de-DE', 'yyyy-MM', undefined, 'aa.bbbb'],
+      ['de-DE', 'MM-yyyy', undefined, '06-20'],
+      ['de-DE', 'MM-yyyy', 'MM.YYYY', '2000-06'],
     ];
 
     const fallbackYear = new Date().getFullYear();

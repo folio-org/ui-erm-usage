@@ -20,16 +20,6 @@ const translations = {
   ...prefixKeys(componentsTranslations, 'stripes-components'),
   ...prefixKeys(smartComponentsTranslations, 'stripes-smart-components'),
   ...prefixKeys(stripesCoreTranslations, 'stripes-core'),
-
-  // en: {
-  //   ...prefixKeys(ermUsageTranslations, 'ui-erm-usage'),
-  //   ...prefixKeys(componentsTranslations, 'stripes-components'),
-  //   ...prefixKeys(smartComponentsTranslations, 'stripes-smart-components'),
-  //   ...prefixKeys(stripesCoreTranslations, 'stripes-core'),
-  // },
-  // // Beispiel: weitere Sprachen später ergänzen
-  // de: {}, // <- leere Fallbacks oder echte deutsche Übersetzungen
-  // nl: {}, // <- optional
 };
 
 // eslint-disable-next-line react/prop-types

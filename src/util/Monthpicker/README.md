@@ -13,25 +13,32 @@ import { Monthpicker } from '@folio/ui-erm-usage/util/Monthpicker';
 ## Props
 Name | type | description | default | required
 --- | --- | --- | --- | ---
-`backendDateStandard` | string | format for saving year and month. | 'YYYY-MM' | false
-`dateFormat` | string | format for saving year and month. | Intl.DateTimeFormat(intl.locale, { year: 'numeric', month: '2-digit' }) | false
+`backendDateFormat` | string | format for saving year and month. | 'yyyy-MM' | false
+`dateFormat` | string | format for display year and month. | Intl.DateTimeFormat(intl.locale, { year: 'numeric', month: '2-digit' }) | false
 `isRequired` | bool | if true, TextField (containing year and month) will be required | false | false
 `textLabel` | string | visible field label | "" | false
-
-
-## Monthpicker example
-
+`input` | object | Form state provided by Redux Form or Final Form's `<Field>` component for accessing the current value `input.value` and update it `input.onChange(newValue)` | 
 ```
-<Monthpicker
-  backendDateFormat="YYYY-MM"
-  dateFormat="MM/YYYY"
-  textLabel="Label Monthpicker"
-  isRequired={true}
-/>
+{
+  name: '',
+  value: '',
+  onChange: () => {},
+  onBlur: () => {},
+  onFocus: () => {},
+}
 ```
+| true
+`meta` | object | Validation state provided by Redux Form or Final Form's `<Field>` to show the error message after interaction with the field | 
+```
+{
+  touched: false,
+  error: undefined,
+}
+```
+| true
 
 
-## Redux-form/Final Form usage
+## Monthpicker example using Redux-form/Final Form
 
 ```
 <Field
