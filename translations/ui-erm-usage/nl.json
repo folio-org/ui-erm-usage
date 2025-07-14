@@ -314,5 +314,5 @@
     "udp.form.udpInfo.changeStatusHeading": "Verandering van status Harvesting?",
     "udp.form.udpInfo.changeStatusMessage": "De status Harvesting is nog steeds actief, hoewel de status Leverancier op inactief is gezet.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Harvesting status op inactief zetten",
-    "statistics.selectedFile": "Selected file"
+    "statistics.selectedFile": "Geselecteerd bestand"
 }
