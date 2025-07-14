@@ -20,6 +20,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
+import { useClickOutside } from '../hooks/useClickOutside';
 import css from './Monthpicker.css';
 
 const Monthpicker = ({
@@ -32,8 +33,13 @@ const Monthpicker = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
-  const container = useRef(null);
+  const containerPopper = useRef(null);
+  const containerTextField = useRef(null);
   const intl = useIntl();
+
+  useClickOutside(containerPopper, () => {
+    setShowCalendar(false);
+  });
 
   const normalizeLuxonFormat = (format) => {
     return format
@@ -158,7 +164,7 @@ const Monthpicker = ({
   );
 
   const content =
-    <div ref={container}>
+    <div ref={containerTextField}>
       <TextField
         aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
         endControl={renderEndElement()}
@@ -256,10 +262,10 @@ const Monthpicker = ({
   );
 
   return (
-    <div>
+    <div ref={containerPopper}>
       {content}
       <Popper
-        anchorRef={container}
+        anchorRef={containerTextField}
         isOpen={showCalendar}
         onToggle={toggleCalendar}
       >
