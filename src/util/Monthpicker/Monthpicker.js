@@ -121,7 +121,7 @@ const Monthpicker = ({
   };
 
   const handleYearChange = (e) => {
-    lastValidDateRef.current = { ...lastValidDateRef.current, year: ensureValidYear(e.target.value) };
+    lastValidDateRef.current = { ...lastValidDateRef.current, year: ensureValidYear(Number(e.target.value)) };
   };
 
   const decrementYear = () => {
