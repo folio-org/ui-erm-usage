@@ -32,6 +32,20 @@ const yearMonth = value => {
   return undefined;
 };
 
+const MMyyyyRegex = /^\d{2}\/\d{4}$/;
+
+const harvestingStartValidator = value => {
+  if (!value) {
+    return <FormattedMessage id="ui-erm-usage.errors.required" />;
+  }
+
+  if (value && !MMyyyyRegex.test(value)) {
+    return <FormattedMessage id="ui-erm-usage.errors.dateInvalid" />;
+  }
+
+  return undefined;
+};
+
 const endDate = values => {
   if (!values || !values.harvestingConfig) {
     return undefined;
@@ -87,4 +101,5 @@ export {
   requiredArray,
   yearMonth,
   requiredValidateUrl,
+  harvestingStartValidator,
 };

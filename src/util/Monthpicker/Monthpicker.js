@@ -30,6 +30,7 @@ const Monthpicker = ({
   isRequired,
   meta,
   textLabel = '',
+  ...rest
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
@@ -177,6 +178,7 @@ const Monthpicker = ({
         placeholder={resolvedDateFormat}
         required={isRequired}
         value={convertDateFormat(input.value, resolvedBackendDateFormat, resolvedDateFormat)}
+        {...rest}
       />
     </div>;
 

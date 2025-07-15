@@ -156,7 +156,7 @@ const HarvestingConfigurationForm = ({
             <Row>
               <Col xs={4}>
                 <HarvestingStartField
-                  required={isHarvestingStatusActive}
+                  isRequired={isHarvestingStatusActive}
                 />
               </Col>
               <Col xs={4}>
