@@ -23,8 +23,8 @@ const translations = {
 };
 
 // eslint-disable-next-line react/prop-types
-const Intl = ({ children }) => (
-  <IntlProvider locale="en" timeZone="UTC" messages={translations}>
+const Intl = ({ children, locale = 'en' }) => (
+  <IntlProvider locale={locale} timeZone="UTC" messages={translations}>
     {children}
   </IntlProvider>
 );
