@@ -154,7 +154,7 @@
     "report.error.3080": "Запитуваний ліміт перевищує максимальний ліміт сервера",
     "udp.form.cancel": "Скасувати",
     "udp.form.delete.confirm.title": "Видалити постачальника даних про використання",
-    "form.delete.confirm.message": "Do you really want to delete {name}?",
+    "form.delete.confirm.message": "Ви справді хочете видалити {name}?",
     "errors.required": "Обов'язково",
     "errors.emailInvalid": "Неправильна адреса е-пошти",
     "errors.dateInvalid": "Дата недійсна",
@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "Змінити статус збору даних?",
     "udp.form.udpInfo.changeStatusMessage": "Статус збору даних все ще активний, хоча статус постачальника встановлено як неактивний.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Встановити статус збору даних як неактивний",
-    "statistics.selectedFile": "Вибраний файл"
+    "statistics.selectedFile": "Вибраний файл",
+    "monthpicker.monthSelection": "Month selection",
+    "monthpicker.yearMonthInput": "Year and month input",
+    "monthpicker.yearMonthSelection": "Calender: Year and month selection",
+    "monthpicker.yearSelection": "Year selection"
 }
