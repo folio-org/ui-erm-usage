@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "收割状况是否改变？",
     "udp.form.udpInfo.changeStatusMessage": "尽管提供者状态已设置为非激活，但收割状态仍为激活。",
     "udp.form.udpInfo.setHarvestingStatusInactive": "将收割状态设置为未激活",
-    "statistics.selectedFile": "Selected file"
+    "statistics.selectedFile": "Selected file",
+    "monthpicker.monthSelection": "Month selection",
+    "monthpicker.yearMonthInput": "Year and month input",
+    "monthpicker.yearMonthSelection": "Calender: Year and month selection",
+    "monthpicker.yearSelection": "Year selection"
 }

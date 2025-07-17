@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "Verandering van status Harvesting?",
     "udp.form.udpInfo.changeStatusMessage": "De status Harvesting is nog steeds actief, hoewel de status Leverancier op inactief is gezet.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Harvesting status op inactief zetten",
-    "statistics.selectedFile": "Geselecteerd bestand"
+    "statistics.selectedFile": "Geselecteerd bestand",
+    "monthpicker.monthSelection": "Month selection",
+    "monthpicker.yearMonthInput": "Year and month input",
+    "monthpicker.yearMonthSelection": "Calender: Year and month selection",
+    "monthpicker.yearSelection": "Year selection"
 }
