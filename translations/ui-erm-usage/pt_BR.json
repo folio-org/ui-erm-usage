@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "Mudar status de harvesting?",
     "udp.form.udpInfo.changeStatusMessage": "O status do harvesting ainda está ativo, embora o status do provedor tenha sido definido como inativo.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Definir o status do harvesting como inativo",
-    "statistics.selectedFile": "Arquivo selecionado"
+    "statistics.selectedFile": "Arquivo selecionado",
+    "monthpicker.monthSelection": "Seleção de mês",
+    "monthpicker.yearMonthInput": "Entrada de ano e mês",
+    "monthpicker.yearMonthSelection": "Calendário: Seleção de ano e mês",
+    "monthpicker.yearSelection": "Seleção do ano"
 }

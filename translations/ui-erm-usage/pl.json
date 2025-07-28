@@ -292,7 +292,7 @@
     "harvester.start.failure": "Failed to schedule a harvesting job{provider, select, true { for ''{name}''} other {}}.",
     "noSourceYet": "Brak źródła",
     "reportOverview.confirmDeleteReport": "Usunąć raport?",
-    "reportOverview.release": "Release",
+    "reportOverview.release": "Wersja",
     "general.reportReleases": "Raportuj wydania",
     "permission.module.erm-usage.enabled": "UI: moduł e-Użycia jest włączony",
     "permission.settings.erm-usage.enabled": "Ustawienia (e-Użycie): wyświetlanie stron z listami ustawień",
@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "Zmienić status harvestingu?",
     "udp.form.udpInfo.changeStatusMessage": "Status harvestingu jest nadal aktywny, chociaż status dostawcy został ustawiony na nieaktywny.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Ustaw status harvestingu na nieaktywny",
-    "statistics.selectedFile": "Wybrany plik"
+    "statistics.selectedFile": "Wybrany plik",
+    "monthpicker.monthSelection": "Wybór miesiąca",
+    "monthpicker.yearMonthInput": "Wprowadzanie roku i miesiąca",
+    "monthpicker.yearMonthSelection": "Kalendarz: wybór roku i miesiąca",
+    "monthpicker.yearSelection": "Wybór roku"
 }

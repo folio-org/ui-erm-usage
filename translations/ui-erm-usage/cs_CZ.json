@@ -314,5 +314,9 @@
     "udp.form.udpInfo.changeStatusHeading": "Změna stavu harvestu?",
     "udp.form.udpInfo.changeStatusMessage": "Stav harvestu je stále aktivní, ačkoli stav poskytovatele byl nastaven jako neaktivní.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Nastavit stav harvestu jako neaktivní",
-    "statistics.selectedFile": "Vybraný soubor"
+    "statistics.selectedFile": "Vybraný soubor",
+    "monthpicker.monthSelection": "Výběr měsíce",
+    "monthpicker.yearMonthInput": "Zadání roku a měsíce",
+    "monthpicker.yearMonthSelection": "Kalendář: Výběr roku a měsíce",
+    "monthpicker.yearSelection": "Výběr roku"
 }
