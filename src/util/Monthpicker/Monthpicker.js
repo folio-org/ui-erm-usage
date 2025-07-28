@@ -23,10 +23,6 @@ import {
 import { useClickOutside } from '../hooks/useClickOutside';
 import css from './Monthpicker.css';
 
-// ------------------------------
-// Format-Ermittlung
-// ------------------------------
-
 const normalizeLuxonFormat = (format) =>
   format.replace(/Y/g, 'y').replace(/m/g, 'M');
 
@@ -50,10 +46,6 @@ const getResolvedDateFormat = (locale, explicitFormat) => {
   return normalizeLuxonFormat(getDateFormatFromLocale(locale));
 };
 
-// ------------------------------
-// Validator
-// ------------------------------
-
 const monthpickerValidator = ({ isRequired = false, inputFormat }) => (value) => {
   if (isRequired && !value) {
     return <FormattedMessage id="ui-erm-usage.errors.required" />;
@@ -66,10 +58,6 @@ const monthpickerValidator = ({ isRequired = false, inputFormat }) => (value) =>
 
   return undefined;
 };
-
-// ------------------------------
-// Monthpicker Component
-// ------------------------------
 
 const Monthpicker = ({
   backendDateFormat = 'yyyy-MM',
@@ -245,12 +233,6 @@ const Monthpicker = ({
                 )}
               </FormattedMessage>
               <Col xs={4}>
-                {/* <TextField
-                type="number"
-                value={lastValidDateRef.current?.year}
-                onChange={handleYearChange}
-                hasClearIcon={false}
-              /> */}
                 <FormattedMessage id="stripes-components.Datepicker.yearControl">
                   {([ariaLabel]) => (
                     <TextField
@@ -259,7 +241,7 @@ const Monthpicker = ({
                       type="number"
                       placeholder={(resolvedDateFormat.match(/y+/) || [])[0]}
                       value={lastValidDateRef.current?.year}
-                      onChange={e => handleYearChange(e)}
+                      onChange={handleYearChange}
                     />
                   )}
                 </FormattedMessage>
