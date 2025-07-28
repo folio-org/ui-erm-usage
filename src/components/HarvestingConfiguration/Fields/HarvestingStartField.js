@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Monthpicker from '../../../util/Monthpicker';
 
-const HarvestingStartField = ({ isRequired, ...rest }) => {
+const HarvestingStartField = ({ isRequired }) => {
   return (
     <Field
       backendDateFormat="YYYY-MM"
@@ -14,7 +14,6 @@ const HarvestingStartField = ({ isRequired, ...rest }) => {
       isRequired={isRequired}
       name="harvestingConfig.harvestingStart"
       textLabel={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />}
-      {...rest}
     />
   );
 };

@@ -32,8 +32,6 @@ const yearMonth = value => {
   return undefined;
 };
 
-const MMyyyyRegex = /^\d{2}\/\d{4}$/;
-
 const endDate = values => {
   if (!values || !values.harvestingConfig) {
     return undefined;
