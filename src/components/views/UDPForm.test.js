@@ -192,25 +192,25 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start invalid format', async () => {
-      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
+      const startInput = screen.getByLabelText('Harvesting start');
       await userEvent.type(startInput, '2020-ab');
       await userEvent.tab();
       expect(screen.getByText('Date invalid', { exact: false })).toBeInTheDocument();
     });
 
     test('harvesting start valid format', async () => {
-      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
-      await userEvent.type(startInput, '2020-01');
+      const startInput = screen.getByLabelText('Harvesting start');
+      await userEvent.type(startInput, '01/2020');
       await userEvent.tab();
       expect(screen.queryByText('Date invalid', { exact: false })).not.toBeInTheDocument();
     });
 
     test('harvesting start < end is invalid', async () => {
-      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
-      await userEvent.type(startInput, '2020-02');
+      const startInput = screen.getByLabelText('Harvesting start');
+      await userEvent.type(startInput, '02/2020');
 
-      const endInput = screen.getByRole('textbox', { name: /harvesting end/i });
-      await userEvent.type(endInput, '2020-01');
+      const endInput = screen.getByLabelText('Harvesting end');
+      await userEvent.type(endInput, '01/2020');
       await userEvent.tab();
       expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();
     });
@@ -236,8 +236,7 @@ describe('UDPForm', () => {
       await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.findByText('BR1'));
 
-      const startInput = screen.getByRole('textbox', { name: /harvesting start/i });
-      await userEvent.type(startInput, '2020-01');
+      await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
 
       await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
       expect(onSubmit).toHaveBeenCalled();
@@ -297,7 +296,7 @@ describe('UDPForm', () => {
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
       await userEvent.click(await screen.getByText('BR1'));
-      await userEvent.type(screen.getByRole('textbox', { name: /harvesting start/i }), '2020-01');
+      await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
       await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
       await userEvent.click(await screen.getByRole('button', { name: 'Save & close' }));
@@ -330,8 +329,8 @@ describe('UDPForm', () => {
       await userEvent.click(screen.getByRole('heading', { name: 'Create usage data provider' }));
       expect(screen.getByRole('button', { name: 'Report type' })).toHaveClass('hasError');
 
-      expect(screen.getByRole('textbox', { name: 'Harvesting start' })).toBeRequired();
-      expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
+      expect(screen.getByLabelText(/Harvesting start/i)).toBeRequired();
+      expect(screen.getByLabelText('Harvesting end')).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Requestor ID' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'API key' })).not.toBeRequired();
@@ -360,8 +359,8 @@ describe('UDPForm', () => {
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).not.toHaveClass('hasError');
 
-      expect(screen.getByRole('textbox', { name: 'Harvesting start' })).not.toBeRequired();
-      expect(screen.getByRole('textbox', { name: 'Harvesting end' })).not.toBeRequired();
+      expect(screen.getByLabelText('Harvesting start')).not.toBeRequired();
+      expect(screen.getByLabelText('Harvesting end')).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Requestor ID' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: 'API key' })).not.toBeRequired();

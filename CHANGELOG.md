@@ -12,6 +12,7 @@
 * NFR: Check combination between provider status and harvesting status ([UIEUS-418](https://folio-org.atlassian.net/browse/UIEUS-418))
 * Update upload form for manual upload of COUNTER reports ([UIEUS-421](https://folio-org.atlassian.net/browse/UIEUS-421))
 * Create monthpicker component based on stripes ([UIEUS-420](https://folio-org.atlassian.net/browse/UIEUS-420))
+* Use month picker for harvesting configuration dates ([UIEUS-416](https://folio-org.atlassian.net/browse/UIEUS-416))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

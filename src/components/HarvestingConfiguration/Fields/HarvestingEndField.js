@@ -1,19 +1,16 @@
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
-import { TextField } from '@folio/stripes/components';
-
-import { yearMonth } from '../../../util/validate';
+import Monthpicker from '../../../util/Monthpicker';
 
 const HarvestingEndField = () => (
   <Field
-    label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
-    name="harvestingConfig.harvestingEnd"
+    backendDateFormat="YYYY-MM"
+    component={Monthpicker}
+    // dateFormat="YYYY-MM"
     id="input-harvestingEnd"
-    component={TextField}
-    placeholder="YYYY-MM"
-    validate={yearMonth}
-    fullWidth
+    name="harvestingConfig.harvestingEnd"
+    textLabel={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingEnd" />}
   />
 );
 
