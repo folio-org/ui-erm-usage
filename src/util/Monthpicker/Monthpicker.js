@@ -23,7 +23,7 @@ import {
 import { useClickOutside } from '../hooks/useClickOutside';
 import css from './Monthpicker.css';
 
-const normalizeLuxonFormat = (format) =>
+const normalizeToLuxonFormat = (format) =>
   format.replace(/Y/g, 'y').replace(/m/g, 'M');
 
 const getDateFormatFromLocale = (locale) => {
@@ -42,8 +42,8 @@ const getDateFormatFromLocale = (locale) => {
 };
 
 const getResolvedDateFormat = (locale, explicitFormat) => {
-  if (explicitFormat) return normalizeLuxonFormat(explicitFormat);
-  return normalizeLuxonFormat(getDateFormatFromLocale(locale));
+  const format = explicitFormat || getDateFormatFromLocale(locale);
+  return normalizeToLuxonFormat(format);
 };
 
 const monthpickerValidator = ({ isRequired = false, inputFormat }) => (value) => {
@@ -83,7 +83,7 @@ const Monthpicker = ({
   );
 
   const resolvedBackendDateFormat = useMemo(
-    () => normalizeLuxonFormat(backendDateFormat),
+    () => normalizeToLuxonFormat(backendDateFormat),
     [backendDateFormat]
   );
 
