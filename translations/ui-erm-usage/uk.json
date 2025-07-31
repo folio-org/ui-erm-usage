@@ -17,7 +17,7 @@
     "udpHarvestingConfig.requestedReport": "Запитуваний звіт",
     "udpHarvestingConfig.harvestingStart": "Початок збору даних",
     "udpHarvestingConfig.harvestingEnd": "Кінець збору даних",
-    "udpHarvestingConfig.sushiCredentials": "SUSHI credentials",
+    "udpHarvestingConfig.sushiCredentials": "Облікові дані SUSHI",
     "aggregatorInfo.aggregatorName": "Ім'я/назва агрегатора",
     "aggregatorInfo.vendorCode": "Код постачальника",
     "vendorInfo.serviceType": "Тип послуги",
@@ -315,8 +315,8 @@
     "udp.form.udpInfo.changeStatusMessage": "Статус збору даних все ще активний, хоча статус постачальника встановлено як неактивний.",
     "udp.form.udpInfo.setHarvestingStatusInactive": "Встановити статус збору даних як неактивний",
     "statistics.selectedFile": "Вибраний файл",
-    "monthpicker.monthSelection": "Month selection",
-    "monthpicker.yearMonthInput": "Year and month input",
-    "monthpicker.yearMonthSelection": "Calender: Year and month selection",
-    "monthpicker.yearSelection": "Year selection"
+    "monthpicker.monthSelection": "Вибір місяця",
+    "monthpicker.yearMonthInput": "Введення року та місяця",
+    "monthpicker.yearMonthSelection": "Календар: вибір року та місяця",
+    "monthpicker.yearSelection": "Вибір року"
 }
