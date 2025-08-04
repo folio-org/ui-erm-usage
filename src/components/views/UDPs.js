@@ -277,7 +277,6 @@ const UDPs = ({
       <div data-test-udp-instances ref={contentRef}>
         <SearchAndSortQuery
           initialFilterState={{
-            harvestingStatus: ['active'],
             status:['active'],
           }}
           initialSearchState={{ query: '' }}
