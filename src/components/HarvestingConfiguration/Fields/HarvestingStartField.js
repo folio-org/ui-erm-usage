@@ -2,30 +2,24 @@ import { PropTypes } from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
-import { TextField } from '@folio/stripes/components';
+import Monthpicker from '../../../util/Monthpicker';
 
-import { composeValidators, required, yearMonth } from '../../../util/validate';
-
-const HarvestingStartField = (props) => {
+const HarvestingStartField = ({ isRequired }) => {
   return (
     <Field
-      label={
-        <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />
-      }
-      name="harvestingConfig.harvestingStart"
+      backendDateFormat="YYYY-MM"
+      component={Monthpicker}
+      data={isRequired ? 1 : 0}
       id="input-harvestingStart"
-      component={TextField}
-      placeholder="YYYY-MM"
-      validate={props.required ? composeValidators(required, yearMonth) : yearMonth}
-      required={props.required}
-      data={props.required ? 1 : 0}
-      fullWidth
+      isRequired={isRequired}
+      name="harvestingConfig.harvestingStart"
+      textLabel={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStart" />}
     />
   );
 };
 
 HarvestingStartField.propTypes = {
-  required: PropTypes.bool
+  isRequired: PropTypes.bool,
 };
 
 export default HarvestingStartField;
