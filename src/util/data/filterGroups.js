@@ -17,7 +17,7 @@ const filterGroups = [
     cql: 'harvestingConfig.harvestVia',
     operator: '=',
     values: [
-      { name: 'Sushi', cql: 'sushi' },
+      { name: 'Counter / Sushi', cql: 'sushi' },
       { name: 'Aggregator', cql: 'aggregator' }
     ]
   },

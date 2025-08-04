@@ -1,5 +1,5 @@
 export default [
   { value: undefined, label: '' },
   { value: 'aggregator', label: 'Aggregator' },
-  { value: 'sushi', label: 'Sushi' }
+  { value: 'sushi', label: 'Counter / Sushi' }
 ];

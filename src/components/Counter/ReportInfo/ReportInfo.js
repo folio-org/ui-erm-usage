@@ -148,7 +148,7 @@ const ReportInfo = ({
       })} (${val})`;
     }
     return `${intl.formatMessage({
-      id: 'ui-erm-usage.report.error.sushiException',
+      id: 'ui-erm-usage.report.error.exception',
     })}: ${label}`;
   };
 
