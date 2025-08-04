@@ -14,6 +14,7 @@
 * Create monthpicker component based on stripes ([UIEUS-420](https://folio-org.atlassian.net/browse/UIEUS-420))
 * Use month picker for harvesting configuration dates ([UIEUS-416](https://folio-org.atlassian.net/browse/UIEUS-416))
 * Changing the predefined search filters ([UIEUS-450](https://folio-org.atlassian.net/browse/UIEUS-450))
+* Integration of the new term COUNTER alongside SUSHI ([UIEUS-451](https://folio-org.atlassian.net/browse/UIEUS-451))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

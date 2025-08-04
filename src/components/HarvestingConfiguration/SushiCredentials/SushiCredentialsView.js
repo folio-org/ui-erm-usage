@@ -23,23 +23,19 @@ const SushiCredentialsView = ({
       <Row>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.customerId" />}
             value={customerId}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorId" />}
             value={requestorId}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
+            label={<FormattedMessage id="ui-erm-usage.credentials.apiKey" />}
             value={apiKey}
           />
         </Col>
@@ -47,32 +43,20 @@ const SushiCredentialsView = ({
       <Row>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.platform" />
-            }
-            value={
-              usageDataProvider.sushiCredentials?.platform ?? <NoValue />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.platform" />}
+            value={usageDataProvider.sushiCredentials?.platform ?? <NoValue />}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
-            }
-            value={
-              usageDataProvider.sushiCredentials?.requestorName ?? <NoValue />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorName" />}
+            value={usageDataProvider.sushiCredentials?.requestorName ?? <NoValue />}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />
-            }
-            value={
-              usageDataProvider.sushiCredentials?.requestorMail ?? <NoValue />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorMail" />}
+            value={usageDataProvider.sushiCredentials?.requestorMail ?? <NoValue />}
           />
         </Col>
       </Row>

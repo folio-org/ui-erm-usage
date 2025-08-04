@@ -94,7 +94,7 @@ const HarvestingConfigurationView = ({
       <Accordion
         open={sushiCredsOpen}
         onToggle={onToggle}
-        label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.sushiCredentials" />}
+        label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.credentials" />}
         id="sushiCredsAccordion"
       >
         <SushiCredentialsView
