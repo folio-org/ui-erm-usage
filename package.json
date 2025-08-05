@@ -67,7 +67,7 @@
     ],
     "displayName": "ui-erm-usage.meta.title",
     "route": "/eusage",
-    "home": "/eusage?filters=harvestingStatus.active&sort=label",
+    "home": "/eusage?filters=status.active&sort=label",
     "queryResource": "query",
     "okapiInterfaces": {
       "aggregator-settings": "2.0",
