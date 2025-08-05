@@ -37,6 +37,17 @@ const reportFailed = {
   'id': 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
   'downloadTime': '2020-07-09T01:08:05.231+00:00',
   'failedAttempts': 5,
+  'failedReason': 'Report not valid: Exception{Number=3032, Severity=ERROR, Message=Usage No Longer Available for Requested Dates }',
+  'release': '4',
+  'reportName': 'JR1',
+  'yearMonth': '2019-11',
+  'providerId': 'd54f9d37-7759-44b6-a621-f950e6332d32',
+};
+
+const reportNull = {
+  'id': 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
+  'downloadTime': '2020-07-09T01:08:05.231+00:00',
+  'failedAttempts': 5,
   'failedReason': 'Report not valid: Exception{Number=3030, Severity=ERROR, Message=No Usage Available for Requested Dates}',
   'release': '4',
   'reportName': 'JR1',
@@ -60,24 +71,43 @@ describe('ReportInfoButton', () => {
     stripes = useStripes();
   });
 
-  it('should render checked icon with default report', () => {
+  it('should render `checked` icon and `success` style for default report', () => {
     renderReportInfoButton(stripes, reportDefault);
 
     const iconElement = screen.getByTestId('icon');
     expect(iconElement).toHaveClass('icon-check-circle');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('success');
   });
 
-  it('should render edit icon with manual edited report', () => {
+  it('should render `edit` icon and `success` style for manual edited report', () => {
     renderReportInfoButton(stripes, reportEditedManually);
 
     const iconElement = screen.getByTestId('icon');
     expect(iconElement).toHaveClass('icon-edit');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('success');
   });
 
-  it('should render times icon with failed report', () => {
+  it('should render `times` icon and `danger` style for failed report', () => {
     renderReportInfoButton(stripes, reportFailed);
 
     const iconElement = screen.getByTestId('icon');
     expect(iconElement).toHaveClass('icon-times-circle');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('danger');
+  });
+
+  it('should render `default` icon anf `success` style for error 3030', () => {
+    renderReportInfoButton(stripes, reportNull);
+
+    const iconElement = screen.getByTestId('icon');
+    expect(iconElement).toHaveClass('icon-default');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('success');
   });
 });
