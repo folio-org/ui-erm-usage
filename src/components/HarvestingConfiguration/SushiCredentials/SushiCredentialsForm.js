@@ -17,11 +17,11 @@ const SushiCredentialsForm = (props) => {
       <Row>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.sushiCreds.customerId" />}
+            label={<FormattedMessage id="ui-erm-usage.credentials.customerId" />}
             name="sushiCredentials.customerId"
             id="addudp_customerid"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.customerId',
+              id: 'ui-erm-usage.udp.form.placeholder.customerId',
             })}
             component={TextField}
             required={!useAggregator && props.required}
@@ -32,11 +32,11 @@ const SushiCredentialsForm = (props) => {
         </Col>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.sushiCreds.requestorId" />}
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorId" />}
             name="sushiCredentials.requestorId"
             id="addudp_requestorid"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorId',
+              id: 'ui-erm-usage.udp.form.placeholder.requestorId',
             })}
             component={TextField}
             fullWidth
@@ -47,11 +47,11 @@ const SushiCredentialsForm = (props) => {
         </Col>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.sushiCreds.apiKey" />}
+            label={<FormattedMessage id="ui-erm-usage.credentials.apiKey" />}
             name="sushiCredentials.apiKey"
             id="addudp_apikey"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.apiKey',
+              id: 'ui-erm-usage.udp.form.placeholder.apiKey',
             })}
             component={TextField}
             disabled={isDisableApiKey}
@@ -65,11 +65,11 @@ const SushiCredentialsForm = (props) => {
       <Row>
         <Col xs={4}>
           <Field
-            label={<FormattedMessage id="ui-erm-usage.sushiCreds.platform" />}
+            label={<FormattedMessage id="ui-erm-usage.credentials.platform" />}
             name="sushiCredentials.platform"
             id="addudp_platform"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.platform',
+              id: 'ui-erm-usage.udp.form.placeholder.platform',
             })}
             component={TextField}
             fullWidth
@@ -78,12 +78,12 @@ const SushiCredentialsForm = (props) => {
         <Col xs={4}>
           <Field
             label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorName" />
+              <FormattedMessage id="ui-erm-usage.credentials.requestorName" />
             }
             name="sushiCredentials.requestorName"
             id="addudp_reqname"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorName',
+              id: 'ui-erm-usage.udp.form.placeholder.requestorName',
             })}
             component={TextField}
             fullWidth
@@ -92,12 +92,12 @@ const SushiCredentialsForm = (props) => {
         <Col xs={4}>
           <Field
             label={
-              <FormattedMessage id="ui-erm-usage.sushiCreds.requestorMail" />
+              <FormattedMessage id="ui-erm-usage.credentials.requestorMail" />
             }
             name="sushiCredentials.requestorMail"
             id="addudp_requestormail"
             placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.sushi.requestorMail',
+              id: 'ui-erm-usage.udp.form.placeholder.requestorMail',
             })}
             component={TextField}
             fullWidth

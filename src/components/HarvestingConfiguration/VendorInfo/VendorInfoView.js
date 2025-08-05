@@ -18,7 +18,7 @@ const VendorInfoView = ({
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.information.harvestVia" />}
-          value="Sushi"
+          value="Counter / Sushi"
         />
       </Col>
       <Col xs={3}>

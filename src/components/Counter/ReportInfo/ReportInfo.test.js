@@ -48,7 +48,7 @@ describe('ReportInfo.js', () => {
   test('failedReason with defined Number', () => {
     render(stripes, 'Exception{Number=1010, Severity=ERROR, Message=A message}');
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(screen.getByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
+    expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with defined Code with whitespace', () => {
@@ -57,7 +57,7 @@ describe('ReportInfo.js', () => {
       '{\\"Code\\": 1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
     );
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(screen.getByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
+    expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with defined Code without whitespace', () => {
@@ -66,7 +66,7 @@ describe('ReportInfo.js', () => {
       '{\\"Code\\":1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
     );
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(screen.getByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
+    expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with warnings (1-999)', () => {
@@ -75,13 +75,13 @@ describe('ReportInfo.js', () => {
       '{\\"Code\\": 123, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
     );
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(screen.getByText('SUSHI exception: Warnings (123)')).toBeInTheDocument();
+    expect(screen.getByText('Exception: Warnings (123)')).toBeInTheDocument();
   });
 
   test('failedReason with multiple defined Numbers', () => {
     render(stripes, 'Exception{Number=1010, Number=2020}');
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(screen.getByText('SUSHI exception: Service busy (1010)')).toBeInTheDocument();
+    expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with HTML-tag', () => {

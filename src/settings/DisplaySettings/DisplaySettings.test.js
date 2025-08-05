@@ -38,7 +38,7 @@ describe('DisplaySettings', () => {
 
   it('should render correctly', () => {
     expect(screen.getByText('ConfigManager')).toBeInTheDocument();
-    const checkbox = screen.getByRole('checkbox', { name: 'Hide sushi credentials in detail views' });
+    const checkbox = screen.getByRole('checkbox', { name: 'Hide credentials in detail views' });
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveAttribute('name', HIDE_CREDENTIALS);
   });
