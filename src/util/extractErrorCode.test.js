@@ -23,11 +23,11 @@ describe('extractErrorCode', () => {
     });
   });
 
-  it('return input, if no code is available', () => {
+  it('return null, if code or number are not available', () => {
     const input = '{"Message":"Only a message"}';
 
     const result = extractErrorCode(input);
 
-    expect(result).toBe(input);
+    expect(result).toBe(null);
   });
 });

@@ -12,7 +12,7 @@ const extractErrorCode = (input) => {
     };
   }
 
-  return input;
+  return null;
 };
 
 export default extractErrorCode;

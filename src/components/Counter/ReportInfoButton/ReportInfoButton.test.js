@@ -111,3 +111,4 @@ describe('ReportInfoButton', () => {
     expect(iconButton).toHaveClass('success');
   });
 });
+
