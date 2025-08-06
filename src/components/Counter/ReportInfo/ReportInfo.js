@@ -7,6 +7,7 @@ import { IfPermission } from '@folio/stripes/core';
 
 import rawDownloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
+import extractErrorCode from '../../../util/extractErrorCode';
 
 const ReportInfo = ({
   report,
@@ -81,14 +82,12 @@ const ReportInfo = ({
   };
 
   const renderDeleteButton = (failInfo) => {
-    let msg = (
-      <FormattedMessage id="ui-erm-usage.report.action.general.delete.report" />
-    );
+    let msg = <FormattedMessage id="ui-erm-usage.report.action.general.delete.report" />;
+
     if (failInfo) {
-      msg = (
-        <FormattedMessage id="ui-erm-usage.report.action.general.delete.entry" />
-      );
+      msg = <FormattedMessage id="ui-erm-usage.report.action.general.delete.entry" />;
     }
+
     return (
       <IfPermission perm="ui-erm-usage.reports.delete">
         <Button
@@ -106,7 +105,9 @@ const ReportInfo = ({
     if (rep.failedReason) {
       return null;
     }
+
     const filetype = getFileType(rep.release).toUpperCase();
+
     return (
       <Button
         id="download-json-xml-button"
@@ -125,6 +126,7 @@ const ReportInfo = ({
 
   const manualEditedText = () => {
     const editReason = ` ${get(report, 'editReason', '-')}`;
+
     return (
       <>
         <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
@@ -137,26 +139,21 @@ const ReportInfo = ({
 
   const translateErrorCodes = (val) => {
     let label;
+
     if (isSushiWarningCode(val)) {
-      label = `${intl.formatMessage({
-        id: 'ui-erm-usage.report.error.1',
-      })} (${val})`;
+      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${val})`;
     } else {
       const id = `ui-erm-usage.report.error.${val}`;
-      label = `${intl.formatMessage({
-        id,
-      })} (${val})`;
+      label = `${intl.formatMessage({ id })} (${val})`;
     }
-    return `${intl.formatMessage({
-      id: 'ui-erm-usage.report.error.exception',
-    })}: ${label}`;
+    return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.exception' })}: ${label}`;
   };
 
   const adaptSushiAndHtmlFailedInfo = (failedReason) => {
-    const matchResult = failedReason.match('(?:Number=|"Code": ?)([0-9]{1,4})');
+    const error = failedReason ? extractErrorCode(failedReason) : null;
 
-    if (matchResult !== null) {
-      return translateErrorCodes(matchResult[1]);
+    if (error !== null) {
+      return translateErrorCodes(error.code);
     } else if (failedReason.includes('<html')) {
       const htmlError = <details><summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>{failedReason}</details>;
       return htmlError;
@@ -174,13 +171,9 @@ const ReportInfo = ({
 
   const failedAttempts = !report.failedAttempts ? null : (
     <KeyValue
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.report.action.failedAttempts',
-      })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.report.action.failedAttempts' })}
       value={intl.formatMessage(
-        {
-          id: 'ui-erm-usage.statistics.report.info.maxAttempts',
-        },
+        { id: 'ui-erm-usage.statistics.report.info.maxAttempts' },
         {
           current: report.failedAttempts,
           max: retryThreshold,
@@ -192,9 +185,7 @@ const ReportInfo = ({
   const displayManualEdited = report.reportEditedManually ? (
     <KeyValue
       data-test-custom-reports-edited-manually
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.general.manualChanges',
-      })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
       value={manualEditedText()}
     />
   ) : (
@@ -204,22 +195,16 @@ const ReportInfo = ({
   const headerSection = (
     <MenuSection
       id="menu-actions"
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.general.report',
-      })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.report' })}
       labelTag="h3"
     >
       <KeyValue label="Usage data provider" value={udpLabel} />
       <KeyValue
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.type',
-        })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
         value={report.reportName}
       />
       <KeyValue
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.date',
-        })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.general.date' })}
         value={report.yearMonth}
       />
       {displayManualEdited}
@@ -236,9 +221,7 @@ const ReportInfo = ({
   const actionSection = (
     <MenuSection
       id="menu-actions"
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.general.actions',
-      })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.actions' })}
       labelTag="h3"
     >
       {renderDeleteButton(failInfo)}

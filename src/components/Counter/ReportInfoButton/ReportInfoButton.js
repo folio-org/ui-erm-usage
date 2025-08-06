@@ -12,6 +12,7 @@ import {
 } from '@folio/stripes/components';
 
 import ReportInfo from '../ReportInfo';
+import extractErrorCode from '../../../util/extractErrorCode';
 
 const ReportInfoButton = ({
   stripes,
@@ -94,9 +95,9 @@ const ReportInfoButton = ({
     return null;
   }
 
-  const errorCode = report.failedReason?.match('(?:Number=|"Code": ?)([0-9]{1,4})');
-  const icon = getButtonIcon(errorCode?.[1]);
-  const style = getButtonStyle(report.failedAttempts, errorCode?.[1]);
+  const error = report.failedReason ? extractErrorCode(report.failedReason) : null;
+  const icon = getButtonIcon(error?.code);
+  const style = getButtonStyle(report.failedAttempts, error?.code);
 
   const confirmMessage = (
     <>
