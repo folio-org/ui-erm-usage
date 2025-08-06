@@ -1,14 +1,12 @@
 const extractErrorCode = (input) => {
-  const codeRegex = /(?:Number=|"Code"\s*:\s*)(\d{1,4})/;
-  const messageRegex = /"Message"\s*:\s*"([^"]+)"/;
+  const counter4Regex = /Number=(\d{1,4})/;
+  const counter5Regex = /"Code"\s*:\s*(\d{1,4})/;
 
-  const codeMatch = input.match(codeRegex);
-  const messageMatch = input.match(messageRegex);
+  const codeMatch = input.match(counter4Regex) || input.match(counter5Regex);
 
   if (codeMatch) {
     return {
       code: codeMatch[1],
-      message: messageMatch?.[1] ?? null,
     };
   }
 
