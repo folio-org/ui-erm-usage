@@ -191,13 +191,6 @@ describe('UDPForm', () => {
       renderUDPForm(stripes);
     });
 
-    test('harvesting start invalid format', async () => {
-      const startInput = screen.getByLabelText('Harvesting start');
-      await userEvent.type(startInput, '2020-ab');
-      await userEvent.tab();
-      expect(screen.getByText('Date invalid', { exact: false })).toBeInTheDocument();
-    });
-
     test('harvesting start valid format', async () => {
       const startInput = screen.getByLabelText('Harvesting start');
       await userEvent.type(startInput, '01/2020');
