@@ -12,6 +12,7 @@ import {
 } from '@folio/stripes/components';
 
 import ReportInfo from '../ReportInfo';
+import extractErrorCode from '../../../util/extractErrorCode';
 
 const ReportInfoButton = ({
   stripes,
@@ -27,8 +28,8 @@ const ReportInfoButton = ({
 
   const log = stripes.logger.log.bind(stripes.logger);
 
-  const getButtonStyle = (failedAttempts) => {
-    if (!failedAttempts) {
+  const getButtonStyle = (failedAttempts, errorCode) => {
+    if (!failedAttempts || (errorCode && errorCode === '3030')) {
       return 'success slim';
     } else if (failedAttempts < maxFailedAttempts) {
       return 'warning slim';
@@ -37,13 +38,17 @@ const ReportInfoButton = ({
     }
   };
 
-  const getButtonIcon = () => {
-    if (!report.failedAttempts && report?.reportEditedManually) {
+  const getButtonIcon = (errorCode) => {
+    const hasFailedAttempts = report.failedAttempts;
+
+    if (!hasFailedAttempts && report?.reportEditedManually) {
       return <Icon icon="edit" />;
-    } else if (!report.failedAttempts) {
+    } else if (!hasFailedAttempts) {
       return <Icon icon="check-circle" />;
-    } else if (report.failedAttempts < maxFailedAttempts) {
+    } else if (hasFailedAttempts < maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
+    } else if (report.failedReason && errorCode === '3030') {
+      return <Icon icon="default" />;
     } else {
       return <Icon icon="times-circle" />;
     }
@@ -92,8 +97,9 @@ const ReportInfoButton = ({
     return null;
   }
 
-  const icon = getButtonIcon();
-  const style = getButtonStyle(report.failedAttempts);
+  const error = report.failedReason ? extractErrorCode(report.failedReason) : null;
+  const icon = getButtonIcon(error?.code);
+  const style = getButtonStyle(report.failedAttempts, error?.code);
 
   const confirmMessage = (
     <>
