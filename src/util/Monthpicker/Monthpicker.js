@@ -68,6 +68,7 @@ const Monthpicker = ({
   textLabel = '',
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showError, setShowError] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
@@ -97,9 +98,23 @@ const Monthpicker = ({
     return dt.isValid ? dt.toFormat(to) : value;
   };
 
-  const validationError = meta.touched && !meta.error
-    ? validator(convertDateFormat(input.value, resolvedBackendDateFormat, resolvedDateFormat))
-    : meta.error;
+  const validationError = useMemo(() => {
+    if (!showError) return undefined;
+
+    const displayValue = convertDateFormat(
+      input.value,
+      resolvedBackendDateFormat,
+      resolvedDateFormat
+    );
+
+    return meta.error || validator(displayValue);
+  }, [input.value, meta.error, resolvedBackendDateFormat, resolvedDateFormat, showError, validator]);
+
+  useEffect(() => {
+    if (meta.touched && meta.error) {
+      setShowError(true);
+    }
+  }, [meta.touched, meta.error]);
 
   useEffect(() => {
     const dt = DateTime.fromFormat(input?.value, resolvedBackendDateFormat);
@@ -128,7 +143,10 @@ const Monthpicker = ({
 
     input.onChange(dt.toFormat(resolvedBackendDateFormat));
 
-    setShowCalendar(false);
+    setTimeout(() => {
+      setShowError(true);
+      setShowCalendar(false);
+    }, 0);
 
     lastValidDateRef.current = { year, month: monthIndex + 1 };
   };
