@@ -23,89 +23,53 @@ function DownloadRange({
   intl,
   onDownloadReportMultiMonth,
   udpId,
-  handleSubmit,
-  values,
 }) {
   const calloutRef = useRef();
-  const [start, setStart] = useState('');
-  const [startError, setStartError] = useState(null);
-  const [end, setEnd] = useState('');
-  const [endError, setEndError] = useState(null);
   const [selectedReport, setSelectedReport] = useState(downloadableReports[0] || {});
   const [exportFormat, setExportFormat] = useState(exportFormats[0].value);
 
-  const validate = (s, e) => {
-    if (!isYearMonth(s)) {
-      setStartError(
-        intl.formatMessage({
-          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
-        })
-      );
-    }
-    if (!isYearMonth(e)) {
-      setEndError(
-        intl.formatMessage({
-          id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.yyyymm',
-        })
-      );
+  const validate = (values) => {
+    const errors = {};
+
+    if (
+      values.startDate && values.endDate &&
+      isYearMonth(values.startDate) && isYearMonth(values.endDate) &&
+      values.startDate > values.endDate
+    ) {
+      errors.endDate = intl.formatMessage({
+        id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart',
+      });
     }
 
-    if (isYearMonth(s) && isYearMonth(e)) {
-      if (s > e) {
-        setEndError(
-          intl.formatMessage({
-            id:
-              'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart',
-          })
-        );
-        setStartError(null);
-      } else {
-        setEndError(null);
-        setStartError(null);
-      }
-    }
+    return errors;
   };
 
-  const hasError = () => {
-    const result =
-      (isEmpty(start) && isEmpty(end)) ||
-      !isEmpty(startError) ||
-      !isEmpty(endError);
-    return result;
-  };
-
-  const handleStartChange = (e) => {
-    const newStart = e.target.value;
-    setStart(newStart);
-    setStartError(null);
-    validate(newStart, end);
-  };
-
-  const handleEndChange = (e) => {
-    const newEnd = e.target.value;
-    setEnd(newEnd);
-    setEndError(null);
-    validate(start, newEnd);
-  };
-
-  const clearStart = () => {
-    setStart('');
-    setStartError(null);
-  };
-
-  const clearEnd = () => {
-    setEnd('');
-    setEndError(null);
-  };
-
-  const doDownload = () => {
-    if (!isEmpty(start) && !isEmpty(end)) {
+  const onSubmit = (values) => {
+    if (selectedReport?.value && !isEmpty(values.startDate) && !isEmpty(values.endDate)) {
       onDownloadReportMultiMonth(
         udpId,
         selectedReport.value,
         selectedReport.release,
-        start,
-        end,
+        values.startDate,
+        values.endDate,
+        exportFormat
+      );
+    } else {
+      calloutRef?.current?.sendCallout({
+        type: 'error',
+        message: intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.missingFields' }),
+      });
+    }
+  };
+
+  const doDownload = (startDate, endDate) => {
+    if (!isEmpty(startDate) && !isEmpty(endDate)) {
+      onDownloadReportMultiMonth(
+        udpId,
+        selectedReport.value,
+        selectedReport.release,
+        startDate,
+        endDate,
         exportFormat
       );
     }
@@ -119,82 +83,85 @@ function DownloadRange({
     setExportFormat(e.target.value);
   };
 
-  const isDisabled = hasError();
-
   return (
     <Form
-      onSubmit={() => {}}
-      render={() => (
-        <>
-          <Row>
-            <Col xs={4}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.start">
-                {(startMessage) => (
-                  <Field
-                    backendDateFormat="YYYY-MM"
-                    component={Monthpicker}
-                    name="startDate"
-                    textLabel={startMessage}
-                  />
-                )}
-              </FormattedMessage>
-            </Col>
-            <Col xs={4}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.end">
-                {(endMessage) => (
-                  <Field
-                    backendDateFormat="YYYY-MM"
-                    component={Monthpicker}
-                    name="endDate"
-                    textLabel={endMessage}
-                  />
-                )}
-              </FormattedMessage>
-            </Col>
-            <Col xs={4}>
-              <></>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={4}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
-                {(label) => (
-                  <Select
-                    label={label}
-                    name="downloadMultiMonths.reportType"
-                    dataOptions={downloadableReports}
-                    onChange={onSelectReportType}
-                  />
-                )}
-              </FormattedMessage>
-            </Col>
-            <Col xs={4}>
-              <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
-                {(label) => (
-                  <Select
-                    label={label}
-                    name="downloadMultiMonths.formats"
-                    dataOptions={exportFormats}
-                    onChange={onSelectExportFormat}
-                  />
-                )}
-              </FormattedMessage>
-            </Col>
-            <Col xs={4}>
-              <div className={css.startButton}>
-                <Button
-                  onClick={doDownload}
-                  buttonStyle="primary"
-                  disabled={isDisabled}
-                >
-                  <FormattedMessage id="ui-erm-usage.report.action.download" />
-                </Button>
-              </div>
-            </Col>
-          </Row>
-          <Callout ref={calloutRef} />
-        </>
-      )}
+      onSubmit={onSubmit}
+      validate={validate}
+      render={({
+        handleSubmit,
+        submitting,
+        pristine,
+        values,
+        invalid,
+      }) => {
+        const isDisabled = invalid || submitting || pristine;
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <Row>
+              <Col xs={4}>
+                <Field
+                  backendDateFormat="YYYY-MM"
+                  component={Monthpicker}
+                  name="startDate"
+                  textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.start' })}
+                />
+              </Col>
+              <Col xs={4}>
+                <Field
+                  backendDateFormat="YYYY-MM"
+                  component={Monthpicker}
+                  name="endDate"
+                  textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.end' })}
+                />
+              </Col>
+              <Col xs={4}>
+                <></>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={4}>
+                <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
+                  {(label) => (
+                    <Select
+                      label={label}
+                      name="downloadMultiMonths.reportType"
+                      dataOptions={downloadableReports}
+                      onChange={onSelectReportType}
+                      value={selectedReport.value}
+                    />
+                  )}
+                </FormattedMessage>
+              </Col>
+              <Col xs={4}>
+                <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
+                  {(label) => (
+                    <Select
+                      label={label}
+                      name="downloadMultiMonths.formats"
+                      dataOptions={exportFormats}
+                      onChange={onSelectExportFormat}
+                      value={exportFormat}
+                    />
+                  )}
+                </FormattedMessage>
+              </Col>
+              <Col xs={4}>
+                <div className={css.startButton}>
+                  <Button
+                    onClick={() => doDownload(values.startDate, values.endDate)}
+                    buttonStyle="primary"
+                    disabled={isDisabled}
+                  >
+                    <FormattedMessage id="ui-erm-usage.report.action.download" />
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+            <Callout ref={calloutRef} />
+          </form>
+        );
+      }}
     />
   );
 }
@@ -204,8 +171,6 @@ DownloadRange.propTypes = {
   intl: PropTypes.object,
   onDownloadReportMultiMonth: PropTypes.func,
   udpId: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  values: PropTypes.object,
 };
 
 export default stripesConnect(injectIntl(DownloadRange));
