@@ -13,7 +13,6 @@ import {
   Select,
 } from '@folio/stripes/components';
 
-import { isYearMonth } from '../../../util/validate';
 import exportFormats from '../../../util/data/exportFormats';
 import Monthpicker from '../../../util/Monthpicker';
 import css from './DownloadRange.css';
@@ -33,12 +32,9 @@ function DownloadRange({
 
     if (
       values.startDate && values.endDate &&
-      isYearMonth(values.startDate) && isYearMonth(values.endDate) &&
       values.startDate > values.endDate
     ) {
-      errors.endDate = intl.formatMessage({
-        id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart',
-      });
+      errors.endDate = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' });
     }
 
     return errors;

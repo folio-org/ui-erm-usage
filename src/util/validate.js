@@ -23,15 +23,6 @@ const mail = value => {
   return undefined;
 };
 
-const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/;
-
-const yearMonth = value => {
-  if (value && !yyyyMMRegex.test(value)) {
-    return <FormattedMessage id="ui-erm-usage.errors.dateInvalid" />;
-  }
-  return undefined;
-};
-
 const endDate = values => {
   if (!values || !values.harvestingConfig) {
     return undefined;
@@ -49,13 +40,6 @@ const endDate = values => {
     errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
   }
   return errors;
-};
-
-const isYearMonth = value => {
-  if (value && yyyyMMRegex.test(value)) {
-    return true;
-  }
-  return false;
 };
 
 const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
@@ -80,11 +64,9 @@ export {
   composeValidators,
   endDate,
   isValidUrl,
-  isYearMonth,
   mail,
   notRequired,
   required,
   requiredArray,
-  yearMonth,
   requiredValidateUrl,
 };
