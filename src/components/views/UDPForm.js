@@ -25,7 +25,7 @@ import stripesFinalForm from '@folio/stripes/final-form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
-import { endDate } from '../../util/validate';
+import { validateDates } from '../../util/validate';
 
 import css from './UDPForm.css';
 
@@ -317,5 +317,5 @@ export default stripesFinalForm({
     values: true,
     invalid: true,
   },
-  validate: (values) => endDate(values),
+  validate: validateDates,
 })(UDPForm);

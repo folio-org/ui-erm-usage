@@ -23,22 +23,26 @@ const mail = value => {
   return undefined;
 };
 
-const endDate = values => {
-  if (!values || !values.harvestingConfig) {
-    return undefined;
-  }
-
-  if (!values.harvestingConfig.harvestingStart && !values.harvestingConfig.harvestingEnd) {
-    return undefined;
-  }
+const validateDates = (values) => {
+  if (!values || !values.harvestingConfig) return undefined;
 
   const errors = {};
   const start = get(values, 'harvestingConfig.harvestingStart', '');
   const end = get(values, 'harvestingConfig.harvestingEnd', '');
-  if (new Date(end) < new Date(start)) {
+
+  if (start && end) {
     errors.harvestingConfig = {};
-    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
+
+    if (new Date(start) > new Date(end)) {
+      errors.harvestingConfig.harvestingStart = (
+        <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />
+      );
+      errors.harvestingConfig.harvestingEnd = (
+        <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />
+      );
+    }
   }
+
   return errors;
 };
 
@@ -62,11 +66,11 @@ const requiredValidateUrl = value => {
 
 export {
   composeValidators,
-  endDate,
   isValidUrl,
   mail,
   notRequired,
   required,
   requiredArray,
   requiredValidateUrl,
+  validateDates,
 };
