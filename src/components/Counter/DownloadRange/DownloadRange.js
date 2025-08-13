@@ -17,26 +17,24 @@ import exportFormats from '../../../util/data/exportFormats';
 import Monthpicker from '../../../util/Monthpicker';
 import css from './DownloadRange.css';
 
-function DownloadRange({
+const DownloadRange = ({
   downloadableReports,
   intl,
   onDownloadReportMultiMonth,
   udpId,
-}) {
+}) => {
   const calloutRef = useRef();
   const [selectedReport, setSelectedReport] = useState(downloadableReports[0] || {});
   const [exportFormat, setExportFormat] = useState(exportFormats[0].value);
+  const [isStartValid, setIsStartValid] = useState(true);
+  const [isEndValid, setIsEndValid] = useState(true);
 
   const validate = (values) => {
     const errors = {};
 
-    if (
-      values.startDate && values.endDate &&
-      values.startDate > values.endDate
-    ) {
+    if (values.startDate && values.endDate && values.startDate > values.endDate) {
       errors.endDate = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' });
     }
-
     return errors;
   };
 
@@ -58,19 +56,6 @@ function DownloadRange({
     }
   };
 
-  const doDownload = (startDate, endDate) => {
-    if (!isEmpty(startDate) && !isEmpty(endDate)) {
-      onDownloadReportMultiMonth(
-        udpId,
-        selectedReport.value,
-        selectedReport.release,
-        startDate,
-        endDate,
-        exportFormat
-      );
-    }
-  };
-
   const onSelectReportType = (e) => {
     setSelectedReport(downloadableReports[e.target.selectedIndex]);
   };
@@ -88,9 +73,13 @@ function DownloadRange({
         submitting,
         pristine,
         values,
-        invalid,
       }) => {
-        const isDisabled = invalid || submitting || pristine;
+        const isDisabled =
+          !values.startDate ||
+          !values.endDate ||
+          !isStartValid ||
+          !isEndValid ||
+          values.startDate > values.endDate;
 
         return (
           <form onSubmit={handleSubmit}>
@@ -99,16 +88,20 @@ function DownloadRange({
                 <Field
                   backendDateFormat="YYYY-MM"
                   component={Monthpicker}
+                  isRequired
                   name="startDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.start' })}
+                  onValidityChange={setIsStartValid}
                 />
               </Col>
               <Col xs={4}>
                 <Field
                   backendDateFormat="YYYY-MM"
                   component={Monthpicker}
+                  isRequired
                   name="endDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.end' })}
+                  onValidityChange={setIsEndValid}
                 />
               </Col>
               <Col xs={4}>
@@ -145,9 +138,9 @@ function DownloadRange({
               <Col xs={4}>
                 <div className={css.startButton}>
                   <Button
-                    onClick={() => doDownload(values.startDate, values.endDate)}
+                    type="submit"
                     buttonStyle="primary"
-                    disabled={isDisabled}
+                    disabled={isDisabled || submitting || pristine}
                   >
                     <FormattedMessage id="ui-erm-usage.report.action.download" />
                   </Button>
@@ -160,7 +153,7 @@ function DownloadRange({
       }}
     />
   );
-}
+};
 
 DownloadRange.propTypes = {
   downloadableReports: PropTypes.arrayOf(PropTypes.object).isRequired,

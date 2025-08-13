@@ -66,9 +66,10 @@ const Monthpicker = ({
   isRequired,
   meta,
   textLabel = '',
+  onValidityChange,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [hasBlurred, setHasBlurred] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
@@ -99,7 +100,7 @@ const Monthpicker = ({
   };
 
   const validationError = useMemo(() => {
-    if (!showError) return undefined;
+    if (!hasBlurred) return undefined;
 
     const displayValue = convertDateFormat(
       input.value,
@@ -107,14 +108,14 @@ const Monthpicker = ({
       resolvedDateFormat
     );
 
-    return meta.error || validator(displayValue);
-  }, [input.value, meta.error, resolvedBackendDateFormat, resolvedDateFormat, showError, validator]);
+    const error = meta.error || validator(displayValue);
 
-  useEffect(() => {
-    if (meta.touched && meta.error) {
-      setShowError(true);
+    if (onValidityChange) {
+      onValidityChange(!error);
     }
-  }, [meta.touched, meta.error]);
+
+    return error;
+  }, [hasBlurred, input.value, meta.error, onValidityChange, resolvedBackendDateFormat, resolvedDateFormat, validator]);
 
   useEffect(() => {
     const dt = DateTime.fromFormat(input?.value, resolvedBackendDateFormat);
@@ -143,10 +144,7 @@ const Monthpicker = ({
 
     input.onChange(dt.toFormat(resolvedBackendDateFormat));
 
-    setTimeout(() => {
-      setShowError(true);
-      setShowCalendar(false);
-    }, 0);
+    setShowCalendar(false);
 
     lastValidDateRef.current = { year, month: monthIndex + 1 };
   };
@@ -197,8 +195,7 @@ const Monthpicker = ({
     />
   );
 
-  const months = Array.from({ length: 12 }, (_, i) =>
-    new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
+  const months = Array.from({ length: 12 }, (_, i) => new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
   return (
     <div ref={containerPopper}>
@@ -209,7 +206,10 @@ const Monthpicker = ({
           error={validationError}
           label={textLabel}
           name={input.name}
-          onBlur={input.onBlur}
+          onBlur={(e) => {
+            setHasBlurred(true);
+            input.onBlur(e);
+          }}
           onChange={(e) => input.onChange(convertDateFormat(e.target.value, resolvedDateFormat, resolvedBackendDateFormat))}
           onFocus={input.onFocus}
           placeholder={resolvedDateFormat}
