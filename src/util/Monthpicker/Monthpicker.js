@@ -310,6 +310,7 @@ Monthpicker.propTypes = {
   input: PropTypes.object,
   isRequired: PropTypes.bool,
   meta: PropTypes.object,
+  onValidityChange: PropTypes.func,
   textLabel: PropTypes.string,
 };
 
