@@ -24,7 +24,7 @@ const mail = value => {
 };
 
 const validateDates = (values) => {
-  if (!values || !values.harvestingConfig) return undefined;
+  if (!values?.harvestingConfig) return undefined;
 
   const errors = {};
   const start = get(values, 'harvestingConfig.harvestingStart', '');
