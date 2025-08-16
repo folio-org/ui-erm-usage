@@ -18,6 +18,7 @@ Name | type | description | default | required
 `isRequired` | bool | if true, TextField (containing year and month) will be required | false | false
 `textLabel` | string | visible field label | "" | false
 `input` | object | Form state provided by Redux Form or Final Form's `<Field>` component for accessing the current value `input.value` and update it `input.onChange(newValue)` | 
+`onValidityChange` | function | Callback function triggered whenever the validity of the entered date changes. Receives a boolean: `true` if the date is valid, `false` if invalid. | "" | false
 ```
 {
   name: '',

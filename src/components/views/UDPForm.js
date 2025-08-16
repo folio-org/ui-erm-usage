@@ -25,7 +25,7 @@ import stripesFinalForm from '@folio/stripes/final-form';
 
 import { UDPInfoForm } from '../UDPInfo';
 import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
-import { endDate } from '../../util/validate';
+import { validateDates } from '../../util/validate';
 
 import css from './UDPForm.css';
 
@@ -138,8 +138,7 @@ const UDPForm = ({
   };
 
   const renderPaneFooter = () => {
-    const disabled = pristine || submitting;
-
+    const disabled = pristine || submitting || values.harvestingConfig.harvestingStart > values.harvestingConfig.harvestingEnd;
     const startButton = (
       <Button
         data-test-udp-form-cancel-button
@@ -201,8 +200,6 @@ const UDPForm = ({
 
   const udp = initialValues || {};
 
-  const footer = renderPaneFooter();
-
   return (
     <HasCommand commands={shortcuts}>
       <form
@@ -214,7 +211,7 @@ const UDPForm = ({
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
-            footer={footer}
+            footer={renderPaneFooter()}
             renderHeader={renderFormPaneHeader}
           >
             <div className={css.UDPFormContent}>
@@ -303,7 +300,7 @@ UDPForm.propTypes = {
 };
 
 export default stripesFinalForm({
-  navigationCheck: true,
+  navigationCheck: false,
   enableReinitialize: true,
   mutators: {
     clearSelectedReports: (_args, state, tools) => {
@@ -317,5 +314,5 @@ export default stripesFinalForm({
     values: true,
     invalid: true,
   },
-  validate: (values) => endDate(values),
+  validate: validateDates,
 })(UDPForm);

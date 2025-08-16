@@ -23,39 +23,27 @@ const mail = value => {
   return undefined;
 };
 
-const yyyyMMRegex = /^[12]\d{3}-(0[1-9]|1[0-2])$/;
-
-const yearMonth = value => {
-  if (value && !yyyyMMRegex.test(value)) {
-    return <FormattedMessage id="ui-erm-usage.errors.dateInvalid" />;
-  }
-  return undefined;
-};
-
-const endDate = values => {
-  if (!values || !values.harvestingConfig) {
-    return undefined;
-  }
-
-  if (!values.harvestingConfig.harvestingStart && !values.harvestingConfig.harvestingEnd) {
-    return undefined;
-  }
+const validateDates = (values) => {
+  if (!values?.harvestingConfig) return undefined;
 
   const errors = {};
   const start = get(values, 'harvestingConfig.harvestingStart', '');
   const end = get(values, 'harvestingConfig.harvestingEnd', '');
-  if (new Date(end) < new Date(start)) {
-    errors.harvestingConfig = {};
-    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
-  }
-  return errors;
-};
 
-const isYearMonth = value => {
-  if (value && yyyyMMRegex.test(value)) {
-    return true;
+  if (start && end) {
+    errors.harvestingConfig = {};
+
+    if (new Date(start) > new Date(end)) {
+      errors.harvestingConfig.harvestingStart = (
+        <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />
+      );
+      errors.harvestingConfig.harvestingEnd = (
+        <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />
+      );
+    }
   }
-  return false;
+
+  return errors;
 };
 
 const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
@@ -78,13 +66,11 @@ const requiredValidateUrl = value => {
 
 export {
   composeValidators,
-  endDate,
   isValidUrl,
-  isYearMonth,
   mail,
   notRequired,
   required,
   requiredArray,
-  yearMonth,
   requiredValidateUrl,
+  validateDates,
 };

@@ -198,14 +198,14 @@ describe('UDPForm', () => {
       expect(screen.queryByText('Date invalid', { exact: false })).not.toBeInTheDocument();
     });
 
-    test('harvesting start < end is invalid', async () => {
+    test('harvesting start > end is invalid', async () => {
       const startInput = screen.getByLabelText('Harvesting start');
       await userEvent.type(startInput, '02/2020');
 
       const endInput = screen.getByLabelText('Harvesting end');
       await userEvent.type(endInput, '01/2020');
       await userEvent.tab();
-      expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();
+      expect(screen.getAllByText('End date must be greater than start date', { exact: false })).toHaveLength(2);
     });
   });
 
