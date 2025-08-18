@@ -34,6 +34,7 @@ const UDPForm = ({
   form,
   handlers,
   initialValues = {},
+  invalid,
   handleSubmit,
   onSubmit,
   pristine,
@@ -138,7 +139,7 @@ const UDPForm = ({
   };
 
   const renderPaneFooter = () => {
-    const disabled = pristine || submitting || values.harvestingConfig.harvestingStart > values.harvestingConfig.harvestingEnd;
+    const disabled = pristine || submitting || invalid;
     const startButton = (
       <Button
         data-test-udp-form-cancel-button
@@ -295,6 +296,7 @@ UDPForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool,
+  invalid: PropTypes.bool,
   submitting: PropTypes.bool,
   values: PropTypes.shape(),
 };
