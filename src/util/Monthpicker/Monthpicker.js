@@ -69,7 +69,7 @@ const Monthpicker = ({
   onValidityChange,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [hasBlurred, setHasBlurred] = useState(false);
+  const [isBlurred, setIsBlurred] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
@@ -100,7 +100,7 @@ const Monthpicker = ({
   };
 
   const validationError = useMemo(() => {
-    if (!hasBlurred) return undefined;
+    if (!isBlurred) return undefined;
 
     const displayValue = convertDateFormat(
       input.value,
@@ -115,7 +115,7 @@ const Monthpicker = ({
     }
 
     return error;
-  }, [hasBlurred, input.value, meta.error, onValidityChange, resolvedBackendDateFormat, resolvedDateFormat, validator]);
+  }, [isBlurred, input.value, meta.error, onValidityChange, resolvedBackendDateFormat, resolvedDateFormat, validator]);
 
   useEffect(() => {
     const dt = DateTime.fromFormat(input?.value, resolvedBackendDateFormat);
@@ -207,7 +207,7 @@ const Monthpicker = ({
           label={textLabel}
           name={input.name}
           onBlur={(e) => {
-            setHasBlurred(true);
+            setIsBlurred(true);
             input.onBlur(e);
           }}
           onChange={(e) => input.onChange(convertDateFormat(e.target.value, resolvedDateFormat, resolvedBackendDateFormat))}
