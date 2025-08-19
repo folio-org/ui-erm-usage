@@ -37,17 +37,25 @@ const MonthpickerInput = ({
   textLabel = '',
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showError, setShowError] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
-    // block blur as long as the monthpicker is open
-    if (showCalendar) {
-      e.preventDefault();
+    const nextTarget = e.relatedTarget;
+
+    // block blur as long as no click outsinde the field-monthpicker-container is happening
+    if (
+      nextTarget &&
+      containerPopper.current &&
+      containerPopper.current.contains(nextTarget)
+    ) {
       return;
     }
+
+    setShowError(true);
     input.onBlur?.(e);
   };
 
@@ -55,7 +63,7 @@ const MonthpickerInput = ({
     setShowCalendar(false);
   });
 
-  const validationError = meta.touched ? meta.error : undefined;
+  const validationError = showError ? meta.error : undefined;
 
   useEffect(() => {
     if (!backendDateFormat) return;
@@ -76,10 +84,8 @@ const MonthpickerInput = ({
     }
   }, [input?.value, backendDateFormat]);
 
-
   const buildDateString = (year, month, format) => {
     const dt = DateTime.fromObject({ year, month });
-
     return dt.toFormat(format);
   };
 
@@ -143,7 +149,7 @@ const MonthpickerInput = ({
     new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
   return (
-    <div ref={containerPopper} onBlur={handleInternalBlur}>
+    <div ref={containerPopper}>
       <div ref={containerTextField}>
         <TextField
           aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
