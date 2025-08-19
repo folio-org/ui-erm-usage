@@ -131,13 +131,17 @@ describe('Monthpicker', () => {
     expect(onChange).toHaveBeenCalledWith('2023-04');
   });
 
-  it('should show error message if meta has an error and touched is true', () => {
+  it('should show error message if meta has an error and touched is true', async () => {
     renderMonthpicker({
       meta: {
-        touched: true,
         error: 'Invalid date',
       },
     });
+
+    const input = screen.getByRole('textbox', { name: 'Year and month input' });
+
+    await userEvent.click(input);
+    await userEvent.tab();
 
     expect(screen.getByText('Invalid date')).toBeInTheDocument();
   });
