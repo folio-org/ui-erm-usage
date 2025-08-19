@@ -35,6 +35,7 @@ const MonthpickerInput = ({
   isRequired,
   meta,
   textLabel = '',
+  onValidityChange,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -57,6 +58,11 @@ const MonthpickerInput = ({
 
     setShowError(true);
     input.onBlur?.(e);
+
+    // callback to trigger error in form outside of Monthpicker
+    if (onValidityChange) {
+      onValidityChange(!meta.error);
+    }
   };
 
   useClickOutside(containerPopper, () => {
@@ -261,6 +267,7 @@ MonthpickerInput.propTypes = {
   isRequired: PropTypes.bool,
   meta: PropTypes.object,
   textLabel: PropTypes.string,
+  onValidityChange: PropTypes.func,
 };
 
 export default MonthpickerInput;

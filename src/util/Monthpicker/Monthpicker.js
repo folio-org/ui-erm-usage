@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { useMemo } from 'react';
 import { Field } from 'react-final-form';
 import {
   useIntl,
@@ -51,16 +52,23 @@ const Monthpicker = ({
   isRequired = false,
   name,
   textLabel,
+  onValidityChange,
 }) => {
   const intl = useIntl();
   const resolvedDateFormat = getResolvedDateFormat(intl.locale, dateFormat);
 
   const resolvedBackendDateFormat = normalizeToLuxonFormat(backendDateFormat);
 
+  const validator = useMemo(
+    () => monthpickerValidator({ isRequired, inputFormat: resolvedBackendDateFormat }),
+    [isRequired, resolvedBackendDateFormat]
+  );
+
   return (
     <Field
       name={name}
-      validate={monthpickerValidator({ isRequired, inputFormat: resolvedBackendDateFormat })}
+      validate={validator}
+      key={isRequired ? 'required' : 'optional'}
     >
       {({ input, meta }) => (
         <MonthpickerInput
@@ -70,6 +78,7 @@ const Monthpicker = ({
           backendDateFormat={resolvedBackendDateFormat}
           dateFormat={resolvedDateFormat}
           textLabel={textLabel}
+          onValidityChange={onValidityChange}
         />
       )}
     </Field>
