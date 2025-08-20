@@ -84,7 +84,6 @@ const DownloadRange = ({
                   isRequired
                   name="startDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.start' })}
-                  // onValidityChange={setIsStartValid}
                 />
               </Col>
               <Col xs={4}>
@@ -93,7 +92,6 @@ const DownloadRange = ({
                   isRequired
                   name="endDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.end' })}
-                  // onValidityChange={setIsEndValid}
                 />
               </Col>
               <Col xs={4}>
