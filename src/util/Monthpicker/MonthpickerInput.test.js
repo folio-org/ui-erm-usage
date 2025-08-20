@@ -81,7 +81,7 @@ describe('MonthpickerInput', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
-  
+
   it('should change year via input', async () => {
     renderMonthpickerInput({
       input: {

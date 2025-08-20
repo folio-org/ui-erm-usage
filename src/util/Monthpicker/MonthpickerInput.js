@@ -35,10 +35,8 @@ const MonthpickerInput = ({
   isRequired,
   meta,
   textLabel = '',
-  onValidityChange,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [showError, setShowError] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
@@ -56,20 +54,14 @@ const MonthpickerInput = ({
       return;
     }
 
-    setShowError(true);
     input.onBlur?.(e);
-
-    // callback to trigger error in form outside of Monthpicker
-    if (onValidityChange) {
-      onValidityChange(!meta.error);
-    }
   };
 
   useClickOutside(containerPopper, () => {
     setShowCalendar(false);
   });
 
-  const validationError = showError ? meta.error : undefined;
+  const validationError = (meta.touched || meta.dirty) && meta.error ? meta.error : undefined;
 
   useEffect(() => {
     if (!backendDateFormat) return;
@@ -151,6 +143,11 @@ const MonthpickerInput = ({
     />
   );
 
+  const handleInputChange = (e) => {
+    const formatted = convertDateFormat(e.target.value, dateFormat, backendDateFormat);
+    input.onChange(formatted);
+  };
+
   const months = Array.from({ length: 12 }, (_, i) =>
     new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
@@ -164,7 +161,7 @@ const MonthpickerInput = ({
           label={textLabel}
           name={input.name}
           onBlur={handleInternalBlur}
-          onChange={(e) => input.onChange(convertDateFormat(e.target.value, dateFormat, backendDateFormat))}
+          onChange={handleInputChange}
           onFocus={(e) => {
             input.onFocus(e);
           }}
@@ -267,7 +264,6 @@ MonthpickerInput.propTypes = {
   isRequired: PropTypes.bool,
   meta: PropTypes.object,
   textLabel: PropTypes.string,
-  onValidityChange: PropTypes.func,
 };
 
 export default MonthpickerInput;

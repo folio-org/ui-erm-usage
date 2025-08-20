@@ -1,4 +1,4 @@
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -119,7 +119,12 @@ describe('UDPForm', () => {
   describe('test harvestVia options', () => {
     beforeEach(async () => {
       renderUDPForm(stripes);
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+
+      const harvestingStatusSelect = screen.getByRole('combobox', { name: /harvesting status/i });
+
+      await waitFor(() => expect(harvestingStatusSelect).toBeInTheDocument());
+
+      userEvent.selectOptions(harvestingStatusSelect, 'active');
     });
 
     test('should enable aggregator options', async () => {

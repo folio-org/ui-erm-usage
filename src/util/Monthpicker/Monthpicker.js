@@ -52,7 +52,6 @@ const Monthpicker = ({
   isRequired = false,
   name,
   textLabel,
-  onValidityChange,
 }) => {
   const intl = useIntl();
   const resolvedDateFormat = getResolvedDateFormat(intl.locale, dateFormat);
@@ -78,7 +77,6 @@ const Monthpicker = ({
           backendDateFormat={resolvedBackendDateFormat}
           dateFormat={resolvedDateFormat}
           textLabel={textLabel}
-          onValidityChange={onValidityChange}
         />
       )}
     </Field>

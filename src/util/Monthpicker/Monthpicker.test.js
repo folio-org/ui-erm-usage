@@ -4,14 +4,14 @@ import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
   screen,
   waitFor,
- } from '@folio/jest-config-stripes/testing-library/react';
+} from '@folio/jest-config-stripes/testing-library/react';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import Monthpicker from './Monthpicker';
 
 const renderMonthpicker = (props = {}, locale) => {
   return renderWithIntl(
-     <Form
+    <Form
       onSubmit={jest.fn()}
       initialValues={{
         [props.name || 'test-monthpicker']: props.value || '',
@@ -39,7 +39,7 @@ describe('Monthpicker', () => {
 
     // focus and blur to trigger validation
     await userEvent.click(input);
-    await userEvent.tab();  
+    await userEvent.tab();
 
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe('Monthpicker', () => {
 
         const input = screen.getByLabelText('Year and month input');
         expect(input).toBeInTheDocument();
-        
+
         await waitFor(() => {
           expect(input).toHaveValue(expectedDisplayValue);
         });
