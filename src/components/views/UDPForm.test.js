@@ -1,4 +1,4 @@
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
@@ -119,7 +119,12 @@ describe('UDPForm', () => {
   describe('test harvestVia options', () => {
     beforeEach(async () => {
       renderUDPForm(stripes);
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+
+      const harvestingStatusSelect = screen.getByRole('combobox', { name: /harvesting status/i });
+
+      await waitFor(() => expect(harvestingStatusSelect).toBeInTheDocument());
+
+      userEvent.selectOptions(harvestingStatusSelect, 'active');
     });
 
     test('should enable aggregator options', async () => {
@@ -198,13 +203,13 @@ describe('UDPForm', () => {
       expect(screen.queryByText('Date invalid', { exact: false })).not.toBeInTheDocument();
     });
 
-    test('harvesting start < end is invalid', async () => {
+    test('harvesting start > end is invalid', async () => {
       const startInput = screen.getByLabelText('Harvesting start');
       await userEvent.type(startInput, '02/2020');
 
       const endInput = screen.getByLabelText('Harvesting end');
       await userEvent.type(endInput, '01/2020');
-      await userEvent.tab();
+      await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
       expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();
     });
   });
