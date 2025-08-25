@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
 import { Field } from 'react-final-form';
@@ -81,6 +82,15 @@ const Monthpicker = ({
       )}
     </Field>
   );
+};
+
+
+Monthpicker.propTypes = {
+  backendDateFormat: PropTypes.string,
+  dateFormat: PropTypes.string,
+  isRequired: PropTypes.bool,
+  name: PropTypes.string,
+  textLabel: PropTypes.string,
 };
 
 export default Monthpicker;

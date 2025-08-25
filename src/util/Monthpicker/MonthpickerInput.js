@@ -48,8 +48,7 @@ const MonthpickerInput = ({
     // block blur as long as no click outsinde the field-monthpicker-container is happening
     if (
       nextTarget &&
-      containerPopper.current &&
-      containerPopper.current.contains(nextTarget)
+      containerPopper.current?.contains(nextTarget)
     ) {
       return;
     }
@@ -106,18 +105,10 @@ const MonthpickerInput = ({
     }
   };
 
-  const decrementYear = () => {
-    const newYear = lastValidDateRef.current?.year - 1;
-    const currentMonth = lastValidDateRef.current?.month;
+  const updateYear = (offset) => {
+    const currentYear = lastValidDateRef.current?.year;
+    const newYear = currentYear + offset;
 
-    lastValidDateRef.current = { month: currentMonth, year: newYear };
-    const newValue = buildDateString(newYear, currentMonth, backendDateFormat);
-
-    input.onChange(newValue);
-  };
-
-  const incrementYear = () => {
-    const newYear = lastValidDateRef.current?.year + 1;
     const currentMonth = lastValidDateRef.current?.month;
 
     lastValidDateRef.current = { month: currentMonth, year: newYear };
@@ -197,7 +188,7 @@ const MonthpickerInput = ({
                     aria-label={ariaLabel}
                     className={css.marginBottom}
                     icon="chevron-double-left"
-                    onClick={decrementYear}
+                    onClick={() => updateYear(-1)}
                   />
                 )}
               </FormattedMessage>
@@ -221,7 +212,7 @@ const MonthpickerInput = ({
                     aria-label={ariaLabel}
                     className={css.marginBottom}
                     icon="chevron-double-right"
-                    onClick={incrementYear}
+                    onClick={() => updateYear(+1)}
                   />
                 )}
               </FormattedMessage>
