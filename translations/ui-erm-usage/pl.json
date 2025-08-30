@@ -258,7 +258,7 @@
     "harvester.jobs.filter.type": "Job types",
     "harvester.jobs.filter.status": "Running status",
     "harvester.jobs.filter.status.scheduled": "Zaplanowane",
-    "harvester.jobs.filter.status.running": "In progress",
+    "harvester.jobs.filter.status.running": "W toku",
     "harvester.jobs.filter.status.finished": "Finished",
     "information.lastJobFinishedAt": "Ostatnie zadanie harvestingu zakończono o",
     "harvester.jobs.filter.result": "Result",
