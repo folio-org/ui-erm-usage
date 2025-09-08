@@ -9,6 +9,7 @@ export const getDownloadCounterReportTypes = (release, report) => {
     value: `${reportType} (${release})`,
     label: `${reportType} (${release})`,
     release,
+    reportType,
   }));
 
   return reportTypeObject;
