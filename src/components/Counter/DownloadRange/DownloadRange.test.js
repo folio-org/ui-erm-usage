@@ -9,16 +9,19 @@ const downloadableReports = [
     value: 'JR1',
     label: 'JR1',
     release: '4',
+    reportType: 'JR1',
   },
   {
     value: 'DR',
     label: 'DR',
     release: '5',
+    reportType: 'DR',
   },
   {
     value: 'TR',
     label: 'TR',
     release: '5.1',
+    reportType: 'TR',
   },
 ];
 
