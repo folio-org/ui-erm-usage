@@ -107,7 +107,6 @@ const DownloadRange = ({
                       name="downloadMultiMonths.reportType"
                       dataOptions={downloadableReports}
                       onChange={onSelectReportType}
-                      value={selectedReport.value}
                     />
                   )}
                 </FormattedMessage>
@@ -120,7 +119,6 @@ const DownloadRange = ({
                       name="downloadMultiMonths.formats"
                       dataOptions={exportFormats}
                       onChange={onSelectExportFormat}
-                      value={exportFormat}
                     />
                   )}
                 </FormattedMessage>
