@@ -45,7 +45,7 @@ const DownloadRange = ({
     if (selectedReport?.value && !isEmpty(values.startDate) && !isEmpty(values.endDate)) {
       onDownloadReportMultiMonth(
         udpId,
-        selectedReport.reportType,
+        selectedReport.value,
         selectedReport.release,
         values.startDate,
         values.endDate,
@@ -107,7 +107,6 @@ const DownloadRange = ({
                       name="downloadMultiMonths.reportType"
                       dataOptions={downloadableReports}
                       onChange={onSelectReportType}
-                      value={selectedReport.value}
                     />
                   )}
                 </FormattedMessage>
@@ -120,7 +119,6 @@ const DownloadRange = ({
                       name="downloadMultiMonths.formats"
                       dataOptions={exportFormats}
                       onChange={onSelectExportFormat}
-                      value={exportFormat}
                     />
                   )}
                 </FormattedMessage>

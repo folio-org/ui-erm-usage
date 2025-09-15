@@ -6,10 +6,9 @@ export const getDownloadCounterReportTypes = (release, report) => {
   const reportTypes = rawDownloadCounterReportTypeMapping[release]?.[report] || [];
 
   const reportTypeObject = reportTypes.map((reportType) => ({
-    value: `${reportType} (${release})`,
+    value: reportType,
     label: `${reportType} (${release})`,
     release,
-    reportType,
   }));
 
   return reportTypeObject;
