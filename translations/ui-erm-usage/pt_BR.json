@@ -63,7 +63,7 @@
     "aggregator.form.create": "Criar agregador",
     "aggregator.form.delete.confirm.title": "Excluir agregador",
     "aggregator.form.newAggregator": "Novo agregador",
-    "settings.hideCredentials": "Ocultar credenciais do sushi em visualizações de detalhes",
+    "settings.hideCredentials": "Ocultar credenciais em visualizações detalhadas",
     "usage-data-provider": "Provedor de dados de uso",
     "usage-data-providers": "Provedores de dados de uso",
     "usage-data-provider-pluralizable": "{count} {count, plural, one {usage-data-provider} other {usage-data-providers}}",
