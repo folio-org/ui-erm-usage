@@ -178,7 +178,7 @@
     "statistics.counter.download.multiMonth.prepare": "Підготує завантаження звіту {reportType} з {start} до {end} у файлі {format}. Це може зайняти деякий час. Зачекайте!",
     "statistics.counter.download.multiMonth.error": "Помилка отримання звіту лічильника {reportType} з {start} до {end} у файлі {format}. Можливо, звіт відсутній?",
     "statistics.custom.upload": "Завантажити звіт не від COUNTER",
-    "statistics.custom.info": "Customreport info",
+    "statistics.custom.info": "Інформація про користувацький звіт",
     "statistics.custom.info.detail": "Детальна інформація",
     "statistics.custom.selectFileFirst": "Спочатку виберіть файл",
     "showTags": "Показати теги",
