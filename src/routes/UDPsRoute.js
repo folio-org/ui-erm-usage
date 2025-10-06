@@ -83,7 +83,8 @@ class UDPsRoute extends React.Component {
         limit: '1000',
         query: 'cql.allRecords=1 sortby label'
       },
-      records: 'tags'
+      records: 'tags',
+      throwErrors: false,
     },
     resultCount: { initialValue: INITIAL_RESULT_COUNT }
   });
