@@ -19,6 +19,7 @@
 * Restructure monthpicker for fixing validation ([UIEUS-457](https://folio-org.atlassian.net/browse/UIEUS-457))
 * Use month picker within the section to exporting statistics ([UIEUS-423](https://folio-org.atlassian.net/browse/UIEUS-423))
 * Export Counter Reports: Incorrect text in the UI when selecting options from the selection "report types" ([UIEUS-458](https://folio-org.atlassian.net/browse/UIEUS-458))
+* Operation GET on resource 'tags' failed, saying: no records in 'tags' element" ([UIEUS-467](https://folio-org.atlassian.net/browse/UIEUS-467))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
