@@ -87,8 +87,8 @@
           "tags.collection.get",
           "ermusageharvester.impl.get",
           "mod-settings.entries.collection.get",
-          "mod-settings.global.read.mod-erm-usage-harvester",
-          "mod-settings.global.read.ui-erm-usage"
+          "mod-settings.global.read.mod-erm-usage-harvester.manage",
+          "mod-settings.global.read.ui-erm-usage.manage"
         ],
         "visible": false
       },
@@ -98,8 +98,8 @@
         "subPermissions": [
           "settings.enabled",
           "mod-settings.entries.collection.get",
-          "mod-settings.global.read.mod-erm-usage-harvester",
-          "mod-settings.global.read.ui-erm-usage"
+          "mod-settings.global.read.mod-erm-usage-harvester.manage",
+          "mod-settings.global.read.ui-erm-usage.manage"
         ],
         "visible": false
       },
@@ -121,8 +121,8 @@
           "ermusageharvester.start-all.get",
           "mod-settings.entries.item.post",
           "mod-settings.entries.item.put",
-          "mod-settings.global.write.mod-erm-usage-harvester",
-          "mod-settings.global.write.ui-erm-usage"
+          "mod-settings.global.write.mod-erm-usage-harvester.manage",
+          "mod-settings.global.write.ui-erm-usage.manage"
         ],
         "visible": true
       },
@@ -252,6 +252,14 @@
           "ermusageharvester.jobs.get"
         ],
         "visible": false
+      },
+      {
+        "permissionName": "mod-settings.global.read.ui-erm-usage.manage",
+        "displayName": "Read settings for ui-erm-usage"
+      },
+      {
+        "permissionName": "mod-settings.global.write.ui-erm-usage.manage",
+        "displayName": "Write settings for ui-erm-usage"
       }
     ],
     "icons": [
