@@ -6,8 +6,8 @@ export const MOD_SETTINGS = {
   BASE_PATH: 'settings/entries',
   RECORD_NAME: 'items',
   SCOPES: {
-    EUSAGE: 'ui-erm-usage',
-    HARVESTER: 'mod-erm-usage-harvester'
+    EUSAGE: 'ui-erm-usage.manage',
+    HARVESTER: 'mod-erm-usage-harvester.manage'
   },
   CONFIG_NAMES: {
     DAYS_TO_KEEP_LOGS: 'days_to_keep_logs',
