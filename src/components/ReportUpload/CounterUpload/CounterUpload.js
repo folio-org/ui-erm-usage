@@ -23,12 +23,16 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     setInfoType(type);
   };
 
-  const showErrorInfo = (msg) => {
-    if (msg.includes('Report already existing')) {
+  const showErrorInfo = (err) => {
+    if (err.code === 'REPORTS_ALREADY_PRESENT') {
       openInfoModal(CounterUpload.overwrite);
     } else {
       closeInfoModal();
-      onFail(msg);
+      const translatedMessage =
+        intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) ||
+        err.message ||
+        JSON.stringify(err);
+      onFail(translatedMessage);
     }
   };
 
@@ -52,8 +56,8 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
       )
         .then((response) => {
           if (!response.ok) {
-            return response.text().then((text) => { // NOSONAR
-              throw new Error(text);
+            return response.json().then((errorData) => {
+              throw errorData;
             });
           } else {
             return response;
@@ -65,7 +69,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
           form.reset();
         })
         .catch((err) => {
-          showErrorInfo(err.message);
+          showErrorInfo(err);
         });
     };
 

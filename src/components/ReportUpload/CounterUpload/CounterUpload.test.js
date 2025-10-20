@@ -52,7 +52,10 @@ describe('CounterUpload', () => {
       rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
         (req, res, ctx) => {
-          return res(ctx.status(500), ctx.body('Report already existing'));
+          return res(ctx.status(500), ctx.json({
+            code: 'REPORTS_ALREADY_PRESENT',
+            message: 'Report exists. Do you want to overwrite?',
+          }));
         }
       )
     );
