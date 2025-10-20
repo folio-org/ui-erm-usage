@@ -11,7 +11,7 @@ const onFail = jest.fn();
 const onSuccess = jest.fn();
 const udpId = '0ba00047-b6cb-417a-a735-e2c1e45e30f1';
 
-const file = new File(['foo'], 'file.json', { type: 'text/plain' });
+const successFile = new File(['foo'], 'file.json', { type: 'text/plain' });
 const unsupportedFile = new File(['foo'], 'unsupportedFile.txt', { type: 'text/plain' });
 const largeFile = new File([new ArrayBuffer(210 * 1024 * 1024)], 'largeFile.json', { type: 'text/plain' });
 
@@ -30,6 +30,26 @@ const renderCounterUpload = (stripes) => {
   );
 };
 
+const uploadFile = async ({ file, expectedError, mockHandler }) => {
+  if (mockHandler) server.use(mockHandler);
+
+  const saveButton = screen.getByRole('button', { name: 'Save' });
+  expect(saveButton).toBeDisabled();
+
+  const inputEl = screen.getByTestId('fileInput');
+  fireEvent.change(inputEl, { target: { files: [file] } });
+  await screen.findByText(file.name);
+
+  await waitFor(() => expect(saveButton).toBeEnabled());
+  await userEvent.click(saveButton);
+
+  if (expectedError) {
+    await waitFor(() => expect(onFail).toHaveBeenCalledWith(expectedError));
+  } else {
+    await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+  }
+};
+
 describe('CounterUpload', () => {
   let stripes;
 
@@ -45,7 +65,7 @@ describe('CounterUpload', () => {
 
   test('drop file', async () => {
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [file] } });
+    fireEvent.change(inputEl, { target: { files: [successFile] } });
     await screen.findByText('file.json');
   });
 
@@ -66,7 +86,7 @@ describe('CounterUpload', () => {
     expect(saveButton).toBeDisabled();
 
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [file] } });
+    fireEvent.change(inputEl, { target: { files: [successFile] } });
     await screen.findByText('file.json');
     await waitFor(() => expect(saveButton).toBeEnabled());
 
@@ -86,55 +106,42 @@ describe('CounterUpload', () => {
     expect(onSuccess).toHaveBeenCalled();
   });
 
-  test('upload unsupported counter report', async () => {
-    server.use(
-      rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId??overwrite=false',
-        (req, res, ctx) => {
-          return res(ctx.status(500), ctx.json({
-            code: 'UNSUPPORTED_FILE_FORMAT',
-            message: 'The file format is not supported.',
-          }));
-        }
-      )
-    );
+  const uploadErrorScenarios = [
+    {
+      name: 'unsupported file format',
+      file: unsupportedFile,
+      expectedError: 'The file format is not supported.',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'UNSUPPORTED_FILE_FORMAT',
+              message: 'The file format is not supported.',
+            })
+          )
+      ),
+    },
+    {
+      name: 'file exceeds maximum size',
+      file: largeFile,
+      expectedError: 'The file size exceeds the maximum allowed size.',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'MAXIMUM_FILESIZE_EXCEEDED',
+              message: 'The file size exceeds the maximum allowed size.',
+            })
+          )
+      ),
+    },
+  ];
 
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-    expect(saveButton).toBeDisabled();
-
-    const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [unsupportedFile] } });
-    screen.findByText('unsupportedFile.txt');
-    await waitFor(() => expect(saveButton).toBeEnabled());
-
-    userEvent.click(saveButton);
-
-    await waitFor(() => expect(onFail).toHaveBeenCalledWith('The file format is not supported.'));
-  });
-
-  test('upload counter report larger 200MB', async () => {
-    server.use(
-      rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId??overwrite=false',
-        (req, res, ctx) => {
-          return res(ctx.status(500), ctx.json({
-            code: 'MAXIMUM_FILESIZE_EXCEEDED',
-            message: 'The file size exceeds the maximum allowed size.',
-          }));
-        }
-      )
-    );
-
-    const saveButton = screen.getByRole('button', { name: 'Save' });
-    expect(saveButton).toBeDisabled();
-
-    const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [largeFile] } });
-    screen.findByText('largeFile.json');
-    await waitFor(() => expect(saveButton).toBeEnabled());
-
-    userEvent.click(saveButton);
-
-    await waitFor(() => expect(onFail).toHaveBeenCalledWith('The file size exceeds the maximum allowed size.'));
+  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ file, expectedError, mockHandler }) => {
+    await uploadFile({ file, expectedError, mockHandler });
   });
 });
