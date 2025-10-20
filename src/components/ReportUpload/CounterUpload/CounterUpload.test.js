@@ -12,6 +12,8 @@ const onSuccess = jest.fn();
 const udpId = '0ba00047-b6cb-417a-a735-e2c1e45e30f1';
 
 const file = new File(['foo'], 'file.json', { type: 'text/plain' });
+const unsupportedFile = new File(['foo'], 'unsupportedFile.txt', { type: 'text/plain' });
+const largeFile = new File([new ArrayBuffer(210 * 1024 * 1024)], 'largeFile.json', { type: 'text/plain' });
 
 const renderCounterUpload = (stripes) => {
   return renderWithIntl(
@@ -47,7 +49,7 @@ describe('CounterUpload', () => {
     await screen.findByText('file.json');
   });
 
-  test('upload counter report', async () => {
+  test('upload and overwrite counter report', async () => {
     server.use(
       rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
@@ -82,5 +84,57 @@ describe('CounterUpload', () => {
     const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
     expect(onSuccess).toHaveBeenCalled();
+  });
+
+  test('upload unsupported counter report', async () => {
+    server.use(
+      rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId??overwrite=false',
+        (req, res, ctx) => {
+          return res(ctx.status(500), ctx.json({
+            code: 'UNSUPPORTED_FILE_FORMAT',
+            message: 'The file format is not supported.',
+          }));
+        }
+      )
+    );
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    expect(saveButton).toBeDisabled();
+
+    const inputEl = screen.getByTestId('fileInput');
+    fireEvent.change(inputEl, { target: { files: [unsupportedFile] } });
+    screen.findByText('unsupportedFile.txt');
+    await waitFor(() => expect(saveButton).toBeEnabled());
+
+    userEvent.click(saveButton);
+
+    await waitFor(() => expect(onFail).toHaveBeenCalledWith('The file format is not supported.'));
+  });
+
+  test('upload counter report larger 200MB', async () => {
+    server.use(
+      rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId??overwrite=false',
+        (req, res, ctx) => {
+          return res(ctx.status(500), ctx.json({
+            code: 'MAXIMUM_FILESIZE_EXCEEDED',
+            message: 'The file size exceeds the maximum allowed size.',
+          }));
+        }
+      )
+    );
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    expect(saveButton).toBeDisabled();
+
+    const inputEl = screen.getByTestId('fileInput');
+    fireEvent.change(inputEl, { target: { files: [largeFile] } });
+    screen.findByText('largeFile.json');
+    await waitFor(() => expect(saveButton).toBeEnabled());
+
+    userEvent.click(saveButton);
+
+    await waitFor(() => expect(onFail).toHaveBeenCalledWith('The file size exceeds the maximum allowed size.'));
   });
 });
