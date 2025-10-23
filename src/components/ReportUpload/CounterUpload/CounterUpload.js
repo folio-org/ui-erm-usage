@@ -6,6 +6,10 @@ import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
+import {
+  ERROR_CODE_TO_TRANSLATE,
+  ERROR_CODE_ALREADY_PRESENT,
+} from '../../../util/constants';
 
 function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
   const [formState, setFormState] = useState({});
@@ -24,14 +28,17 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
   };
 
   const showErrorInfo = (err) => {
-    if (err.code === 'REPORTS_ALREADY_PRESENT') {
+    if (err.code === ERROR_CODE_ALREADY_PRESENT) {
       openInfoModal(CounterUpload.overwrite);
     } else {
       closeInfoModal();
-      const translatedMessage =
-        intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) ||
-        err.message ||
-        JSON.stringify(err);
+
+      let translatedMessage;
+      if (ERROR_CODE_TO_TRANSLATE.includes(err.code)) {
+        translatedMessage = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
+      } else {
+        translatedMessage = err.message || JSON.stringify(err);
+      }
       onFail(translatedMessage);
     }
   };
