@@ -187,6 +187,7 @@
   "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "The COUNTER Release version is not supported.",
   "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
   "counter.upload.error.OTHER": "The report could not be processed.",
+  "error.unexpected": "An unexpected error has occurred",
 
   "udp.form.cancel": "Cancel",
   "udp.form.close": "Close new usage data provider Dialog",

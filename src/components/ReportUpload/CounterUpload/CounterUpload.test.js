@@ -11,9 +11,7 @@ const onFail = jest.fn();
 const onSuccess = jest.fn();
 const udpId = '0ba00047-b6cb-417a-a735-e2c1e45e30f1';
 
-const successFile = new File(['foo'], 'file.json', { type: 'text/plain' });
-const unsupportedFile = new File(['foo'], 'unsupportedFile.txt', { type: 'text/plain' });
-const largeFile = new File([new ArrayBuffer(210 * 1024 * 1024)], 'largeFile.json', { type: 'text/plain' });
+const file = new File(['foo'], 'file.json', { type: 'text/plain' });
 
 const renderCounterUpload = (stripes) => {
   return renderWithIntl(
@@ -30,15 +28,15 @@ const renderCounterUpload = (stripes) => {
   );
 };
 
-const uploadFile = async ({ file, expectedError, mockHandler }) => {
+const uploadFile = async ({ mockFile, expectedError, mockHandler }) => {
   if (mockHandler) server.use(mockHandler);
 
   const saveButton = screen.getByRole('button', { name: 'Save' });
   expect(saveButton).toBeDisabled();
 
   const inputEl = screen.getByTestId('fileInput');
-  fireEvent.change(inputEl, { target: { files: [file] } });
-  await screen.findByText(file.name);
+  fireEvent.change(inputEl, { target: { files: [mockFile] } });
+  await screen.findByText(mockFile.name);
 
   await waitFor(() => expect(saveButton).toBeEnabled());
   await userEvent.click(saveButton);
@@ -65,7 +63,7 @@ describe('CounterUpload', () => {
 
   test('drop file', async () => {
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [successFile] } });
+    fireEvent.change(inputEl, { target: { files: [file] } });
     await screen.findByText('file.json');
   });
 
@@ -86,7 +84,7 @@ describe('CounterUpload', () => {
     expect(saveButton).toBeDisabled();
 
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [successFile] } });
+    fireEvent.change(inputEl, { target: { files: [file] } });
     await screen.findByText('file.json');
     await waitFor(() => expect(saveButton).toBeEnabled());
 
@@ -109,7 +107,7 @@ describe('CounterUpload', () => {
   const uploadErrorScenarios = [
     {
       name: 'unsupported file format',
-      file: unsupportedFile,
+      mockFile: file,
       expectedError: 'The file format is not supported.',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
@@ -125,7 +123,7 @@ describe('CounterUpload', () => {
     },
     {
       name: 'file exceeds maximum size',
-      file: largeFile,
+      mockFile: file,
       expectedError: 'The file size exceeds the maximum allowed size.',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
@@ -141,7 +139,7 @@ describe('CounterUpload', () => {
     },
   ];
 
-  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ file, expectedError, mockHandler }) => {
-    await uploadFile({ file, expectedError, mockHandler });
+  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, mockHandler }) => {
+    await uploadFile({ mockFile, expectedError, mockHandler });
   });
 });

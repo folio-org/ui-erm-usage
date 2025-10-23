@@ -6,10 +6,6 @@ import { Button, Loading, Modal } from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
-import {
-  ERROR_CODE_TO_TRANSLATE,
-  ERROR_CODE_ALREADY_PRESENT,
-} from '../../../util/constants';
 
 function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
   const [formState, setFormState] = useState({});
@@ -27,20 +23,25 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     setInfoType(type);
   };
 
-  const showErrorInfo = (err) => {
-    if (err.code === ERROR_CODE_ALREADY_PRESENT) {
+  const showErrorInfo = (err = {}) => {
+    if (err.code === 'REPORTS_ALREADY_PRESENT') {
       openInfoModal(CounterUpload.overwrite);
-    } else {
-      closeInfoModal();
-
-      let translatedMessage;
-      if (ERROR_CODE_TO_TRANSLATE.includes(err.code)) {
-        translatedMessage = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
-      } else {
-        translatedMessage = err.message || JSON.stringify(err);
-      }
-      onFail(translatedMessage);
+      return;
     }
+
+    closeInfoModal();
+
+    let message;
+    if (err.code) {
+      message = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
+    } else {
+      message = intl.formatMessage({ id: 'ui-erm-usage.error.unexpected' });
+      if (err.message) {
+        message += `: ${err.message}`;
+      }
+    }
+
+    onFail(message);
   };
 
   useEffect(() => {
