@@ -169,6 +169,16 @@ describe('CounterUpload', () => {
           )
       ),
     },
+    {
+      name: 'error 404 without response body',
+      mockFile: file,
+      expectedError: expect.stringContaining('An unexpected error has occurred'),
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(ctx.status(404))
+      ),
+    },
   ];
 
   test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, mockHandler }) => {
