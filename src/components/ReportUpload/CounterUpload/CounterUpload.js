@@ -35,7 +35,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     if (err.code) {
       message = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
     } else {
-      message = intl.formatMessage({ id: 'ui-erm-usage.error.unexpected' });
+      message = intl.formatMessage({ id: 'ui-erm-usage.general.error' });
       if (err.message) {
         message += `: ${err.message}`;
       }
