@@ -44,6 +44,19 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     onFail(message);
   };
 
+  const handleUploadResponse = (response, form) => {
+    if (!response.ok) {
+      return response.json().then((errorData) => {
+        throw errorData;
+      });
+    }
+
+    onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
+    closeInfoModal();
+    form.reset();
+    return response;
+  };
+
   useEffect(() => {
     const { values, form, overwrite } = formState;
 
@@ -62,20 +75,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
           body: formData,
         }
       )
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((errorData) => {
-              throw errorData;
-            });
-          } else {
-            return response;
-          }
-        })
-        .then(() => {
-          onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
-          closeInfoModal();
-          form.reset();
-        })
+        .then((response) => handleUploadResponse(response, form))
         .catch((err) => {
           showErrorInfo(err);
         });
