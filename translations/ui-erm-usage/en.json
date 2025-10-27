@@ -140,7 +140,6 @@
   "report.upload.success": "Success:",
   "report.upload.completed": "Upload completed.",
   "report.upload.modal.label": "Counter-Report upload",
-  "report.upload.reportExists": "Report exists. Do you want to overwrite?",
   "report.upload.upload": "Upload",
   "report.upload.dropFile": "Drop file here",
   "report.upload.selectFile": "or select file",
@@ -187,7 +186,6 @@
   "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "The COUNTER Release version is not supported.",
   "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
   "counter.upload.error.OTHER": "The report could not be processed.",
-  "error.unexpected": "",
 
   "udp.form.cancel": "Cancel",
   "udp.form.close": "Close new usage data provider Dialog",

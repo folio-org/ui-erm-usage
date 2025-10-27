@@ -78,7 +78,7 @@ describe('CounterUpload', () => {
         (req, res, ctx) => {
           return res(ctx.status(500), ctx.json({
             code: 'REPORTS_ALREADY_PRESENT',
-            message: 'Report exists. Do you want to overwrite?',
+            message: 'One or more reports already exist for the time period.',
           }));
         }
       )
@@ -93,7 +93,7 @@ describe('CounterUpload', () => {
     await waitFor(() => expect(saveButton).toBeEnabled());
 
     await userEvent.click(saveButton);
-    await screen.findByText('Report exists. Do you want to overwrite?');
+    await screen.findByText('One or more reports already exist for the time period.');
 
     server.use(
       rest.post(
@@ -177,6 +177,22 @@ describe('CounterUpload', () => {
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
           res(ctx.status(404))
+      ),
+    },
+    {
+      name: 'error with code but without translation',
+      mockFile: file,
+      expectedError: 'ui-erm-usage.counter.upload.error.NEW_ERROR_CODE',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'NEW_ERROR_CODE',
+              message: 'This is a new error code without translation',
+            })
+          )
       ),
     },
   ];

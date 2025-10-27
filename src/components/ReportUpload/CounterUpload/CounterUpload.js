@@ -95,7 +95,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
       return (
         <>
           <div>
-            <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
+            <FormattedMessage id="ui-erm-usage.counter.upload.error.REPORTS_ALREADY_PRESENT" />
           </div>
           <Button id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
             <FormattedMessage id="ui-erm-usage.general.yes" />
