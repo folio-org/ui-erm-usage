@@ -1,7 +1,9 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { fireEvent, screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
-import { MemoryRouter } from 'react-router-dom';
+
 import renderWithIntl from '../../../../test/jest/helpers';
 import { server, rest } from '../../../../test/jest/testServer';
 import CounterUpload from './CounterUpload';
@@ -28,11 +30,33 @@ const renderCounterUpload = (stripes) => {
   );
 };
 
+const uploadFile = async ({ mockFile, expectedError, mockHandler }) => {
+  if (mockHandler) server.use(mockHandler);
+
+  const saveButton = screen.getByRole('button', { name: 'Save' });
+  expect(saveButton).toBeDisabled();
+
+  const inputEl = screen.getByTestId('fileInput');
+  fireEvent.change(inputEl, { target: { files: [mockFile] } });
+  await screen.findByText(mockFile.name);
+
+  await waitFor(() => expect(saveButton).toBeEnabled());
+  await userEvent.click(saveButton);
+
+  if (expectedError) {
+    await waitFor(() => expect(onFail).toHaveBeenCalledWith(expectedError));
+  } else {
+    await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+  }
+};
+
 describe('CounterUpload', () => {
   let stripes;
 
   beforeEach(() => {
     stripes = useStripes();
+    onFail.mockClear();
+    onSuccess.mockClear();
     renderCounterUpload(stripes);
   });
 
@@ -47,12 +71,15 @@ describe('CounterUpload', () => {
     await screen.findByText('file.json');
   });
 
-  test('upload counter report', async () => {
+  test('upload and overwrite counter report', async () => {
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) => {
-          return res(ctx.status(500), ctx.body('Report already existing'));
+          return res(ctx.status(500), ctx.json({
+            code: 'REPORTS_ALREADY_PRESENT',
+            message: 'One or more reports already exist for the time period.',
+          }));
         }
       )
     );
@@ -70,7 +97,7 @@ describe('CounterUpload', () => {
 
     server.use(
       rest.post(
-        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId?overwrite=:overwrite',
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) => {
           return res(ctx.text('success'));
         }
@@ -79,5 +106,98 @@ describe('CounterUpload', () => {
     const yesButton = screen.getByRole('button', { name: 'Yes' });
     await userEvent.click(yesButton);
     expect(onSuccess).toHaveBeenCalled();
+  });
+
+  const uploadErrorScenarios = [
+    {
+      name: 'unsupported file format (error code translation exists)',
+      mockFile: file,
+      expectedError: 'The file format is not supported.',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'UNSUPPORTED_FILE_FORMAT',
+              message: 'The file format is not supported.',
+            })
+          )
+      ),
+    },
+    {
+      name: 'file exceeds maximum size (error code translation exists)',
+      mockFile: file,
+      expectedError: 'The file size exceeds the maximum allowed size.',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'MAXIMUM_FILESIZE_EXCEEDED',
+              message: 'The file size exceeds the maximum allowed size.',
+            })
+          )
+      ),
+    },
+    {
+      name: 'error without code property (err.message exists)',
+      mockFile: file,
+      expectedError: 'An unexpected error has occurred: foo',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              message: 'foo',
+            })
+          )
+      ),
+    },
+    {
+      name: 'error without code and message properties (err is undefined)',
+      mockFile: file,
+      expectedError: 'An unexpected error has occurred',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({})
+          )
+      ),
+    },
+    {
+      name: 'error 404 without response body',
+      mockFile: file,
+      expectedError: expect.stringContaining('An unexpected error has occurred'),
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(ctx.status(404))
+      ),
+    },
+    {
+      name: 'error with code but without translation',
+      mockFile: file,
+      expectedError: 'ui-erm-usage.counter.upload.error.NEW_ERROR_CODE',
+      mockHandler: rest.post(
+        'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
+        (req, res, ctx) =>
+          res(
+            ctx.status(500),
+            ctx.json({
+              code: 'NEW_ERROR_CODE',
+              message: 'This is a new error code without translation',
+            })
+          )
+      ),
+    },
+  ];
+
+  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, mockHandler }) => {
+    await uploadFile({ mockFile, expectedError, mockHandler });
   });
 });

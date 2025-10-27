@@ -23,13 +23,38 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     setInfoType(type);
   };
 
-  const showErrorInfo = (msg) => {
-    if (msg.includes('Report already existing')) {
+  const showErrorInfo = (err = {}) => {
+    if (err.code === 'REPORTS_ALREADY_PRESENT') {
       openInfoModal(CounterUpload.overwrite);
-    } else {
-      closeInfoModal();
-      onFail(msg);
+      return;
     }
+
+    closeInfoModal();
+
+    let message;
+    if (err.code) {
+      message = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
+    } else {
+      message = intl.formatMessage({ id: 'ui-erm-usage.general.error' });
+      if (err.message) {
+        message += `: ${err.message}`;
+      }
+    }
+
+    onFail(message);
+  };
+
+  const handleUploadResponse = (response, form) => {
+    if (!response.ok) {
+      return response.json().then((errorData) => {
+        throw errorData;
+      });
+    }
+
+    onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
+    closeInfoModal();
+    form.reset();
+    return response;
   };
 
   useEffect(() => {
@@ -50,22 +75,9 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
           body: formData,
         }
       )
-        .then((response) => {
-          if (!response.ok) {
-            return response.text().then((text) => { // NOSONAR
-              throw new Error(text);
-            });
-          } else {
-            return response;
-          }
-        })
-        .then(() => {
-          onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
-          closeInfoModal();
-          form.reset();
-        })
+        .then((response) => handleUploadResponse(response, form))
         .catch((err) => {
-          showErrorInfo(err.message);
+          showErrorInfo(err);
         });
     };
 
