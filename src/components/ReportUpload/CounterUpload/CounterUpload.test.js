@@ -93,7 +93,7 @@ describe('CounterUpload', () => {
     await waitFor(() => expect(saveButton).toBeEnabled());
 
     await userEvent.click(saveButton);
-    await screen.findByText('One or more reports already exist for the time period.');
+    await screen.findByText('Report exists. Do you want to overwrite?');
 
     server.use(
       rest.post(
