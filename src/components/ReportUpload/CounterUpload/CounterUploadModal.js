@@ -58,26 +58,26 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
           open={open}
           label={intl.formatMessage({ id: 'ui-erm-usage.statistics.counter.upload' })}
         >
-          <p>
+          <div>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.general.info" />}
               value={<FormattedMessage id="ui-erm-usage.report.upload.info" />}
             />
-          </p>
-          <p>
+          </div>
+          <div>
             <Col xs={8} className={formCss.centered}>
               <Field name="file">
                 {({ input: { onChange } }) => <FileUploader onChange={onChange} />}
               </Field>
             </Col>
-          </p>
-          <p className={formCss.marginTop}>
+          </div>
+          <div className={formCss.marginTop}>
             <KeyValue
               label={<FormattedMessage id="ui-erm-usage.statistics.selectedFile" />}
               value={values.file?.path}
             />
-          </p>
-          <p className={formCss.marginTop}>
+          </div>
+          <div className={formCss.marginTop}>
             <Field
               component={Checkbox}
               id="addcounterreport_reportEditedManually"
@@ -86,8 +86,8 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
               name="reportEditedManually"
               type="checkbox"
             />
-          </p>
-          <p className={formCss.marginTop}>
+          </div>
+          <div className={formCss.marginTop}>
             <Field
               component={TextField}
               disabled={values.reportEditedManually?.value === false}
@@ -99,7 +99,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
               placeholder={intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
               required={values.reportEditedManually?.value === true}
             />
-          </p>
+          </div>
         </Modal>
       )}
     />
