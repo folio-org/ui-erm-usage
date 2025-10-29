@@ -182,7 +182,7 @@
     "statistics.custom.info.detail": "Informações detalhadas",
     "statistics.custom.selectFileFirst": "Selecione o arquivo primeiro",
     "showTags": "Mostrar tags",
-    "general.error": "Ops. Algo deu errado...",
+    "general.error": "Ocorreu um erro inesperado",
     "statistics.counter.upload.wait": "Carregando relatório. Por favor aguarde!",
     "permission.generalSettings.manage": "Configurações (Uso eletrônico): Pode visualizar e editar as configurações",
     "permission.all": "Uso eletrônico: Todas as permissões",
@@ -318,5 +318,13 @@
     "udp.form.placeholder.apiKey": "Insira a chave da API",
     "udp.form.placeholder.platform": "Insira a plataforma para solicitar o uso para",
     "udp.form.placeholder.requestorName": "Insira o nome do solicitante",
-    "udp.form.placeholder.requestorMail": "Insira o e-mail do solicitante"
+    "udp.form.placeholder.requestorMail": "Insira o e-mail do solicitante",
+    "counter.upload.error.INVALID_REPORT_CONTENT": "O conteúdo do relatório é inválido.",
+    "counter.upload.error.MAXIMUM_FILESIZE_EXCEEDED": "O tamanho do arquivo excede o tamanho máximo permitido.",
+    "counter.upload.error.MULTIPLE_FILES_NOT_SUPPORTED": "Carregar de vários arquivos não é permitido.",
+    "counter.upload.error.REPORTS_ALREADY_PRESENT": "Já existem um ou mais relatórios para o período.",
+    "counter.upload.error.UNSUPPORTED_FILE_FORMAT": "O formato do arquivo não é compatível.",
+    "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "A versão de lançamento do COUNTER não é compatível.",
+    "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "O tipo de relatório não é suportado.",
+    "counter.upload.error.OTHER": "O relatório não pôde ser processado."
 }

@@ -182,7 +182,7 @@
     "statistics.custom.info.detail": "Detail info",
     "statistics.custom.selectFileFirst": "Select file first",
     "showTags": "Show tags",
-    "general.error": "Ooops. Something went wrong...",
+    "general.error": "An unexpected error has occurred",
     "statistics.counter.upload.wait": "Uploading report. Please wait!",
     "permission.generalSettings.manage": "Settings (eUsage): Can view and edit all settings",
     "permission.all": "eUsage: All permissions",
@@ -318,5 +318,13 @@
     "udp.form.placeholder.apiKey": "Enter the API key",
     "udp.form.placeholder.platform": "Enter platform to request usage for",
     "udp.form.placeholder.requestorName": "Enter the requestor name",
-    "udp.form.placeholder.requestorMail": "Enter the requestor mail"
+    "udp.form.placeholder.requestorMail": "Enter the requestor mail",
+    "counter.upload.error.INVALID_REPORT_CONTENT": "The report content is invalid.",
+    "counter.upload.error.MAXIMUM_FILESIZE_EXCEEDED": "The file size exceeds the maximum allowed size.",
+    "counter.upload.error.MULTIPLE_FILES_NOT_SUPPORTED": "Upload of multiple files is not supported.",
+    "counter.upload.error.REPORTS_ALREADY_PRESENT": "One or more reports already exist for the time period.",
+    "counter.upload.error.UNSUPPORTED_FILE_FORMAT": "The file format is not supported.",
+    "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "The COUNTER Release version is not supported.",
+    "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
+    "counter.upload.error.OTHER": "The report could not be processed."
 }
