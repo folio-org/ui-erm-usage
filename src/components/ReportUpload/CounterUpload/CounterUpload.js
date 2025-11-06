@@ -2,46 +2,108 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Loading, Modal } from '@folio/stripes/components';
+import { Button, Loading, Modal, ModalFooter } from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
 
-function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, udpId }) {
+function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) {
   const [formState, setFormState] = useState({});
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [infoType, setInfoType] = useState('');
+  const [modalContent, setModalContent] = useState({ title: '', content: null, footer: null });
+
   const intl = useIntl();
 
-  const closeInfoModal = () => {
+  const detailedErrorCodes = [
+    'INVALID_REPORT_CONTENT',
+    'MAXIMUM_FILESIZE_EXCEEDED',
+    'MULTIPLE_FILES_NOT_SUPPORTED',
+    'UNSUPPORTED_FILE_FORMAT',
+    'UNSUPPORTED_REPORT_RELEASE',
+    'UNSUPPORTED_REPORT_TYPE',
+    'OTHER',
+  ];
+
+  const handleSelectOtherFile = () => {
     setShowInfoModal(false);
-    setInfoType('');
+    formState.form?.reset();
   };
 
-  const openInfoModal = (type) => {
-    setShowInfoModal(true);
-    setInfoType(type);
+  const handleCloseModalsAndReset = () => {
+    onClose();
+    handleSelectOtherFile();
   };
+
+  const errorFooter = () => (
+    <>
+      <Button
+        buttonStyle="primary"
+        onClick={handleSelectOtherFile}
+      >
+        <FormattedMessage id="ui-erm-usage.report.upload.selectAnotherFile" />
+      </Button>
+      <Button onClick={handleCloseModalsAndReset}>
+        <FormattedMessage id="ui-erm-usage.general.close" />
+      </Button>
+    </>
+  );
+
+  const labelModalUploadFailed = intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label.failed' });
+  const labelModalUpload = intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label' });
 
   const showErrorInfo = (err = {}) => {
+    // REPORTS_ALREADY_PRESENT
     if (err.code === 'REPORTS_ALREADY_PRESENT') {
-      openInfoModal(CounterUpload.overwrite);
-      return;
-    }
-
-    closeInfoModal();
-
-    let message;
-    if (err.code) {
-      message = intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` });
+      setModalContent({
+        title: labelModalUpload,
+        content: (
+          <div>
+            <p><FormattedMessage id="ui-erm-usage.report.upload.reportExists" /></p>
+          </div>
+        ),
+        footer: (
+          <>
+            <Button buttonStyle="primary" id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
+              <FormattedMessage id="ui-erm-usage.general.yes" />
+            </Button>
+            <Button id="overwriteNo" onClick={handleSelectOtherFile}>
+              <FormattedMessage id="ui-erm-usage.general.no" />
+            </Button>
+          </>
+        ),
+      });
+    // UNSUPPORTED_FILE_FORMAT
+    } else if (err.code === 'UNSUPPORTED_FILE_FORMAT') {
+      setModalContent({
+        title: labelModalUploadFailed,
+        content: (
+          <div>
+            <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` })}</p>
+          </div>
+        ),
+        footer: errorFooter(),
+      });
+    // All other ERRORS (with or without CODES)
     } else {
-      message = intl.formatMessage({ id: 'ui-erm-usage.general.error' });
-      if (err.message) {
-        message += `: ${err.message}`;
-      }
+      setModalContent({
+        title: labelModalUploadFailed,
+        content: (
+          <div>
+            <p><FormattedMessage id="ui-erm-usage.general.error" /></p>
+            <details>
+              <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
+              <p>{(err.code && detailedErrorCodes.includes(err.code)) ?
+                intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) :
+                err?.message || String(err)}
+              </p>
+            </details>
+          </div>
+        ),
+        footer: errorFooter(),
+      });
     }
 
-    onFail(message);
+    setShowInfoModal(true);
   };
 
   const handleUploadResponse = (response, form) => {
@@ -52,7 +114,7 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     }
 
     onSuccess(intl.formatMessage({ id: 'ui-erm-usage.report.upload.completed' }));
-    closeInfoModal();
+    setShowInfoModal(false);
     form.reset();
     return response;
   };
@@ -61,7 +123,17 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     const { values, form, overwrite } = formState;
 
     const doUpload = () => {
-      openInfoModal(CounterUpload.upload);
+      setModalContent({
+        title: labelModalUpload,
+        content: (
+          <div>
+            <p><FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" /></p>
+            <Loading />
+          </div>
+        ),
+        footer: null,
+      });
+      setShowInfoModal(true);
 
       const formData = new FormData();
       formData.append('file', values.file);
@@ -90,61 +162,22 @@ function CounterUpload({ onClose, onFail, onSuccess, open, stripes: { okapi }, u
     setFormState({ values, form });
   };
 
-  const renderInfo = () => {
-    if (infoType === CounterUpload.overwrite) {
-      return (
-        <>
-          <div>
-            <FormattedMessage id="ui-erm-usage.report.upload.reportExists" />
-          </div>
-          <Button id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
-            <FormattedMessage id="ui-erm-usage.general.yes" />
-          </Button>
-          <Button id="overwriteNo" onClick={closeInfoModal}>
-            <FormattedMessage id="ui-erm-usage.general.no" />
-          </Button>
-        </>
-      );
-    } else if (infoType === CounterUpload.upload) {
-      return (
-        <>
-          <FormattedMessage id="ui-erm-usage.statistics.counter.upload.wait" />
-          <Loading />
-        </>
-      );
-    } else {
-      return (
-        <>
-          <FormattedMessage id="ui-erm-usage.general.error" />
-          <Button onClick={closeInfoModal}>
-            <FormattedMessage id="ui-erm-usage.general.no" />
-          </Button>
-        </>
-      );
-    }
-  };
-
   return (
     <>
       <CounterUploadModal open={open} onClose={onClose} onSubmit={handleSubmit} />
       <Modal
         open={showInfoModal}
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.modal.label',
-        })}
+        label={modalContent.title}
+        footer={<ModalFooter>{modalContent.footer}</ModalFooter>}
       >
-        {showInfoModal && renderInfo()}
+        {showInfoModal && modalContent.content}
       </Modal>
     </>
   );
 }
 
-CounterUpload.upload = 'upload';
-CounterUpload.overwrite = 'overwrite';
-
 CounterUpload.propTypes = {
   onSuccess: PropTypes.func,
-  onFail: PropTypes.func,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
   open: PropTypes.bool,
