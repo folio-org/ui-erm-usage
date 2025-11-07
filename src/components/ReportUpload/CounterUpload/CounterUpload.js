@@ -6,6 +6,9 @@ import { Button, Loading, Modal, ModalFooter } from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
+import {
+  ERROR_CODES
+} from '../../../util/constants';
 
 function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) {
   const [formState, setFormState] = useState({});
@@ -14,15 +17,7 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
 
   const intl = useIntl();
 
-  const detailedErrorCodes = [
-    'INVALID_REPORT_CONTENT',
-    'MAXIMUM_FILESIZE_EXCEEDED',
-    'MULTIPLE_FILES_NOT_SUPPORTED',
-    'UNSUPPORTED_FILE_FORMAT',
-    'UNSUPPORTED_REPORT_RELEASE',
-    'UNSUPPORTED_REPORT_TYPE',
-    'OTHER',
-  ];
+
 
   const handleSelectOtherFile = () => {
     setShowInfoModal(false);
@@ -90,13 +85,15 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
         content: (
           <div>
             <p><FormattedMessage id="ui-erm-usage.general.error" /></p>
-            <details>
-              <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
-              <p>{(err.code && detailedErrorCodes.includes(err.code)) ?
-                intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) :
-                err?.message || String(err)}
-              </p>
-            </details>
+            {err &&
+              <details>
+                <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
+                <p>{(err.code && ERROR_CODES.includes(err.code)) ?
+                  intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) :
+                  err?.message || String(err)}
+                </p>
+              </details>
+          }
           </div>
         ),
         footer: errorFooter(),
