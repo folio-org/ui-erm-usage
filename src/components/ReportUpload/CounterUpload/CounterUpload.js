@@ -90,7 +90,7 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
                 <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
                 <p>{(err.code && ERROR_CODES.includes(err.code)) ?
                   intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) :
-                  err?.message || String(err)}
+                  err?.message || JSON.stringify(err)}
                 </p>
               </details>
           }
