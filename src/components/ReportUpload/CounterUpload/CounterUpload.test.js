@@ -28,7 +28,7 @@ const renderCounterUpload = (stripes) => {
   );
 };
 
-const uploadFile = async ({ mockFile, expectedError, expectedDetail, mockHandler }) => {
+const uploadFile = async ({ mockFile, expectedError, expectedMessage, mockHandler }) => {
   if (mockHandler) server.use(mockHandler);
 
   const saveButton = screen.getByRole('button', { name: 'Save' });
@@ -45,9 +45,9 @@ const uploadFile = async ({ mockFile, expectedError, expectedDetail, mockHandler
     await waitFor(() => {
       expect(screen.getByText(expectedError)).toBeInTheDocument();
     });
-    if (expectedDetail) {
+    if (expectedMessage) {
       const details = screen.getByText(/more information/i).closest('details');
-      expect(within(details).getByText(expectedDetail)).toBeInTheDocument();
+      expect(within(details).getByText(expectedMessage)).toBeInTheDocument();
     }
   } else {
     await waitFor(() => expect(onSuccess).toHaveBeenCalled());
@@ -117,7 +117,7 @@ describe('CounterUpload', () => {
       name: 'unsupported file format (error code translation exists)',
       mockFile: file,
       expectedError: 'You cannot upload files with this format. Please check whether the file is a valid Master COUNTER report file.',
-      expectedDetail: '',
+      expectedMessage: '',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -134,7 +134,7 @@ describe('CounterUpload', () => {
       name: 'file exceeds maximum size (error code translation exists)',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetail: 'The file size exceeds the maximum allowed size.',
+      expectedMessage: 'The file size exceeds the maximum allowed size.',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -151,7 +151,7 @@ describe('CounterUpload', () => {
       name: 'error without code property (err.message exists)',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetail: 'foo',
+      expectedMessage: 'foo',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -167,7 +167,7 @@ describe('CounterUpload', () => {
       name: 'error without code and message properties (err is undefined)',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetail: '',
+      expectedMessage: '',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -181,7 +181,7 @@ describe('CounterUpload', () => {
       name: 'error 404 without response body',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetail: '',
+      expectedMessage: '',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -192,7 +192,7 @@ describe('CounterUpload', () => {
       name: 'error with code but without translation',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetail: 'This is a new error code without translation',
+      expectedMessage: 'This is a new error code without translation',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -207,7 +207,7 @@ describe('CounterUpload', () => {
     },
   ];
 
-  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, expectedDetail, mockHandler }) => {
-    await uploadFile({ mockFile, expectedError, expectedDetail, mockHandler });
+  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, expectedMessage, mockHandler }) => {
+    await uploadFile({ mockFile, expectedError, expectedMessage, mockHandler });
   });
 });
