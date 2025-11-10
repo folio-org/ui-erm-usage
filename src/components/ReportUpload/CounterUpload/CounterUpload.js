@@ -6,9 +6,6 @@ import { Button, Loading, Modal, ModalFooter } from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
-import {
-  ERROR_CODES
-} from '../../../util/constants';
 
 function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) {
   const [formState, setFormState] = useState({});
@@ -16,8 +13,6 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
   const [modalContent, setModalContent] = useState({ title: '', content: null, footer: null });
 
   const intl = useIntl();
-
-
 
   const handleSelectOtherFile = () => {
     setShowInfoModal(false);
@@ -68,7 +63,7 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
         ),
       });
     // All ERRORS with CODES
-    } else if (err.code && ERROR_CODES.includes(err.code)) {
+    } else if (err.code) {
       setModalContent({
         title: labelModalUploadFailed,
         content: (

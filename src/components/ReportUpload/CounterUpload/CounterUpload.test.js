@@ -191,8 +191,8 @@ describe('CounterUpload', () => {
     {
       name: 'error with code but without translation',
       mockFile: file,
-      expectedError: 'An error has occurred.',
-      expectedMessage: 'This is a new error code without translation',
+      expectedError: 'ui-erm-usage.counter.upload.error.NEW_ERROR_CODE',
+      expectedMessage: '',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
