@@ -67,18 +67,25 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
           </>
         ),
       });
-    // UNSUPPORTED_FILE_FORMAT
-    } else if (err.code === 'UNSUPPORTED_FILE_FORMAT') {
+    // All ERRORS with CODES
+    } else if (err.code && ERROR_CODES.includes(err.code)) {
       setModalContent({
         title: labelModalUploadFailed,
         content: (
           <div>
             <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` })}</p>
+            {(err.code === 'UNSUPPORTED_FILE_FORMAT') &&
+              <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}.detail` })}</p>
+            }
+            <details>
+              <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
+              <p>{err?.details}</p>
+            </details>
           </div>
         ),
         footer: errorFooter(),
       });
-    // All other ERRORS (with or without CODES)
+    // All other ERRORS (without CODES)
     } else {
       setModalContent({
         title: labelModalUploadFailed,
@@ -88,12 +95,9 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
             {err &&
               <details>
                 <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
-                <p>{(err.code && ERROR_CODES.includes(err.code)) ?
-                  intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` }) :
-                  err?.message || JSON.stringify(err)}
-                </p>
+                <p>{err?.message || JSON.stringify(err)}</p>
               </details>
-          }
+            }
           </div>
         ),
         footer: errorFooter(),

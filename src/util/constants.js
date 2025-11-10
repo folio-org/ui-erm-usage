@@ -20,10 +20,10 @@ export const ERROR_CODES = [
   'INVALID_REPORT_CONTENT',
   'MAXIMUM_FILESIZE_EXCEEDED',
   'MULTIPLE_FILES_NOT_SUPPORTED',
+  'UNSUPPORTED_FILE_FORMAT',
   'UNSUPPORTED_REPORT_RELEASE',
   'UNSUPPORTED_REPORT_TYPE',
   'OTHER',
-  // special treatment for this codes in UI:
+  // special treatment for this code in UI:
   // 'REPORTS_ALREADY_PRESENT',
-  // 'UNSUPPORTED_FILE_FORMAT',
 ];
