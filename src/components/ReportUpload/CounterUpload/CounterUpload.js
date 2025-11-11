@@ -69,12 +69,9 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
         content: (
           <div>
             <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` })}</p>
-            {(err.code === 'UNSUPPORTED_FILE_FORMAT') &&
-              <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}.detail` })}</p>
-            }
             <details>
               <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
-              <p>{err?.details}</p>
+              <p>{err.details}</p>
             </details>
           </div>
         ),
@@ -90,7 +87,7 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
             {err &&
               <details>
                 <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
-                <p>{err?.message || JSON.stringify(err)}</p>
+                <p>{err.message || JSON.stringify(err)}</p>
               </details>
             }
           </div>

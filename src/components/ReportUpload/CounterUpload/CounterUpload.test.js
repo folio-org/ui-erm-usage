@@ -116,8 +116,8 @@ describe('CounterUpload', () => {
     {
       name: 'unsupported file format (error code translation exists)',
       mockFile: file,
-      expectedError: 'The file format is not supported.',
-      expectedMessage: '',
+      expectedError: 'The file format is not supported.<p>You cannot upload files with this format. Please check whether the file is a valid COUNTER report file.</p>',
+      expectedMessage: 'java.lang.IllegalArgumentException: Invalid filename',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -126,6 +126,7 @@ describe('CounterUpload', () => {
             ctx.json({
               code: 'UNSUPPORTED_FILE_FORMAT',
               message: 'The file format is not supported.',
+              details: 'java.lang.IllegalArgumentException: Invalid filename',
             })
           )
       ),
@@ -134,7 +135,7 @@ describe('CounterUpload', () => {
       name: 'file exceeds maximum size (error code translation exists)',
       mockFile: file,
       expectedError: 'The file size exceeds the maximum allowed size.',
-      expectedMessage: '',
+      expectedMessage: 'The maximum file size is 209715200 bytes.',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
@@ -143,6 +144,7 @@ describe('CounterUpload', () => {
             ctx.json({
               code: 'MAXIMUM_FILESIZE_EXCEEDED',
               message: 'The file size exceeds the maximum allowed size.',
+              details: 'The maximum file size is 209715200 bytes.',
             })
           )
       ),
