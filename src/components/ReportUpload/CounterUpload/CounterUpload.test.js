@@ -116,7 +116,7 @@ describe('CounterUpload', () => {
     {
       name: 'unsupported file format (error code translation exists)',
       mockFile: file,
-      expectedError: 'The file format is not supported.<p>You cannot upload files with this format. Please check whether the file is a valid COUNTER report file.</p>',
+      expectedError: 'The file format is not supported.',
       expectedMessage: 'java.lang.IllegalArgumentException: Invalid filename',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
