@@ -41,9 +41,9 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
   const labelModalUploadFailed = intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label.failed' });
   const labelModalUpload = intl.formatMessage({ id: 'ui-erm-usage.report.upload.modal.label' });
 
-  const showErrorInfo = (err = {}) => {
+  const showErrorInfo = (err) => {
     // REPORTS_ALREADY_PRESENT
-    if (err.code === 'REPORTS_ALREADY_PRESENT') {
+    if (err?.code === 'REPORTS_ALREADY_PRESENT') {
       setModalContent({
         title: labelModalUpload,
         content: (
@@ -63,16 +63,18 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
         ),
       });
     // All ERRORS with CODES
-    } else if (err.code) {
+    } else if (err?.code) {
       setModalContent({
         title: labelModalUploadFailed,
         content: (
           <div>
             <p>{intl.formatMessage({ id: `ui-erm-usage.counter.upload.error.${err.code}` })}</p>
-            <details>
-              <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
-              <p>{err.details}</p>
-            </details>
+            {err.details &&
+              <details>
+                <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.general.moreInformation' })}</b></summary>
+                <p>{err.details}</p>
+              </details>
+            }
           </div>
         ),
         footer: errorFooter(),
