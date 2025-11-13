@@ -47,7 +47,7 @@ const uploadFile = async ({ mockFile, expectedError, expectedDetails, mockHandle
     });
     if (expectedDetails) {
       const details = screen.getByText(/more information/i).closest('details');
-      expect(within(details).getByText(expectedDetails, { exact: false })).toBeInTheDocument();
+      expect(within(details).getByText(expectedDetails)).toBeInTheDocument();
     } else {
       expect(screen.queryByText(/more information/i)).not.toBeInTheDocument();
     }
@@ -185,7 +185,7 @@ describe('CounterUpload', () => {
       name: 'error 404 without response body',
       mockFile: file,
       expectedError: 'An error has occurred.',
-      expectedDetails: 'invalid json response body at',
+      expectedDetails: /invalid json response body at/,
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
         (req, res, ctx) =>
