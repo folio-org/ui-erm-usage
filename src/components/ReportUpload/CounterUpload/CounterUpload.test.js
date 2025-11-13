@@ -208,10 +208,25 @@ describe('CounterUpload', () => {
             })
           )
       ),
+      suppressConsoleError: 'NEW_ERROR_CODE',
     },
   ];
 
-  test.each(uploadErrorScenarios)('upload scenario: $name', async ({ mockFile, expectedError, expectedDetails, mockHandler }) => {
-    await uploadFile({ mockFile, expectedError, expectedDetails, mockHandler });
-  });
+  test.each(uploadErrorScenarios)(
+    'upload scenario: $name',
+    async ({ mockFile, expectedError, expectedDetails, mockHandler, suppressConsoleError }) => {
+      const originalError = console.error;
+      const consoleErrorSpy =
+        suppressConsoleError &&
+        jest.spyOn(console, 'error').mockImplementation((err, ...args) => {
+          if (!err?.message?.includes(suppressConsoleError)) {
+            originalError(err, ...args);
+          }
+        });
+
+      await uploadFile({ mockFile, expectedError, expectedDetails, mockHandler });
+
+      consoleErrorSpy?.mockRestore();
+    }
+  );
 });

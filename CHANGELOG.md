@@ -23,6 +23,7 @@
 * Define permissions for `mod-settings` ([UIEUS-469](https://folio-org.atlassian.net/browse/UIEUS-469))
 * Update to counter-reports interface v5.0 ([UIEUS-472](https://folio-org.atlassian.net/browse/UIEUS-472))
 * Improvement of the notification of exceptions when manually uploading COUNTER files ([UIEUS-403](https://folio-org.atlassian.net/browse/UIEUS-403))
+* Improve CounterUpload test output by conditionally suppressing expected console errors ([UIEUS-476](https://folio-org.atlassian.net/browse/UIEUS-476))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
