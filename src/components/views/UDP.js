@@ -538,7 +538,6 @@ const UDP = ({
           <CounterUpload
             open={showCounterUpload}
             onClose={() => setShowCounterUpload(false)}
-            onFail={handleFail}
             onSuccess={handleSuccess}
             stripes={stripes}
             udpId={providerId}
