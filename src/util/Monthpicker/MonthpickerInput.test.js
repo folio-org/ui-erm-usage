@@ -100,7 +100,9 @@ describe('MonthpickerInput', () => {
     await userEvent.clear(yearInput);
     await userEvent.type(yearInput, '2025');
 
-    expect(yearInput.value).toBe('2025');
+    await waitFor(() => {
+      expect(yearInput.value).toBe('2025');
+    });
   });
 
   it('should increment and decrement year', async () => {
