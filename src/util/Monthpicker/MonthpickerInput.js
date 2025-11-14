@@ -19,7 +19,6 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { useClickOutside } from '../hooks/useClickOutside';
 import css from './Monthpicker.css';
 
 const convertDateFormat = (value, from, to) => {
@@ -40,12 +39,14 @@ const MonthpickerInput = ({
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
+  const calendarDialogRef = useRef(null);
+  const previousFocusRef = useRef(null);
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
     const nextTarget = e.relatedTarget;
 
-    // block blur as long as no click outsinde the field-monthpicker-container is happening
+    // block blur as long as no click outside the field-monthpicker-container is happening
     if (
       nextTarget &&
       containerPopper.current?.contains(nextTarget)
@@ -56,9 +57,47 @@ const MonthpickerInput = ({
     input.onBlur?.(e);
   };
 
-  useClickOutside(containerPopper, () => {
-    setShowCalendar(false);
-  });
+  // click-outside
+  useEffect(() => {
+    if (!showCalendar) {
+      return () => {};
+    }
+
+    const handleClickOutside = (event) => {
+      const isInsideTextField = containerTextField.current?.contains(event.target);
+      const isInsidePopper = containerPopper.current?.contains(event.target);
+
+      if (!isInsideTextField && !isInsidePopper) {
+        setShowCalendar(false);
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCalendar]);
+
+  // focus management
+  useEffect(() => {
+    if (showCalendar) {
+      // save current focused element
+      previousFocusRef.current = document.activeElement;
+
+      // focus Monthpicker
+      setTimeout(() => {
+        calendarDialogRef.current?.focus();
+      }, 100);
+    } else if (previousFocusRef.current) {
+      // focus saved element
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    }
+  }, [showCalendar]);
 
   const validationError = (meta.touched || meta.dirty) && meta.error ? meta.error : undefined;
 
@@ -125,12 +164,17 @@ const MonthpickerInput = ({
     },
   ];
 
+  const handleToggleCalendar = () => {
+    setShowCalendar(prev => !prev);
+  };
+
   const renderEndElement = () => (
     <IconButton
       aria-haspopup="true"
+      aria-expanded={showCalendar}
       icon="calendar"
       id="monthpicker-toggle-calendar-button"
-      onClick={() => setShowCalendar(!showCalendar)}
+      onClick={handleToggleCalendar}
     />
   );
 
@@ -165,7 +209,8 @@ const MonthpickerInput = ({
       <Popper
         anchorRef={containerTextField}
         isOpen={showCalendar}
-        onToggle={() => setShowCalendar(false)}
+        onToggle={() => {}}
+        overlayRef={containerPopper}
       >
         <HasCommand
           commands={shortcuts}
@@ -174,6 +219,8 @@ const MonthpickerInput = ({
           {/* Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead */}
           {/* eslint-disable-next-line */}
           <div
+            ref={calendarDialogRef}
+            tabIndex={-1}
             aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
             className={css.calendar}
             role="dialog"
