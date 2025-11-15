@@ -3,6 +3,8 @@ import {
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import StripesOverlayWrapper from '@folio/stripes-components/util/StripesOverlayWrapper';
+import { OVERLAY_CONTAINER_ID } from '@folio/stripes-components/util/consts';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import MonthpickerInput from './MonthpickerInput';
@@ -33,16 +35,42 @@ const renderMonthpickerInput = (props = {}, locale) => {
   );
 };
 
-describe('MonthpickerInput', () => {
+const renderMonthpickerInputWithPortal = (props = {}, locale) => {
+  return renderWithIntl(
+    <StripesOverlayWrapper>
+      <MonthpickerInput {...defaultProps} {...props} />
+    </StripesOverlayWrapper>,
+    undefined,
+    locale,
+  );
+};
+
+// Helper to create a portal container like Stripes does in FOLIO reference environments
+const setupPortalContainer = () => {
+  const portalContainer = document.createElement('div');
+  portalContainer.setAttribute('id', OVERLAY_CONTAINER_ID);
+  document.body.appendChild(portalContainer);
+  return portalContainer;
+};
+
+const cleanupPortalContainer = () => {
+  const container = document.getElementById(OVERLAY_CONTAINER_ID);
+  if (container) {
+    document.body.removeChild(container);
+  }
+};
+
+// Shared test suite that runs in both environments
+const sharedTests = (renderFn) => {
   it('should render input field with correct placeholder', () => {
-    renderMonthpickerInput();
+    renderFn();
 
     expect(screen.getByRole('textbox', { name: 'Year and month input' })).toBeInTheDocument();
     expect(screen.getByPlaceholderText('yyyy-MM')).toBeInTheDocument();
   });
 
   it('should display dialog if calendar icon is clicked', async () => {
-    renderMonthpickerInput();
+    renderFn();
 
     const toggleButton = screen.getByRole('button', { name: /calendar/i });
     await userEvent.click(toggleButton);
@@ -51,7 +79,7 @@ describe('MonthpickerInput', () => {
   });
 
   it('should show all months as buttons', async () => {
-    renderMonthpickerInput();
+    renderFn();
     await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
 
     const buttons = screen.getAllByRole('button');
@@ -61,7 +89,7 @@ describe('MonthpickerInput', () => {
 
   it('should call input.onChange if a month is selected', async () => {
     const onChange = jest.fn();
-    renderMonthpickerInput({
+    renderFn({
       input: {
         name: 'test-monthpicker',
         value: '2023-01',
@@ -83,7 +111,7 @@ describe('MonthpickerInput', () => {
   });
 
   it('should change year via input', async () => {
-    renderMonthpickerInput({
+    renderFn({
       input: {
         name: 'test-monthpicker',
         value: '2023-06',
@@ -106,7 +134,7 @@ describe('MonthpickerInput', () => {
   it('should increment and decrement year', async () => {
     const onChange = jest.fn();
 
-    renderMonthpickerInput({
+    renderFn({
       input: {
         name: 'test-monthpicker',
         value: '2023-04',
@@ -130,5 +158,23 @@ describe('MonthpickerInput', () => {
 
     await userEvent.click(prevYearBtn);
     expect(onChange).toHaveBeenCalledWith('2023-04');
+  });
+};
+
+describe('MonthpickerInput', () => {
+  describe('without portal (inline rendering)', () => {
+    sharedTests(renderMonthpickerInput);
+  });
+
+  describe('with portal (FOLIO reference environments)', () => {
+    beforeEach(() => {
+      setupPortalContainer();
+    });
+
+    afterEach(() => {
+      cleanupPortalContainer();
+    });
+
+    sharedTests(renderMonthpickerInputWithPortal);
   });
 });
