@@ -40,6 +40,7 @@ const MonthpickerInput = ({
   const lastValidDateRef = useRef({ year: null, month: null });
   const containerPopper = useRef(null);
   const containerTextField = useRef(null);
+  const popperOverlayRef = useRef(null);
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
@@ -48,7 +49,8 @@ const MonthpickerInput = ({
     // block blur as long as no click outsinde the field-monthpicker-container is happening
     if (
       nextTarget &&
-      containerPopper.current?.contains(nextTarget)
+      (containerPopper.current?.contains(nextTarget) ||
+       popperOverlayRef.current?.contains(nextTarget))
     ) {
       return;
     }
@@ -56,7 +58,7 @@ const MonthpickerInput = ({
     input.onBlur?.(e);
   };
 
-  useClickOutside(containerPopper, () => {
+  useClickOutside(containerPopper, popperOverlayRef, () => {
     setShowCalendar(false);
   });
 
@@ -165,7 +167,7 @@ const MonthpickerInput = ({
       <Popper
         anchorRef={containerTextField}
         isOpen={showCalendar}
-        onToggle={() => setShowCalendar(false)}
+        overlayRef={popperOverlayRef}
       >
         <HasCommand
           commands={shortcuts}

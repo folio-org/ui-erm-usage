@@ -8,9 +8,10 @@ import {
 
 import { useClickOutside } from './useClickOutside';
 
-function TestComponent({ onOutsideClick }) {
+const TestComponent = ({ onOutsideClick }) => {
   const ref = useRef(null);
-  useClickOutside(ref, onOutsideClick);
+  const overlayRef = useRef(null);
+  useClickOutside(ref, overlayRef, onOutsideClick);
 
   return (
     <div>
@@ -18,9 +19,12 @@ function TestComponent({ onOutsideClick }) {
       <div ref={ref}>
         <input placeholder="Inside Input" />
       </div>
+      <div ref={overlayRef}>
+        <button type="button">Overlay Button</button>
+      </div>
     </div>
   );
-}
+};
 
 describe('useClickOutside', () => {
   let handler;
@@ -30,13 +34,18 @@ describe('useClickOutside', () => {
     render(<TestComponent onOutsideClick={handler} />);
   });
 
-  it('should call handler if clicking OUTSIDE the element', () => {
+  it('should call handler if clicking OUTSIDE the elements', () => {
     fireEvent.mouseDown(screen.getByRole('button', { name: 'Outside Button' }));
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
-  it('should NOT call handler if clicking INSIDE the element', () => {
+  it('should NOT call handler if clicking INSIDE the main element', () => {
     fireEvent.mouseDown(screen.getByPlaceholderText('Inside Input'));
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('should NOT call handler if clicking INSIDE the overlay element', () => {
+    fireEvent.mouseDown(screen.getByRole('button', { name: 'Overlay Button' }));
     expect(handler).not.toHaveBeenCalled();
   });
 });
