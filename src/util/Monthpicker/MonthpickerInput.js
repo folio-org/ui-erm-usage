@@ -209,7 +209,6 @@ const MonthpickerInput = ({
       <Popper
         anchorRef={containerTextField}
         isOpen={showCalendar}
-        onToggle={() => {}}
         overlayRef={containerPopper}
       >
         <HasCommand
