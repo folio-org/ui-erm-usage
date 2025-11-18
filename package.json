@@ -89,8 +89,7 @@
           "mod-settings.entries.collection.get",
           "mod-settings.global.read.mod-erm-usage-harvester.manage",
           "mod-settings.global.read.ui-erm-usage.manage",
-          "mod-settings.global.read.stripes-core.prefs.manage",
-          "mod-settings.entries.collection.get"
+          "mod-settings.global.read.stripes-core.prefs.manage"
         ],
         "visible": false
       },
@@ -102,8 +101,7 @@
           "mod-settings.entries.collection.get",
           "mod-settings.global.read.mod-erm-usage-harvester.manage",
           "mod-settings.global.read.ui-erm-usage.manage",
-          "mod-settings.global.read.stripes-core.prefs.manage",
-          "mod-settings.entries.collection.get"
+          "mod-settings.global.read.stripes-core.prefs.manage"
         ],
         "visible": false
       },
