@@ -161,7 +161,7 @@ const MonthpickerInput = ({
     new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
   return (
-    <div ref={containerPopper} tabIndex={-1}>
+    <div ref={containerPopper}>
       <div ref={containerTextField}>
         <TextField
           aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
