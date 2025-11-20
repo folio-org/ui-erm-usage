@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   screen,
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
@@ -96,9 +97,10 @@ describe('MonthpickerInput', () => {
     await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
 
     // use spinbutton for input with type="number"
-    const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+    const yearInput = await screen.getByRole('spinbutton', { name: 'year' });
     await userEvent.clear(yearInput);
-    await userEvent.type(yearInput, '2025');
+    // use fireEvent here to prevent timing issues
+    fireEvent.input(yearInput, { target: { value: '2025' } });
 
     await waitFor(() => {
       expect(yearInput.value).toBe('2025');

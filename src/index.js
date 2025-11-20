@@ -14,6 +14,7 @@ import {
   NavListSection,
   CommandList,
   HasCommand,
+  StripesOverlayWrapper
 } from '@folio/stripes/components';
 
 import pkg from '../package';
@@ -76,7 +77,7 @@ const ErmUsage = ({
   }
 
   return (
-    <>
+    <StripesOverlayWrapper>
       <CommandList commands={commands}>
         <HasCommand
           commands={shortcuts}
@@ -117,7 +118,7 @@ const ErmUsage = ({
           allCommands={commands}
         />
       )}
-    </>
+    </StripesOverlayWrapper>
   );
 };
 
