@@ -182,7 +182,7 @@
     "statistics.custom.info.detail": "Informações detalhadas",
     "statistics.custom.selectFileFirst": "Selecione o arquivo primeiro",
     "showTags": "Mostrar tags",
-    "general.error": "Ocorreu um erro inesperado",
+    "general.error": "Ocorreu um erro.",
     "statistics.counter.upload.wait": "Carregando relatório. Por favor aguarde!",
     "permission.generalSettings.manage": "Configurações (Uso eletrônico): Pode visualizar e editar as configurações",
     "permission.all": "Uso eletrônico: Todas as permissões",
@@ -326,5 +326,8 @@
     "counter.upload.error.UNSUPPORTED_FILE_FORMAT": "O formato do arquivo não é compatível.",
     "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "A versão de lançamento do COUNTER não é compatível.",
     "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "O tipo de relatório não é suportado.",
-    "counter.upload.error.OTHER": "O relatório não pôde ser processado."
+    "counter.upload.error.OTHER": "O relatório não pôde ser processado.",
+    "general.moreInformation": "Mais informações",
+    "report.upload.modal.label.failed": "Falha no envio do arquivo",
+    "report.upload.selectAnotherFile": "Selecione outro arquivo para carregar"
 }
