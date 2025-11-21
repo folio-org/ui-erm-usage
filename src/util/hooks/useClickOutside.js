@@ -1,16 +1,24 @@
 import { useEffect } from 'react';
 
-export function useClickOutside(ref, handler) {
+export function useClickOutside(ref, overlayRef, handler, isOpen = true) {
   useEffect(() => {
+    if (!isOpen) return () => {};
+
     function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (ref.current && !ref.current.contains(event.target) && !overlayRef?.current?.contains(event.target)) {
         handler(event);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    // Add delay to avoid immediate trigger and closing when opening the element
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 0);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      clearTimeout(timeoutId);
+      document.removeEventListener('click', handleClickOutside);
     };
-  }, [ref, handler]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, overlayRef, isOpen]);
 }

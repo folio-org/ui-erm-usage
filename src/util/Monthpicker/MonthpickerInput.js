@@ -19,7 +19,11 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { useClickOutside } from '../hooks/useClickOutside';
+import {
+  useClickOutside,
+  useFocusManagement,
+} from '../hooks';
+
 import css from './Monthpicker.css';
 
 const convertDateFormat = (value, from, to) => {
@@ -38,17 +42,20 @@ const MonthpickerInput = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
-  const containerPopper = useRef(null);
-  const containerTextField = useRef(null);
+  const textFieldRef = useRef(null);
+  const monthpickerFocusRef = useRef(null);
+  const popperOverlayRef = useRef(null);
+
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
     const nextTarget = e.relatedTarget;
 
-    // block blur as long as no click outsinde the field-monthpicker-container is happening
+    // block blur as long as no click outside the field-monthpicker-container is happening
     if (
       nextTarget &&
-      containerPopper.current?.contains(nextTarget)
+      (textFieldRef.current?.contains(nextTarget) ||
+       popperOverlayRef.current?.contains(nextTarget))
     ) {
       return;
     }
@@ -56,9 +63,14 @@ const MonthpickerInput = ({
     input.onBlur?.(e);
   };
 
-  useClickOutside(containerPopper, () => {
-    setShowCalendar(false);
-  });
+  useClickOutside(
+    textFieldRef,
+    popperOverlayRef,
+    () => setShowCalendar(false),
+    showCalendar,
+  );
+
+  useFocusManagement(monthpickerFocusRef, showCalendar);
 
   const validationError = (meta.touched || meta.dirty) && meta.error ? meta.error : undefined;
 
@@ -125,12 +137,17 @@ const MonthpickerInput = ({
     },
   ];
 
+  const handleToggleCalendar = () => {
+    setShowCalendar(prev => !prev);
+  };
+
   const renderEndElement = () => (
     <IconButton
       aria-haspopup="true"
+      aria-expanded={showCalendar}
       icon="calendar"
       id="monthpicker-toggle-calendar-button"
-      onClick={() => setShowCalendar(!showCalendar)}
+      onClick={handleToggleCalendar}
     />
   );
 
@@ -143,29 +160,27 @@ const MonthpickerInput = ({
     new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
   return (
-    <div ref={containerPopper}>
-      <div ref={containerTextField}>
-        <TextField
-          aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
-          endControl={renderEndElement()}
-          error={validationError}
-          label={textLabel}
-          name={input.name}
-          onBlur={handleInternalBlur}
-          onChange={handleInputChange}
-          onFocus={(e) => {
-            input.onFocus(e);
-          }}
-          placeholder={dateFormat}
-          required={isRequired}
-          value={convertDateFormat(input.value, backendDateFormat, dateFormat)}
-        />
-      </div>
+    <div ref={textFieldRef}>
+      <TextField
+        aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
+        endControl={renderEndElement()}
+        error={validationError}
+        label={textLabel}
+        name={input.name}
+        onBlur={handleInternalBlur}
+        onChange={handleInputChange}
+        onFocus={(e) => {
+          input.onFocus(e);
+        }}
+        placeholder={dateFormat}
+        required={isRequired}
+        value={convertDateFormat(input.value, backendDateFormat, dateFormat)}
+      />
 
       <Popper
-        anchorRef={containerTextField}
+        anchorRef={textFieldRef}
         isOpen={showCalendar}
-        onToggle={() => setShowCalendar(false)}
+        overlayRef={popperOverlayRef}
       >
         <HasCommand
           commands={shortcuts}
@@ -174,6 +189,8 @@ const MonthpickerInput = ({
           {/* Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead */}
           {/* eslint-disable-next-line */}
           <div
+            ref={monthpickerFocusRef}
+            tabIndex={-1}
             aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
             className={css.calendar}
             role="dialog"

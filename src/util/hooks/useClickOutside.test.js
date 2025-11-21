@@ -10,7 +10,8 @@ import { useClickOutside } from './useClickOutside';
 
 function TestComponent({ onOutsideClick }) {
   const ref = useRef(null);
-  useClickOutside(ref, onOutsideClick);
+  const overlayRef = useRef(null);
+  useClickOutside(ref, overlayRef, onOutsideClick, true);
 
   return (
     <div>
@@ -26,17 +27,23 @@ describe('useClickOutside', () => {
   let handler;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     handler = jest.fn();
     render(<TestComponent onOutsideClick={handler} />);
+    jest.runAllTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('should call handler if clicking OUTSIDE the element', () => {
-    fireEvent.mouseDown(screen.getByRole('button', { name: 'Outside Button' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Outside Button' }));
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
   it('should NOT call handler if clicking INSIDE the element', () => {
-    fireEvent.mouseDown(screen.getByPlaceholderText('Inside Input'));
+    fireEvent.click(screen.getByPlaceholderText('Inside Input'));
     expect(handler).not.toHaveBeenCalled();
   });
 });
