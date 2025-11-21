@@ -182,7 +182,7 @@
     "statistics.custom.info.detail": "Detail info",
     "statistics.custom.selectFileFirst": "Select file first",
     "showTags": "Show tags",
-    "general.error": "An unexpected error has occurred",
+    "general.error": "An error has occurred.",
     "statistics.counter.upload.wait": "Uploading report. Please wait!",
     "permission.generalSettings.manage": "Indstillinger (eStatistik): Kan se og redigere indstillinger",
     "permission.all": "eUsage: All permissions",
@@ -326,5 +326,8 @@
     "counter.upload.error.UNSUPPORTED_FILE_FORMAT": "The file format is not supported.",
     "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "The COUNTER Release version is not supported.",
     "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
-    "counter.upload.error.OTHER": "The report could not be processed."
+    "counter.upload.error.OTHER": "The report could not be processed.",
+    "general.moreInformation": "More information",
+    "report.upload.modal.label.failed": "File upload failed",
+    "report.upload.selectAnotherFile": "Select another file to upload"
 }
