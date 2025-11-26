@@ -15,3 +15,5 @@ export const MOD_SETTINGS = {
     MAX_FAILED_ATTEMPTS:'max_failed_attempts',
   },
 };
+
+export const TAGS_SCOPE = 'ui-tags.tags.manage';

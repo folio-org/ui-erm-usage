@@ -25,6 +25,7 @@
 * Improvement of the notification of exceptions when manually uploading COUNTER files ([UIEUS-403](https://folio-org.atlassian.net/browse/UIEUS-403))
 * Improve CounterUpload test output by conditionally suppressing expected console errors ([UIEUS-476](https://folio-org.atlassian.net/browse/UIEUS-476))
 * Include global permissions in package.json base permissions ([UIEUS-474](https://folio-org.atlassian.net/browse/UIEUS-474))
+* Migrate tag flag from mod-configuration to mod-settings ([UIEUS-475](https://folio-org.atlassian.net/browse/UIEUS-475))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
