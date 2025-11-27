@@ -12,7 +12,6 @@ import extractHarvesterImpls from '../util/harvesterImpls';
 import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
-  TAGS_SCOPE,
 } from '../util/constants';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
@@ -255,7 +254,7 @@ const UDPViewRouteContainer = compose(
 )(UDPViewRoute);
 
 UDPViewRouteContainer.defaultProps = {
-  tagsScope: TAGS_SCOPE,
+  tagsScope: SCOPES.TAGS,
 };
 
 export default UDPViewRouteContainer;

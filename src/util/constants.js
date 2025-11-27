@@ -7,7 +7,8 @@ export const MOD_SETTINGS = {
   RECORD_NAME: 'items',
   SCOPES: {
     EUSAGE: 'ui-erm-usage.manage',
-    HARVESTER: 'mod-erm-usage-harvester.manage'
+    HARVESTER: 'mod-erm-usage-harvester.manage',
+    TAGS: 'ui-tags.tags.manage',
   },
   CONFIG_NAMES: {
     DAYS_TO_KEEP_LOGS: 'days_to_keep_logs',
@@ -15,5 +16,3 @@ export const MOD_SETTINGS = {
     MAX_FAILED_ATTEMPTS:'max_failed_attempts',
   },
 };
-
-export const TAGS_SCOPE = 'ui-tags.tags.manage';
