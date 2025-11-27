@@ -11,7 +11,7 @@ import urls from '../util/urls';
 import extractHarvesterImpls from '../util/harvesterImpls';
 import {
   MAX_FAILED_ATTEMPTS,
-  MOD_SETTINGS
+  MOD_SETTINGS,
 } from '../util/constants';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
@@ -247,8 +247,14 @@ UDPViewRoute.manifest = Object.freeze({
   query: {},
 });
 
-export default compose(
+const UDPViewRouteContainer = compose(
   withReportHandlers,
   stripesConnect,
   withTags
 )(UDPViewRoute);
+
+UDPViewRouteContainer.defaultProps = {
+  tagsScope: SCOPES.TAGS,
+};
+
+export default UDPViewRouteContainer;

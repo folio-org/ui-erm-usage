@@ -84,12 +84,13 @@
         "permissionName": "module.erm-usage.enabled",
         "displayName": "UI: eUsage module is enabled",
         "subPermissions": [
-          "tags.collection.get",
           "ermusageharvester.impl.get",
           "mod-settings.entries.collection.get",
           "mod-settings.global.read.mod-erm-usage-harvester.manage",
+          "mod-settings.global.read.stripes-core.prefs.manage",
           "mod-settings.global.read.ui-erm-usage.manage",
-          "mod-settings.global.read.stripes-core.prefs.manage"
+          "mod-settings.global.read.ui-tags.tags.manage",
+          "tags.collection.get"
         ],
         "visible": false
       },
