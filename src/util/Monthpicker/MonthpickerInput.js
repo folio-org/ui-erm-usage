@@ -42,6 +42,18 @@ const MonthpickerInput = ({
   const containerTextField = useRef(null);
   const intl = useIntl();
 
+  const focusTrap = {
+    toStart: () => {
+      // Focus year input field
+      calendarRef.current?.querySelector('input[type="number"]')?.focus();
+    },
+    toLast: () => {
+      // Focus last month button
+      const buttons = calendarRef.current?.querySelectorAll('[role="grid"] button');
+      buttons?.[buttons.length - 1]?.focus();
+    }
+  };
+
   const handleInternalBlur = (e) => {
     const nextTarget = e.relatedTarget;
 
@@ -57,8 +69,11 @@ const MonthpickerInput = ({
     input.onBlur?.(e);
   };
 
-  const closeCalendar = () => {
+  const closeCalendar = (restoreFocus = true) => {
     setShowCalendar(false);
+    if (restoreFocus) {
+      containerTextField.current?.querySelector('input')?.focus();
+    }
   };
 
   const validationError = (meta.touched || meta.dirty) && meta.error ? meta.error : undefined;
@@ -82,6 +97,15 @@ const MonthpickerInput = ({
     }
   }, [input?.value, backendDateFormat]);
 
+  // Set initial focus on year input when calendar opens
+  useEffect(() => {
+    if (showCalendar && calendarRef.current) {
+      requestAnimationFrame(() => {
+        calendarRef.current?.querySelector('input[type="number"]')?.focus();
+      });
+    }
+  }, [showCalendar]);
+
   const buildDateString = (year, month, format) => {
     const dt = DateTime.fromObject({ year, month });
     return dt.toFormat(format);
@@ -96,7 +120,7 @@ const MonthpickerInput = ({
     const formattedValue = dt.toFormat(backendDateFormat);
     input.onChange(formattedValue);
 
-    setShowCalendar(false);
+    closeCalendar();
   };
 
   const handleYearChange = (e) => {
@@ -121,13 +145,14 @@ const MonthpickerInput = ({
   const shortcuts = [
     {
       name: 'close',
-      handler: () => setShowCalendar(false),
+      handler: () => closeCalendar(),
       shortcut: 'esc',
     },
   ];
 
   const renderEndElement = () => (
     <IconButton
+      aria-expanded={showCalendar}
       aria-haspopup="true"
       icon="calendar"
       id="monthpicker-toggle-calendar-button"
@@ -169,7 +194,7 @@ const MonthpickerInput = ({
       >
         <RootCloseWrapper
           ref={calendarRef}
-          onRootClose={closeCalendar}
+          onRootClose={() => closeCalendar(false)}
         >
           <HasCommand
             commands={shortcuts}
@@ -183,6 +208,9 @@ const MonthpickerInput = ({
             className={css.calendar}
             role="dialog"
           >
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+            <div onFocus={focusTrap.toLast} tabIndex="0" />
+
             <fieldset className={css.calendarHeader}>
               <legend className="sr-only">
                 {intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearSelection' })}
@@ -194,6 +222,7 @@ const MonthpickerInput = ({
                     className={css.marginBottom}
                     icon="chevron-double-left"
                     onClick={() => updateYear(-1)}
+                    tabIndex="-1"
                   />
                 )}
               </FormattedMessage>
@@ -218,6 +247,7 @@ const MonthpickerInput = ({
                     className={css.marginBottom}
                     icon="chevron-double-right"
                     onClick={() => updateYear(+1)}
+                    tabIndex="-1"
                   />
                 )}
               </FormattedMessage>
@@ -246,6 +276,9 @@ const MonthpickerInput = ({
                 </div>
               ))}
             </div>
+
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+            <div onFocus={focusTrap.toStart} tabIndex="0" />
           </div>
           </HasCommand>
         </RootCloseWrapper>
