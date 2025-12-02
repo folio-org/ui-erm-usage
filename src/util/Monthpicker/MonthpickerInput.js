@@ -16,10 +16,10 @@ import {
   HasCommand,
   IconButton,
   Popper,
+  RootCloseWrapper,
   TextField,
 } from '@folio/stripes/components';
 
-import { useClickOutside } from '../hooks/useClickOutside';
 import css from './Monthpicker.css';
 
 const convertDateFormat = (value, from, to) => {
@@ -38,17 +38,18 @@ const MonthpickerInput = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const lastValidDateRef = useRef({ year: null, month: null });
-  const containerPopper = useRef(null);
+  const calendarRef = useRef(null);
   const containerTextField = useRef(null);
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
     const nextTarget = e.relatedTarget;
 
-    // block blur as long as no click outsinde the field-monthpicker-container is happening
+    // block blur as long as focus is moving within the text field or calendar
     if (
       nextTarget &&
-      containerPopper.current?.contains(nextTarget)
+      (containerTextField.current?.contains(nextTarget) ||
+       calendarRef.current?.contains(nextTarget))
     ) {
       return;
     }
@@ -56,9 +57,9 @@ const MonthpickerInput = ({
     input.onBlur?.(e);
   };
 
-  useClickOutside(containerPopper, () => {
+  const closeCalendar = () => {
     setShowCalendar(false);
-  });
+  };
 
   const validationError = (meta.touched || meta.dirty) && meta.error ? meta.error : undefined;
 
@@ -143,7 +144,7 @@ const MonthpickerInput = ({
     new Intl.DateTimeFormat(intl.locale, { month: 'short' }).format(new Date(2000, i, 1)));
 
   return (
-    <div ref={containerPopper}>
+    <div>
       <div ref={containerTextField}>
         <TextField
           aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
@@ -165,15 +166,19 @@ const MonthpickerInput = ({
       <Popper
         anchorRef={containerTextField}
         isOpen={showCalendar}
-        onToggle={() => setShowCalendar(false)}
       >
-        <HasCommand
-          commands={shortcuts}
-          scope={document.body}
+        <RootCloseWrapper
+          ref={calendarRef}
+          onRootClose={closeCalendar}
         >
-          {/* Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead */}
-          {/* eslint-disable-next-line */}
+          <HasCommand
+            commands={shortcuts}
+            scope={document.body}
+          >
+            {/* Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead */}
+            {/* eslint-disable-next-line */}
           <div
+            ref={calendarRef}
             aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthSelection' })}
             className={css.calendar}
             role="dialog"
@@ -242,7 +247,8 @@ const MonthpickerInput = ({
               ))}
             </div>
           </div>
-        </HasCommand>
+          </HasCommand>
+        </RootCloseWrapper>
       </Popper>
     </div>
   );

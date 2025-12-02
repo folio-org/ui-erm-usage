@@ -3,6 +3,7 @@ import {
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import { StripesOverlayWrapper } from '@folio/stripes/components';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import MonthpickerInput from './MonthpickerInput';
@@ -130,5 +131,40 @@ describe('MonthpickerInput', () => {
 
     await userEvent.click(prevYearBtn);
     expect(onChange).toHaveBeenCalledWith('2023-04');
+  });
+
+  it('should work correctly in portal mode (usePortal: true)', async () => {
+    const onChange = jest.fn();
+
+    renderWithIntl(
+      <StripesOverlayWrapper>
+        <MonthpickerInput
+          {...defaultProps}
+          input={{
+            name: 'test-monthpicker',
+            value: '2023-01',
+            onChange,
+            onBlur: jest.fn(),
+            onFocus: jest.fn(),
+          }}
+        />
+      </StripesOverlayWrapper>
+    );
+
+    // Open calendar
+    await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    // Select a month (clicking inside the portaled calendar should work)
+    const juneButton = screen.getAllByRole('button').find(btn => btn.textContent === 'Jun');
+    await userEvent.click(juneButton);
+
+    // Verify onChange was called with correct value
+    expect(onChange).toHaveBeenCalledWith('2023-06');
+
+    // Verify calendar closes after selection
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
 });
