@@ -327,7 +327,7 @@
     "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "Verze ČÍTAČE není podporována.",
     "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "Typ výstupu není podporován.",
     "counter.upload.error.OTHER": "Výstup se nepodařilo zpracovat.",
-    "general.moreInformation": "More information",
-    "report.upload.modal.label.failed": "File upload failed",
-    "report.upload.selectAnotherFile": "Select another file to upload"
+    "general.moreInformation": "Více informací",
+    "report.upload.modal.label.failed": "Nahrávání souboru se nezdařilo",
+    "report.upload.selectAnotherFile": "Vyberte další soubor, který chcete nahrát"
 }
