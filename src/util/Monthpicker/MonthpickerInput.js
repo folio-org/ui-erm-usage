@@ -40,18 +40,18 @@ const MonthpickerInput = ({
   const lastValidDateRef = useRef({ year: null, month: null });
   const calendarRef = useRef(null);
   const containerTextField = useRef(null);
+  const textFieldInputRef = useRef(null);
+  const yearInputRef = useRef(null);
+  const lastMonthButtonRef = useRef(null);
   const intl = useIntl();
 
   const focusTrap = {
     toStart: () => {
-      // Focus year input field
-      calendarRef.current?.querySelector('input[type="number"]')?.focus();
+      yearInputRef.current?.focus();
     },
     toLast: () => {
-      // Focus last month button
-      const buttons = calendarRef.current?.querySelectorAll('[role="grid"] button');
-      buttons?.[buttons.length - 1]?.focus();
-    }
+      lastMonthButtonRef.current?.focus();
+    },
   };
 
   const handleInternalBlur = (e) => {
@@ -72,7 +72,7 @@ const MonthpickerInput = ({
   const closeCalendar = (restoreFocus = true) => {
     setShowCalendar(false);
     if (restoreFocus) {
-      containerTextField.current?.querySelector('input')?.focus();
+      textFieldInputRef.current?.focus();
     }
   };
 
@@ -99,9 +99,9 @@ const MonthpickerInput = ({
 
   // Set initial focus on year input when calendar opens
   useEffect(() => {
-    if (showCalendar && calendarRef.current) {
+    if (showCalendar) {
       requestAnimationFrame(() => {
-        calendarRef.current?.querySelector('input[type="number"]')?.focus();
+        yearInputRef.current?.focus();
       });
     }
   }, [showCalendar]);
@@ -175,6 +175,7 @@ const MonthpickerInput = ({
           aria-label={intl.formatMessage({ id: 'ui-erm-usage.monthpicker.yearMonthInput' })}
           endControl={renderEndElement()}
           error={validationError}
+          inputRef={textFieldInputRef}
           label={textLabel}
           name={input.name}
           onBlur={handleInternalBlur}
@@ -232,6 +233,7 @@ const MonthpickerInput = ({
                     <TextField
                       aria-label={ariaLabel}
                       hasClearIcon={false}
+                      inputRef={yearInputRef}
                       type="number"
                       placeholder={(dateFormat.match(/y+/) || [])[0]}
                       value={lastValidDateRef.current?.year}
@@ -265,6 +267,7 @@ const MonthpickerInput = ({
                   {/* eslint-disable-next-line */}
                   <div role="gridcell">
                     <Button
+                      ref={i === months.length - 1 ? lastMonthButtonRef : null}
                       aria-label={i + 1 === lastValidDateRef.current.month ? `${monthLabel} selected` : monthLabel}
                       aria-pressed={i + 1 === lastValidDateRef.current.month}
                       buttonStyle={i + 1 === lastValidDateRef.current.month ? 'primary' : ''}
