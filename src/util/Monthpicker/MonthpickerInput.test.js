@@ -167,4 +167,30 @@ describe('MonthpickerInput', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
+
+  it('should trap focus within calendar', async () => {
+    renderMonthpickerInput();
+
+    await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+
+    const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+    await waitFor(() => {
+      expect(yearInput).toHaveFocus();
+    });
+
+    await userEvent.tab({ shift: true });
+
+    const monthButtons = screen.getAllByRole('button').filter(btn => btn.textContent?.length === 3);
+    const lastMonthButton = monthButtons[monthButtons.length - 1];
+
+    await waitFor(() => {
+      expect(lastMonthButton).toHaveFocus();
+    });
+
+    await userEvent.tab();
+
+    await waitFor(() => {
+      expect(yearInput).toHaveFocus();
+    });
+  });
 });
