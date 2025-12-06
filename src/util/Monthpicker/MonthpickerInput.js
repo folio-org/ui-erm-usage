@@ -40,6 +40,7 @@ const MonthpickerInput = ({
   const lastValidDateRef = useRef({ year: null, month: null });
   const calendarRef = useRef(null);
   const containerTextField = useRef(null);
+  const toggleButtonRef = useRef(null);
   const intl = useIntl();
 
   const handleInternalBlur = (e) => {
@@ -128,6 +129,7 @@ const MonthpickerInput = ({
 
   const renderEndElement = () => (
     <IconButton
+      ref={toggleButtonRef}
       aria-haspopup="true"
       icon="calendar"
       id="monthpicker-toggle-calendar-button"
@@ -169,7 +171,13 @@ const MonthpickerInput = ({
       >
         <RootCloseWrapper
           ref={calendarRef}
-          onRootClose={closeCalendar}
+          onRootClose={(e) => {
+            // Ignore if toggle button is clicked
+            if (toggleButtonRef.current?.contains(e.target)) {
+              return;
+            }
+            closeCalendar();
+          }}
         >
           <HasCommand
             commands={shortcuts}
