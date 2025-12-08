@@ -58,7 +58,8 @@ const renderMonthpickerInputWithParentHasCommand = (parentEscHandler) => {
 };
 
 const pressEscapeKey = (element) => {
-  // keyboardjs from stripes-react-hotkeys uses keyCode to identify keys
+  // keyboardjs from stripes-react-hotkeys uses keyCode to identify keys.
+  // We use fireEvent instead of userEvent.keyboard because userEvent doesn't set keyCode.
   fireEvent.keyDown(element, { key: 'Escape', code: 'Escape', keyCode: 27, which: 27 });
   fireEvent.keyUp(element, { key: 'Escape', code: 'Escape', keyCode: 27, which: 27 });
 };
