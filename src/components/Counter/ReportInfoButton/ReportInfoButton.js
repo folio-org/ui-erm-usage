@@ -41,14 +41,14 @@ const ReportInfoButton = ({
   const getButtonIcon = (errorCode) => {
     const hasFailedAttempts = report.failedAttempts;
 
-    if (!hasFailedAttempts && report?.reportEditedManually) {
+    if (report.failedReason && errorCode === '3030') {
+      return <Icon icon="default" />;
+    } else if (!hasFailedAttempts && report?.reportEditedManually) {
       return <Icon icon="edit" />;
     } else if (!hasFailedAttempts) {
       return <Icon icon="check-circle" />;
     } else if (hasFailedAttempts < maxFailedAttempts) {
       return <Icon icon="exclamation-circle" />;
-    } else if (report.failedReason && errorCode === '3030') {
-      return <Icon icon="default" />;
     } else {
       return <Icon icon="times-circle" />;
     }
