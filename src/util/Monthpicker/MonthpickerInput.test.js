@@ -8,9 +8,28 @@ import {
   HasCommand,
   StripesOverlayWrapper,
 } from '@folio/stripes/components';
+import { act } from 'react';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import MonthpickerInput from './MonthpickerInput';
+
+// Capture onRootClose by wrapping the real RootCloseWrapper
+let capturedOnRootClose = null;
+
+jest.mock('@folio/stripes/components', () => {
+  const actual = jest.requireActual('@folio/stripes/components');
+  const React = jest.requireActual('react');
+  const ActualRootCloseWrapper = actual.RootCloseWrapper;
+
+  return {
+    ...actual,
+    RootCloseWrapper: React.forwardRef((props, ref) => {
+      capturedOnRootClose = props.onRootClose;
+      // Use the real RootCloseWrapper with all its actual behavior
+      return <ActualRootCloseWrapper {...props} ref={ref} />;
+    }),
+  };
+});
 
 const defaultProps = {
   input: {
@@ -222,6 +241,65 @@ describe('MonthpickerInput', () => {
     await waitFor(() => {
       expect(yearInput).toHaveFocus();
     });
+  });
+
+  it('should toggle calendar on repeated icon clicks', async () => {
+    renderMonthpickerInput();
+
+    const toggleButton = screen.getByRole('button', { name: /calendar/i });
+
+    await userEvent.click(toggleButton);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    await userEvent.click(toggleButton);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await userEvent.click(toggleButton);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    await userEvent.click(toggleButton);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('should close calendar when clicking outside', async () => {
+    renderMonthpickerInput();
+
+    const toggleButton = screen.getByRole('button', { name: /calendar/i });
+
+    await userEvent.click(toggleButton);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    await userEvent.click(document.body);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it("RootCloseWrapper's onRootClose() should not close the calendar when toggle button is the click target", async () => {
+    // Tests the fix for toggle button race condition (see UIEUS-491):
+    // When the calendar is open, clicking the toggle button would trigger both RootCloseWrapper's
+    // onRootClose AND toggle button's onClick, causing the calendar to stay open.
+    // Can't reproduce this race condition in jsdom, so we directly call onRootClose to verify the
+    // ref check prevents closing the calendar.
+
+    renderMonthpickerInput();
+
+    const toggleButton = screen.getByRole('button', { name: /calendar/i });
+
+    // Open calendar
+    await userEvent.click(toggleButton);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    // Directly call RootCloseWrapper's onRootClose with the toggle button as target
+    // Use act() to flush setState calls synchronously before the assertion
+    act(() => {
+      capturedOnRootClose({ target: toggleButton });
+    });
+
+    // Calendar should still be open
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    // Normal toggle should still work, calendar should close
+    await userEvent.click(toggleButton);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   describe('ESC key handling', () => {
