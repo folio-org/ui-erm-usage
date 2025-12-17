@@ -1,9 +1,13 @@
 import {
+  fireEvent,
   screen,
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesOverlayWrapper } from '@folio/stripes/components';
+import {
+  HasCommand,
+  StripesOverlayWrapper,
+} from '@folio/stripes/components';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import MonthpickerInput from './MonthpickerInput';
@@ -32,6 +36,32 @@ const renderMonthpickerInput = (props = {}, locale) => {
     undefined,
     locale,
   );
+};
+
+const renderMonthpickerInputWithParentHasCommand = (parentEscHandler) => {
+  return renderWithIntl(
+    <HasCommand
+      commands={[
+        {
+          name: 'close',
+          handler: parentEscHandler,
+          shortcut: 'esc',
+        },
+      ]}
+      scope={document.body}
+    >
+      <div>
+        <MonthpickerInput {...defaultProps} />
+      </div>
+    </HasCommand>
+  );
+};
+
+const pressEscapeKey = (element) => {
+  // keyboardjs from stripes-react-hotkeys uses keyCode to identify keys.
+  // We use fireEvent instead of userEvent.keyboard because userEvent doesn't set keyCode.
+  fireEvent.keyDown(element, { key: 'Escape', code: 'Escape', keyCode: 27, which: 27 });
+  fireEvent.keyUp(element, { key: 'Escape', code: 'Escape', keyCode: 27, which: 27 });
 };
 
 describe('MonthpickerInput', () => {
@@ -191,6 +221,78 @@ describe('MonthpickerInput', () => {
 
     await waitFor(() => {
       expect(yearInput).toHaveFocus();
+    });
+  });
+
+  describe('ESC key handling', () => {
+    it('should close calendar when ESC pressed on month button', async () => {
+      renderMonthpickerInput();
+
+      await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      const monthButton = screen.getAllByRole('button').find(btn => btn.textContent === 'May');
+      monthButton.focus();
+
+      pressEscapeKey(monthButton);
+
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    it('should close calendar when ESC pressed on year input', async () => {
+      renderMonthpickerInput();
+
+      await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      const yearInput = screen.getByRole('spinbutton', { name: 'year' });
+      yearInput.focus();
+
+      pressEscapeKey(yearInput);
+
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+    });
+
+    it('should not propagate ESC to parent when closing calendar', async () => {
+      const parentEscHandler = jest.fn();
+      renderMonthpickerInputWithParentHasCommand(parentEscHandler);
+
+      await userEvent.click(screen.getByRole('button', { name: /calendar/i }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      const monthButton = screen.getAllByRole('button').find(btn => btn.textContent === 'May');
+      monthButton.focus();
+
+      pressEscapeKey(monthButton);
+
+      // Calendar should close
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
+
+      // Parent's ESC handler should NOT be called (event propagation was stopped)
+      expect(parentEscHandler).not.toHaveBeenCalled();
+    });
+
+    it('should propagate ESC to parent when calendar is closed', async () => {
+      const parentEscHandler = jest.fn();
+      renderMonthpickerInputWithParentHasCommand(parentEscHandler);
+
+      // Calendar is closed
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+      // Focus the input field
+      const input = screen.getByRole('textbox', { name: 'Year and month input' });
+      input.focus();
+
+      pressEscapeKey(input);
+
+      // Parent's ESC handler SHOULD be called (calendar is closed, no stopPropagation)
+      expect(parentEscHandler).toHaveBeenCalled();
     });
   });
 });

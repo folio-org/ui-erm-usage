@@ -145,7 +145,12 @@ const MonthpickerInput = ({
   const shortcuts = [
     {
       name: 'close',
-      handler: () => closeCalendar(),
+      handler: (e) => {
+        // Stop propagation to prevent parent HasCommand components from also handling ESC.
+        // This ensures only the calendar closes, not parent views (e.g., UDP detail view).
+        e.stopPropagation();
+        closeCalendar();
+      },
       shortcut: 'esc',
     },
   ];
@@ -199,7 +204,11 @@ const MonthpickerInput = ({
         >
           <HasCommand
             commands={shortcuts}
-            scope={document.body}
+            scope={calendarRef}
+            // HasCommand is setup before the ref is assigned, which prevents it from setting up
+            // focus listeners, so we need to override isWithinScope. Since HasCommand only exists
+            // when the calendar is open, we can safely return true.
+            isWithinScope={() => true}
           >
             {/* Popper component requires a 'div', which is why 'dialog' can not be used here and 'role' is set instead */}
             {/* eslint-disable-next-line */}
