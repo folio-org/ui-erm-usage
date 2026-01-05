@@ -182,7 +182,7 @@
     "statistics.custom.info.detail": "Detailní informace",
     "statistics.custom.selectFileFirst": "Nejprve vybrat soubor",
     "showTags": "Zobrazit štítky",
-    "general.error": "Jejda. Něco se pokazilo...",
+    "general.error": "Došlo k chybě.",
     "statistics.counter.upload.wait": "Nahrávání výstupu. Počkejte prosím!",
     "permission.generalSettings.manage": "Nastavení (eStatistiky): Může zobrazit a upravit všechna nastavení",
     "permission.all": "eStatistiky: Všechna oprávnění",

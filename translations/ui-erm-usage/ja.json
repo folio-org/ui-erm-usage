@@ -57,7 +57,7 @@
     "aggregator.config.customerId": "顧客ID（Customer ID）",
     "aggregator.config.reportRelease": "レポートリリース",
     "aggregator.config.accountConfig": "アカウント設定",
-    "aggregator.config.accountConfig.type": "種類",
+    "aggregator.config.accountConfig.type": "タイプ",
     "aggregator.config.accountConfig.mail": "メール",
     "aggregator.config.accountConfig.contact": "Contact",
     "aggregator.form.create": "アグリゲーターの作成",
