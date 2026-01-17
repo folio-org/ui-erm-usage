@@ -223,7 +223,7 @@
     "statistics.harvesting.success": "資料擷取成功",
     "statistics.report.info.maxAttempts": "{current} (最多次數: {max})",
     "action.refreshStatistics": "重新整理統計表",
-    "udpHarvestingConfig.deleteThisItem": "刪除此館藏",
+    "udpHarvestingConfig.deleteThisItem": "刪除此單件",
     "udpHarvestingConfig.addReportType": "新增報告類型",
     "settings.harvester.config.periodic.confirmDelete": "刪除定期資料擷取設定？",
     "udp.counterStatistics": "COUNTER 統計",
