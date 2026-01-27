@@ -12,8 +12,8 @@ import {
   Row,
   Select,
 } from '@folio/stripes/components';
+import { Monthpicker } from '@folio/stripes-leipzig-components';
 
-import Monthpicker from '../../../util/Monthpicker';
 import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
 

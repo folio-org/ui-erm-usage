@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { useIntl } from 'react-intl';
 
-import Monthpicker from '../../../util/Monthpicker';
+import { Monthpicker } from '@folio/stripes-leipzig-components';
 
 const HarvestingStartField = ({ isRequired }) => {
   const intl = useIntl();

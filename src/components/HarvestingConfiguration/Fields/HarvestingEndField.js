@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import Monthpicker from '../../../util/Monthpicker';
+import { Monthpicker } from '@folio/stripes-leipzig-components';
 
 const HarvestingEndField = () => {
   const intl = useIntl();
