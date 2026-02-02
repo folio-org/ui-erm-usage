@@ -31,6 +31,7 @@
 * Fix Monthpicker ESC key propagation ([UIEUS-490](https://folio-org.atlassian.net/browse/UIEUS-490))
 * Fix clicking Monthpicker calendar icon does not close the calendar when already open ([UIEUS-491](https://folio-org.atlassian.net/browse/UIEUS-491))
 * Improve priority of ReportInfoButton icons ([UIEUS-492](https://folio-org.atlassian.net/browse/UIEUS-492))
+* Migrate redux-form to react-final-form ([UIEUS-487](https://folio-org.atlassian.net/browse/UIEUS-487))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

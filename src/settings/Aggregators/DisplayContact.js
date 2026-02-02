@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
+
 import { Row, Col, Button, TextField } from '@folio/stripes/components';
 
 function DisplayContact({ fields }) {
   const intl = useIntl();
-  const renderSubContact = (elem, index, currentFields) => {
+
+  const renderSubContact = (elem, index) => {
     return (
       <Row key={elem}>
         <Col xs={8}>
           <Field
             label={intl.formatMessage(
               {
-                id:
-                  'ui-erm-usage.aggregator.config.accountConfig.contact.number',
+                id: 'ui-erm-usage.aggregator.config.accountConfig.contact.number',
               },
-              { number: parseInt(index + 1, 10) }
+              { number: Number.parseInt(index + 1, 10) }
             )}
             name={elem}
             id={elem}
@@ -25,7 +26,7 @@ function DisplayContact({ fields }) {
         </Col>
         <Col xs={4} style={{ textAlign: 'right', marginTop: '25px' }}>
           <Button
-            onClick={() => currentFields.remove(index)}
+            onClick={() => fields.remove(index)}
             buttonStyle="danger"
           >
             <FormattedMessage id="ui-erm-usage.general.remove" />

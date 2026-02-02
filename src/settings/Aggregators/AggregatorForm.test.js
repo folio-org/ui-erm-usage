@@ -19,6 +19,7 @@ const aggregators = [
 
 const onSubmit = jest.fn();
 const onRemove = jest.fn();
+const onCancel = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
   return renderWithIntl(withReduxForm(
@@ -26,7 +27,8 @@ const renderAggregratorForm = (stripes, initialValues = {}) => {
       <StripesContext.Provider value={stripes}>
         <AggregatorForm
           aggregators={aggregators}
-          onSave={onSubmit}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
           initialValues={initialValues}
           onRemove={onRemove}
           stripes={stripes}
@@ -40,7 +42,7 @@ describe('AggregatorForm', () => {
   let stripes;
 
   beforeEach(() => {
-    onSubmit.mockClear();
+    jest.clearAllMocks();
     stripes = useStripes();
     renderAggregratorForm(stripes);
   });
