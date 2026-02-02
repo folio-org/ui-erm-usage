@@ -39,6 +39,7 @@ const AggregatorForm = ({
   stripes,
   initialValues,
   intl,
+  invalid,
   handleSubmit,
   onCancel,
   onRemove,
@@ -140,7 +141,7 @@ const AggregatorForm = ({
   };
 
   const getPaneFooter = () => {
-    const disabled = pristine || submitting;
+    const disabled = pristine || submitting || invalid;
 
     const startButton = (
       <Button
@@ -404,6 +405,7 @@ AggregatorForm.propTypes = {
     connect: PropTypes.func.isRequired,
   }).isRequired,
   initialValues: PropTypes.object,
+  invalid: PropTypes.bool,
   intl: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
