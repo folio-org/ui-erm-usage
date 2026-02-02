@@ -31,9 +31,20 @@ import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
-// Helper to combine multiple validators
-const composeValidators = (...validators) => (value) =>
-  validators.reduce((error, validator) => error || validator(value), undefined);
+const validateConfigMail = (value, allValues) => {
+  const configType = allValues?.accountConfig?.configType;
+  const configTypeIsMail = configType === 'Mail';
+
+  if (configTypeIsMail && !value) {
+    return required(value);
+  }
+
+  if (value) {
+    return mail(value);
+  }
+
+  return undefined;
+};
 
 const AggregatorForm = ({
   stripes,
@@ -251,8 +262,6 @@ const AggregatorForm = ({
   const configType = getSelectedConfigType();
   const configTypeIsMail = configType === 'Mail';
 
-  const configMailValidate = configTypeIsMail ? composeValidators(mail, required) : mail;
-
   const confirmationMessage = (
     <FormattedMessage
       id="ui-erm-usage.form.delete.confirm.message"
@@ -372,7 +381,7 @@ const AggregatorForm = ({
                       fullWidth
                       disabled={disabled}
                       required={configTypeIsMail}
-                      validate={configMailValidate}
+                      validate={validateConfigMail}
                     />
                     <DisplayContactsForm />
                   </Col>
@@ -423,6 +432,7 @@ export default injectIntl(
     enableReinitialize: true,
     subscription: {
       values: true,
+      invalid: true,
     },
   })(AggregatorForm)
 );
