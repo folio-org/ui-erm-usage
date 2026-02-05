@@ -121,7 +121,7 @@
     "report.upload.upload": "Uploaden",
     "report.upload.dropFile": "Plaats bestand hier",
     "report.upload.selectFile": "of selecteer bestand",
-    "report.upload.info": "It is possible to upload usage statistics for<ul><li>Counter 4 (XML, CSV)</li><li>Counter 5 (JSON, CSV)</li><li>Counter 5.1 (JSON, CSV, TSV, XLSX)</li></ul>",
+    "report.upload.info": "Uploaden van gebruiksstatistieken is mogelijk voor<ul><li>Counter 4 (XML, CSV)</li><li>Counter 5 (JSON, CSV)</li><li>Counter 5.1 (JSON, CSV, TSV, XLSX)</li></ul>.",
     "report.error.other": "Andere",
     "report.error.0": "Informatie of debug",
     "report.error.1": "Waarschuwingen",

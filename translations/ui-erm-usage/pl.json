@@ -316,7 +316,7 @@
     "udp.form.placeholder.customerId": "Wprowadź ID klienta",
     "udp.form.placeholder.requestorId": "Wprowadź ID rezerwującego",
     "udp.form.placeholder.apiKey": "Wprowadź klucz API",
-    "udp.form.placeholder.platform": "Enter platform to request usage for",
+    "udp.form.placeholder.platform": "Wprowadź platformę, dla której chcesz zgłosić użycie",
     "udp.form.placeholder.requestorName": "Wprowadź nazwę rezerwującego",
     "udp.form.placeholder.requestorMail": "Wprowadź e-mail rezerwującego",
     "counter.upload.error.INVALID_REPORT_CONTENT": "Treść raportu jest nieprawidłowa.",
