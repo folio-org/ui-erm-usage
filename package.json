@@ -31,9 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^7.1.5",
-    "react-redux": "^8.0.5",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.0.0"
+    "react-router-dom": "^5.2.0"
   },
   "dependencies": {
     "compose-function": "^3.0.3",
@@ -47,18 +45,15 @@
     "react-dropzone": "^10.2.2",
     "react-final-form": "^6.3.5",
     "react-final-form-arrays": "^3.1.1",
-    "react-router-prop-types": "^1.0.4",
-    "redux-form": "^8.3.7"
+    "react-router-prop-types": "^1.0.4"
   },
   "peerDependencies": {
     "@folio/stripes": "^10.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^7.1.5",
-    "react-redux": "^8.0.5",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.0.0"
+    "react-router-dom": "^5.2.0"
   },
   "stripes": {
     "actsAs": [

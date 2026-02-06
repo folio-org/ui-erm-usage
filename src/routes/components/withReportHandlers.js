@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { withStripes } from '@folio/stripes/core';
 import { Callout } from '@folio/stripes/components';
-import { SubmissionError } from 'redux-form';
 import saveAs from 'file-saver';
 import { saveReport } from '../../util/downloadReport';
 import fetchWithDefaultOptions from '../../util/fetchWithDefaultOptions';
@@ -34,10 +33,7 @@ export default function withReportHandlers(WrappedComponent) {
         .then((response) => {
           calloutRef.current.removeCallout(calloutID);
           if (response.status >= 400) {
-            throw new SubmissionError({
-              identifier: `Error ${response.status} retrieving report for multiple months`,
-              _error: 'Fetch counter report failed',
-            });
+            throw new Error(`Error ${response.status} retrieving report for multiple months: Fetch counter report failed`);
           } else {
             if (format === 'csv') {
               return response.text();
@@ -54,10 +50,7 @@ export default function withReportHandlers(WrappedComponent) {
             message: errorMsg,
             timeout: 0,
           });
-          throw new SubmissionError({
-            identifier: `Error ${err} retrieving counter report for multiple months`,
-            _error: 'Fetch counter report failed',
-          });
+          throw new Error(`Error ${err} retrieving counter report for multiple months: Fetch counter report failed`);
         });
     };
 
@@ -65,10 +58,7 @@ export default function withReportHandlers(WrappedComponent) {
       return fetchWithDefaultOptions(okapi, `/counter-reports/export/${reportId}?format=${format}`)
         .then((response) => {
           if (response.status >= 400) {
-            throw new SubmissionError({
-              identifier: `Error ${response.status} retrieving counter report by id`,
-              _error: 'Fetch counter csv failed',
-            });
+            throw new Error(`Error ${response.status} retrieving counter report by id: Fetch counter csv failed`);
           } else {
             if (format === 'csv') {
               return response.text();
@@ -88,10 +78,7 @@ export default function withReportHandlers(WrappedComponent) {
       return fetchWithDefaultOptions(okapi, `/counter-reports/${reportId}/download`)
         .then((response) => {
           if (response.status >= 400) {
-            throw new SubmissionError({
-              identifier: `Error ${response.status} downloading counter report by id`,
-              _error: 'Fetch counter csv failed',
-            });
+            throw new Error(`Error ${response.status} downloading counter report by id: Fetch counter csv failed`);
           } else {
             return response.text();
           }
@@ -108,10 +95,7 @@ export default function withReportHandlers(WrappedComponent) {
       return fetchWithDefaultOptions(okapi, `/erm-usage/files/${fileId}`)
         .then((response) => {
           if (response.status >= 400) {
-            throw new SubmissionError({
-              identifier: `Error ${response.status} retrieving file`,
-              _error: 'Fetch file failed',
-            });
+            throw new Error(`Error ${response.status} retrieving file: Fetch file failed`);
           } else {
             return response.blob();
           }
