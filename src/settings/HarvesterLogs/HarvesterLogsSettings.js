@@ -3,7 +3,7 @@ import { useStripes } from '@folio/stripes/core';
 import { ConfigManager } from '@folio/stripes/smart-components';
 import { FormattedMessage } from 'react-intl';
 import { Col, Row, TextField } from '@folio/stripes/components';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 
 import {
   DAYS_TO_KEEP_LOGS,
@@ -22,24 +22,21 @@ const HarvesterLogsSettings = () => {
 
   return (
     <ConfigManagerConnected
-      getInitialValues={getInitialValues}
-      label={
-        <FormattedMessage id="ui-erm-usage.settings.harvester.logs.title" />
-      }
-      scope={SCOPES.HARVESTER}
       configName={CONFIG_NAMES.DAYS_TO_KEEP_LOGS}
+      formType="final-form"
+      getInitialValues={getInitialValues}
+      label={<FormattedMessage id="ui-erm-usage.settings.harvester.logs.title" />}
+      scope={SCOPES.HARVESTER}
     >
       <div>
         <Row>
           <Col xs={6}>
             <Field
               component={TextField}
-              type="number"
               id={CONFIG_NAMES.DAYS_TO_KEEP_LOGS}
+              label={<FormattedMessage id="ui-erm-usage.settings.harvester.logs.daysToKeepLogs" />}
               name={CONFIG_NAMES.DAYS_TO_KEEP_LOGS}
-              label={
-                <FormattedMessage id="ui-erm-usage.settings.harvester.logs.daysToKeepLogs" />
-              }
+              type="number"
             />
           </Col>
         </Row>
