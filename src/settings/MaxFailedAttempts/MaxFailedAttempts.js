@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
 import { Col, Row, TextField } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
 import {
+  FORM_TYPE_FINAL_FORM,
   MAX_FAILED_ATTEMPTS,
-  MOD_SETTINGS
+  MOD_SETTINGS,
 } from '../../util/constants';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
@@ -32,24 +33,21 @@ class MaxFailedAttempts extends React.Component {
         style={{ flex: '0 0 50%', left: '0px' }}
       >
         <this.configManager
-          getInitialValues={this.getInitialValues}
-          label={
-            <FormattedMessage id="ui-erm-usage.settings.harvester.config" />
-          }
-          scope={SCOPES.HARVESTER}
           configName={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
+          formType={FORM_TYPE_FINAL_FORM}
+          getInitialValues={this.getInitialValues}
+          label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
+          scope={SCOPES.HARVESTER}
         >
           <div data-test-settings-harvester-config>
             <Row>
               <Col xs={6}>
                 <Field
                   component={TextField}
-                  type="number"
                   id={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
+                  label={<FormattedMessage id="ui-erm-usage.settings.section.number.failed" />}
                   name={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
-                  label={
-                    <FormattedMessage id="ui-erm-usage.settings.section.number.failed" />
-                  }
+                  type="number"
                 />
               </Col>
             </Row>

@@ -1,54 +1,65 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import { useStripes } from '@folio/stripes/core';
-import { ConfigManager } from '@folio/stripes/smart-components';
+import { StripesContext, useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers';
-import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
-import { MOD_SETTINGS } from '../../util/constants';
+import { MAX_FAILED_ATTEMPTS, MOD_SETTINGS } from '../../util/constants';
 import MaxFailedAttempts from './MaxFailedAttempts';
 
-jest.mock('@folio/stripes/smart-components', () => ({
-  ConfigManager: jest.fn(({ children }) => (
-    <div>
-      ConfigManager
-      {children}
-    </div>
-  )),
-}));
+const { CONFIG_NAMES } = MOD_SETTINGS;
 
-const {
-  SCOPES: { HARVESTER },
-  CONFIG_NAMES: { MAX_FAILED_ATTEMPTS },
-} = MOD_SETTINGS;
+const renderMaxFailedAttempts = (stripes, resources) => {
+  if (resources) {
+    stripes.connect =
+      (Component) =>
+        ({ ...props }) => {
+          return <Component {...props} mutator={{}} resources={resources} />;
+        };
+  }
+  return renderWithIntl(
+    <StripesContext.Provider value={stripes}>
+      <MemoryRouter>
+        <MaxFailedAttempts stripes={stripes} />
+      </MemoryRouter>
+    </StripesContext.Provider>
+  );
+};
 
 describe('MaxFailedAttempts', () => {
+  const stripes = useStripes();
+  const originalConnect = stripes.connect;
+
   beforeEach(() => {
-    renderWithIntl(withReduxForm(<MaxFailedAttempts stripes={useStripes()} />));
+    stripes.connect = originalConnect;
   });
 
   it('should render correctly', () => {
-    expect(screen.getByText('ConfigManager')).toBeInTheDocument();
+    renderMaxFailedAttempts(stripes);
+
     const spinbutton = screen.getByRole('spinbutton', { name: 'Number of failed attempts' });
     expect(spinbutton).toBeInTheDocument();
-    expect(spinbutton).toHaveAttribute('name', MAX_FAILED_ATTEMPTS);
+    expect(spinbutton).toHaveAttribute('name', CONFIG_NAMES.MAX_FAILED_ATTEMPTS);
   });
 
   it('should call ConfigManager with correct arguments', () => {
-    expect(ConfigManager).toHaveBeenCalledWith(
-      expect.objectContaining({
-        label: expect.objectContaining({
-          props: expect.objectContaining({ id: 'ui-erm-usage.settings.harvester.config' }),
-        }),
-        scope: HARVESTER,
-        configName: MAX_FAILED_ATTEMPTS,
-      }),
-      {},
-    );
+    renderMaxFailedAttempts(stripes);
+
+    expect(screen.getByRole('heading', { name: 'Harvester configuration' })).toBeInTheDocument();
+    const spinbutton = screen.getByRole('spinbutton', { name: 'Number of failed attempts' });
+    expect(spinbutton).toBeInTheDocument();
   });
 
-  it('should correctly get the initial value', () => {
-    const getInitialValues = ConfigManager.mock.calls[0][0].getInitialValues;
-    expect(getInitialValues([{ value: 10 }])).toEqual({ [MAX_FAILED_ATTEMPTS]: 10 });
-    expect(getInitialValues([])).toEqual({ [MAX_FAILED_ATTEMPTS]: 5 });
+  it('should display value from settings', () => {
+    const resources = {
+      settings: { records: [{ items: [{ value: '10' }] }], hasLoaded: true },
+    };
+    renderMaxFailedAttempts(stripes, resources);
+    expect(screen.getByRole('spinbutton').valueAsNumber).toBe(10);
+  });
+
+  it('should display default value when settings are empty', () => {
+    renderMaxFailedAttempts(stripes);
+    expect(screen.getByRole('spinbutton').valueAsNumber).toBe(MAX_FAILED_ATTEMPTS);
   });
 });

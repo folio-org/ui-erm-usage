@@ -4,7 +4,6 @@ import { screen, within } from '@folio/jest-config-stripes/testing-library/react
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 
-import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
 import aggregator from '../../../test/fixtures/aggregator';
@@ -19,28 +18,30 @@ const aggregators = [
 
 const onSubmit = jest.fn();
 const onRemove = jest.fn();
+const onCancel = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
-  return renderWithIntl(withReduxForm(
+  return renderWithIntl(
     <MemoryRouter>
       <StripesContext.Provider value={stripes}>
         <AggregatorForm
           aggregators={aggregators}
-          onSave={onSubmit}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
           initialValues={initialValues}
           onRemove={onRemove}
           stripes={stripes}
         />
       </StripesContext.Provider>
     </MemoryRouter>
-  ));
+  );
 };
 
 describe('AggregatorForm', () => {
   let stripes;
 
   beforeEach(() => {
-    onSubmit.mockClear();
+    jest.clearAllMocks();
     stripes = useStripes();
     renderAggregratorForm(stripes);
   });

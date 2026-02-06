@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { isEmpty, isNil } from 'lodash';
-import { autofill, change, getFormValues, Field } from 'redux-form';
-import { useState } from 'react';
+import { Field } from 'react-final-form';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { isEmpty, isNil } from 'lodash';
 
 import {
   Accordion,
@@ -23,7 +23,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
-import stripesForm from '@folio/stripes/form';
+import stripesFinalForm from '@folio/stripes/final-form';
 
 import DisplayContactsForm from './DisplayContactsForm';
 import { required, mail } from '../../util/validate';
@@ -31,17 +31,33 @@ import { AggregatorConfigForm } from './AggregatorConfig';
 import css from './AggregatorForm.css';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
+const validateConfigMail = (value, allValues) => {
+  const configType = allValues?.accountConfig?.configType;
+  const configTypeIsMail = configType === 'Mail';
+
+  if (configTypeIsMail && !value) {
+    return required(value);
+  }
+
+  if (value) {
+    return mail(value);
+  }
+
+  return undefined;
+};
+
 const AggregatorForm = ({
   stripes,
   initialValues,
-  invalid,
   intl,
+  invalid,
   handleSubmit,
-  onSave,
   onCancel,
   onRemove,
   pristine,
   submitting,
+  form,
+  values,
   aggregators,
 }) => {
   const aggregator = initialValues || {};
@@ -72,30 +88,20 @@ const AggregatorForm = ({
     aggregatorConfig: true,
   });
 
-  const getCurrentValues = () => {
-    const state = stripes.store.getState();
-    return getFormValues('aggregatorForm')(state) || {};
-  };
-
-  const hasConfigType = (values) => {
+  const hasConfigType = (val) => {
     return (
-      !isEmpty(values) &&
-      !isEmpty(values.accountConfig) &&
-      !isEmpty(values.accountConfig.configType)
+      !isEmpty(val) &&
+      !isEmpty(val.accountConfig) &&
+      !isEmpty(val.accountConfig.configType)
     );
   };
 
   const getSelectedConfigType = () => {
-    const currentVals = getCurrentValues();
-    if (hasConfigType(currentVals)) {
-      return currentVals.accountConfig.configType;
+    if (hasConfigType(values)) {
+      return values.accountConfig.configType;
     } else {
       return null;
     }
-  };
-
-  const save = (data) => {
-    onSave(data);
   };
 
   const beginDelete = () => {
@@ -124,7 +130,7 @@ const AggregatorForm = ({
   };
 
   const getLastMenu = () => {
-    const edit = initialValues && initialValues.id;
+    const edit = initialValues?.id;
 
     return (
       <PaneMenu>
@@ -150,7 +156,6 @@ const AggregatorForm = ({
 
     const startButton = (
       <Button
-        data-test-aggregator-form-cancel-button
         marginBottom0
         id="clickable-close-aggregator"
         buttonStyle="default mega"
@@ -162,7 +167,6 @@ const AggregatorForm = ({
 
     const endButton = (
       <Button
-        data-test-aggregator-form-submit-button
         marginBottom0
         id="clickable-save-aggregator"
         buttonStyle="primary mega"
@@ -193,42 +197,37 @@ const AggregatorForm = ({
 
   const handleRemoveConfigField = (index) => {
     const currentConf = aggregatorConfigFields[index];
-    setAggregatorConfigFields((fileds) => [
-      ...fileds.slice(0, index),
-      ...fileds.slice(index + 1),
+    setAggregatorConfigFields((fields) => [
+      ...fields.slice(0, index),
+      ...fields.slice(index + 1),
     ]);
 
-    stripes.store.dispatch(
-      autofill(
-        'aggregatorForm',
-        `aggregatorConfig.${currentConf.key}`,
-        undefined
-      )
-    );
+    if (currentConf.key) {
+      form.change(`aggregatorConfig.${currentConf.key}`, undefined);
+    }
   };
 
   const handleConfigFieldChange = (fieldName, index, value, fields) => {
-    fields[index][fieldName] = value;
-    return fields;
+    const newFields = [...fields];
+    newFields[index] = { ...newFields[index], [fieldName]: value };
+    return newFields;
   };
 
-  const changeFormValue = (key, value) => {
-    stripes.store.dispatch(change('aggregatorForm', key, value));
-  };
-
-  const updateForm = () => {
-    aggregatorConfigFields.forEach((entry) => {
-      const k = `aggregatorConfig.${entry.key}`;
-      changeFormValue(k, entry.value);
+  useEffect(() => {
+    form.batch(() => {
+      aggregatorConfigFields.forEach((entry) => {
+        if (entry.key) {
+          const k = `aggregatorConfig.${entry.key}`;
+          form.change(k, entry.value);
+        }
+      });
     });
-  };
+  }, [aggregatorConfigFields, form]);
 
   const handleConfigChange = (field, index, e) => {
-    const val = e === undefined ? 'e' : e.target.value;
+    const val = e === undefined ? '' : e.target.value;
     setAggregatorConfigFields((prevFields) => {
-      const newFields = handleConfigFieldChange(field, index, val, prevFields);
-      updateForm();
-      return newFields;
+      return handleConfigFieldChange(field, index, val, prevFields);
     });
   };
 
@@ -247,7 +246,7 @@ const AggregatorForm = ({
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
   };
 
-  const renderFormPaneHeader = () => (
+  const renderPaneHeader = () => (
     <PaneHeader
       firstMenu={getFirstMenu()}
       lastMenu={getLastMenu()}
@@ -261,8 +260,6 @@ const AggregatorForm = ({
   const configType = getSelectedConfigType();
   const configTypeIsMail = configType === 'Mail';
 
-  const configMailValidate = configTypeIsMail ? [mail, required] : [mail];
-
   const confirmationMessage = (
     <FormattedMessage
       id="ui-erm-usage.form.delete.confirm.message"
@@ -274,13 +271,13 @@ const AggregatorForm = ({
     <form
       id="form-aggregator-setting"
       className={css.AggregatorFormRoot}
-      onSubmit={handleSubmit(save)}
+      onSubmit={handleSubmit}
     >
       <Paneset isRoot>
         <Pane
           defaultWidth="100%"
           footer={getPaneFooter()}
-          renderHeader={renderFormPaneHeader}
+          renderHeader={renderPaneHeader}
         >
           <div className={css.AggregatorFormContent}>
             <AccordionSet id="aggregator-form-accordion-set">
@@ -308,7 +305,7 @@ const AggregatorForm = ({
                       fullWidth
                       disabled={disabled}
                       required
-                      validate={[required]}
+                      validate={required}
                     />
                     <Field
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}
@@ -321,7 +318,7 @@ const AggregatorForm = ({
                       dataOptions={aggregators}
                       fullWidth
                       required
-                      validate={[required]}
+                      validate={required}
                     />
                     <Field
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />}
@@ -331,7 +328,7 @@ const AggregatorForm = ({
                       fullWidth
                       disabled={disabled}
                       required
-                      validate={[required]}
+                      validate={required}
                     />
                   </Col>
                 </Row>
@@ -372,7 +369,7 @@ const AggregatorForm = ({
                       fullWidth
                       disabled={disabled}
                       required
-                      validate={[required]}
+                      validate={required}
                     />
                     <Field
                       label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.mail" />}
@@ -382,7 +379,7 @@ const AggregatorForm = ({
                       fullWidth
                       disabled={disabled}
                       required={configTypeIsMail}
-                      validate={configMailValidate}
+                      validate={validateConfigMail}
                     />
                     <DisplayContactsForm />
                   </Col>
@@ -413,16 +410,13 @@ AggregatorForm.propTypes = {
   stripes: PropTypes.shape({
     hasPerm: PropTypes.func.isRequired,
     connect: PropTypes.func.isRequired,
-    store: PropTypes.shape({
-      dispatch: PropTypes.func.isRequired,
-      getState: PropTypes.func.isRequired,
-    }),
   }).isRequired,
   initialValues: PropTypes.object,
   invalid: PropTypes.bool,
   intl: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
-  onSave: PropTypes.func,
+  form: PropTypes.object.isRequired,
+  values: PropTypes.object,
   onCancel: PropTypes.func,
   onRemove: PropTypes.func,
   pristine: PropTypes.bool,
@@ -431,9 +425,12 @@ AggregatorForm.propTypes = {
 };
 
 export default injectIntl(
-  stripesForm({
-    form: 'aggregatorForm',
+  stripesFinalForm({
     navigationCheck: true,
     enableReinitialize: true,
+    subscription: {
+      values: true,
+      invalid: true,
+    },
   })(AggregatorForm)
 );

@@ -1,4 +1,4 @@
-import { FieldArray } from 'redux-form';
+import { FieldArray } from 'react-final-form-arrays';
 import { FormattedMessage } from 'react-intl';
 
 import DisplayContact from './DisplayContact';

@@ -1,45 +1,62 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import { useStripes } from '@folio/stripes/core';
-import { ConfigManager } from '@folio/stripes/smart-components';
+import { StripesContext, useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers';
-import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
 import { MOD_SETTINGS } from '../../util/constants';
 import DisplaySettings from './DisplaySettings';
 
-jest.mock('@folio/stripes/smart-components', () => ({
-  ConfigManager: jest.fn(({ children }) => (
-    <div>
-      ConfigManager
-      {children}
-    </div>
-  )),
-}));
-
-const {
-  SCOPES: { EUSAGE },
-  CONFIG_NAMES: { HIDE_CREDENTIALS },
-} = MOD_SETTINGS;
+const renderDisplaySettings = (stripes, resources) => {
+  if (resources) {
+    stripes.connect =
+      (Component) =>
+        ({ ...props }) => {
+          return <Component {...props} mutator={{}} resources={resources} />;
+        };
+  }
+  return renderWithIntl(
+    <StripesContext.Provider value={stripes}>
+      <MemoryRouter>
+        <DisplaySettings label="Test Label" stripes={stripes} />
+      </MemoryRouter>
+    </StripesContext.Provider>
+  );
+};
 
 describe('DisplaySettings', () => {
+  const stripes = useStripes();
+  const originalConnect = stripes.connect;
+
   beforeEach(() => {
-    renderWithIntl(withReduxForm(<DisplaySettings label="Test Label" stripes={useStripes()} />));
-  });
-  it('should call ConfigManager with correct arguments', () => {
-    expect(ConfigManager).toHaveBeenCalledWith(
-      expect.objectContaining({
-        label: 'Test Label',
-        scope: EUSAGE,
-        configName: HIDE_CREDENTIALS,
-      }),
-      {},
-    );
+    stripes.connect = originalConnect;
   });
 
   it('should render correctly', () => {
-    expect(screen.getByText('ConfigManager')).toBeInTheDocument();
+    renderDisplaySettings(stripes);
+
+    expect(screen.getByRole('heading', { name: 'Test Label' })).toBeInTheDocument();
+
     const checkbox = screen.getByRole('checkbox', { name: 'Hide credentials in detail views' });
     expect(checkbox).toBeInTheDocument();
-    expect(checkbox).toHaveAttribute('name', HIDE_CREDENTIALS);
+    expect(checkbox).toHaveAttribute('name', MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS);
+  });
+
+  it('should display value from resources', () => {
+    const resources = {
+      settings: { records: [{ items: [{ value: 'true' }] }], hasLoaded: true },
+    };
+
+    renderDisplaySettings(stripes, resources);
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Hide credentials in detail views' });
+    expect(checkbox).toBeChecked();
+  });
+
+  it('should display default value when settings are empty', () => {
+    renderDisplaySettings(stripes);
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Hide credentials in detail views' });
+    expect(checkbox).not.toBeChecked();
   });
 });
