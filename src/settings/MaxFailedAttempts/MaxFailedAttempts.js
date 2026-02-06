@@ -7,8 +7,9 @@ import { Col, Row, TextField } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
 import {
+  FORM_TYPE_FINAL_FORM,
   MAX_FAILED_ATTEMPTS,
-  MOD_SETTINGS
+  MOD_SETTINGS,
 } from '../../util/constants';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
@@ -33,7 +34,7 @@ class MaxFailedAttempts extends React.Component {
       >
         <this.configManager
           configName={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
-          formType="final-form"
+          formType={FORM_TYPE_FINAL_FORM}
           getInitialValues={this.getInitialValues}
           label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
           scope={SCOPES.HARVESTER}

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { isEmpty, isNil } from 'lodash';
 
@@ -213,7 +213,7 @@ const AggregatorForm = ({
     return newFields;
   };
 
-  const updateForm = () => {
+  useEffect(() => {
     form.batch(() => {
       aggregatorConfigFields.forEach((entry) => {
         if (entry.key) {
@@ -222,14 +222,12 @@ const AggregatorForm = ({
         }
       });
     });
-  };
+  }, [aggregatorConfigFields, form]);
 
   const handleConfigChange = (field, index, e) => {
     const val = e === undefined ? '' : e.target.value;
     setAggregatorConfigFields((prevFields) => {
-      const newFields = handleConfigFieldChange(field, index, val, prevFields);
-      updateForm();
-      return newFields;
+      return handleConfigFieldChange(field, index, val, prevFields);
     });
   };
 
