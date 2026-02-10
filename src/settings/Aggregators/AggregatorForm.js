@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Field } from 'react-final-form';
-import { useEffect, useState } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { isEmpty, isNil } from 'lodash';
+import arrayMutators from 'final-form-arrays';
+import { isEmpty } from 'lodash';
 
 import {
   Accordion,
@@ -56,31 +57,11 @@ const AggregatorForm = ({
   onRemove,
   pristine,
   submitting,
-  form,
   values,
   aggregators,
 }) => {
   const aggregator = initialValues || {};
 
-  const parseInitialAggConfig = () => {
-    const { aggregatorConfig } = aggregator;
-    if (isNil(aggregatorConfig)) {
-      return [];
-    }
-
-    return Object.keys(aggregatorConfig).map((key) => {
-      const value = aggregatorConfig[key];
-      return {
-        key,
-        value,
-        isInitial: true,
-      };
-    });
-  };
-
-  const initialAggConfig = parseInitialAggConfig();
-
-  const [aggregatorConfigFields, setAggregatorConfigFields] = useState(initialAggConfig);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
     generalSection: true,
@@ -189,46 +170,6 @@ const AggregatorForm = ({
 
   const handleExpandAll = (secs) => {
     setSections(secs);
-  };
-
-  const handleAddConfigField = () => {
-    setAggregatorConfigFields((fields) => fields.concat({}));
-  };
-
-  const handleRemoveConfigField = (index) => {
-    const currentConf = aggregatorConfigFields[index];
-    setAggregatorConfigFields((fields) => [
-      ...fields.slice(0, index),
-      ...fields.slice(index + 1),
-    ]);
-
-    if (currentConf.key) {
-      form.change(`aggregatorConfig.${currentConf.key}`, undefined);
-    }
-  };
-
-  const handleConfigFieldChange = (fieldName, index, value, fields) => {
-    const newFields = [...fields];
-    newFields[index] = { ...newFields[index], [fieldName]: value };
-    return newFields;
-  };
-
-  useEffect(() => {
-    form.batch(() => {
-      aggregatorConfigFields.forEach((entry) => {
-        if (entry.key) {
-          const k = `aggregatorConfig.${entry.key}`;
-          form.change(k, entry.value);
-        }
-      });
-    });
-  }, [aggregatorConfigFields, form]);
-
-  const handleConfigChange = (field, index, e) => {
-    const val = e === undefined ? '' : e.target.value;
-    setAggregatorConfigFields((prevFields) => {
-      return handleConfigFieldChange(field, index, val, prevFields);
-    });
   };
 
   const renderPaneTitle = () => {
@@ -340,13 +281,7 @@ const AggregatorForm = ({
                 onToggle={handleSectionToggle}
                 label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
               >
-                <AggregatorConfigForm
-                  fields={aggregatorConfigFields}
-                  onAddField={handleAddConfigField}
-                  onChange={handleConfigChange}
-                  onRemoveField={handleRemoveConfigField}
-                  stripes={stripes}
-                />
+                <AggregatorConfigForm stripes={stripes} />
               </Accordion>
 
               <Accordion
@@ -381,7 +316,7 @@ const AggregatorForm = ({
                       required={configTypeIsMail}
                       validate={validateConfigMail}
                     />
-                    <DisplayContactsForm />
+                    <DisplayContactsForm stripes={stripes} />
                   </Col>
                 </Row>
               </Accordion>
@@ -415,7 +350,6 @@ AggregatorForm.propTypes = {
   invalid: PropTypes.bool,
   intl: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
-  form: PropTypes.object.isRequired,
   values: PropTypes.object,
   onCancel: PropTypes.func,
   onRemove: PropTypes.func,
@@ -428,9 +362,15 @@ export default injectIntl(
   stripesFinalForm({
     navigationCheck: true,
     enableReinitialize: true,
+    // keepDirtyOnReinitialize: true,
+    mutators: {
+      ...arrayMutators
+    },
     subscription: {
       values: true,
       invalid: true,
+      // pristine: true,
+      // submitting: true,
     },
   })(AggregatorForm)
 );
