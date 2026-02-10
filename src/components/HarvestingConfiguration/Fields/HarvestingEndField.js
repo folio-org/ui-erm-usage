@@ -8,7 +8,6 @@ const HarvestingEndField = () => {
   return (
     <Monthpicker
       backendDateFormat="YYYY-MM"
-      id="input-harvestingEnd"
       name="harvestingConfig.harvestingEnd"
       textLabel={intl.formatMessage({ id: 'ui-erm-usage.udpHarvestingConfig.harvestingEnd' })}
     />

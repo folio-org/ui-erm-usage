@@ -9,7 +9,6 @@ const HarvestingStartField = ({ isRequired }) => {
   return (
     <Monthpicker
       backendDateFormat="YYYY-MM"
-      id="input-harvestingStart"
       isRequired={isRequired}
       name="harvestingConfig.harvestingStart"
       textLabel={intl.formatMessage({ id: 'ui-erm-usage.udpHarvestingConfig.harvestingStart' })}
