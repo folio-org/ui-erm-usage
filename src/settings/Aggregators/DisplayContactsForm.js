@@ -37,7 +37,7 @@ const DisplayContactsForm = ({ stripes }) => {
           }}
           renderField={(field, index) => (
             <Row>
-              <Col xs={8}>
+              <Col xs={10}>
                 <Field
                   name={`accountConfig.displayContact[${index}]`}
                 >
