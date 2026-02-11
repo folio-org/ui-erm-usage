@@ -90,9 +90,9 @@
           "ermusageharvester.impl.get",
           "mod-settings.entries.collection.get",
           "mod-settings.global.read.mod-erm-usage-harvester.manage",
-          "mod-settings.global.read.stripes-core.prefs.manage",
           "mod-settings.global.read.ui-erm-usage.manage",
           "mod-settings.global.read.ui-tags.tags.manage",
+          "stripes-core.settings.read",
           "tags.collection.get"
         ],
         "visible": false
@@ -105,7 +105,7 @@
           "mod-settings.entries.collection.get",
           "mod-settings.global.read.mod-erm-usage-harvester.manage",
           "mod-settings.global.read.ui-erm-usage.manage",
-          "mod-settings.global.read.stripes-core.prefs.manage"
+          "stripes-core.settings.read"
         ],
         "visible": false
       },
