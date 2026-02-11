@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within, waitFor } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 
@@ -79,6 +79,53 @@ describe('AggregatorForm', () => {
     const trashBtn = screen.getByRole('button', { name: 'Delete this item' });
     await userEvent.click(trashBtn);
     expect(screen.queryByText('Key')).not.toBeInTheDocument();
+  });
+});
+
+describe('Edit Aggregator', () => {
+  let stripes;
+
+  beforeEach(async () => {
+    stripes = useStripes();
+    renderAggregratorForm(stripes, aggregator);
+  });
+
+  test('adding "config parameter" enables save button, removing "config parameter" disables save button', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
+
+    const addConfigBtn = screen.getByRole('button', { name: 'Add config parameter' });
+    await userEvent.click(addConfigBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeEnabled();
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: 'Delete this item' });
+    await userEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
+  });
+
+  test('adding "contact" enables save button, removing "contact" disables save button', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
+
+    const addContactBtn = screen.getByRole('button', { name: /Add contact/i });
+    await userEvent.click(addContactBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeEnabled();
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: 'Delete this item' });
+    await userEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
   });
 });
 

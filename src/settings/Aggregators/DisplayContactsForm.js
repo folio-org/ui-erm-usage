@@ -25,9 +25,9 @@ const DisplayContactsForm = ({ stripes }) => {
           fields={fields.value || []}
           id="display_contacts"
           onAdd={() => fields.push('')}
-          // onRemove={(index) => fields.remove(index)}
           onRemove={(index) => {
             fields.remove(index);
+            // Ensure that if the last item is removed, the field is set to an empty array instead of undefined
             setTimeout(() => {
               const currentValue = form.getState().values?.accountConfig?.displayContact;
               if (currentValue === undefined || (Array.isArray(currentValue) && currentValue.length === 0)) {
@@ -46,7 +46,7 @@ const DisplayContactsForm = ({ stripes }) => {
                       {...input}
                       label={intl.formatMessage(
                         { id: 'ui-erm-usage.aggregator.config.accountConfig.contact.number' },
-                        { number: parseInt(index + 1, 10) }
+                        { number: Number.parseInt(index + 1, 10) }
                       )}
                       id={`aggregator-conf-input-value-${index}`}
                       disabled={disabled}

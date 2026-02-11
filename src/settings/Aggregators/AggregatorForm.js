@@ -362,15 +362,12 @@ export default injectIntl(
   stripesFinalForm({
     navigationCheck: true,
     enableReinitialize: true,
-    // keepDirtyOnReinitialize: true,
     mutators: {
       ...arrayMutators
     },
     subscription: {
       values: true,
       invalid: true,
-      // pristine: true,
-      // submitting: true,
     },
   })(AggregatorForm)
 );
