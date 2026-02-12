@@ -44,9 +44,9 @@ const AggregatorDetails = ({
   };
 
   const renderContact = (aggregator) => {
-    if (aggregator.accountConfig && aggregator.accountConfig.displayContact) {
-      return aggregator.accountConfig.displayContact.map((item, i) => (
-        <p key={i}>{item}</p>
+    if (aggregator?.accountConfig?.displayContact) {
+      return aggregator.accountConfig.displayContact.map((item) => (
+        <p key={item}>{item}</p>
       ));
     } else {
       return null;
@@ -71,8 +71,6 @@ const AggregatorDetails = ({
 
   const settings = resources?.settings?.records || [];
   const hideValues = settings[0]?.value === true;
-
-  const config = aggregator.aggregatorConfig;
 
   const displayWhenOpenAccountConfAcc = (
     <DownloadCredentialsButton
@@ -125,7 +123,7 @@ const AggregatorDetails = ({
           <Row>
             <Col xs={8}>
               <AggregatorConfigView
-                aggregatorConfig={config}
+                aggregatorConfig={aggregator.aggregatorConfigFields}
                 hideValues={hideValues}
               />
             </Col>
