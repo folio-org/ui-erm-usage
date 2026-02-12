@@ -1,10 +1,54 @@
 import PropTypes from 'prop-types';
-import { sortBy } from 'lodash';
+import { sortBy, isNil, isEmpty } from 'lodash';
 
 import { EntryManager } from '@folio/stripes/smart-components';
 
 import AggregatorDetails from './AggregatorDetails';
 import AggregatorForm from './AggregatorForm';
+
+const parseInitialValues = (aggregator) => {
+  if (!aggregator) return aggregator;
+
+  const { aggregatorConfig } = aggregator;
+
+  // Transform aggregatorConfig from object to array
+  let aggregatorConfigArray = [];
+  if (!isNil(aggregatorConfig) && !isEmpty(aggregatorConfig)) {
+    aggregatorConfigArray = Object.keys(aggregatorConfig).map((key) => ({
+      key,
+      value: aggregatorConfig[key],
+      isInitial: true,
+    }));
+  }
+
+  return {
+    ...aggregator,
+    aggregatorConfig: aggregatorConfigArray,
+    accountConfig: {
+      ...aggregator.accountConfig,
+      displayContact: aggregator.accountConfig?.displayContact || []
+    }
+  };
+};
+
+const onBeforeSave = (formData) => {
+  const { aggregatorConfig, ...rest } = formData;
+
+  // Transform aggregatorConfig from array to object
+  const aggregatorConfigObj = {};
+  if (aggregatorConfig && Array.isArray(aggregatorConfig)) {
+    aggregatorConfig.forEach(field => {
+      if (field.key && field.key.trim() !== '') {
+        aggregatorConfigObj[field.key] = field.value || '';
+      }
+    });
+  }
+
+  return {
+    ...rest,
+    aggregatorConfig: aggregatorConfigObj
+  };
+};
 
 const AggregatorManager = ({
   label,
@@ -13,7 +57,6 @@ const AggregatorManager = ({
   stripes,
 }) => {
   const entryList = sortBy(resources?.entries?.records || [], ['label']);
-
   const records = resources.aggregatorImpls?.records ?? [];
   const implementations = records.length ? records[0].implementations : [];
   const serviceTypes = implementations.map(i => ({
@@ -39,6 +82,8 @@ const AggregatorManager = ({
           post: 'ui-erm-usage.generalSettings.manage',
           delete: 'ui-erm-usage.generalSettings.manage'
         }}
+        parseInitialValues={parseInitialValues}
+        onBeforeSave={onBeforeSave}
         aggregators={serviceTypes}
         stripes={stripes}
       />

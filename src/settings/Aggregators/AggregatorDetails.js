@@ -17,7 +17,6 @@ import {
 import { MOD_SETTINGS } from '../../util/constants';
 import DownloadCredentialsButton from './DownloadCredentialsButton';
 import { AggregatorConfigView } from './AggregatorConfig';
-
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 
 const AggregatorDetails = ({
@@ -123,7 +122,7 @@ const AggregatorDetails = ({
           <Row>
             <Col xs={8}>
               <AggregatorConfigView
-                aggregatorConfig={aggregator.aggregatorConfigFields}
+                aggregatorConfig={aggregator.aggregatorConfig}
                 hideValues={hideValues}
               />
             </Col>

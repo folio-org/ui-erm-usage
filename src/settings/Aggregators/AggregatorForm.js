@@ -368,6 +368,8 @@ export default injectIntl(
     subscription: {
       values: true,
       invalid: true,
+      pristine: true,
+      submitting: true,
     },
   })(AggregatorForm)
 );

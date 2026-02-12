@@ -13,9 +13,7 @@ const AggregatorConfigView = ({ aggregatorConfig, hideValues }) => {
     return null;
   }
 
-  return aggregatorConfig.map(({ key, value }) => (
-    renderKeyValue(key, value, hideValues)
-  ));
+  return Object.entries(aggregatorConfig).map(([key, value]) => renderKeyValue(key, value, hideValues));
 };
 
 AggregatorConfigView.propTypes = {
