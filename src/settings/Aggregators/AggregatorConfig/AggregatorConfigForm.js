@@ -10,6 +10,8 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
+import { required } from '../../../util/validate';
+
 function AggregatorConfigForm({ stripes }) {
   const intl = useIntl();
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
@@ -38,14 +40,17 @@ function AggregatorConfigForm({ stripes }) {
                     <Col xs={6}>
                       <Field
                         name={`aggregatorConfigFields[${index}].key`}
+                        validate={required}
                       >
-                        {({ input }) => (
+                        {({ input, meta }) => (
                           <TextField
                             {...input}
                             autoFocus
                             label="Key"
                             id={`aggregator-conf-input-key-${index}`}
                             disabled={field.isInitial || disabled}
+                            error={meta.touched && meta.error}
+                            required
                           />
                         )}
                       </Field>
@@ -53,13 +58,16 @@ function AggregatorConfigForm({ stripes }) {
                     <Col xs={6}>
                       <Field
                         name={`aggregatorConfigFields[${index}].value`}
+                        validate={required}
                       >
-                        {({ input }) => (
+                        {({ input, meta }) => (
                           <TextField
                             {...input}
                             label="Value"
                             id={`aggregator-conf-input-value-${index}`}
                             disabled={disabled}
+                            error={meta.touched && meta.error}
+                            required
                           />
                         )}
                       </Field>

@@ -69,10 +69,10 @@ describe('AggregatorForm', () => {
     const addBtn = screen.getByRole('button', { name: 'Add config parameter' });
     await userEvent.click(addBtn);
 
-    const keyField = screen.getByLabelText('Key');
+    const keyField = screen.getByLabelText(/Key/);
     await userEvent.type(keyField, 'key');
 
-    const valueField = screen.getByLabelText('Value');
+    const valueField = screen.getByLabelText(/Value/);
     await userEvent.type(valueField, 'val');
     expect(screen.getByText('Key')).toBeInTheDocument();
 
@@ -90,12 +90,22 @@ describe('Edit Aggregator', () => {
     renderAggregratorForm(stripes, aggregator);
   });
 
-  test('adding "config parameter" enables save button, removing "config parameter" disables save button', async () => {
+  test('adding "config parameter" and entering values enables save button, removing "config parameter" disables save button', async () => {
     const saveButton = screen.getByRole('button', { name: 'Save & close' });
     expect(saveButton).toBeDisabled();
 
     const addConfigBtn = screen.getByRole('button', { name: 'Add config parameter' });
     await userEvent.click(addConfigBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
+
+    const keyField = screen.getByLabelText(/Key/);
+    await userEvent.type(keyField, 'key');
+
+    const valueField = screen.getByLabelText(/Value/);
+    await userEvent.type(valueField, 'val');
 
     await waitFor(() => {
       expect(saveButton).toBeEnabled();
