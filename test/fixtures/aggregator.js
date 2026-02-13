@@ -7,7 +7,12 @@ const aggregator = {
     configType: 'API',
     displayContact: [],
   },
-  aggregatorConfig: {},
+  aggregatorConfig: {
+    reportRelease: '4',
+    apiKey: 'xxx',
+    requestorId: 'xxx',
+    customerId: 'xxx',
+  },
 };
 
 export default aggregator;
