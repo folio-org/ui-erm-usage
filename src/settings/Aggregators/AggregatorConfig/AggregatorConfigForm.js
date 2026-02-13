@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import { FieldArray } from 'react-final-form-arrays';
-import { Field, useForm } from 'react-final-form';
+import { Field } from 'react-final-form';
 import {
   Col,
   InfoPopover,
@@ -15,7 +15,6 @@ import { required } from '../../../util/validate';
 function AggregatorConfigForm({ stripes }) {
   const intl = useIntl();
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
-  const form = useForm();
 
   return (
     <FieldArray name="aggregatorConfig">
@@ -35,15 +34,7 @@ function AggregatorConfigForm({ stripes }) {
                 })}
                 fields={fields.value || []}
                 onAdd={() => fields.push({ key: '', value: '', isInitial: false })}
-                onRemove={(index) => {
-                  fields.remove(index);
-                  setTimeout(() => {
-                    const currentValue = form.getState().values?.aggregatorConfig;
-                    if (currentValue === undefined || (Array.isArray(currentValue) && currentValue.length === 0)) {
-                      form.change('aggregatorConfig', []);
-                    }
-                  }, 0);
-                }}
+                onRemove={(index) => fields.remove(index)}
                 renderField={(field, index) => (
                   <Row>
                     <Col xs={6}>

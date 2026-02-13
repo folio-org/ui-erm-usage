@@ -23,10 +23,12 @@ const parseInitialValues = (aggregator) => {
 
   return {
     ...aggregator,
-    aggregatorConfig: aggregatorConfigArray,
+    aggregatorConfig: aggregatorConfigArray.length > 0 ? aggregatorConfigArray : undefined,
     accountConfig: {
       ...aggregator.accountConfig,
-      displayContact: aggregator.accountConfig?.displayContact || []
+      displayContact: aggregator.accountConfig?.displayContact?.length > 0
+        ? aggregator.accountConfig.displayContact
+        : undefined
     }
   };
 };

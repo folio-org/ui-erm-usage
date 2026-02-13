@@ -5,9 +5,9 @@ const aggregator = {
   serviceUrl: 'http://aggregagtor.de',
   accountConfig: {
     configType: 'API',
-    displayContact: [],
+    displayContact: undefined,
   },
-  aggregatorConfig: [],
+  aggregatorConfig: undefined,
 };
 
 export default aggregator;
