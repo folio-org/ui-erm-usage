@@ -6,7 +6,7 @@ import { StripesContext, useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
-import aggregator from '../../../test/fixtures/aggregator';
+import aggregatorTransformed from '../../../test/fixtures/aggregatorTransformed';
 import '../../../test/jest/__mock__';
 
 const aggregators = [
@@ -87,7 +87,7 @@ describe('Edit Aggregator', () => {
 
   beforeEach(async () => {
     stripes = useStripes();
-    renderAggregratorForm(stripes, aggregator);
+    renderAggregratorForm(stripes, aggregatorTransformed);
   });
 
   test('adding "config parameter" and entering values enables save button, removing "config parameter" disables save button', async () => {
@@ -144,7 +144,7 @@ describe('Delete Aggregator', () => {
 
   beforeEach(async () => {
     stripes = useStripes();
-    renderAggregratorForm(stripes, aggregator);
+    renderAggregratorForm(stripes, aggregatorTransformed);
 
     const deleteBtn = screen.getByRole('button', { name: 'Delete' });
     await userEvent.click(deleteBtn);

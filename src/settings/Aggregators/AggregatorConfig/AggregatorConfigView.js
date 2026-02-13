@@ -17,12 +17,7 @@ const AggregatorConfigView = ({ aggregatorConfig, hideValues }) => {
 };
 
 AggregatorConfigView.propTypes = {
-  aggregatorConfig: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })
-  ),
+  aggregatorConfig: PropTypes.object,
   hideValues: PropTypes.bool,
 };
 

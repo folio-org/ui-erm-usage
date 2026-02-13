@@ -1,13 +1,13 @@
-const aggregator = {
+const aggregatorTransformed = {
   id: 'b02d9da7-631d-4252-81c0-52d2a048bb4e',
   label: 'Aggregator Test',
   serviceType: 'NSS',
   serviceUrl: 'http://aggregagtor.de',
   accountConfig: {
     configType: 'API',
-    displayContact: [],
+    displayContact: undefined,
   },
-  aggregatorConfig: {},
+  aggregatorConfig: undefined,
 };
 
-export default aggregator;
+export default aggregatorTransformed;
