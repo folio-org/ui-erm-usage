@@ -32,6 +32,7 @@
 * Improve priority of ReportInfoButton icons ([UIEUS-492](https://folio-org.atlassian.net/browse/UIEUS-492))
 * Move Monthpicker to stripes-leipzig-components ([UIEUS-473](https://folio-org.atlassian.net/browse/UIEUS-473))
 * Adapt global permissions in package.json base permissions ([UIEUS-474](https://folio-org.atlassian.net/browse/UIEUS-474))
+* Migrate redux-form to react-final-form ([UIEUS-487](https://folio-org.atlassian.net/browse/UIEUS-487))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

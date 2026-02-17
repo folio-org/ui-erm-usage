@@ -1,23 +1,61 @@
-import { FieldArray } from 'redux-form';
-import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import { useIntl } from 'react-intl';
+import { FieldArray } from 'react-final-form-arrays';
+import { Field } from 'react-final-form';
 
-import DisplayContact from './DisplayContact';
-import formCss from '../../util/sharedStyles/form.css';
+import {
+  Col,
+  RepeatableField,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
 
-const DisplayContactsForm = () => {
+const DisplayContactsForm = ({ stripes }) => {
+  const intl = useIntl();
+  const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
+
   return (
-    <>
-      <div className={formCss.label}>
-        <FormattedMessage id="ui-erm-usage.aggregator.config.contacts" />
-      </div>
-      <FieldArray
-        component={DisplayContact}
-        name="accountConfig.displayContact"
-        label="Displaycontact"
-        id="display_contacts"
-      />
-    </>
+    <FieldArray name="accountConfig.displayContact">
+      {({ fields }) => (
+        <RepeatableField
+          addLabel={intl.formatMessage({
+            id: 'ui-erm-usage.aggregator.config.addContact',
+          })}
+          fields={fields.value || []}
+          id="display_contacts"
+          onAdd={() => fields.push('')}
+          onRemove={(index) => fields.remove(index)}
+          renderField={(field, index) => (
+            <Row>
+              <Col xs={10}>
+                <Field
+                  name={`accountConfig.displayContact[${index}]`}
+                >
+                  {({ input }) => (
+                    <TextField
+                      {...input}
+                      label={intl.formatMessage(
+                        { id: 'ui-erm-usage.aggregator.config.accountConfig.contact.number' },
+                        { number: Number.parseInt(index + 1, 10) }
+                      )}
+                      id={`aggregator-conf-input-value-${index}`}
+                      disabled={disabled}
+                    />
+                  )}
+                </Field>
+              </Col>
+            </Row>
+          )}
+        />
+      )}
+    </FieldArray>
   );
+};
+
+DisplayContactsForm.propTypes = {
+  stripes: PropTypes.shape({
+    hasPerm: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default DisplayContactsForm;

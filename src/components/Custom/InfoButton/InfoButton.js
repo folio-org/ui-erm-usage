@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { isNil } from 'lodash';
 import { useState } from 'react';
-import { SubmissionError } from 'redux-form';
 import { FormattedMessage } from 'react-intl';
 
 import { stripesConnect } from '@folio/stripes/core';
@@ -34,10 +33,7 @@ function InfoButton(props) {
     })
       .then((response) => {
         if (response.status >= 400) {
-          throw new SubmissionError({
-            identifier: `Error ${response.status} deleting file`,
-            _error: 'Fetch file failed',
-          });
+          throw new Error(`Error ${response.status} deleting file: Fetch file failed`);
         } else {
           doDeleteReport();
         }

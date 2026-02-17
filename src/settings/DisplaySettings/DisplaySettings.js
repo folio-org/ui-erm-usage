@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Field } from 'redux-form';
+import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
-import { MOD_SETTINGS } from '../../util/constants';
+import { MOD_SETTINGS, FORM_TYPE_FINAL_FORM } from '../../util/constants';
 
 const { SCOPES, CONFIG_NAMES: { HIDE_CREDENTIALS } } = MOD_SETTINGS;
 
@@ -31,9 +31,10 @@ class DisplaySettings extends React.Component {
     const { label } = this.props;
     return (
       <this.configManager
+        configName={HIDE_CREDENTIALS}
+        formType={FORM_TYPE_FINAL_FORM}
         label={label}
         scope={SCOPES.EUSAGE}
-        configName={HIDE_CREDENTIALS}
       >
         <Row>
           <Col xs={12}>

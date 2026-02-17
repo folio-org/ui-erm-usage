@@ -1,13 +1,12 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
+import { screen, within, waitFor } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { StripesContext, useStripes } from '@folio/stripes/core';
 
-import { withReduxForm } from '../../../test/jest/helpers/withReduxForm';
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
-import aggregator from '../../../test/fixtures/aggregator';
+import aggregatorTransformed from '../../../test/fixtures/aggregatorTransformed';
 import '../../../test/jest/__mock__';
 
 const aggregators = [
@@ -19,28 +18,30 @@ const aggregators = [
 
 const onSubmit = jest.fn();
 const onRemove = jest.fn();
+const onCancel = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
-  return renderWithIntl(withReduxForm(
+  return renderWithIntl(
     <MemoryRouter>
       <StripesContext.Provider value={stripes}>
         <AggregatorForm
           aggregators={aggregators}
-          onSave={onSubmit}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
           initialValues={initialValues}
           onRemove={onRemove}
           stripes={stripes}
         />
       </StripesContext.Provider>
     </MemoryRouter>
-  ));
+  );
 };
 
 describe('AggregatorForm', () => {
   let stripes;
 
   beforeEach(() => {
-    onSubmit.mockClear();
+    jest.clearAllMocks();
     stripes = useStripes();
     renderAggregratorForm(stripes);
   });
@@ -68,10 +69,10 @@ describe('AggregatorForm', () => {
     const addBtn = screen.getByRole('button', { name: 'Add config parameter' });
     await userEvent.click(addBtn);
 
-    const keyField = screen.getByLabelText('Key');
+    const keyField = screen.getByLabelText(/Key/);
     await userEvent.type(keyField, 'key');
 
-    const valueField = screen.getByLabelText('Value');
+    const valueField = screen.getByLabelText(/Value/);
     await userEvent.type(valueField, 'val');
     expect(screen.getByText('Key')).toBeInTheDocument();
 
@@ -81,12 +82,69 @@ describe('AggregatorForm', () => {
   });
 });
 
+describe('Edit Aggregator', () => {
+  let stripes;
+
+  beforeEach(async () => {
+    stripes = useStripes();
+    renderAggregratorForm(stripes, aggregatorTransformed);
+  });
+
+  test('adding "config parameter" and entering values enables save button, removing "config parameter" disables save button', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
+
+    const addConfigBtn = screen.getByRole('button', { name: 'Add config parameter' });
+    await userEvent.click(addConfigBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
+
+    const keyField = screen.getByLabelText(/Key/);
+    await userEvent.type(keyField, 'key');
+
+    const valueField = screen.getByLabelText(/Value/);
+    await userEvent.type(valueField, 'val');
+
+    await waitFor(() => {
+      expect(saveButton).toBeEnabled();
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: 'Delete this item' });
+    await userEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
+  });
+
+  test('adding "contact" enables save button, removing "contact" disables save button', async () => {
+    const saveButton = screen.getByRole('button', { name: 'Save & close' });
+    expect(saveButton).toBeDisabled();
+
+    const addContactBtn = screen.getByRole('button', { name: /Add contact/i });
+    await userEvent.click(addContactBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeEnabled();
+    });
+
+    const deleteBtn = screen.getByRole('button', { name: 'Delete this item' });
+    await userEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(saveButton).toBeDisabled();
+    });
+  });
+});
+
 describe('Delete Aggregator', () => {
   let stripes;
 
   beforeEach(async () => {
     stripes = useStripes();
-    renderAggregratorForm(stripes, aggregator);
+    renderAggregratorForm(stripes, aggregatorTransformed);
 
     const deleteBtn = screen.getByRole('button', { name: 'Delete' });
     await userEvent.click(deleteBtn);
