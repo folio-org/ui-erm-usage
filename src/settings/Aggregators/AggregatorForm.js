@@ -65,8 +65,8 @@ const AggregatorForm = ({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
     generalSection: true,
-    accountConfig: true,
     aggregatorConfig: true,
+    accountConfig: true,
   });
 
   const hasConfigType = (val) => {
@@ -277,7 +277,7 @@ const AggregatorForm = ({
 
               <Accordion
                 open={sections.aggregatorConfig}
-                id="aggregatorConfig-form"
+                id="aggregatorConfig"
                 onToggle={handleSectionToggle}
                 label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
               >
@@ -286,7 +286,7 @@ const AggregatorForm = ({
 
               <Accordion
                 open={sections.accountConfig}
-                id="accountConfig-form"
+                id="accountConfig"
                 onToggle={handleSectionToggle}
                 label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
               >
