@@ -36,11 +36,11 @@ const stubHarvesterImpls = [
   },
   {
     value: 'cs50',
-    label: 'Counter Sushi 5.0',
+    label: 'Counter 5.0',
   },
   {
     value: 'cs51',
-    label: 'Counter Sushi 5.1',
+    label: 'Counter 5.1',
   },
 ];
 

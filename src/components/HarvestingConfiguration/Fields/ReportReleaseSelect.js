@@ -11,11 +11,11 @@ const ReportReleaseSelect = (props) => {
   return (
     <Field
       component={Select}
+      data={props.required ? 1 : 0}
       dataOptions={reportReleaseOptions}
-      initialValue="5.1"
       fullWidth
       id={props.id}
-      data={props.required ? 1 : 0}
+      initialValue="5.1"
       label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
       name="harvestingConfig.reportRelease"
       onChange={props.onChange}

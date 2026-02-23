@@ -27,12 +27,12 @@ const VendorInfoForm = ({
         <Col xs={4}>
           <Field
             component={Select}
+            data={!disabled && isRequired ? 1 : 0}
             dataOptions={harvesterImpls}
             disabled={disabled}
             fullWidth
             id="addudp_servicetype"
             initialValue="cs51"
-            data={!disabled && isRequired ? 1 : 0}
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
             name="harvestingConfig.sushiConfig.serviceType"
             required={!disabled && isRequired}
