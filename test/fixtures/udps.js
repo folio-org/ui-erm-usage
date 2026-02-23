@@ -38,7 +38,6 @@ const udps = [
     harvestingConfig: {
       harvestingStatus: 'active',
     },
-    reportReleases: ['5.1'],
   }
 ];
 

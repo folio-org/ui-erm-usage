@@ -103,9 +103,14 @@ const UDPs = ({
       <NoValue />;
   };
 
+  const getReportReleases = (udp) => {
+    if (!udp.reportReleases?.length) return <NoValue />;
+    return udp.reportReleases.join(', ');
+  };
+
   const formatter = {
     label: (udp) => udp.label,
-    reportReleases: (udp) => udp.reportReleases.join(', ') ?? '',
+    reportReleases: (udp) => getReportReleases(udp),
     harvestingStatus: (udp) => (
       <FormattedMessage id={`ui-erm-usage.general.status.${udp.harvestingConfig.harvestingStatus}`} />
     ),
