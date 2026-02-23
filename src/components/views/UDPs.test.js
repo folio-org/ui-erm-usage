@@ -39,7 +39,7 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
           queryGetter={jest.fn()}
           querySetter={jest.fn()}
           searchString="status.active"
-          visibleColumns={['label', 'harvestingStatus', 'Latest statistics', 'aggregator']}
+          visibleColumns={['label', 'reportReleases', 'harvestingStatus', 'Latest statistics', 'aggregator']}
           history={history}
           onSearchComplete={onSearchComplete}
           location={{ pathname: '', search: '' }}
@@ -98,6 +98,7 @@ describe('rerender result list', () => {
 
       expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
       expect(screen.getByText('American Chemical Society')).toBeInTheDocument();
+      expect(screen.getByText('5.0, 4')).toBeInTheDocument();
       expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
 
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
@@ -227,6 +228,7 @@ describe('UDPs SASQ View', () => {
       expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
       expect(screen.getByText('Latest statistics')).toBeInTheDocument();
       expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
+      expect(document.querySelector('#clickable-list-column-reportreleases')).toBeInTheDocument();
     });
   });
 });

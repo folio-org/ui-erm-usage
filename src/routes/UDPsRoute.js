@@ -31,6 +31,7 @@ class UDPsRoute extends React.Component {
             '(keywords all "%{query.query}*")',
             {
               label: 'label',
+              reportReleases: 'reportReleases',
               harvestingStatus: 'harvestingConfig.harvestingStatus',
               latestStats: 'latestReport',
               aggregator: 'harvestingConfig.aggregator.name'

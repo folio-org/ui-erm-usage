@@ -43,7 +43,7 @@ const UDPs = ({
   selectedRecordId,
   source,
   syncToLocationSearch = true,
-  visibleColumns = ['label', 'harvestingStatus', 'latestStats', 'aggregator'],
+  visibleColumns = ['label', 'reportReleases', 'harvestingStatus', 'latestStats', 'aggregator'],
 }) => {
   const resultsPaneTitleRef = useRef();
 
@@ -83,6 +83,7 @@ const UDPs = ({
 
   const columnMapping = {
     label: <FormattedMessage id="ui-erm-usage.information.providerName" />,
+    reportReleases: <FormattedMessage id="ui-erm-usage.general.reportReleases" />,
     harvestingStatus: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
     latestStats: <FormattedMessage id="ui-erm-usage.information.latestStatistics" />,
     aggregator: <FormattedMessage id="ui-erm-usage.information.aggregator" />,
@@ -90,6 +91,7 @@ const UDPs = ({
 
   const columnWidths = {
     label: 300,
+    reportReleases: 150,
     harvestingStatus: 150,
     latestStats: 150,
     aggregator: 200,
@@ -101,12 +103,16 @@ const UDPs = ({
       <NoValue />;
   };
 
+  const getReportReleases = (udp) => {
+    if (!udp.reportReleases?.length) return <NoValue />;
+    return udp.reportReleases.join(', ');
+  };
+
   const formatter = {
     label: (udp) => udp.label,
+    reportReleases: (udp) => getReportReleases(udp),
     harvestingStatus: (udp) => (
-      <FormattedMessage
-        id={`ui-erm-usage.general.status.${udp.harvestingConfig.harvestingStatus}`}
-      />
+      <FormattedMessage id={`ui-erm-usage.general.status.${udp.harvestingConfig.harvestingStatus}`} />
     ),
     latestStats: (udp) => udp.latestReport,
     aggregator: (udp) => getAggregatorName(udp),
