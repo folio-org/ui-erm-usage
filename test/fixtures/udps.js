@@ -26,6 +26,7 @@ const udps = [
     earliestReport: '2018-01',
     hasFailedReport: 'no',
     reportErrorCodes: [],
+    reportReleases: ['5.0', '4'],
     reportTypes: ['JR1'],
     notes:
       'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
@@ -37,6 +38,7 @@ const udps = [
     harvestingConfig: {
       harvestingStatus: 'active',
     },
+    reportReleases: ['5.1'],
   }
 ];
 
