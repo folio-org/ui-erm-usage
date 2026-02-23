@@ -228,6 +228,7 @@ describe('UDPs SASQ View', () => {
       expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
       expect(screen.getByText('Latest statistics')).toBeInTheDocument();
       expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
+      expect(document.querySelector('#clickable-list-column-reportreleases')).toBeInTheDocument();
     });
   });
 });
