@@ -29,7 +29,6 @@ const VendorInfoForm = ({
             component={Select}
             data={!disabled && isRequired ? 1 : 0}
             dataOptions={harvesterImpls}
-            defaultValue="cs51"
             disabled={disabled}
             fullWidth
             id="addudp_servicetype"

@@ -69,12 +69,17 @@ const initialUdp = {
     'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
 };
 
+const initialValues = {
+  status: 'active',
+  harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5.1', sushiConfig: { serviceType: 'cs51' } }
+};
+
 const onDelete = jest.fn();
 const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
 
-const renderUDPForm = (stripes, udp = {}) => {
+const renderUDPForm = (stripes, udp = initialValues) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -220,17 +225,17 @@ describe('UDPForm', () => {
     });
 
     test('harvesting start valid format', async () => {
-      const startInput = screen.getByLabelText('Harvesting start');
+      const startInput = screen.getByLabelText(/Harvesting start/i);
       await userEvent.type(startInput, '01/2020');
       await userEvent.tab();
       expect(screen.queryByText('Date invalid', { exact: false })).not.toBeInTheDocument();
     });
 
     test('harvesting start > end is invalid', async () => {
-      const startInput = screen.getByLabelText('Harvesting start');
+      const startInput = screen.getByLabelText(/Harvesting start/i);
       await userEvent.type(startInput, '02/2020');
 
-      const endInput = screen.getByLabelText('Harvesting end');
+      const endInput = screen.getByLabelText(/Harvesting end/i);
       await userEvent.type(endInput, '01/2020');
       await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
       expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();

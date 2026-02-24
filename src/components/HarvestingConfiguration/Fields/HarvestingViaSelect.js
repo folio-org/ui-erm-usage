@@ -12,7 +12,6 @@ const HarvestingViaSelect = (props) => {
     <Field
       component={Select}
       dataOptions={harvestingViaOptions}
-      defaultValue="sushi"
       fullWidth
       id="harvestingConfig.harvestVia"
       data={props.required ? 1 : 0}
