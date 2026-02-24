@@ -54,7 +54,7 @@ const UDPCreateRoute = ({
       initialValues={
         {
           status: 'active',
-          harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5', sushiConfig: { serviceType: 'cs50' } }
+          harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5.1', sushiConfig: { serviceType: 'cs51' } }
         }
       }
       isLoading={fetchIsPending()}

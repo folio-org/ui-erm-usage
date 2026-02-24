@@ -36,7 +36,11 @@ const stubHarvesterImpls = [
   },
   {
     value: 'cs50',
-    label: 'Counter Sushi 5.0',
+    label: 'Counter 5.0',
+  },
+  {
+    value: 'cs51',
+    label: 'Counter 5.1',
   },
 ];
 
@@ -114,6 +118,25 @@ describe('UDPForm', () => {
   test('should render form', async () => {
     renderUDPForm(stripes);
     expect(screen.getByText('Harvesting status')).toBeVisible();
+  });
+
+  describe('test create new UDP', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      renderUDPForm(stripes);
+    });
+
+    test('check initial values', async () => {
+      const providerStatusCombobox = screen.getByRole('combobox', { name: 'Provider status' });
+      const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
+      const serviceTypeCombobox = screen.getByRole('combobox', { name: 'Service type' });
+      const reportReleaseCombobox = screen.getByRole('combobox', { name: 'Report release' });
+
+      expect(providerStatusCombobox).toHaveValue('active');
+      expect(harvestingStatusCombobox).toHaveValue('active');
+      expect(serviceTypeCombobox).toHaveValue('cs51');
+      expect(reportReleaseCombobox).toHaveValue('5.1');
+    });
   });
 
   describe('test harvestVia options', () => {

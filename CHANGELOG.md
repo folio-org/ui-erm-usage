@@ -35,6 +35,7 @@
 * Migrate redux-form to react-final-form ([UIEUS-487](https://folio-org.atlassian.net/browse/UIEUS-487))
 * Accordions cannot be expanded or collapsed in the settings for aggregators ([UIEUS-496](https://folio-org.atlassian.net/browse/UIEUS-496))
 * Additional column for report releases in the provider list ([UIEUS-493](https://folio-org.atlassian.net/browse/UIEUS-493))
+* Change default value of Service type and Report release to Counter 5.1 ([UIEUS-500](https://folio-org.atlassian.net/browse/UIEUS-500))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
