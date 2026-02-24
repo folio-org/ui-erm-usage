@@ -323,7 +323,7 @@
     "counter.upload.error.UNSUPPORTED_REPORT_RELEASE": "The COUNTER Release version is not supported.",
     "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
     "counter.upload.error.OTHER": "The report could not be processed.",
-    "general.moreInformation": "More information",
-    "report.upload.modal.label.failed": "File upload failed",
-    "report.upload.selectAnotherFile": "Select another file to upload"
+    "general.moreInformation": "ข้อมูลเพิ่มเติม",
+    "report.upload.modal.label.failed": "อัปโหลดไฟล์ไม่สำเร็จ",
+    "report.upload.selectAnotherFile": "เลือกไฟล์อื่นเพื่ออัปโหลด"
 }
