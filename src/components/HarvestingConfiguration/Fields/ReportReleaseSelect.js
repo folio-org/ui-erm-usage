@@ -13,7 +13,6 @@ const ReportReleaseSelect = (props) => {
       component={Select}
       data={props.required ? 1 : 0}
       dataOptions={reportReleaseOptions}
-      defaultValue="5.1"
       fullWidth
       id={props.id}
       label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
