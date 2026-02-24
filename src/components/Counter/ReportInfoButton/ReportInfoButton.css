@@ -1,0 +1,5 @@
+[class*="button---"].yellow {
+  background-color: #ff0;
+  border: 1px solid #ff0;
+  color: #000;
+}

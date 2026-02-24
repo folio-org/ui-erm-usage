@@ -44,7 +44,7 @@ const reportFailed = {
   'providerId': 'd54f9d37-7759-44b6-a621-f950e6332d32',
 };
 
-const reportNull = {
+const report3030 = {
   'id': 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
   'downloadTime': '2020-07-09T01:08:05.231+00:00',
   'failedAttempts': 5,
@@ -53,6 +53,17 @@ const reportNull = {
   'reportName': 'JR1',
   'yearMonth': '2019-11',
   'providerId': 'd54f9d37-7759-44b6-a621-f950e6332d32',
+};
+
+const report3031 = {
+  'id': 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
+  'downloadTime': '2020-07-09T01:08:05.231+00:00',
+  'failedAttempts': 1,
+  'failedReason': 'Report not valid: Exception{Number=3031, Severity=ERROR, Message=Usage Not Ready for Requested Dates}',
+  'release': '5',
+  'reportName': 'TR',
+  'yearMonth': '2025-07',
+  'providerId': '653afd8c-239f-406c-b765-489774b6ec26',
 };
 
 const renderReportInfoButton = (stripes, report) => {
@@ -102,13 +113,23 @@ describe('ReportInfoButton', () => {
   });
 
   it('should render `default` icon anf `success` style for error 3030', () => {
-    renderReportInfoButton(stripes, reportNull);
+    renderReportInfoButton(stripes, report3030);
 
     const iconElement = screen.getByTestId('icon');
     expect(iconElement).toHaveClass('icon-default');
 
     const iconButton = screen.getByRole('button', { name: /open report info/i });
     expect(iconButton).toHaveClass('success');
+  });
+
+  it('should render `calendar` icon and `yellow` style for error 3031', () => {
+    renderReportInfoButton(stripes, report3031);
+
+    const iconElement = screen.getByTestId('icon');
+    expect(iconElement).toHaveClass('icon-calendar');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('yellow');
   });
 });
 
