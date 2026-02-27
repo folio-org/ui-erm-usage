@@ -13,6 +13,7 @@ import {
 
 import ReportInfo from '../ReportInfo';
 import extractErrorCode from '../../../util/extractErrorCode';
+import css from './ReportInfoButton.css';
 
 const ReportInfoButton = ({
   stripes,
@@ -30,11 +31,13 @@ const ReportInfoButton = ({
 
   const getButtonStyle = (failedAttempts, errorCode) => {
     if (!failedAttempts || (errorCode && errorCode === '3030')) {
-      return 'success slim';
+      return { buttonStyle: 'success slim' };
+    } else if (errorCode && errorCode === '3031') {
+      return { buttonStyle: 'slim', buttonClass: css.yellow };
     } else if (failedAttempts < maxFailedAttempts) {
-      return 'warning slim';
+      return { buttonStyle: 'warning slim' };
     } else {
-      return 'danger slim';
+      return { buttonStyle: 'danger slim' };
     }
   };
 
@@ -43,6 +46,8 @@ const ReportInfoButton = ({
 
     if (report.failedReason && errorCode === '3030') {
       return <Icon icon="default" />;
+    } else if (report.failedReason && errorCode === '3031') {
+      return <Icon icon="calendar" />;
     } else if (!hasFailedAttempts && report?.reportEditedManually) {
       return <Icon icon="edit" />;
     } else if (!hasFailedAttempts) {
@@ -99,7 +104,7 @@ const ReportInfoButton = ({
 
   const error = report.failedReason ? extractErrorCode(report.failedReason) : null;
   const icon = getButtonIcon(error?.code);
-  const style = getButtonStyle(report.failedAttempts, error?.code);
+  const { buttonStyle, buttonClass = '' } = getButtonStyle(report.failedAttempts, error?.code);
 
   const confirmMessage = (
     <>
@@ -139,12 +144,13 @@ const ReportInfoButton = ({
   return (
     <>
       <Button
-        bottomMargin0
-        aria-label={label}
-        id={buttonId}
-        data-testid={buttonId}
-        buttonStyle={style}
         aria-haspopup="true"
+        aria-label={label}
+        bottomMargin0
+        buttonStyle={buttonStyle}
+        buttonClass={buttonClass}
+        data-testid={buttonId}
+        id={buttonId}
         onClick={() => setShowDropDown(curState => !curState)}
       >
         {icon}
