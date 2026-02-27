@@ -38,6 +38,7 @@
 * Change default value of Service type and Report release to Counter 5.1 ([UIEUS-500](https://folio-org.atlassian.net/browse/UIEUS-500))
 * Remove redundant defaultValue props from harvesting configuration fields ([UIEUS-504](https://folio-org.atlassian.net/browse/UIEUS-504))
 * NFR: CoP 3031 (Usage Not Ready for Requested Dates) ([UIEUS-441](https://folio-org.atlassian.net/browse/UIEUS-441))
+* Unite functions for ReportInfoButton style and icon ([UIEUS-505](https://folio-org.atlassian.net/browse/UIEUS-505))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))
