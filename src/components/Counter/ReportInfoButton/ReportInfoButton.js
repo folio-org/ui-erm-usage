@@ -30,32 +30,37 @@ const ReportInfoButton = ({
   const log = stripes.logger.log.bind(stripes.logger);
 
   const getButtonStyle = (failedAttempts, errorCode) => {
-    if (!failedAttempts || (errorCode && errorCode === '3030')) {
-      return { buttonStyle: 'success slim' };
-    } else if (errorCode && errorCode === '3031') {
-      return { buttonStyle: 'slim', buttonClass: css.yellow };
-    } else if (failedAttempts < maxFailedAttempts) {
-      return { buttonStyle: 'warning slim' };
-    } else {
-      return { buttonStyle: 'danger slim' };
-    }
-  };
-
-  const getButtonIcon = (errorCode) => {
-    const hasFailedAttempts = report.failedAttempts;
-
     if (report.failedReason && errorCode === '3030') {
-      return <Icon icon="default" />;
+      return {
+        buttonStyle: 'success slim',
+        icon: <Icon icon="default" />,
+      };
     } else if (report.failedReason && errorCode === '3031') {
-      return <Icon icon="calendar" />;
-    } else if (!hasFailedAttempts && report?.reportEditedManually) {
-      return <Icon icon="edit" />;
-    } else if (!hasFailedAttempts) {
-      return <Icon icon="check-circle" />;
-    } else if (hasFailedAttempts < maxFailedAttempts) {
-      return <Icon icon="exclamation-circle" />;
+      return {
+        buttonStyle: 'slim',
+        buttonClass: css.yellow,
+        icon: <Icon icon="calendar" />,
+      };
+    } else if (!failedAttempts && report?.reportEditedManually) {
+      return {
+        buttonStyle: 'success slim',
+        icon: <Icon icon="edit" />,
+      };
+    } else if (!failedAttempts) {
+      return {
+        buttonStyle: 'success slim',
+        icon: <Icon icon="check-circle" />,
+      };
+    } else if (failedAttempts < maxFailedAttempts) {
+      return {
+        buttonStyle: 'warning slim',
+        icon: <Icon icon="exclamation-circle" />,
+      };
     } else {
-      return <Icon icon="times-circle" />;
+      return {
+        buttonStyle: 'danger slim',
+        icon: <Icon icon="times-circle" />,
+      };
     }
   };
 
@@ -103,8 +108,7 @@ const ReportInfoButton = ({
   }
 
   const error = report.failedReason ? extractErrorCode(report.failedReason) : null;
-  const icon = getButtonIcon(error?.code);
-  const { buttonStyle, buttonClass = '' } = getButtonStyle(report.failedAttempts, error?.code);
+  const { buttonStyle, buttonClass = '', icon } = getButtonStyle(report.failedAttempts, error?.code);
 
   const confirmMessage = (
     <>
