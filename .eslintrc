@@ -1,19 +1,98 @@
 {
-  "extends": "@folio/eslint-config-stripes",
-  "parser": "@babel/eslint-parser",
-  "plugins": [],
   "root": true,
   "env": {
     "jest": true
   },
+  "extends": [
+    "@folio/eslint-config-stripes",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended"
+  ],
+  "parser": "@babel/eslint-parser",
+  "plugins": [
+    "canonical"
+  ],
   "rules": {
-    "implicit-arrow-linebreak": "off",
+    "array-bracket-newline": ["error", { "multiline": true }],
+    "canonical/export-specifier-newline": "error",
+    "canonical/import-specifier-newline": "error",
+    "comma-dangle": [
+      "error", 
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+        "newlines-between": "always",
+        "pathGroups": [
+          {
+            "pattern": "@folio/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "key-spacing": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true,
+        "mode": "strict"
+      }
+    ],
+    "max-len": ["warn", { "code": 120 }],
+    "newline-per-chained-call": ["warn", { "ignoreChainWithDepth": 2 }],
+    "no-multiple-empty-lines": "error",
+    "object-curly-newline": [
+      "error",
+      {
+        "ImportDeclaration": { "multiline": true, "minProperties": 2 },
+        "ExportDeclaration": { "multiline": true, "minProperties": 2 }
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "block-like" }
+    ],
+    "quote-props": ["error", "as-needed"],
     "react/forbid-prop-types": [
       // rule was removed from eslint-config-stripes in v8.0.0
       "warn",
       {
         "forbid": ["any", "array"]
       }
-    ]
+    ],
+    "react/jsx-sort-props": "error",
+    "react/sort-prop-types": "error",
+    "sort-imports": ["error", { "ignoreCase": true, "ignoreDeclarationSort": true }],
+    "testing-library/no-await-sync-events": [
+      "error",
+      { "eventModules": ["fire-event"] }
+    ],
+    "testing-library/no-node-access": "off",
+    "testing-library/no-render-in-lifecycle": [
+      "error",
+      { "allowTestingFrameworkSetupHook": "beforeEach" }
+    ],
+    "testing-library/prefer-user-event": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
