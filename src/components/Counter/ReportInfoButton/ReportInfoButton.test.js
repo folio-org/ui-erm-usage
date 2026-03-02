@@ -38,7 +38,7 @@ const reportFailed = {
   downloadTime: '2020-07-09T01:08:05.231+00:00',
   failedAttempts: 5,
   failedReason:
-    'Report not valid: Exception{Number=3032, Severity=ERROR, Message=Usage No Longer Available for Requested Dates }',
+    'Report not valid: Exception{ Severity=ERROR, Message=Usage No Longer Available for Requested Dates }',
   release: '4',
   reportName: 'JR1',
   yearMonth: '2019-11',
@@ -66,6 +66,17 @@ const report3031 = {
   reportName: 'TR',
   yearMonth: '2025-07',
   providerId: '653afd8c-239f-406c-b765-489774b6ec26',
+};
+
+const report3032 = {
+  'id': 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
+  'downloadTime': '2020-07-09T01:08:05.231+00:00',
+  'failedAttempts': 1,
+  'failedReason': 'Report not valid: Exception{Number=3032, Severity=ERROR, Message=Usage No Longer Available for Requested Dates}',
+  'release': '5',
+  'reportName': 'TR',
+  'yearMonth': '2025-07',
+  'providerId': '653afd8c-239f-406c-b765-489774b6ec26',
 };
 
 const renderReportInfoButton = (stripes, report) => {
@@ -132,5 +143,15 @@ describe('ReportInfoButton', () => {
 
     const iconButton = screen.getByRole('button', { name: /open report info/i });
     expect(iconButton).toHaveClass('yellow');
+  });
+
+  it('should render `calendar` icon and `danger` style for error 3032', () => {
+    renderReportInfoButton(stripes, report3032);
+
+    const iconElement = screen.getByTestId('icon');
+    expect(iconElement).toHaveClass('icon-calendar');
+
+    const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(iconButton).toHaveClass('danger');
   });
 });

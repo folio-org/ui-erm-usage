@@ -44,6 +44,11 @@ const ReportInfoButton = ({
         buttonClass: css.yellow,
         icon: <Icon icon="calendar" />,
       };
+    } else if (report.failedReason && errorCode === '3032') {
+      return {
+        buttonStyle: 'danger slim',
+        icon: <Icon icon="calendar" />,
+      };
     } else if (!failedAttempts && report?.reportEditedManually) {
       return {
         buttonStyle: 'success slim',
