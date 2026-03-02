@@ -1,7 +1,11 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
-import { StripesContext, useStripes } from '@folio/stripes/core';
-import usePeriodicConfig from './usePeriodicConfig';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import Intl from '../../../test/jest/__mock__/intl.mock';
+import usePeriodicConfig from './usePeriodicConfig';
 
 const expectedUrl = 'https://folio-testing-okapi.dev.folio.org/erm-usage-harvester/periodic';
 const expectedHeaders = {

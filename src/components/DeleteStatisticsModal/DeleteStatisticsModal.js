@@ -1,14 +1,17 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { useState } from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { useOkapiKy } from '@folio/stripes/core';
 import {
   Button,
   ConfirmationModal,
   Modal,
   ModalFooter,
 } from '@folio/stripes/components';
+import { useOkapiKy } from '@folio/stripes/core';
 
 import DeleteStatistics from './DeleteStatistics';
 
@@ -37,7 +40,9 @@ function DeleteStatisticsModal({
   const removeFromReportsToDelete = (id) => {
     setReportsToDelete((prev) => new Set([...prev].filter((x) => x !== id)));
   };
+
   const ky = useOkapiKy();
+
   const handleSubmit = () => {
     const idArray = JSON.stringify([...reportsToDelete]);
     ky('counter-reports/reports/delete', {
@@ -50,6 +55,7 @@ function DeleteStatisticsModal({
     })
       .then((res) => {
         setShowConfirmDelete(false);
+
         if (res.ok) {
           setReportsToDelete(new Set());
           const msg = intl.formatMessage(
@@ -90,13 +96,8 @@ function DeleteStatisticsModal({
   return (
     <>
       <Modal
-        id="delete-reports-modal"
         closeOnBackgroundClick
         data-test-delete-reports-modal
-        open={open}
-        label={
-          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header" />
-        }
         footer={
           <ModalFooter>
             <Button
@@ -120,26 +121,34 @@ function DeleteStatisticsModal({
             </Button>
           </ModalFooter>
         }
+        id="delete-reports-modal"
+        label={
+          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header" />
+        }
+        open={open}
       >
         <DeleteStatistics
-          stripes={stripes}
-          providerId={providerId}
-          isStatsLoading={isStatsLoading}
-          handlers={handlers}
-          counterReports={counterReports}
-          reportsToDelete={reportsToDelete}
           addToReportsToDelete={addToReportsToDelete}
-          removeFromReportsToDelete={removeFromReportsToDelete}
-          udpLabel={udpLabel}
+          counterReports={counterReports}
+          handlers={handlers}
+          isStatsLoading={isStatsLoading}
           maxFailedAttempts={maxFailedAttempts}
+          providerId={providerId}
+          removeFromReportsToDelete={removeFromReportsToDelete}
+          reportsToDelete={reportsToDelete}
+          stripes={stripes}
+          udpLabel={udpLabel}
         />
       </Modal>
       <ConfirmationModal
-        id="delete-multi-statistics-confirmation"
-        open={showConfirmDelete}
+        buttonStyle="danger"
+        confirmLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.delete',
+        })}
         heading={
           <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header.question" />
         }
+        id="delete-multi-statistics-confirmation"
         message={
           <FormattedMessage
             id="ui-erm-usage.statistics.multi.delete.confirmation"
@@ -149,19 +158,21 @@ function DeleteStatisticsModal({
             }}
           />
         }
-        onConfirm={handleSubmit}
         onCancel={() => {
           setShowConfirmDelete(false);
         }}
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.delete',
-        })}
-        buttonStyle="danger"
+        onConfirm={handleSubmit}
+        open={showConfirmDelete}
       />
       <ConfirmationModal
-        id="close-delete-multi-statistics-confirmation"
-        open={showCloseModal}
+        cancelLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.closeWithoutSave',
+        })}
+        confirmLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.keepEditing',
+        })}
         heading={<FormattedMessage id="ui-erm-usage.general.sure" />}
+        id="close-delete-multi-statistics-confirmation"
         message={
           <FormattedMessage id="ui-erm-usage.general.unsaved.selections" />
         }
@@ -170,18 +181,14 @@ function DeleteStatisticsModal({
           onCloseModal();
         }}
         onConfirm={() => setShowCloseModal(false)}
-        cancelLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.closeWithoutSave',
-        })}
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.keepEditing',
-        })}
+        open={showCloseModal}
       />
     </>
   );
 }
 
 DeleteStatisticsModal.propTypes = {
+  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handlers: PropTypes.shape({}).isRequired,
   intl: PropTypes.object,
   isStatsLoading: PropTypes.bool.isRequired,
@@ -192,7 +199,6 @@ DeleteStatisticsModal.propTypes = {
   open: PropTypes.bool,
   providerId: PropTypes.string.isRequired,
   stripes: PropTypes.object.isRequired,
-  counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   udpLabel: PropTypes.string.isRequired,
 };
 

@@ -1,5 +1,8 @@
+import {
+  get,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { get, isEmpty } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -11,10 +14,7 @@ import {
 } from '@folio/stripes/components';
 
 import formCss from '../../util/sharedStyles/form.css';
-import SelectedReportsForm from './SelectedReports';
 import { AggregatorInfoForm } from './AggregatorInfo';
-import { VendorInfoForm } from './VendorInfo';
-import { SushiCredentialsForm } from './SushiCredentials';
 import {
   HarvestingEndField,
   HarvestingStartField,
@@ -22,6 +22,9 @@ import {
   HarvestingViaSelect,
   ReportReleaseSelect,
 } from './Fields';
+import SelectedReportsForm from './SelectedReports';
+import { SushiCredentialsForm } from './SushiCredentials';
+import { VendorInfoForm } from './VendorInfo';
 
 const HarvestingConfigurationForm = ({
   accordionId,
@@ -41,14 +44,17 @@ const HarvestingConfigurationForm = ({
 
     const val = (event.target.value === '') ? undefined : event.target.value;
     const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', null);
+
     if (selectedReportReleaseValues !== val) {
       const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
+
       if (!isEmpty(requestedReports)) {
         setConfirmClear(true);
         setSelectedReportRelease(val);
       } else {
         form.mutators.setReportRelease({}, val);
       }
+
       if ((val === '4' && values.sushiCredentials?.apiKey) ||
         ((val === '5' || val === '5.1') && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
         form.change('sushiCredentials.apiKey', undefined);
@@ -68,6 +74,7 @@ const HarvestingConfigurationForm = ({
       form.mutators.clearSelectedReports({}, values);
       form.mutators.setReportRelease({}, selectedReportRelease);
     }
+
     setConfirmClear(false);
   };
 
@@ -84,10 +91,10 @@ const HarvestingConfigurationForm = ({
 
   return (
     <Accordion
-      label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
-      open={expanded}
       id={accordionId}
+      label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
       onToggle={onToggleAccordion}
+      open={expanded}
     >
       <Row>
         <Col xs>
@@ -104,33 +111,33 @@ const HarvestingConfigurationForm = ({
             <Row>
               <Col xs={4}>
                 <HarvestingViaSelect
-                  required={isHarvestingStatusActive}
                   onChange={changeSelectedHarvestVia}
+                  required={isHarvestingStatusActive}
                 />
               </Col>
-              <Col xs={8} className={formCss.centerNote}>
+              <Col className={formCss.centerNote} xs={8}>
                 <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
               </Col>
             </Row>
             <Row>
               <AggregatorInfoForm
                 aggregators={aggregators}
-                isRequired={isHarvestingStatusActive}
                 disabled={harvestVia !== 'aggregator'}
+                isRequired={isHarvestingStatusActive}
               />
             </Row>
             <VendorInfoForm
               disabled={harvestVia !== 'sushi'}
-              isRequired={isHarvestingStatusActive}
               harvesterImpls={harvesterImplementations}
+              isRequired={isHarvestingStatusActive}
             />
           </section>
           <section className={formCss.separator}>
             <SushiCredentialsForm
-              useAggregator={harvestVia === 'aggregator'}
               form={form}
-              values={values}
               required={isHarvestingStatusActive}
+              useAggregator={harvestVia === 'aggregator'}
+              values={values}
             />
           </section>
           <section className={formCss.separator}>
@@ -138,14 +145,14 @@ const HarvestingConfigurationForm = ({
               <Col xs={4}>
                 <ReportReleaseSelect
                   id="addudp_reportrelease"
-                  required={isHarvestingStatusActive}
                   onChange={changeSelectedCounterVersion}
+                  required={isHarvestingStatusActive}
                 />
               </Col>
               <Col xs={8}>
                 <SelectedReportsForm
-                  initialValues={initialValues}
                   counterVersion={reportRelease}
+                  initialValues={initialValues}
                   required={isHarvestingStatusActive}
                   selectedReports={requestedReports}
                 />
@@ -168,13 +175,13 @@ const HarvestingConfigurationForm = ({
       </Row>
 
       <ConfirmationModal
-        id="clear-report-selection-confirmation"
-        open={confirmClear}
-        heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
-        message={confirmationMessage}
-        onConfirm={() => { confirmClearReports(true); }}
-        onCancel={() => { confirmClearReports(false); }}
         confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearLabel" />}
+        heading={<FormattedMessage id="ui-erm-usage.udp.form.selectedReports.clearModalHeading" />}
+        id="clear-report-selection-confirmation"
+        message={confirmationMessage}
+        onCancel={() => { confirmClearReports(false); }}
+        onConfirm={() => { confirmClearReports(true); }}
+        open={confirmClear}
       />
     </Accordion>
   );
@@ -184,16 +191,16 @@ HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,
   aggregators: PropTypes.arrayOf(PropTypes.shape()),
   expanded: PropTypes.bool,
-  harvesterImplementations: PropTypes.arrayOf(PropTypes.object),
-  initialValues: PropTypes.object,
   form: PropTypes.shape({
     change: PropTypes.func,
-    resetFieldState: PropTypes.func,
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
     }),
+    resetFieldState: PropTypes.func,
   }),
+  harvesterImplementations: PropTypes.arrayOf(PropTypes.object),
+  initialValues: PropTypes.object,
   onToggle: PropTypes.func,
   values: PropTypes.shape(),
 };

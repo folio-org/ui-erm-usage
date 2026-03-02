@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
-import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import {
+  Button,
+  Icon,
+  KeyValue,
+  MenuSection,
+} from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
@@ -30,16 +38,16 @@ function CustomReportInfoFile(props) {
         labelTag="h3"
       >
         <Button
-          id="download-custom-report-button"
           buttonStyle="dropdownItem"
+          id="download-custom-report-button"
           onClick={() => handlers.doDownloadFile(customReport.fileId, customReport.fileName)}
         >
           <Icon icon="arrow-down">{`Download ${customReport.fileName}`}</Icon>
         </Button>
         <IfPermission perm="ui-erm-usage.reports.delete">
           <Button
-            id="delete-custom-report-button"
             buttonStyle="dropdownItem"
+            id="delete-custom-report-button"
             onClick={onDelete}
           >
             <Icon icon="trash">
@@ -53,12 +61,12 @@ function CustomReportInfoFile(props) {
 }
 
 CustomReportInfoFile.propTypes = {
-  onDelete: PropTypes.func.isRequired,
   customReport: PropTypes.shape().isRequired,
-  udpLabel: PropTypes.string.isRequired,
   handlers: PropTypes.shape({
     doDownloadFile: PropTypes.func,
   }),
+  onDelete: PropTypes.func.isRequired,
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default CustomReportInfoFile;

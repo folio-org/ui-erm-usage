@@ -11,9 +11,9 @@ function CustomReportInfo(props) {
     return (
       <CustomReportInfoFile
         customReport={customReport}
+        handlers={handlers}
         onDelete={onDelete}
         udpLabel={udpLabel}
-        handlers={handlers}
       />
     );
   } else {
@@ -28,12 +28,12 @@ function CustomReportInfo(props) {
 }
 
 CustomReportInfo.propTypes = {
-  onDelete: PropTypes.func.isRequired,
   customReport: PropTypes.shape().isRequired,
-  udpLabel: PropTypes.string.isRequired,
   handlers: PropTypes.shape({
     doDownloadFile: PropTypes.func,
   }),
+  onDelete: PropTypes.func.isRequired,
+  udpLabel: PropTypes.string.isRequired,
 };
 
 export default CustomReportInfo;

@@ -1,11 +1,13 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import renderWithIntl from '../../../test/jest/helpers';
 
-import UDPInfoView from './UDPInfoView';
 import udp from '../../../test/fixtures/udp';
+import renderWithIntl from '../../../test/jest/helpers';
+import UDPInfoView from './UDPInfoView';
 
-const renderUDPInfoView = (usageDataProvider = udp) =>
-  renderWithIntl(<UDPInfoView id="udpInfo" usageDataProvider={usageDataProvider} />);
+const renderUDPInfoView =
+  (usageDataProvider = udp) => renderWithIntl(
+    <UDPInfoView id="udpInfo" usageDataProvider={usageDataProvider} />
+  );
 
 describe('UDPInfoView component', () => {
   it('should display description', () => {

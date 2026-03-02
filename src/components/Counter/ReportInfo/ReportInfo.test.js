@@ -1,6 +1,11 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
+
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
 import ReportInfo from './ReportInfo';
 

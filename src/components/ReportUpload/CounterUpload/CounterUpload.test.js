@@ -1,11 +1,18 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { fireEvent, screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  waitFor,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../../test/jest/helpers';
-import { server, rest } from '../../../../test/jest/testServer';
+import {
+  rest,
+  server,
+} from '../../../../test/jest/testServer';
 import CounterUpload from './CounterUpload';
 
 const onClose = jest.fn();
@@ -35,7 +42,7 @@ const uploadFile = async ({ mockFile, expectedError, expectedDetails, mockHandle
   expect(saveButton).toBeDisabled();
 
   const inputEl = screen.getByTestId('fileInput');
-  fireEvent.change(inputEl, { target: { files: [mockFile] } });
+  await userEvent.upload(inputEl, mockFile);
   await screen.findByText(mockFile.name);
 
   await waitFor(() => expect(saveButton).toBeEnabled());
@@ -45,6 +52,7 @@ const uploadFile = async ({ mockFile, expectedError, expectedDetails, mockHandle
     await waitFor(() => {
       expect(screen.getByText(expectedError)).toBeInTheDocument();
     });
+
     if (expectedDetails) {
       const details = screen.getByText(/more information/i).closest('details');
       expect(within(details).getByText(expectedDetails)).toBeInTheDocument();
@@ -73,7 +81,7 @@ describe('CounterUpload', () => {
 
   test('drop file', async () => {
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [file] } });
+    await userEvent.upload(inputEl, file);
     await screen.findByText('file.json');
   });
 
@@ -94,7 +102,7 @@ describe('CounterUpload', () => {
     expect(saveButton).toBeDisabled();
 
     const inputEl = screen.getByTestId('fileInput');
-    fireEvent.change(inputEl, { target: { files: [file] } });
+    await userEvent.upload(inputEl, file);
     await screen.findByText('file.json');
     await waitFor(() => expect(saveButton).toBeEnabled());
 
@@ -122,15 +130,14 @@ describe('CounterUpload', () => {
       expectedDetails: 'java.lang.IllegalArgumentException: Invalid filename',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(
-            ctx.status(500),
-            ctx.json({
-              code: 'UNSUPPORTED_FILE_FORMAT',
-              message: 'The file format is not supported.',
-              details: 'java.lang.IllegalArgumentException: Invalid filename',
-            })
-          )
+        (req, res, ctx) => res(
+          ctx.status(500),
+          ctx.json({
+            code: 'UNSUPPORTED_FILE_FORMAT',
+            message: 'The file format is not supported.',
+            details: 'java.lang.IllegalArgumentException: Invalid filename',
+          })
+        )
       ),
     },
     {
@@ -140,15 +147,14 @@ describe('CounterUpload', () => {
       expectedDetails: 'The maximum file size is 209715200 bytes.',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(
-            ctx.status(500),
-            ctx.json({
-              code: 'MAXIMUM_FILESIZE_EXCEEDED',
-              message: 'The file size exceeds the maximum allowed size.',
-              details: 'The maximum file size is 209715200 bytes.',
-            })
-          )
+        (req, res, ctx) => res(
+          ctx.status(500),
+          ctx.json({
+            code: 'MAXIMUM_FILESIZE_EXCEEDED',
+            message: 'The file size exceeds the maximum allowed size.',
+            details: 'The maximum file size is 209715200 bytes.',
+          })
+        )
       ),
     },
     {
@@ -158,13 +164,12 @@ describe('CounterUpload', () => {
       expectedDetails: 'foo',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(
-            ctx.status(500),
-            ctx.json({
-              message: 'foo',
-            })
-          )
+        (req, res, ctx) => res(
+          ctx.status(500),
+          ctx.json({
+            message: 'foo',
+          })
+        )
       ),
     },
     {
@@ -174,11 +179,10 @@ describe('CounterUpload', () => {
       expectedDetails: '{}',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(
-            ctx.status(500),
-            ctx.json({})
-          )
+        (req, res, ctx) => res(
+          ctx.status(500),
+          ctx.json({})
+        )
       ),
     },
     {
@@ -188,8 +192,7 @@ describe('CounterUpload', () => {
       expectedDetails: /invalid json response body at/,
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(ctx.status(404))
+        (req, res, ctx) => res(ctx.status(404))
       ),
     },
     {
@@ -199,14 +202,13 @@ describe('CounterUpload', () => {
       expectedDetails: '',
       mockHandler: rest.post(
         'https://folio-testing-okapi.dev.folio.org/counter-reports/multipartupload/provider/:udpId',
-        (req, res, ctx) =>
-          res(
-            ctx.status(500),
-            ctx.json({
-              code: 'NEW_ERROR_CODE',
-              message: 'This is a new error code without translation',
-            })
-          )
+        (req, res, ctx) => res(
+          ctx.status(500),
+          ctx.json({
+            code: 'NEW_ERROR_CODE',
+            message: 'This is a new error code without translation',
+          })
+        )
       ),
       suppressConsoleError: 'NEW_ERROR_CODE',
     },

@@ -1,6 +1,9 @@
-import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
 import { InfoPopover } from '@folio/stripes/components';
 
@@ -25,6 +28,7 @@ const AggregatorContactInfo = ({
           if (!response.ok) {
             return Promise.reject(response);
           }
+
           return response.json();
         })
         .catch(async (resp) => {

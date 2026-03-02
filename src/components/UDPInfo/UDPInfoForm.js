@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Field } from 'react-final-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
 import {
   Accordion,
@@ -13,9 +16,9 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-import { required } from '../../util/validate';
 import statusOptions, { STATUS } from '../../util/data/statusOptions';
 import useTranslateLabels from '../../util/hooks/useTranslateLabels';
+import { required } from '../../util/validate';
 
 function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
   const [showStatusConflictModal, setShowStatusConflictModal] = useState(false);
@@ -47,40 +50,40 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
 
   return (
     <Accordion
-      label={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.title" />}
-      open={expanded}
       id={accordionId}
+      label={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.title" />}
       onToggle={onToggle}
+      open={expanded}
     >
       <Row>
         <Col xs={4}>
           <Field
+            component={TextField}
+            fullWidth
+            id="addudp_providername"
             label={
               <FormattedMessage id="ui-erm-usage.information.providerName" />
             }
+            name="label"
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.udpName',
             })}
-            name="label"
-            id="addudp_providername"
-            component={TextField}
             required
             validate={required}
-            fullWidth
           />
         </Col>
         <Col xs={8}>
           <Field
+            component={TextField}
+            fullWidth
+            id="addudp_description"
             label={
               <FormattedMessage id="ui-erm-usage.general.description" />
             }
             name="description"
-            id="addudp_description"
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.udpDescription',
             })}
-            component={TextField}
-            fullWidth
           />
         </Col>
       </Row>
@@ -99,13 +102,13 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
         </Col>
       </Row>
       <ConfirmationModal
-        id="change-status-modal"
-        open={showStatusConflictModal}
-        heading={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.changeStatusHeading" />}
-        message={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.changeStatusMessage" />}
-        onConfirm={() => { handleStatusConflictConfirmation(true); }}
-        onCancel={() => { handleStatusConflictConfirmation(false); }}
         confirmLabel={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.setHarvestingStatusInactive" />}
+        heading={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.changeStatusHeading" />}
+        id="change-status-modal"
+        message={<FormattedMessage id="ui-erm-usage.udp.form.udpInfo.changeStatusMessage" />}
+        onCancel={() => { handleStatusConflictConfirmation(false); }}
+        onConfirm={() => { handleStatusConflictConfirmation(true); }}
+        open={showStatusConflictModal}
       />
     </Accordion>
   );

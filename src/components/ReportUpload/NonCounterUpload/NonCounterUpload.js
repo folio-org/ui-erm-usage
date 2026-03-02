@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import NonCounterUploadModal from './NonCounterUploadModal';
+
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import NonCounterUploadModal from './NonCounterUploadModal';
 
 function NonCounterUpload({
   onFail,
@@ -31,9 +32,9 @@ function NonCounterUpload({
 
   return (
     <NonCounterUploadModal
-      open={open}
       onClose={onClose}
       onSubmit={handleNonCounterUpload}
+      open={open}
       stripes={stripes}
       udpId={udpId}
     />
@@ -41,11 +42,10 @@ function NonCounterUpload({
 }
 
 NonCounterUpload.propTypes = {
-  // handlers: PropTypes.shape(),
+  onClose: PropTypes.func.isRequired,
   onFail: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
 };

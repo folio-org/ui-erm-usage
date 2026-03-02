@@ -4,32 +4,32 @@ const commands = [
   {
     name: 'new',
     label: (<FormattedMessage id="stripes-components.shortcut.createRecord" />),
-    shortcut: 'alt+n'
+    shortcut: 'alt+n',
   },
   {
     name: 'edit',
     label: (<FormattedMessage id="stripes-components.shortcut.editRecord" />),
-    shortcut: 'mod+alt+e'
+    shortcut: 'mod+alt+e',
   },
   {
     name: 'save',
     label: (<FormattedMessage id="stripes-components.shortcut.saveRecord" />),
-    shortcut: 'mod+s'
+    shortcut: 'mod+s',
   },
   {
     name: 'expandAllSections',
     label: (<FormattedMessage id="stripes-components.shortcut.expandAll" />),
-    shortcut: 'mod+alt+b'
+    shortcut: 'mod+alt+b',
   },
   {
     name: 'collapseAllSections',
     label: (<FormattedMessage id="stripes-components.shortcut.collapseAll" />),
-    shortcut: 'mod+alt+g'
+    shortcut: 'mod+alt+g',
   },
   {
     name: 'search',
     label: (<FormattedMessage id="stripes-components.shortcut.goToSearchFilter" />),
-    shortcut: 'mod+alt+h'
+    shortcut: 'mod+alt+h',
   },
   {
     name: 'openShortcutModal',
@@ -39,7 +39,7 @@ const commands = [
   {
     name: 'expandCollapse',
     label: (<FormattedMessage id="stripes-components.shortcut.expandOrCollapse" />),
-    shortcut: 'spacebar'
+    shortcut: 'spacebar',
   },
 ];
 

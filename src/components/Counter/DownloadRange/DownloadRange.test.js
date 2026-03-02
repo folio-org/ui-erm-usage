@@ -1,7 +1,7 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import renderWithIntl from '../../../../test/jest/helpers';
 
+import renderWithIntl from '../../../../test/jest/helpers';
 import DownloadRange from './DownloadRange';
 
 const downloadableReports = [
@@ -28,8 +28,8 @@ const renderDownloadRange = () => {
   return renderWithIntl(
     <DownloadRange
       downloadableReports={downloadableReports}
-      udpId="e67924ee-aa00-454e-8fd0-c3f81339d20e"
       onDownloadReportMultiMonth={onDownloadReportMultiMonth}
+      udpId="e67924ee-aa00-454e-8fd0-c3f81339d20e"
     />
   );
 };
@@ -61,7 +61,7 @@ describe('DownloadRange', () => {
       '5',
       '2020-01',
       '2020-02',
-      'csv',
+      'csv'
     );
   });
 
@@ -87,7 +87,7 @@ describe('DownloadRange', () => {
       '5.1',
       '2020-01',
       '2020-02',
-      'xlsx',
+      'xlsx'
     );
   });
 });

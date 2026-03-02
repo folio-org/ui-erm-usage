@@ -1,5 +1,9 @@
+import {
+  cloneDeep,
+  findIndex,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { cloneDeep, findIndex, isEmpty } from 'lodash';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -12,23 +16,29 @@ import {
   Selection,
 } from '@folio/stripes/components';
 
+import {
+  notRequired,
+  required,
+} from '../../../util/validate';
 import css from './SelectReportType.css';
-import { notRequired, required } from '../../../util/validate';
 
 const omitUsedOptions = (list, usedValues, id) => {
   const unUsedValues = cloneDeep(list);
+
   if (!isEmpty(usedValues)) {
     usedValues.forEach((item, index) => {
       if (id !== index) {
         const usedValueIndex = findIndex(unUsedValues, (v) => {
           return v.label === item;
         });
+
         if (usedValueIndex !== -1) {
           unUsedValues.splice(usedValueIndex, 1);
         }
       }
     });
   }
+
   return unUsedValues;
 };
 
@@ -44,6 +54,7 @@ function SelectReportType(props) {
               <div id={`reportType-selection-${index}`}>
                 <Field
                   component={Selection}
+                  data={props.required ? 1 : 0}
                   dataOptions={omitUsedOptions(
                     counterReportsCurrentVersion,
                     selectedReports,
@@ -54,7 +65,6 @@ function SelectReportType(props) {
                   }
                   name={elem}
                   validate={props.required ? required : notRequired}
-                  data={props.required ? 1 : 0}
                 />
               </div>
             </Col>
@@ -86,10 +96,10 @@ function SelectReportType(props) {
 }
 
 SelectReportType.propTypes = {
-  fields: PropTypes.object,
   counterReportsCurrentVersion: PropTypes.arrayOf(PropTypes.shape()),
+  fields: PropTypes.object,
+  required: PropTypes.bool,
   selectedReports: PropTypes.arrayOf(PropTypes.string),
-  required: PropTypes.bool
 };
 
 export default SelectReportType;

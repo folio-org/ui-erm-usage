@@ -1,5 +1,9 @@
+import {
+  isEmpty,
+  isNil,
+  sortBy,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { sortBy, isNil, isEmpty } from 'lodash';
 
 import { EntryManager } from '@folio/stripes/smart-components';
 
@@ -13,6 +17,7 @@ const parseInitialValues = (aggregator) => {
 
   // Transform aggregatorConfig from object to array
   let aggregatorConfigArray = [];
+
   if (!isNil(aggregatorConfig) && !isEmpty(aggregatorConfig)) {
     aggregatorConfigArray = Object.keys(aggregatorConfig).map((key) => ({
       key,
@@ -28,8 +33,8 @@ const parseInitialValues = (aggregator) => {
       ...aggregator.accountConfig,
       displayContact: aggregator.accountConfig?.displayContact?.length > 0
         ? aggregator.accountConfig.displayContact
-        : undefined
-    }
+        : undefined,
+    },
   };
 };
 
@@ -38,6 +43,7 @@ const onBeforeSave = (formData) => {
 
   // Transform aggregatorConfig from array to object
   const aggregatorConfigObj = {};
+
   if (aggregatorConfig && Array.isArray(aggregatorConfig)) {
     aggregatorConfig.forEach(field => {
       if (field.key && field.key.trim() !== '') {
@@ -48,7 +54,7 @@ const onBeforeSave = (formData) => {
 
   return {
     ...rest,
-    aggregatorConfig: aggregatorConfigObj
+    aggregatorConfig: aggregatorConfigObj,
   };
 };
 
@@ -63,7 +69,7 @@ const AggregatorManager = ({
   const implementations = records.length ? records[0].implementations : [];
   const serviceTypes = implementations.map(i => ({
     value: i.type,
-    label: i.name
+    label: i.name,
   }));
 
   return (
@@ -72,21 +78,21 @@ const AggregatorManager = ({
       style={{ flex: '0 0 50%', left: '0px' }}
     >
       <EntryManager
-        parentMutator={mutator}
-        entryList={entryList}
+        aggregators={serviceTypes}
         detailComponent={AggregatorDetails}
         entryFormComponent={AggregatorForm}
-        paneTitle={label}
         entryLabel={label}
+        entryList={entryList}
         nameKey="label"
+        onBeforeSave={onBeforeSave}
+        paneTitle={label}
+        parentMutator={mutator}
+        parseInitialValues={parseInitialValues}
         permissions={{
           put: 'ui-erm-usage.generalSettings.manage',
           post: 'ui-erm-usage.generalSettings.manage',
-          delete: 'ui-erm-usage.generalSettings.manage'
+          delete: 'ui-erm-usage.generalSettings.manage',
         }}
-        parseInitialValues={parseInitialValues}
-        onBeforeSave={onBeforeSave}
-        aggregators={serviceTypes}
         stripes={stripes}
       />
     </div>
@@ -102,30 +108,30 @@ AggregatorManager.manifest = Object.freeze({
     perRequest: 100,
     params: {
       query: 'cql.allRecords=1',
-      limit: '1000'
-    }
+      limit: '1000',
+    },
   },
   aggregatorImpls: {
     type: 'okapi',
     path: 'erm-usage-harvester/impl?aggregator=true',
-    throwErrors: false
-  }
+    throwErrors: false,
+  },
 });
 
 AggregatorManager.propTypes = {
   label: PropTypes.string.isRequired,
-  resources: PropTypes.shape({
-    entries: PropTypes.shape({
-      records: PropTypes.arrayOf(PropTypes.object)
-    }),
-    aggregatorImpls: PropTypes.shape()
-  }).isRequired,
   mutator: PropTypes.shape({
     entries: PropTypes.shape({
+      DELETE: PropTypes.func,
       POST: PropTypes.func,
       PUT: PropTypes.func,
-      DELETE: PropTypes.func
-    })
+    }),
+  }).isRequired,
+  resources: PropTypes.shape({
+    aggregatorImpls: PropTypes.shape(),
+    entries: PropTypes.shape({
+      records: PropTypes.arrayOf(PropTypes.object),
+    }),
   }).isRequired,
   stripes: PropTypes.shape(),
 };

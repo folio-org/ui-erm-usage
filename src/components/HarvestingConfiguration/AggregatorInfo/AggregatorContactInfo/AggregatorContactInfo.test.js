@@ -1,15 +1,21 @@
-import { render, screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  render,
+  screen,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
 
-import { server, rest } from '../../../../../test/jest/testServer';
+import {
+  rest,
+  server,
+} from '../../../../../test/jest/testServer';
 import AggregatorContactInfo from './AggregatorContactInfo';
 
 const aggregatorId = '5b6ba83e-d7e5-414e-ba7b-134749c0d950';
 
 const renderAggregatorContactInfo = (stripes) => {
   return render(
-    <AggregatorContactInfo stripes={stripes} aggregatorId={aggregatorId} />
+    <AggregatorContactInfo aggregatorId={aggregatorId} stripes={stripes} />
   );
 };
 

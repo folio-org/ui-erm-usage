@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
-import { Button, Modal } from '@folio/stripes/components';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+
+import {
+  Button,
+  Modal,
+} from '@folio/stripes/components';
+
 import urls from '../../util/urls';
 
 const createSuccessText = (udpLabel) => {
@@ -35,16 +40,16 @@ const createLabelText = (isSuccess) => {
 
 const HarvesterInfoModal = ({ errMessage = null, isSuccess = false, onClose, open = false, udpLabel }) => (
   <Modal
-    dismissible
     closeOnBackgroundClick
-    open={open}
-    onClose={onClose}
-    label={createLabelText(isSuccess)}
+    dismissible
     footer={
       <Button onClick={onClose}>
         <FormattedMessage id="ui-erm-usage.general.ok" />
       </Button>
     }
+    label={createLabelText(isSuccess)}
+    onClose={onClose}
+    open={open}
   >
     {isSuccess ? (
       createSuccessText(udpLabel)

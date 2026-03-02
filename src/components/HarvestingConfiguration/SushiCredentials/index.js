@@ -1,4 +1,7 @@
-import SushiCredentialsView from './SushiCredentialsView';
 import SushiCredentialsForm from './SushiCredentialsForm';
+import SushiCredentialsView from './SushiCredentialsView';
 
-export { SushiCredentialsView, SushiCredentialsForm };
+export {
+  SushiCredentialsView,
+  SushiCredentialsForm,
+};

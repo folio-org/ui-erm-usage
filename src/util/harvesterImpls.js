@@ -5,7 +5,7 @@ const extractHarvesterImpls = (resources) => {
     : [];
   const results = implementations.map(i => ({
     value: i.type,
-    label: i.name
+    label: i.name,
   }));
   results.unshift({ value: undefined, label: '' });
   return results;

@@ -1,12 +1,19 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { screen, within, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  waitFor,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
+import aggregatorTransformed from '../../../test/fixtures/aggregatorTransformed';
 import renderWithIntl from '../../../test/jest/helpers';
 import AggregatorForm from './AggregatorForm';
-import aggregatorTransformed from '../../../test/fixtures/aggregatorTransformed';
 import '../../../test/jest/__mock__';
 
 const aggregators = [
@@ -26,10 +33,10 @@ const renderAggregratorForm = (stripes, initialValues = {}) => {
       <StripesContext.Provider value={stripes}>
         <AggregatorForm
           aggregators={aggregators}
-          onSubmit={onSubmit}
-          onCancel={onCancel}
           initialValues={initialValues}
+          onCancel={onCancel}
           onRemove={onRemove}
+          onSubmit={onSubmit}
           stripes={stripes}
         />
       </StripesContext.Provider>
@@ -90,7 +97,8 @@ describe('Edit Aggregator', () => {
     renderAggregratorForm(stripes, aggregatorTransformed);
   });
 
-  test('adding "config parameter" and entering values enables save button, removing "config parameter" disables save button', async () => {
+  test('adding "config parameter" and entering values enables save button, ' +
+    'removing "config parameter" disables save button', async () => {
     const saveButton = screen.getByRole('button', { name: 'Save & close' });
     expect(saveButton).toBeDisabled();
 

@@ -1,18 +1,18 @@
-import PropTypes from 'prop-types';
 import { isNil } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   ConfirmationModal,
   IconButton,
   Modal,
 } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
-import CustomReportInfo from '../CustomReportInfo';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import CustomReportInfo from '../CustomReportInfo';
 
 function InfoButton(props) {
   const [showModal, setShowModal] = useState(false);
@@ -49,6 +49,7 @@ function InfoButton(props) {
     } else {
       doDeleteReport();
     }
+
     setShowConfirmDelete(false);
   };
 
@@ -77,36 +78,36 @@ function InfoButton(props) {
     <>
       <IconButton
         aria-label={ariaLabel}
+        data-testid={`custom-report-button-${customReport.id}`}
         icon="info"
         id={`custom-report-button-${customReport.id}`}
-        data-testid={`custom-report-button-${customReport.id}`}
         onClick={() => setShowModal(!showModal)}
       />
       <Modal
-        id={`custom-report-info-${customReport.id}`}
         closeOnBackgroundClick
-        open={showModal}
-        label={<FormattedMessage id="ui-erm-usage.statistics.custom.info" />}
         footer={footer}
+        id={`custom-report-info-${customReport.id}`}
+        label={<FormattedMessage id="ui-erm-usage.statistics.custom.info" />}
+        open={showModal}
       >
-        <div id="custom-report-info" className="custom-report-info">
+        <div className="custom-report-info" id="custom-report-info">
           <CustomReportInfo
-            stripes={props.stripes}
             customReport={customReport}
-            onDelete={handleDelete}
-            udpLabel={props.udpLabel}
             handlers={props.handlers}
+            onDelete={handleDelete}
+            stripes={props.stripes}
+            udpLabel={props.udpLabel}
           />
         </div>
       </Modal>
       <ConfirmationModal
-        open={showConfirmDelete}
+        cancelLabel={<FormattedMessage id="ui-erm-usage.general.no" />}
+        confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}
         heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDeleteReport" />}
         message={deleteConfirmMsg}
-        onConfirm={doDelete}
-        confirmLabel={<FormattedMessage id="ui-erm-usage.general.yes" />}
         onCancel={() => setShowConfirmDelete(false)}
-        cancelLabel={<FormattedMessage id="ui-erm-usage.general.no" />}
+        onConfirm={doDelete}
+        open={showConfirmDelete}
       />
     </>
   );
@@ -123,22 +124,22 @@ InfoButton.manifest = Object.freeze({
 });
 
 InfoButton.propTypes = {
+  customReport: PropTypes.shape().isRequired,
+  handlers: PropTypes.shape(),
   mutator: PropTypes.shape({
     customReport: PropTypes.object,
   }),
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
-      url: PropTypes.string.isRequired,
       tenant: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
     }).isRequired,
     store: PropTypes.shape({
       getState: PropTypes.func,
     }),
   }).isRequired,
-  customReport: PropTypes.shape().isRequired,
   udpLabel: PropTypes.string.isRequired,
-  handlers: PropTypes.shape(),
 };
 
 export default stripesConnect(InfoButton);

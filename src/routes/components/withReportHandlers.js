@@ -1,9 +1,11 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import { withStripes } from '@folio/stripes/core';
-import { Callout } from '@folio/stripes/components';
 import saveAs from 'file-saver';
+import PropTypes from 'prop-types';
+import { useRef } from 'react';
+import { injectIntl } from 'react-intl';
+
+import { Callout } from '@folio/stripes/components';
+import { withStripes } from '@folio/stripes/core';
+
 import { saveReport } from '../../util/downloadReport';
 import fetchWithDefaultOptions from '../../util/fetchWithDefaultOptions';
 
@@ -28,16 +30,21 @@ export default function withReportHandlers(WrappedComponent) {
       );
       return fetchWithDefaultOptions(
         okapi,
+        // eslint-disable-next-line max-len
         `/counter-reports/export/provider/${udpId}/report/${reportType}/version/${version}/from/${start}/to/${end}?format=${format}`
       )
         .then((response) => {
           calloutRef.current.removeCallout(calloutID);
+
           if (response.status >= 400) {
-            throw new Error(`Error ${response.status} retrieving report for multiple months: Fetch counter report failed`);
+            throw new Error(
+              `Error ${response.status} retrieving report for multiple months: Fetch counter report failed`
+            );
           } else {
             if (format === 'csv') {
               return response.text();
             }
+
             return response.blob();
           }
         })
@@ -63,6 +70,7 @@ export default function withReportHandlers(WrappedComponent) {
             if (format === 'csv') {
               return response.text();
             }
+
             return response.blob();
           }
         })
@@ -126,8 +134,10 @@ export default function withReportHandlers(WrappedComponent) {
       </>
     );
   }
+
   WithReportHandlers.propTypes = {
     handlers: PropTypes.object,
+    intl: PropTypes.object,
     stripes: PropTypes.shape({
       okapi: PropTypes.shape({
         tenant: PropTypes.string.isRequired,
@@ -136,7 +146,6 @@ export default function withReportHandlers(WrappedComponent) {
       }).isRequired,
       store: PropTypes.object.isRequired,
     }).isRequired,
-    intl: PropTypes.object,
   };
 
   return withStripes(injectIntl(WithReportHandlers));

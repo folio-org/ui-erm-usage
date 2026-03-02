@@ -1,5 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
+
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import HarvesterInfoModal from './HarvesterInfoModal';
 

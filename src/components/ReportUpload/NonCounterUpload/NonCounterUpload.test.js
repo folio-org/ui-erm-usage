@@ -1,7 +1,12 @@
-import { fireEvent, screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
-import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+
+import {
+  screen,
+  waitFor,
+} from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useStripes } from '@folio/stripes/core';
+
 import renderWithIntl from '../../../../test/jest/helpers';
 import NonCounterUpload from './NonCounterUpload';
 
@@ -53,7 +58,8 @@ describe('NonCounterUpload', () => {
       await userEvent.type(noteInput, 'Test note');
 
       const inputEl = screen.getByTestId('fileInput');
-      fireEvent.change(inputEl, { target: { files: [file] } });
+
+      await userEvent.upload(inputEl, file);
       await screen.findByText('file.json');
 
       const saveButton = screen.getByRole('button', { name: 'Save' });
@@ -70,7 +76,7 @@ describe('NonCounterUpload', () => {
       await userEvent.type(noteInput, 'Test note');
 
       const inputEl = screen.getByTestId('fileInput');
-      fireEvent.change(inputEl, { target: { files: [file] } });
+      await userEvent.upload(inputEl, file);
       await screen.findByText('file.json');
 
       const linkButton = screen.getByRole('radio', { name: 'Link file' });

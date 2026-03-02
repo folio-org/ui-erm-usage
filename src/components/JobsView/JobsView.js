@@ -1,4 +1,14 @@
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
+import {
+  useHistory,
+  useLocation,
+} from 'react-router';
+
 import {
   Button,
   MultiColumnList,
@@ -7,13 +17,14 @@ import {
   PaneMenu,
   Paneset,
 } from '@folio/stripes/components';
-import { SearchAndSortQuery, buildUrl } from '@folio/stripes/smart-components';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { get } from 'lodash';
 import { useStripes } from '@folio/stripes/core';
-import { useHistory, useLocation } from 'react-router';
-import JobsFilter from './JobsFilter';
+import {
+  buildUrl,
+  SearchAndSortQuery,
+} from '@folio/stripes/smart-components';
+
 import urls from '../../util/urls';
+import JobsFilter from './JobsFilter';
 import JobsViewResultCell from './JobsViewResultCell';
 
 const resultsFormatter = (formatMessage, stripes, source) => {
@@ -39,9 +50,11 @@ const resultsFormatter = (formatMessage, stripes, source) => {
       const seconds = diff % 60;
 
       let result = '';
+
       if (hours >= 1) {
         result += format(hours) + 'h ';
       }
+
       result += format(minutes) + 'm ' + format(seconds) + 's';
       return result;
     } else {
@@ -70,11 +83,13 @@ const resultsFormatter = (formatMessage, stripes, source) => {
     duration: (job) => getDuration(job.startedAt, job.finishedAt),
     status: (job) => {
       let status;
+
       if (job.finishedAt) {
         status = 'finished';
       } else {
         status = job.nextStart ? 'scheduled' : 'running';
       }
+
       return formatMessage({
         id: 'ui-erm-usage.harvester.jobs.filter.status.' + status,
       });
@@ -101,6 +116,7 @@ const JobsView = ({ source, filterGroups }) => {
   const querySetter = ({ location: loc, nsValues }) => {
     const url = buildUrl(loc, nsValues);
     const { pathname, search } = loc;
+
     if (`${pathname}${search}` !== url) {
       history.push(url, loc.state);
     }
@@ -120,6 +136,7 @@ const JobsView = ({ source, filterGroups }) => {
         />
       );
     }
+
     return <FormattedMessage id="stripes-smart-components.searchCriteria" />;
   };
 
@@ -182,19 +199,6 @@ const JobsView = ({ source, filterGroups }) => {
           >
             <MultiColumnList
               autoSize
-              virtualize
-              loading={source.pending()}
-              visibleColumns={[
-                'providerId',
-                'type',
-                'startedAt',
-                'finishedAt',
-                'duration',
-                'status',
-                'result'
-              ]}
-              formatter={resultsFormatter(formatMessage, stripes, source)}
-              contentData={source.records() || []}
               columnMapping={{
                 providerId: formatMessage({
                   id: 'ui-erm-usage.harvester.jobs.column.provider',
@@ -218,17 +222,30 @@ const JobsView = ({ source, filterGroups }) => {
                   id: 'ui-erm-usage.harvester.jobs.filter.result',
                 }),
               }}
-              totalCount={source.totalCount() || 0}
-              onNeedMoreData={() => {
-                source.fetchMore(30);
-              }}
+              contentData={source.records() || []}
+              formatter={resultsFormatter(formatMessage, stripes, source)}
+              loading={source.pending()}
               onHeaderClick={(e, m) => {
                 return ['startedAt', 'finishedAt'].includes(m.name)
                   ? renderProps.onSort(e, m)
                   : {};
               }}
+              onNeedMoreData={() => {
+                source.fetchMore(30);
+              }}
               sortDirection={sortDirection}
               sortOrder={sortOrder}
+              totalCount={source.totalCount() || 0}
+              virtualize
+              visibleColumns={[
+                'providerId',
+                'type',
+                'startedAt',
+                'finishedAt',
+                'duration',
+                'status',
+                'result',
+              ]}
             />
           </Pane>
         </Paneset>
@@ -238,8 +255,8 @@ const JobsView = ({ source, filterGroups }) => {
 };
 
 JobsView.propTypes = {
-  source: PropTypes.object,
   filterGroups: PropTypes.arrayOf(PropTypes.object),
+  source: PropTypes.object,
 };
 
 export default JobsView;

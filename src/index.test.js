@@ -1,11 +1,12 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { useStripes } from '@folio/stripes/core';
+
 import renderWithIntl from '../test/jest/helpers';
-import UDPEditRoute from './routes/UDPEditRoute';
-import UDPCreateRoute from './routes/UDPCreateRoute';
 import ErmUsage from './index';
+import UDPCreateRoute from './routes/UDPCreateRoute';
+import UDPEditRoute from './routes/UDPEditRoute';
 
 const match = {
   isExact: false,

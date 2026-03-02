@@ -4,4 +4,10 @@ import HarvestingStatusSelect from './HarvestingStatusSelect';
 import HarvestingViaSelect from './HarvestingViaSelect';
 import ReportReleaseSelect from './ReportReleaseSelect';
 
-export { HarvestingEndField, HarvestingStartField, HarvestingStatusSelect, HarvestingViaSelect, ReportReleaseSelect };
+export {
+  HarvestingEndField,
+  HarvestingStartField,
+  HarvestingStatusSelect,
+  HarvestingViaSelect,
+  ReportReleaseSelect,
+};

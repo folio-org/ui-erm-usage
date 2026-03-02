@@ -1,8 +1,19 @@
-import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  waitFor,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
-import { server, rest } from '../../../test/jest/testServer';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import renderWithIntl from '../../../test/jest/helpers';
+import {
+  rest,
+  server,
+} from '../../../test/jest/testServer';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
 
 const onCloseModal = jest.fn();
@@ -93,16 +104,16 @@ const renderDeleteStatistics = (stripes) => {
   renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <DeleteStatisticsModal
+        counterReports={counterReports}
         handlers={handlers}
         isStatsLoading={false}
         maxFailedAttempts={5}
         onCloseModal={onCloseModal}
-        open
         onFail={onFail}
         onSuccess={onSuccess}
+        open
         providerId={udpId}
         stripes={stripes}
-        counterReports={counterReports}
         udpLabel={udpLabel}
       />
     </StripesContext.Provider>

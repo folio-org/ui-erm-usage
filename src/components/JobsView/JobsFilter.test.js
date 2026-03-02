@@ -1,5 +1,10 @@
-import { fireEvent, screen } from '@folio/jest-config-stripes/testing-library/react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import {
+  MemoryRouter,
+  Route,
+} from 'react-router-dom';
+
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import filterGroups from '../../util/data/filterGroupsJobsView';
@@ -14,8 +19,8 @@ const renderJobFilter = (providerId, id, label) => {
   return renderWithIntl(
     <MemoryRouter initialEntries={[{ pathname: '/eusage/jobs', search, state }]}>
       <JobsFilter
-        filterGroups={filterGroups}
         activeFilters={{ state: { filters: [] } }}
+        filterGroups={filterGroups}
         getFilterHandlers={() => {}}
       />
       <Route
@@ -49,7 +54,7 @@ describe('JobFilter component tests', () => {
     expect(screen.getByText('Job types')).toBeInTheDocument();
   });
 
-  test('that checkbox toggle sets query param and keeps location state', () => {
+  test('that checkbox toggle sets query param and keeps location state', async () => {
     const expectedProviderState = {
       id: 'f3712487-7ca4-4e46-968c-5239ec9da5a1',
       label: 'ProviderXY',
@@ -64,12 +69,12 @@ describe('JobFilter component tests', () => {
     const checkbox = screen.getByRole('checkbox', { name: /ProviderXY/ });
     expect(checkbox).toBeChecked();
 
-    fireEvent.click(checkbox); // uncheck
+    await userEvent.click(checkbox); // uncheck
     expect(testLocation.state.provider).toStrictEqual(expectedProviderState);
     expect(new URLSearchParams(testLocation.search).get('providerId')).toBeNull();
     expect(checkbox).not.toBeChecked();
 
-    fireEvent.click(checkbox); // check
+    await userEvent.click(checkbox); // check
     expect(testLocation.state.provider).toStrictEqual(expectedProviderState);
     expect(new URLSearchParams(testLocation.search).get('providerId')).toBe(
       'f3712487-7ca4-4e46-968c-5239ec9da5a1'

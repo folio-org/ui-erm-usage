@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 
 import { KeyValue } from '@folio/stripes/components';
 

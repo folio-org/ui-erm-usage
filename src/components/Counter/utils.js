@@ -1,4 +1,7 @@
-import { isEqual, uniqWith } from 'lodash';
+import {
+  isEqual,
+  uniqWith,
+} from 'lodash';
 
 import rawDownloadCounterReportTypeMapping from '../../util/data/downloadReportTypesOptions';
 
@@ -22,6 +25,7 @@ export const getAvailableReports = reports => {
         if (monthData && typeof monthData === 'string') {
           return false;
         }
+
         return monthData && (!monthData.failedAttempts || monthData.failedAttempts === 0);
       });
     })

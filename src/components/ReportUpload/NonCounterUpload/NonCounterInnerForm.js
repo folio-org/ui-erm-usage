@@ -1,14 +1,26 @@
-import { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { Field } from 'react-final-form';
 import { isNil } from 'lodash';
-import { CalloutContext } from '@folio/stripes/core';
-import { Col, Row, TextField, RadioButton } from '@folio/stripes/components';
+import PropTypes from 'prop-types';
+import {
+  useContext,
+  useState,
+} from 'react';
+import { Field } from 'react-final-form';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
+import {
+  Col,
+  RadioButton,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
+import { CalloutContext } from '@folio/stripes/core';
+
+import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
-import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 
 function NonCounterUploadInnerForm(props) {
   const [selectedFile, setSelectedFile] = useState();
@@ -45,6 +57,7 @@ function NonCounterUploadInnerForm(props) {
     })
       .then((response) => {
         setShowUploadModal(false);
+
         if (response.ok) {
           response.json().then((json) => {
             mutators.setFileId({}, json.id);
@@ -109,9 +122,11 @@ function NonCounterUploadInnerForm(props) {
   const handleLinkUrlChange = (e) => {
     const { mutators, udpId } = props;
     const value = e.target.value;
+
     if (!isNil(fileId)) {
       doDeleteRawFile();
     }
+
     setLinkUrl(value);
     mutators.setFileId({}, null);
     mutators.setLinkUrl({}, value);
@@ -140,7 +155,7 @@ function NonCounterUploadInnerForm(props) {
 
   return (
     <Row>
-      <Col xs={12} md={12}>
+      <Col md={12} xs={12}>
         <Row>
           <Col xs={10}>
             <Field
@@ -172,23 +187,23 @@ function NonCounterUploadInnerForm(props) {
               checked={useFile}
               id="custom-report-file-radio"
               inline
-              onChange={() => {
-                setUseFile(!useFile);
-              }}
               label={
                 <FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />
                 }
+              onChange={() => {
+                setUseFile(!useFile);
+              }}
             />
             <RadioButton
               checked={!useFile}
               id="custom-report-link-radio"
               inline
-              onChange={() => {
-                setUseFile(!useFile);
-              }}
               label={
                 <FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />
                 }
+              onChange={() => {
+                setUseFile(!useFile);
+              }}
             />
           </Col>
         </Row>

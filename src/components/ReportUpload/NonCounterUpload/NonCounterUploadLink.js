@@ -1,13 +1,20 @@
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { Col, Row, TextField } from '@folio/stripes/components';
+import {
+  Col,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
 
 import { isValidUrl } from '../../../util/validate';
 
 function NonCounterUploadLink({ linkUrl, onChangeLinkUrl }) {
   return (
-    <Col xs={12} md={12}>
+    <Col md={12} xs={12}>
       <Row data-test-report-link-url>
         <TextField
           error={isValidUrl(linkUrl) ? '' : <FormattedMessage id="ui-erm-usage.errors.enterValidUrl" />}

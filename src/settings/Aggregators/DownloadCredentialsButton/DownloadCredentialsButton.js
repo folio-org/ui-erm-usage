@@ -1,24 +1,29 @@
-import { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { stripesConnect, CalloutContext } from '@folio/stripes/core';
+
 import {
   Button,
   Dropdown,
   DropdownMenu,
   Icon,
 } from '@folio/stripes/components';
+import {
+  CalloutContext,
+  stripesConnect,
+} from '@folio/stripes/core';
 
 import { downloadCredentials } from '../../../util/downloadReport';
 
 const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
   const callout = useContext(CalloutContext);
+
   const onClickDownloadCredentials = (format) => {
     downloadCredentials(
       aggregatorId,
       format,
       stripes.okapi,
-      { 'Content-Type': 'application/json' },
+      { 'Content-Type': 'application/json' }
     ).catch((err) => {
       callout.sendCallout({ type: 'error', message: err.message });
     });

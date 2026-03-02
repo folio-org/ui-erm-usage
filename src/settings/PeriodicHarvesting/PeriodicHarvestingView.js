@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
   injectIntl,
-  FormattedMessage
 } from 'react-intl';
 
 import {
@@ -11,7 +11,10 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import { formatDateTime, splitDateTime } from '../../util/dateTimeProcessing';
+import {
+  formatDateTime,
+  splitDateTime,
+} from '../../util/dateTimeProcessing';
 
 const PeriodicHarvestingView = ({
   periodicConfig,
@@ -45,7 +48,9 @@ const PeriodicHarvestingView = ({
             <Col xs={8}>
               <KeyValue
                 label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-                value={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + perConf.periodicInterval })}
+                value={formatMessage(
+                  { id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + perConf.periodicInterval }
+                )}
               />
             </Col>
           </Row>
@@ -78,8 +83,8 @@ const PeriodicHarvestingView = ({
 };
 
 PeriodicHarvestingView.propTypes = {
-  periodicConfig: PropTypes.object,
   intl: PropTypes.object,
+  periodicConfig: PropTypes.object,
 };
 
 export default injectIntl(PeriodicHarvestingView);

@@ -8,8 +8,8 @@ const filterGroups = [
     operator: '=',
     values: [
       { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
-      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' }
-    ]
+      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' },
+    ],
   },
   {
     label: 'Harvest via',
@@ -18,8 +18,8 @@ const filterGroups = [
     operator: '=',
     values: [
       { name: 'Counter / Sushi', cql: 'sushi' },
-      { name: 'Aggregator', cql: 'aggregator' }
-    ]
+      { name: 'Aggregator', cql: 'aggregator' },
+    ],
   },
   {
     label: 'Aggregators',
@@ -27,7 +27,7 @@ const filterGroups = [
     cql: 'harvestingConfig.aggregator.name',
     operator: '=',
     values: [],
-    restrictWhenAllSelected: true
+    restrictWhenAllSelected: true,
   },
   {
     label: 'Has failed reports',
@@ -36,8 +36,8 @@ const filterGroups = [
     operator: '=',
     values: [
       { name: <FormattedMessage id="ui-erm-usage.general.yes" />, cql: 'yes' },
-      { name: <FormattedMessage id="ui-erm-usage.general.no" />, cql: 'no' }
-    ]
+      { name: <FormattedMessage id="ui-erm-usage.general.no" />, cql: 'no' },
+    ],
   },
   {
     label: 'Tags',
@@ -74,8 +74,8 @@ const filterGroups = [
     operator: '=',
     values: [
       { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
-      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' }
-    ]
+      { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' },
+    ],
   },
 ];
 

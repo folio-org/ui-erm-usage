@@ -1,17 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import { stripesConnect } from '@folio/stripes/core';
 import {
   makeQueryFunction,
-  StripesConnectedSource
+  StripesConnectedSource,
 } from '@folio/stripes/smart-components';
 
 import UDPs from '../components/views/UDPs';
-import urls from '../util/urls';
-
 import filterGroups from '../util/data/filterGroups';
+import urls from '../util/urls';
 
 const INITIAL_RESULT_COUNT = 30;
 const RESULT_COUNT_INCREMENT = 30;
@@ -34,39 +33,39 @@ class UDPsRoute extends React.Component {
               reportReleases: 'reportReleases',
               harvestingStatus: 'harvestingConfig.harvestingStatus',
               latestStats: 'latestReport',
-              aggregator: 'harvestingConfig.aggregator.name'
+              aggregator: 'harvestingConfig.aggregator.name',
             },
             filterGroups,
             2
-          )
+          ),
         },
-        staticFallback: { params: {} }
-      }
+        staticFallback: { params: {} },
+      },
     },
     aggregatorSettings: {
       type: 'okapi',
       path: 'aggregator-settings',
-      records: 'aggregatorSettings'
+      records: 'aggregatorSettings',
     },
     harvesterImpls: {
       type: 'okapi',
       path: 'erm-usage-harvester/impl?aggregator=false',
-      throwErrors: false
+      throwErrors: false,
     },
     errorCodes: {
       type: 'okapi',
       path: 'counter-reports/errors/codes',
-      records: 'errorCodes'
+      records: 'errorCodes',
     },
     reportTypes: {
       type: 'okapi',
       path: 'counter-reports/reports/types',
-      records: 'reportTypes'
+      records: 'reportTypes',
     },
     reportReleases: {
       type: 'okapi',
       path: 'counter-reports/reports/releases',
-      records: 'reportReleases'
+      records: 'reportReleases',
     },
     numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
@@ -74,58 +73,58 @@ class UDPsRoute extends React.Component {
       initialValue: {
         query: '',
         filters: 'status.active',
-        sort: 'label'
-      }
+        sort: 'label',
+      },
     },
     tags: {
       type: 'okapi',
       path: 'tags',
       params: {
         limit: '1000',
-        query: 'cql.allRecords=1 sortby label'
+        query: 'cql.allRecords=1 sortby label',
       },
       records: 'tags',
       throwErrors: false,
     },
-    resultCount: { initialValue: INITIAL_RESULT_COUNT }
+    resultCount: { initialValue: INITIAL_RESULT_COUNT },
   });
 
   static propTypes = {
     children: PropTypes.node,
     history: PropTypes.shape({
-      push: PropTypes.func.isRequired
+      push: PropTypes.func.isRequired,
     }).isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
-      search: PropTypes.string
+      search: PropTypes.string,
     }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
-        id: PropTypes.string
-      })
+        id: PropTypes.string,
+      }),
     }),
     mutator: PropTypes.shape({
-      usageDataProviders: PropTypes.shape({
-        POST: PropTypes.func.isRequired
-      }),
       numFiltersLoaded: PropTypes.shape({
-        replace: PropTypes.func.isRequired
+        replace: PropTypes.func.isRequired,
       }),
       query: PropTypes.shape({
-        update: PropTypes.func
-      }).isRequired
+        update: PropTypes.func,
+      }).isRequired,
+      usageDataProviders: PropTypes.shape({
+        POST: PropTypes.func.isRequired,
+      }),
     }).isRequired,
     resources: PropTypes.shape({
       aggregatorSettings: PropTypes.shape(),
       harvesterImpls: PropTypes.shape(),
       numFiltersLoaded: PropTypes.number,
       usageDataProviders: PropTypes.shape({
-        records: PropTypes.arrayOf(PropTypes.object)
-      })
+        records: PropTypes.arrayOf(PropTypes.object),
+      }),
     }).isRequired,
     stripes: PropTypes.shape({
-      logger: PropTypes.object
-    }).isRequired
+      logger: PropTypes.object,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -203,15 +202,15 @@ class UDPsRoute extends React.Component {
           reportTypes: get(resources, 'reportTypes.records', []),
           reportReleases: get(resources, 'reportReleases.records', []),
         }}
-        selectedRecordId={match.params.id}
+        history={history}
+        location={location}
         onNeedMoreData={this.handleNeedMoreData}
         queryGetter={this.queryGetter}
         querySetter={this.querySetter}
         searchField={this.searchField}
         searchString={location.search}
+        selectedRecordId={match.params.id}
         source={this.source}
-        history={history}
-        location={location}
       >
         {children}
       </UDPs>

@@ -1,7 +1,16 @@
-import { screen, waitFor, within } from '@folio/jest-config-stripes/testing-library/react';
-import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
 import { MemoryRouter } from 'react-router-dom';
+
+import {
+  screen,
+  waitFor,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import UDPForm from './UDPForm';
 
@@ -71,7 +80,12 @@ const initialUdp = {
 
 const initialValues = {
   status: 'active',
-  harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5.1', sushiConfig: { serviceType: 'cs51' } }
+  harvestingConfig: {
+    harvestingStatus: 'active',
+    harvestVia: 'sushi',
+    reportRelease: '5.1',
+    sushiConfig: { serviceType: 'cs51' },
+  },
 };
 
 const onDelete = jest.fn();
@@ -152,7 +166,7 @@ describe('UDPForm', () => {
 
       await waitFor(() => expect(harvestingStatusSelect).toBeInTheDocument());
 
-      userEvent.selectOptions(harvestingStatusSelect, 'active');
+      await userEvent.selectOptions(harvestingStatusSelect, 'active');
     });
 
     test('should enable aggregator options', async () => {
@@ -180,22 +194,22 @@ describe('UDPForm', () => {
     });
 
     const testSwitchFromCounterRelease4To5 = async (reportRelease) => {
-      expect(await screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
-      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
-      const reportTypeButton = await screen.getByRole('button', { name: /Report type/ });
+      const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
 
-      await userEvent.click(await screen.getByRole('option', { name: /BR1/ }));
+      await userEvent.click(screen.getByRole('option', { name: /BR1/ }));
       expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), [reportRelease]);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
-      await userEvent.click(await screen.getByRole('button', { name: 'Clear reports' }));
-      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
+      await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButtonNew).toBeInTheDocument();
@@ -204,7 +218,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('option', { name: /IR/ })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: /PR/ })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: /TR/ })).toBeInTheDocument();
-      await userEvent.click(await screen.getByRole('option', { name: /PR/ }));
+      await userEvent.click(screen.getByRole('option', { name: /PR/ }));
       expect(screen.getByLabelText('PR')).toBeInTheDocument();
       expect(screen.queryByRole('option', { name: /BR1/ })).not.toBeInTheDocument();
       expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
@@ -237,7 +251,7 @@ describe('UDPForm', () => {
 
       const endInput = screen.getByLabelText(/Harvesting end/i);
       await userEvent.type(endInput, '01/2020');
-      await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
+      await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
       expect(screen.getByText('End date must be greater than start date', { exact: false })).toBeInTheDocument();
     });
   });
@@ -252,9 +266,11 @@ describe('UDPForm', () => {
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /provider status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']);
+      await userEvent.selectOptions(
+        screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']
+      );
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
-      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
 
@@ -264,7 +280,7 @@ describe('UDPForm', () => {
 
       await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
 
-      await userEvent.click(await screen.getByRole('button', { name: /Save & close/ }));
+      await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
       expect(onSubmit).toHaveBeenCalled();
     });
   });
@@ -316,16 +332,16 @@ describe('UDPForm', () => {
 
       expect(screen.getByText('Counter 4')).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
-      await userEvent.click(await screen.getByRole('button', { name: /add report type/i }));
+      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
-      await userEvent.click(await screen.getByText('BR1'));
+      await userEvent.click(screen.getByText('BR1'));
       await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
       await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
-      await userEvent.click(await screen.getByRole('button', { name: 'Save & close' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Save & close' }));
       expect(onSubmit).not.toHaveBeenCalled();
     });
   });
@@ -366,9 +382,7 @@ describe('UDPForm', () => {
     });
 
     test('harvesting status is inactive', async () => {
-      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), [
-        'inactive',
-      ]);
+      await userEvent.selectOptions(screen.getByLabelText('Harvesting status', { exact: false }), ['inactive']);
 
       expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
@@ -428,7 +442,10 @@ describe('UDPForm', () => {
         expect(screen.getByText('Required')).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: 'Customer ID' })).toBeRequired();
 
-        await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
+        await userEvent.selectOptions(
+          screen.getByRole('combobox', { name: /harvest statistics via/i }),
+          ['aggregator']
+        );
         expect(screen.getByRole('textbox', { name: 'Customer ID' })).not.toBeRequired();
         expect(screen.queryByText('Required')).not.toBeInTheDocument();
       });
@@ -501,35 +518,58 @@ describe('UDPForm', () => {
     });
 
     it('should open modal with headline, message and buttons', async () => {
-      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
-      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).toBeInTheDocument();
+      const changeStatusModal =
+        screen.getByRole(
+          'dialog',
+          { name: 'The harvesting status is still active, although the provider status has been set to inactive.' }
+        );
+      expect(within(changeStatusModal).getByRole(
+        'heading',
+        { name: 'Change of harvesting status?' }
+      )).toBeInTheDocument();
 
       const cancelButton = within(changeStatusModal).getByRole('button', { name: 'Cancel' });
-      const confirmButton = within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
+      const confirmButton =
+        within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
       expect(cancelButton).toBeInTheDocument();
       expect(confirmButton).toBeInTheDocument();
     });
 
     test('clicking cancel should close the modal and set both status to active ', async () => {
-      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
+      const changeStatusModal =
+        screen.getByRole(
+          'dialog',
+          { name: 'The harvesting status is still active, although the provider status has been set to inactive.' }
+        );
       const cancelButton = within(changeStatusModal).getByRole('button', { name: 'Cancel' });
       await userEvent.click(cancelButton);
 
       expect(screen.getByRole('combobox', { name: 'Provider status' })).toHaveValue('active');
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toHaveValue('active');
-      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).not.toBeInTheDocument();
+      expect(within(changeStatusModal).queryByRole(
+        'heading',
+        { name: 'Change of harvesting status?' }
+      )).not.toBeInTheDocument();
     });
 
-    test('clicking confirm should close the modal, set both status to inactive and disable harvester select box', async () => {
-      const changeStatusModal = screen.getByRole('dialog', { name: 'The harvesting status is still active, although the provider status has been set to inactive.' });
-      const confirmButton = within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
+    test('clicking confirm should close the modal, ' +
+      'set both status to inactive and disable harvester select box', async () => {
+      const changeStatusModal =
+        screen.getByRole(
+          'dialog',
+          { name: 'The harvesting status is still active, although the provider status has been set to inactive.' }
+        );
+      const confirmButton =
+        within(changeStatusModal).getByRole('button', { name: 'Set harvesting status to inactive' });
       const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
       await userEvent.click(confirmButton);
 
       expect(screen.getByRole('combobox', { name: 'Provider status' })).toHaveValue('inactive');
       expect(harvestingStatusCombobox).toHaveValue('inactive');
       expect(harvestingStatusCombobox).toBeDisabled();
-      expect(within(changeStatusModal).getByRole('heading', { name: 'Change of harvesting status?' })).not.toBeInTheDocument();
+      expect(within(changeStatusModal).queryByRole(
+        'heading', { name: 'Change of harvesting status?' }
+      )).not.toBeInTheDocument();
     });
   });
 });

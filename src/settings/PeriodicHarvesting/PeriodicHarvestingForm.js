@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { IfPermission } from '@folio/stripes/core';
 import {
   Button,
   Col,
@@ -15,11 +17,12 @@ import {
   Select,
   Timepicker,
 } from '@folio/stripes/components';
+import { IfPermission } from '@folio/stripes/core';
 import stripesFinalForm from '@folio/stripes/final-form';
 
-import { required } from '../../util/validate';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 import { formatDateTime } from '../../util/dateTimeProcessing';
+import { required } from '../../util/validate';
 
 const PeriodicHarvestingForm = ({
   handleSubmit,
@@ -37,6 +40,7 @@ const PeriodicHarvestingForm = ({
     if (confirmation) {
       onDelete();
     }
+
     setConfirmDelete(false);
   };
 
@@ -49,11 +53,11 @@ const PeriodicHarvestingForm = ({
         <Row>
           <Col xs={8}>
             <Field
-              label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />}
               aria-label={intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
-              name="date"
-              id="periodic-harvesting-start"
               component={Datepicker}
+              id="periodic-harvesting-start"
+              label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />}
+              name="date"
               outputFormatter={({ value }) => value}
               validate={required}
             />
@@ -62,9 +66,9 @@ const PeriodicHarvestingForm = ({
         <Row>
           <Col xs={8}>
             <Field
-              name="time"
-              label={intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
               component={Timepicker}
+              label={intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+              name="time"
               outputFormatter={({ value }) => value}
               validate={required}
             />
@@ -73,9 +77,6 @@ const PeriodicHarvestingForm = ({
         <Row>
           <Col xs={8}>
             <Field
-              label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.periodicInterval" />}
-              name="periodicInterval"
-              id="periodic-harvesting-interval"
               component={Select}
               dataOptions={periodicHarvestingIntervals.map(
                 ({ label, value }) => ({
@@ -83,11 +84,14 @@ const PeriodicHarvestingForm = ({
                   value,
                 })
               )}
+              fullWidth
+              id="periodic-harvesting-interval"
               initialValue={
                 initialValues.periodicInterval ||
                 periodicHarvestingIntervals[0].value
               }
-              fullWidth
+              label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.periodicInterval" />}
+              name="periodicInterval"
               validate={required}
             />
           </Col>
@@ -103,34 +107,34 @@ const PeriodicHarvestingForm = ({
         <PaneMenu>
           <IfPermission perm="ui-erm-usage.generalSettings.manage">
             <Button
-              id="clickable-delete-config"
-              title="DELETE"
               buttonStyle="danger"
-              onClick={beginDelete}
               disabled={isDeleteButtonDisabled}
+              id="clickable-delete-config"
               marginBottom0
+              onClick={beginDelete}
+              title="DELETE"
             >
               <FormattedMessage id="ui-erm-usage.general.delete" />
             </Button>
           </IfPermission>
           <Button
-            id="save-config"
-            type="submit"
-            title="Save"
             buttonStyle="primary paneHeaderNewButton"
+            id="save-config"
             marginBottom0
+            title="Save"
+            type="submit"
           >
             <FormattedMessage id="ui-erm-usage.general.save" />
           </Button>
         </PaneMenu>
       </form>
       <ConfirmationModal
-        id="delete-config-confirmation"
-        open={confirmDelete}
         heading={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.confirmDelete" />}
+        id="delete-config-confirmation"
         message={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.deleteQuestion" />}
-        onConfirm={() => { doConfirmDelete(true); }}
         onCancel={() => { doConfirmDelete(false); }}
+        onConfirm={() => { doConfirmDelete(true); }}
+        open={confirmDelete}
       />
     </>
   );

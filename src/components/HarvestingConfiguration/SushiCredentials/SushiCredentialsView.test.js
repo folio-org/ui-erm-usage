@@ -1,8 +1,8 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import renderWithIntl from '../../../../test/jest/helpers';
 
-import SushiCredentialsView from './SushiCredentialsView';
 import udp from '../../../../test/fixtures/udp';
+import renderWithIntl from '../../../../test/jest/helpers';
+import SushiCredentialsView from './SushiCredentialsView';
 
 const renderSushiCredentialsView = (usageDataProvider = udp, hideCredentials = true) => {
   const settings = [
@@ -13,7 +13,7 @@ const renderSushiCredentialsView = (usageDataProvider = udp, hideCredentials = t
     },
   ];
   return renderWithIntl(
-    <SushiCredentialsView usageDataProvider={usageDataProvider} settings={settings} />
+    <SushiCredentialsView settings={settings} usageDataProvider={usageDataProvider} />
   );
 };
 

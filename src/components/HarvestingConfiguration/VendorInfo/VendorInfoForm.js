@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import { Field } from 'react-final-form';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
 import {
   Col,
@@ -43,10 +46,10 @@ const VendorInfoForm = ({
         <Col xs={8}>
           <Field
             component={TextField}
+            data={!disabled && isRequired ? 1 : 0}
             disabled={disabled}
             fullWidth
             id="addudp_serviceurl"
-            data={!disabled && isRequired ? 1 : 0}
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
             name="harvestingConfig.sushiConfig.serviceUrl"
             placeholder={intl.formatMessage({
@@ -65,7 +68,7 @@ VendorInfoForm.propTypes = {
   disabled: PropTypes.bool.isRequired,
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   intl: PropTypes.object,
-  isRequired: PropTypes.bool
+  isRequired: PropTypes.bool,
 };
 
 export default injectIntl(VendorInfoForm);

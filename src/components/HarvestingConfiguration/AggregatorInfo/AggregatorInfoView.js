@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Row, Col, KeyValue, NoValue } from '@folio/stripes/components';
+import {
+  Col,
+  KeyValue,
+  NoValue,
+  Row,
+} from '@folio/stripes/components';
 
 import AggregatorContactInfo from './AggregatorContactInfo';
 
@@ -73,10 +78,10 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
 };
 
 AggregatorInfoView.propTypes = {
-  usageDataProvider: PropTypes.object.isRequired,
   stripes: PropTypes.shape({
     hasPerm: PropTypes.func.isRequired,
   }).isRequired,
+  usageDataProvider: PropTypes.object.isRequired,
 };
 
 export default AggregatorInfoView;

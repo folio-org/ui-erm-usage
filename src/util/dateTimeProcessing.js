@@ -1,7 +1,8 @@
 import moment from 'moment-timezone';
 
 export const combineDateTime = (date, time, locale, timezone) => {
-  const localeData = moment().locale(locale).localeData();
+  const localeData = moment().locale(locale)
+    .localeData();
   const dateFormat = localeData.longDateFormat('L');
   const timeFormat = localeData.longDateFormat('LT');
   return moment
@@ -15,7 +16,8 @@ export const combineDateTime = (date, time, locale, timezone) => {
 };
 
 export const splitDateTime = (dateTime, locale, timezone) => {
-  const dT = moment(dateTime).locale(locale).tz(timezone);
+  const dT = moment(dateTime).locale(locale)
+    .tz(timezone);
   return {
     date: dT.format('L'),
     time: dT.format('LT'),

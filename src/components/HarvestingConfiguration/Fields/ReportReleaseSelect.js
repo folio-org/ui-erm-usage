@@ -1,11 +1,14 @@
+import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 
 import { Select } from '@folio/stripes/components';
 
-import { notRequired, required } from '../../../util/validate';
 import reportReleaseOptions from '../../../util/data/reportReleaseOptions';
+import {
+  notRequired,
+  required,
+} from '../../../util/validate';
 
 const ReportReleaseSelect = (props) => {
   return (
@@ -27,7 +30,7 @@ const ReportReleaseSelect = (props) => {
 ReportReleaseSelect.propTypes = {
   id: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  required: PropTypes.bool
+  required: PropTypes.bool,
 };
 
 export default ReportReleaseSelect;

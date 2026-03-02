@@ -1,9 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
-import { Col, Row, TextField } from '@folio/stripes/components';
+import {
+  Col,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
 import { ConfigManager } from '@folio/stripes/smart-components';
 
 import {

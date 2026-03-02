@@ -1,5 +1,5 @@
 const urls = {
-  udps : () => '/eusage',
+  udps: () => '/eusage',
   udpView: id => `/eusage/view/${id}`,
   udpEdit: id => `/eusage/${id}/edit`,
   udpCreate: () => '/eusage/create',

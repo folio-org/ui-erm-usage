@@ -1,5 +1,7 @@
-import { useStripes } from '@folio/stripes/core';
 import { useIntl } from 'react-intl';
+
+import { useStripes } from '@folio/stripes/core';
+
 import fetchWithDefaultOptions from '../fetchWithDefaultOptions';
 
 const usePeriodicConfig = () => {

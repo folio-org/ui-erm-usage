@@ -1,4 +1,10 @@
-import { fireEvent, screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  fireEvent,
+  screen,
+  waitFor,
+} from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import FileUploader from './FileUploader';
 
@@ -31,7 +37,7 @@ describe('FileUploader', () => {
 
   it('calls onChange when a file is selected', async () => {
     const dropzone = screen.getByTestId('fileInput');
-    fireEvent.change(dropzone, { target: { files: [file] } });
+    await userEvent.upload(dropzone, file);
 
     await waitFor(() => {
       expect(onChangeMock).toHaveBeenCalledWith(file);

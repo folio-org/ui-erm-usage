@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { Field, Form } from 'react-final-form';
+import {
+  Field,
+  Form,
+} from 'react-final-form';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   Checkbox,
@@ -12,9 +17,10 @@ import {
   ModalFooter,
   TextField,
 } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
-import FileUploader from '../FileUploader';
 import formCss from '../../../util/sharedStyles/form.css';
+import FileUploader from '../FileUploader';
 
 function CounterUploadModal({ intl, onClose, onSubmit, open }) {
   const footer = (isValid, handleSubmit, handleReset) => {
@@ -37,26 +43,28 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
 
   const validateFormValues = (values) => {
     const errors = {};
+
     if (!values.file) {
       errors.file = 'Required';
     }
+
     if (values.reportEditedManually && !values.editReason) {
       errors.editReason = 'Required';
     }
+
     return errors;
   };
 
   return (
     <Form
       onSubmit={onSubmit}
-      validate={validateFormValues}
       render={({ handleSubmit, form, values }) => (
         <Modal
           closeOnBackgroundClick
           footer={footer(form.getState().valid, handleSubmit, form.reset)}
           id="upload-counter-modal"
-          open={open}
           label={intl.formatMessage({ id: 'ui-erm-usage.statistics.counter.upload' })}
+          open={open}
         >
           <div>
             <KeyValue
@@ -65,7 +73,7 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
             />
           </div>
           <div>
-            <Col xs={8} className={formCss.centered}>
+            <Col className={formCss.centered} xs={8}>
               <Field name="file">
                 {({ input: { onChange } }) => <FileUploader onChange={onChange} />}
               </Field>
@@ -92,8 +100,8 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
               component={TextField}
               disabled={values.reportEditedManually?.value === false}
               fullWidth
-              initialValue=""
               id="addcounterreport_editReason"
+              initialValue=""
               label={<FormattedMessage id="ui-erm-usage.report.upload.editReason" />}
               name="editReason"
               placeholder={intl.formatMessage({ id: 'ui-erm-usage.report.upload.editReason.placeholder' })}
@@ -102,15 +110,16 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
           </div>
         </Modal>
       )}
+      validate={validateFormValues}
     />
   );
 }
 
 CounterUploadModal.propTypes = {
   intl: PropTypes.object,
-  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
 };
 
 export default injectIntl(stripesConnect(CounterUploadModal));

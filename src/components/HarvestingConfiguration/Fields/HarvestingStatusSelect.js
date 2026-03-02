@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Select } from '@folio/stripes/components';
 
-import { required } from '../../../util/validate';
 import statusOptions from '../../../util/data/statusOptions';
 import useTranslateLabels from '../../../util/hooks/useTranslateLabels';
+import { required } from '../../../util/validate';
 
 const HarvestingStatusSelect = ({ disabled }) => {
   return (

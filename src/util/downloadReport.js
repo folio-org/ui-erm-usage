@@ -1,4 +1,5 @@
 import saveAs from 'file-saver';
+
 import fetchWithDefaultOptions from './fetchWithDefaultOptions';
 
 const saveReport = (id, reportData, fileType) => {
@@ -24,6 +25,7 @@ const downloadCredentials = (aggregatorId, format, okapi, httpHeaders) => {
         if (format === 'csv') {
           return response.text();
         }
+
         return response.blob();
       }
     })
@@ -35,4 +37,7 @@ const downloadCredentials = (aggregatorId, format, okapi, httpHeaders) => {
     });
 };
 
-export { downloadCredentials, saveReport };
+export {
+  downloadCredentials,
+  saveReport,
+};

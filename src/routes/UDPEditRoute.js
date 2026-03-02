@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
 
-import { stripesConnect } from '@folio/stripes/core';
 import { LoadingPane } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import extractHarvesterImpls from '../util/harvesterImpls';
@@ -48,9 +48,11 @@ const UDPEditRoute = ({
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 
   if (!hasPerms) return <div>No Permission</div>;
+
   if (fetchIsPending()) {
     return <LoadingPane onClose={handleClose} />;
   }
+
   return (
     <UDPForm
       data={{

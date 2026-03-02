@@ -1,4 +1,8 @@
-import { combineDateTime, formatDateTime, splitDateTime } from './dateTimeProcessing';
+import {
+  combineDateTime,
+  formatDateTime,
+  splitDateTime,
+} from './dateTimeProcessing';
 
 describe('test split', () => {
   const splitCases = [

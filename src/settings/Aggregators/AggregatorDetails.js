@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { stripesConnect } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -13,11 +12,12 @@ import {
   NoValue,
   Row,
 } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
 import { MOD_SETTINGS } from '../../util/constants';
-import DownloadCredentialsButton from './DownloadCredentialsButton';
-import { AggregatorConfigView } from './AggregatorConfig';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
+import { AggregatorConfigView } from './AggregatorConfig';
+import DownloadCredentialsButton from './DownloadCredentialsButton';
 
 const AggregatorDetails = ({
   initialValues,
@@ -34,7 +34,7 @@ const AggregatorDetails = ({
   const handleSectionToggle = ({ id }) => {
     setSections((curState) => ({
       ...curState,
-      [id]: !curState[id]
+      [id]: !curState[id],
     }));
   };
 
@@ -53,7 +53,6 @@ const AggregatorDetails = ({
   };
 
   const aggregator = initialValues;
-  const contacts = renderContact(aggregator);
   const sType = aggregator.serviceType;
   const serviceType = aggregators.find((e) => e.value === sType);
   const serviceTypeLabel = serviceType?.label ?? <NoValue />;
@@ -90,10 +89,10 @@ const AggregatorDetails = ({
           </Col>
         </Row>
         <Accordion
-          open={sections.generalInformation}
           id="generalInformation"
-          onToggle={handleSectionToggle}
           label={<FormattedMessage id="ui-erm-usage.aggregator.generalInformation" />}
+          onToggle={handleSectionToggle}
+          open={sections.generalInformation}
         >
           <Row>
             <Col xs={4}>
@@ -114,10 +113,10 @@ const AggregatorDetails = ({
         </Accordion>
 
         <Accordion
-          open={sections.aggregatorConfig}
           id="aggregatorConfig"
-          onToggle={handleSectionToggle}
           label={<FormattedMessage id="ui-erm-usage.aggregator.aggregatorConfig.title" />}
+          onToggle={handleSectionToggle}
+          open={sections.aggregatorConfig}
         >
           <Row>
             <Col xs={8}>
@@ -130,11 +129,11 @@ const AggregatorDetails = ({
         </Accordion>
 
         <Accordion
-          open={sections.accountConfig}
-          id="accountConfig"
-          onToggle={handleSectionToggle}
-          label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
           displayWhenOpen={displayWhenOpenAccountConfAcc}
+          id="accountConfig"
+          label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig" />}
+          onToggle={handleSectionToggle}
+          open={sections.accountConfig}
         >
           <Row>
             <Col xs={4}>
@@ -148,7 +147,7 @@ const AggregatorDetails = ({
               />
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.contact" />}
-                value={contacts}
+                value={renderContact(aggregator)}
               />
             </Col>
           </Row>
@@ -165,11 +164,12 @@ AggregatorDetails.manifest = Object.freeze({
     path: MOD_SETTINGS.BASE_PATH,
     params: {
       query: `(scope==${MOD_SETTINGS.SCOPES.EUSAGE} and key==${MOD_SETTINGS.CONFIG_NAMES.HIDE_CREDENTIALS})`,
-    }
+    },
   },
 });
 
 AggregatorDetails.propTypes = {
+  aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialValues: PropTypes.object,
   resources: PropTypes.shape({
     settings: PropTypes.shape({
@@ -177,7 +177,6 @@ AggregatorDetails.propTypes = {
     }),
   }).isRequired,
   stripes: PropTypes.shape().isRequired,
-  aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default stripesConnect(AggregatorDetails);
