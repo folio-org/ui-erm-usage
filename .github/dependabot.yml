@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+ignore:
+  - dependency-name: "@folio/*"
+  - dependency-name: "react"
+  - dependency-name: "react-dom"
+  - dependency-name: "react-intl"
+  - dependency-name: "react-router"
+  - dependency-name: "react-router-dom"
