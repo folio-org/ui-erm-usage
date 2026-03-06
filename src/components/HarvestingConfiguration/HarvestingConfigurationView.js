@@ -1,6 +1,12 @@
+import {
+  get,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { get, isEmpty } from 'lodash';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
 import {
   Accordion,
@@ -10,10 +16,10 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import { AggregatorInfoView } from './AggregatorInfo';
-import { VendorInfoView } from './VendorInfo';
-import { SushiCredentialsView } from './SushiCredentials';
 import reportReleaseOptions from '../../util/data/reportReleaseOptions';
+import { AggregatorInfoView } from './AggregatorInfo';
+import { SushiCredentialsView } from './SushiCredentials';
+import { VendorInfoView } from './VendorInfo';
 
 const HarvestingConfigurationView = ({
   usageDataProvider,
@@ -25,21 +31,23 @@ const HarvestingConfigurationView = ({
 }) => {
   const createProvider = (udp) => {
     const harvestVia = get(udp, 'harvestingConfig.harvestVia');
+
     if (!harvestVia) {
       return null;
     }
+
     if (harvestVia === 'aggregator') {
       return (
         <AggregatorInfoView
-          usageDataProvider={udp}
           stripes={stripes}
+          usageDataProvider={udp}
         />
       );
     } else {
       return (
         <VendorInfoView
-          usageDataProvider={udp}
           harvesterImpls={harvesterImpls}
+          usageDataProvider={udp}
         />
       );
     }
@@ -92,14 +100,14 @@ const HarvestingConfigurationView = ({
         </Col>
       </Row>
       <Accordion
-        open={sushiCredsOpen}
-        onToggle={onToggle}
-        label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.credentials" />}
         id="sushiCredsAccordion"
+        label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.credentials" />}
+        onToggle={onToggle}
+        open={sushiCredsOpen}
       >
         <SushiCredentialsView
-          usageDataProvider={usageDataProvider}
           settings={settings}
+          usageDataProvider={usageDataProvider}
         />
       </Accordion>
     </div>
@@ -107,12 +115,12 @@ const HarvestingConfigurationView = ({
 };
 
 HarvestingConfigurationView.propTypes = {
-  usageDataProvider: PropTypes.object.isRequired,
-  stripes: PropTypes.object.isRequired,
-  sushiCredsOpen: PropTypes.bool,
+  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   settings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+  stripes: PropTypes.object.isRequired,
+  sushiCredsOpen: PropTypes.bool,
+  usageDataProvider: PropTypes.object.isRequired,
 };
 
 export default injectIntl(HarvestingConfigurationView);

@@ -1,7 +1,11 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
-import { MemoryRouter } from 'react-router-dom';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import '../../../../test/jest/__mock__';
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';

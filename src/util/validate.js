@@ -14,6 +14,7 @@ const requiredArray = value => {
 };
 
 const mail = value => {
+  // eslint-disable-next-line max-len
   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   if (value && !mailRegex.test(value)) {
@@ -29,6 +30,7 @@ const yearMonth = value => {
   if (value && !yyyyMMRegex.test(value)) {
     return <FormattedMessage id="ui-erm-usage.errors.dateInvalid" />;
   }
+
   return undefined;
 };
 
@@ -44,10 +46,12 @@ const endDate = values => {
   const errors = {};
   const start = get(values, 'harvestingConfig.harvestingStart', '');
   const end = get(values, 'harvestingConfig.harvestingEnd', '');
+
   if (new Date(end) < new Date(start)) {
     errors.harvestingConfig = {};
     errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
   }
+
   return errors;
 };
 
@@ -55,10 +59,15 @@ const isYearMonth = value => {
   if (value && yyyyMMRegex.test(value)) {
     return true;
   }
+
   return false;
 };
 
-const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined);
+const composeValidators =
+  (...validators) => value => validators.reduce(
+    (error, validator) => error || validator(value),
+    undefined
+  );
 
 const isValidUrl = (url) => {
   try {

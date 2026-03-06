@@ -1,10 +1,19 @@
-import { CalloutContext, StripesContext, useStripes } from '@folio/stripes/core';
-import { screen, waitFor } from '@folio/jest-config-stripes/testing-library/react';
-import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+
+import {
+  screen,
+  waitFor,
+} from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import {
+  CalloutContext,
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import PeriodicHarvestingManager from './PeriodicHarvestingManager';
 import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
+import PeriodicHarvestingManager from './PeriodicHarvestingManager';
 
 jest.mock('../../util/hooks/usePeriodicConfig');
 jest.mock('./PeriodicHarvestingView', () => () => <div>PeriodicHarvestingView</div>);

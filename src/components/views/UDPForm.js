@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,14 +19,13 @@ import {
   Paneset,
   Row,
 } from '@folio/stripes/components';
-import { ViewMetaData } from '@folio/stripes/smart-components';
 import { IfPermission } from '@folio/stripes/core';
 import stripesFinalForm from '@folio/stripes/final-form';
+import { ViewMetaData } from '@folio/stripes/smart-components';
 
-import { UDPInfoForm } from '../UDPInfo';
-import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
 import { endDate } from '../../util/validate';
-
+import { HarvestingConfigurationForm } from '../HarvestingConfiguration';
+import { UDPInfoForm } from '../UDPInfo';
 import css from './UDPForm.css';
 
 const UDPForm = ({
@@ -73,7 +72,7 @@ const UDPForm = ({
   const shortcuts = [
     {
       name: 'save',
-      handler: handleSaveKeyCommand
+      handler: handleSaveKeyCommand,
     },
     {
       name: 'expandAllSections',
@@ -82,7 +81,7 @@ const UDPForm = ({
     {
       name: 'collapseAllSections',
       handler: collapseAllSections,
-    }
+    },
   ];
 
   const beginDelete = () => {
@@ -103,10 +102,10 @@ const UDPForm = ({
         <FormattedMessage id="ui-erm-usage.udp.form.close">
           {([ariaLabel]) => (
             <IconButton
-              id="clickable-close-udp-form-x"
-              onClick={handlers.onClose}
               aria-label={ariaLabel}
               icon="times"
+              id="clickable-close-udp-form-x"
+              onClick={handlers.onClose}
             />
           )}
         </FormattedMessage>
@@ -122,12 +121,12 @@ const UDPForm = ({
         {isEditing && (
           <IfPermission perm="ui-erm-usage.udp.delete">
             <Button
-              id="clickable-delete-udp"
-              title={<FormattedMessage id="ui-erm-usage.general.delete" />}
               buttonStyle="danger"
-              onClick={beginDelete}
               disabled={confirmDelete}
+              id="clickable-delete-udp"
               marginBottom0
+              onClick={beginDelete}
+              title={<FormattedMessage id="ui-erm-usage.general.delete" />}
             >
               <FormattedMessage id="ui-erm-usage.general.delete" />
             </Button>
@@ -142,10 +141,10 @@ const UDPForm = ({
 
     const startButton = (
       <Button
-        data-test-udp-form-cancel-button
-        marginBottom0
-        id="clickable-close-udp-form"
         buttonStyle="default mega"
+        data-test-udp-form-cancel-button
+        id="clickable-close-udp-form"
+        marginBottom0
         onClick={handlers.onClose}
       >
         <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
@@ -154,19 +153,19 @@ const UDPForm = ({
 
     const endButton = (
       <Button
-        data-test-udp-form-submit-button
-        marginBottom0
-        id="clickable-createnewudp"
         buttonStyle="primary mega"
-        type="submit"
-        onClick={handleSubmit}
+        data-test-udp-form-submit-button
         disabled={disabled}
+        id="clickable-createnewudp"
+        marginBottom0
+        onClick={handleSubmit}
+        type="submit"
       >
         <FormattedMessage id="stripes-components.saveAndClose" />
       </Button>
     );
 
-    return <PaneFooter renderStart={startButton} renderEnd={endButton} />;
+    return <PaneFooter renderEnd={endButton} renderStart={startButton} />;
   };
 
   const handleExpandAll = (secs) => {
@@ -201,20 +200,18 @@ const UDPForm = ({
 
   const udp = initialValues || {};
 
-  const footer = renderPaneFooter();
-
   return (
     <HasCommand commands={shortcuts}>
       <form
         className={css.UDPFormRoot}
+        data-test-form-page
         id="form-udp"
         onSubmit={handleSubmit}
-        data-test-form-page
       >
         <Paneset isRoot>
           <Pane
             defaultWidth="100%"
-            footer={footer}
+            footer={renderPaneFooter()}
             renderHeader={renderFormPaneHeader}
           >
             <div className={css.UDPFormContent}>
@@ -222,8 +219,8 @@ const UDPForm = ({
                 <Row end="xs">
                   <Col xs>
                     <ExpandAllButton
-                      id="clickable-expand-all"
                       accordionStatus={sections}
+                      id="clickable-expand-all"
                       onToggle={handleExpandAll}
                     />
                   </Col>
@@ -250,18 +247,18 @@ const UDPForm = ({
                 />
               </AccordionSet>
               <ConfirmationModal
-                id="delete-udp-confirmation"
-                open={confirmDelete}
                 heading={
                   <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
                 }
+                id="delete-udp-confirmation"
                 message={getConfirmationMessage(udp)}
-                onConfirm={() => {
-                  doConfirmDelete(true);
-                }}
                 onCancel={() => {
                   doConfirmDelete(false);
                 }}
+                onConfirm={() => {
+                  doConfirmDelete(true);
+                }}
+                open={confirmDelete}
               />
             </div>
           </Pane>
@@ -278,16 +275,17 @@ UDPForm.propTypes = {
   }).isRequired,
   form: PropTypes.shape({
     change: PropTypes.func,
-    resetFieldState: PropTypes.func,
     mutators: PropTypes.shape({
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
     }),
+    resetFieldState: PropTypes.func,
   }),
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func,
   }),
+  handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.shape({
     id: PropTypes.string,
     label: PropTypes.string,
@@ -295,7 +293,6 @@ UDPForm.propTypes = {
       createdDate: PropTypes.string,
     }),
   }),
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool,
   submitting: PropTypes.bool,

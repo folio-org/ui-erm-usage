@@ -1,7 +1,10 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import { StripesContext, useStripes } from '@folio/stripes/core';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers';
 import { MOD_SETTINGS } from '../../util/constants';
@@ -10,11 +13,11 @@ import DisplaySettings from './DisplaySettings';
 const renderDisplaySettings = (stripes, resources) => {
   if (resources) {
     stripes.connect =
-      (Component) =>
-        ({ ...props }) => {
-          return <Component {...props} mutator={{}} resources={resources} />;
-        };
+      (Component) => ({ ...props }) => {
+        return <Component {...props} mutator={{}} resources={resources} />;
+      };
   }
+
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>

@@ -8,6 +8,7 @@ const transformReportsForMCL = (counterReportsPerYear) => {
         if (!releaseAcc[release]) {
           releaseAcc[release] = {};
         }
+
         releaseAcc[release][month] = report;
 
         return releaseAcc;

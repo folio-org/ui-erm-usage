@@ -1,20 +1,23 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { StripesContext, useStripes } from '@folio/stripes/core';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import HarvesterLogsSettings from './HarvesterLogsSettings';
 import { DAYS_TO_KEEP_LOGS } from '../../util/constants';
+import HarvesterLogsSettings from './HarvesterLogsSettings';
 
 const renderHarvesterLogsSettings = (stripes, resources) => {
   if (resources) {
     stripes.connect =
-      (Component) =>
-        ({ ...props }) => {
-          return <Component {...props} mutator={{}} resources={resources} />;
-        };
+      (Component) => ({ ...props }) => {
+        return <Component {...props} mutator={{}} resources={resources} />;
+      };
   }
+
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>

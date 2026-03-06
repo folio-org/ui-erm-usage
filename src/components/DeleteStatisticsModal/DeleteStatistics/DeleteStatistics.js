@@ -1,6 +1,6 @@
+import { isNil } from 'lodash';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { isNil } from 'lodash';
 
 import {
   Accordion,
@@ -13,8 +13,8 @@ import {
 import { stripesConnect } from '@folio/stripes/core';
 
 import CounterStatistics from '../../Counter';
-import ReportInfoButton from '../../Counter/ReportInfoButton';
 import css from '../../Counter/CounterStatistics.css';
+import ReportInfoButton from '../../Counter/ReportInfoButton';
 
 function DeleteStatistics({
   stripes,
@@ -26,7 +26,7 @@ function DeleteStatistics({
   addToReportsToDelete,
   removeFromReportsToDelete,
   counterReports,
-  maxFailedAttempts
+  maxFailedAttempts,
 }) {
   const handleClickReportCheckbox = (id) => {
     if (reportsToDelete.has(id)) {
@@ -38,26 +38,28 @@ function DeleteStatistics({
 
   const renderReportNew = (report, month) => {
     const r = report[month];
+
     if (report?.checkbox) {
       if (isNil(r)) {
         return <></>;
       }
+
       return (
         <Checkbox
           checked={r ? reportsToDelete.has(r.id) : false}
-          value={r.id}
-          onChange={() => handleClickReportCheckbox(r.id)}
           data-testid={`checkbox-${r.id}`}
+          onChange={() => handleClickReportCheckbox(r.id)}
+          value={r.id}
         />
       );
     } else {
       return (
         <ReportInfoButton
+          handlers={handlers}
+          maxFailedAttempts={maxFailedAttempts}
           report={r}
           stripes={stripes}
-          maxFailedAttempts={maxFailedAttempts}
           udpLabel={udpLabel}
-          handlers={handlers}
         />
       );
     }
@@ -72,6 +74,7 @@ function DeleteStatistics({
         }
       });
       const isChecked = reportIds.every(el => reportsToDelete.has(el));
+
       const handleClickReportName = () => {
         if (isChecked) {
           // remove reports from reportsToDelete
@@ -85,37 +88,42 @@ function DeleteStatistics({
           });
         }
       };
+
       return (
         <Checkbox
           checked={isChecked}
           label={report.report}
-          value={report.report}
           onChange={() => handleClickReportName()}
+          value={report.report}
         />
       );
     }
+
     return report.report;
   };
 
   const generateMonthFormatters = () => {
     const monthFormatter = {};
+
     for (let i = 1; i <= 12; i++) {
       const month = i.toString().padStart(2, '0'); // Pads single-digit months with leading zero
       monthFormatter[month] = (report) => renderReportNew(report, month);
     }
+
     return monthFormatter;
   };
 
   const reportFormatter = {
-    'report': (report) => renderReportName(report),
-    'release': report => report.release,
-    ...generateMonthFormatters()
+    report: (report) => renderReportName(report),
+    release: report => report.release,
+    ...generateMonthFormatters(),
   };
 
   const createCheckBoxEntry = (stat, key) => {
     if (isNil(stat[key])) {
       return null;
     }
+
     if (key === 'report') {
       return stat.report;
     }
@@ -133,6 +141,7 @@ function DeleteStatistics({
     if (isNil(reports)) {
       return null;
     }
+
     const newReports = [];
     reports.forEach(r => {
       const newReport = { ...r };
@@ -142,7 +151,7 @@ function DeleteStatistics({
       stats.forEach((s) => {
         newStats.push({ ...s });
         const checkBoxes = {
-          'report': createCheckBoxEntry(s, 'report'),
+          report: createCheckBoxEntry(s, 'report'),
           '01': createCheckBoxEntry(s, '01'),
           '02': createCheckBoxEntry(s, '02'),
           '03': createCheckBoxEntry(s, '03'),
@@ -152,10 +161,10 @@ function DeleteStatistics({
           '07': createCheckBoxEntry(s, '07'),
           '08': createCheckBoxEntry(s, '08'),
           '09': createCheckBoxEntry(s, '09'),
-          '10': createCheckBoxEntry(s, '10'),
-          '11': createCheckBoxEntry(s, '11'),
-          '12': createCheckBoxEntry(s, '12'),
-          'checkbox': true
+          10: createCheckBoxEntry(s, '10'),
+          11: createCheckBoxEntry(s, '11'),
+          12: createCheckBoxEntry(s, '12'),
+          checkbox: true,
         };
         newStats.push(checkBoxes);
       });
@@ -181,13 +190,13 @@ function DeleteStatistics({
           <Col xs={12}>
             <Accordion id="counter-reports-accordion" label="COUNTER">
               <CounterStatistics
-                infoText={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.infoText" />}
-                stripes={stripes}
-                providerId={providerId}
-                reports={processedReports}
                 handlers={handlers}
+                infoText={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.infoText" />}
+                providerId={providerId}
                 reportFormatter={reportFormatter}
+                reports={processedReports}
                 showMultiMonthDownload={false}
+                stripes={stripes}
               />
             </Accordion>
           </Col>
@@ -210,19 +219,19 @@ function DeleteStatistics({
 }
 
 DeleteStatistics.propTypes = {
+  addToReportsToDelete: PropTypes.func.isRequired,
   counterReports: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handlers: PropTypes.shape({}),
   isStatsLoading: PropTypes.bool.isRequired,
   maxFailedAttempts: PropTypes.number.isRequired,
   providerId: PropTypes.string.isRequired,
-  reportsToDelete: PropTypes.shape().isRequired,
-  addToReportsToDelete: PropTypes.func.isRequired,
   removeFromReportsToDelete: PropTypes.func.isRequired,
+  reportsToDelete: PropTypes.shape().isRequired,
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
-      url: PropTypes.string.isRequired,
       tenant: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
     }).isRequired,
     store: PropTypes.shape({
       getState: PropTypes.func,

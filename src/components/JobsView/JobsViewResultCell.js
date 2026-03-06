@@ -1,14 +1,16 @@
-import { InfoPopover } from '@folio/stripes/components';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { memo } from 'react';
+
+import { InfoPopover } from '@folio/stripes/components';
+
 import styles from './JobsView.css';
 
 const JobsViewResultCell = ({ errorMessage = '', text }) => {
   const textWithInfo = (
     <span className={styles.alignCentered}>
       {text}
-      <InfoPopover iconSize="medium" content={errorMessage} />
+      <InfoPopover content={errorMessage} iconSize="medium" />
     </span>
   );
   return isEmpty(errorMessage) ? text : textWithInfo;
@@ -16,7 +18,7 @@ const JobsViewResultCell = ({ errorMessage = '', text }) => {
 
 JobsViewResultCell.propTypes = {
   errorMessage: PropTypes.string,
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
 };
 
 export default memo(JobsViewResultCell);

@@ -1,7 +1,12 @@
-import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
-import { FormattedMessage } from 'react-intl';
 import { PropTypes } from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
+import {
+  Col,
+  KeyValue,
+  NoValue,
+  Row,
+} from '@folio/stripes/components';
 import { useStripes } from '@folio/stripes/core';
 
 import statusOptions from '../../util/data/statusOptions';
@@ -74,15 +79,15 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
 };
 
 UDPHeader.propTypes = {
+  lastJob: PropTypes.shape({
+    finishedAt: PropTypes.string,
+  }),
   usageDataProvider: PropTypes.shape({
-    latestReport: PropTypes.string,
     harvestingConfig: PropTypes.shape({
       harvestingStatus: PropTypes.string,
     }),
+    latestReport: PropTypes.string,
     status: PropTypes.string,
-  }),
-  lastJob: PropTypes.shape({
-    finishedAt: PropTypes.string,
   }),
 };
 

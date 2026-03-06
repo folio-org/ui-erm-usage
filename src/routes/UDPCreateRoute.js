@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 
-import { stripesConnect } from '@folio/stripes/core';
 import { LoadingPane } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import extractHarvesterImpls from '../util/harvesterImpls';
-
 import urls from '../util/urls';
 
 const UDPCreateRoute = ({
@@ -38,9 +37,11 @@ const UDPCreateRoute = ({
   const aggregators = (resources.aggregators || {}).records || [];
 
   if (!hasPerms) return <div>No Permission</div>;
+
   if (fetchIsPending()) {
     return <LoadingPane onClose={handleClose} />;
   }
+
   return (
     <UDPForm
       data={{
@@ -54,7 +55,12 @@ const UDPCreateRoute = ({
       initialValues={
         {
           status: 'active',
-          harvestingConfig: { harvestingStatus: 'active', harvestVia: 'sushi', reportRelease: '5.1', sushiConfig: { serviceType: 'cs51' } }
+          harvestingConfig: {
+            harvestingStatus: 'active',
+            harvestVia: 'sushi',
+            reportRelease: '5.1',
+            sushiConfig: { serviceType: 'cs51' },
+          },
         }
       }
       isLoading={fetchIsPending()}

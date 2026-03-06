@@ -1,13 +1,21 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { Button, Icon, KeyValue, MenuSection } from '@folio/stripes/components';
+import {
+  Button,
+  Icon,
+  KeyValue,
+  MenuSection,
+} from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
 import rawDownloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
-import isSushiWarningCode from '../../../util/isSushiWarningCode';
 import extractErrorCode from '../../../util/extractErrorCode';
+import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
 const ReportInfo = ({
   report,
@@ -42,7 +50,7 @@ const ReportInfo = ({
   };
 
   const isDownloadable = (release, reportName) => {
-    return rawDownloadCounterReportTypeMapping[release] && rawDownloadCounterReportTypeMapping[release][reportName] !== undefined;
+    return rawDownloadCounterReportTypeMapping[release]?.[reportName] !== undefined;
   };
 
   const isCSVPossible = (rep) => !rep.failedReason && isDownloadable(rep.release, rep.reportName);
@@ -91,8 +99,8 @@ const ReportInfo = ({
     return (
       <IfPermission perm="ui-erm-usage.reports.delete">
         <Button
-          id="delete-report-button"
           buttonStyle="dropdownItem"
+          id="delete-report-button"
           onClick={() => onClickDeleteReport()}
         >
           <Icon icon="trash">{msg}</Icon>
@@ -110,8 +118,8 @@ const ReportInfo = ({
 
     return (
       <Button
-        id="download-json-xml-button"
         buttonStyle="dropdownItem"
+        id="download-json-xml-button"
         onClick={() => onClickDownloadRawReport(rep.release)}
       >
         <Icon icon="arrow-down">
@@ -146,6 +154,7 @@ const ReportInfo = ({
       const id = `ui-erm-usage.report.error.${val}`;
       label = `${intl.formatMessage({ id })} (${val})`;
     }
+
     return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.exception' })}: ${label}`;
   };
 
@@ -155,7 +164,11 @@ const ReportInfo = ({
     if (error !== null) {
       return translateErrorCodes(error.code);
     } else if (failedReason.includes('<html')) {
-      const htmlError = <details><summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>{failedReason}</details>;
+      const htmlError =
+        <details>
+          <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>
+          {failedReason}
+        </details>;
       return htmlError;
     } else {
       return failedReason;
@@ -213,11 +226,6 @@ const ReportInfo = ({
     </MenuSection>
   );
 
-  const rawDownloadButton = renderRawDownloadButton(report);
-
-  const csvDownloadButton = renderCSVDownloadButton(report);
-  const xslxDownloadButton = renderXLSXDownloadButton(report);
-
   const actionSection = (
     <MenuSection
       id="menu-actions"
@@ -225,9 +233,9 @@ const ReportInfo = ({
       labelTag="h3"
     >
       {renderDeleteButton(failInfo)}
-      {rawDownloadButton}
-      {csvDownloadButton}
-      {xslxDownloadButton}
+      {renderRawDownloadButton(report)}
+      {renderCSVDownloadButton(report)}
+      {renderXLSXDownloadButton(report)}
     </MenuSection>
   );
 
@@ -240,12 +248,12 @@ const ReportInfo = ({
 };
 
 ReportInfo.propTypes = {
-  report: PropTypes.object,
   deleteReport: PropTypes.func,
   downloadRawReport: PropTypes.func,
   downloadReport: PropTypes.func,
-  retryThreshold: PropTypes.number,
   intl: PropTypes.object,
+  report: PropTypes.object,
+  retryThreshold: PropTypes.number,
   udpLabel: PropTypes.string.isRequired,
 };
 

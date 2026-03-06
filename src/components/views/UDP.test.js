@@ -1,14 +1,18 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
-import { MemoryRouter } from 'react-router-dom';
-import renderWithIntl from '../../../test/jest/helpers';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
-import UDP from './UDP';
-import stubUDP from '../../../test/fixtures/udp';
 import counterReports from '../../../test/fixtures/counterReports';
 import harvesterImpls from '../../../test/fixtures/harvesterImpls';
 import settings from '../../../test/fixtures/settings';
+import stubUDP from '../../../test/fixtures/udp';
+import renderWithIntl from '../../../test/jest/helpers';
+import UDP from './UDP';
 
 const data = {
   counterReports,
@@ -43,16 +47,16 @@ const renderUDP = (stripes) => {
       <MemoryRouter>
         <UDP
           data={data}
-          stripes={stripes}
           handlers={handlers}
           isHarvesterExistent={false}
           isLoading={false}
           isStatsLoading={false}
+          location={{}}
           mutator={mutators}
           statsReloadCount={0}
+          stripes={stripes}
           tagsEnabled={false}
           udpReloadCount={0}
-          location={{}}
         />
       </MemoryRouter>
     </StripesContext.Provider>

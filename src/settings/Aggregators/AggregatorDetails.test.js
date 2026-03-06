@@ -1,11 +1,15 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { CalloutContext, StripesContext, useStripes } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
-import AggregatorDetails from './AggregatorDetails';
+import aggregator from '../../../test/fixtures/aggregator';
 import renderWithIntl from '../../../test/jest/helpers';
 import { downloadCredentials } from '../../util/downloadReport';
-import aggregator from '../../../test/fixtures/aggregator';
+import AggregatorDetails from './AggregatorDetails';
 
 const initialValues = aggregator;
 const aggregators = [
@@ -75,8 +79,7 @@ describe('AggregatorDetails', () => {
 
     test('error is displayed in callout', async () => {
       const errMsg = 'Some error happened';
-      downloadCredentials.mockImplementation(() =>
-        Promise.reject(new Error(errMsg)));
+      downloadCredentials.mockImplementation(() => Promise.reject(new Error(errMsg)));
       const downloadCSVButton = screen.getByText('Download as CSV');
       await userEvent.click(downloadCSVButton);
 

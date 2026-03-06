@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
+import {
+  Col,
+  KeyValue,
+  NoValue,
+  Row,
+} from '@folio/stripes/components';
 
 function UDPInfoView(props) {
   const { usageDataProvider, id } = props;

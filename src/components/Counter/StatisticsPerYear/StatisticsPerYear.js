@@ -1,7 +1,19 @@
+import {
+  cloneDeep,
+  has,
+  isEmpty,
+  keys,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { cloneDeep, has, isEmpty, keys } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
 import {
   Accordion,
@@ -27,6 +39,7 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
         : false;
     });
     setYearAccordions(yearAccs);
+
     return function cleanup() {
       setYearAccordions({});
     };
@@ -59,8 +72,8 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
     ];
 
     const columnWidths = {
-      'report': '65px',
-      'release': '70px',
+      report: '65px',
+      release: '70px',
       '01': '50px',
       '02': '50px',
       '03': '50px',
@@ -70,9 +83,9 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
       '07': '50px',
       '08': '50px',
       '09': '50px',
-      '10': '50px',
-      '11': '50px',
-      '12': '50px',
+      10: '50px',
+      11: '50px',
+      12: '50px',
     };
 
     const generateColumnMappings = () => {
@@ -96,19 +109,19 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
 
       return (
         <Accordion
-          id={year}
           key={year}
+          id={year}
           label={year}
-          open={yearAccordions[y]}
           onToggle={handleAccordionToggle}
+          open={yearAccordions[y]}
         >
           <MultiColumnList
-            contentData={reps}
-            visibleColumns={visibleColumns}
-            columnWidths={columnWidths}
-            interactive={false}
-            formatter={reportFormatter}
             columnMapping={generateColumnMappings()}
+            columnWidths={columnWidths}
+            contentData={reps}
+            formatter={reportFormatter}
+            interactive={false}
+            visibleColumns={visibleColumns}
           />
         </Accordion>
       );
@@ -131,11 +144,11 @@ function StatisticsPerYear({ infoText, intl, reportFormatter, reports }) {
         <Col xs>
           <ExpandAllButton
             accordionStatus={yearAccordions}
+            collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
+            expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
             id="expand-all-counter-report-years"
             onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
-            expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
-            collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
           />
         </Col>
       </Row>

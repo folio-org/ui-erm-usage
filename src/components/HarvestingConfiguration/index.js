@@ -1,4 +1,7 @@
-import HarvestingConfigurationView from './HarvestingConfigurationView';
 import HarvestingConfigurationForm from './HarvestingConfigurationForm';
+import HarvestingConfigurationView from './HarvestingConfigurationView';
 
-export { HarvestingConfigurationView, HarvestingConfigurationForm };
+export {
+  HarvestingConfigurationView,
+  HarvestingConfigurationForm,
+};

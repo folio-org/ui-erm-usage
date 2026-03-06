@@ -1,8 +1,8 @@
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { EntryManager } from '@folio/stripes/smart-components';
 
-import AggregatorManager from './AggregatorManager';
 import renderWithIntl from '../../../test/jest/helpers';
+import AggregatorManager from './AggregatorManager';
 
 jest.mock('@folio/stripes/smart-components', () => ({
   EntryManager: jest.fn(() => <div data-testid="entry-manager" />),

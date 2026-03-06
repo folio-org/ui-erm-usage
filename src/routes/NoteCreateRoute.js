@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { Redirect } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { NoteCreatePage } from '@folio/stripes/smart-components';
 
-import urls from '../util/urls';
 import formatNoteReferrerEntityData from '../util/formatNoteReferrerEntityData';
+import urls from '../util/urls';
 
 const NoteCreateRoute = ({
   history,
-  location
+  location,
 }) => {
   const renderCreatePage = () => {
     return (
       <NoteCreatePage
-        referredEntityData={formatNoteReferrerEntityData(location.state)}
-        entityTypeTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider' }}
-        paneHeaderAppIcon="erm-usage"
         domain="erm-usage"
+        entityTypeTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider' }}
         navigateBack={history.goBack}
+        paneHeaderAppIcon="erm-usage"
+        referredEntityData={formatNoteReferrerEntityData(location.state)}
       />
     );
   };

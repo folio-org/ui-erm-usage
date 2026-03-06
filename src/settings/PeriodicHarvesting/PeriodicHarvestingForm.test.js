@@ -1,11 +1,15 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { StripesContext, useStripes } from '@folio/stripes/core';
-import { MemoryRouter } from 'react-router-dom';
-import renderWithIntl from '../../../test/jest/helpers';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
-import PeriodicHarvestingForm from './PeriodicHarvestingForm';
+import renderWithIntl from '../../../test/jest/helpers';
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
+import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 
 const stubInitialValues = {
   startAt: '2021-01-01T07:00:00.0000+0000',
@@ -17,14 +21,15 @@ const stubInitialValues = {
 
 const onSubmit = jest.fn();
 const onDelete = jest.fn();
+
 const renderPeriodicHarvestingForm = (stripes, initialVals = {}) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
         <PeriodicHarvestingForm
-          onSubmit={onSubmit}
-          onDelete={onDelete}
           initialValues={initialVals}
+          onDelete={onDelete}
+          onSubmit={onSubmit}
         />
       </MemoryRouter>
     </StripesContext.Provider>

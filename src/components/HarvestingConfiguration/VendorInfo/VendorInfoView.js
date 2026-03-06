@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import {
+  Col,
+  KeyValue,
+  NoValue,
+  Row,
+} from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
-import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
 
 const VendorInfoView = ({
   usageDataProvider,
@@ -38,8 +43,8 @@ const VendorInfoView = ({
 };
 
 VendorInfoView.propTypes = {
-  usageDataProvider: PropTypes.object.isRequired,
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+  usageDataProvider: PropTypes.object.isRequired,
 };
 
 export default stripesConnect(VendorInfoView);

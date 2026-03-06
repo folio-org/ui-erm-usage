@@ -1,31 +1,41 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { noop } from 'lodash';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
+import { Link } from 'react-router-dom';
 
-import { AppIcon, IfPermission } from '@folio/stripes/core';
 import {
-  CollapseFilterPaneButton,
-  ExpandFilterPaneButton,
-  SearchAndSortQuery,
-  SearchAndSortNoResultsMessage as NoResultsMessage,
-} from '@folio/stripes/smart-components';
-import {
-  MultiColumnList,
-  Pane,
   Button,
   HasCommand,
   Icon,
+  MultiColumnList,
   NoValue,
+  Pane,
   PaneHeader,
   PaneMenu,
   Paneset,
   SearchField,
 } from '@folio/stripes/components';
+import {
+  AppIcon,
+  IfPermission,
+} from '@folio/stripes/core';
+import {
+  CollapseFilterPaneButton,
+  ExpandFilterPaneButton,
+  SearchAndSortNoResultsMessage as NoResultsMessage,
+  SearchAndSortQuery,
+} from '@folio/stripes/smart-components';
 
-import UDPFilters from '../UDPFilters/UDPFilters';
 import urls from '../../util/urls';
+import UDPFilters from '../UDPFilters/UDPFilters';
 
 const UDPs = ({
   children,
@@ -135,10 +145,10 @@ const UDPs = ({
 
     return (
       <RowComponent
+        key={`row-${rowIndex}`}
         aria-rowindex={rowIndex + 2}
         className={rowClass}
         data-label={[rowData.name].join('...')}
-        key={`row-${rowIndex}`}
         role="row"
         {...rowProps}
       >
@@ -170,9 +180,9 @@ const UDPs = ({
     return (
       <div data-test-udps-no-results-message>
         <NoResultsMessage
-          source={result}
-          searchTerm={query.query || ''}
           filterPaneIsVisible
+          searchTerm={query.query || ''}
+          source={result}
           toggleFilterPane={noop}
         />
       </div>
@@ -182,6 +192,7 @@ const UDPs = ({
   const renderResultsFirstMenu = (filters) => {
     const filterCount =
       filters.string !== '' ? filters.string.split(',').length : 0;
+
     if (filterPaneIsVisible) {
       return null;
     }
@@ -235,7 +246,11 @@ const UDPs = ({
               buttonStyle="dropDownItem"
               id="clickable-harvester-logs"
               marginBottom0
-              to={{ pathname: urls.jobsView, search: '?sort=-startedAt', state: { from: location.pathname + location.search } }}
+              to={{
+                pathname: urls.jobsView,
+                search: '?sort=-startedAt',
+                state: { from: location.pathname + location.search },
+              }}
             >
               <Icon icon="arrow-right">
                 <FormattedMessage id="ui-erm-usage.harvester.jobs.show" />
@@ -263,13 +278,13 @@ const UDPs = ({
   const renderResultsPaneHeader = (activeFilters, result) => {
     return (
       <PaneHeader
+        actionMenu={renderActionMenu}
         appIcon={<AppIcon app="erm-usage" />}
         firstMenu={renderResultsFirstMenu(activeFilters)}
-        actionMenu={renderActionMenu}
         id="pane-list-udps"
+        paneSub={renderResultsPaneSubtitle(result)}
         paneTitle={<FormattedMessage id="ui-erm-usage.usage-data-providers" />}
         paneTitleRef={resultsPaneTitleRef}
-        paneSub={renderResultsPaneSubtitle(result)}
       />
     );
   };
@@ -280,10 +295,10 @@ const UDPs = ({
 
   return (
     <HasCommand commands={shortcuts}>
-      <div data-test-udp-instances ref={contentRef}>
+      <div ref={contentRef} data-test-udp-instances>
         <SearchAndSortQuery
           initialFilterState={{
-            status:['active'],
+            status: ['active'],
           }}
           initialSearchState={{ query: '' }}
           initialSortState={{ sort: 'label' }}
@@ -342,8 +357,8 @@ const UDPs = ({
                       <div>
                         <Button
                           buttonStyle="none"
-                          id="clickable-reset-all"
                           disabled={disableReset()}
+                          id="clickable-reset-all"
                           onClick={resetAll}
                         >
                           <Icon icon="times-circle-solid">
@@ -361,8 +376,8 @@ const UDPs = ({
                 )}
                 <Pane
                   defaultWidth="fill"
-                  padContent={false}
                   id="pane-list-udps"
+                  padContent={false}
                   renderHeader={() => renderResultsPaneHeader(activeFilters, source)}
                 >
                   <MultiColumnList
@@ -373,9 +388,9 @@ const UDPs = ({
                     formatter={formatter}
                     id="list-udps"
                     isEmptyMessage={renderIsEmptyMessage(query, source)}
+                    isSelected={({ item }) => item.id === selectedRecordId}
                     onHeaderClick={onSort}
                     onNeedMoreData={onNeedMoreData}
-                    isSelected={({ item }) => item.id === selectedRecordId}
                     onRowClick={onSelectRow}
                     rowFormatter={rowFormatter}
                     sortDirection={
@@ -402,11 +417,11 @@ UDPs.propTypes = {
   contentRef: PropTypes.object,
   data: PropTypes.shape(),
   history: PropTypes.object.isRequired,
+  intl: PropTypes.object,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
     search: PropTypes.string.isRequired,
   }).isRequired,
-  intl: PropTypes.object,
   onNeedMoreData: PropTypes.func,
   onSelectRow: PropTypes.func,
   queryGetter: PropTypes.func.isRequired,

@@ -3,8 +3,8 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { NoteViewPage } from '@folio/stripes/smart-components';
 
-import urls from '../util/urls';
 import formatNoteReferrerEntityData from '../util/formatNoteReferrerEntityData';
+import urls from '../util/urls';
 
 const NoteViewRoute = ({
   history,
@@ -28,13 +28,15 @@ const NoteViewRoute = ({
 
   return (
     <NoteViewPage
+      entityTypePluralizedTranslationKeys={{
+        'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider-pluralizable',
+      }}
       entityTypeTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider' }}
-      entityTypePluralizedTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider-pluralizable' }}
       navigateBack={navigateBack}
+      noteId={match.params.id}
       onEdit={onEdit}
       paneHeaderAppIcon="erm-usage"
       referredEntityData={formatNoteReferrerEntityData(location.state)}
-      noteId={match.params.id}
     />
   );
 };

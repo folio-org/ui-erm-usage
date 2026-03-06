@@ -1,7 +1,15 @@
-import { cloneDeep, groupBy, has, keys } from 'lodash';
-import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import {
+  cloneDeep,
+  groupBy,
+  has,
+  keys,
+} from 'lodash';
 import PropTypes from 'prop-types';
+import {
+  useEffect,
+  useState,
+} from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import {
   Accordion,
@@ -12,8 +20,8 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import InfoButton from './InfoButton';
 import css from './CustomStatistics.css';
+import InfoButton from './InfoButton';
 
 function CustomStatistics(props) {
   const [yearAccordions, setYearAccordions] = useState({});
@@ -28,6 +36,7 @@ function CustomStatistics(props) {
       yearAccs[y] = false;
     });
     setYearAccordions(yearAccs);
+
     return function cleanup() {
       setYearAccordions({});
     };
@@ -57,11 +66,11 @@ function CustomStatistics(props) {
 
   const accordions = dataPerYear.map((entry) => (
     <Accordion
-      id={entry.year}
       key={entry.year}
+      id={entry.year}
       label={entry.year}
-      open={yearAccordions[entry.year]}
       onToggle={handleAccordionToggle}
+      open={yearAccordions[entry.year]}
     >
       <MultiColumnList
         columnMapping={{
@@ -75,10 +84,10 @@ function CustomStatistics(props) {
           note: (line) => line.note,
           fileId: (line) => (
             <InfoButton
-              stripes={stripes}
               customReport={line}
-              udpLabel={udpLabel}
               handlers={handlers}
+              stripes={stripes}
+              udpLabel={udpLabel}
             />
           ),
         }}
@@ -92,16 +101,16 @@ function CustomStatistics(props) {
       <Row end="xs">
         <Col xs>
           <ExpandAllButton
-            id="expand-all-custom-report-years"
             accordionStatus={yearAccordions}
-            onToggle={(obj) => setYearAccordions(obj)}
-            setStatus={null}
-            expandLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
-            }
             collapseLabel={
               <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
             }
+            expandLabel={
+              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
+            }
+            id="expand-all-custom-report-years"
+            onToggle={(obj) => setYearAccordions(obj)}
+            setStatus={null}
           />
         </Col>
       </Row>
@@ -117,19 +126,19 @@ function CustomStatistics(props) {
 }
 
 CustomStatistics.propTypes = {
+  customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
+  handlers: PropTypes.shape(),
   stripes: PropTypes.shape({
     connect: PropTypes.func,
     okapi: PropTypes.shape({
-      url: PropTypes.string.isRequired,
       tenant: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
     }).isRequired,
     store: PropTypes.shape({
       getState: PropTypes.func,
     }),
   }).isRequired,
-  customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
   udpLabel: PropTypes.string.isRequired,
-  handlers: PropTypes.shape(),
 };
 
 export default CustomStatistics;

@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import { stripesConnect } from '@folio/stripes/core';
-import { StripesConnectedSource, makeQueryFunction } from '@folio/stripes/smart-components';
+import {
+  makeQueryFunction,
+  StripesConnectedSource,
+} from '@folio/stripes/smart-components';
 
-import { useState } from 'react';
 import JobsView from '../components/JobsView';
 import filterGroups from '../util/data/filterGroupsJobsView';
-
 
 const timestamp = Date.now();
 
@@ -18,12 +20,13 @@ const JobsViewRoute = ({ resources, mutator, stripes }) => {
   ));
   source.update({ resources, mutator }, 'jobs');
 
-  return <JobsView source={source} filterGroups={filterGroups} />;
+  return <JobsView filterGroups={filterGroups} source={source} />;
 };
 
 const createCQL = () => {
   return (queryParams, pathComponents, resourceValues, logger) => {
-    const tmp = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0)(queryParams, pathComponents, resourceValues, logger);
+    const queryFn = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0);
+    const tmp = queryFn(queryParams, pathComponents, resourceValues, logger);
     return tmp
       ? tmp
         .replace('status==', '')
@@ -35,11 +38,11 @@ const createCQL = () => {
 };
 
 JobsViewRoute.propTypes = {
-  resources: PropTypes.object.isRequired,
   mutator: PropTypes.object.isRequired,
+  resources: PropTypes.object.isRequired,
   stripes: PropTypes.shape({
     logger: PropTypes.shape().isRequired,
-  }).isRequired
+  }).isRequired,
 };
 
 JobsViewRoute.manifest = Object.freeze({
@@ -54,25 +57,25 @@ JobsViewRoute.manifest = Object.freeze({
       params: {
         providerId: '?{providerId:-}',
         timestamp: '%{timestamp}',
-        query: createCQL()
+        query: createCQL(),
       },
-      staticFallback: { params: {} }
-    }
+      staticFallback: { params: {} },
+    },
   },
   udps: {
     type: 'okapi',
     path: 'usage-data-providers',
     params: {
-      limit: '1000'
+      limit: '1000',
     },
-    records: 'usageDataProviders'
+    records: 'usageDataProviders',
   },
   resultCount: {
     initialValue: 30,
   },
   timestamp: {
     initialValue: timestamp,
-  }
+  },
 });
 
 export default stripesConnect(JobsViewRoute);

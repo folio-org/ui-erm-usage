@@ -40,6 +40,7 @@
 * NFR: CoP 3031 (Usage Not Ready for Requested Dates) ([UIEUS-441](https://folio-org.atlassian.net/browse/UIEUS-441))
 * Unite functions for ReportInfoButton style and icon ([UIEUS-505](https://folio-org.atlassian.net/browse/UIEUS-505))
 * NFR: CoP 3032 (Usage No Longer Available for Requested Dates) ([UIEUS-442](https://folio-org.atlassian.net/browse/UIEUS-442))
+* Add eslint rules ([UIEUS-502](https://folio-org.atlassian.net/browse/UIEUS-502))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

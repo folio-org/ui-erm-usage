@@ -1,31 +1,32 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { Switch } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
+
 import {
-  AppContextMenu,
-  Route,
-} from '@folio/stripes/core';
-import {
+  CommandList,
+  HasCommand,
   KeyboardShortcutsModal,
   NavList,
   NavListItem,
   NavListSection,
-  CommandList,
-  HasCommand,
 } from '@folio/stripes/components';
+import {
+  AppContextMenu,
+  Route,
+} from '@folio/stripes/core';
 
 import pkg from '../package';
 import commands from './commands';
-import UDPsRoute from './routes/UDPsRoute';
-import UDPViewRoute from './routes/UDPViewRoute';
-import UDPCreateRoute from './routes/UDPCreateRoute';
-import UDPEditRoute from './routes/UDPEditRoute';
+import JobsViewRoute from './routes/JobsViewRoute';
 import NoteCreateRoute from './routes/NoteCreateRoute';
 import NoteEditRoute from './routes/NoteEditRoute';
 import NoteViewRoute from './routes/NoteViewRoute';
-import JobsViewRoute from './routes/JobsViewRoute';
+import UDPCreateRoute from './routes/UDPCreateRoute';
+import UDPEditRoute from './routes/UDPEditRoute';
+import UDPsRoute from './routes/UDPsRoute';
+import UDPViewRoute from './routes/UDPViewRoute';
 import Settings from './settings';
 
 const ErmUsage = ({
@@ -38,6 +39,7 @@ const ErmUsage = ({
 
   const focusSearchField = () => {
     const el = document.getElementById('input-udp-search');
+
     if (el) {
       el.focus();
     } else {
@@ -61,11 +63,11 @@ const ErmUsage = ({
   const shortcuts = [
     {
       name: 'search',
-      handler: focusSearchField
+      handler: focusSearchField,
     },
     {
       name: 'openShortcutModal',
-      handler: changeKeyboardShortcutsModal
+      handler: changeKeyboardShortcutsModal,
     },
   ];
 
@@ -98,23 +100,23 @@ const ErmUsage = ({
             )}
           </AppContextMenu>
           <Switch>
-            <Route path={`${match.path}/notes/create`} component={NoteCreateRoute} />
-            <Route path={`${match.path}/notes/:id/edit`} component={NoteEditRoute} />
-            <Route path={`${match.path}/notes/:id`} component={NoteViewRoute} />
-            <Route path={`${match.path}/create`} component={UDPCreateRoute} />
-            <Route path={`${match.path}/:id/edit`} component={UDPEditRoute} />
-            <Route path={`${match.path}/jobs`} component={JobsViewRoute} />
-            <Route path={`${match.path}`} component={UDPsRoute}>
-              <Route path={`${match.path}/view/:id`} component={UDPViewRoute} />
+            <Route component={NoteCreateRoute} path={`${match.path}/notes/create`} />
+            <Route component={NoteEditRoute} path={`${match.path}/notes/:id/edit`} />
+            <Route component={NoteViewRoute} path={`${match.path}/notes/:id`} />
+            <Route component={UDPCreateRoute} path={`${match.path}/create`} />
+            <Route component={UDPEditRoute} path={`${match.path}/:id/edit`} />
+            <Route component={JobsViewRoute} path={`${match.path}/jobs`} />
+            <Route component={UDPsRoute} path={`${match.path}`}>
+              <Route component={UDPViewRoute} path={`${match.path}/view/:id`} />
             </Route>
           </Switch>
         </HasCommand>
       </CommandList>
       { showKeyboardShortcutsModal && (
         <KeyboardShortcutsModal
-          open
-          onClose={() => { changeKeyboardShortcutsModal(false); }}
           allCommands={commands}
+          onClose={() => { changeKeyboardShortcutsModal(false); }}
+          open
         />
       )}
     </>
@@ -124,7 +126,7 @@ const ErmUsage = ({
 ErmUsage.propTypes = {
   history: PropTypes.object,
   match: ReactRouterPropTypes.match.isRequired,
-  showSettings: PropTypes.bool
+  showSettings: PropTypes.bool,
 };
 
 export default ErmUsage;

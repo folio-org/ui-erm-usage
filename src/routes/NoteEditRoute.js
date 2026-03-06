@@ -1,10 +1,10 @@
-import ReactRouterPropTypes from 'react-router-prop-types';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { NoteEditPage } from '@folio/stripes/smart-components';
 
-import urls from '../util/urls';
 import formatNoteReferrerEntityData from '../util/formatNoteReferrerEntityData';
+import urls from '../util/urls';
 
 const NoteEditRoute = ({
   history,
@@ -20,13 +20,15 @@ const NoteEditRoute = ({
 
   return (
     <NoteEditPage
-      referredEntityData={formatNoteReferrerEntityData(location.state)}
-      entityTypeTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider' }}
-      entityTypePluralizedTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider-pluralizable' }}
-      paneHeaderAppIcon="erm-usage"
       domain="erm-usage"
+      entityTypePluralizedTranslationKeys={{
+        'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider-pluralizable',
+      }}
+      entityTypeTranslationKeys={{ 'erm-usage-data-provider': 'ui-erm-usage.usage-data-provider' }}
       navigateBack={goToNoteView}
       noteId={match.params.id}
+      paneHeaderAppIcon="erm-usage"
+      referredEntityData={formatNoteReferrerEntityData(location.state)}
     />
   );
 };

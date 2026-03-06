@@ -1,15 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import React from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
 import { Settings } from '@folio/stripes/smart-components';
 
-import MaxFailedAttempts from './MaxFailedAttempts';
-import StartHarvester from './StartHarvester';
 import AggregatorManager from './Aggregators/AggregatorManager';
 import DisplaySettings from './DisplaySettings';
-import PeriodicHarvestingManager from './PeriodicHarvesting';
 import HarvesterLogsSettings from './HarvesterLogs';
+import MaxFailedAttempts from './MaxFailedAttempts';
+import PeriodicHarvestingManager from './PeriodicHarvesting';
+import StartHarvester from './StartHarvester';
 
 /*
   STRIPES-NEW-APP
@@ -21,8 +24,8 @@ class ErmUsageSettings extends React.Component {
   static propTypes = {
     intl: PropTypes.object,
     stripes: PropTypes.shape({
-      connect: PropTypes.func.isRequired
-    }).isRequired
+      connect: PropTypes.func.isRequired,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -39,14 +42,14 @@ class ErmUsageSettings extends React.Component {
           {
             route: 'aggregators',
             label: formatMessage({ id: 'ui-erm-usage.information.aggregators' }),
-            component: AggregatorManager
+            component: AggregatorManager,
           },
           {
             route: 'displaySettings',
             label: formatMessage({ id: 'ui-erm-usage.settings.section.display.settings' }),
-            component: DisplaySettings
-          }
-        ]
+            component: DisplaySettings,
+          },
+        ],
       },
       {
         label: <FormattedMessage id="ui-erm-usage.settings.harvester" />,
@@ -54,25 +57,25 @@ class ErmUsageSettings extends React.Component {
           {
             route: 'failed-attempts',
             label: formatMessage({ id: 'ui-erm-usage.settings.section.number.failed' }),
-            component: MaxFailedAttempts
+            component: MaxFailedAttempts,
           },
           {
             route: 'start-harvester',
             label: formatMessage({ id: 'ui-erm-usage.harvester.start' }),
-            component: StartHarvester
+            component: StartHarvester,
           },
           {
             route: 'periodic-harvesting',
             label: formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' }),
-            component: PeriodicHarvestingManager
+            component: PeriodicHarvestingManager,
           },
           {
             route: 'harvester-logs',
             label: formatMessage({ id: 'ui-erm-usage.settings.harvester.logs.title' }),
-            component: HarvesterLogsSettings
+            component: HarvesterLogsSettings,
           },
-        ]
-      }
+        ],
+      },
     ];
   }
 
@@ -80,8 +83,8 @@ class ErmUsageSettings extends React.Component {
     return (
       <Settings
         {...this.props}
-        sections={this.sections}
         paneTitle="erm-usage"
+        sections={this.sections}
       />
     );
   }

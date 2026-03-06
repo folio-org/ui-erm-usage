@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
-import { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+import {
+  useRef,
+  useState,
+} from 'react';
 import { Form } from 'react-final-form';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { stripesConnect } from '@folio/stripes/core';
+import { Monthpicker } from '@folio/stripes-leipzig-components';
 import {
   Button,
   Callout,
@@ -12,7 +18,7 @@ import {
   Row,
   Select,
 } from '@folio/stripes/components';
-import { Monthpicker } from '@folio/stripes-leipzig-components';
+import { stripesConnect } from '@folio/stripes/core';
 
 import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
@@ -35,7 +41,8 @@ const DownloadRange = ({
     const errors = {};
 
     if (new Date(values.startDate) > new Date(values.endDate)) {
-      errors.endDate = intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' });
+      errors.endDate =
+        intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.error.endGreaterStart' });
     }
 
     return errors;
@@ -70,7 +77,6 @@ const DownloadRange = ({
   return (
     <Form
       onSubmit={onSubmit}
-      validate={validate}
       render={({
         handleSubmit,
         invalid,
@@ -103,9 +109,9 @@ const DownloadRange = ({
                 <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
                   {(label) => (
                     <Select
+                      dataOptions={downloadableReports}
                       label={label}
                       name="downloadMultiMonths.reportType"
-                      dataOptions={downloadableReports}
                       onChange={onSelectReportType}
                     />
                   )}
@@ -115,9 +121,9 @@ const DownloadRange = ({
                 <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.dataType">
                   {(label) => (
                     <Select
+                      dataOptions={exportFormats}
                       label={label}
                       name="downloadMultiMonths.formats"
-                      dataOptions={exportFormats}
                       onChange={onSelectExportFormat}
                     />
                   )}
@@ -126,9 +132,9 @@ const DownloadRange = ({
               <Col xs={4}>
                 <div className={css.startButton}>
                   <Button
-                    type="submit"
                     buttonStyle="primary"
                     disabled={invalid}
+                    type="submit"
                   >
                     <FormattedMessage id="ui-erm-usage.report.action.download" />
                   </Button>
@@ -139,6 +145,7 @@ const DownloadRange = ({
           </form>
         );
       }}
+      validate={validate}
     />
   );
 };

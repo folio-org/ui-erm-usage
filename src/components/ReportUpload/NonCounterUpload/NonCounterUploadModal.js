@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
+import {
+  Button,
+  Modal,
+  ModalFooter,
+} from '@folio/stripes/components';
 import stripesFinalForm from '@folio/stripes/final-form';
-import { Button, Modal, ModalFooter } from '@folio/stripes/components';
 
-import NonCounterInnerForm from './NonCounterInnerForm';
 import { isValidUrl } from '../../../util/validate';
+import NonCounterInnerForm from './NonCounterInnerForm';
 
 function NonCounterUploadModal(props) {
   const { invalid, onClose } = props;
@@ -33,19 +37,19 @@ function NonCounterUploadModal(props) {
       onSubmit={props.handleSubmit}
     >
       <Modal
-        id="upload-non-counter-modal"
         closeOnBackgroundClick
         footer={renderFooter(props.handleSubmit)}
-        open={props.open}
+        id="upload-non-counter-modal"
         label={
           <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
           }
+        open={props.open}
       >
         <div className="upload-non-counter-modal">
           <NonCounterInnerForm
             mutators={props.form.mutators}
-            udpId={props.udpId}
             stripes={props.stripes}
+            udpId={props.udpId}
           />
         </div>
       </Modal>
@@ -62,10 +66,10 @@ NonCounterUploadModal.propTypes = {
       setProviderId: PropTypes.func,
     }),
   }),
-  invalid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
+  invalid: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
 };
@@ -96,17 +100,20 @@ export default stripesFinalForm({
   validate: (values) => {
     const errors = {};
     const yyyyRegex = /^[12]\d{3}$/;
+
     if (!values.fileId && !values.linkUrl) {
       errors.fileId = 'Required';
       errors.linkUrl = 'Required';
     } else if (values.linkUrl && !isValidUrl(values.linkUrl)) {
       errors.linkUrl = 'Invalid format';
     }
+
     if (!values.year) {
       errors.year = 'Required';
     } else if (!yyyyRegex.test(values.year)) {
       errors.year = 'Invalid format';
     }
+
     return errors;
   },
 })(NonCounterUploadModal);

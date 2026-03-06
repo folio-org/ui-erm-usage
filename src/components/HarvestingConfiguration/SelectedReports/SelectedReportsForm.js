@@ -1,15 +1,16 @@
 import _ from 'lodash';
-import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
 import { FieldArray } from 'react-final-form-arrays';
+import { FormattedMessage } from 'react-intl';
+
 import { Label } from '@folio/stripes/components';
+
 import formCss from '../../../util/sharedStyles/form.css';
+import { requiredArray } from '../../../util/validate';
 import counterReportMapping from './data/counterReports';
 import css from './SelectedReportsForm.css';
-
 import SelectReportType from './SelectReportType';
-import { requiredArray } from '../../../util/validate';
 
 const getCounterReportsForVersion = (counterVersion) => {
   return _.filter(counterReportMapping, ['counterVersion', counterVersion]);
@@ -18,8 +19,8 @@ const getCounterReportsForVersion = (counterVersion) => {
 class SelectedReportsForm extends React.Component {
   static propTypes = {
     counterVersion: PropTypes.string,
+    required: PropTypes.bool,
     selectedReports: PropTypes.arrayOf(PropTypes.string),
-    required: PropTypes.bool
   };
 
   constructor(props) {
@@ -46,8 +47,8 @@ class SelectedReportsForm extends React.Component {
           <SelectReportType
             counterReportsCurrentVersion={this.counterReportsCurrentVersion}
             fields={fields}
-            selectedReports={this.props.selectedReports}
             required={this.props.required}
+            selectedReports={this.props.selectedReports}
           />
         )}
       </FieldArray>

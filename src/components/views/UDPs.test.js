@@ -1,13 +1,20 @@
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
-import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
-import { ModuleHierarchyProvider, StripesContext, useStripes } from '@folio/stripes/core';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import {
+  ModuleHierarchyProvider,
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
-import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import udps from '../../../test/fixtures/udps';
 import aggregator from '../../../test/fixtures/aggregator';
+import udps from '../../../test/fixtures/udps';
+import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import UDPs from './UDPs';
 
 jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
@@ -16,8 +23,20 @@ const onSearchComplete = jest.fn();
 const history = {};
 
 let renderWithIntlResult = {};
-const sourcePending = { source: { pending: jest.fn(() => true), totalCount: jest.fn(() => 0), loaded: jest.fn(() => false) } };
-const sourceLoaded = { source: { pending: jest.fn(() => false), totalCount: jest.fn(() => 1), loaded: jest.fn(() => true) } };
+const sourcePending = {
+  source: {
+    pending: jest.fn(() => true),
+    totalCount: jest.fn(() => 0),
+    loaded: jest.fn(() => false),
+  },
+};
+const sourceLoaded = {
+  source: {
+    pending: jest.fn(() => false),
+    totalCount: jest.fn(() => 1),
+    loaded: jest.fn(() => true),
+  },
+};
 
 // rerender result list for generate correct state and prevState of recordsArePending
 // trigger a new list of results: source isPending has to be TRUE first, than FALSE
@@ -34,15 +53,15 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
             reportTypes: ['BR', 'TR'],
             reportReleases: ['5.0', '4'],
           }}
-          selectedRecordId=""
+          history={history}
+          location={{ pathname: '', search: '' }}
           onNeedMoreData={jest.fn()}
+          onSearchComplete={onSearchComplete}
           queryGetter={jest.fn()}
           querySetter={jest.fn()}
           searchString="status.active"
+          selectedRecordId=""
           visibleColumns={['label', 'reportReleases', 'harvestingStatus', 'Latest statistics', 'aggregator']}
-          history={history}
-          onSearchComplete={onSearchComplete}
-          location={{ pathname: '', search: '' }}
           {...props}
         />
       </ModuleHierarchyProvider>
@@ -192,18 +211,23 @@ describe('UDPs SASQ View', () => {
       await userEvent.click(reportReleaseAccordion);
 
       const multiselects = screen.getAllByLabelText('open menu');
-      const multiselectReportReleases = multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-reportReleases');
+      const multiselectReportReleases =
+        multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-reportReleases');
       expect(multiselectReportReleases).toBeInTheDocument();
       await userEvent.click(multiselectReportReleases);
 
       const listboxes = screen.getAllByRole('listbox');
-      const reportReleasesList = listboxes.find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-reportReleases');
+      const reportReleasesList =
+        listboxes.find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-reportReleases');
       expect(within(reportReleasesList).getByRole('option', { name: /5.0/ })).toBeInTheDocument();
       expect(within(reportReleasesList).getByRole('option', { name: /4/ })).toBeInTheDocument();
       await userEvent.click(within(reportReleasesList).getByRole('option', { name: /4/ }));
 
       const searchboxes = screen.getAllByRole('searchbox');
-      const searchboxReportReleases = searchboxes.find(btn => btn.getAttribute('aria-describedby') === 'multi-describe-control-filter-reportReleases');
+      const searchboxReportReleases =
+        searchboxes.find(
+          btn => btn.getAttribute('aria-describedby') === 'multi-describe-control-filter-reportReleases'
+        );
       expect(searchboxReportReleases).toBeInTheDocument();
       expect(within(searchboxReportReleases).getByText('4')).toBeInTheDocument();
       expect(within(searchboxReportReleases).queryByText('5.0')).not.toBeInTheDocument();

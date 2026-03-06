@@ -1,4 +1,7 @@
-import UDPInfoView from './UDPInfoView';
 import UDPInfoForm from './UDPInfoForm';
+import UDPInfoView from './UDPInfoView';
 
-export { UDPInfoView, UDPInfoForm };
+export {
+  UDPInfoView,
+  UDPInfoForm,
+};

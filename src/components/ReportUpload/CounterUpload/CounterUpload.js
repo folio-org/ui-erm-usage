@@ -1,8 +1,19 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
-import { Button, Loading, Modal, ModalFooter } from '@folio/stripes/components';
+import {
+  Button,
+  Loading,
+  Modal,
+  ModalFooter,
+} from '@folio/stripes/components';
 
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
@@ -53,7 +64,11 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
         ),
         footer: (
           <>
-            <Button buttonStyle="primary" id="overwriteYes" onClick={() => setFormState({ ...formState, overwrite: true })}>
+            <Button
+              buttonStyle="primary"
+              id="overwriteYes"
+              onClick={() => setFormState({ ...formState, overwrite: true })}
+            >
               <FormattedMessage id="ui-erm-usage.general.yes" />
             </Button>
             <Button id="overwriteNo" onClick={handleSelectOtherFile}>
@@ -159,11 +174,11 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
 
   return (
     <>
-      <CounterUploadModal open={open} onClose={onClose} onSubmit={handleSubmit} />
+      <CounterUploadModal onClose={onClose} onSubmit={handleSubmit} open={open} />
       <Modal
-        open={showInfoModal}
-        label={modalContent.title}
         footer={<ModalFooter>{modalContent.footer}</ModalFooter>}
+        label={modalContent.title}
+        open={showInfoModal}
       >
         {showInfoModal && modalContent.content}
       </Modal>
@@ -172,11 +187,11 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
 }
 
 CounterUpload.propTypes = {
+  onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func,
+  open: PropTypes.bool,
   stripes: PropTypes.shape().isRequired,
   udpId: PropTypes.string,
-  open: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default CounterUpload;

@@ -1,12 +1,30 @@
-import { useState, useContext, useEffect } from 'react';
-import { useIntl } from 'react-intl';
-import { CalloutContext, IfPermission } from '@folio/stripes/core';
-import { ConfirmationModal, IconButton, Pane, PaneHeader, PaneMenu } from '@folio/stripes/components';
 import { isEmpty } from 'lodash';
+import {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useIntl } from 'react-intl';
+
+import {
+  ConfirmationModal,
+  IconButton,
+  Pane,
+  PaneHeader,
+  PaneMenu,
+} from '@folio/stripes/components';
+import {
+  CalloutContext,
+  IfPermission,
+} from '@folio/stripes/core';
+
+import {
+  combineDateTime,
+  splitDateTime,
+} from '../../util/dateTimeProcessing';
+import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
 import PeriodicHarvestingForm from './PeriodicHarvestingForm';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
-import { combineDateTime, splitDateTime } from '../../util/dateTimeProcessing';
-import usePeriodicConfig from '../../util/hooks/usePeriodicConfig';
 
 const PeriodicHarvestingManager = () => {
   const [config, setConfig] = useState({});
@@ -34,7 +52,8 @@ const PeriodicHarvestingManager = () => {
   };
 
   const fetchPeriodicHarvestingConf = () => {
-    periodicConfig.fetchConfig().then(setConfig).catch(showErrorInfo);
+    periodicConfig.fetchConfig().then(setConfig)
+      .catch(showErrorInfo);
   };
 
   const savePeriodicHarvestingConf = (formValues) => {
@@ -78,17 +97,17 @@ const PeriodicHarvestingManager = () => {
         <PaneMenu>
           {isEditing ? (
             <IconButton
+              aria-label="End Edit Config"
               icon="times"
               id="clickable-close-edit-config"
               onClick={() => setConfirming(true)}
-              aria-label="End Edit Config"
             />
           ) : (
             <IconButton
+              aria-label="Start Edit Config"
               icon={getEditIcon()}
               id="clickable-open-edit-config"
               onClick={() => setIsEditing(true)}
-              aria-label="Start Edit Config"
             />
           )}
         </PaneMenu>
@@ -118,25 +137,25 @@ const PeriodicHarvestingManager = () => {
   return (
     <>
       <Pane
-        id="periodic-harvesting-pane"
         defaultWidth="fill"
+        id="periodic-harvesting-pane"
         renderHeader={renderPeriodicHarvestingPaneHeader}
       >
         {periodicHarvesting}
       </Pane>
       <ConfirmationModal
-        open={confirming}
+        cancelLabel={formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
+        confirmLabel={formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
         heading={formatMessage({ id: 'ui-erm-usage.general.pleaseConfirm' })}
         message={formatMessage({
           id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
         })}
-        confirmLabel={formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
-        onConfirm={() => setConfirming(false)}
-        cancelLabel={formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
         onCancel={() => {
           setIsEditing(false);
           setConfirming(false);
         }}
+        onConfirm={() => setConfirming(false)}
+        open={confirming}
       />
     </>
   );

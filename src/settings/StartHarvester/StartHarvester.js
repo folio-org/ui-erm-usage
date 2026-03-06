@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Button, Pane, PaneHeader } from '@folio/stripes/components';
+
+import {
+  Button,
+  Pane,
+  PaneHeader,
+} from '@folio/stripes/components';
 import { useOkapiKy } from '@folio/stripes/core';
+
 import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
 
 const StartHarvester = () => {
@@ -37,9 +43,9 @@ const StartHarvester = () => {
 
   return (
     <Pane
-      id="start-harvester-pane"
       defaultWidth="fill"
       fluidContentWidth
+      id="start-harvester-pane"
       renderHeader={renderStartHarvestingPaneHeader}
     >
       <div>

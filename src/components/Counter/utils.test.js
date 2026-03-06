@@ -1,4 +1,7 @@
-import { getAvailableReports, getDownloadCounterReportTypes } from './utils';
+import {
+  getAvailableReports,
+  getDownloadCounterReportTypes,
+} from './utils';
 
 describe('getDownloadCounterReportTypes', () => {
   it('should return correct values for release 4 and report JR1', () => {

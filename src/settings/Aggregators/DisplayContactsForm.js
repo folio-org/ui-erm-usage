@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { useIntl } from 'react-intl';
-import { FieldArray } from 'react-final-form-arrays';
 import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
+import { useIntl } from 'react-intl';
 
 import {
   Col,
@@ -34,12 +34,12 @@ const DisplayContactsForm = ({ stripes }) => {
                   {({ input }) => (
                     <TextField
                       {...input}
+                      disabled={disabled}
+                      id={`aggregator-conf-input-value-${index}`}
                       label={intl.formatMessage(
                         { id: 'ui-erm-usage.aggregator.config.accountConfig.contact.number' },
                         { number: Number.parseInt(index + 1, 10) }
                       )}
-                      id={`aggregator-conf-input-value-${index}`}
-                      disabled={disabled}
                     />
                   )}
                 </Field>

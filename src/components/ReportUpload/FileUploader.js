@@ -1,6 +1,7 @@
-import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
+import { FormattedMessage } from 'react-intl';
+
 import { Button } from '@folio/stripes/components';
 
 const FileUploader = ({ onChange }) => {
@@ -17,7 +18,7 @@ const FileUploader = ({ onChange }) => {
   };
 
   return (
-    <Dropzone noClick onDrop={(acceptedFiles) => onChange(acceptedFiles[0])} multiple={false}>
+    <Dropzone multiple={false} noClick onDrop={(acceptedFiles) => onChange(acceptedFiles[0])}>
       {({ getRootProps, getInputProps, open }) => (
         <div {...getRootProps()} style={style}>
           <input {...getInputProps()} data-testid="fileInput" />

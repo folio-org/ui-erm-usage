@@ -1,16 +1,26 @@
+import {
+  find,
+  get,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import { find, get, isEmpty } from 'lodash';
+import {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
 import {
   Accordion,
   AccordionSet,
-  FilterAccordionHeader
+  FilterAccordionHeader,
 } from '@folio/stripes/components';
 import {
   CheckboxFilter,
-  MultiSelectionFilter
+  MultiSelectionFilter,
 } from '@folio/stripes/smart-components';
 
 import filterGroups from '../../util/data/filterGroups';
@@ -41,23 +51,26 @@ const UDPFilters = ({
   const translateErrorCodesFilterValues = (entry) => {
     const val = get(entry, 'label', entry);
     let label;
+
     if (isSushiWarningCode(val)) {
       label = `${intl.formatMessage({
-        id: 'ui-erm-usage.report.error.1'
+        id: 'ui-erm-usage.report.error.1',
       })} (${val})`;
     } else {
       label = `${intl.formatMessage({
-        id: `ui-erm-usage.report.error.${val}`
+        id: `ui-erm-usage.report.error.${val}`,
       })} (${val})`;
     }
+
     return {
       label,
-      value: val
+      value: val,
     };
   };
 
   const getRemoteDefinedFilterVals = (filterData, filterName) => {
     const inputVals = filterData[`${filterName}`] || [];
+
     if (filterName === 'errorCodes') {
       // we need to translate numeric error codes to human readable text...
       return inputVals.map(entry => {
@@ -68,7 +81,7 @@ const UDPFilters = ({
         const val = get(entry, 'label', entry);
         return {
           label: val,
-          value: val
+          value: val,
         };
       });
     }
@@ -82,11 +95,12 @@ const UDPFilters = ({
       const filterName = filter.name;
       const currentFilter = find(filterGroups, { name: filterName });
       let newValues = {};
+
       if (isFilterDefinedLocally(currentFilter)) {
         newValues = currentFilter.values.map(key => {
           return {
             value: key.cql,
-            label: key.name
+            label: key.name,
           };
         });
       } else {
@@ -127,7 +141,7 @@ const UDPFilters = ({
           onChange={group => {
             filterHandlers.state({
               ...activeFilters,
-              [group.name]: group.values
+              [group.name]: group.values,
             });
           }}
           selectedValues={groupFilters}
@@ -157,7 +171,7 @@ const UDPFilters = ({
           onChange={group => {
             filterHandlers.state({
               ...activeFilters,
-              [group.name]: group.values
+              [group.name]: group.values,
             });
           }}
           selectedValues={groupFilters}
@@ -185,7 +199,7 @@ UDPFilters.propTypes = {
   activeFilters: PropTypes.object,
   data: PropTypes.object.isRequired,
   filterHandlers: PropTypes.object,
-  intl: PropTypes.object
+  intl: PropTypes.object,
 };
 
 export default injectIntl(UDPFilters);

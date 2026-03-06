@@ -1,18 +1,21 @@
-import PropTypes from 'prop-types';
 import { isNil } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { stripesConnect } from '@folio/stripes/core';
 import {
   Button,
   ConfirmationModal,
   Icon,
   Modal,
 } from '@folio/stripes/components';
+import { stripesConnect } from '@folio/stripes/core';
 
-import ReportInfo from '../ReportInfo';
 import extractErrorCode from '../../../util/extractErrorCode';
+import ReportInfo from '../ReportInfo';
 import css from './ReportInfoButton.css';
 
 const ReportInfoButton = ({
@@ -156,8 +159,8 @@ const ReportInfoButton = ({
         aria-haspopup="true"
         aria-label={label}
         bottomMargin0
-        buttonStyle={buttonStyle}
         buttonClass={buttonClass}
+        buttonStyle={buttonStyle}
         data-testid={buttonId}
         id={buttonId}
         onClick={() => setShowDropDown(curState => !curState)}
@@ -165,36 +168,36 @@ const ReportInfoButton = ({
         {icon}
       </Button>
       <Modal
-        id={dropdownId}
         closeOnBackgroundClick
         data-test-counter-report-info
-        open={showDropDown}
-        label="Report info"
         footer={footer}
+        id={dropdownId}
+        label="Report info"
+        open={showDropDown}
       >
-        <div id="report-info" className={reportInfoClassName}>
+        <div className={reportInfoClassName} id="report-info">
           <ReportInfo
-            report={report}
             deleteReport={deleteReport}
             downloadRawReport={downloadRawReport}
             downloadReport={downloadReport}
+            report={report}
             retryThreshold={maxFailedAttempts}
             udpLabel={udpLabel}
           />
         </div>
       </Modal>
       <ConfirmationModal
-        open={showConfirmDelete}
-        heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDeleteReport" />}
-        message={confirmMessage}
-        onConfirm={doDelete}
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.yes',
-        })}
-        onCancel={hideConfirm}
         cancelLabel={intl.formatMessage({
           id: 'ui-erm-usage.general.no',
         })}
+        confirmLabel={intl.formatMessage({
+          id: 'ui-erm-usage.general.yes',
+        })}
+        heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDeleteReport" />}
+        message={confirmMessage}
+        onCancel={hideConfirm}
+        onConfirm={doDelete}
+        open={showConfirmDelete}
       />
     </>
   );
@@ -212,19 +215,19 @@ ReportInfoButton.manifest = Object.freeze({
 });
 
 ReportInfoButton.propTypes = {
-  stripes: PropTypes.shape().isRequired,
-  report: PropTypes.object,
-  mutator: PropTypes.shape({
-    counterReports: PropTypes.object,
-    csvReports: PropTypes.object,
-  }),
-  intl: PropTypes.object,
-  maxFailedAttempts: PropTypes.number,
-  udpLabel: PropTypes.string,
   handlers: PropTypes.shape({
     onDownloadReportSingleMonth: PropTypes.func,
     onDownloadReportSingleMonthRaw: PropTypes.func,
   }),
+  intl: PropTypes.object,
+  maxFailedAttempts: PropTypes.number,
+  mutator: PropTypes.shape({
+    counterReports: PropTypes.object,
+    csvReports: PropTypes.object,
+  }),
+  report: PropTypes.object,
+  stripes: PropTypes.shape().isRequired,
+  udpLabel: PropTypes.string,
 };
 
 export default stripesConnect(injectIntl(ReportInfoButton));

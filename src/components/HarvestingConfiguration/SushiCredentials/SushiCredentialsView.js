@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import { Col, KeyValue, NoValue, Row } from '@folio/stripes/components';
+import {
+  Col,
+  KeyValue,
+  NoValue,
+  Row,
+} from '@folio/stripes/components';
 
 const SushiCredentialsView = ({
   usageDataProvider,
@@ -65,8 +70,8 @@ const SushiCredentialsView = ({
 };
 
 SushiCredentialsView.propTypes = {
-  usageDataProvider: PropTypes.object.isRequired,
   settings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  usageDataProvider: PropTypes.object.isRequired,
 };
 
 export default SushiCredentialsView;

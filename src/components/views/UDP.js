@@ -1,9 +1,17 @@
+import {
+  get,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
-import { get, isEmpty } from 'lodash';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import {
+  useRef,
+  useState,
+} from 'react';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 
-import { IfPermission, TitleManager, Pluggable, withOkapiKy } from '@folio/stripes/core';
 import {
   Accordion,
   AccordionSet,
@@ -11,10 +19,11 @@ import {
   Button,
   Callout,
   Col,
-  ExpandAllButton,
   collapseAllSections,
+  ExpandAllButton,
   expandAllSections,
   HasCommand,
+  Headline,
   Icon,
   Layout,
   Pane,
@@ -22,28 +31,31 @@ import {
   PaneHeaderIconButton,
   PaneMenu,
   Row,
-  Headline,
 } from '@folio/stripes/components';
+import {
+  IfPermission,
+  Pluggable,
+  TitleManager,
+  withOkapiKy,
+} from '@folio/stripes/core';
 import {
   NotesSmartAccordion,
   ViewMetaData,
 } from '@folio/stripes/smart-components';
 
-import HelperApp from '../HelperApp';
-
-import { UDPInfoView } from '../UDPInfo';
-import { HarvestingConfigurationView } from '../HarvestingConfiguration';
-import CounterUpload from '../ReportUpload/CounterUpload';
-import NonCounterUpload from '../ReportUpload/NonCounterUpload';
+import transformReportsForMCL from '../../util/transformReportsForMCL';
+import urls from '../../util/urls';
 import CounterStatistics from '../Counter';
+import createStandardReportFormatter from '../Counter/StandardReportFormatter';
 import CustomStatistics from '../Custom';
 import DeleteStatisticsModal from '../DeleteStatisticsModal';
-
-import urls from '../../util/urls';
-import transformReportsForMCL from '../../util/transformReportsForMCL';
-import createStandardReportFormatter from '../Counter/StandardReportFormatter';
-import UDPHeader from '../UDPHeader/UDPHeader';
 import HarvesterInfoModal from '../HarvesterInfoModal/HarvesterInfoModal';
+import { HarvestingConfigurationView } from '../HarvestingConfiguration';
+import HelperApp from '../HelperApp';
+import CounterUpload from '../ReportUpload/CounterUpload';
+import NonCounterUpload from '../ReportUpload/NonCounterUpload';
+import UDPHeader from '../UDPHeader/UDPHeader';
+import { UDPInfoView } from '../UDPInfo';
 
 let callout;
 
@@ -147,13 +159,13 @@ const UDP = ({
           <FormattedMessage id="ui-erm-usage.showTags">
             {(ariaLabel) => (
               <PaneHeaderIconButton
+                aria-label={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
+                badgeCount={tags.length}
                 icon="tag"
                 id="clickable-show-tags"
                 onClick={() => {
                   showHelperApp('tags');
                 }}
-                badgeCount={tags.length}
-                aria-label={typeof ariaLabel === 'string' ? ariaLabel : ariaLabel[0]}
               />
             )}
           </FormattedMessage>
@@ -199,9 +211,9 @@ const UDP = ({
           <IfPermission perm="ui-erm-usage-harvester.start.single">
             <Button
               buttonStyle="dropDownItem"
+              disabled={isInActive(usageDataProvider)}
               id="start-harvester-button"
               marginBottom0
-              disabled={isInActive(usageDataProvider)}
               onClick={() => {
                 openStartHarvesterModal(usageDataProvider.id);
                 onToggle();
@@ -214,8 +226,8 @@ const UDP = ({
           </IfPermission>
           <HarvesterInfoModal
             {...harvesterModalState}
-            udpLabel={usageDataProvider.label}
             onClose={closeStartHarvesterModal}
+            udpLabel={usageDataProvider.label}
           />
         </div>
         <div>
@@ -229,7 +241,7 @@ const UDP = ({
                 search: '?providerId=' + providerId + '&sort=-startedAt',
                 state: {
                   from: location.pathname + location.search,
-                  provider: { id: providerId, label: providerLabel }
+                  provider: { id: providerId, label: providerLabel },
                 },
               }}
             >
@@ -241,14 +253,14 @@ const UDP = ({
         </div>
         <div>
           <Button
-            id="clickable-refresh-statistics"
+            aria-label="Edit usage data provider"
             buttonStyle="dropDownItem"
+            id="clickable-refresh-statistics"
+            marginBottom0
             onClick={() => {
               onToggle();
               reloadStatistics();
             }}
-            aria-label="Edit usage data provider"
-            marginBottom0
           >
             <Icon icon="refresh">
               <FormattedMessage id="ui-erm-usage.action.refreshStatistics" />
@@ -290,14 +302,14 @@ const UDP = ({
         <IfPermission perm="ui-erm-usage.reports.delete">
           <div>
             <Button
-              id="clickable-delete-reports"
+              aria-label="Delete reports"
               buttonStyle="dropDownItem"
+              id="clickable-delete-reports"
+              marginBottom0
               onClick={() => {
                 onToggle();
                 doShowDeleteReports();
               }}
-              aria-label="Delete reports"
-              marginBottom0
             >
               <Icon icon="trash">
                 <FormattedMessage id="ui-erm-usage.statistics.multi.button" />
@@ -308,11 +320,11 @@ const UDP = ({
         {canEdit && (
           <div>
             <Button
-              id="clickable-edit-udp"
-              buttonStyle="dropDownItem"
-              onClick={() => { handlers.onEdit(); }}
               aria-label="Edit usage data provider"
+              buttonStyle="dropDownItem"
+              id="clickable-edit-udp"
               marginBottom0
+              onClick={() => { handlers.onEdit(); }}
             >
               <Icon icon="edit">
                 <FormattedMessage id="ui-erm-usage.general.edit" />
@@ -376,6 +388,7 @@ const UDP = ({
     if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
+
     if (data.counterReports.length > 0) {
       const reportFormatter = createStandardReportFormatter(
         handlers,
@@ -385,13 +398,13 @@ const UDP = ({
       );
       return (
         <CounterStatistics
-          stripes={stripes}
-          providerId={providerId}
-          udpLabel={label}
-          reports={reports}
           handlers={handlers}
+          providerId={providerId}
           reportFormatter={reportFormatter}
+          reports={reports}
           showMultiMonthDownload
+          stripes={stripes}
+          udpLabel={label}
         />
       );
     } else {
@@ -403,14 +416,15 @@ const UDP = ({
     if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
     }
+
     if (data.customReports.length > 0) {
       return (
         <CustomStatistics
-          stripes={stripes}
-          providerId={providerId}
-          udpLabel={label}
           customReports={data.customReports}
           handlers={handlers}
+          providerId={providerId}
+          stripes={stripes}
+          udpLabel={label}
         />
       );
     } else {
@@ -446,12 +460,12 @@ const UDP = ({
       >
         <>
           <Pane
-            id="pane-udpdetails"
             defaultWidth="40%"
+            id="pane-udpdetails"
             renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
           >
             <TitleManager record={label} stripes={stripes} />
-            <UDPHeader usageDataProvider={data.usageDataProvider} lastJob={data.lastJob} />
+            <UDPHeader lastJob={data.lastJob} usageDataProvider={data.usageDataProvider} />
             <Headline size="xx-large" tag="h2">
               {label}
             </Headline>
@@ -461,8 +475,8 @@ const UDP = ({
             />
             <UDPInfoView
               id="udpInfo"
-              usageDataProvider={usageDataProvider}
               stripes={stripes}
+              usageDataProvider={usageDataProvider}
             />
             <AccordionStatus ref={accordionStatusRef}>
               <Row end="xs">
@@ -472,19 +486,19 @@ const UDP = ({
               </Row>
               <AccordionSet initialStatus={getInitialAccordionsState()}>
                 <Accordion
+                  id="harvestingAccordion"
                   label={
                     <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
                   }
-                  id="harvestingAccordion"
                 >
                   <HarvestingConfigurationView
-                    usageDataProvider={usageDataProvider}
-                    stripes={stripes}
-                    settings={data.settings}
                     harvesterImpls={data.harvesterImpls}
+                    settings={data.settings}
+                    stripes={stripes}
+                    usageDataProvider={usageDataProvider}
                   />
                 </Accordion>
-                <Pluggable type="ui-agreements-extension" data={{ op: 'match-names', data }} />
+                <Pluggable data={{ op: 'match-names', data }} type="ui-agreements-extension" />
                 <Accordion
                   id="counterStatisticsAccordion"
                   label={
@@ -507,11 +521,11 @@ const UDP = ({
                   {getCustomStatistics(label, providerId)}
                 </Accordion>
                 <NotesSmartAccordion
-                  id="notesAccordion"
                   domainName="erm-usage"
                   entityId={usageDataProvider.id}
                   entityName={usageDataProvider.label}
                   entityType="erm-usage-data-provider"
+                  id="notesAccordion"
                   pathToNoteCreate={urls.noteCreate()}
                   pathToNoteDetails={urls.notes()}
                   stripes={stripes}
@@ -523,30 +537,30 @@ const UDP = ({
             <HelperApp appName={helperApp} onClose={closeHelperApp} />
           )}
           <DeleteStatisticsModal
+            counterReports={counterReportsByRelease}
             handlers={handlers}
             isStatsLoading={isStatsLoading}
             maxFailedAttempts={maxFailedAttempts}
             onCloseModal={doCloseDeleteReports}
-            open={showDeleteReports}
             onFail={handleFail}
             onSuccess={handleSuccess}
+            open={showDeleteReports}
             providerId={providerId}
             stripes={stripes}
-            counterReports={counterReportsByRelease}
             udpLabel={label}
           />
           <CounterUpload
-            open={showCounterUpload}
             onClose={() => setShowCounterUpload(false)}
             onSuccess={handleSuccess}
+            open={showCounterUpload}
             stripes={stripes}
             udpId={providerId}
           />
           <NonCounterUpload
-            open={showNonCounterUpload}
             onClose={() => setShowNonCounterUpload(false)}
             onFail={handleFail}
             onSuccess={handleSuccess}
+            open={showNonCounterUpload}
             stripes={stripes}
             udpId={providerId}
           />
@@ -567,10 +581,10 @@ UDP.propTypes = {
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
     customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),
+    lastJob: PropTypes.object,
     maxFailedAttempts: PropTypes.number,
     settings: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     usageDataProvider: PropTypes.object,
-    lastJob: PropTypes.object,
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
@@ -580,23 +594,23 @@ UDP.propTypes = {
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }).isRequired,
   mutator: PropTypes.shape({
-    udpReloadToggle: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
     statsReloadToggle: PropTypes.shape({
       replace: PropTypes.func.isRequired,
     }).isRequired,
-  }).isRequired,
-  udpReloadCount: PropTypes.number.isRequired,
-  stripes: PropTypes.object.isRequired,
-  tagsEnabled: PropTypes.bool,
-  statsReloadCount: PropTypes.number.isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string
+    udpReloadToggle: PropTypes.shape({
+      replace: PropTypes.func.isRequired,
+    }).isRequired,
   }).isRequired,
   okapiKy: PropTypes.func.isRequired,
+  statsReloadCount: PropTypes.number.isRequired,
+  stripes: PropTypes.object.isRequired,
+  tagsEnabled: PropTypes.bool,
+  udpReloadCount: PropTypes.number.isRequired,
 };
 
 export default injectIntl(withOkapiKy(UDP));

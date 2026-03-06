@@ -1,5 +1,7 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import { omit } from 'lodash';
+
+import { screen } from '@folio/jest-config-stripes/testing-library/react';
+
 import renderWithIntl from '../../../test/jest/helpers';
 import PeriodicHarvestingView from './PeriodicHarvestingView';
 
@@ -7,7 +9,7 @@ const periodicConfig = {
   id: '8bf5fe33-5ec8-420c-a86d-6320c55ba554',
   startAt: '2021-05-07T12:13:19.000+0000',
   lastTriggeredAt: '2021-05-07T12:13:22.701+0000',
-  periodicInterval: 'daily'
+  periodicInterval: 'daily',
 };
 
 const renderPeriodicHarvestingView = (initialVals = {}) => {

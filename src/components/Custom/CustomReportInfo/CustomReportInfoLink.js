@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
-import { Button, Icon, MenuSection, TextLink } from '@folio/stripes/components';
+import {
+  Button,
+  Icon,
+  MenuSection,
+  TextLink,
+} from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
@@ -21,17 +29,17 @@ function CustomReportInfoLink(props) {
         labelTag="h3"
       >
         <TextLink
-          id="custom-report-link"
-          target="_blank"
-          rel="noopener noreferrer"
           href={customReport.linkUrl}
+          id="custom-report-link"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           <Icon icon="external-link">{customReport.linkUrl}</Icon>
         </TextLink>
         <IfPermission perm="ui-erm-usage.reports.delete">
           <Button
-            id="delete-custom-report-button"
             buttonStyle="dropdownItem"
+            id="delete-custom-report-button"
             onClick={onDelete}
           >
             <Icon icon="trash">
@@ -45,8 +53,8 @@ function CustomReportInfoLink(props) {
 }
 
 CustomReportInfoLink.propTypes = {
-  onDelete: PropTypes.func.isRequired,
   customReport: PropTypes.shape().isRequired,
+  onDelete: PropTypes.func.isRequired,
   udpLabel: PropTypes.string.isRequired,
 };
 

@@ -1,14 +1,24 @@
-import PropTypes from 'prop-types';
 import { sortBy } from 'lodash';
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import {
+  useEffect,
+  useState,
+} from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { AccordionSet, Col, Row } from '@folio/stripes/components';
+import {
+  AccordionSet,
+  Col,
+  Row,
+} from '@folio/stripes/components';
 
-import StatisticsPerYear from './StatisticsPerYear';
-import DownloadRange from './DownloadRange';
-import { getAvailableReports, getDownloadCounterReportTypes } from './utils';
 import css from './CounterStatistics.css';
+import DownloadRange from './DownloadRange';
+import StatisticsPerYear from './StatisticsPerYear';
+import {
+  getAvailableReports,
+  getDownloadCounterReportTypes,
+} from './utils';
 
 const CounterStatistics = ({
   handlers,
@@ -45,8 +55,8 @@ const CounterStatistics = ({
           <AccordionSet id="data-test-counter-reports">
             <StatisticsPerYear
               infoText={infoText}
-              reports={reports}
               reportFormatter={reportFormatter}
+              reports={reports}
             />
           </AccordionSet>
         </Col>
@@ -61,9 +71,9 @@ const CounterStatistics = ({
           </Col>
           <Col xs={12}>
             <DownloadRange
-              udpId={providerId}
               downloadableReports={downloadableReports}
               onDownloadReportMultiMonth={handlers.onDownloadReportMultiMonth}
+              udpId={providerId}
             />
           </Col>
         </Row>

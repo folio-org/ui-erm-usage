@@ -1,7 +1,10 @@
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { useStripes } from '@folio/stripes/core';
 import { Accordion } from '@folio/stripes/components';
+import { useStripes } from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
 import renderWithIntl from '../../../test/jest/helpers';
@@ -32,9 +35,9 @@ const mockReportFormatter = {
   '07': () => '-',
   '08': () => '-',
   '09': () => '-',
-  '10': () => '-',
-  '11': () => '-',
-  '12': () => '-',
+  10: () => '-',
+  11: () => '-',
+  12: () => '-',
 };
 
 const reports = [
@@ -42,14 +45,14 @@ const reports = [
     year: '2018',
     stats: [
       {
-        '10': {
+        10: {
           id: 'bf4ffe1b-d9f5-4054-ba1f-2ea590a4b822',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           release: '4',
           reportName: 'BR1',
           yearMonth: '2018-10',
         },
-        '11': {
+        11: {
           id: 'dbda8610-e1d1-4f40-bcfe-d5de351d7242',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           release: '4',
@@ -60,14 +63,14 @@ const reports = [
         release: '4',
       },
       {
-        '10': {
+        10: {
           id: 'bf4ffe1b-d9f5-4054-ba1f-2ea590a4b822',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           release: '4.1',
           reportName: 'BR1',
           yearMonth: '2018-10',
         },
-        '11': {
+        11: {
           id: 'dbda8610-e1d1-4f40-bcfe-d5de351d7242',
           downloadTime: '2024-09-09T17:17:00.699+00:00',
           failedAttempts: 2,
@@ -78,8 +81,8 @@ const reports = [
         },
         report: 'BR1',
         release: '4.1',
-      }
-    ]
+      },
+    ],
   },
   {
     year: '2019',
@@ -93,9 +96,9 @@ const reports = [
           release: '5',
           reportName: 'TR',
           yearMonth: '2019-06',
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
     year: '2021',
@@ -111,9 +114,9 @@ const reports = [
           release: '5',
           reportName: 'PR',
           yearMonth: '2021-01',
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
     year: '2020',
@@ -127,23 +130,23 @@ const reports = [
           release: '5.1',
           reportName: 'TR',
           yearMonth: '2020-06',
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 ];
 
 const renderCounterStatistics = (stripes) => {
   return renderWithIntl(
     <Accordion id="counterStatisticsAccordion" label="Counter statistics">
       <CounterStatistics
-        stripes={stripes}
-        providerId={providerId}
-        udpLabel={label}
-        reports={reports}
         handlers={handlers}
+        providerId={providerId}
         reportFormatter={mockReportFormatter}
+        reports={reports}
         showMultiMonthDownload
+        stripes={stripes}
+        udpLabel={label}
       />
     </Accordion>
   );
@@ -162,20 +165,21 @@ describe('CounterStatistics', () => {
     expect(screen.getByText('2019')).toBeInTheDocument();
   });
 
-  it('should render table with report for 2019', () => {
+  it('should render table with report for 2019', async () => {
     renderCounterStatistics(stripes);
 
     const accordion2019 = screen.getByText('2019');
     expect(accordion2019).toBeInTheDocument();
 
-    userEvent.click(accordion2019);
+    await userEvent.click(accordion2019);
 
     const section2019 = screen.getByRole('region', { name: /2019/ });
     const text = within(section2019).getByText(/TR/);
     expect(text).toBeInTheDocument();
 
     const headers = within(section2019).getAllByRole('columnheader');
-    const expectedLabels = ['Report', 'Release', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const expectedLabels =
+      ['Report', 'Release', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     headers.forEach((header, index) => {
       expect(header).toHaveTextContent(expectedLabels[index]);
@@ -185,7 +189,8 @@ describe('CounterStatistics', () => {
     expect(within(section2019).getByText(/5/)).toBeInTheDocument();
   });
 
-  it('should be visible download for multiple months with report version behind report, but without failed reports', () => {
+  it('should be visible download for multiple months with report version behind report, ' +
+    'but without failed reports', async () => {
     const expectedOptionStrings = [
       'BR1 (4)',
       'TR (5)',
@@ -210,7 +215,7 @@ describe('CounterStatistics', () => {
 
     const reportTypeSelectBox = screen.getByRole('combobox', { name: 'Report type' });
     expect(reportTypeSelectBox).toBeInTheDocument();
-    userEvent.click(reportTypeSelectBox);
+    await userEvent.click(reportTypeSelectBox);
 
     const optionStrings = within(reportTypeSelectBox)
       .getAllByRole('option')

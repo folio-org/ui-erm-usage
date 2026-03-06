@@ -1,13 +1,18 @@
 import { useMemo } from 'react';
-import { useStripes } from '@folio/stripes/core';
-import { ConfigManager } from '@folio/stripes/smart-components';
-import { FormattedMessage } from 'react-intl';
-import { Col, Row, TextField } from '@folio/stripes/components';
 import { Field } from 'react-final-form';
+import { FormattedMessage } from 'react-intl';
 
 import {
-  FORM_TYPE_FINAL_FORM,
+  Col,
+  Row,
+  TextField,
+} from '@folio/stripes/components';
+import { useStripes } from '@folio/stripes/core';
+import { ConfigManager } from '@folio/stripes/smart-components';
+
+import {
   DAYS_TO_KEEP_LOGS,
+  FORM_TYPE_FINAL_FORM,
   MOD_SETTINGS,
 } from '../../util/constants';
 

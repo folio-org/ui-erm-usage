@@ -4,17 +4,20 @@ import { FormattedMessage } from 'react-intl';
 
 import { Select } from '@folio/stripes/components';
 
-import { required, notRequired } from '../../../util/validate';
 import harvestingViaOptions from '../../../util/data/harvestingViaOptions';
+import {
+  notRequired,
+  required,
+} from '../../../util/validate';
 
 const HarvestingViaSelect = (props) => {
   return (
     <Field
       component={Select}
+      data={props.required ? 1 : 0}
       dataOptions={harvestingViaOptions}
       fullWidth
       id="harvestingConfig.harvestVia"
-      data={props.required ? 1 : 0}
       label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator" />}
       name="harvestingConfig.harvestVia"
       onChange={props.onChange}
@@ -25,8 +28,8 @@ const HarvestingViaSelect = (props) => {
 };
 
 HarvestingViaSelect.propTypes = {
-  required: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  required: PropTypes.bool,
 };
 
 export default HarvestingViaSelect;

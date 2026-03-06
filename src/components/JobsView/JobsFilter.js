@@ -1,12 +1,19 @@
 import PropTypes from 'prop-types';
 import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
+import {
+  useHistory,
+  useLocation,
+} from 'react-router';
+
+import {
   Accordion,
   AccordionSet,
   FilterAccordionHeader,
 } from '@folio/stripes/components';
 import { CheckboxFilter } from '@folio/stripes/smart-components';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useHistory, useLocation } from 'react-router';
 
 const JobsFilter = (props) => {
   const location = useLocation();
@@ -60,11 +67,13 @@ const JobsFilter = (props) => {
 
   const toggleUdp = () => {
     const params = new URLSearchParams(location.search);
+
     if (pathId) {
       params.delete('providerId');
     } else {
       params.set('providerId', stateId);
     }
+
     history.push({ search: params.toString(), state: location.state });
   };
 
@@ -110,8 +119,8 @@ const JobsFilter = (props) => {
 };
 
 JobsFilter.propTypes = {
-  filterGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeFilters: PropTypes.object.isRequired,
+  filterGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
   getFilterHandlers: PropTypes.func.isRequired,
 };
 

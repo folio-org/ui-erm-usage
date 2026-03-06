@@ -1,18 +1,21 @@
-import PropTypes from 'prop-types';
 import compose from 'compose-function';
-import { get, isEmpty } from 'lodash';
+import {
+  get,
+  isEmpty,
+} from 'lodash';
+import PropTypes from 'prop-types';
 
 import { stripesConnect } from '@folio/stripes/core';
 import { withTags } from '@folio/stripes/smart-components';
 
 import UDP from '../components/views/UDP';
-import withReportHandlers from './components/withReportHandlers';
-import urls from '../util/urls';
-import extractHarvesterImpls from '../util/harvesterImpls';
 import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
+import extractHarvesterImpls from '../util/harvesterImpls';
+import urls from '../util/urls';
+import withReportHandlers from './components/withReportHandlers';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
 
@@ -50,6 +53,7 @@ function UDPViewRoute(props) {
   const getCounterReports = (udpId) => {
     const records = (resources.counterReports || {}).records || null;
     const reports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
+
     if (
       !isEmpty(reports) &&
       reports[0].reportsPerType[0].counterReports[0].providerId === udpId
@@ -66,6 +70,7 @@ function UDPViewRoute(props) {
       'customReports.records[0].customReports',
       []
     );
+
     if (!isEmpty(reports) && reports[0].providerId === udpId) {
       return reports;
     } else {
@@ -95,6 +100,7 @@ function UDPViewRoute(props) {
 
   const getMaxFailedAttempts = () => {
     const settings = resources.failedAttemptsSettings || {};
+
     if (isEmpty(settings) || settings.records.length === 0) {
       return MAX_FAILED_ATTEMPTS;
     } else {
@@ -166,14 +172,14 @@ UDPViewRoute.propTypes = {
   }).isRequired,
   resources: PropTypes.shape({
     counterReports: PropTypes.shape(),
+    failedAttemptsSettings: PropTypes.shape(),
     harvesterImpls: PropTypes.shape(),
+    harvesterJobs: PropTypes.shape(),
     query: PropTypes.object,
     settings: PropTypes.shape({
       records: PropTypes.arrayOf(PropTypes.object),
     }),
     usageDataProvider: PropTypes.shape(),
-    failedAttemptsSettings: PropTypes.shape(),
-    harvesterJobs: PropTypes.shape(),
   }).isRequired,
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
@@ -215,7 +221,7 @@ UDPViewRoute.manifest = Object.freeze({
     path: MOD_SETTINGS.BASE_PATH,
     params: {
       query: `(scope==${SCOPES.EUSAGE} and key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
-    }
+    },
   },
   counterReports: {
     type: 'okapi',
@@ -232,11 +238,11 @@ UDPViewRoute.manifest = Object.freeze({
     path: MOD_SETTINGS.BASE_PATH,
     params: {
       query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
-    }
+    },
   },
   statsReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.
-    // Thanks to Mike Taylor in ui-courses (https://github.com/folio-org/ui-courses/blame/a8dcccfd58e89e102f6fad1e95b52dbe89947e0b/src/routes/CourseRoute.js#L36)
+    // Thanks to Mike Taylor.
     initialValue: 0,
   },
   udpReloadToggle: {

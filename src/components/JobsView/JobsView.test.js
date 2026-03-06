@@ -1,10 +1,14 @@
 import '../../../test/jest/__mock__';
-import { screen, within } from '@folio/jest-config-stripes/testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
-import udpsFixture from '../../../test/fixtures/udps';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
+
 import jobsFixture from '../../../test/fixtures/jobs';
+import udpsFixture from '../../../test/fixtures/udps';
+import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import JobsViewRoute from '../../routes/JobsViewRoute';
 
 jest.mock('./JobsViewResultCell', () => () => (
@@ -96,9 +100,10 @@ describe('JobView component', () => {
     ];
 
     renderJobView(jobsFixture);
-    const rowContent = screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
-      .queryAllByRole(role)
-      .map((e) => e.textContent)));
+    const rowContent =
+      screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
+        .queryAllByRole(role)
+        .map((e) => e.textContent)));
     expect(rowContent).toEqual(expectedRowContent);
   });
 });

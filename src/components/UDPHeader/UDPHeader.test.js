@@ -1,11 +1,15 @@
-import { StripesContext, useStripes } from '@folio/stripes/core';
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import UDPHeader from './UDPHeader';
+import {
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
+
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
+import UDPHeader from './UDPHeader';
 
 const renderUDPHeader = (stripes, udp, lastJob) => renderWithIntl(
   <StripesContext.Provider value={stripes}>
-    <UDPHeader usageDataProvider={udp} lastJob={lastJob} />
+    <UDPHeader lastJob={lastJob} usageDataProvider={udp} />
   </StripesContext.Provider>
 );
 
