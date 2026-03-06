@@ -87,6 +87,8 @@
 
   "vendorInfo.serviceType": "Service type",
   "vendorInfo.serviceUrl": "Service URL",
+  "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+  "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester.",
 
   "credentials.customerId": "Customer ID",
   "credentials.requestorId": "Requestor ID",
