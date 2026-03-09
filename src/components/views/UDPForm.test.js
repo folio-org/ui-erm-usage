@@ -134,9 +134,15 @@ describe('UDPForm', () => {
     });
   });
 
-  test('should render form', async () => {
+  test('should render form and service url with info button', async () => {
     renderUDPForm(stripes);
     expect(screen.getByText('Harvesting status')).toBeVisible();
+
+    expect(screen.getByRole('textbox', { name: /service url/i })).toBeInTheDocument();
+    const serviceUrlLabel = document.querySelector('label[for="addudp_serviceurl"]');
+
+    expect(serviceUrlLabel).toBeInTheDocument();
+    expect(within(serviceUrlLabel).getByRole('button', { name: 'info' })).toBeInTheDocument();
   });
 
   describe('test create new UDP', () => {
