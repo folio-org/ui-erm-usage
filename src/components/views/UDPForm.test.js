@@ -134,9 +134,15 @@ describe('UDPForm', () => {
     });
   });
 
-  test('should render form', async () => {
+  test('should render form and service url with info button', async () => {
     renderUDPForm(stripes);
     expect(screen.getByText('Harvesting status')).toBeVisible();
+
+    expect(screen.getByRole('textbox', { name: /service url/i })).toBeInTheDocument();
+    const serviceUrlLabel = document.querySelector('label[for="addudp_serviceurl"]');
+
+    expect(serviceUrlLabel).toBeInTheDocument();
+    expect(within(serviceUrlLabel).getByRole('button', { name: 'info' })).toBeInTheDocument();
   });
 
   describe('test create new UDP', () => {
@@ -362,7 +368,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Vendor code' })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeRequired();
-      expect(screen.getByRole('textbox', { name: 'Service URL' })).toBeRequired();
+      expect(screen.getByRole('textbox', { name: /service url/i })).toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
@@ -392,7 +398,7 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Vendor code' })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
-      expect(screen.getByRole('textbox', { name: 'Service URL' })).not.toBeRequired();
+      expect(screen.getByRole('textbox', { name: /service url/i })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Report release' })).not.toBeRequired();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));

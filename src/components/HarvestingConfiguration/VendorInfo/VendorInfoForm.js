@@ -7,6 +7,7 @@ import {
 
 import {
   Col,
+  InfoPopover,
   Row,
   Select,
   TextField,
@@ -17,6 +18,7 @@ import {
   required,
   requiredValidateUrl,
 } from '../../../util/validate';
+import css from './VendorInfoForm.css';
 
 const VendorInfoForm = ({
   disabled,
@@ -50,7 +52,28 @@ const VendorInfoForm = ({
             disabled={disabled}
             fullWidth
             id="addudp_serviceurl"
-            label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />}
+            label={
+              <>
+                <FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl" />
+                <InfoPopover
+                  className={css.serviceUrlInfoPopover}
+                  content={
+                    <>
+                      <FormattedMessage id="ui-erm-usage.vendorInfo.serviceUrl.info" /><br />
+                      <FormattedMessage
+                        id="ui-erm-usage.vendorInfo.serviceUrl.note"
+                        values={{
+                          // eslint-disable-next-line max-len
+                          urlSushiReport: <a href="https://usage.catsanddogs.org/sushi/reports/tr_b1" rel="noopener noreferrer" target="_blank">https://usage.catsanddogs.org/sushi/reports/tr_b1</a>,
+                          // eslint-disable-next-line max-len
+                          urlSushi: <a href="https://usage.catsanddogs.org/sushi" rel="noopener noreferrer" target="_blank">https://usage.catsanddogs.org/sushi</a>,
+                        }}
+                      />
+                    </>
+                  }
+                />
+              </>
+            }
             name="harvestingConfig.sushiConfig.serviceUrl"
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.vendor.url',
