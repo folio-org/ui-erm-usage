@@ -15,12 +15,17 @@ jest.mock('./JobsViewResultCell', () => () => (
   <div>MockedJobsViewResultCell</div>
 ));
 
+const mockReplace = jest.fn();
+
 const renderJobView = (jobs) => renderWithIntl(
   <MemoryRouter>
     <JobsViewRoute
       mutator={{
         query: {
           update: () => {},
+        },
+        timestamp: {
+          replace: mockReplace,
         },
       }}
       resources={{
@@ -44,6 +49,16 @@ const renderJobView = (jobs) => renderWithIntl(
 );
 
 describe('JobView component', () => {
+  afterEach(() => {
+    mockReplace.mockClear();
+  });
+
+  it('should update timestamp on mount to trigger a fresh fetch', () => {
+    renderJobView([]);
+    expect(mockReplace).toHaveBeenCalledTimes(1);
+    expect(typeof mockReplace.mock.calls[0][0]).toBe('number');
+  });
+
   it('should display no results if no job data is provided', () => {
     renderJobView([]);
     expect(screen.getByText('The list contains no items')).toBeInTheDocument();
