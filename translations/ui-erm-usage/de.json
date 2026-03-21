@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "The report could not be processed.",
     "general.moreInformation": "More information",
     "report.upload.modal.label.failed": "Hochladen der Datei fehlgeschlagen",
-    "report.upload.selectAnotherFile": "Andere Datei auswählen"
+    "report.upload.selectAnotherFile": "Andere Datei auswählen",
+    "vendorInfo.serviceUrl.info": "Die URL ist in der Regel auf den Informationsseiten im Backend des Anbieters zu finden.",
+    "vendorInfo.serviceUrl.note": "Hinweis: Geben Sie nur die Basis-URL ein, nicht die vollständige URL. Wenn der Anbieter beispielsweise die URL {urlSushiReport} angibt, geben Sie nur den Teil vor (und ohne) reports ein: {urlSushi}. Alles Weitere wird vom Harvester hinzugefügt."
 }

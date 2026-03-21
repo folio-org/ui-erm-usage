@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "The report could not be processed.",
     "general.moreInformation": "ข้อมูลเพิ่มเติม",
     "report.upload.modal.label.failed": "อัปโหลดไฟล์ไม่สำเร็จ",
-    "report.upload.selectAnotherFile": "เลือกไฟล์อื่นเพื่ออัปโหลด"
+    "report.upload.selectAnotherFile": "เลือกไฟล์อื่นเพื่ออัปโหลด",
+    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }

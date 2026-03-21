@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "Rapor işleme alınamadı.",
     "general.moreInformation": "Daha fazla bilgi",
     "report.upload.modal.label.failed": "Dosya yükle başarısız oldu",
-    "report.upload.selectAnotherFile": "Yükle için başka bir dosya seçin"
+    "report.upload.selectAnotherFile": "Yükle için başka bir dosya seçin",
+    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }
