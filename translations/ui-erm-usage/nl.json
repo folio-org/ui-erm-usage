@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "Het Rapport kon niet worden verwerkt.",
     "general.moreInformation": "Meer informatie",
     "report.upload.modal.label.failed": "Uploaden van bestand mislukt",
-    "report.upload.selectAnotherFile": "Selecteer een ander bestand om te Uploaden"
+    "report.upload.selectAnotherFile": "Selecteer een ander bestand om te Uploaden",
+    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }

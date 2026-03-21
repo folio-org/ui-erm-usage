@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "报告无法处理。",
     "general.moreInformation": "更多信息",
     "report.upload.modal.label.failed": "文件上传失败",
-    "report.upload.selectAnotherFile": "选择另一个文件上传"
+    "report.upload.selectAnotherFile": "选择另一个文件上传",
+    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }

@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "O relatório não pôde ser processado.",
     "general.moreInformation": "Mais informações",
     "report.upload.modal.label.failed": "Falha no envio do arquivo",
-    "report.upload.selectAnotherFile": "Selecione outro arquivo para carregar"
+    "report.upload.selectAnotherFile": "Selecione outro arquivo para carregar",
+    "vendorInfo.serviceUrl.info": "A URL geralmente está listada nas páginas de informações do painel administrativo do provedor.",
+    "vendorInfo.serviceUrl.note": "Observação: Insira apenas a URL base, não a URL completa. Por exemplo, se o provedor listar a URL {urlSushiReport}. insira apenas a parte anterior (e excluindo) aos relatórios: {urlSushi}. Tudo o resto é adicionado pela colheitadeira."
 }

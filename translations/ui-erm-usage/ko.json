@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "보고서를 처리할 수 없습니다.",
     "general.moreInformation": "자세히 보기",
     "report.upload.modal.label.failed": "파일 업로드에 실패했습니다.",
-    "report.upload.selectAnotherFile": "업로드할 다른 파일을 선택해 주세요."
+    "report.upload.selectAnotherFile": "업로드할 다른 파일을 선택해 주세요.",
+    "vendorInfo.serviceUrl.info": "해당 URL은 일반적으로 제공업체의 관리(백엔드) 정보 페이지에서 확인할 수 있습니다.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }
