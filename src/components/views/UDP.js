@@ -208,7 +208,7 @@ const UDP = ({
     return (
       <>
         <div>
-          <IfPermission perm="ui-erm-usage-harvester.start.single">
+          <IfPermission perm="ui-erm-usage.harvester.start.single">
             <Button
               buttonStyle="dropDownItem"
               disabled={isInActive(usageDataProvider)}
@@ -231,7 +231,7 @@ const UDP = ({
           />
         </div>
         <div>
-          <IfPermission perm="ui-erm-usage-harvester.jobs.view">
+          <IfPermission perm="ui-erm-usage.harvester.jobs.view">
             <Button
               buttonStyle="dropDownItem"
               id="clickable-harvester-logs"

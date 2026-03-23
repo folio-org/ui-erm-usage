@@ -240,7 +240,7 @@ const UDPs = ({
           </IfPermission>
         </div>
         <div>
-          <IfPermission perm="ui-erm-usage-harvester.jobs.view">
+          <IfPermission perm="ui-erm-usage.harvester.jobs.view">
             <Button
               aria-label={intl.formatMessage({ id: 'ui-erm-usage.harvester.jobs.show' })}
               buttonStyle="dropDownItem"

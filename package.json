@@ -140,8 +140,8 @@
           "ui-erm-usage.udp.delete",
           "ui-erm-usage.reports.delete",
           "ui-erm-usage.generalSettings.manage",
-          "ui-erm-usage-harvester.start.single",
-          "ui-erm-usage-harvester.jobs.view"
+          "ui-erm-usage.harvester.start.single",
+          "ui-erm-usage.harvester.jobs.view"
         ],
         "visible": true
       },
@@ -167,7 +167,7 @@
           "customreports.collection.get",
           "customreports.item.get",
           "erm-usage.files.item.get",
-          "ui-erm-usage-harvester.jobs.view"
+          "ui-erm-usage.harvester.jobs.view"
         ],
         "visible": true
       },
