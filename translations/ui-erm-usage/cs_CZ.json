@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "Výstup se nepodařilo zpracovat.",
     "general.moreInformation": "Více informací",
     "report.upload.modal.label.failed": "Nahrávání souboru se nezdařilo",
-    "report.upload.selectAnotherFile": "Vyberte další soubor, který chcete nahrát"
+    "report.upload.selectAnotherFile": "Vyberte další soubor, který chcete nahrát",
+    "vendorInfo.serviceUrl.info": "URL je obvykle uvedeno na informačních stránkách poskytovatele.",
+    "vendorInfo.serviceUrl.note": "Poznámka: Zadejte pouze základní adresu URL, nikoli celou adresu URL. Pokud například poskytovatel uvádí adresu URL {urlSushiReport}, zadejte pouze část před (a bez) zpráv: {urlSushi}. Vše ostatní doplní harvester."
 }

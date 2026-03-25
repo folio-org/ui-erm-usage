@@ -42,6 +42,7 @@
 * NFR: CoP 3032 (Usage No Longer Available for Requested Dates) ([UIEUS-442](https://folio-org.atlassian.net/browse/UIEUS-442))
 * Add eslint rules ([UIEUS-502](https://folio-org.atlassian.net/browse/UIEUS-502))
 * UDP (Edit mode): Adding an info box to the Service URL field ([UIEUS-509](https://folio-org.atlassian.net/browse/UIEUS-509))
+* Fix stale permission references in permissionSets ([UIEUS-513](https://folio-org.atlassian.net/browse/UIEUS-513))
 * Fix jobs page not fetching fresh data on navigation ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)

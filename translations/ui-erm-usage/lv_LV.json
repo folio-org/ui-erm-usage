@@ -4,7 +4,7 @@
     "ui-erm-usage.resultCount": "ResultCount:",
     "resultCount": "{count, number} Records found",
     "erm-usage": "ERM Usage",
-    "meta.title": "eUsage",
+    "meta.title": "eLietojumi",
     "information.providerName": "Provider name",
     "information.platform": "Platform",
     "information.harvestingStatus": "Harvesting status",
@@ -325,5 +325,7 @@
     "counter.upload.error.OTHER": "The report could not be processed.",
     "general.moreInformation": "More information",
     "report.upload.modal.label.failed": "File upload failed",
-    "report.upload.selectAnotherFile": "Select another file to upload"
+    "report.upload.selectAnotherFile": "Select another file to upload",
+    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
+    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
 }
