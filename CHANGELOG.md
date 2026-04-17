@@ -1,6 +1,8 @@
 # Change history for ui-erm-usage
 
-## 12.0.0 (IN PROGRESS)
+## 12.1.0 (IN PROGRESS)
+
+## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
 * NFR: Improvement of the report info when HTTP status codes occured ([UIEUS-367](https://folio-org.atlassian.net/browse/UIEUS-367))
 * *BREAKING* Migrate settings from `mod-configuration` to `mod-settings` ([UIEUS-387](https://folio-org.atlassian.net/browse/UIEUS-387))
