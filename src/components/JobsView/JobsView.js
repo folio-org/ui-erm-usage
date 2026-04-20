@@ -231,7 +231,9 @@ const JobsView = ({ source, filterGroups }) => {
                   : {};
               }}
               onNeedMoreData={() => {
-                source.fetchMore(30);
+                if (source.totalCount() > source.records().length) {
+                  source.fetchMore(30);
+                }
               }}
               sortDirection={sortDirection}
               sortOrder={sortOrder}
