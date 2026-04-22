@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { NoPermissionMessage } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
@@ -36,7 +37,7 @@ const UDPCreateRoute = ({
   const harvesterImpls = extractHarvesterImpls(resources);
   const aggregators = (resources.aggregators || {}).records || [];
 
-  if (!hasPerms) return <div>No Permission</div>;
+  if (!hasPerms) return <NoPermissionMessage />;
 
   if (fetchIsPending()) {
     return <LoadingPane onClose={handleClose} />;
