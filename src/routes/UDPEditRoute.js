@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
+import { NoPermissionMessage } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
@@ -47,7 +48,7 @@ const UDPEditRoute = ({
   const aggregators = (resources.aggregators || {}).records || [];
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 
-  if (!hasPerms) return <div>No Permission</div>;
+  if (!hasPerms) return <NoPermissionMessage />;
 
   if (fetchIsPending()) {
     return <LoadingPane onClose={handleClose} />;
