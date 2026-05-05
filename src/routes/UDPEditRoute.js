@@ -6,7 +6,6 @@ import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
-import extractHarvesterImpls from '../util/harvesterImpls';
 import urls from '../util/urls';
 
 const UDPEditRoute = ({
@@ -44,7 +43,7 @@ const UDPEditRoute = ({
       .some((r) => r.isPending);
   };
 
-  const harvesterImpls = extractHarvesterImpls(resources);
+  const harvesterImpls = resources.harvesterImpls?.records || [];
   const aggregators = (resources.aggregators || {}).records || [];
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 

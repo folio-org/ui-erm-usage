@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FieldArray } from 'react-final-form-arrays';
@@ -8,34 +7,22 @@ import { Label } from '@folio/stripes/components';
 
 import formCss from '../../../util/sharedStyles/form.css';
 import { requiredArray } from '../../../util/validate';
-import counterReportMapping from './data/counterReports';
 import css from './SelectedReportsForm.css';
 import SelectReportType from './SelectReportType';
 
-const getCounterReportsForVersion = (counterVersion) => {
-  return _.filter(counterReportMapping, ['counterVersion', counterVersion]);
-};
-
 class SelectedReportsForm extends React.Component {
   static propTypes = {
-    counterVersion: PropTypes.string,
     required: PropTypes.bool,
     selectedReports: PropTypes.arrayOf(PropTypes.string),
+    supportedReports: PropTypes.arrayOf(PropTypes.string),
   };
 
-  constructor(props) {
-    super(props);
-
-    this.counterReportsCurrentVersion = getCounterReportsForVersion(props.counterVersion);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.counterVersion !== prevProps.counterVersion) {
-      this.counterReportsCurrentVersion = getCounterReportsForVersion(this.props.counterVersion);
-    }
-  }
-
   render() {
+    const counterReportsCurrentVersion = (this.props.supportedReports ?? []).map(r => ({
+      label: r,
+      value: r,
+    }));
+
     const reportsSelect = (
       <FieldArray
         name="harvestingConfig.requestedReports"
@@ -45,7 +32,7 @@ class SelectedReportsForm extends React.Component {
       >
         {({ fields }) => (
           <SelectReportType
-            counterReportsCurrentVersion={this.counterReportsCurrentVersion}
+            counterReportsCurrentVersion={counterReportsCurrentVersion}
             fields={fields}
             required={this.props.required}
             selectedReports={this.props.selectedReports}

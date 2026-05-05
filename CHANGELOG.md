@@ -2,6 +2,7 @@
 
 ## 12.1.0 (IN PROGRESS)
 * Use NoPermissionMessage from stripes-leipzig-components ([UIEUS-517](https://folio-org.atlassian.net/browse/UIEUS-517))
+* Replace hardcoded report release and report type mappings with backend /impl data and remove report release dropdown ([UIEUS-510](https://folio-org.atlassian.net/browse/UIEUS-510))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))

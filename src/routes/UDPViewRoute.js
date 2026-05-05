@@ -13,7 +13,6 @@ import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
-import extractHarvesterImpls from '../util/harvesterImpls';
 import urls from '../util/urls';
 import withReportHandlers from './components/withReportHandlers';
 
@@ -112,7 +111,7 @@ function UDPViewRoute(props) {
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = get(resources, 'settings.records', []);
-  const harvesterImpls = extractHarvesterImpls(resources);
+  const harvesterImpls = resources.harvesterImpls?.records || [];
   const statsReloadCount = get(resources, 'statsReloadToggle', 0);
   const udpReloadCount = get(resources, 'udpReloadToggle', 0);
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);

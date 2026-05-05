@@ -5,7 +5,6 @@ import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
-import extractHarvesterImpls from '../util/harvesterImpls';
 import urls from '../util/urls';
 
 const UDPCreateRoute = ({
@@ -34,8 +33,11 @@ const UDPCreateRoute = ({
       .some((r) => r.isPending);
   };
 
-  const harvesterImpls = extractHarvesterImpls(resources);
+  const harvesterImpls = resources.harvesterImpls?.records || [];
   const aggregators = (resources.aggregators || {}).records || [];
+
+  const implList = harvesterImpls[0]?.implementations ?? [];
+  const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
 
   if (!hasPerms) return <NoPermissionMessage />;
 
@@ -53,17 +55,15 @@ const UDPCreateRoute = ({
         ...handlers,
         onClose: handleClose,
       }}
-      initialValues={
-        {
-          status: 'active',
-          harvestingConfig: {
-            harvestingStatus: 'active',
-            harvestVia: 'sushi',
-            reportRelease: '5.1',
-            sushiConfig: { serviceType: 'cs51' },
-          },
-        }
-      }
+      initialValues={{
+        status: 'active',
+        harvestingConfig: {
+          harvestingStatus: 'active',
+          harvestVia: 'sushi',
+          reportRelease: defaultImpl?.reportRelease,
+          sushiConfig: { serviceType: defaultImpl?.type },
+        },
+      }}
       isLoading={fetchIsPending()}
       onSubmit={handleSubmit}
       store={stripes.store}
