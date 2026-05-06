@@ -81,6 +81,7 @@ const initialUdp = {
       serviceType: 'cs41',
       serviceUrl: 'http://usage.udp.com/SushiServer',
     },
+    reportRelease: '4',
     requestedReports: ['DR1'],
     harvestingStart: '2018-01',
   },
@@ -99,6 +100,7 @@ const initialValues = {
   harvestingConfig: {
     harvestingStatus: 'active',
     harvestVia: 'sushi',
+    reportRelease: '5.1',
     sushiConfig: { serviceType: 'cs51' },
   },
 };
@@ -481,14 +483,14 @@ describe('UDPForm', () => {
     const testSelectServiceType = async (serviceType) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      const releaseSelectBox = screen.getByRole('combobox', { name: /service type/i });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: /service type/i });
 
       expect(reqIdBox).toBeEnabled();
       expect(reqIdBox).toHaveValue('id1234');
 
-      await userEvent.selectOptions(releaseSelectBox, serviceType);
+      await userEvent.selectOptions(serviceTypeSelect, serviceType);
 
-      expect(releaseSelectBox.value).toBe(serviceType);
+      expect(serviceTypeSelect.value).toBe(serviceType);
       expect(reqIdBox).toHaveValue('id1234');
     };
 

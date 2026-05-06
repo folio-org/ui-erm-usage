@@ -34,7 +34,9 @@ class SelectedReportsForm extends React.Component {
           <FieldArray
             name="harvestingConfig.requestedReports"
             required={this.props.required}
-            // dont know why, but this seems to work
+            // this.props always reflects current props when called.
+            /* With a functional component useRef would be needed to achieve the same effect.
+               Since react-final-form-arrays caches the validator at mount via useConstant. */
             validate={(value) => this.props.required && requiredArray(value)}
           >
             {({ fields }) => (
