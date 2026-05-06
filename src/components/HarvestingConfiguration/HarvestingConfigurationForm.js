@@ -45,7 +45,7 @@ const HarvestingConfigurationForm = ({
     ? harvesterImplementations[0].implementations
     : [];
 
-  const changeSelectedCounterVersion = (event) => {
+  const changeSelectedServiceType = (event) => {
     const selectedType = (event.target.value === '') ? undefined : event.target.value;
     form.change('harvestingConfig.sushiConfig.serviceType', selectedType);
     const impl = implementations.find(i => i.type === selectedType);
@@ -139,7 +139,7 @@ const HarvestingConfigurationForm = ({
               />
             </Row>
             <VendorInfoForm
-              changeSelectedCounterVersion={changeSelectedCounterVersion}
+              changeSelectedServiceType={changeSelectedServiceType}
               disabled={harvestVia !== 'sushi'}
               harvesterImpls={extractHarvesterImpls(harvesterImplementations)}
               isRequired={isHarvestingStatusActive}
@@ -154,15 +154,11 @@ const HarvestingConfigurationForm = ({
             />
           </section>
           <section className={formCss.separator}>
-            <Row>
-              <Col xs={12}>
-                <SelectedReportsForm
-                  required={isHarvestingStatusActive}
-                  selectedReports={requestedReports}
-                  supportedReports={supportedReports}
-                />
-              </Col>
-            </Row>
+            <SelectedReportsForm
+              required={isHarvestingStatusActive}
+              selectedReports={requestedReports}
+              supportedReports={supportedReports}
+            />
           </section>
           <section className={formCss.separator}>
             <Row>

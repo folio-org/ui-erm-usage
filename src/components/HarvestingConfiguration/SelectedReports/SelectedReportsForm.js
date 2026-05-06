@@ -23,24 +23,6 @@ class SelectedReportsForm extends React.Component {
       value: r,
     }));
 
-    const reportsSelect = (
-      <FieldArray
-        name="harvestingConfig.requestedReports"
-        required={this.props.required}
-        // dont know why, but this seems to work
-        validate={(value) => this.props.required && requiredArray(value)}
-      >
-        {({ fields }) => (
-          <SelectReportType
-            counterReportsCurrentVersion={counterReportsCurrentVersion}
-            fields={fields}
-            required={this.props.required}
-            selectedReports={this.props.selectedReports}
-          />
-        )}
-      </FieldArray>
-    );
-
     return (
       <>
         <div className={formCss.label}>
@@ -48,7 +30,23 @@ class SelectedReportsForm extends React.Component {
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.requestedReport" />
           </Label>
         </div>
-        <div className={css.reportListDropdownWrap}>{reportsSelect}</div>
+        <div className={css.reportListDropdownWrap}>
+          <FieldArray
+            name="harvestingConfig.requestedReports"
+            required={this.props.required}
+            // dont know why, but this seems to work
+            validate={(value) => this.props.required && requiredArray(value)}
+          >
+            {({ fields }) => (
+              <SelectReportType
+                counterReportsCurrentVersion={counterReportsCurrentVersion}
+                fields={fields}
+                required={this.props.required}
+                selectedReports={this.props.selectedReports}
+              />
+            )}
+          </FieldArray>
+        </div>
       </>
     );
   }

@@ -347,10 +347,9 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['cs41']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
 
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
@@ -506,7 +505,7 @@ describe('UDPForm', () => {
     });
 
     test('change reqId and apiKey with service type 5 selected', async () => {
-      renderUDPForm(stripes, { harvestingConfig: { serviceType: 'Counter 5.0' } });
+      renderUDPForm(stripes, { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } });
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
       const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
 
