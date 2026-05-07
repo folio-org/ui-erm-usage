@@ -241,7 +241,6 @@ const UDPForm = ({
                   expanded={sections.editHarvestingConfig}
                   form={form}
                   harvesterImplementations={data.harvesterImpls}
-                  initialValues={initialValues}
                   onToggle={handleSectionToggle}
                   values={values}
                 />

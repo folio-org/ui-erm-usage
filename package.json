@@ -74,7 +74,7 @@
       "usage-data-providers": "3.1",
       "settings": "1.2",
       "tags": "1.0",
-      "erm-usage-harvester": "2.0"
+      "erm-usage-harvester": "2.1"
     },
     "stripesDeps": [
       "@folio/stripes-leipzig-components"

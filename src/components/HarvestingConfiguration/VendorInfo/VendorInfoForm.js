@@ -21,6 +21,7 @@ import {
 import css from './VendorInfoForm.css';
 
 const VendorInfoForm = ({
+  changeSelectedServiceType,
   disabled,
   harvesterImpls,
   intl,
@@ -39,6 +40,7 @@ const VendorInfoForm = ({
             id="addudp_servicetype"
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
             name="harvestingConfig.sushiConfig.serviceType"
+            onChange={changeSelectedServiceType}
             required={!disabled && isRequired}
             validate={!disabled && isRequired ? required : notRequired}
           />
@@ -88,6 +90,7 @@ const VendorInfoForm = ({
 };
 
 VendorInfoForm.propTypes = {
+  changeSelectedServiceType: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   intl: PropTypes.object,

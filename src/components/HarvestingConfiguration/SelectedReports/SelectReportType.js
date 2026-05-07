@@ -46,52 +46,56 @@ function SelectReportType(props) {
   const { counterReportsCurrentVersion, fields, selectedReports } = props;
 
   return (
-    <Row>
-      <Col xs={12}>
-        {fields.map((elem, index) => (
-          <Row key={index}>
-            <Col xs={6}>
-              <div id={`reportType-selection-${index}`}>
-                <Field
-                  component={Selection}
-                  data={props.required ? 1 : 0}
-                  dataOptions={omitUsedOptions(
-                    counterReportsCurrentVersion,
-                    selectedReports,
-                    index
-                  )}
-                  label={
-                    <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
-                  }
-                  name={elem}
-                  validate={props.required ? required : notRequired}
-                />
-              </div>
-            </Col>
-            <Col xs={2}>
-              <div className={`${css.repeatableFieldRemoveItem}`}>
-                <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
-                  {([label]) => (
-                    <IconButton
-                      aria-label={label}
-                      icon="trash"
-                      onClick={() => fields.remove(index)}
-                    />
-                  )}
-                </FormattedMessage>
-              </div>
-            </Col>
-          </Row>
-        ))}
-      </Col>
-      <Col xs={4}>
-        <Button data-test-add-report-button onClick={() => fields.push('')}>
-          <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
-            {([label]) => <Icon icon="plus-sign">{label}</Icon>}
-          </FormattedMessage>
-        </Button>
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col xs={7}>
+          {fields.map((elem, index) => (
+            <Row key={elem}>
+              <Col xs={6}>
+                <div id={`reportType-selection-${index}`}>
+                  <Field
+                    component={Selection}
+                    data={props.required ? 1 : 0}
+                    dataOptions={omitUsedOptions(
+                      counterReportsCurrentVersion,
+                      selectedReports,
+                      index
+                    )}
+                    label={
+                      <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
+                    }
+                    name={elem}
+                    validate={props.required ? required : notRequired}
+                  />
+                </div>
+              </Col>
+              <Col xs={1}>
+                <div className={`${css.repeatableFieldRemoveItem}`}>
+                  <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
+                    {([label]) => (
+                      <IconButton
+                        aria-label={label}
+                        icon="trash"
+                        onClick={() => fields.remove(index)}
+                      />
+                    )}
+                  </FormattedMessage>
+                </div>
+              </Col>
+            </Row>
+          ))}
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={4}>
+          <Button data-test-add-report-button onClick={() => fields.push('')}>
+            <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
+              {([label]) => <Icon icon="plus-sign">{label}</Icon>}
+            </FormattedMessage>
+          </Button>
+        </Col>
+      </Row>
+    </>
   );
 }
 

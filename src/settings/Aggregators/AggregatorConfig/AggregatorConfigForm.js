@@ -24,7 +24,7 @@ function AggregatorConfigForm({ stripes }) {
           <InfoPopover
             content={`${intl.formatMessage({
               id: 'ui-erm-usage.aggregator.config.popover',
-            })} apiKey, requestorId, customerId, reportRelease`}
+            })} apiKey, requestorId, customerId`}
           />
           <Row>
             <Col xs={8}>

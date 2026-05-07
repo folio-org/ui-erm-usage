@@ -31,7 +31,6 @@ const stubAggregators = [
           apiKey: 'xxx',
           customerId: 'xxx',
           requestorId: 'xxx',
-          reportRelease: '4',
         },
       },
     ],
@@ -40,16 +39,34 @@ const stubAggregators = [
 
 const stubHarvesterImpls = [
   {
-    value: 'cs41',
-    label: 'Counter Sushi 4.1',
-  },
-  {
-    value: 'cs50',
-    label: 'Counter 5.0',
-  },
-  {
-    value: 'cs51',
-    label: 'Counter 5.1',
+    implementations: [
+      {
+        type: 'cs41',
+        name: 'Counter-Sushi 4.1',
+        reportRelease: '4',
+        supportedReports: [
+          'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR7',
+          'DB1', 'DB2',
+          'JR1', 'JR1 GOA', 'JR1a', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5',
+          'MR1', 'MR1 Mobile',
+          'PR1',
+          'TR1', 'TR2', 'TR3', 'TR3 Mobile',
+        ],
+      },
+      {
+        type: 'cs50',
+        name: 'Counter 5.0',
+        reportRelease: '5',
+        supportedReports: ['DR', 'IR', 'PR', 'TR'],
+      },
+      {
+        type: 'cs51',
+        name: 'Counter 5.1',
+        reportRelease: '5.1',
+        supportedReports: ['DR', 'IR', 'PR', 'TR'],
+        isDefault: true,
+      },
+    ],
   },
 ];
 
@@ -155,12 +172,10 @@ describe('UDPForm', () => {
       const providerStatusCombobox = screen.getByRole('combobox', { name: 'Provider status' });
       const harvestingStatusCombobox = screen.getByRole('combobox', { name: 'Harvesting status' });
       const serviceTypeCombobox = screen.getByRole('combobox', { name: 'Service type' });
-      const reportReleaseCombobox = screen.getByRole('combobox', { name: 'Report release' });
 
       expect(providerStatusCombobox).toHaveValue('active');
       expect(harvestingStatusCombobox).toHaveValue('active');
       expect(serviceTypeCombobox).toHaveValue('cs51');
-      expect(reportReleaseCombobox).toHaveValue('5.1');
     });
   });
 
@@ -190,7 +205,7 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('test report release and selected reports options', () => {
+  describe('test service type and selected reports options', () => {
     beforeEach(() => {
       renderUDPForm(stripes, {});
     });
@@ -199,9 +214,10 @@ describe('UDPForm', () => {
       jest.clearAllMocks();
     });
 
-    const testSwitchFromCounterRelease4To5 = async (reportRelease) => {
-      expect(screen.getByRole('option', { name: 'Counter 4' })).toBeInTheDocument();
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
+    const testSwitchFromCounterRelease4To5 = async (serviceType) => {
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
+      expect(screen.getByRole('option', { name: 'Counter-Sushi 4.1' })).toBeInTheDocument();
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
@@ -211,7 +227,7 @@ describe('UDPForm', () => {
       await userEvent.click(screen.getByRole('option', { name: /BR1/ }));
       expect(screen.getByLabelText('BR1')).toBeInTheDocument();
 
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), [reportRelease]);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), [serviceType]);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
       await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
@@ -230,11 +246,11 @@ describe('UDPForm', () => {
       expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
     };
 
-    test('select reportRelease 5', async () => {
-      await testSwitchFromCounterRelease4To5('Counter 5');
+    test('select service type 5', async () => {
+      await testSwitchFromCounterRelease4To5('Counter 5.0');
     }, 10000);
 
-    test('select reportRelease 5.1', async () => {
+    test('select service type 5.1', async () => {
       await testSwitchFromCounterRelease4To5('Counter 5.1');
     }, 10000);
   });
@@ -271,11 +287,11 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /provider status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['aggregator']);
       await userEvent.selectOptions(
         screen.getByRole('combobox', { name: /aggregator/i }), ['5b6ba83e-d7e5-414e-ba7b-134749c0d950']
       );
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
@@ -333,11 +349,9 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['cs41']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
 
-      expect(screen.getByText('Counter 4')).toBeInTheDocument();
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /report release/i }), ['Counter 4']);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
@@ -370,7 +384,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: /service url/i })).toBeRequired();
 
-      expect(screen.getByRole('combobox', { name: 'Report release' })).toBeRequired();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       // click somewhere outside of the selection list to close the menu without choosing any report
@@ -400,7 +413,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: /service url/i })).not.toBeRequired();
 
-      expect(screen.getByRole('combobox', { name: 'Report release' })).not.toBeRequired();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('button', { name: 'Report type' })).not.toHaveClass('hasError');
@@ -458,43 +470,44 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('test that reqId and apiKey fields are disabled and cleared depending on reportRelease selection', () => {
+  describe('test that reqId and apiKey fields are disabled and cleared depending on service type selection', () => {
     const reportReleaseProvider = {
       label: 'Provider with reqId and apiKey',
+      harvestingConfig: { harvestVia: 'sushi' },
       sushiCredentials: {
         requestorId: 'id1234',
         apiKey: 'key1234',
       },
     };
 
-    const testSelectReportRelease = async (reportRelease) => {
+    const testSelectServiceType = async (serviceType) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      const releaseSelectBox = screen.getByRole('combobox', { name: /report release/i });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: /service type/i });
 
       expect(reqIdBox).toBeEnabled();
       expect(reqIdBox).toHaveValue('id1234');
 
-      await userEvent.selectOptions(releaseSelectBox, reportRelease);
+      await userEvent.selectOptions(serviceTypeSelect, serviceType);
 
-      expect(releaseSelectBox.value).toBe(reportRelease);
+      expect(serviceTypeSelect.value).toBe(serviceType);
       expect(reqIdBox).toHaveValue('id1234');
     };
 
-    test('select reportRelease 4', async () => {
-      testSelectReportRelease('4');
+    test('select service type 4', async () => {
+      await testSelectServiceType('cs41');
     });
 
-    test('select reportRelease 5', async () => {
-      testSelectReportRelease('5');
+    test('select service type 5', async () => {
+      await testSelectServiceType('cs50');
     });
 
-    test('select reportRelease 5.1', async () => {
-      testSelectReportRelease('5.1');
+    test('select service type 5.1', async () => {
+      await testSelectServiceType('cs51');
     });
 
-    test('change reqId and apiKey with reportRelease 5 selected', async () => {
-      renderUDPForm(stripes, { harvestingConfig: { reportRelease: '5' } });
+    test('change reqId and apiKey with service type 5 selected', async () => {
+      renderUDPForm(stripes, { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } });
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
       const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
 
