@@ -1,6 +1,6 @@
-const extractHarvesterImpls = (resources) => {
-  const implementations = resources.length
-    ? resources[0].implementations
+const extractHarvesterImpls = (records) => {
+  const implementations = records.length
+    ? records[0].implementations
     : [];
   const results = implementations.map(i => ({
     value: i.type,
