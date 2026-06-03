@@ -37,6 +37,20 @@ describe('combineDateTime', () => {
     ['de', 'Europe/Berlin', '20.06.2023', '08:00', '2023-06-20T06:00:00+0000'],
     ['en', 'America/New_York', '06/20/2023', '2:00 AM', '2023-06-20T06:00:00+0000'],
     ['en-SE', 'Europe/Stockholm', '2026-04-30', '08:15', '2026-04-30T06:15:00+0000'],
+    // The Timepicker emits unpadded 24-hour times for de/en-SE locales
+    // ("8:15", "0:00"); these must parse as well as the padded display form.
+    ['de', 'Europe/Berlin', '20.06.2023', '8:15', '2023-06-20T06:15:00+0000'],
+    ['en-SE', 'Europe/Stockholm', '2026-04-30', '8:15', '2026-04-30T06:15:00+0000'],
+    // Midnight, in both the picker's unpadded form and the padded display form.
+    ['de', 'Europe/Berlin', '20.06.2023', '0:00', '2023-06-19T22:00:00+0000'],
+    ['de', 'Europe/Berlin', '20.06.2023', '00:00', '2023-06-19T22:00:00+0000'],
+    ['en', 'America/New_York', '06/20/2023', '12:00 AM', '2023-06-20T04:00:00+0000'],
+    // Region locale (en-US, FOLIO's default). dayjs only loads the parent "en"
+    // locale, so the AM/PM meridiem must be parsed against the parent language
+    // rather than the unloaded region locale.
+    ['en-US', 'America/New_York', '06/20/2023', '7:00 AM', '2023-06-20T11:00:00+0000'],
+    ['en-US', 'America/New_York', '06/20/2023', '12:00 AM', '2023-06-20T04:00:00+0000'],
+    ['en-US', 'America/New_York', '06/20/2023', '2:00 PM', '2023-06-20T18:00:00+0000'],
   ];
 
   test.each(cases)(
