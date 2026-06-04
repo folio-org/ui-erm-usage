@@ -1,6 +1,6 @@
 # Change history for ui-erm-usage
 
-## 12.1.0 (IN PROGRESS)
+## [12.0.1](https://github.com/folio-org/ui-erm-usage/tree/v12.0.1) (2026-06-04)
 * Replace `moment-timezone` with dayjs and `Intl.DateTimeFormat` in date/time utilities ([UIEUS-521](https://folio-org.atlassian.net/browse/UIEUS-521))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
