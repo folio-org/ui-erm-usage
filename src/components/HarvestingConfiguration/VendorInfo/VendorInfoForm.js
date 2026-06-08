@@ -77,6 +77,7 @@ const VendorInfoForm = ({
               </>
             }
             name="harvestingConfig.sushiConfig.serviceUrl"
+            parse={value => value?.trim()}
             placeholder={intl.formatMessage({
               id: 'ui-erm-usage.udp.form.placeholder.vendor.url',
             })}
