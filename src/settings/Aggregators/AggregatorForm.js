@@ -274,6 +274,7 @@ const AggregatorForm = ({
                       id="input-aggregator-service-url"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />}
                       name="serviceUrl"
+                      parse={value => value?.trim()}
                       required
                       validate={required}
                     />

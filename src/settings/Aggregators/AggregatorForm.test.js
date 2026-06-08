@@ -87,6 +87,15 @@ describe('AggregatorForm', () => {
     await userEvent.click(trashBtn);
     expect(screen.queryByText('Key')).not.toBeInTheDocument();
   });
+
+  test('trims whitespace from service url', async () => {
+    const serviceUrlInput = screen.getByRole('textbox', { name: /service url/i });
+    await userEvent.click(serviceUrlInput);
+    await userEvent.paste('  http://example.com/sushi   ');
+    await userEvent.tab();
+
+    expect(serviceUrlInput).toHaveValue('http://example.com/sushi');
+  });
 });
 
 describe('Edit Aggregator', () => {
