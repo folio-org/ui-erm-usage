@@ -127,6 +127,19 @@ describe('Edit Aggregator', () => {
     });
   });
 
+  test('delete with unsaved changes resets the form to initial values before calling onRemove', async () => {
+    const nameInput = screen.getByLabelText('Name', { exact: false });
+    await userEvent.type(nameInput, ' changed');
+    expect(nameInput).toHaveValue(`${aggregatorTransformed.label} changed`);
+
+    await userEvent.click(await screen.findByText('Delete'));
+    const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+    await userEvent.click(within(deleteModal).getByRole('button', { name: 'Submit' }));
+
+    expect(onRemove).toHaveBeenCalledWith(aggregatorTransformed);
+    expect(nameInput).toHaveValue(aggregatorTransformed.label);
+  });
+
   test('adding "contact" enables save button, removing "contact" disables save button', async () => {
     const saveButton = screen.getByRole('button', { name: 'Save & close' });
     expect(saveButton).toBeDisabled();
