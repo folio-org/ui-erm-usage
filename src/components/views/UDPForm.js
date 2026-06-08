@@ -90,6 +90,7 @@ const UDPForm = ({
 
   const doConfirmDelete = (confirmation) => {
     if (confirmation) {
+      form.reset();
       handlers.onDelete(initialValues.id);
     } else {
       setConfirmDelete(false);
@@ -278,6 +279,7 @@ UDPForm.propTypes = {
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
     }),
+    reset: PropTypes.func,
     resetFieldState: PropTypes.func,
   }),
   handlers: PropTypes.shape({

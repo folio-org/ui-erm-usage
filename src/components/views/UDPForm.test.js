@@ -338,6 +338,19 @@ describe('UDPForm', () => {
       await userEvent.click(submit);
       expect(onDelete).toHaveBeenCalled();
     });
+
+    test('delete with unsaved changes resets the form before calling onDelete', async () => {
+      const descriptionInput = screen.getByRole('textbox', { name: /description/i });
+      await userEvent.type(descriptionInput, 'some change');
+      expect(descriptionInput).toHaveValue('some change');
+
+      await userEvent.click(await screen.findByText('Delete'));
+      const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+      await userEvent.click(within(deleteModal).getByRole('button', { name: 'Submit' }));
+
+      expect(onDelete).toHaveBeenCalledWith(initialUdp.id);
+      expect(descriptionInput).toHaveValue('');
+    });
   });
 
   describe('test change from sushi to aggregator', () => {
