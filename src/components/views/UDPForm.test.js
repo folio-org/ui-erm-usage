@@ -205,6 +205,21 @@ describe('UDPForm', () => {
     });
   });
 
+  describe('service url trimming', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
+
+    test('trims whitespace from service url', async () => {
+      const serviceUrlInput = screen.getByRole('textbox', { name: /service url/i });
+      await userEvent.click(serviceUrlInput);
+      await userEvent.paste('  http://example.com/sushi   ');
+      await userEvent.tab();
+
+      expect(serviceUrlInput).toHaveValue('http://example.com/sushi');
+    });
+  });
+
   describe('test service type and selected reports options', () => {
     beforeEach(() => {
       renderUDPForm(stripes, {});
