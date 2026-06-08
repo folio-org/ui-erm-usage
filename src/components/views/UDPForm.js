@@ -279,7 +279,7 @@ UDPForm.propTypes = {
       clearSelectedReports: PropTypes.func,
       setReportRelease: PropTypes.func,
     }),
-    reset: PropTypes.func,
+    reset: PropTypes.func.isRequired,
     resetFieldState: PropTypes.func,
   }),
   handlers: PropTypes.shape({

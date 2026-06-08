@@ -58,6 +58,7 @@ const AggregatorForm = ({
   initialValues,
   intl,
   invalid,
+  form,
   handleSubmit,
   onCancel,
   onRemove,
@@ -97,6 +98,7 @@ const AggregatorForm = ({
 
   const doConfirmDelete = (confirmation) => {
     if (confirmation) {
+      form.reset();
       onRemove(initialValues);
     } else {
       setConfirmDelete(false);
@@ -349,6 +351,9 @@ const AggregatorForm = ({
 
 AggregatorForm.propTypes = {
   aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
+  form: PropTypes.shape({
+    reset: PropTypes.func.isRequired,
+  }).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
   intl: PropTypes.object,
