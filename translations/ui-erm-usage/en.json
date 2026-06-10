@@ -262,6 +262,7 @@
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
   "errors.urlRequired": "Invalid URL: http:// or https:// required!",
   "errors.enterValidUrl": "Please enter a valid URL",
+  "errors.enterValidDate": "Please enter a valid date",
 
   "harvester.start": "Start harvester",
   "harvester.start.failed": "Harvester failed to start",
