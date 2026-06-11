@@ -5,6 +5,7 @@
 * Replace hardcoded report release and report type mappings with backend /impl data and remove report release dropdown ([UIEUS-510](https://folio-org.atlassian.net/browse/UIEUS-510))
 * Replace `moment-timezone` with dayjs and `Intl.DateTimeFormat` in date/time utilities ([UIEUS-521](https://folio-org.atlassian.net/browse/UIEUS-521))
 * Service URL: Automatically remove whitespaces at the begin and the end ([UIEUS-519](https://folio-org.atlassian.net/browse/UIEUS-519))
+* Periodic harvesting: Show "Please enter a valid date" instead of "Required" for an invalid start date ([UIEUS-523](https://folio-org.atlassian.net/browse/UIEUS-523))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
