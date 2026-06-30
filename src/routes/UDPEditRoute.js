@@ -31,12 +31,6 @@ const UDPEditRoute = ({
     });
   };
 
-  const handleDelete = (id) => {
-    mutator.usageDataProvider.DELETE({ id }).then(() => {
-      history.push(`${urls.udps()}${location.search}`);
-    });
-  };
-
   const fetchIsPending = () => {
     return Object.values(resources)
       .filter((r) => r && r.resource !== 'usageDataProvider')
@@ -62,7 +56,6 @@ const UDPEditRoute = ({
       handlers={{
         ...handlers,
         onClose: handleClose,
-        onDelete: handleDelete,
       }}
       initialValues={udp}
       isLoading={fetchIsPending()}
@@ -107,7 +100,6 @@ UDPEditRoute.propTypes = {
     aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProvider: PropTypes.shape({
-      DELETE: PropTypes.func.isRequired,
       POST: PropTypes.func.isRequired,
       PUT: PropTypes.func.isRequired,
     }).isRequired,
