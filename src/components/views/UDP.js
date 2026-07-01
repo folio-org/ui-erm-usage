@@ -153,7 +153,7 @@ const UDP = ({
   };
 
   const getConfirmationMessage = (udp) => {
-    const name = udp.label || '';
+    const name = udp.label;
     return (
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
