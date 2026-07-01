@@ -138,6 +138,14 @@ describe('UDP', () => {
         expect(screen.getByRole('heading', { name: /Delete usage data Provider/ })).toBeInTheDocument();
       });
 
+      test('if confirmation message contains UDP name in bold', async () => {
+        await userEvent.click(screen.getByText('Delete'));
+        const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+        expect(deleteModal).toHaveTextContent(`Do you really want to delete ${stubUDP.label}?`);
+        const udpLabel = within(deleteModal).getByText(stubUDP.label);
+        expect(udpLabel.tagName.toLowerCase()).toBe('strong');
+      });
+
       test('click cancel delete', async () => {
         await userEvent.click(screen.getByText('Delete'));
 
