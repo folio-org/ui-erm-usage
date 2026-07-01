@@ -254,7 +254,7 @@
   "aggregator.form.delete.confirm.title": "Delete aggregator",
   "aggregator.form.newAggregator": "New aggregator",
   "udp.form.delete.confirm.title": "Delete usage data Provider",
-  "form.delete.confirm.message": "Do you really want to delete {name}?",
+  "form.delete.confirm.message": "Do you really want to delete <strong>{name}</strong>?",
 
   "errors.required": "Required",
   "errors.emailInvalid": "Email address invalid",

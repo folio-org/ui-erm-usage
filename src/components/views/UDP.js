@@ -157,7 +157,7 @@ const UDP = ({
     return (
       <FormattedMessage
         id="ui-erm-usage.form.delete.confirm.message"
-        values={{ name }}
+        values={{ name, strong: (chunks) => <strong>{chunks}</strong> }}
       />
     );
   };
@@ -611,6 +611,8 @@ const UDP = ({
             }}
           />
           <ConfirmationModal
+            buttonStyle="danger"
+            confirmLabel={<FormattedMessage id="ui-erm-usage.general.delete" />}
             heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
             id="delete-udp-confirmation"
             message={getConfirmationMessage(usageDataProvider)}

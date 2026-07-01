@@ -155,7 +155,7 @@ describe('UDP', () => {
 
       test('click submit delete', async () => {
         await userEvent.click(screen.getByText('Delete'));
-        const submit = screen.getByRole('button', { name: 'Submit', id: 'clickable-delete-udp-confirmation-confirm' });
+        const submit = screen.getByRole('button', { name: 'Delete', id: 'clickable-delete-udp-confirmation-confirm' });
         await userEvent.click(submit);
         expect(handlers.onDelete).toHaveBeenCalledWith(stubUDP.id);
       });
