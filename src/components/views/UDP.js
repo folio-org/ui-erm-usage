@@ -358,9 +358,7 @@ const UDP = ({
         )}
         <IfPermission perm="ui-erm-usage.udp.delete">
           <Button
-            aria-label={<FormattedMessage id="ui-erm-usage.general.delete" />}
             buttonStyle="dropDownItem"
-            disabled={confirmDelete}
             id="clickable-delete-udp"
             marginBottom0
             onClick={() => {
