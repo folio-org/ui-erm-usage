@@ -13,7 +13,6 @@ import {
   AccordionSet,
   Button,
   Col,
-  ConfirmationModal,
   ExpandAllButton,
   Icon,
   IconButton,
@@ -26,7 +25,6 @@ import {
   Select,
   TextField,
 } from '@folio/stripes/components';
-import { IfPermission } from '@folio/stripes/core';
 import stripesFinalForm from '@folio/stripes/final-form';
 
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
@@ -60,15 +58,11 @@ const AggregatorForm = ({
   invalid,
   handleSubmit,
   onCancel,
-  onRemove,
   pristine,
   submitting,
   values,
   aggregators,
 }) => {
-  const aggregator = initialValues || {};
-
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
     generalSection: true,
     aggregatorConfig: true,
@@ -91,18 +85,6 @@ const AggregatorForm = ({
     }
   };
 
-  const beginDelete = () => {
-    setConfirmDelete(true);
-  };
-
-  const doConfirmDelete = (confirmation) => {
-    if (confirmation) {
-      onRemove(initialValues);
-    } else {
-      setConfirmDelete(false);
-    }
-  };
-
   const getFirstMenu = () => {
     return (
       <PaneMenu>
@@ -112,28 +94,6 @@ const AggregatorForm = ({
           id="clickable-close-service-point"
           onClick={onCancel}
         />
-      </PaneMenu>
-    );
-  };
-
-  const getLastMenu = () => {
-    const edit = initialValues?.id;
-
-    return (
-      <PaneMenu>
-        {edit && (
-          <IfPermission perm="ui-erm-usage.generalSettings.manage">
-            <Button
-              buttonStyle="danger"
-              disabled={confirmDelete}
-              id="clickable-delete-aggregator"
-              marginBottom0
-              onClick={beginDelete}
-            >
-              <FormattedMessage id="ui-erm-usage.general.delete" />
-            </Button>
-          </IfPermission>
-        )}
       </PaneMenu>
     );
   };
@@ -196,23 +156,14 @@ const AggregatorForm = ({
   const renderPaneHeader = () => (
     <PaneHeader
       firstMenu={getFirstMenu()}
-      lastMenu={getLastMenu()}
       paneTitle={renderPaneTitle()}
     />
   );
 
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
-  const name = aggregator.label || '';
 
   const configType = getSelectedConfigType();
   const configTypeIsMail = configType === 'Mail';
-
-  const confirmationMessage = (
-    <FormattedMessage
-      id="ui-erm-usage.form.delete.confirm.message"
-      values={{ name }}
-    />
-  );
 
   return (
     <form
@@ -328,19 +279,6 @@ const AggregatorForm = ({
                 </Row>
               </Accordion>
             </AccordionSet>
-
-            <ConfirmationModal
-              heading={<FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />}
-              id="deleteaggregator-confirmation"
-              message={confirmationMessage}
-              onCancel={() => {
-                doConfirmDelete(false);
-              }}
-              onConfirm={() => {
-                doConfirmDelete(true);
-              }}
-              open={confirmDelete}
-            />
           </div>
         </Pane>
       </Paneset>
@@ -355,12 +293,7 @@ AggregatorForm.propTypes = {
   intl: PropTypes.object,
   invalid: PropTypes.bool,
   onCancel: PropTypes.func,
-  onRemove: PropTypes.func,
   pristine: PropTypes.bool,
-  stripes: PropTypes.shape({
-    connect: PropTypes.func.isRequired,
-    hasPerm: PropTypes.func.isRequired,
-  }).isRequired,
   submitting: PropTypes.bool,
   values: PropTypes.object,
 };

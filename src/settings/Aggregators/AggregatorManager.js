@@ -80,6 +80,7 @@ const AggregatorManager = ({
       <EntryManager
         aggregators={serviceTypes}
         detailComponent={AggregatorDetails}
+        enableDetailsActionMenu
         entryFormComponent={AggregatorForm}
         entryLabel={label}
         entryList={entryList}
