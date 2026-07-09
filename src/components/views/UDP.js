@@ -20,6 +20,7 @@ import {
   Callout,
   Col,
   collapseAllSections,
+  ConfirmationModal,
   ExpandAllButton,
   expandAllSections,
   HasCommand,
@@ -78,6 +79,7 @@ const UDP = ({
   const accordionStatusRef = useRef();
   callout = useRef();
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [helperApp, setHelperApp] = useState(null);
   const [showDeleteReports, setShowDeleteReports] = useState(null);
   const [harvesterModalState, setHarvesterModalState] = useState({});
@@ -148,6 +150,28 @@ const UDP = ({
 
   const doCloseDeleteReports = () => {
     setShowDeleteReports(false);
+  };
+
+  const getConfirmationMessage = (udp) => {
+    const name = udp.label;
+    return (
+      <FormattedMessage
+        id="ui-erm-usage.form.delete.confirm.message"
+        values={{ name, strong: (chunks) => <strong>{chunks}</strong> }}
+      />
+    );
+  };
+
+  const beginDelete = () => {
+    setConfirmDelete(true);
+  };
+
+  const doConfirmDelete = (confirmation, usageDataProvider) => {
+    if (confirmation) {
+      handlers.onDelete(usageDataProvider.id);
+    } else {
+      setConfirmDelete(false);
+    }
   };
 
   const renderDetailMenu = (udp) => {
@@ -332,6 +356,21 @@ const UDP = ({
             </Button>
           </div>
         )}
+        <IfPermission perm="ui-erm-usage.udp.delete">
+          <Button
+            buttonStyle="dropDownItem"
+            id="clickable-delete-udp"
+            marginBottom0
+            onClick={() => {
+              onToggle();
+              beginDelete();
+            }}
+          >
+            <Icon icon="trash">
+              <FormattedMessage id="ui-erm-usage.general.delete" />
+            </Icon>
+          </Button>
+        </IfPermission>
       </>
     );
   };
@@ -569,6 +608,20 @@ const UDP = ({
               callout = ref;
             }}
           />
+          <ConfirmationModal
+            buttonStyle="danger"
+            confirmLabel={<FormattedMessage id="ui-erm-usage.general.delete" />}
+            heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
+            id="delete-udp-confirmation"
+            message={getConfirmationMessage(usageDataProvider)}
+            onCancel={() => {
+              doConfirmDelete(false, null);
+            }}
+            onConfirm={() => {
+              doConfirmDelete(true, usageDataProvider);
+            }}
+            open={confirmDelete}
+          />
         </>
       </HasCommand>
     );
@@ -588,6 +641,7 @@ UDP.propTypes = {
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     onEdit: PropTypes.func,
   }).isRequired,
   intl: PropTypes.object,

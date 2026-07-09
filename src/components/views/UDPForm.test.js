@@ -105,7 +105,6 @@ const initialValues = {
   },
 };
 
-const onDelete = jest.fn();
 const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
@@ -119,7 +118,7 @@ const renderUDPForm = (stripes, udp = initialValues) => {
             aggregators: stubAggregators,
             harvesterImpls: stubHarvesterImpls,
           }}
-          handlers={{ onClose, onDelete }}
+          handlers={{ onClose }}
           handleSubmit={handleSubmit}
           initialValues={udp}
           onSubmit={onSubmit}
@@ -319,39 +318,6 @@ describe('UDPForm', () => {
 
       await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
       expect(onSubmit).toHaveBeenCalled();
-    });
-  });
-
-  describe('test delete UDP', () => {
-    beforeEach(() => {
-      renderUDPForm(stripes, initialUdp);
-    });
-
-    test('delete modal is shown', async () => {
-      await userEvent.click(await screen.findByText('Delete'));
-      expect(screen.getByRole('heading', { name: /Delete usage data Provider/ })).toBeInTheDocument();
-    });
-
-    test('click cancel delete', async () => {
-      await userEvent.click(await screen.findByText('Delete'));
-
-      const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
-      expect(deleteModal).toBeVisible();
-
-      const deleteModalText = within(deleteModal).getByRole('heading', { name: 'Delete usage data Provider' });
-      expect(deleteModalText).toBeInTheDocument();
-
-      const cancelButton = within(deleteModal).getByRole('button', { name: 'Cancel' });
-      await userEvent.click(cancelButton);
-      expect(deleteModalText).not.toBeInTheDocument();
-      expect(onDelete).not.toHaveBeenCalled();
-    });
-
-    test('click submit delete', async () => {
-      await userEvent.click(await screen.findByText('Delete'));
-      const submit = screen.getByRole('button', { name: 'Submit', id: 'clickable-delete-udp-confirmation-confirm' });
-      await userEvent.click(submit);
-      expect(onDelete).toHaveBeenCalled();
     });
   });
 
