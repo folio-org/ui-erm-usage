@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { stripesConnect } from '@folio/stripes/core';
 import { withTags } from '@folio/stripes/smart-components';
 
-import UDP from '../components/views/UDP';
+import UDPView from '../components/views/UDP';
 import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
@@ -37,6 +37,12 @@ function UDPViewRoute(props) {
   const handleEdit = () => {
     const { location, match } = props;
     props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
+  };
+
+  const handleDelete = (udpId) => {
+    mutator.usageDataProvider.DELETE({ id: udpId }).then(() => {
+      props.history.push(`${urls.udps()}${props.location.search}`);
+    });
   };
 
   const getRecord = (udpId) => {
@@ -116,36 +122,35 @@ function UDPViewRoute(props) {
   const udpReloadCount = get(resources, 'udpReloadToggle', 0);
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
   return (
-    <>
-      <UDP
-        canEdit={stripes.hasPerm('ui-erm-usage.udp.edit')}
-        data={{
-          counterReports,
-          customReports,
-          harvesterImpls,
-          maxFailedAttempts,
-          settings,
-          usageDataProvider: selectedRecord,
-          lastJob: getLastHarvestingJob(),
-        }}
-        handlers={{
-          ...handlers,
-          onClose: handleClose,
-          onEdit: handleEdit,
-        }}
-        history={props.history}
-        isHarvesterExistent={isHarvesterExistent()}
-        isLoading={isLoading()}
-        isStatsLoading={isStatsLoading()}
-        location={props.location}
-        match={props.match}
-        mutator={mutator}
-        statsReloadCount={statsReloadCount}
-        stripes={stripes}
-        tagsEnabled={tagsEnabled}
-        udpReloadCount={udpReloadCount}
-      />
-    </>
+    <UDPView
+      canEdit={stripes.hasPerm('ui-erm-usage.udp.edit')}
+      data={{
+        counterReports,
+        customReports,
+        harvesterImpls,
+        maxFailedAttempts,
+        settings,
+        usageDataProvider: selectedRecord,
+        lastJob: getLastHarvestingJob(),
+      }}
+      handlers={{
+        ...handlers,
+        onClose: handleClose,
+        onDelete: handleDelete,
+        onEdit: handleEdit,
+      }}
+      history={props.history}
+      isHarvesterExistent={isHarvesterExistent()}
+      isLoading={isLoading()}
+      isStatsLoading={isStatsLoading()}
+      location={props.location}
+      match={props.match}
+      mutator={mutator}
+      statsReloadCount={statsReloadCount}
+      stripes={stripes}
+      tagsEnabled={tagsEnabled}
+      udpReloadCount={udpReloadCount}
+    />
   );
 }
 
@@ -167,7 +172,9 @@ UDPViewRoute.propTypes = {
     query: PropTypes.shape({
       update: PropTypes.func.isRequired,
     }).isRequired,
-    usageDataProvider: PropTypes.object.isRequired,
+    usageDataProvider: PropTypes.shape({
+      DELETE: PropTypes.func.isRequired,
+    }).isRequired,
   }).isRequired,
   resources: PropTypes.shape({
     counterReports: PropTypes.shape(),
@@ -198,6 +205,7 @@ UDPViewRoute.manifest = Object.freeze({
   usageDataProvider: {
     type: 'okapi',
     path: 'usage-data-providers/:{id}?unused=%{udpReloadToggle}',
+    shouldRefresh: () => false,
   },
   harvesterImpls: {
     type: 'okapi',
