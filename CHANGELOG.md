@@ -7,6 +7,7 @@
 * Service URL: Automatically remove whitespaces at the begin and the end ([UIEUS-519](https://folio-org.atlassian.net/browse/UIEUS-519))
 * Periodic harvesting: Show "Please enter a valid date" instead of "Required" for an invalid start date ([UIEUS-523](https://folio-org.atlassian.net/browse/UIEUS-523))
 * New position for the Delete button used to delete a UDP data record ([UIEUS-526](https://folio-org.atlassian.net/browse/UIEUS-526))
+* New position for the Delete button used to delete an aggregator record in the settings ([UIEUS-527](https://folio-org.atlassian.net/browse/UIEUS-527))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
