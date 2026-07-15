@@ -23,7 +23,6 @@ const aggregators = [
 ];
 
 const onSubmit = jest.fn();
-const onRemove = jest.fn();
 const onCancel = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
@@ -34,7 +33,6 @@ const renderAggregratorForm = (stripes, initialValues = {}) => {
           aggregators={aggregators}
           initialValues={initialValues}
           onCancel={onCancel}
-          onRemove={onRemove}
           onSubmit={onSubmit}
           stripes={stripes}
         />

@@ -294,6 +294,9 @@ AggregatorForm.propTypes = {
   invalid: PropTypes.bool,
   onCancel: PropTypes.func,
   pristine: PropTypes.bool,
+  stripes: PropTypes.shape({
+    hasPerm: PropTypes.func.isRequired,
+  }).isRequired,
   submitting: PropTypes.bool,
   values: PropTypes.object,
 };
