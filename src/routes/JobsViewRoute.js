@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
 import { stripesConnect } from '@folio/stripes/core';
 import {
@@ -10,8 +13,6 @@ import {
 import JobsView from '../components/JobsView';
 import filterGroups from '../util/data/filterGroupsJobsView';
 
-const timestamp = Date.now();
-
 const JobsViewRoute = ({ resources, mutator, stripes }) => {
   const [source] = useState(new StripesConnectedSource(
     { resources, mutator },
@@ -19,6 +20,11 @@ const JobsViewRoute = ({ resources, mutator, stripes }) => {
     'jobs'
   ));
   source.update({ resources, mutator }, 'jobs');
+
+  // Update timestamp on mount to ensure fresh data on each navigation
+  useEffect(() => {
+    mutator.timestamp.replace(Date.now());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- mutator is stable, only run on mount
 
   return <JobsView filterGroups={filterGroups} source={source} />;
 };
@@ -73,9 +79,7 @@ JobsViewRoute.manifest = Object.freeze({
   resultCount: {
     initialValue: 30,
   },
-  timestamp: {
-    initialValue: timestamp,
-  },
+  timestamp: { initialValue: Date.now() },
 });
 
 export default stripesConnect(JobsViewRoute);
