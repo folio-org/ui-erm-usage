@@ -19,7 +19,7 @@ const DisplayContactsForm = ({ stripes }) => {
       {({ fields }) => (
         <RepeatableField
           addLabel={intl.formatMessage({
-            id: 'ui-erm-usage.aggregator.config.addContact',
+            id: 'ui-erm-usage.aggregator.config.button.addContact',
           })}
           fields={fields.value || []}
           id="display_contacts"
