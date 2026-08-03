@@ -214,7 +214,7 @@
     "aggregator.form.placeholder.serviceType": "Select a service type",
     "aggregator.form.placeholder.configType": "Select a config type",
     "aggregator.config.accountConfig.contact.number": "Contact #{number}",
-    "aggregator.config.addContact": "+ Add Contact",
+    "aggregator.config.addContact": "Add Contact",
     "aggregator.config.contacts": "Contacts",
     "aggregator.config.popover": "For German National Statistic Server specify the keys:",
     "aggregator.config.addParam": "Add config parameter",

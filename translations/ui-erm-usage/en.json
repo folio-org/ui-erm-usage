@@ -245,7 +245,7 @@
   "aggregator.config.accountConfig.mail": "Mail",
   "aggregator.config.accountConfig.contact": "Contact",
   "aggregator.config.accountConfig.contact.number": "Contact #{number}",
-  "aggregator.config.addContact": "+ Add Contact",
+  "aggregator.config.addContact": "Add Contact",
   "aggregator.config.contacts": "Contacts",
   "aggregator.config.popover": "For German National Statistic Server specify the keys:",
   "aggregator.config.addParam": "Add config parameter",
