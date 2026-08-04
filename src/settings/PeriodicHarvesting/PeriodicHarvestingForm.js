@@ -56,7 +56,6 @@ const PeriodicHarvestingForm = ({
         <Row>
           <Col xs={8}>
             <Field
-              aria-label={intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
               component={Datepicker}
               id="periodic-harvesting-start"
               label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />}

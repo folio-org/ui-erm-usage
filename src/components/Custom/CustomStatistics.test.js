@@ -71,7 +71,7 @@ describe('CustomStatistics', () => {
       await userEvent.click(expandAll);
 
       const reportButton = screen.getByRole('button', {
-        name: 'Open report info for custom report 2020 foo.',
+        name: 'Open report info for custom report 2020 - foo.',
       });
       await userEvent.click(reportButton);
     });
@@ -94,7 +94,7 @@ describe('CustomStatistics', () => {
       await userEvent.click(expandAll);
 
       const reportButton = screen.getByRole('button', {
-        name: 'Open report info for custom report 2020 link.',
+        name: 'Open report info for custom report 2020 - link.',
       });
       await userEvent.click(reportButton);
     });

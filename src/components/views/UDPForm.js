@@ -109,7 +109,7 @@ const UDPForm = ({
         marginBottom0
         onClick={handlers.onClose}
       >
-        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
       </Button>
     );
 

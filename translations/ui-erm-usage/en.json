@@ -113,7 +113,9 @@
   "reportOverview.release": "Release",
 
   "reportOverview.confirmDeleteReport": "Delete report?",
-  "reportOverview.deleteTemplateMessage": "{name} will be removed from non-counter reports.",
+  "reportOverview.deleteCustomReport": "{name} will be removed from non-counter reports.",
+  "reportOverview.openCounterReport": "Open report info for report {reportName} at year month {yearMonth}.",
+  "reportOverview.openCustomReport": "Open report info for custom report {reportName}.",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
   "reportOverview.reportsPerYear": "Reports grouped by year",
@@ -193,8 +195,7 @@
   "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
   "counter.upload.error.OTHER": "The report could not be processed.",
 
-  "udp.form.cancel": "Cancel",
-  "udp.form.close": "Close new usage data provider Dialog",
+  "udp.form.close": "Close usage data provider form",
   "udp.form.createUDP": "Create usage data provider",
   "udp.form.udpInfo.title": "Usage data provider information",
   "udp.form.udpInfo.providerName": "Provider name",
@@ -251,6 +252,7 @@
   "aggregator.config.addParam": "Add config parameter",
 
   "aggregator.form.create": "Create aggregator",
+  "aggregator.form.close": "Close aggregator form",
   "aggregator.form.newAggregator": "New aggregator",
   "udp.form.delete.confirm.title": "Delete usage data Provider",
   "form.delete.confirm.message": "Do you really want to delete <strong>{name}</strong>?",
@@ -307,6 +309,8 @@
   "settings.harvester.config.periodic.saved": "Successfully saved periodic harvesting config",
   "settings.harvester.config.periodic.deleted": "Successfully deleted periodic harvesting config",
   "settings.harvester.config.periodic.title": "Periodic harvesting",
+  "settings.harvester.config.periodic.form.close": "Close periodic harvesting configuration",
+  "settings.harvester.config.periodic.form.open": "{mode, select, edit {Edit periodic harvesting configuration} other {Add periodic harvesting configuration}}",
   "settings.harvester.config.periodic.edit.cancel": "Are you sure to cancel editing?",
   "settings.harvester.config.periodic.start.date": "Start date",
   "settings.harvester.config.periodic.start.time": "Start time",

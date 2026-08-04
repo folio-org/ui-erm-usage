@@ -277,7 +277,6 @@ const UDP = ({
         </div>
         <div>
           <Button
-            aria-label="Edit usage data provider"
             buttonStyle="dropDownItem"
             id="clickable-refresh-statistics"
             marginBottom0
@@ -326,7 +325,6 @@ const UDP = ({
         <IfPermission perm="ui-erm-usage.reports.delete">
           <div>
             <Button
-              aria-label="Delete reports"
               buttonStyle="dropDownItem"
               id="clickable-delete-reports"
               marginBottom0
@@ -344,7 +342,6 @@ const UDP = ({
         {canEdit && (
           <div>
             <Button
-              aria-label="Edit usage data provider"
               buttonStyle="dropDownItem"
               id="clickable-edit-udp"
               marginBottom0

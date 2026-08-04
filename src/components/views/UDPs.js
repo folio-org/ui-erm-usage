@@ -227,7 +227,6 @@ const UDPs = ({
         <div>
           <IfPermission perm="ui-erm-usage.udp.create">
             <Button
-              aria-label={intl.formatMessage({ id: 'ui-erm-usage.udp.form.createUDP' })}
               buttonStyle="dropDownItem"
               id="clickable-new-udp"
               marginBottom0
@@ -242,7 +241,6 @@ const UDPs = ({
         <div>
           <IfPermission perm="ui-erm-usage.harvester.jobs.view">
             <Button
-              aria-label={intl.formatMessage({ id: 'ui-erm-usage.harvester.jobs.show' })}
               buttonStyle="dropDownItem"
               id="clickable-harvester-logs"
               marginBottom0
