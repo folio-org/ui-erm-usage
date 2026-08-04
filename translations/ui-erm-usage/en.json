@@ -115,7 +115,7 @@
   "reportOverview.confirmDeleteReport": "Delete report?",
   "reportOverview.deleteCustomReport": "{name} will be removed from non-counter reports.",
   "reportOverview.openCounterReport": "Open report info for report {reportName} at year month {yearMonth}.",
-  "reportOverview.openCustomReport": "Open report info for custom report {year} {note}.",
+  "reportOverview.openCustomReport": "Open report info for custom report {reportName}.",
   "reportOverview.reportType": "Report type",
   "reportOverview.reportDate": "Report date",
   "reportOverview.reportsPerYear": "Reports grouped by year",

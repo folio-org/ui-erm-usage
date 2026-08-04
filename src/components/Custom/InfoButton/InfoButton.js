@@ -62,9 +62,13 @@ function InfoButton(props) {
     setShowConfirmDelete(true);
   };
 
+  const reportName = customReport.note
+    ? `${customReport.year} - ${customReport.note}`
+    : customReport.year;
+
   const ariaLabel = intl.formatMessage(
     { id: 'ui-erm-usage.reportOverview.openCustomReport' },
-    { year: customReport.year, note: customReport.note ?? '' }
+    { reportName }
   );
   const footer = (
     <Button id="close-report-info-button" onClick={() => setShowModal(false)}>
@@ -75,9 +79,7 @@ function InfoButton(props) {
   const deleteConfirmMsg = (
     <FormattedMessage
       id="ui-erm-usage.reportOverview.deleteCustomReport"
-      values={{
-        name: <strong>{`${customReport.year} - ${customReport.note ?? ''}`}</strong>,
-      }}
+      values={{ name: <strong>{reportName}</strong> }}
     />
   );
 
