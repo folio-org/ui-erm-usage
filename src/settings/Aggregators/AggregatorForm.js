@@ -89,9 +89,9 @@ const AggregatorForm = ({
     return (
       <PaneMenu>
         <IconButton
-          aria-label="Cancel"
+          aria-label={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.close' })}
           icon="times"
-          id="clickable-close-service-point"
+          id="clickable-close-aggregator-x"
           onClick={onCancel}
         />
       </PaneMenu>
@@ -108,7 +108,7 @@ const AggregatorForm = ({
         marginBottom0
         onClick={onCancel}
       >
-        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
       </Button>
     );
 

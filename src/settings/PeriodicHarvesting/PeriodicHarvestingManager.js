@@ -97,14 +97,19 @@ const PeriodicHarvestingManager = () => {
         <PaneMenu>
           {isEditing ? (
             <IconButton
-              aria-label="End Edit Config"
+              aria-label={formatMessage({
+                id: 'ui-erm-usage.settings.harvester.config.periodic.form.close',
+              })}
               icon="times"
               id="clickable-close-edit-config"
               onClick={() => setConfirming(true)}
             />
           ) : (
             <IconButton
-              aria-label="Start Edit Config"
+              aria-label={formatMessage(
+                { id: 'ui-erm-usage.settings.harvester.config.periodic.form.open' },
+                { mode: isEmpty(config) ? 'add' : 'edit' }
+              )}
               icon={getEditIcon()}
               id="clickable-open-edit-config"
               onClick={() => setIsEditing(true)}

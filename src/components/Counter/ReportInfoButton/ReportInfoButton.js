@@ -142,14 +142,17 @@ const ReportInfoButton = ({
   const failedInfo = report.failedAttempts
     ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
     : intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.success' });
-  const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
+  const label = `${intl.formatMessage(
+    { id: 'ui-erm-usage.reportOverview.openCounterReport' },
+    { reportName: report.reportName, yearMonth: report.yearMonth }
+  )} ${failedInfo}`;
   const reportInfoClassName = report.failedAttempts
     ? 'report-info-failed'
     : 'report-info-valid';
 
   const footer = (
     <Button id="close-report-info-button" onClick={handleClose}>
-      Close
+      <FormattedMessage id="ui-erm-usage.general.close" />
     </Button>
   );
 
