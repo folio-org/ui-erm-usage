@@ -84,7 +84,7 @@ const UDPForm = ({
   const renderFirstMenu = () => {
     return (
       <PaneMenu>
-        <FormattedMessage id="ui-erm-usage.general.close">
+        <FormattedMessage id="ui-erm-usage.udp.form.close">
           {([ariaLabel]) => (
             <IconButton
               aria-label={ariaLabel}
