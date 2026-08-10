@@ -208,12 +208,12 @@ const ReportInfo = ({
   const headerSection = (
     <MenuSection
       id="menu-actions"
-      label={intl.formatMessage({ id: 'ui-erm-usage.general.report' })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.report.report' })}
       labelTag="h3"
     >
       <KeyValue label="Usage data provider" value={udpLabel} />
       <KeyValue
-        label={intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.report.type' })}
         value={report.reportName}
       />
       <KeyValue

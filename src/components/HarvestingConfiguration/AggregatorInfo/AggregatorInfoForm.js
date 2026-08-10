@@ -69,7 +69,7 @@ const AggregatorInfoForm = ({
           fullWidth
           id="addudp_vendorcode"
           label={
-            <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.vendorCode" />
+            <FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />
           }
           name="harvestingConfig.aggregator.vendorCode"
           placeholder={intl.formatMessage({
