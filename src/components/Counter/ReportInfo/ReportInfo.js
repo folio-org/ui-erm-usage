@@ -137,10 +137,10 @@ const ReportInfo = ({
 
     return (
       <>
-        <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
+        <FormattedMessage id="ui-erm-usage.report.upload.editedManually" />
         <br />
-        <FormattedMessage id="ui-erm-usage.general.editReason" />
-        {editReason}
+        <FormattedMessage id="ui-erm-usage.report.upload.editReason" />
+        {`: ${editReason}`}
       </>
     );
   };
@@ -198,7 +198,7 @@ const ReportInfo = ({
   const displayManualEdited = report.reportEditedManually ? (
     <KeyValue
       data-test-custom-reports-edited-manually
-      label={intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.report.upload.manualChanges' })}
       value={manualEditedText()}
     />
   ) : (
