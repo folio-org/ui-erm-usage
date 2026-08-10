@@ -106,7 +106,6 @@
   "reportOverview.downloadMultiMonths.end": "End (Year-Month)",
   "reportOverview.downloadMultiMonths.dataType": "Data type",
   "reportOverview.downloadMultiMonths.error.endGreaterStart": "End must be greater than start",
-  "reportOverview.downloadMultiMonths.error.missingFields": "Please select a report type and enter start and end date",
   "reportOverview.infoText": "Overview about harvested statistics per year. Expand a year and click a colored button to download/delete report or get additional info.",
   "reportOverview.expandAllYears": "Expand all years",
   "reportOverview.collapseAllYears": "Collapse all years",
