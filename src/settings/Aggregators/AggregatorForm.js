@@ -150,7 +150,7 @@ const AggregatorForm = ({
       );
     }
 
-    return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
+    return <FormattedMessage id="ui-erm-usage.aggregator.form.new" />;
   };
 
   const renderPaneHeader = () => (
