@@ -100,14 +100,14 @@ function NonCounterUploadInnerForm(props) {
         } else {
           handleFail(
             intl.formatMessage({
-              id: 'ui-erm-usage.report.delete.failed',
+              id: 'ui-erm-usage.report.upload.failed',
             })
           );
         }
       })
       .catch((err) => {
         const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.delete.failed',
+          id: 'ui-erm-usage.report.upload.failed',
         });
         const infoText = `${failText} ${err.message}`;
         handleFail(infoText);

@@ -106,7 +106,7 @@ const DownloadRange = ({
             </Row>
             <Row>
               <Col xs={4}>
-                <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
+                <FormattedMessage id="ui-erm-usage.reportOverview.reportType">
                   {(label) => (
                     <Select
                       dataOptions={downloadableReports}

@@ -96,7 +96,7 @@ function InfoButton(props) {
         closeOnBackgroundClick
         footer={footer}
         id={`custom-report-info-${customReport.id}`}
-        label={<FormattedMessage id="ui-erm-usage.statistics.custom.info" />}
+        label={<FormattedMessage id="ui-erm-usage.report.custom.info" />}
         open={showModal}
       >
         <div className="custom-report-info" id="custom-report-info">

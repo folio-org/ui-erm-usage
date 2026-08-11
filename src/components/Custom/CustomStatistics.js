@@ -75,9 +75,7 @@ function CustomStatistics(props) {
       <MultiColumnList
         columnMapping={{
           note: <FormattedMessage id="ui-erm-usage.general.note" />,
-          fileId: (
-            <FormattedMessage id="ui-erm-usage.statistics.custom.info.detail" />
-          ),
+          fileId: <FormattedMessage id="ui-erm-usage.statistics.custom.info.detail" />,
         }}
         contentData={entry.data}
         formatter={{
