@@ -11,6 +11,7 @@
 * Rename "+ Add Contact" to "Add Contact". ([UIEUS-535](https://folio-org.atlassian.net/browse/UIEUS-535))
 * Improve aria-labels ([UIEUS-528](https://folio-org.atlassian.net/browse/UIEUS-528))
 * Clean up redundancies in translation file ([UIEUS-538](https://folio-org.atlassian.net/browse/UIEUS-538))
+* Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
