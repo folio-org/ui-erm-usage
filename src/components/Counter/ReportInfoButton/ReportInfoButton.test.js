@@ -1,4 +1,7 @@
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import { useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../../test/jest/helpers';
@@ -8,7 +11,7 @@ jest.mock('@folio/stripes-components/lib/Icon', () => {
   return ({ icon }) => (
     <span>
       Icon
-      <span className={`icon-${icon}`} data-testid="icon">{icon}</span>
+      <span>{icon}</span>
     </span>
   );
 });
@@ -99,60 +102,48 @@ describe('ReportInfoButton', () => {
   it('should render `checked` icon and `success` style for default report', () => {
     renderReportInfoButton(stripes, reportDefault);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-check-circle');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('check-circle')).toBeInTheDocument();
     expect(iconButton).toHaveClass('success');
   });
 
   it('should render `edit` icon and `success` style for manual edited report', () => {
     renderReportInfoButton(stripes, reportEditedManually);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-edit');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('edit')).toBeInTheDocument();
     expect(iconButton).toHaveClass('success');
   });
 
   it('should render `times` icon and `danger` style for failed report', () => {
     renderReportInfoButton(stripes, reportFailed);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-times-circle');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('times-circle')).toBeInTheDocument();
     expect(iconButton).toHaveClass('danger');
   });
 
   it('should render `default` icon anf `success` style for error 3030', () => {
     renderReportInfoButton(stripes, report3030);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-default');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('default')).toBeInTheDocument();
     expect(iconButton).toHaveClass('success');
   });
 
   it('should render `calendar` icon and `yellow` style for error 3031', () => {
     renderReportInfoButton(stripes, report3031);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-calendar');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
     expect(iconButton).toHaveClass('yellow');
   });
 
   it('should render `calendar` icon and `danger` style for error 3032', () => {
     renderReportInfoButton(stripes, report3032);
 
-    const iconElement = screen.getByTestId('icon');
-    expect(iconElement).toHaveClass('icon-calendar');
-
     const iconButton = screen.getByRole('button', { name: /open report info/i });
+    expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
     expect(iconButton).toHaveClass('danger');
   });
 });

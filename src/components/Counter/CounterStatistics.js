@@ -52,7 +52,7 @@ const CounterStatistics = ({
           </div>
         </Col>
         <Col xs={12}>
-          <AccordionSet id="data-test-counter-reports">
+          <AccordionSet>
             <StatisticsPerYear
               infoText={infoText}
               reportFormatter={reportFormatter}

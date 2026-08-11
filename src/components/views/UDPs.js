@@ -178,7 +178,7 @@ const UDPs = ({
     }
 
     return (
-      <div data-test-udps-no-results-message>
+      <div>
         <NoResultsMessage
           filterPaneIsVisible
           searchTerm={query.query || ''}
@@ -293,11 +293,9 @@ const UDPs = ({
 
   return (
     <HasCommand commands={shortcuts}>
-      <div ref={contentRef} data-test-udp-instances>
+      <div ref={contentRef}>
         <SearchAndSortQuery
-          initialFilterState={{
-            status: ['active'],
-          }}
+          initialFilterState={{ status: ['active'] }}
           initialSearchState={{ query: '' }}
           initialSortState={{ sort: 'label' }}
           queryGetter={queryGetter}
@@ -328,11 +326,8 @@ const UDPs = ({
                     >
                       <div>
                         <SearchField
-                          ariaLabel={intl.formatMessage({
-                            id: 'ui-erm-usage.udp.searchInputLabel',
-                          })}
+                          ariaLabel={intl.formatMessage({ id: 'ui-erm-usage.udp.searchInputLabel' })}
                           autoFocus
-                          data-test-udp-search-input
                           id="input-udp-search"
                           inputRef={searchField}
                           name="query"

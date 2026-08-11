@@ -53,9 +53,7 @@ const UDPFilters = ({
     let label;
 
     if (isSushiWarningCode(val)) {
-      label = `${intl.formatMessage({
-        id: 'ui-erm-usage.report.error.1',
-      })} (${val})`;
+      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${val})`;
     } else {
       label = `${intl.formatMessage({
         id: `ui-erm-usage.report.error.${val}`,

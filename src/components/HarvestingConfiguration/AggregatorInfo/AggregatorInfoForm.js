@@ -51,13 +51,9 @@ const AggregatorInfoForm = ({
           disabled={disabled}
           fullWidth
           id="addudp_aggid"
-          label={
-            <FormattedMessage id="ui-erm-usage.information.aggregator" />
-          }
+          label={<FormattedMessage id="ui-erm-usage.information.aggregator" />}
           name="harvestingConfig.aggregator.id"
-          placeholder={intl.formatMessage({
-            id: 'ui-erm-usage.udp.form.placeholder.aggregator.select',
-          })}
+          placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.aggregator.select' })}
           required={!disabled && isRequired}
           validate={!disabled && isRequired ? required : notRequired}
         />
@@ -68,13 +64,9 @@ const AggregatorInfoForm = ({
           disabled={disabled}
           fullWidth
           id="addudp_vendorcode"
-          label={
-            <FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />
-          }
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />}
           name="harvestingConfig.aggregator.vendorCode"
-          placeholder={intl.formatMessage({
-            id: 'ui-erm-usage.udp.form.placeholder.aggregator.vendor',
-          })}
+          placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.aggregator.vendor' })}
         />
       </Col>
     </>

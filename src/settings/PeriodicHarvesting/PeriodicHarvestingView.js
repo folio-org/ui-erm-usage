@@ -26,44 +26,42 @@ const PeriodicHarvestingView = ({
     const { date, time } = splitDateTime(perConf.startAt, locale, timeZone);
 
     return (
-      <>
-        <div id="periodic-harvesting-detail-view">
-          <Row>
-            <Col xs={8}>
-              <KeyValue
-                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
-                value={date}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={8}>
-              <KeyValue
-                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
-                value={time}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={8}>
-              <KeyValue
-                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
-                value={formatMessage(
-                  { id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + perConf.periodicInterval }
-                )}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={8}>
-              <KeyValue
-                label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
-                value={lastTriggeredAt}
-              />
-            </Col>
-          </Row>
-        </div>
-      </>
+      <div id="periodic-harvesting-detail-view">
+        <Row>
+          <Col xs={8}>
+            <KeyValue
+              label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
+              value={date}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={8}>
+            <KeyValue
+              label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.time' })}
+              value={time}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={8}>
+            <KeyValue
+              label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.periodicInterval' })}
+              value={formatMessage(
+                { id: 'ui-erm-usage.settings.harvester.config.periodic.interval.' + perConf.periodicInterval }
+              )}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={8}>
+            <KeyValue
+              label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.lastTriggered' })}
+              value={lastTriggeredAt}
+            />
+          </Col>
+        </Row>
+      </div>
     );
   };
 

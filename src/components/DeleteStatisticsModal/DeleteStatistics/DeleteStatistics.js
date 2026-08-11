@@ -47,7 +47,6 @@ function DeleteStatistics({
       return (
         <Checkbox
           checked={r ? reportsToDelete.has(r.id) : false}
-          data-testid={`checkbox-${r.id}`}
           onChange={() => handleClickReportCheckbox(r.id)}
           value={r.id}
         />
@@ -183,7 +182,6 @@ function DeleteStatistics({
 
     const processedReports = preprocessReports(reports);
 
-    // if (counterReports.length > 0) {
     if (!isNil(reports) && reports.length > 0) {
       counterStats = (
         <Row className={css.subAccordionSections}>

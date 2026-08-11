@@ -78,7 +78,7 @@ const AggregatorDetails = ({
   );
 
   return (
-    <div data-test-aggregator-details>
+    <div>
       <AccordionSet>
         <Row end="xs">
           <Col xs>
