@@ -137,10 +137,10 @@ const ReportInfo = ({
 
     return (
       <>
-        <FormattedMessage id="ui-erm-usage.report.upload.editedManually" />
+        <FormattedMessage id="ui-erm-usage.general.manualChanges.infoText" />
         <br />
-        <FormattedMessage id="ui-erm-usage.report.upload.editReason" />
-        {`: ${editReason}`}
+        <FormattedMessage id="ui-erm-usage.general.editReason" />
+        {editReason}
       </>
     );
   };
@@ -198,7 +198,7 @@ const ReportInfo = ({
   const displayManualEdited = report.reportEditedManually ? (
     <KeyValue
       data-test-custom-reports-edited-manually
-      label={intl.formatMessage({ id: 'ui-erm-usage.report.upload.manualChanges' })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
       value={manualEditedText()}
     />
   ) : (
@@ -208,12 +208,12 @@ const ReportInfo = ({
   const headerSection = (
     <MenuSection
       id="menu-actions"
-      label={intl.formatMessage({ id: 'ui-erm-usage.report.report' })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.general.report' })}
       labelTag="h3"
     >
       <KeyValue label="Usage data provider" value={udpLabel} />
       <KeyValue
-        label={intl.formatMessage({ id: 'ui-erm-usage.report.type' })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
         value={report.reportName}
       />
       <KeyValue

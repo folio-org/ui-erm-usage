@@ -14,6 +14,11 @@
   "general.save": "Save",
   "general.info": "Info",
   "general.date": "Date",
+  "general.report": "Report",
+  "general.type": "Type",
+  "general.manualChanges": "Manual changes",
+  "general.manualChanges.infoText": "Report data has been edited manually.",
+  "general.editReason": "Edit reason:",
   "general.actions": "Actions",
   "general.yes": "Yes",
   "general.no": "No",
@@ -110,9 +115,6 @@
   "reportOverview.expandAllYears": "Expand all years",
   "reportOverview.collapseAllYears": "Collapse all years",
 
-  "report.report": "Report",
-  "report.type": "Type",
-
   "report.action.download": "Download",
   "report.action.download.csv": "Download report as CSV",
   "report.action.download.xlsx": "Download report as XLSX",
@@ -123,7 +125,7 @@
 
   "report.custom.info": "Custom report info",
 
-  "report.failed": "Failed...",
+  "report.upload.failed": "Failed...",
   "report.upload.success": "Success:",
   "report.upload.completed": "Upload completed.",
   "report.upload.modal.label": "Counter-Report upload",
@@ -136,7 +138,6 @@
   "report.upload.editedManually": "Report data has been edited manually",
   "report.upload.editReason": "Edit reason",
   "report.upload.editReason.placeholder": "Enter reason for manual changes",
-  "report.upload.manualChanges": "Manual changes",
 
   "report.error.htmlResponse": "An error has occured",
   "report.error.exception": "Exception",
@@ -222,7 +223,7 @@
   "aggregator.config.addParam": "Add config parameter",
 
   "aggregator.form.close": "Close aggregator form",
-  "aggregator.form.new": "New aggregator",
+  "aggregator.form.newAggregator": "New aggregator",
   "udp.form.delete.confirm.title": "Delete usage data Provider",
   "form.delete.confirm.message": "Do you really want to delete <strong>{name}</strong>?",
 

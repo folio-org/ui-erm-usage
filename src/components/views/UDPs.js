@@ -93,7 +93,7 @@ const UDPs = ({
 
   const columnMapping = {
     label: <FormattedMessage id="ui-erm-usage.information.providerName" />,
-    reportReleases: <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />,
+    reportReleases: <FormattedMessage id="ui-erm-usage.general.reportReleases" />,
     harvestingStatus: <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />,
     latestStats: <FormattedMessage id="ui-erm-usage.information.latestStatistics" />,
     aggregator: <FormattedMessage id="ui-erm-usage.information.aggregator" />,

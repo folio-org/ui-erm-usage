@@ -95,7 +95,7 @@ const ReportInfoButton = ({
       .then(() => {})
       .catch((err) => {
         const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.failed',
+          id: 'ui-erm-usage.report.upload.failed',
         });
         const infoText = failText + ' ' + err.message;
         log('Delete of counter report failed: ' + infoText);

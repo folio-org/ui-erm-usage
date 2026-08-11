@@ -107,7 +107,7 @@ const UDP = ({
 
   const handleFail = (msg) => {
     const failText = intl.formatMessage({
-      id: 'ui-erm-usage.report.failed',
+      id: 'ui-erm-usage.report.upload.failed',
     });
     callout.sendCallout({
       type: 'error',
