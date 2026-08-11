@@ -26,7 +26,7 @@ const handlers = {
   onDownloadReportSingleMonthRaw,
 };
 
-// Die Monats-Checkboxen tragen kein Label, aber die Report-ID als value.
+// The monthly checkboxes have no label, but carry the report id as their value.
 const getReportCheckbox = (id) => screen.getAllByRole('checkbox').find((cb) => cb.value === id);
 
 const counterReports = [
