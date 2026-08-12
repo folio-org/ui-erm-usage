@@ -156,7 +156,7 @@ function NonCounterUploadInnerForm(props) {
               id="custom-report-year"
               label={<FormattedMessage id="ui-erm-usage.general.year" />}
               name="year"
-              placeholder="YYYY"
+              placeholder={intl.formatMessage({ id: 'ui-erm-usage.general.yearFormat' })}
               required
             />
           </Col>
