@@ -100,12 +100,8 @@ function CustomStatistics(props) {
         <Col xs>
           <ExpandAllButton
             accordionStatus={yearAccordions}
-            collapseLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />
-            }
-            expandLabel={
-              <FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />
-            }
+            collapseLabel={<FormattedMessage id="ui-erm-usage.reportOverview.collapseAllYears" />}
+            expandLabel={<FormattedMessage id="ui-erm-usage.reportOverview.expandAllYears" />}
             id="expand-all-custom-report-years"
             onToggle={(obj) => setYearAccordions(obj)}
             setStatus={null}
@@ -114,7 +110,7 @@ function CustomStatistics(props) {
       </Row>
       <Row className={css.subAccordionSections}>
         <Col xs={12}>
-          <AccordionSet id="data-test-custom-reports">
+          <AccordionSet>
             {accordions}
           </AccordionSet>
         </Col>

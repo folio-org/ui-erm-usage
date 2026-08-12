@@ -29,7 +29,7 @@ const VendorInfoView = ({
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
-          value={<div data-test-service-type>{serviceTypeLabel}</div>}
+          value={serviceTypeLabel}
         />
       </Col>
       <Col xs={3}>

@@ -45,31 +45,19 @@ const UDPHeader = ({ usageDataProvider = { harvestingConfig: {} }, lastJob = {} 
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.information.latestStatistics" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.information.latestStatistics" />}
             value={latestReport ?? <NoValue />}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.information.harvestingStatus" />
-            }
-            value={
-              harvestingStatusOption ? (
-                <FormattedMessage id={harvestingStatusOption.label} />
-              ) : (
-                <NoValue />
-              )
-            }
+            label={<FormattedMessage id="ui-erm-usage.information.harvestingStatus" />}
+            value={harvestingStatusOption ? <FormattedMessage id={harvestingStatusOption.label} /> : <NoValue />}
           />
         </Col>
         <Col xs={3}>
           <KeyValue
-            label={
-              <FormattedMessage id="ui-erm-usage.information.lastJobFinishedAt" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.information.lastJobFinishedAt" />}
             value={finishedAtLabel ?? <NoValue />}
           />
         </Col>

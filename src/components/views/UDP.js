@@ -92,9 +92,7 @@ const UDP = ({
   };
 
   const handleSuccess = (msg) => {
-    const success = intl.formatMessage({
-      id: 'ui-erm-usage.report.upload.success',
-    });
+    const success = intl.formatMessage({ id: 'ui-erm-usage.report.upload.success' });
     callout.sendCallout({
       message: `${success} ${msg}`,
     });
@@ -106,9 +104,7 @@ const UDP = ({
   };
 
   const handleFail = (msg) => {
-    const failText = intl.formatMessage({
-      id: 'ui-erm-usage.report.upload.failed',
-    });
+    const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
     callout.sendCallout({
       type: 'error',
       message: `${failText} ${msg}`,
@@ -402,7 +398,7 @@ const UDP = ({
     <PaneHeader
       dismissible
       onClose={handlers.onClose}
-      paneTitle={<span data-test-collection-header-title>loading</span>}
+      paneTitle="loading"
     />
   );
 
@@ -474,7 +470,7 @@ const UDP = ({
       dismissible
       lastMenu={renderDetailMenu(usageDataProvider)}
       onClose={handlers.onClose}
-      paneTitle={<span data-test-header-title>{label}</span>}
+      paneTitle={label}
     />
   );
 
@@ -523,9 +519,7 @@ const UDP = ({
               <AccordionSet initialStatus={getInitialAccordionsState()}>
                 <Accordion
                   id="harvestingAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
                 >
                   <HarvestingConfigurationView
                     harvesterImpls={data.harvesterImpls}
@@ -537,9 +531,7 @@ const UDP = ({
                 <Pluggable data={{ op: 'match-names', data }} type="ui-agreements-extension" />
                 <Accordion
                   id="counterStatisticsAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.counterStatistics" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
                 >
                   {getCounterStatistics(
                     counterReportsByRelease,
@@ -550,9 +542,7 @@ const UDP = ({
                 </Accordion>
                 <Accordion
                   id="nonCounterStatisticsAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
                 >
                   {getCustomStatistics(label, providerId)}
                 </Accordion>

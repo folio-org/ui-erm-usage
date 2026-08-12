@@ -197,7 +197,6 @@ const ReportInfo = ({
 
   const displayManualEdited = report.reportEditedManually ? (
     <KeyValue
-      data-test-custom-reports-edited-manually
       label={intl.formatMessage({ id: 'ui-erm-usage.general.manualChanges' })}
       value={manualEditedText()}
     />

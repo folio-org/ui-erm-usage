@@ -29,9 +29,7 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
       {aggregatorName}
     </Link> :
-    <>
-      {aggregatorName}
-    </>;
+    <>{aggregatorName}</>;
   const aggregatorContact = (
     <AggregatorContactInfo aggregatorId={aggregatorId} stripes={stripes} />
   );
@@ -55,22 +53,14 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
       </Col>
       <Col xs={3}>
         <KeyValue
-          label={
-            <FormattedMessage id="ui-erm-usage.aggregatorInfo.aggregatorName" />
-          }
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.aggregatorName" />}
           value={aggregatorLink}
         />
       </Col>
       <Col xs={3}>
         <KeyValue
-          label={
-            <FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />
-          }
-          value={
-            usageDataProvider.harvestingConfig?.aggregator?.vendorCode ?? (
-              <NoValue />
-            )
-          }
+          label={<FormattedMessage id="ui-erm-usage.aggregatorInfo.vendorCode" />}
+          value={usageDataProvider.harvestingConfig?.aggregator?.vendorCode ?? <NoValue />}
         />
       </Col>
     </Row>
