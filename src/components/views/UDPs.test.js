@@ -99,7 +99,7 @@ describe('rerender result list', () => {
   describe('trigger search with loading new results', () => {
     it('should set the focus to the result list', async () => {
       renderWithIntlResult = renderUDPs(stripes, sourcePending, udps);
-      expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
+      expect(screen.getByRole('region', { name: /Usage data providers/ })).toBeInTheDocument();
 
       const searchFieldInput = document.querySelector('#input-udp-search');
       await userEvent.type(searchFieldInput, 'American');
@@ -121,7 +121,7 @@ describe('rerender result list', () => {
       expect(screen.getByRole('region', { name: /Usage data providers/ })).toBeInTheDocument();
 
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+      expect(screen.getByRole('region', { name: /Usage data providers/ })).toHaveFocus();
     });
   });
 });
