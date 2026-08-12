@@ -21,6 +21,7 @@ const FileUploader = ({ onChange }) => {
     <Dropzone multiple={false} noClick onDrop={(acceptedFiles) => onChange(acceptedFiles[0])}>
       {({ getRootProps, getInputProps, open }) => (
         <div {...getRootProps()} style={style}>
+          {/* keep data-testid here, since the input has no visible label */}
           <input {...getInputProps()} data-testid="fileInput" />
           <FormattedMessage id="ui-erm-usage.report.upload.dropFile" />
           <Button buttonStyle="primary" onClick={() => open()}>

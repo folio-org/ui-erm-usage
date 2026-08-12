@@ -61,9 +61,7 @@ function SelectReportType(props) {
                       selectedReports,
                       index
                     )}
-                    label={
-                      <FormattedMessage id="ui-erm-usage.reportOverview.reportType" />
-                    }
+                    label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
                     name={elem}
                     validate={props.required ? required : notRequired}
                   />
@@ -88,7 +86,7 @@ function SelectReportType(props) {
       </Row>
       <Row>
         <Col xs={4}>
-          <Button data-test-add-report-button onClick={() => fields.push('')}>
+          <Button onClick={() => fields.push('')}>
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
               {([label]) => <Icon icon="plus-sign">{label}</Icon>}
             </FormattedMessage>

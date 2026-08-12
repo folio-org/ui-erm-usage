@@ -23,9 +23,7 @@ const NoteCreateRoute = ({
     );
   };
 
-  return location.state
-    ? renderCreatePage()
-    : <Redirect to={urls.eUsage()} />;
+  return location.state ? renderCreatePage() : <Redirect to={urls.eUsage()} />;
 };
 
 NoteCreateRoute.propTypes = {

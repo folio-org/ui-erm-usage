@@ -69,17 +69,13 @@ function DeleteStatisticsModal({
           onSuccess(msg);
         } else {
           onFail(
-            intl.formatMessage({
-              id: 'ui-erm-usage.statistics.multi.delete.fail',
-            })
+            intl.formatMessage({ id: 'ui-erm-usage.statistics.multi.delete.fail' })
           );
         }
       })
       .catch(() => {
         onFail(
-          intl.formatMessage({
-            id: 'ui-erm-usage.statistics.multi.delete.fail',
-          })
+          intl.formatMessage({ id: 'ui-erm-usage.statistics.multi.delete.fail' })
         );
       });
   };
@@ -97,7 +93,6 @@ function DeleteStatisticsModal({
     <>
       <Modal
         closeOnBackgroundClick
-        data-test-delete-reports-modal
         footer={
           <ModalFooter>
             <Button
@@ -108,9 +103,7 @@ function DeleteStatisticsModal({
             >
               <FormattedMessage
                 id="ui-erm-usage.statistics.multi.delete.submit"
-                values={{
-                  count: reportsToDelete.size,
-                }}
+                values={{ count: reportsToDelete.size }}
               />
             </Button>
             <Button
@@ -122,9 +115,7 @@ function DeleteStatisticsModal({
           </ModalFooter>
         }
         id="delete-reports-modal"
-        label={
-          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header" />
-        }
+        label={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.header" />}
         open={open}
       >
         <DeleteStatistics
@@ -142,12 +133,8 @@ function DeleteStatisticsModal({
       </Modal>
       <ConfirmationModal
         buttonStyle="danger"
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.delete',
-        })}
-        heading={
-          <FormattedMessage id="ui-erm-usage.statistics.multi.delete.header.question" />
-        }
+        confirmLabel={intl.formatMessage({ id: 'ui-erm-usage.general.delete' })}
+        heading={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.header.question" />}
         id="delete-multi-statistics-confirmation"
         message={
           <FormattedMessage
@@ -165,17 +152,11 @@ function DeleteStatisticsModal({
         open={showConfirmDelete}
       />
       <ConfirmationModal
-        cancelLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.closeWithoutSave',
-        })}
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.keepEditing',
-        })}
+        cancelLabel={intl.formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
+        confirmLabel={intl.formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
         heading={<FormattedMessage id="ui-erm-usage.general.sure" />}
         id="close-delete-multi-statistics-confirmation"
-        message={
-          <FormattedMessage id="ui-erm-usage.general.unsaved.selections" />
-        }
+        message={<FormattedMessage id="ui-erm-usage.general.unsaved.selections" />}
         onCancel={() => {
           setShowCloseModal(false);
           onCloseModal();

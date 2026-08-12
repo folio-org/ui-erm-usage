@@ -29,9 +29,7 @@ function AggregatorConfigForm({ stripes }) {
           <Row>
             <Col xs={8}>
               <RepeatableField
-                addLabel={intl.formatMessage({
-                  id: 'ui-erm-usage.aggregator.config.addParam',
-                })}
+                addLabel={intl.formatMessage({ id: 'ui-erm-usage.aggregator.config.addParam' })}
                 fields={fields.value || []}
                 id="add-agg-config-param"
                 onAdd={() => fields.push({ key: '', value: '', isInitial: false })}

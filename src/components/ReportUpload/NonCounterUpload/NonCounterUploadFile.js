@@ -27,7 +27,6 @@ function NonCounterUploadFile({ fileId, handlers, isUploading, onSelectFile, fil
       downloadButton = (
         <Button
           buttonStyle="link"
-          data-test-doc-file
           onClick={() => handlers.doDownloadFile(fileId, file.name)}
         >
           <Icon icon="external-link">{file.name}</Icon>

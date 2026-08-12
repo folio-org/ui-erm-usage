@@ -16,9 +16,7 @@ function ReportInfoHeader(props) {
   return (
     <MenuSection
       id="menu-actions"
-      label={intl.formatMessage({
-        id: 'ui-erm-usage.report.custom.info',
-      })}
+      label={intl.formatMessage({ id: 'ui-erm-usage.report.custom.info' })}
       labelTag="h3"
     >
       <ViewMetaData metadata={customReport.metadata} />

@@ -16,7 +16,7 @@ import AggregatorManager from './AggregatorManager';
 const ActualEntryManager = jest.requireActual('@folio/stripes/smart-components').EntryManager;
 
 jest.mock('@folio/stripes/smart-components', () => ({
-  EntryManager: jest.fn(() => <div data-testid="entry-manager" />),
+  EntryManager: jest.fn(() => <div />),
 }));
 
 const defaultProps = {
@@ -51,8 +51,6 @@ const defaultProps = {
 describe('AggregatorManager', () => {
   it('should render AggregatorManager and EntryManager', () => {
     renderWithIntl(<AggregatorManager {...defaultProps} />);
-
-    expect(screen.getByTestId('entry-manager')).toBeInTheDocument();
 
     expect(EntryManager).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -139,7 +137,7 @@ describe('Aggregator action menu', () => {
   });
 
   afterEach(() => {
-    EntryManager.mockImplementation(() => <div data-testid="entry-manager" />);
+    EntryManager.mockImplementation(() => <div />);
     document.getElementById('ModuleContainer')?.remove();
   });
 

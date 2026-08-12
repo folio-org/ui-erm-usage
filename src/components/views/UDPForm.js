@@ -104,7 +104,6 @@ const UDPForm = ({
     const startButton = (
       <Button
         buttonStyle="default mega"
-        data-test-udp-form-cancel-button
         id="clickable-close-udp-form"
         marginBottom0
         onClick={handlers.onClose}
@@ -116,7 +115,6 @@ const UDPForm = ({
     const endButton = (
       <Button
         buttonStyle="primary mega"
-        data-test-udp-form-submit-button
         disabled={disabled}
         id="clickable-createnewudp"
         marginBottom0
@@ -153,7 +151,6 @@ const UDPForm = ({
     <HasCommand commands={shortcuts}>
       <form
         className={css.UDPFormRoot}
-        data-test-form-page
         id="form-udp"
         onSubmit={handleSubmit}
       >

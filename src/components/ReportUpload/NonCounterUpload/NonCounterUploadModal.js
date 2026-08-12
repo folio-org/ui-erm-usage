@@ -32,7 +32,6 @@ function NonCounterUploadModal(props) {
 
   return (
     <form
-      data-test-custom-report-form-page
       id="form-custom-report"
       onSubmit={props.handleSubmit}
     >
@@ -40,9 +39,7 @@ function NonCounterUploadModal(props) {
         closeOnBackgroundClick
         footer={renderFooter(props.handleSubmit)}
         id="upload-non-counter-modal"
-        label={
-          <FormattedMessage id="ui-erm-usage.statistics.custom.upload" />
-          }
+        label={<FormattedMessage id="ui-erm-usage.statistics.custom.upload" />}
         open={props.open}
       >
         <div className="upload-non-counter-modal">

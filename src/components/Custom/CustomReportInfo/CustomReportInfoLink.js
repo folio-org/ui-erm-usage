@@ -23,9 +23,7 @@ function CustomReportInfoLink(props) {
       <ReportInfoHeader customReport={customReport} udpLabel={udpLabel} />
       <MenuSection
         id="menu-actions"
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.actions',
-        })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.general.actions' })}
         labelTag="h3"
       >
         <TextLink

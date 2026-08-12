@@ -19,8 +19,7 @@ describe('UDPInfoView component', () => {
     // eslint-disable-next-line no-unused-vars
     const { description, ...udpNoDesc } = udp;
     renderUDPInfoView(udpNoDesc);
-    const desc = screen.queryByText('This is a mock udp');
-    expect(desc).not.toBeInTheDocument();
-    expect(document.querySelector('[data-test-no-value]')).toBeInTheDocument();
+    expect(screen.queryByText('This is a mock udp')).not.toBeInTheDocument();
+    expect(screen.getByText('No value set')).toBeInTheDocument();
   });
 });

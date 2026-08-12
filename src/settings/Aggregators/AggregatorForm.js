@@ -212,9 +212,7 @@ const AggregatorForm = ({
                       id="input-aggregator-service-type"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}
                       name="serviceType"
-                      placeholder={intl.formatMessage({
-                        id: 'ui-erm-usage.aggregator.form.placeholder.serviceType',
-                      })}
+                      placeholder={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.placeholder.serviceType' })}
                       required
                       validate={required}
                     />
@@ -258,9 +256,7 @@ const AggregatorForm = ({
                       id="input-aggregator-account-type"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />}
                       name="accountConfig.configType"
-                      placeholder={intl.formatMessage({
-                        id: 'ui-erm-usage.aggregator.form.placeholder.configType',
-                      })}
+                      placeholder={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.placeholder.configType' })}
                       required
                       validate={required}
                     />
