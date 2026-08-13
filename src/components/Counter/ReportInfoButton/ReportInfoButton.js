@@ -167,7 +167,7 @@ const ReportInfoButton = ({
         closeOnBackgroundClick
         footer={footer}
         id={dropdownId}
-        label="Report info"
+        label={<FormattedMessage id="ui-erm-usage.report.counter.info" />}
         open={showDropDown}
       >
         <div className={reportInfoClassName} id="report-info">

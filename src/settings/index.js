@@ -83,7 +83,7 @@ class ErmUsageSettings extends React.Component {
     return (
       <Settings
         {...this.props}
-        paneTitle="erm-usage"
+        paneTitle={<FormattedMessage id="ui-erm-usage.meta.title" />}
         sections={this.sections}
       />
     );

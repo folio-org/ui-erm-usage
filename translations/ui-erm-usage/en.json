@@ -32,7 +32,6 @@
   "general.edit": "Edit",
   "general.note": "Note",
   "general.year": "Year",
-  "general.yearFormat": "YYYY",
   "general.fileSize.kb": "Filesize in kB",
   "general.error": "An error has occurred.",
   "general.error2": "Error",
@@ -125,6 +124,7 @@
   "report.action.failedAttempts": "Failed attempts",
 
   "report.custom.info": "Custom report info",
+  "report.counter.info": "Report info",
 
   "report.upload.failed": "Failed...",
   "report.upload.success": "Success:",
@@ -232,6 +232,7 @@
   "errors.required": "Required",
   "errors.emailInvalid": "Email address invalid",
   "errors.dateInvalid": "Date invalid",
+  "errors.yearInvalid": "Year invalid",
   "errors.endDateMustBeGraterStartDate": "End date must be greater than start date",
   "errors.urlRequired": "Invalid URL: http:// or https:// required!",
   "errors.enterValidUrl": "Please enter a valid URL",
