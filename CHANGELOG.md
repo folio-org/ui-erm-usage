@@ -13,6 +13,7 @@
 * Clean up redundancies in translation file ([UIEUS-538](https://folio-org.atlassian.net/browse/UIEUS-538))
 * Remove test selectors ([UIEUS-542](https://folio-org.atlassian.net/browse/UIEUS-542))
 * Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
+* Adapt aggragator form pane header ([UIEUS-545](https://folio-org.atlassian.net/browse/UIEUS-545))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
