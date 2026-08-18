@@ -1,6 +1,9 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
   StripesContext,
@@ -24,6 +27,7 @@ const data = {
 
 const handlers = {
   onClose: jest.fn,
+  onDelete: jest.fn(),
   onEdit: jest.fn,
   onDownloadReportMultiMonth: jest.fn,
 };
@@ -122,6 +126,47 @@ describe('UDP', () => {
       await userEvent.click(screen.getByText('Delete reports'));
       const heading = screen.getByRole('heading', { name: 'Delete multiple reports' });
       expect(heading).toBeInTheDocument();
+    });
+
+    describe('test delete UDP', () => {
+      beforeEach(() => {
+        handlers.onDelete.mockClear();
+      });
+
+      test('delete modal is shown', async () => {
+        await userEvent.click(screen.getByText('Delete'));
+        expect(screen.getByRole('heading', { name: /Delete usage data Provider/ })).toBeInTheDocument();
+      });
+
+      test('if confirmation message contains UDP name in bold', async () => {
+        await userEvent.click(screen.getByText('Delete'));
+        const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+        expect(deleteModal).toHaveTextContent(`Do you really want to delete ${stubUDP.label}?`);
+        const udpLabel = within(deleteModal).getByText(stubUDP.label);
+        expect(udpLabel.tagName.toLowerCase()).toBe('strong');
+      });
+
+      test('click cancel delete', async () => {
+        await userEvent.click(screen.getByText('Delete'));
+
+        const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
+        expect(deleteModal).toBeVisible();
+
+        const deleteModalText = within(deleteModal).getByRole('heading', { name: 'Delete usage data Provider' });
+        expect(deleteModalText).toBeInTheDocument();
+
+        const cancelButton = within(deleteModal).getByRole('button', { name: 'Cancel' });
+        await userEvent.click(cancelButton);
+        expect(deleteModalText).not.toBeInTheDocument();
+        expect(handlers.onDelete).not.toHaveBeenCalled();
+      });
+
+      test('click submit delete', async () => {
+        await userEvent.click(screen.getByText('Delete'));
+        const submit = screen.getByRole('button', { name: 'Delete', id: 'clickable-delete-udp-confirmation-confirm' });
+        await userEvent.click(submit);
+        expect(handlers.onDelete).toHaveBeenCalledWith(stubUDP.id);
+      });
     });
   });
 });

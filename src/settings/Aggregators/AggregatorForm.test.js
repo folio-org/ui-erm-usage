@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom';
 import {
   screen,
   waitFor,
-  within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
@@ -24,7 +23,6 @@ const aggregators = [
 ];
 
 const onSubmit = jest.fn();
-const onRemove = jest.fn();
 const onCancel = jest.fn();
 
 const renderAggregratorForm = (stripes, initialValues = {}) => {
@@ -35,7 +33,6 @@ const renderAggregratorForm = (stripes, initialValues = {}) => {
           aggregators={aggregators}
           initialValues={initialValues}
           onCancel={onCancel}
-          onRemove={onRemove}
           onSubmit={onSubmit}
           stripes={stripes}
         />
@@ -86,6 +83,15 @@ describe('AggregatorForm', () => {
     const trashBtn = screen.getByRole('button', { name: 'Delete this item' });
     await userEvent.click(trashBtn);
     expect(screen.queryByText('Key')).not.toBeInTheDocument();
+  });
+
+  test('trims whitespace from service url', async () => {
+    const serviceUrlInput = screen.getByRole('textbox', { name: /service url/i });
+    await userEvent.click(serviceUrlInput);
+    await userEvent.paste('  http://example.com/sushi   ');
+    await userEvent.tab();
+
+    expect(serviceUrlInput).toHaveValue('http://example.com/sushi');
   });
 });
 
@@ -144,35 +150,5 @@ describe('Edit Aggregator', () => {
     await waitFor(() => {
       expect(saveButton).toBeDisabled();
     });
-  });
-});
-
-describe('Delete Aggregator', () => {
-  let stripes;
-
-  beforeEach(async () => {
-    stripes = useStripes();
-    renderAggregratorForm(stripes, aggregatorTransformed);
-
-    const deleteBtn = screen.getByRole('button', { name: 'Delete' });
-    await userEvent.click(deleteBtn);
-  });
-
-  test('click cancel', async () => {
-    const deleteModalText = screen.getByRole('heading', { name: 'Delete aggregator' });
-    expect(deleteModalText).toBeInTheDocument();
-
-    const deleteModal = screen.getByRole('dialog', { name: /Do you really want to delete/ });
-    expect(deleteModal).toBeVisible();
-
-    const cancelButton = within(deleteModal).getByRole('button', { name: 'Cancel' });
-    await userEvent.click(cancelButton);
-    expect(deleteModalText).not.toBeInTheDocument();
-  });
-
-  test('click submit', async () => {
-    const submitBtn = screen.getByRole('button', { name: 'Submit' });
-    await userEvent.click(submitBtn);
-    expect(onRemove).toHaveBeenCalled();
   });
 });

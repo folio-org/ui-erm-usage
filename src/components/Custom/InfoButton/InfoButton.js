@@ -1,7 +1,10 @@
 import { isNil } from 'lodash';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
 import {
   Button,
@@ -15,6 +18,7 @@ import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CustomReportInfo from '../CustomReportInfo';
 
 function InfoButton(props) {
+  const intl = useIntl();
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const {
@@ -58,19 +62,24 @@ function InfoButton(props) {
     setShowConfirmDelete(true);
   };
 
-  const ariaLabel = `Open report info for custom report ${customReport.year} ${customReport.note}.`;
+  const reportName = customReport.note
+    ? `${customReport.year} - ${customReport.note}`
+    : customReport.year;
+
+  const ariaLabel = intl.formatMessage(
+    { id: 'ui-erm-usage.reportOverview.openCustomReport' },
+    { reportName }
+  );
   const footer = (
     <Button id="close-report-info-button" onClick={() => setShowModal(false)}>
-      Close
+      <FormattedMessage id="ui-erm-usage.general.close" />
     </Button>
   );
 
   const deleteConfirmMsg = (
     <FormattedMessage
-      id="ui-erm-usage.reportOverview.deleteTemplateMessage"
-      values={{
-        name: <strong>{`${customReport.year} - ${customReport.note}`}</strong>,
-      }}
+      id="ui-erm-usage.reportOverview.deleteCustomReport"
+      values={{ name: <strong>{reportName}</strong> }}
     />
   );
 
@@ -78,7 +87,6 @@ function InfoButton(props) {
     <>
       <IconButton
         aria-label={ariaLabel}
-        data-testid={`custom-report-button-${customReport.id}`}
         icon="info"
         id={`custom-report-button-${customReport.id}`}
         onClick={() => setShowModal(!showModal)}
@@ -87,7 +95,7 @@ function InfoButton(props) {
         closeOnBackgroundClick
         footer={footer}
         id={`custom-report-info-${customReport.id}`}
-        label={<FormattedMessage id="ui-erm-usage.statistics.custom.info" />}
+        label={<FormattedMessage id="ui-erm-usage.report.custom.info" />}
         open={showModal}
       >
         <div className="custom-report-info" id="custom-report-info">

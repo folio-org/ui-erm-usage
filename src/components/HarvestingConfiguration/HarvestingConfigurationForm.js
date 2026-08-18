@@ -13,6 +13,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
+import extractHarvesterImpls from '../../util/harvesterImpls';
 import formCss from '../../util/sharedStyles/form.css';
 import { AggregatorInfoForm } from './AggregatorInfo';
 import {
@@ -20,7 +21,6 @@ import {
   HarvestingStartField,
   HarvestingStatusSelect,
   HarvestingViaSelect,
-  ReportReleaseSelect,
 } from './Fields';
 import SelectedReportsForm from './SelectedReports';
 import { SushiCredentialsForm } from './SushiCredentials';
@@ -31,28 +31,36 @@ const HarvestingConfigurationForm = ({
   aggregators,
   expanded,
   harvesterImplementations,
-  initialValues,
   form,
   onToggle,
   values,
 }) => {
   const [confirmClear, setConfirmClear] = useState(false);
   const [selectedReportRelease, setSelectedReportRelease] = useState('');
+  const [previousServiceType, setPreviousServiceType] = useState(undefined);
 
-  const changeSelectedCounterVersion = (event) => {
-    event.preventDefault();
+  const serviceType = get(values, 'harvestingConfig.sushiConfig.serviceType');
 
-    const val = (event.target.value === '') ? undefined : event.target.value;
-    const selectedReportReleaseValues = get(values, 'harvestingConfig.reportRelease', null);
+  const implementations = harvesterImplementations?.length
+    ? harvesterImplementations[0].implementations
+    : [];
 
-    if (selectedReportReleaseValues !== val) {
+  const changeSelectedServiceType = (event) => {
+    const selectedType = (event.target.value === '') ? undefined : event.target.value;
+    form.change('harvestingConfig.sushiConfig.serviceType', selectedType);
+    const impl = implementations.find(i => i.type === selectedType);
+    const val = impl?.reportRelease;
+    const currentReportRelease = get(values, 'harvestingConfig.reportRelease', null);
+
+    if (currentReportRelease !== val) {
       const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
-      if (!isEmpty(requestedReports)) {
+      if (isEmpty(requestedReports)) {
+        form.mutators.setReportRelease({}, val);
+      } else {
+        setPreviousServiceType(serviceType);
         setConfirmClear(true);
         setSelectedReportRelease(val);
-      } else {
-        form.mutators.setReportRelease({}, val);
       }
 
       if ((val === '4' && values.sushiCredentials?.apiKey) ||
@@ -73,6 +81,8 @@ const HarvestingConfigurationForm = ({
     if (confirmation) {
       form.mutators.clearSelectedReports({}, values);
       form.mutators.setReportRelease({}, selectedReportRelease);
+    } else {
+      form.change('harvestingConfig.sushiConfig.serviceType', previousServiceType);
     }
 
     setConfirmClear(false);
@@ -82,8 +92,10 @@ const HarvestingConfigurationForm = ({
   const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
   const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
   const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
-  const reportRelease = get(values, 'harvestingConfig.reportRelease', '');
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
+
+  const currentImpl = implementations.find(i => i.type === serviceType);
+  const supportedReports = currentImpl?.supportedReports ?? [];
 
   const confirmationMessage = (
     <FormattedMessage id="ui-erm-usage.udp.form.selectedReports.confirmClearMessage" />
@@ -127,8 +139,9 @@ const HarvestingConfigurationForm = ({
               />
             </Row>
             <VendorInfoForm
+              changeSelectedServiceType={changeSelectedServiceType}
               disabled={harvestVia !== 'sushi'}
-              harvesterImpls={harvesterImplementations}
+              harvesterImpls={extractHarvesterImpls(harvesterImplementations)}
               isRequired={isHarvestingStatusActive}
             />
           </section>
@@ -141,23 +154,11 @@ const HarvestingConfigurationForm = ({
             />
           </section>
           <section className={formCss.separator}>
-            <Row>
-              <Col xs={4}>
-                <ReportReleaseSelect
-                  id="addudp_reportrelease"
-                  onChange={changeSelectedCounterVersion}
-                  required={isHarvestingStatusActive}
-                />
-              </Col>
-              <Col xs={8}>
-                <SelectedReportsForm
-                  counterVersion={reportRelease}
-                  initialValues={initialValues}
-                  required={isHarvestingStatusActive}
-                  selectedReports={requestedReports}
-                />
-              </Col>
-            </Row>
+            <SelectedReportsForm
+              required={isHarvestingStatusActive}
+              selectedReports={requestedReports}
+              supportedReports={supportedReports}
+            />
           </section>
           <section className={formCss.separator}>
             <Row>
@@ -200,7 +201,6 @@ HarvestingConfigurationForm.propTypes = {
     resetFieldState: PropTypes.func,
   }),
   harvesterImplementations: PropTypes.arrayOf(PropTypes.object),
-  initialValues: PropTypes.object,
   onToggle: PropTypes.func,
   values: PropTypes.shape(),
 };

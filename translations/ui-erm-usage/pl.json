@@ -249,7 +249,7 @@
     "harvester.jobs.filter.type.periodic": "Okresowy",
     "harvester.jobs.filter.type.tenant": "Tenant",
     "harvester.jobs.filter.type.provider": "Dostawca",
-    "harvester.jobs.refresh": "Odświeżać",
+    "harvester.jobs.refresh": "Odśwież",
     "harvester.jobs.column.provider": "Dostawca / Tenant",
     "harvester.jobs.column.type": "Rodzaj",
     "harvester.jobs.column.start": "Rozpoczęcie",

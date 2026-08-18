@@ -20,6 +20,7 @@ import {
   Callout,
   Col,
   collapseAllSections,
+  ConfirmationModal,
   ExpandAllButton,
   expandAllSections,
   HasCommand,
@@ -78,6 +79,7 @@ const UDP = ({
   const accordionStatusRef = useRef();
   callout = useRef();
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [helperApp, setHelperApp] = useState(null);
   const [showDeleteReports, setShowDeleteReports] = useState(null);
   const [harvesterModalState, setHarvesterModalState] = useState({});
@@ -90,9 +92,7 @@ const UDP = ({
   };
 
   const handleSuccess = (msg) => {
-    const success = intl.formatMessage({
-      id: 'ui-erm-usage.report.upload.success',
-    });
+    const success = intl.formatMessage({ id: 'ui-erm-usage.report.upload.success' });
     callout.sendCallout({
       message: `${success} ${msg}`,
     });
@@ -104,9 +104,7 @@ const UDP = ({
   };
 
   const handleFail = (msg) => {
-    const failText = intl.formatMessage({
-      id: 'ui-erm-usage.report.upload.failed',
-    });
+    const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
     callout.sendCallout({
       type: 'error',
       message: `${failText} ${msg}`,
@@ -148,6 +146,28 @@ const UDP = ({
 
   const doCloseDeleteReports = () => {
     setShowDeleteReports(false);
+  };
+
+  const getConfirmationMessage = (udp) => {
+    const name = udp.label;
+    return (
+      <FormattedMessage
+        id="ui-erm-usage.form.delete.confirm.message"
+        values={{ name, strong: (chunks) => <strong>{chunks}</strong> }}
+      />
+    );
+  };
+
+  const beginDelete = () => {
+    setConfirmDelete(true);
+  };
+
+  const doConfirmDelete = (confirmation, usageDataProvider) => {
+    if (confirmation) {
+      handlers.onDelete(usageDataProvider.id);
+    } else {
+      setConfirmDelete(false);
+    }
   };
 
   const renderDetailMenu = (udp) => {
@@ -253,7 +273,6 @@ const UDP = ({
         </div>
         <div>
           <Button
-            aria-label="Edit usage data provider"
             buttonStyle="dropDownItem"
             id="clickable-refresh-statistics"
             marginBottom0
@@ -302,7 +321,6 @@ const UDP = ({
         <IfPermission perm="ui-erm-usage.reports.delete">
           <div>
             <Button
-              aria-label="Delete reports"
               buttonStyle="dropDownItem"
               id="clickable-delete-reports"
               marginBottom0
@@ -320,7 +338,6 @@ const UDP = ({
         {canEdit && (
           <div>
             <Button
-              aria-label="Edit usage data provider"
               buttonStyle="dropDownItem"
               id="clickable-edit-udp"
               marginBottom0
@@ -332,6 +349,21 @@ const UDP = ({
             </Button>
           </div>
         )}
+        <IfPermission perm="ui-erm-usage.udp.delete">
+          <Button
+            buttonStyle="dropDownItem"
+            id="clickable-delete-udp"
+            marginBottom0
+            onClick={() => {
+              onToggle();
+              beginDelete();
+            }}
+          >
+            <Icon icon="trash">
+              <FormattedMessage id="ui-erm-usage.general.delete" />
+            </Icon>
+          </Button>
+        </IfPermission>
       </>
     );
   };
@@ -366,7 +398,7 @@ const UDP = ({
     <PaneHeader
       dismissible
       onClose={handlers.onClose}
-      paneTitle={<span data-test-collection-header-title>loading</span>}
+      paneTitle="loading"
     />
   );
 
@@ -438,7 +470,7 @@ const UDP = ({
       dismissible
       lastMenu={renderDetailMenu(usageDataProvider)}
       onClose={handlers.onClose}
-      paneTitle={<span data-test-header-title>{label}</span>}
+      paneTitle={label}
     />
   );
 
@@ -487,9 +519,7 @@ const UDP = ({
               <AccordionSet initialStatus={getInitialAccordionsState()}>
                 <Accordion
                   id="harvestingAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
                 >
                   <HarvestingConfigurationView
                     harvesterImpls={data.harvesterImpls}
@@ -501,9 +531,7 @@ const UDP = ({
                 <Pluggable data={{ op: 'match-names', data }} type="ui-agreements-extension" />
                 <Accordion
                   id="counterStatisticsAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.counterStatistics" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
                 >
                   {getCounterStatistics(
                     counterReportsByRelease,
@@ -514,9 +542,7 @@ const UDP = ({
                 </Accordion>
                 <Accordion
                   id="nonCounterStatisticsAccordion"
-                  label={
-                    <FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />
-                  }
+                  label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
                 >
                   {getCustomStatistics(label, providerId)}
                 </Accordion>
@@ -569,6 +595,20 @@ const UDP = ({
               callout = ref;
             }}
           />
+          <ConfirmationModal
+            buttonStyle="danger"
+            confirmLabel={<FormattedMessage id="ui-erm-usage.general.delete" />}
+            heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
+            id="delete-udp-confirmation"
+            message={getConfirmationMessage(usageDataProvider)}
+            onCancel={() => {
+              doConfirmDelete(false, null);
+            }}
+            onConfirm={() => {
+              doConfirmDelete(true, usageDataProvider);
+            }}
+            open={confirmDelete}
+          />
         </>
       </HasCommand>
     );
@@ -588,6 +628,7 @@ UDP.propTypes = {
   }).isRequired,
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     onEdit: PropTypes.func,
   }).isRequired,
   intl: PropTypes.object,

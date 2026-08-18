@@ -200,27 +200,13 @@ const JobsView = ({ source, filterGroups }) => {
             <MultiColumnList
               autoSize
               columnMapping={{
-                providerId: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.column.provider',
-                }),
-                type: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.column.type',
-                }),
-                startedAt: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.column.start',
-                }),
-                finishedAt: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.column.finish',
-                }),
-                duration: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.column.duration',
-                }),
-                status: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.filter.status',
-                }),
-                result: formatMessage({
-                  id: 'ui-erm-usage.harvester.jobs.filter.result',
-                }),
+                providerId: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.provider' }),
+                type: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.type' }),
+                startedAt: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.start' }),
+                finishedAt: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.finish' }),
+                duration: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.duration' }),
+                status: formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.status' }),
+                result: formatMessage({ id: 'ui-erm-usage.harvester.jobs.filter.result' }),
               }}
               contentData={source.records() || []}
               formatter={resultsFormatter(formatMessage, stripes, source)}

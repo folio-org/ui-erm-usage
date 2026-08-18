@@ -1,11 +1,11 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
+import { NoPermissionMessage } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
-import extractHarvesterImpls from '../util/harvesterImpls';
 import urls from '../util/urls';
 
 const UDPEditRoute = ({
@@ -31,23 +31,17 @@ const UDPEditRoute = ({
     });
   };
 
-  const handleDelete = (id) => {
-    mutator.usageDataProvider.DELETE({ id }).then(() => {
-      history.push(`${urls.udps()}${location.search}`);
-    });
-  };
-
   const fetchIsPending = () => {
     return Object.values(resources)
       .filter((r) => r && r.resource !== 'usageDataProvider')
       .some((r) => r.isPending);
   };
 
-  const harvesterImpls = extractHarvesterImpls(resources);
+  const harvesterImpls = resources.harvesterImpls?.records || [];
   const aggregators = (resources.aggregators || {}).records || [];
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 
-  if (!hasPerms) return <div>No Permission</div>;
+  if (!hasPerms) return <NoPermissionMessage />;
 
   if (fetchIsPending()) {
     return <LoadingPane onClose={handleClose} />;
@@ -62,7 +56,6 @@ const UDPEditRoute = ({
       handlers={{
         ...handlers,
         onClose: handleClose,
-        onDelete: handleDelete,
       }}
       initialValues={udp}
       isLoading={fetchIsPending()}
@@ -107,7 +100,6 @@ UDPEditRoute.propTypes = {
     aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProvider: PropTypes.shape({
-      DELETE: PropTypes.func.isRequired,
       POST: PropTypes.func.isRequired,
       PUT: PropTypes.func.isRequired,
     }).isRequired,

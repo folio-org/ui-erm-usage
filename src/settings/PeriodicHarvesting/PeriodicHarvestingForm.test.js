@@ -54,7 +54,23 @@ describe('PeriodicHarvestingForm', () => {
     expect(screen.getByRole('button', { name: 'Delete' })).toBeDisabled();
 
     await userEvent.click(screen.getByText('Save'));
-    expect(screen.queryAllByText('Required')).toHaveLength(2);
+    expect(screen.getByText('Please enter a valid date')).toBeInTheDocument();
+    expect(screen.getByText('Required')).toBeInTheDocument();
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  test('test invalid date', async () => {
+    onSubmit.mockClear();
+    renderPeriodicHarvestingForm(stripes);
+
+    await userEvent.type(
+      screen.getByLabelText('Start date', { exact: false }),
+      '2026-10-77'
+    );
+    await userEvent.type(screen.getByText('Start time', { exact: false }), '5:01 AM');
+    await userEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(screen.getByText('Please enter a valid date')).toBeInTheDocument();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
@@ -72,6 +88,7 @@ describe('PeriodicHarvestingForm', () => {
 
     await userEvent.click(screen.getByText('Save'));
     expect(screen.queryByText('Required')).not.toBeInTheDocument();
+    expect(screen.queryByText('Please enter a valid date')).not.toBeInTheDocument();
     expect(onSubmit).toHaveBeenCalled();
   });
 

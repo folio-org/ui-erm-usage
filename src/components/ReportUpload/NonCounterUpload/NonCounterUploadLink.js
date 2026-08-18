@@ -15,7 +15,7 @@ import { isValidUrl } from '../../../util/validate';
 function NonCounterUploadLink({ linkUrl, onChangeLinkUrl }) {
   return (
     <Col md={12} xs={12}>
-      <Row data-test-report-link-url>
+      <Row>
         <TextField
           error={isValidUrl(linkUrl) ? '' : <FormattedMessage id="ui-erm-usage.errors.enterValidUrl" />}
           id="custom-report-link-url"

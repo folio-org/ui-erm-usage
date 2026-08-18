@@ -22,7 +22,10 @@ import stripesFinalForm from '@folio/stripes/final-form';
 
 import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 import { formatDateTime } from '../../util/dateTimeProcessing';
-import { required } from '../../util/validate';
+import {
+  required,
+  requiredValidDate,
+} from '../../util/validate';
 
 const PeriodicHarvestingForm = ({
   handleSubmit,
@@ -53,13 +56,12 @@ const PeriodicHarvestingForm = ({
         <Row>
           <Col xs={8}>
             <Field
-              aria-label={intl.formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.start.date' })}
               component={Datepicker}
               id="periodic-harvesting-start"
               label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.start.date" />}
               name="date"
               outputFormatter={({ value }) => value}
-              validate={required}
+              validate={requiredValidDate}
             />
           </Col>
         </Row>

@@ -324,7 +324,7 @@
     "counter.upload.error.UNSUPPORTED_REPORT_TYPE": "The report type is not supported.",
     "counter.upload.error.OTHER": "The report could not be processed.",
     "general.moreInformation": "More information",
-    "report.upload.modal.label.failed": "File upload failed",
+    "report.upload.modal.label.failed": "ファイルのアップロードに失敗しました",
     "report.upload.selectAnotherFile": "Select another file to upload",
     "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
     "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."

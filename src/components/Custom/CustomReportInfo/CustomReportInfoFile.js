@@ -32,9 +32,7 @@ function CustomReportInfoFile(props) {
       </ReportInfoHeader>
       <MenuSection
         id="menu-actions"
-        label={intl.formatMessage({
-          id: 'ui-erm-usage.general.actions',
-        })}
+        label={intl.formatMessage({ id: 'ui-erm-usage.general.actions' })}
         labelTag="h3"
       >
         <Button

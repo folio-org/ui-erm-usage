@@ -8,6 +8,13 @@ const required = value => {
 
 const notRequired = () => undefined;
 
+// the Datepicker commits an unparseable entry as an empty value,
+// so this single message covers both the empty and the invalid case
+const requiredValidDate = value => {
+  if (value) return undefined;
+  return <FormattedMessage id="ui-erm-usage.errors.enterValidDate" />;
+};
+
 const requiredArray = value => {
   if (value && value.length > 0) return undefined;
   return <FormattedMessage id="ui-erm-usage.errors.required" />;
@@ -94,6 +101,7 @@ export {
   notRequired,
   required,
   requiredArray,
+  requiredValidDate,
   yearMonth,
   requiredValidateUrl,
 };

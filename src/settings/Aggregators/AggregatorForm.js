@@ -13,7 +13,6 @@ import {
   AccordionSet,
   Button,
   Col,
-  ConfirmationModal,
   ExpandAllButton,
   Icon,
   IconButton,
@@ -26,7 +25,6 @@ import {
   Select,
   TextField,
 } from '@folio/stripes/components';
-import { IfPermission } from '@folio/stripes/core';
 import stripesFinalForm from '@folio/stripes/final-form';
 
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
@@ -60,15 +58,11 @@ const AggregatorForm = ({
   invalid,
   handleSubmit,
   onCancel,
-  onRemove,
   pristine,
   submitting,
   values,
   aggregators,
 }) => {
-  const aggregator = initialValues || {};
-
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
     generalSection: true,
     aggregatorConfig: true,
@@ -91,49 +85,15 @@ const AggregatorForm = ({
     }
   };
 
-  const beginDelete = () => {
-    setConfirmDelete(true);
-  };
-
-  const doConfirmDelete = (confirmation) => {
-    if (confirmation) {
-      onRemove(initialValues);
-    } else {
-      setConfirmDelete(false);
-    }
-  };
-
   const getFirstMenu = () => {
     return (
       <PaneMenu>
         <IconButton
-          aria-label="Cancel"
+          aria-label={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.close' })}
           icon="times"
-          id="clickable-close-service-point"
+          id="clickable-close-aggregator-x"
           onClick={onCancel}
         />
-      </PaneMenu>
-    );
-  };
-
-  const getLastMenu = () => {
-    const edit = initialValues?.id;
-
-    return (
-      <PaneMenu>
-        {edit && (
-          <IfPermission perm="ui-erm-usage.generalSettings.manage">
-            <Button
-              buttonStyle="danger"
-              disabled={confirmDelete}
-              id="clickable-delete-aggregator"
-              marginBottom0
-              onClick={beginDelete}
-            >
-              <FormattedMessage id="ui-erm-usage.general.delete" />
-            </Button>
-          </IfPermission>
-        )}
       </PaneMenu>
     );
   };
@@ -148,7 +108,7 @@ const AggregatorForm = ({
         marginBottom0
         onClick={onCancel}
       >
-        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
       </Button>
     );
 
@@ -196,23 +156,14 @@ const AggregatorForm = ({
   const renderPaneHeader = () => (
     <PaneHeader
       firstMenu={getFirstMenu()}
-      lastMenu={getLastMenu()}
       paneTitle={renderPaneTitle()}
     />
   );
 
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
-  const name = aggregator.label || '';
 
   const configType = getSelectedConfigType();
   const configTypeIsMail = configType === 'Mail';
-
-  const confirmationMessage = (
-    <FormattedMessage
-      id="ui-erm-usage.form.delete.confirm.message"
-      values={{ name }}
-    />
-  );
 
   return (
     <form
@@ -261,9 +212,7 @@ const AggregatorForm = ({
                       id="input-aggregator-service-type"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}
                       name="serviceType"
-                      placeholder={intl.formatMessage({
-                        id: 'ui-erm-usage.aggregator.form.placeholder.serviceType',
-                      })}
+                      placeholder={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.placeholder.serviceType' })}
                       required
                       validate={required}
                     />
@@ -274,6 +223,7 @@ const AggregatorForm = ({
                       id="input-aggregator-service-url"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceUrl" />}
                       name="serviceUrl"
+                      parse={value => value?.trim()}
                       required
                       validate={required}
                     />
@@ -306,9 +256,7 @@ const AggregatorForm = ({
                       id="input-aggregator-account-type"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.config.accountConfig.type" />}
                       name="accountConfig.configType"
-                      placeholder={intl.formatMessage({
-                        id: 'ui-erm-usage.aggregator.form.placeholder.configType',
-                      })}
+                      placeholder={intl.formatMessage({ id: 'ui-erm-usage.aggregator.form.placeholder.configType' })}
                       required
                       validate={required}
                     />
@@ -327,19 +275,6 @@ const AggregatorForm = ({
                 </Row>
               </Accordion>
             </AccordionSet>
-
-            <ConfirmationModal
-              heading={<FormattedMessage id="ui-erm-usage.aggregator.form.delete.confirm.title" />}
-              id="deleteaggregator-confirmation"
-              message={confirmationMessage}
-              onCancel={() => {
-                doConfirmDelete(false);
-              }}
-              onConfirm={() => {
-                doConfirmDelete(true);
-              }}
-              open={confirmDelete}
-            />
           </div>
         </Pane>
       </Paneset>
@@ -354,10 +289,8 @@ AggregatorForm.propTypes = {
   intl: PropTypes.object,
   invalid: PropTypes.bool,
   onCancel: PropTypes.func,
-  onRemove: PropTypes.func,
   pristine: PropTypes.bool,
   stripes: PropTypes.shape({
-    connect: PropTypes.func.isRequired,
     hasPerm: PropTypes.func.isRequired,
   }).isRequired,
   submitting: PropTypes.bool,

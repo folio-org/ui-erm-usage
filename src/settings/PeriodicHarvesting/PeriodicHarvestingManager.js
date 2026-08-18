@@ -97,14 +97,17 @@ const PeriodicHarvestingManager = () => {
         <PaneMenu>
           {isEditing ? (
             <IconButton
-              aria-label="End Edit Config"
+              aria-label={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.form.close' })}
               icon="times"
               id="clickable-close-edit-config"
               onClick={() => setConfirming(true)}
             />
           ) : (
             <IconButton
-              aria-label="Start Edit Config"
+              aria-label={formatMessage(
+                { id: 'ui-erm-usage.settings.harvester.config.periodic.form.open' },
+                { mode: isEmpty(config) ? 'add' : 'edit' }
+              )}
               icon={getEditIcon()}
               id="clickable-open-edit-config"
               onClick={() => setIsEditing(true)}
@@ -147,9 +150,7 @@ const PeriodicHarvestingManager = () => {
         cancelLabel={formatMessage({ id: 'ui-erm-usage.general.closeWithoutSave' })}
         confirmLabel={formatMessage({ id: 'ui-erm-usage.general.keepEditing' })}
         heading={formatMessage({ id: 'ui-erm-usage.general.pleaseConfirm' })}
-        message={formatMessage({
-          id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel',
-        })}
+        message={formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.edit.cancel' })}
         onCancel={() => {
           setIsEditing(false);
           setConfirming(false);

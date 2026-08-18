@@ -63,7 +63,7 @@ describe('InfoButton', () => {
   test('has no permission', async () => {
     stripes.hasPerm = () => false;
     renderInfoButton(stripes);
-    const iconButton = screen.getByRole('button', { name: /report 2020 foo/ });
+    const iconButton = screen.getByRole('button', { name: /report 2020 - foo/ });
     await userEvent.click(iconButton);
     expect(screen.queryByText('Delete custom report')).not.toBeInTheDocument();
   });
@@ -71,7 +71,7 @@ describe('InfoButton', () => {
   test('renders report info', async () => {
     stripes.hasPerm = () => true;
     renderInfoButton(stripes);
-    const iconButton = screen.getByRole('button', { name: /report 2020 foo/ });
+    const iconButton = screen.getByRole('button', { name: /report 2020 - foo/ });
     await userEvent.click(iconButton);
     expect(screen.getByText('American Chemical Society')).toBeVisible();
 

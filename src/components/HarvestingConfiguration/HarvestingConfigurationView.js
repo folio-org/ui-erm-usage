@@ -16,7 +16,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import reportReleaseOptions from '../../util/data/reportReleaseOptions';
+import extractHarvesterImpls from '../../util/harvesterImpls';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
@@ -46,7 +46,7 @@ const HarvestingConfigurationView = ({
     } else {
       return (
         <VendorInfoView
-          harvesterImpls={harvesterImpls}
+          harvesterImpls={extractHarvesterImpls(harvesterImpls)}
           usageDataProvider={udp}
         />
       );
@@ -62,10 +62,7 @@ const HarvestingConfigurationView = ({
   }
 
   const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-  const reportRelease = reportReleaseOptions.find(
-    (e) => e.value === counterVersion
-  );
-  const reportReleaseLabel = reportRelease?.label ?? <NoValue />;
+  const reportReleaseLabel = counterVersion ? `Counter ${counterVersion}` : <NoValue />;
 
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
   const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;

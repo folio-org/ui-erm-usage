@@ -42,9 +42,7 @@ const JobsFilter = (props) => {
         displayClearButton={groupFilters.length > 0}
         header={FilterAccordionHeader}
         id={`filter-accordion-${key}`}
-        label={
-          <FormattedMessage id={`ui-erm-usage.harvester.jobs.filter.${key}`} />
-        }
+        label={<FormattedMessage id={`ui-erm-usage.harvester.jobs.filter.${key}`} />}
         onClearFilter={() => {
           props.getFilterHandlers().clearGroup(key);
         }}

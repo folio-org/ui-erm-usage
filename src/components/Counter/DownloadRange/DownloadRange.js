@@ -100,13 +100,10 @@ const DownloadRange = ({
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.end' })}
                 />
               </Col>
-              <Col xs={4}>
-                <></>
-              </Col>
             </Row>
             <Row>
               <Col xs={4}>
-                <FormattedMessage id="ui-erm-usage.reportOverview.downloadMultiMonths.reportType">
+                <FormattedMessage id="ui-erm-usage.reportOverview.reportType">
                   {(label) => (
                     <Select
                       dataOptions={downloadableReports}

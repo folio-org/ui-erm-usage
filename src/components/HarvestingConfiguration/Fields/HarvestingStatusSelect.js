@@ -16,7 +16,7 @@ const HarvestingStatusSelect = ({ disabled }) => {
       disabled={disabled}
       fullWidth
       id="addudp_harvestingstatus"
-      label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.harvestingStatus" />}
+      label={<FormattedMessage id="ui-erm-usage.information.harvestingStatus" />}
       name="harvestingConfig.harvestingStatus"
       required
       validate={required}

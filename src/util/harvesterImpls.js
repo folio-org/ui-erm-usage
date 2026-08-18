@@ -1,5 +1,4 @@
-const extractHarvesterImpls = (resources) => {
-  const records = resources.harvesterImpls?.records || [];
+const extractHarvesterImpls = (records) => {
   const implementations = records.length
     ? records[0].implementations
     : [];

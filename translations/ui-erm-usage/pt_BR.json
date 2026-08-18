@@ -158,7 +158,7 @@
     "settings.harvester": "Harvester",
     "settings.section.display.settings": "Configurações de exibição",
     "settings.section.number.failed": "Número de tentativas fracassadas",
-    "settings.harvester.start.tenant": "Iniciar o harvesting para o locatário atual:",
+    "settings.harvester.start.tenant": "Iniciar o harvesting para o inquilino atual:",
     "settings.harvester.config": "Configuração do harvester",
     "settings.credentials.download": "Baixar credenciais",
     "settings.credentials.download.csv": "Baixar como CSV",
@@ -250,7 +250,7 @@
     "harvester.jobs.filter.type.tenant": "Locatário",
     "harvester.jobs.filter.type.provider": "Fornecedor",
     "harvester.jobs.refresh": "Atualizar",
-    "harvester.jobs.column.provider": "Provedor / Locatário",
+    "harvester.jobs.column.provider": "Provedor / Inquilino",
     "harvester.jobs.column.type": "Tipo",
     "harvester.jobs.column.start": "Iniciar",
     "harvester.jobs.column.finish": "Finalizar",
@@ -327,5 +327,5 @@
     "report.upload.modal.label.failed": "Falha no envio do arquivo",
     "report.upload.selectAnotherFile": "Selecione outro arquivo para carregar",
     "vendorInfo.serviceUrl.info": "A URL geralmente está listada nas páginas de informações do painel administrativo do provedor.",
-    "vendorInfo.serviceUrl.note": "Observação: Insira apenas a URL base, não a URL completa. Por exemplo, se o provedor listar a URL {urlSushiReport}. insira apenas a parte anterior (e excluindo) aos relatórios: {urlSushi}. Tudo o resto é adicionado pela colheitadeira."
+    "vendorInfo.serviceUrl.note": "Observação: Insira apenas a URL base, não a URL completa. Por exemplo, se o provedor listar a URL {urlSushiReport}. insira apenas a parte anterior (e excluindo) aos relatórios: {urlSushi}. Tudo o resto é adicionado pela serviço de coleta."
 }

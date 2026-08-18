@@ -1,6 +1,20 @@
 # Change history for ui-erm-usage
 
-## 12.0.0 (IN PROGRESS)
+## 12.1.0 (IN PROGRESS)
+* Use NoPermissionMessage from stripes-leipzig-components ([UIEUS-517](https://folio-org.atlassian.net/browse/UIEUS-517))
+* Replace hardcoded report release and report type mappings with backend /impl data and remove report release dropdown ([UIEUS-510](https://folio-org.atlassian.net/browse/UIEUS-510))
+* Replace `moment-timezone` with dayjs and `Intl.DateTimeFormat` in date/time utilities ([UIEUS-521](https://folio-org.atlassian.net/browse/UIEUS-521))
+* Service URL: Automatically remove whitespaces at the begin and the end ([UIEUS-519](https://folio-org.atlassian.net/browse/UIEUS-519))
+* Periodic harvesting: Show "Please enter a valid date" instead of "Required" for an invalid start date ([UIEUS-523](https://folio-org.atlassian.net/browse/UIEUS-523))
+* New position for the Delete button used to delete a UDP data record ([UIEUS-526](https://folio-org.atlassian.net/browse/UIEUS-526))
+* New position for the Delete button used to delete an aggregator record in the settings ([UIEUS-527](https://folio-org.atlassian.net/browse/UIEUS-527))
+* Rename "+ Add Contact" to "Add Contact". ([UIEUS-535](https://folio-org.atlassian.net/browse/UIEUS-535))
+* Improve aria-labels ([UIEUS-528](https://folio-org.atlassian.net/browse/UIEUS-528))
+* Clean up redundancies in translation file ([UIEUS-538](https://folio-org.atlassian.net/browse/UIEUS-538))
+* Remove test selectors ([UIEUS-542](https://folio-org.atlassian.net/browse/UIEUS-542))
+* Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
+
+## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
 * NFR: Improvement of the report info when HTTP status codes occured ([UIEUS-367](https://folio-org.atlassian.net/browse/UIEUS-367))
 * *BREAKING* Migrate settings from `mod-configuration` to `mod-settings` ([UIEUS-387](https://folio-org.atlassian.net/browse/UIEUS-387))

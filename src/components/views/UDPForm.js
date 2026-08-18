@@ -7,7 +7,6 @@ import {
   AccordionSet,
   Button,
   Col,
-  ConfirmationModal,
   ExpandAllButton,
   expandAllFunction,
   HasCommand,
@@ -19,7 +18,6 @@ import {
   Paneset,
   Row,
 } from '@folio/stripes/components';
-import { IfPermission } from '@folio/stripes/core';
 import stripesFinalForm from '@folio/stripes/final-form';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 
@@ -39,7 +37,6 @@ const UDPForm = ({
   submitting,
   values,
 }) => {
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [sections, setSections] = useState({
     editUDPInfo: true,
     editHarvestingConfig: true,
@@ -84,18 +81,6 @@ const UDPForm = ({
     },
   ];
 
-  const beginDelete = () => {
-    setConfirmDelete(true);
-  };
-
-  const doConfirmDelete = (confirmation) => {
-    if (confirmation) {
-      handlers.onDelete(initialValues.id);
-    } else {
-      setConfirmDelete(false);
-    }
-  };
-
   const renderFirstMenu = () => {
     return (
       <PaneMenu>
@@ -113,48 +98,23 @@ const UDPForm = ({
     );
   };
 
-  const renderLastMenu = () => {
-    const isEditing = initialValues?.id;
-
-    return (
-      <PaneMenu>
-        {isEditing && (
-          <IfPermission perm="ui-erm-usage.udp.delete">
-            <Button
-              buttonStyle="danger"
-              disabled={confirmDelete}
-              id="clickable-delete-udp"
-              marginBottom0
-              onClick={beginDelete}
-              title={<FormattedMessage id="ui-erm-usage.general.delete" />}
-            >
-              <FormattedMessage id="ui-erm-usage.general.delete" />
-            </Button>
-          </IfPermission>
-        )}
-      </PaneMenu>
-    );
-  };
-
   const renderPaneFooter = () => {
     const disabled = pristine || submitting;
 
     const startButton = (
       <Button
         buttonStyle="default mega"
-        data-test-udp-form-cancel-button
         id="clickable-close-udp-form"
         marginBottom0
         onClick={handlers.onClose}
       >
-        <FormattedMessage id="ui-erm-usage.udp.form.cancel" />
+        <FormattedMessage id="ui-erm-usage.general.cancel" />
       </Button>
     );
 
     const endButton = (
       <Button
         buttonStyle="primary mega"
-        data-test-udp-form-submit-button
         disabled={disabled}
         id="clickable-createnewudp"
         marginBottom0
@@ -180,31 +140,17 @@ const UDPForm = ({
     });
   };
 
-  const getConfirmationMessage = (udp) => {
-    const name = udp.label || '';
-    return (
-      <FormattedMessage
-        id="ui-erm-usage.form.delete.confirm.message"
-        values={{ name }}
-      />
-    );
-  };
-
   const renderFormPaneHeader = () => (
     <PaneHeader
       firstMenu={renderFirstMenu()}
-      lastMenu={renderLastMenu()}
       paneTitle={initialValues.id ? initialValues.label : <FormattedMessage id="ui-erm-usage.udp.form.createUDP" />}
     />
   );
-
-  const udp = initialValues || {};
 
   return (
     <HasCommand commands={shortcuts}>
       <form
         className={css.UDPFormRoot}
-        data-test-form-page
         id="form-udp"
         onSubmit={handleSubmit}
       >
@@ -241,25 +187,10 @@ const UDPForm = ({
                   expanded={sections.editHarvestingConfig}
                   form={form}
                   harvesterImplementations={data.harvesterImpls}
-                  initialValues={initialValues}
                   onToggle={handleSectionToggle}
                   values={values}
                 />
               </AccordionSet>
-              <ConfirmationModal
-                heading={
-                  <FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />
-                }
-                id="delete-udp-confirmation"
-                message={getConfirmationMessage(udp)}
-                onCancel={() => {
-                  doConfirmDelete(false);
-                }}
-                onConfirm={() => {
-                  doConfirmDelete(true);
-                }}
-                open={confirmDelete}
-              />
             </div>
           </Pane>
         </Paneset>
@@ -283,7 +214,6 @@ UDPForm.propTypes = {
   }),
   handlers: PropTypes.shape({
     onClose: PropTypes.func.isRequired,
-    onDelete: PropTypes.func,
   }),
   handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.shape({

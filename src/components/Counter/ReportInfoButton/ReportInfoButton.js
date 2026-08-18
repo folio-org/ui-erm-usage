@@ -94,9 +94,7 @@ const ReportInfoButton = ({
       .DELETE({ id: report.id })
       .then(() => {})
       .catch((err) => {
-        const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
-        });
+        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
         const infoText = failText + ' ' + err.message;
         log('Delete of counter report failed: ' + infoText);
       });
@@ -121,15 +119,11 @@ const ReportInfoButton = ({
   const confirmMessage = (
     <>
       <span>
-        {intl.formatMessage({
-          id: 'ui-erm-usage.statistics.delete',
-        })}
+        {intl.formatMessage({ id: 'ui-erm-usage.statistics.delete' })}
         <br />
       </span>
       <span>
-        {`${intl.formatMessage({
-          id: 'ui-erm-usage.reportOverview.reportType',
-        })}:
+        {`${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportType' })}:
           ${report.reportName} --
           ${intl.formatMessage({ id: 'ui-erm-usage.reportOverview.reportDate' })}:
           ${report.yearMonth}`}
@@ -142,14 +136,17 @@ const ReportInfoButton = ({
   const failedInfo = report.failedAttempts
     ? intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.error' })
     : intl.formatMessage({ id: 'ui-erm-usage.statistics.harvesting.success' });
-  const label = `Open report info for report ${report.reportName} at year month ${report.yearMonth}. ${failedInfo}`;
+  const label = `${intl.formatMessage(
+    { id: 'ui-erm-usage.reportOverview.openCounterReport' },
+    { reportName: report.reportName, yearMonth: report.yearMonth }
+  )} ${failedInfo}`;
   const reportInfoClassName = report.failedAttempts
     ? 'report-info-failed'
     : 'report-info-valid';
 
   const footer = (
     <Button id="close-report-info-button" onClick={handleClose}>
-      Close
+      <FormattedMessage id="ui-erm-usage.general.close" />
     </Button>
   );
 
@@ -161,7 +158,6 @@ const ReportInfoButton = ({
         bottomMargin0
         buttonClass={buttonClass}
         buttonStyle={buttonStyle}
-        data-testid={buttonId}
         id={buttonId}
         onClick={() => setShowDropDown(curState => !curState)}
       >
@@ -169,7 +165,6 @@ const ReportInfoButton = ({
       </Button>
       <Modal
         closeOnBackgroundClick
-        data-test-counter-report-info
         footer={footer}
         id={dropdownId}
         label="Report info"
@@ -187,12 +182,8 @@ const ReportInfoButton = ({
         </div>
       </Modal>
       <ConfirmationModal
-        cancelLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.no',
-        })}
-        confirmLabel={intl.formatMessage({
-          id: 'ui-erm-usage.general.yes',
-        })}
+        cancelLabel={intl.formatMessage({ id: 'ui-erm-usage.general.no' })}
+        confirmLabel={intl.formatMessage({ id: 'ui-erm-usage.general.yes' })}
         heading={<FormattedMessage id="ui-erm-usage.reportOverview.confirmDeleteReport" />}
         message={confirmMessage}
         onCancel={hideConfirm}

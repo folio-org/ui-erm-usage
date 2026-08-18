@@ -99,7 +99,7 @@ describe('rerender result list', () => {
   describe('trigger search with loading new results', () => {
     it('should set the focus to the result list', async () => {
       renderWithIntlResult = renderUDPs(stripes, sourcePending, udps);
-      expect(document.querySelector('#paneHeaderpane-list-udps')).toBeInTheDocument();
+      expect(screen.getByRole('region', { name: /Usage data providers/ })).toBeInTheDocument();
 
       const searchFieldInput = document.querySelector('#input-udp-search');
       await userEvent.type(searchFieldInput, 'American');
@@ -118,10 +118,10 @@ describe('rerender result list', () => {
       expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(1);
       expect(screen.getByText('American Chemical Society')).toBeInTheDocument();
       expect(screen.getByText('5.0, 4')).toBeInTheDocument();
-      expect(document.querySelector('[data-test-pane-header]')).toBeInTheDocument();
+      expect(screen.getByRole('region', { name: /Usage data providers/ })).toBeInTheDocument();
 
       expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
-      expect(document.querySelector('#paneHeaderpane-list-udps')).toHaveFocus();
+      expect(screen.getByRole('region', { name: /Usage data providers/ })).toHaveFocus();
     });
   });
 });
@@ -289,6 +289,6 @@ describe('UDPs SASQ View - Without results', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
     expect(document.querySelectorAll('#list-udps .mclRowContainer > [role=row]').length).toEqual(0);
-    expect(document.querySelector('[data-test-pane-header]')).not.toHaveFocus();
+    expect(screen.getByRole('region', { name: /Usage data providers/ })).not.toHaveFocus();
   });
 });

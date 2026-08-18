@@ -24,14 +24,12 @@ function AggregatorConfigForm({ stripes }) {
           <InfoPopover
             content={`${intl.formatMessage({
               id: 'ui-erm-usage.aggregator.config.popover',
-            })} apiKey, requestorId, customerId, reportRelease`}
+            })} apiKey, requestorId, customerId`}
           />
           <Row>
             <Col xs={8}>
               <RepeatableField
-                addLabel={intl.formatMessage({
-                  id: 'ui-erm-usage.aggregator.config.addParam',
-                })}
+                addLabel={intl.formatMessage({ id: 'ui-erm-usage.aggregator.config.addParam' })}
                 fields={fields.value || []}
                 id="add-agg-config-param"
                 onAdd={() => fields.push({ key: '', value: '', isInitial: false })}

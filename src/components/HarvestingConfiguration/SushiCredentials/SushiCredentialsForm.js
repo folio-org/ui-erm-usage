@@ -33,9 +33,7 @@ const SushiCredentialsForm = (props) => {
             id="addudp_customerid"
             label={<FormattedMessage id="ui-erm-usage.credentials.customerId" />}
             name="sushiCredentials.customerId"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.customerId',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.customerId' })}
             required={!useAggregator && props.required}
             validate={!useAggregator && props.required ? required : notRequired}
           />
@@ -50,9 +48,7 @@ const SushiCredentialsForm = (props) => {
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
             }}
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.requestorId',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.requestorId' })}
           />
         </Col>
         <Col xs={4}>
@@ -66,9 +62,7 @@ const SushiCredentialsForm = (props) => {
             onChange={(e) => {
               form.change(e.target.name, e.target.value);
             }}
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.apiKey',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.apiKey' })}
           />
         </Col>
       </Row>
@@ -80,9 +74,7 @@ const SushiCredentialsForm = (props) => {
             id="addudp_platform"
             label={<FormattedMessage id="ui-erm-usage.credentials.platform" />}
             name="sushiCredentials.platform"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.platform',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.platform' })}
           />
         </Col>
         <Col xs={4}>
@@ -90,13 +82,9 @@ const SushiCredentialsForm = (props) => {
             component={TextField}
             fullWidth
             id="addudp_reqname"
-            label={
-              <FormattedMessage id="ui-erm-usage.credentials.requestorName" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorName" />}
             name="sushiCredentials.requestorName"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.requestorName',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.requestorName' })}
           />
         </Col>
         <Col xs={4}>
@@ -104,13 +92,9 @@ const SushiCredentialsForm = (props) => {
             component={TextField}
             fullWidth
             id="addudp_requestormail"
-            label={
-              <FormattedMessage id="ui-erm-usage.credentials.requestorMail" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.credentials.requestorMail" />}
             name="sushiCredentials.requestorMail"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.requestorMail',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.requestorMail' })}
           />
         </Col>
       </Row>

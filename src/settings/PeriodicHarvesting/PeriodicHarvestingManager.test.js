@@ -170,7 +170,7 @@ describe('PeriodicHarvestingManager', () => {
     expect(screen.getByRole('heading', { name: 'Please confirm!' })).toBeVisible();
 
     // click close
-    await userEvent.click(screen.getByRole('button', { name: /close/i }));
+    await userEvent.click(screen.getByRole('button', { name: 'Close without saving' }));
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /config/i })).toHaveAttribute('icon', 'plus-sign');
     });

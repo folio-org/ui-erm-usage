@@ -42,7 +42,6 @@
     "final-form": "^4.18.7",
     "final-form-arrays": "^3.0.2",
     "lodash": "^4.17.4",
-    "moment-timezone": "^0.5.14",
     "prop-types": "^15.6.0",
     "react-dropzone": "^10.2.2",
     "react-final-form": "^6.3.5",
@@ -74,7 +73,7 @@
       "usage-data-providers": "3.1",
       "settings": "1.2",
       "tags": "1.0",
-      "erm-usage-harvester": "2.0"
+      "erm-usage-harvester": "2.1"
     },
     "stripesDeps": [
       "@folio/stripes-leipzig-components"

@@ -69,17 +69,13 @@ function NonCounterUploadInnerForm(props) {
           });
         } else {
           handleFail(
-            intl.formatMessage({
-              id: 'ui-erm-usage.report.upload.failed',
-            })
+            intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' })
           );
         }
       })
       .catch((err) => {
         setShowUploadModal(false);
-        const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.upload.failed',
-        });
+        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
         const infoText = `${failText} ${err.message}`;
         handleFail(infoText);
       });
@@ -99,16 +95,12 @@ function NonCounterUploadInnerForm(props) {
           mutators.setFileSize({}, null);
         } else {
           handleFail(
-            intl.formatMessage({
-              id: 'ui-erm-usage.report.delete.failed',
-            })
+            intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' })
           );
         }
       })
       .catch((err) => {
-        const failText = intl.formatMessage({
-          id: 'ui-erm-usage.report.delete.failed',
-        });
+        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
         const infoText = `${failText} ${err.message}`;
         handleFail(infoText);
       });
@@ -161,7 +153,6 @@ function NonCounterUploadInnerForm(props) {
             <Field
               autoFocus
               component={TextField}
-              data-test-custom-report-year
               id="custom-report-year"
               label={<FormattedMessage id="ui-erm-usage.general.year" />}
               name="year"
@@ -174,7 +165,6 @@ function NonCounterUploadInnerForm(props) {
           <Col xs={10}>
             <Field
               component={TextField}
-              data-test-custom-report-note
               id="custom-report-note"
               label={<FormattedMessage id="ui-erm-usage.general.note" />}
               name="note"
@@ -187,9 +177,7 @@ function NonCounterUploadInnerForm(props) {
               checked={useFile}
               id="custom-report-file-radio"
               inline
-              label={
-                <FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />
-                }
+              label={<FormattedMessage id="ui-erm-usage.statistics.custom.uploadFile" />}
               onChange={() => {
                 setUseFile(!useFile);
               }}
@@ -198,9 +186,7 @@ function NonCounterUploadInnerForm(props) {
               checked={!useFile}
               id="custom-report-link-radio"
               inline
-              label={
-                <FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />
-                }
+              label={<FormattedMessage id="ui-erm-usage.statistics.custom.linkFile" />}
               onChange={() => {
                 setUseFile(!useFile);
               }}

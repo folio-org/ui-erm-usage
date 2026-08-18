@@ -61,13 +61,9 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
             component={TextField}
             fullWidth
             id="addudp_providername"
-            label={
-              <FormattedMessage id="ui-erm-usage.information.providerName" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.information.providerName" />}
             name="label"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.udpName',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.udpName' })}
             required
             validate={required}
           />
@@ -77,13 +73,9 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
             component={TextField}
             fullWidth
             id="addudp_description"
-            label={
-              <FormattedMessage id="ui-erm-usage.general.description" />
-            }
+            label={<FormattedMessage id="ui-erm-usage.general.description" />}
             name="description"
-            placeholder={intl.formatMessage({
-              id: 'ui-erm-usage.udp.form.placeholder.udpDescription',
-            })}
+            placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.udpDescription' })}
           />
         </Col>
       </Row>

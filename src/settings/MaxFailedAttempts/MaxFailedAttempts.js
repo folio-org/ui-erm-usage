@@ -32,10 +32,7 @@ class MaxFailedAttempts extends React.Component {
 
   render() {
     return (
-      <div
-        data-test-settings-harvester-max-failed-attempts
-        style={{ flex: '0 0 50%', left: '0px' }}
-      >
+      <div style={{ flex: '0 0 50%', left: '0px' }}>
         <this.configManager
           configName={CONFIG_NAMES.MAX_FAILED_ATTEMPTS}
           formType={FORM_TYPE_FINAL_FORM}
@@ -43,7 +40,7 @@ class MaxFailedAttempts extends React.Component {
           label={<FormattedMessage id="ui-erm-usage.settings.harvester.config" />}
           scope={SCOPES.HARVESTER}
         >
-          <div data-test-settings-harvester-config>
+          <div>
             <Row>
               <Col xs={6}>
                 <Field

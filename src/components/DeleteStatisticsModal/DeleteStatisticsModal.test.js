@@ -26,6 +26,9 @@ const handlers = {
   onDownloadReportSingleMonthRaw,
 };
 
+// The monthly checkboxes have no label, but carry the report id as their value.
+const getReportCheckbox = (id) => screen.getAllByRole('checkbox').find((cb) => cb.value === id);
+
 const counterReports = [
   {
     year: '2019',
@@ -152,8 +155,8 @@ describe('DeleteStatisticsModal', () => {
     test('delete button is enabled after selecting two reports', async () => {
       const idReport1 = counterReports[0].stats[0]['01'].id;
       const idReport2 = counterReports[0].stats[0]['02'].id;
-      const checkBoxRepOne = screen.getByTestId(`checkbox-${idReport1}`);
-      const checkBoxRepTwo = screen.getByTestId(`checkbox-${idReport2}`);
+      const checkBoxRepOne = getReportCheckbox(idReport1);
+      const checkBoxRepTwo = getReportCheckbox(idReport2);
       await userEvent.click(checkBoxRepOne);
       await userEvent.click(checkBoxRepTwo);
       const submit = screen.getByRole('button', { name: 'Delete 2 reports' });
@@ -173,7 +176,7 @@ describe('DeleteStatisticsModal', () => {
       });
       await userEvent.click(expandAllButton);
       const idReport1 = counterReports[0].stats[0]['01'].id;
-      const checkBoxRepOne = screen.getByTestId(`checkbox-${idReport1}`);
+      const checkBoxRepOne = getReportCheckbox(idReport1);
       await userEvent.click(checkBoxRepOne);
       const submit = screen.getByRole('button', { name: 'Delete 1 report' });
       await userEvent.click(submit);
@@ -236,7 +239,7 @@ describe('DeleteStatisticsModal', () => {
       });
       await userEvent.click(expandAllButton);
       const idReport1 = counterReports[0].stats[0]['01'].id;
-      const checkBoxRepOne = screen.getByTestId(`checkbox-${idReport1}`);
+      const checkBoxRepOne = getReportCheckbox(idReport1);
       await userEvent.click(checkBoxRepOne);
       const cancel = screen.getByRole('button', {
         name: 'Cancel',
@@ -270,7 +273,7 @@ describe('DeleteStatisticsModal', () => {
       });
       await userEvent.click(expandAllButton);
 
-      const reportJanButton = screen.getByTestId('clickable-download-stats-by-id-DR-2019-01');
+      const reportJanButton = screen.getByRole('button', { name: /report DR at year month 2019-01/ });
       await userEvent.click(reportJanButton);
     });
 

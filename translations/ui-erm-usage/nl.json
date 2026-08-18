@@ -326,6 +326,6 @@
     "general.moreInformation": "Meer informatie",
     "report.upload.modal.label.failed": "Uploaden van bestand mislukt",
     "report.upload.selectAnotherFile": "Selecteer een ander bestand om te Uploaden",
-    "vendorInfo.serviceUrl.info": "The URL is usually listed on the provider’s backend information pages.",
-    "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester."
+    "vendorInfo.serviceUrl.info": "De URL wordt meestal vermeld op de backend informatiepagina's van de Leverancier.",
+    "vendorInfo.serviceUrl.note": "Opmerking: Voer alleen de basis URL in, niet de volledige URL. Als de provider bijvoorbeeld de URL {urlSushiReport}Voer alleen het gedeelte vóór (en exclusief) Rapporten in: {urlSushi}. Al het andere wordt toegevoegd door de Harvester."
 }

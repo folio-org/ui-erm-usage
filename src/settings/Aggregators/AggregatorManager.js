@@ -73,13 +73,11 @@ const AggregatorManager = ({
   }));
 
   return (
-    <div
-      data-test-aggregator-instances
-      style={{ flex: '0 0 50%', left: '0px' }}
-    >
+    <div style={{ flex: '0 0 50%', left: '0px' }}>
       <EntryManager
         aggregators={serviceTypes}
         detailComponent={AggregatorDetails}
+        enableDetailsActionMenu
         entryFormComponent={AggregatorForm}
         entryLabel={label}
         entryList={entryList}
