@@ -107,7 +107,7 @@ const resultsFormatter = (formatMessage, stripes, source) => {
   };
 };
 
-const JobsView = ({ source, filterGroups }) => {
+const JobsView = ({ source, filterGroups, onRefresh }) => {
   const { formatMessage } = useIntl();
   const stripes = useStripes();
   const history = useHistory();
@@ -156,7 +156,7 @@ const JobsView = ({ source, filterGroups }) => {
               buttonStyle="primary"
               marginBottom0
               onClick={() => {
-                source.mutator.timestamp.replace(Date.now());
+                onRefresh();
               }}
             >
               {formatMessage({ id: 'ui-erm-usage.harvester.jobs.refresh' })}
@@ -217,8 +217,8 @@ const JobsView = ({ source, filterGroups }) => {
                   : {};
               }}
               onNeedMoreData={() => {
-                if (source.totalCount() > source.records().length) {
-                  source.fetchMore(30);
+                if (source.hasMore()) {
+                  source.fetchMore();
                 }
               }}
               sortDirection={sortDirection}
@@ -244,6 +244,7 @@ const JobsView = ({ source, filterGroups }) => {
 
 JobsView.propTypes = {
   filterGroups: PropTypes.arrayOf(PropTypes.object),
+  onRefresh: PropTypes.func.isRequired,
   source: PropTypes.object,
 };
 

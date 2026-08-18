@@ -13,6 +13,7 @@
 * Clean up redundancies in translation file ([UIEUS-538](https://folio-org.atlassian.net/browse/UIEUS-538))
 * Remove test selectors ([UIEUS-542](https://folio-org.atlassian.net/browse/UIEUS-542))
 * Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
+* Fetch jobs with react-query so each visit gets fresh data ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
@@ -57,7 +58,6 @@
 * Add eslint rules ([UIEUS-502](https://folio-org.atlassian.net/browse/UIEUS-502))
 * UDP (Edit mode): Adding an info box to the Service URL field ([UIEUS-509](https://folio-org.atlassian.net/browse/UIEUS-509))
 * Fix stale permission references in permissionSets ([UIEUS-513](https://folio-org.atlassian.net/browse/UIEUS-513))
-* Fix jobs page not fetching fresh data on navigation ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
 
 ## [11.0.1](https://github.com/folio-org/ui-erm-usage/tree/v11.0.1) (2025-04-11)
 * Fix settings aggregator form ([UIEUS-411](https://folio-org.atlassian.net/browse/UIEUS-411))

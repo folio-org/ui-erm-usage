@@ -1,50 +1,69 @@
 import PropTypes from 'prop-types';
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { stripesConnect } from '@folio/stripes/core';
-import {
-  makeQueryFunction,
-  StripesConnectedSource,
-} from '@folio/stripes/smart-components';
+import { makeQueryFunction } from '@folio/stripes/smart-components';
 
 import JobsView from '../components/JobsView';
 import filterGroups from '../util/data/filterGroupsJobsView';
+import useJobs from '../util/hooks/useJobs';
 
-const JobsViewRoute = ({ resources, mutator, stripes }) => {
-  const [source] = useState(new StripesConnectedSource(
-    { resources, mutator },
-    stripes.logger,
-    'jobs'
-  ));
-  source.update({ resources, mutator }, 'jobs');
+const queryFn = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0);
 
-  // Update timestamp on mount to ensure fresh data on each navigation
-  useEffect(() => {
-    mutator.timestamp.replace(Date.now());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- mutator is stable, only run on mount
+const toCQL = (queryParams, logger) => {
+  const cql = queryFn(queryParams, {}, { query: queryParams }, logger);
 
-  return <JobsView filterGroups={filterGroups} source={source} />;
+  return cql
+    ? cql
+      .replace('status==', '')
+      .replace('"scheduled"', 'nextStart=""')
+      .replace('"running"', '(startedAt="" NOT finishedAt="")')
+      .replace('"finished"', 'finishedAt=""')
+    : cql;
 };
 
-const createCQL = () => {
-  return (queryParams, pathComponents, resourceValues, logger) => {
-    const queryFn = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0);
-    const tmp = queryFn(queryParams, pathComponents, resourceValues, logger);
-    return tmp
-      ? tmp
-        .replace('status==', '')
-        .replace('"scheduled"', 'nextStart=""')
-        .replace('"running"', '(startedAt="" NOT finishedAt="")')
-        .replace('"finished"', 'finishedAt=""')
-      : tmp;
+const JobsViewRoute = ({ resources, stripes }) => {
+  const location = useLocation();
+  const [createdBefore, setCreatedBefore] = useState(() => Date.now());
+
+  // Not the `query` resource: stripes-core mirrors location into it a render late, so a
+  // fetch keyed off the mirror runs once under the previous filters first.
+  const queryParams = Object.fromEntries(new URLSearchParams(location.search));
+
+  const {
+    fetchMore,
+    hasMore,
+    isFetching,
+    isSuccess,
+    jobs,
+    totalRecords,
+  } = useJobs({
+    createdBefore,
+    providerId: queryParams.providerId ?? '',
+    query: toCQL(queryParams, stripes.logger),
+  });
+
+  const source = {
+    fetchMore,
+    hasMore: () => hasMore,
+    loaded: () => isSuccess,
+    pending: () => isFetching,
+    records: () => jobs,
+    resources,
+    totalCount: () => totalRecords,
   };
+
+  return (
+    <JobsView
+      filterGroups={filterGroups}
+      onRefresh={() => setCreatedBefore(Date.now())}
+      source={source}
+    />
+  );
 };
 
 JobsViewRoute.propTypes = {
-  mutator: PropTypes.object.isRequired,
   resources: PropTypes.object.isRequired,
   stripes: PropTypes.shape({
     logger: PropTypes.shape().isRequired,
@@ -52,22 +71,8 @@ JobsViewRoute.propTypes = {
 };
 
 JobsViewRoute.manifest = Object.freeze({
+  // Read by JobsView's queryGetter for the current sort and filters.
   query: {},
-  jobs: {
-    type: 'okapi',
-    path: 'erm-usage-harvester/jobs',
-    records: 'jobInfos',
-    recordsRequired: '%{resultCount}',
-    perRequest: 30,
-    GET: {
-      params: {
-        providerId: '?{providerId:-}',
-        timestamp: '%{timestamp}',
-        query: createCQL(),
-      },
-      staticFallback: { params: {} },
-    },
-  },
   udps: {
     type: 'okapi',
     path: 'usage-data-providers',
@@ -76,10 +81,6 @@ JobsViewRoute.manifest = Object.freeze({
     },
     records: 'usageDataProviders',
   },
-  resultCount: {
-    initialValue: 30,
-  },
-  timestamp: { initialValue: Date.now() },
 });
 
 export default stripesConnect(JobsViewRoute);

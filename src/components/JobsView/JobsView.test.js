@@ -2,69 +2,76 @@ import '../../../test/jest/__mock__';
 import { MemoryRouter } from 'react-router-dom';
 
 import {
+  render,
   screen,
+  waitFor,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
 import jobsFixture from '../../../test/fixtures/jobs';
 import udpsFixture from '../../../test/fixtures/udps';
-import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
+import Intl from '../../../test/jest/__mock__/intl.mock';
+import StripesQueryProvider from '../../../test/jest/helpers/StripesQueryProvider';
+import stubHarvester from '../../../test/jest/helpers/stubHarvester';
 import JobsViewRoute from '../../routes/JobsViewRoute';
 
 jest.mock('./JobsViewResultCell', () => () => (
   <div>MockedJobsViewResultCell</div>
 ));
 
-const mockReplace = jest.fn();
+const HEADER_ROW = 1;
 
-const renderJobView = (jobs) => renderWithIntl(
-  <MemoryRouter>
-    <JobsViewRoute
-      mutator={{
-        query: {
-          update: () => {},
-        },
-        timestamp: {
-          replace: mockReplace,
-        },
-      }}
-      resources={{
-        udps: {
-          records: udpsFixture,
-        },
-        jobs: {
-          hasLoaded: true,
-          isPending: false,
-          records: jobs,
-          other: {
-            totalRecords: jobs.length,
-          },
-        },
-        query: {
-          sort: '',
-        },
-      }}
-    />
-  </MemoryRouter>
+const app = (visible = true) => (
+  <Intl locale="en">
+    <StripesQueryProvider>
+      <MemoryRouter>
+        {visible ? (
+          <JobsViewRoute
+            resources={{
+              query: { sort: '' },
+              udps: { records: udpsFixture },
+            }}
+          />
+        ) : null}
+      </MemoryRouter>
+    </StripesQueryProvider>
+  </Intl>
 );
 
+const renderJobView = () => render(app());
+
+const awaitRows = (count) => waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(count + HEADER_ROW));
+
+// Only the route unmounts, so coming back is a real remount against a surviving cache.
+const revisit = (rerender) => {
+  rerender(app(false));
+  rerender(app(true));
+};
+
 describe('JobView component', () => {
+  let now;
+
+  beforeEach(() => {
+    now = 1700000000000;
+    jest.spyOn(Date, 'now').mockImplementation(() => now);
+  });
+
   afterEach(() => {
-    mockReplace.mockClear();
+    jest.restoreAllMocks();
   });
 
-  it('should update timestamp on mount to trigger a fresh fetch', () => {
-    renderJobView([]);
-    expect(mockReplace).toHaveBeenCalledTimes(1);
-    expect(typeof mockReplace.mock.calls[0][0]).toBe('number');
+  it('should display no results if the harvester returns none', async () => {
+    stubHarvester([]);
+
+    renderJobView();
+
+    expect(
+      await screen.findByText('The list contains no items')
+    ).toBeInTheDocument();
   });
 
-  it('should display no results if no job data is provided', () => {
-    renderJobView([]);
-    expect(screen.getByText('The list contains no items')).toBeInTheDocument();
-  });
-
-  it('should display properly formatted results if job data is provided', () => {
+  it('should display properly formatted results if job data is provided', async () => {
     const expectedRowContent = [
       [
         'Provider / Tenant',
@@ -114,11 +121,74 @@ describe('JobView component', () => {
       ['diku', 'Periodic', '9/29/2022, 10:30:04 AM', '', '', 'Scheduled', ''],
     ];
 
-    renderJobView(jobsFixture);
+    stubHarvester(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
     const rowContent =
       screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
         .queryAllByRole(role)
         .map((e) => e.textContent)));
     expect(rowContent).toEqual(expectedRowContent);
+  });
+
+  it('should pin the job list to a snapshot taken when the page is opened', async () => {
+    const requests = stubHarvester(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    expect(requests).toEqual([
+      {
+        limit: '30',
+        offset: '0',
+        providerId: '',
+        query: '(cql.allRecords=1) sortby startedAt/sort.descending',
+        timestamp: String(now),
+      },
+    ]);
+  });
+
+  // Stamped once per bundle instead, jobs that finished since the app loaded never appear.
+  it('should take a new snapshot on each visit', async () => {
+    const requests = stubHarvester(jobsFixture);
+
+    const { rerender } = renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    now += 180000;
+    revisit(rerender);
+    await waitFor(() => expect(requests).toHaveLength(2));
+
+    expect(requests[1].timestamp).toBe(String(now));
+    expect(Number(requests[1].timestamp)).toBeGreaterThan(
+      Number(requests[0].timestamp)
+    );
+  });
+
+  it('should take a new snapshot when the refresh button is clicked', async () => {
+    const requests = stubHarvester(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    now += 60000;
+    await userEvent.click(screen.getByRole('button', { name: 'Refresh' }));
+    await waitFor(() => expect(requests).toHaveLength(2));
+
+    expect(requests[1].timestamp).toBe(String(now));
+  });
+
+  // MultiColumnList asks for more rows from its loader row's componentDidMount, before any
+  // data has arrived, and again once the list is complete.
+  it('should not ask for more rows before the first page lands or once the list is complete', async () => {
+    const requests = stubHarvester(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    expect(requests).toHaveLength(1);
+    expect(requests[0].limit).toBe('30');
   });
 });
