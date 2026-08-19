@@ -23,6 +23,10 @@ jest.mock('./JobsViewResultCell', () => () => (
 ));
 
 const HEADER_ROW = 1;
+const PAGE_SIZE = 30;
+const PAGING_QUIET_MS = 500;
+const PAGING_POLL_MS = 50;
+const PAGING_TIMEOUT_MS = 5000;
 
 const manyJobs = (count) => Array.from({ length: count }, (unused, i) => ({
   id: `job-${i}`,
@@ -54,17 +58,23 @@ const renderJobView = () => render(app());
 const awaitRows = (count) => waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(count + HEADER_ROW));
 
 const awaitPagingStopped = async (requests) => {
-  let seen = -1;
-  let stableFor = 0;
+  let lastSeenCount = -1;
+  let quietSince = 0;
 
   await waitFor(() => {
-    stableFor = requests.length === seen ? stableFor + 1 : 0;
-    seen = requests.length;
-
-    if (stableFor < 3) {
-      throw new Error(`still paging: ${requests.length} requests so far`);
+    if (requests.length !== lastSeenCount) {
+      lastSeenCount = requests.length;
+      quietSince = performance.now();
     }
-  }, { interval: 100, timeout: 5000 });
+
+    const quietFor = performance.now() - quietSince;
+
+    if (quietFor < PAGING_QUIET_MS) {
+      throw new Error(
+        `still paging: ${requests.length} requests, quiet for ${Math.round(quietFor)}ms`
+      );
+    }
+  }, { interval: PAGING_POLL_MS, timeout: PAGING_TIMEOUT_MS });
 };
 
 const revisit = (rerender) => {
@@ -219,7 +229,12 @@ describe('JobView component', () => {
     renderJobView();
     await awaitPagingStopped(requests);
 
-    expect(screen.getAllByRole('row').length).toBeLessThan(total / 2);
-    expect(Number(requests[requests.length - 1].offset)).toBeLessThan(total - 60);
+    const requestedOffsets = requests.map((request) => request.offset);
+    const loadedRows = requests.length * PAGE_SIZE;
+    const renderedRows = screen.getAllByRole('row').length - HEADER_ROW;
+
+    expect(requestedOffsets).toEqual(['0', '30', '60']);
+    expect(loadedRows).toBeLessThan(total);
+    expect(renderedRows).toBeLessThan(loadedRows);
   });
 });
