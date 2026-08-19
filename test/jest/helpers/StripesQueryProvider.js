@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import {
   QueryClient,
   QueryClientProvider,
@@ -13,17 +12,10 @@ import {
 
 const StripesQueryProvider = ({ children }) => {
   const stripes = useStripes();
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  }));
 
   return (
     <StripesContext.Provider value={stripes}>
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={new QueryClient()}>
         <ModuleHierarchyProvider module="@folio/erm-usage">
           {children}
         </ModuleHierarchyProvider>

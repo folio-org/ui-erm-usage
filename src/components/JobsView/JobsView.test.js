@@ -13,7 +13,7 @@ import jobsFixture from '../../../test/fixtures/jobs';
 import udpsFixture from '../../../test/fixtures/udps';
 import Intl from '../../../test/jest/__mock__/intl.mock';
 import StripesQueryProvider from '../../../test/jest/helpers/StripesQueryProvider';
-import stubHarvester from '../../../test/jest/helpers/stubHarvester';
+import stubJobsEndpoint from '../../../test/jest/helpers/stubJobsEndpoint';
 import JobsViewRoute from '../../routes/JobsViewRoute';
 
 jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
@@ -85,7 +85,7 @@ describe('JobView component', () => {
   });
 
   it('should display no results if the harvester returns none', async () => {
-    stubHarvester([]);
+    stubJobsEndpoint([]);
 
     renderJobView();
 
@@ -144,7 +144,7 @@ describe('JobView component', () => {
       ['diku', 'Periodic', '9/29/2022, 10:30:04 AM', '', '', 'Scheduled', ''],
     ];
 
-    stubHarvester(jobsFixture);
+    stubJobsEndpoint(jobsFixture);
 
     renderJobView();
     await awaitRows(jobsFixture.length);
@@ -157,7 +157,7 @@ describe('JobView component', () => {
   });
 
   it('should pin the job list to a snapshot taken when the page is opened', async () => {
-    const requests = stubHarvester(jobsFixture);
+    const requests = stubJobsEndpoint(jobsFixture);
 
     renderJobView();
     await awaitRows(jobsFixture.length);
@@ -174,7 +174,7 @@ describe('JobView component', () => {
   });
 
   it('should take a new snapshot on each visit', async () => {
-    const requests = stubHarvester(jobsFixture);
+    const requests = stubJobsEndpoint(jobsFixture);
 
     const { rerender } = renderJobView();
     await awaitRows(jobsFixture.length);
@@ -190,7 +190,7 @@ describe('JobView component', () => {
   });
 
   it('should take a new snapshot when the refresh button is clicked', async () => {
-    const requests = stubHarvester(jobsFixture);
+    const requests = stubJobsEndpoint(jobsFixture);
 
     renderJobView();
     await awaitRows(jobsFixture.length);
@@ -203,7 +203,7 @@ describe('JobView component', () => {
   });
 
   it('should not ask for more rows before the first page lands or once the list is complete', async () => {
-    const requests = stubHarvester(jobsFixture);
+    const requests = stubJobsEndpoint(jobsFixture);
 
     renderJobView();
     await awaitRows(jobsFixture.length);
@@ -214,7 +214,7 @@ describe('JobView component', () => {
 
   it('should stop paging once the viewport is filled', async () => {
     const total = 213;
-    const requests = stubHarvester(manyJobs(total));
+    const requests = stubJobsEndpoint(manyJobs(total));
 
     renderJobView();
     await awaitPagingStopped(requests);

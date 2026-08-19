@@ -7,7 +7,7 @@ import {
 } from '@folio/jest-config-stripes/testing-library/react';
 
 import StripesQueryProvider from '../../../test/jest/helpers/StripesQueryProvider';
-import stubHarvester from '../../../test/jest/helpers/stubHarvester';
+import stubJobsEndpoint from '../../../test/jest/helpers/stubJobsEndpoint';
 import useJobs from './useJobs';
 
 const jobs = (count) => Array.from({ length: count }, (unused, i) => ({ id: `job-${i}` }));
@@ -19,7 +19,7 @@ const renderUseJobs = (params) => renderHook(
 
 describe('useJobs', () => {
   it('should ask for the first page under the given snapshot', async () => {
-    const requests = stubHarvester(jobs(5));
+    const requests = stubJobsEndpoint(jobs(5));
 
     const { result } = renderUseJobs({ createdBefore: 1234, providerId: 'abc', query: 'type=="provider"' });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -36,7 +36,7 @@ describe('useJobs', () => {
   });
 
   it('should omit the query parameter rather than send it empty', async () => {
-    const requests = stubHarvester();
+    const requests = stubJobsEndpoint();
 
     const { result } = renderUseJobs({ query: undefined });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -45,7 +45,7 @@ describe('useJobs', () => {
   });
 
   it('should report the records and the total', async () => {
-    stubHarvester(jobs(42));
+    stubJobsEndpoint(jobs(42));
 
     const { result } = renderUseJobs();
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -55,7 +55,7 @@ describe('useJobs', () => {
   });
 
   it('should not report a total until the first page lands', () => {
-    stubHarvester(jobs(5));
+    stubJobsEndpoint(jobs(5));
 
     const { result } = renderUseJobs();
 
@@ -64,7 +64,7 @@ describe('useJobs', () => {
   });
 
   it('should page by offset, carrying only the rows that are new', async () => {
-    const requests = stubHarvester(jobs(100));
+    const requests = stubJobsEndpoint(jobs(100));
 
     const { result } = renderUseJobs();
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -78,7 +78,7 @@ describe('useJobs', () => {
   });
 
   it('should report more rows until the list is complete', async () => {
-    stubHarvester(jobs(45));
+    stubJobsEndpoint(jobs(45));
 
     const { result } = renderUseJobs();
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -91,7 +91,7 @@ describe('useJobs', () => {
   });
 
   it('should stop paging when a page comes back empty', async () => {
-    const requests = stubHarvester(jobs(100), { available: 30 });
+    const requests = stubJobsEndpoint(jobs(100), { available: 30 });
 
     const { result } = renderUseJobs();
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -104,7 +104,7 @@ describe('useJobs', () => {
   });
 
   it('should refetch when the snapshot changes', async () => {
-    const requests = stubHarvester(jobs(5));
+    const requests = stubJobsEndpoint(jobs(5));
 
     const { rerender, result } = renderUseJobs({ createdBefore: 1000 });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -116,7 +116,7 @@ describe('useJobs', () => {
   });
 
   it('should serve an unchanged snapshot from cache', async () => {
-    const requests = stubHarvester(jobs(5));
+    const requests = stubJobsEndpoint(jobs(5));
 
     const { rerender, result } = renderUseJobs({ createdBefore: 1000 });
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
