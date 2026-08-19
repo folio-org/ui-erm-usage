@@ -2,54 +2,109 @@ import '../../../test/jest/__mock__';
 import { MemoryRouter } from 'react-router-dom';
 
 import {
+  render,
   screen,
+  waitFor,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
 import jobsFixture from '../../../test/fixtures/jobs';
 import udpsFixture from '../../../test/fixtures/udps';
-import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
+import Intl from '../../../test/jest/__mock__/intl.mock';
+import StripesQueryProvider from '../../../test/jest/helpers/StripesQueryProvider';
+import stubJobsEndpoint from '../../../test/jest/helpers/stubJobsEndpoint';
 import JobsViewRoute from '../../routes/JobsViewRoute';
+
+jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
 
 jest.mock('./JobsViewResultCell', () => () => (
   <div>MockedJobsViewResultCell</div>
 ));
 
-const renderJobView = (jobs) => renderWithIntl(
-  <MemoryRouter>
-    <JobsViewRoute
-      mutator={{
-        query: {
-          update: () => {},
-        },
-      }}
-      resources={{
-        udps: {
-          records: udpsFixture,
-        },
-        jobs: {
-          hasLoaded: true,
-          isPending: false,
-          records: jobs,
-          other: {
-            totalRecords: jobs.length,
-          },
-        },
-        query: {
-          sort: '',
-        },
-      }}
-    />
-  </MemoryRouter>
+const HEADER_ROW = 1;
+const PAGE_SIZE = 30;
+const PAGING_QUIET_MS = 500;
+const PAGING_POLL_MS = 50;
+const PAGING_TIMEOUT_MS = 5000;
+
+const manyJobs = (count) => Array.from({ length: count }, (unused, i) => ({
+  id: `job-${i}`,
+  type: 'tenant',
+  startedAt: '2022-09-28T10:30:04.305+00:00',
+  finishedAt: '2022-09-28T11:33:05.305+00:00',
+  result: 'success',
+}));
+
+const app = (visible = true) => (
+  <Intl locale="en">
+    <StripesQueryProvider>
+      <MemoryRouter>
+        {visible ? (
+          <JobsViewRoute
+            resources={{
+              query: { sort: '' },
+              udps: { records: udpsFixture },
+            }}
+          />
+        ) : null}
+      </MemoryRouter>
+    </StripesQueryProvider>
+  </Intl>
 );
 
+const renderJobView = () => render(app());
+
+const awaitRows = (count) => waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(count + HEADER_ROW));
+
+const awaitPagingStopped = async (requests) => {
+  let lastSeenCount = -1;
+  let quietSince = 0;
+
+  await waitFor(() => {
+    if (requests.length !== lastSeenCount) {
+      lastSeenCount = requests.length;
+      quietSince = performance.now();
+    }
+
+    const quietFor = performance.now() - quietSince;
+
+    if (quietFor < PAGING_QUIET_MS) {
+      throw new Error(
+        `still paging: ${requests.length} requests, quiet for ${Math.round(quietFor)}ms`
+      );
+    }
+  }, { interval: PAGING_POLL_MS, timeout: PAGING_TIMEOUT_MS });
+};
+
+const revisit = (rerender) => {
+  rerender(app(false));
+  rerender(app(true));
+};
+
 describe('JobView component', () => {
-  it('should display no results if no job data is provided', () => {
-    renderJobView([]);
-    expect(screen.getByText('The list contains no items')).toBeInTheDocument();
+  let now;
+
+  beforeEach(() => {
+    now = 1700000000000;
+    jest.spyOn(Date, 'now').mockImplementation(() => now);
   });
 
-  it('should display properly formatted results if job data is provided', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should display no results if the harvester returns none', async () => {
+    stubJobsEndpoint([]);
+
+    renderJobView();
+
+    expect(
+      await screen.findByText('The list contains no items')
+    ).toBeInTheDocument();
+  });
+
+  it('should display properly formatted results if job data is provided', async () => {
     const expectedRowContent = [
       [
         'Provider / Tenant',
@@ -99,11 +154,87 @@ describe('JobView component', () => {
       ['diku', 'Periodic', '9/29/2022, 10:30:04 AM', '', '', 'Scheduled', ''],
     ];
 
-    renderJobView(jobsFixture);
+    stubJobsEndpoint(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
     const rowContent =
       screen.getAllByRole('row').map((row) => ['columnheader', 'gridcell'].flatMap((role) => within(row)
         .queryAllByRole(role)
         .map((e) => e.textContent)));
     expect(rowContent).toEqual(expectedRowContent);
+  });
+
+  it('should pin the job list to a snapshot taken when the page is opened', async () => {
+    const requests = stubJobsEndpoint(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    expect(requests).toEqual([
+      {
+        limit: '30',
+        offset: '0',
+        providerId: '',
+        query: '(cql.allRecords=1) sortby startedAt/sort.descending',
+        timestamp: String(now),
+      },
+    ]);
+  });
+
+  it('should take a new snapshot on each visit', async () => {
+    const requests = stubJobsEndpoint(jobsFixture);
+
+    const { rerender } = renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    now += 180000;
+    revisit(rerender);
+    await waitFor(() => expect(requests).toHaveLength(2));
+
+    expect(requests[1].timestamp).toBe(String(now));
+    expect(Number(requests[1].timestamp)).toBeGreaterThan(
+      Number(requests[0].timestamp)
+    );
+  });
+
+  it('should take a new snapshot when the refresh button is clicked', async () => {
+    const requests = stubJobsEndpoint(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    now += 60000;
+    await userEvent.click(screen.getByRole('button', { name: 'Refresh' }));
+    await waitFor(() => expect(requests).toHaveLength(2));
+
+    expect(requests[1].timestamp).toBe(String(now));
+  });
+
+  it('should not ask for more rows before the first page lands or once the list is complete', async () => {
+    const requests = stubJobsEndpoint(jobsFixture);
+
+    renderJobView();
+    await awaitRows(jobsFixture.length);
+
+    expect(requests).toHaveLength(1);
+    expect(requests[0].limit).toBe('30');
+  });
+
+  it('should stop paging once the viewport is filled', async () => {
+    const total = 213;
+    const requests = stubJobsEndpoint(manyJobs(total));
+
+    renderJobView();
+    await awaitPagingStopped(requests);
+
+    const requestedOffsets = requests.map((request) => request.offset);
+    const loadedRows = requests.length * PAGE_SIZE;
+    const renderedRows = screen.getAllByRole('row').length - HEADER_ROW;
+
+    expect(requestedOffsets).toEqual(['0', '30', '60']);
+    expect(loadedRows).toBeLessThan(total);
+    expect(renderedRows).toBeLessThan(loadedRows);
   });
 });
