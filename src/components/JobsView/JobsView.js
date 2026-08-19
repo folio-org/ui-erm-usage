@@ -198,7 +198,7 @@ const JobsView = ({ source, filterGroups, onRefresh }) => {
             renderHeader={renderResultsPaneHeader}
           >
             <MultiColumnList
-              autoSize
+              autosize
               columnMapping={{
                 providerId: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.provider' }),
                 type: formatMessage({ id: 'ui-erm-usage.harvester.jobs.column.type' }),

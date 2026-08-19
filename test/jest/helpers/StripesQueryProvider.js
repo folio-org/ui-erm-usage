@@ -11,8 +11,6 @@ import {
   useStripes,
 } from '@folio/stripes/core';
 
-// Stands in for the providers stripes-core wraps every module in: useOkapiKy reads Okapi
-// settings from StripesContext, and useNamespace builds query keys from the hierarchy.
 const StripesQueryProvider = ({ children }) => {
   const stripes = useStripes();
   const [queryClient] = useState(() => new QueryClient({

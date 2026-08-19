@@ -16,11 +16,21 @@ import StripesQueryProvider from '../../../test/jest/helpers/StripesQueryProvide
 import stubHarvester from '../../../test/jest/helpers/stubHarvester';
 import JobsViewRoute from '../../routes/JobsViewRoute';
 
+jest.mock('react-virtualized-auto-sizer', () => ({ children }) => children({ width: 1920, height: 1080 }));
+
 jest.mock('./JobsViewResultCell', () => () => (
   <div>MockedJobsViewResultCell</div>
 ));
 
 const HEADER_ROW = 1;
+
+const manyJobs = (count) => Array.from({ length: count }, (unused, i) => ({
+  id: `job-${i}`,
+  type: 'tenant',
+  startedAt: '2022-09-28T10:30:04.305+00:00',
+  finishedAt: '2022-09-28T11:33:05.305+00:00',
+  result: 'success',
+}));
 
 const app = (visible = true) => (
   <Intl locale="en">
@@ -43,7 +53,20 @@ const renderJobView = () => render(app());
 
 const awaitRows = (count) => waitFor(() => expect(screen.getAllByRole('row')).toHaveLength(count + HEADER_ROW));
 
-// Only the route unmounts, so coming back is a real remount against a surviving cache.
+const awaitPagingStopped = async (requests) => {
+  let seen = -1;
+  let stableFor = 0;
+
+  await waitFor(() => {
+    stableFor = requests.length === seen ? stableFor + 1 : 0;
+    seen = requests.length;
+
+    if (stableFor < 3) {
+      throw new Error(`still paging: ${requests.length} requests so far`);
+    }
+  }, { interval: 100, timeout: 5000 });
+};
+
 const revisit = (rerender) => {
   rerender(app(false));
   rerender(app(true));
@@ -150,7 +173,6 @@ describe('JobView component', () => {
     ]);
   });
 
-  // Stamped once per bundle instead, jobs that finished since the app loaded never appear.
   it('should take a new snapshot on each visit', async () => {
     const requests = stubHarvester(jobsFixture);
 
@@ -180,8 +202,6 @@ describe('JobView component', () => {
     expect(requests[1].timestamp).toBe(String(now));
   });
 
-  // MultiColumnList asks for more rows from its loader row's componentDidMount, before any
-  // data has arrived, and again once the list is complete.
   it('should not ask for more rows before the first page lands or once the list is complete', async () => {
     const requests = stubHarvester(jobsFixture);
 
@@ -190,5 +210,16 @@ describe('JobView component', () => {
 
     expect(requests).toHaveLength(1);
     expect(requests[0].limit).toBe('30');
+  });
+
+  it('should stop paging once the viewport is filled', async () => {
+    const total = 213;
+    const requests = stubHarvester(manyJobs(total));
+
+    renderJobView();
+    await awaitPagingStopped(requests);
+
+    expect(screen.getAllByRole('row').length).toBeLessThan(total / 2);
+    expect(Number(requests[requests.length - 1].offset)).toBeLessThan(total - 60);
   });
 });

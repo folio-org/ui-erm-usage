@@ -6,8 +6,6 @@ import {
 const JOBS_URL =
   'https://folio-testing-okapi.dev.folio.org/erm-usage-harvester/jobs';
 
-// Serves `jobs` a page at a time and records every request. `available` caps the rows
-// actually served, so a harvester that stops short of the total it reports can be tested.
 const stubHarvester = (jobs = [], { available = jobs.length } = {}) => {
   const requests = [];
   const served = jobs.slice(0, available);

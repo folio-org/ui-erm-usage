@@ -35,7 +35,6 @@ describe('useJobs', () => {
     ]);
   });
 
-  // URLSearchParams would turn an undefined value into the literal string "undefined".
   it('should omit the query parameter rather than send it empty', async () => {
     const requests = stubHarvester();
 
@@ -64,7 +63,6 @@ describe('useJobs', () => {
     expect(result.current.hasMore).toBe(false);
   });
 
-  // Widening `limit` instead would re-send every row already on screen.
   it('should page by offset, carrying only the rows that are new', async () => {
     const requests = stubHarvester(jobs(100));
 
@@ -92,8 +90,6 @@ describe('useJobs', () => {
     expect(result.current.hasMore).toBe(false);
   });
 
-  // Without this the same offset would be asked for forever, since the loaded count stops
-  // rising while the reported total stays higher.
   it('should stop paging when a page comes back empty', async () => {
     const requests = stubHarvester(jobs(100), { available: 30 });
 
@@ -107,7 +103,6 @@ describe('useJobs', () => {
     expect(result.current.jobs).toHaveLength(30);
   });
 
-  // Every visit stamps a new snapshot, which has to miss the cache.
   it('should refetch when the snapshot changes', async () => {
     const requests = stubHarvester(jobs(5));
 

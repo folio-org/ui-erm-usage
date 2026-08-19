@@ -11,8 +11,8 @@ import useJobs from '../util/hooks/useJobs';
 
 const queryFn = makeQueryFunction('cql.allRecords=1', '', {}, filterGroups, 0);
 
-const toCQL = (queryParams, logger) => {
-  const cql = queryFn(queryParams, {}, { query: queryParams }, logger);
+const toCQL = (urlQuery, logger) => {
+  const cql = queryFn(urlQuery, {}, { query: urlQuery }, logger);
 
   return cql
     ? cql
@@ -27,9 +27,7 @@ const JobsViewRoute = ({ resources, stripes }) => {
   const location = useLocation();
   const [createdBefore, setCreatedBefore] = useState(() => Date.now());
 
-  // Not the `query` resource: stripes-core mirrors location into it a render late, so a
-  // fetch keyed off the mirror runs once under the previous filters first.
-  const queryParams = Object.fromEntries(new URLSearchParams(location.search));
+  const urlQuery = Object.fromEntries(new URLSearchParams(location.search));
 
   const {
     fetchMore,
@@ -40,8 +38,8 @@ const JobsViewRoute = ({ resources, stripes }) => {
     totalRecords,
   } = useJobs({
     createdBefore,
-    providerId: queryParams.providerId ?? '',
-    query: toCQL(queryParams, stripes.logger),
+    providerId: urlQuery.providerId ?? '',
+    query: toCQL(urlQuery, stripes.logger),
   });
 
   const source = {
@@ -71,7 +69,6 @@ JobsViewRoute.propTypes = {
 };
 
 JobsViewRoute.manifest = Object.freeze({
-  // Read by JobsView's queryGetter for the current sort and filters.
   query: {},
   udps: {
     type: 'okapi',
