@@ -13,7 +13,9 @@
 * Clean up redundancies in translation file ([UIEUS-538](https://folio-org.atlassian.net/browse/UIEUS-538))
 * Remove test selectors ([UIEUS-542](https://folio-org.atlassian.net/browse/UIEUS-542))
 * Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
-* Adapt aggragator form pane header ([UIEUS-545](https://folio-org.atlassian.net/browse/UIEUS-545))
+* Fetch jobs with react-query so each visit gets fresh data ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
+* Jobs list: load only the rows the viewport needs instead of every page ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
+* Adapt aggregator form pane header ([UIEUS-545](https://folio-org.atlassian.net/browse/UIEUS-545))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
