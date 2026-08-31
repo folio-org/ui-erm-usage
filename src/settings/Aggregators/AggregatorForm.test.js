@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import { MemoryRouter } from 'react-router-dom';
 
 import {
@@ -150,5 +151,33 @@ describe('Edit Aggregator', () => {
     await waitFor(() => {
       expect(saveButton).toBeDisabled();
     });
+  });
+});
+
+describe('AggregatorForm pane title', () => {
+  let stripes;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    stripes = useStripes();
+  });
+
+  test('create: renders "New aggregator"', () => {
+    renderAggregratorForm(stripes);
+
+    expect(screen.getByText('New aggregator')).toBeInTheDocument();
+  });
+
+  test('edit: renders the aggregator label', () => {
+    renderAggregratorForm(stripes, aggregatorTransformed);
+
+    expect(screen.getByText('Aggregator Test')).toBeInTheDocument();
+  });
+
+  test('duplicate: renders "New aggregator" as there is no id', () => {
+    renderAggregratorForm(stripes, omit(aggregatorTransformed, 'id'));
+
+    expect(screen.getByText('New aggregator')).toBeInTheDocument();
+    expect(screen.queryByText('Aggregator Test')).not.toBeInTheDocument();
   });
 });

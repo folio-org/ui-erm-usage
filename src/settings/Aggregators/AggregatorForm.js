@@ -138,7 +138,13 @@ const AggregatorForm = ({
   };
 
   const renderPaneTitle = () => {
-    return initialValues?.label ?? <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
+    const agg = initialValues || {};
+
+    if (agg.id) {
+      return agg.label;
+    }
+
+    return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
   };
 
   const renderPaneHeader = () => (
