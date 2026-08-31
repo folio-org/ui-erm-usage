@@ -114,7 +114,7 @@ const PeriodicHarvestingForm = ({
               id="clickable-delete-config"
               marginBottom0
               onClick={beginDelete}
-              title="DELETE"
+              title={intl.formatMessage({ id: 'ui-erm-usage.general.delete' })}
             >
               <FormattedMessage id="ui-erm-usage.general.delete" />
             </Button>
@@ -123,7 +123,7 @@ const PeriodicHarvestingForm = ({
             buttonStyle="primary paneHeaderNewButton"
             id="save-config"
             marginBottom0
-            title="Save"
+            title={intl.formatMessage({ id: 'ui-erm-usage.general.save' })}
             type="submit"
           >
             <FormattedMessage id="ui-erm-usage.general.save" />

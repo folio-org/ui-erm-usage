@@ -48,6 +48,7 @@ function AggregatorConfigForm({ stripes }) {
                             disabled={field.isInitial || disabled}
                             error={meta.touched ? meta.error : undefined}
                             id={`aggregator-conf-input-key-${index}`}
+                            // do not translate the label, as it is a key-value pair
                             label="Key"
                             required
                           />
@@ -65,6 +66,7 @@ function AggregatorConfigForm({ stripes }) {
                             disabled={disabled}
                             error={meta.touched ? meta.error : undefined}
                             id={`aggregator-conf-input-value-${index}`}
+                            // do not translate the label, as it is a key-value pair
                             label="Value"
                             required
                           />

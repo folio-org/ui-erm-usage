@@ -8,7 +8,10 @@ import {
 } from '@folio/stripes/components';
 import stripesFinalForm from '@folio/stripes/final-form';
 
-import { isValidUrl } from '../../../util/validate';
+import {
+  isValidUrl,
+  required,
+} from '../../../util/validate';
 import NonCounterInnerForm from './NonCounterInnerForm';
 
 function NonCounterUploadModal(props) {
@@ -99,16 +102,16 @@ export default stripesFinalForm({
     const yyyyRegex = /^[12]\d{3}$/;
 
     if (!values.fileId && !values.linkUrl) {
-      errors.fileId = 'Required';
-      errors.linkUrl = 'Required';
+      errors.fileId = true;
+      errors.linkUrl = true;
     } else if (values.linkUrl && !isValidUrl(values.linkUrl)) {
-      errors.linkUrl = 'Invalid format';
+      errors.linkUrl = true;
     }
 
     if (!values.year) {
-      errors.year = 'Required';
+      errors.year = required(values.year);
     } else if (!yyyyRegex.test(values.year)) {
-      errors.year = 'Invalid format';
+      errors.year = <FormattedMessage id="ui-erm-usage.errors.yearInvalid" />;
     }
 
     return errors;

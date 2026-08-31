@@ -45,11 +45,11 @@ function CounterUploadModal({ intl, onClose, onSubmit, open }) {
     const errors = {};
 
     if (!values.file) {
-      errors.file = 'Required';
+      errors.file = true;
     }
 
     if (values.reportEditedManually && !values.editReason) {
-      errors.editReason = 'Required';
+      errors.editReason = true;
     }
 
     return errors;
