@@ -15,6 +15,7 @@
 * Reorder and structure translation keys ([UIEUS-543](https://folio-org.atlassian.net/browse/UIEUS-543))
 * Fetch jobs with react-query so each visit gets fresh data ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
 * Jobs list: load only the rows the viewport needs instead of every page ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
+* Check and fix hard coded strings ([UIEUS-537](https://folio-org.atlassian.net/browse/UIEUS-537))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))

@@ -27,6 +27,7 @@ import {
   Headline,
   Icon,
   Layout,
+  NoValue,
   Pane,
   PaneHeader,
   PaneHeaderIconButton,
@@ -477,7 +478,7 @@ const UDP = ({
   const usageDataProvider = get(data, 'usageDataProvider', {});
   if (isLoading) return renderLoadingPane();
 
-  const label = get(usageDataProvider, 'label', 'No LABEL');
+  const label = get(usageDataProvider, 'label', <NoValue />);
   const providerId = get(usageDataProvider, 'id', '');
   const counterReportsByRelease = transformReportsForMCL(data.counterReports);
   const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);

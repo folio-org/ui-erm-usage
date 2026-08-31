@@ -210,7 +210,10 @@ const ReportInfo = ({
       label={intl.formatMessage({ id: 'ui-erm-usage.general.report' })}
       labelTag="h3"
     >
-      <KeyValue label="Usage data provider" value={udpLabel} />
+      <KeyValue
+        label={intl.formatMessage({ id: 'ui-erm-usage.usage-data-provider' })}
+        value={udpLabel}
+      />
       <KeyValue
         label={intl.formatMessage({ id: 'ui-erm-usage.general.type' })}
         value={report.reportName}

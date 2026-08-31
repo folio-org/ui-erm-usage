@@ -2,7 +2,6 @@ import { FormattedMessage } from 'react-intl';
 
 const filterGroups = [
   {
-    label: 'Harvesting status',
     name: 'harvestingStatus',
     cql: 'harvestingConfig.harvestingStatus',
     operator: '=',
@@ -12,17 +11,15 @@ const filterGroups = [
     ],
   },
   {
-    label: 'Harvest via',
     name: 'harvestVia',
     cql: 'harvestingConfig.harvestVia',
     operator: '=',
     values: [
       { name: 'Counter / Sushi', cql: 'sushi' },
-      { name: 'Aggregator', cql: 'aggregator' },
+      { name: <FormattedMessage id="ui-erm-usage.information.aggregator" />, cql: 'aggregator' },
     ],
   },
   {
-    label: 'Aggregators',
     name: 'aggregators',
     cql: 'harvestingConfig.aggregator.name',
     operator: '=',
@@ -30,7 +27,6 @@ const filterGroups = [
     restrictWhenAllSelected: true,
   },
   {
-    label: 'Has failed reports',
     name: 'hasFailedReport',
     cql: 'hasFailedReport',
     operator: '=',
@@ -40,35 +36,30 @@ const filterGroups = [
     ],
   },
   {
-    label: 'Tags',
     name: 'tags',
     cql: 'tags.tagList',
     values: [],
     operator: '=',
   },
   {
-    label: 'Error Codes',
     name: 'errorCodes',
     cql: 'reportErrorCodes',
     operator: '=',
     values: [],
   },
   {
-    label: 'Report Types',
     name: 'reportTypes',
     cql: 'reportTypes',
     operator: '=',
     values: [],
   },
   {
-    label: 'Report Releases',
     name: 'reportReleases',
     cql: 'reportReleases',
     operator: '=',
     values: [],
   },
   {
-    label: 'Provider status',
     name: 'status',
     cql: 'status',
     operator: '=',
