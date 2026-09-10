@@ -14,7 +14,6 @@ import {
   Button,
   Col,
   ExpandAllButton,
-  Icon,
   IconButton,
   Pane,
   PaneFooter,
@@ -142,12 +141,7 @@ const AggregatorForm = ({
     const agg = initialValues || {};
 
     if (agg.id) {
-      return (
-        <div>
-          <Icon icon="edit" size="small" />
-          <span>{`Edit: ${agg.label}`}</span>
-        </div>
-      );
+      return agg.label;
     }
 
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
