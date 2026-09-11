@@ -15,10 +15,10 @@ import routeProps from '../../test/fixtures/routeProps';
 import renderWithIntl from '../../test/jest/helpers';
 import UDPViewRoute from './UDPViewRoute';
 
-const renderUDPViewRoute = (stripes) => renderWithIntl(
+const renderUDPViewRoute = (stripes, props = routeProps) => renderWithIntl(
   <StripesContext.Provider value={stripes}>
     <MemoryRouter>
-      <UDPViewRoute {...routeProps} stripes={stripes} />
+      <UDPViewRoute {...props} stripes={stripes} />
     </MemoryRouter>
   </StripesContext.Provider>
 );
@@ -30,6 +30,24 @@ describe('UDPViewRoute', () => {
     stripes = useStripes();
     routeProps.mutator.usageDataProvider.DELETE.mockClear();
     routeProps.history.push.mockClear();
+  });
+
+  describe('UDP request failed', () => {
+    test('reports the UDP as not found instead of keeping it loading', () => {
+      renderUDPViewRoute(stripes, {
+        ...routeProps,
+        resources: {
+          ...routeProps.resources,
+          usageDataProvider: {
+            records: [],
+            isPending: false,
+            failed: { httpStatus: 404 },
+          },
+        },
+      });
+
+      expect(screen.getByText('Usage data provider not found')).toBeInTheDocument();
+    });
   });
 
   describe('Delete UDP', () => {
