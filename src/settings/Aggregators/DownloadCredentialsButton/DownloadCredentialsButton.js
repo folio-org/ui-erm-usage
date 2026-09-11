@@ -13,6 +13,10 @@ import {
   stripesConnect,
 } from '@folio/stripes/core';
 
+import {
+  CSV,
+  XLSX,
+} from '../../../util/constants';
 import { downloadCredentials } from '../../../util/downloadReport';
 
 const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
@@ -39,7 +43,10 @@ const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
           onClick={() => onClickDownloadCredentials('csv')}
         >
           <Icon icon="arrow-down">
-            <FormattedMessage id="ui-erm-usage.settings.credentials.download.csv" />
+            <FormattedMessage
+              id="ui-erm-usage.settings.credentials.download.fileType"
+              values={{ filetype: CSV }}
+            />
           </Icon>
         </Button>
         <Button
@@ -47,7 +54,10 @@ const DownloadCredentialsButton = ({ aggregatorId, stripes }) => {
           onClick={() => onClickDownloadCredentials('xlsx')}
         >
           <Icon icon="arrow-down">
-            <FormattedMessage id="ui-erm-usage.settings.credentials.download.xlsx" />
+            <FormattedMessage
+              id="ui-erm-usage.settings.credentials.download.fileType"
+              values={{ filetype: XLSX }}
+            />
           </Icon>
         </Button>
       </DropdownMenu>

@@ -3,12 +3,14 @@ import { useIntl } from 'react-intl';
 
 import { Monthpicker } from '@folio/stripes-leipzig-components';
 
+import { YEAR_MONTH_FORMAT } from '../../../util/constants';
+
 const HarvestingStartField = ({ isRequired }) => {
   const intl = useIntl();
 
   return (
     <Monthpicker
-      backendDateFormat="YYYY-MM"
+      backendDateFormat={YEAR_MONTH_FORMAT}
       isRequired={isRequired}
       name="harvestingConfig.harvestingStart"
       textLabel={intl.formatMessage({ id: 'ui-erm-usage.udpHarvestingConfig.harvestingStart' })}

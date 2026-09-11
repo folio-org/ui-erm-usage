@@ -10,6 +10,8 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
+import { COUNTER_SUSHI } from '../../../util/constants';
+
 const VendorInfoView = ({
   usageDataProvider,
   harvesterImpls,
@@ -23,7 +25,7 @@ const VendorInfoView = ({
       <Col xs={3}>
         <KeyValue
           label={<FormattedMessage id="ui-erm-usage.information.harvestVia" />}
-          value="Counter / Sushi"
+          value={COUNTER_SUSHI}
         />
       </Col>
       <Col xs={3}>
