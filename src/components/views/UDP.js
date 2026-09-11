@@ -26,7 +26,7 @@ import {
   HasCommand,
   Headline,
   Icon,
-  Layout,
+  LoadingPane,
   NoValue,
   Pane,
   PaneHeader,
@@ -395,28 +395,6 @@ const UDP = ({
     },
   ];
 
-  const renderLoadingPaneHeader = () => (
-    <PaneHeader
-      dismissible
-      onClose={handlers.onClose}
-      paneTitle="loading"
-    />
-  );
-
-  const renderLoadingPane = () => {
-    return (
-      <Pane
-        defaultWidth="40%"
-        id="pane-collectiondetails"
-        renderHeader={() => renderLoadingPaneHeader()}
-      >
-        <Layout className="marginTop1">
-          <Icon icon="spinner-ellipsis" width="10px" />
-        </Layout>
-      </Pane>
-    );
-  };
-
   const getCounterStatistics = (reports, label, providerId, maxFailedAttempts) => {
     if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
@@ -476,7 +454,7 @@ const UDP = ({
   );
 
   const usageDataProvider = get(data, 'usageDataProvider', {});
-  if (isLoading) return renderLoadingPane();
+  if (isLoading) return <LoadingPane />;
 
   const label = get(usageDataProvider, 'label', <NoValue />);
   const providerId = get(usageDataProvider, 'id', '');
