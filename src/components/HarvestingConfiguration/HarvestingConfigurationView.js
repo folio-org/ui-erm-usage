@@ -16,7 +16,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import extractHarvesterImpls from '../../util/harvesterImpls';
+import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
@@ -29,6 +29,9 @@ const HarvestingConfigurationView = ({
   settings,
   harvesterImpls,
 }) => {
+  const serviceType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType');
+  const serviceTypeSupported = isServiceTypeSupported(harvesterImpls, serviceType);
+
   const createProvider = (udp) => {
     const harvestVia = get(udp, 'harvestingConfig.harvestVia');
 
@@ -47,6 +50,7 @@ const HarvestingConfigurationView = ({
       return (
         <VendorInfoView
           harvesterImpls={extractHarvesterImpls(harvesterImpls)}
+          isServiceTypeSupported={serviceTypeSupported}
           usageDataProvider={udp}
         />
       );
@@ -62,7 +66,20 @@ const HarvestingConfigurationView = ({
   }
 
   const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-  const reportReleaseLabel = counterVersion ? `Counter ${counterVersion}` : <NoValue />;
+  let reportReleaseLabel = <NoValue />;
+
+  if (counterVersion) {
+    const reportRelease = `Counter ${counterVersion}`;
+
+    reportReleaseLabel = serviceTypeSupported
+      ? reportRelease
+      : (
+        <FormattedMessage
+          id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
+          values={{ value: reportRelease }}
+        />
+      );
+  }
 
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
   const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;

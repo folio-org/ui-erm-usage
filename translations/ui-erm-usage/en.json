@@ -269,6 +269,7 @@
   "udpHarvestingConfig.credentials": "Credentials",
   "udpHarvestingConfig.deleteThisItem": "Delete this item",
   "udpHarvestingConfig.addReportType": "Add report type",
+  "udpHarvestingConfig.unsupportedValue": "{value} (Unsupported)",
 
   "vendorInfo.serviceType": "Service type",
   "vendorInfo.serviceUrl": "Service URL",

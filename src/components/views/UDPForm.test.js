@@ -109,14 +109,14 @@ const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
 
-const renderUDPForm = (stripes, udp = initialValues) => {
+const renderUDPForm = (stripes, udp = initialValues, harvesterImpls = stubHarvesterImpls) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
         <UDPForm
           data={{
             aggregators: stubAggregators,
-            harvesterImpls: stubHarvesterImpls,
+            harvesterImpls,
           }}
           handlers={{ onClose }}
           handleSubmit={handleSubmit}
@@ -201,6 +201,30 @@ describe('UDPForm', () => {
 
       expect(screen.getByRole('combobox', { name: 'Aggregator' })).toBeDisabled();
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeEnabled();
+    });
+  });
+
+  describe('unsupported service type', () => {
+    const supportedHarvesterImpls = [
+      {
+        implementations: stubHarvesterImpls[0].implementations.filter(i => i.type !== 'cs41'),
+      },
+    ];
+
+    test('should add current unsupported service type as selected option', () => {
+      renderUDPForm(stripes, initialUdp, supportedHarvesterImpls);
+
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      expect(serviceTypeSelect).toHaveValue('cs41');
+      expect(within(serviceTypeSelect).getByRole('option', { name: 'Counter-Sushi 4.1 (Unsupported)' }))
+        .toBeInTheDocument();
+    });
+
+    test('should not add an unsupported option for a supported service type', () => {
+      renderUDPForm(stripes, initialValues, supportedHarvesterImpls);
+
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
     });
   });
 
