@@ -10,8 +10,6 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
-import { getUnsupportedServiceTypeName } from '../../../util/harvesterImpls';
-
 const VendorInfoView = ({
   usageDataProvider,
   harvesterImpls,
@@ -25,7 +23,7 @@ const VendorInfoView = ({
     serviceTypeLabel = (
       <FormattedMessage
         id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
-        values={{ value: getUnsupportedServiceTypeName(currentSType) }}
+        values={{ value: currentSType }}
       />
     );
   }

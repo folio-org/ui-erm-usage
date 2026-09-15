@@ -1,6 +1,5 @@
 import extractHarvesterImpls, {
   getImplementations,
-  getUnsupportedServiceTypeName,
   isServiceTypeSupported,
 } from './harvesterImpls';
 
@@ -53,16 +52,6 @@ describe('harvesterImpls', () => {
 
     test('should return true while implementations are not loaded', () => {
       expect(isServiceTypeSupported([], 'cs41')).toBe(true);
-    });
-  });
-
-  describe('getUnsupportedServiceTypeName', () => {
-    test('should return known name of unsupported service type', () => {
-      expect(getUnsupportedServiceTypeName('cs41')).toBe('Counter-Sushi 4.1');
-    });
-
-    test('should fall back to service type code', () => {
-      expect(getUnsupportedServiceTypeName('cs99')).toBe('cs99');
     });
   });
 });

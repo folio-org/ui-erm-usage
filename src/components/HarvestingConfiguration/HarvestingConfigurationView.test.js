@@ -134,14 +134,9 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
 
-    test('should append (Unsupported) to name of unsupported service type', () => {
+    test('should append (Unsupported) to unsupported service type', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }));
-      expect(screen.getByText('Counter-Sushi 4.1 (Unsupported)')).toBeInTheDocument();
-    });
-
-    test('should fall back to service type code if no name is known', () => {
-      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs99' }));
-      expect(screen.getByText('cs99 (Unsupported)')).toBeInTheDocument();
+      expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {

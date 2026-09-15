@@ -216,8 +216,7 @@ describe('UDPForm', () => {
 
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(serviceTypeSelect).toHaveValue('cs41');
-      expect(within(serviceTypeSelect).getByRole('option', { name: 'Counter-Sushi 4.1 (Unsupported)' }))
-        .toBeInTheDocument();
+      expect(within(serviceTypeSelect).getByRole('option', { name: 'cs41 (Unsupported)' })).toBeInTheDocument();
     });
 
     test('should not add an unsupported option for a supported service type', () => {
