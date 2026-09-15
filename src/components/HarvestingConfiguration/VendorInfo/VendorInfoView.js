@@ -17,16 +17,14 @@ const VendorInfoView = ({
 }) => {
   const currentSType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');
   const serviceType = harvesterImpls?.find((e) => e.value === currentSType);
-  let serviceTypeLabel = serviceType?.label ?? <NoValue />;
-
-  if (currentSType && !isServiceTypeSupported) {
-    serviceTypeLabel = (
+  const serviceTypeLabel = isServiceTypeSupported
+    ? serviceType?.label ?? <NoValue />
+    : (
       <FormattedMessage
         id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
         values={{ value: currentSType }}
       />
     );
-  }
 
   return (
     <Row>

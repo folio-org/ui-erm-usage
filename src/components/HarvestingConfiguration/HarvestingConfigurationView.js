@@ -33,7 +33,7 @@ const HarvestingConfigurationView = ({
   const serviceType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType');
   const serviceTypeSupported = isServiceTypeSupported(harvesterImpls, serviceType);
 
-  const createProvider = (udp) => {
+  const createProvider = () => {
     if (!harvestVia) {
       return null;
     }
@@ -42,7 +42,7 @@ const HarvestingConfigurationView = ({
       return (
         <AggregatorInfoView
           stripes={stripes}
-          usageDataProvider={udp}
+          usageDataProvider={usageDataProvider}
         />
       );
     } else {
@@ -50,13 +50,13 @@ const HarvestingConfigurationView = ({
         <VendorInfoView
           harvesterImpls={extractHarvesterImpls(harvesterImpls)}
           isServiceTypeSupported={serviceTypeSupported}
-          usageDataProvider={udp}
+          usageDataProvider={usageDataProvider}
         />
       );
     }
   };
 
-  const provider = createProvider(usageDataProvider);
+  const provider = createProvider();
   const reports = [...get(usageDataProvider, 'harvestingConfig.requestedReports', [])].sort();
   let requestedReports = '';
 
