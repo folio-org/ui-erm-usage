@@ -29,12 +29,11 @@ const HarvestingConfigurationView = ({
   settings,
   harvesterImpls,
 }) => {
+  const harvestVia = get(usageDataProvider, 'harvestingConfig.harvestVia');
   const serviceType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType');
   const serviceTypeSupported = isServiceTypeSupported(harvesterImpls, serviceType);
 
   const createProvider = (udp) => {
-    const harvestVia = get(udp, 'harvestingConfig.harvestVia');
-
     if (!harvestVia) {
       return null;
     }
@@ -58,7 +57,7 @@ const HarvestingConfigurationView = ({
   };
 
   const provider = createProvider(usageDataProvider);
-  const reports = get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
+  const reports = [...get(usageDataProvider, 'harvestingConfig.requestedReports', [])].sort();
   let requestedReports = '';
 
   if (!isEmpty(reports)) {
@@ -71,7 +70,8 @@ const HarvestingConfigurationView = ({
   if (counterVersion) {
     const reportRelease = `Counter ${counterVersion}`;
 
-    reportReleaseLabel = serviceTypeSupported
+    // the service type is kept when switching to aggregator, but only matters for sushi
+    reportReleaseLabel = harvestVia !== 'sushi' || serviceTypeSupported
       ? reportRelease
       : (
         <FormattedMessage

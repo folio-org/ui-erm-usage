@@ -94,31 +94,36 @@ describe('HarvestingConfigurationView with unsupported values', () => {
     );
   };
 
-  // the report release is unsupported if the service type is unsupported,
-  // the service type is kept when switching from sushi to aggregator
-  describe.each(['aggregator', 'sushi'])('report release with harvestVia %s', (harvestVia) => {
+  // the report release is unsupported if the service type of a sushi UDP is unsupported
+  describe('report release with harvestVia sushi', () => {
     test('should render report release without suffix if service type is supported', () => {
-      renderView(createUdp({ harvestVia, reportRelease: '5.1', serviceType: 'cs51' }));
+      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs51' }));
       expect(screen.getByText('Counter 5.1')).toBeInTheDocument();
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
 
     test('should append (Unsupported) to report release if service type is unsupported', () => {
-      renderView(createUdp({ harvestVia, reportRelease: '4', serviceType: 'cs41' }));
+      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '4', serviceType: 'cs41' }));
       expect(screen.getByText('Counter 4 (Unsupported)')).toBeInTheDocument();
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {
-      renderView(createUdp({ harvestVia, reportRelease: '4', serviceType: 'cs41' }), []);
+      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '4', serviceType: 'cs41' }), []);
       expect(screen.getByText('Counter 4')).toBeInTheDocument();
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
   });
 
-  test('should not append (Unsupported) to report release of aggregator UDP without service type', () => {
-    renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4' }));
-    expect(screen.getByText('Counter 4')).toBeInTheDocument();
-    expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
+  // the service type is kept when switching from sushi to aggregator, but is not used for harvesting
+  describe('report release with harvestVia aggregator', () => {
+    test.each([
+      ['without service type', undefined],
+      ['with leftover unsupported service type', 'cs41'],
+    ])('should not append (Unsupported) %s', (_description, serviceType) => {
+      renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4', serviceType }));
+      expect(screen.getByText('Counter 4')).toBeInTheDocument();
+      expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
+    });
   });
 
   // the service type is only displayed for UDPs that are not harvested via aggregator

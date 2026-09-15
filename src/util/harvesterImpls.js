@@ -1,4 +1,4 @@
-import legacyServiceTypeNames from './data/legacyServiceTypes';
+import unsupportedServiceTypeNames from './data/unsupportedServiceTypes';
 
 const getImplementations = (records) => {
   return records?.length
@@ -21,11 +21,11 @@ const isServiceTypeSupported = (records, serviceType) => {
   return !serviceType || !implementations.length || implementations.some(i => i.type === serviceType);
 };
 
-const getLegacyServiceTypeName = (serviceType) => legacyServiceTypeNames[serviceType] ?? serviceType;
+const getUnsupportedServiceTypeName = (serviceType) => unsupportedServiceTypeNames[serviceType] ?? serviceType;
 
 export {
   getImplementations,
-  getLegacyServiceTypeName,
+  getUnsupportedServiceTypeName,
   isServiceTypeSupported,
 };
 
