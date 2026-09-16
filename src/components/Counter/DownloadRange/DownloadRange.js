@@ -20,6 +20,7 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
+import { YEAR_MONTH_FORMAT } from '../../../util/constants';
 import exportFormats from '../../../util/data/exportFormats';
 import css from './DownloadRange.css';
 
@@ -86,7 +87,7 @@ const DownloadRange = ({
             <Row>
               <Col xs={4}>
                 <Monthpicker
-                  backendDateFormat="YYYY-MM"
+                  backendDateFormat={YEAR_MONTH_FORMAT}
                   isRequired
                   name="startDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.start' })}
@@ -94,7 +95,7 @@ const DownloadRange = ({
               </Col>
               <Col xs={4}>
                 <Monthpicker
-                  backendDateFormat="YYYY-MM"
+                  backendDateFormat={YEAR_MONTH_FORMAT}
                   isRequired
                   name="endDate"
                   textLabel={intl.formatMessage({ id: 'ui-erm-usage.reportOverview.downloadMultiMonths.end' })}

@@ -18,6 +18,7 @@
 * Check and fix hard coded strings ([UIEUS-537](https://folio-org.atlassian.net/browse/UIEUS-537))
 * Adapt aggregator form pane header ([UIEUS-545](https://folio-org.atlassian.net/browse/UIEUS-545))
 * Use stripes LoadingPane component ([UIEUS-551](https://folio-org.atlassian.net/browse/UIEUS-551))
+* Use constants for proper names ([UIEUS-546](https://folio-org.atlassian.net/browse/UIEUS-546))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
