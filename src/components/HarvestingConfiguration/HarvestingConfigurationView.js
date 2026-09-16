@@ -57,7 +57,7 @@ const HarvestingConfigurationView = ({
   };
 
   const provider = createProvider();
-  const reports = [...get(usageDataProvider, 'harvestingConfig.requestedReports', [])].sort();
+  const reports = get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
   let requestedReports = '';
 
   if (!isEmpty(reports)) {
