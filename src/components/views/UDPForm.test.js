@@ -225,6 +225,13 @@ describe('UDPForm', () => {
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
     });
+
+    test('should not add an unsupported option while implementations are not loaded', () => {
+      renderUDPForm(stripes, initialUdp, []);
+
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
+    });
   });
 
   describe('service url trimming', () => {
