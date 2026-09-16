@@ -26,18 +26,18 @@ const data = {
 };
 
 const handlers = {
-  onClose: jest.fn(),
+  onClose: jest.fn,
   onDelete: jest.fn(),
-  onEdit: jest.fn(),
-  onDownloadReportMultiMonth: jest.fn(),
+  onEdit: jest.fn,
+  onDownloadReportMultiMonth: jest.fn,
 };
 
 const mutators = {
   udpReloadToggle: {
-    replace: jest.fn(),
+    replace: jest.fn,
   },
   statsReloadToggle: {
-    replace: jest.fn(),
+    replace: jest.fn,
   },
 };
 
