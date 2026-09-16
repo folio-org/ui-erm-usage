@@ -238,7 +238,6 @@
   "udp.counterStatistics": "COUNTER statistics",
   "udp.nonCounterStatistics": "Non-COUNTER statistics",
   "udp.searchInputLabel": "Search usage data providers",
-  "udp.notFoundMessage": "Usage data provider not found",
   "udp.form.close": "Close usage data provider form",
   "udp.form.createUDP": "Create usage data provider",
   "udp.form.udpInfo.title": "Usage data provider information",

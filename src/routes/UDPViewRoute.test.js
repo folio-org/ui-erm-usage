@@ -23,6 +23,11 @@ const renderUDPViewRoute = (stripes, props = routeProps) => renderWithIntl(
   </StripesContext.Provider>
 );
 
+const renderWithUdpResource = (stripes, usageDataProvider) => renderUDPViewRoute(stripes, {
+  ...routeProps,
+  resources: { ...routeProps.resources, usageDataProvider },
+});
+
 describe('UDPViewRoute', () => {
   let stripes;
 
@@ -32,21 +37,26 @@ describe('UDPViewRoute', () => {
     routeProps.history.push.mockClear();
   });
 
-  describe('UDP request failed', () => {
-    test('reports the UDP as not found instead of keeping it loading', () => {
-      renderUDPViewRoute(stripes, {
-        ...routeProps,
-        resources: {
-          ...routeProps.resources,
-          usageDataProvider: {
-            records: [],
-            isPending: false,
-            failed: { httpStatus: 404 },
-          },
-        },
+  describe('UDP is not available', () => {
+    test('shows the loading pane while a request is pending after an earlier failure', () => {
+      renderWithUdpResource(stripes, {
+        records: [],
+        isPending: true,
+        failed: { httpStatus: 404 },
       });
 
-      expect(screen.getByText('Usage data provider not found')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+      expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+    });
+
+    test('renders nothing once the request has failed', () => {
+      renderWithUdpResource(stripes, {
+        records: [],
+        isPending: false,
+        failed: { httpStatus: 404 },
+      });
+
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
   });
 

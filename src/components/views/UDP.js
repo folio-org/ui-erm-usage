@@ -1,4 +1,7 @@
-import { get } from 'lodash';
+import {
+  get,
+  isEmpty,
+} from 'lodash';
 import PropTypes from 'prop-types';
 import {
   useRef,
@@ -56,6 +59,8 @@ import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 import UDPHeader from '../UDPHeader/UDPHeader';
 import { UDPInfoView } from '../UDPInfo';
 
+const PANE_ID = 'pane-udpdetails';
+
 let callout;
 
 const UDP = ({
@@ -65,7 +70,6 @@ const UDP = ({
   intl,
   isHarvesterExistent,
   isLoading,
-  isNotFound,
   isStatsLoading,
   mutator,
   udpReloadCount,
@@ -452,20 +456,19 @@ const UDP = ({
   );
 
   const usageDataProvider = get(data, 'usageDataProvider', {});
-  if (isLoading) return <LoadingPane />;
 
-  if (isNotFound) {
+  if (isLoading) {
     return (
-      <Pane
-        defaultWidth="40%"
+      <LoadingPane
         dismissible
-        id="pane-udpdetails"
+        id={PANE_ID}
         onClose={handlers.onClose}
-      >
-        <FormattedMessage id="ui-erm-usage.udp.notFoundMessage" />
-      </Pane>
+      />
     );
   }
+
+  // Not loading and still no record: the request for the UDP failed.
+  if (isEmpty(usageDataProvider)) return null;
 
   const label = get(usageDataProvider, 'label', <NoValue />);
   const providerId = get(usageDataProvider, 'id', '');
@@ -480,7 +483,7 @@ const UDP = ({
       <>
         <Pane
           defaultWidth="40%"
-          id="pane-udpdetails"
+          id={PANE_ID}
           renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
         >
           <TitleManager record={label} stripes={stripes} />
@@ -620,7 +623,6 @@ UDP.propTypes = {
   intl: PropTypes.object,
   isHarvesterExistent: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
-  isNotFound: PropTypes.bool.isRequired,
   isStatsLoading: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,

@@ -107,8 +107,7 @@ function UDPViewRoute(props) {
   const selectedRecord = getRecord(id);
   const isUdpPending = get(resources, 'usageDataProvider.isPending', true);
   const hasUdpFailed = Boolean(get(resources, 'usageDataProvider.failed'));
-  const isLoading = (isUdpPending || !hasUdpFailed) && isEmpty(selectedRecord);
-  const isNotFound = !isUdpPending && hasUdpFailed && isEmpty(selectedRecord);
+  const isLoading = isEmpty(selectedRecord) && (isUdpPending || !hasUdpFailed);
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = get(resources, 'settings.records', []);
@@ -137,7 +136,6 @@ function UDPViewRoute(props) {
       history={props.history}
       isHarvesterExistent={isHarvesterExistent()}
       isLoading={isLoading}
-      isNotFound={isNotFound}
       isStatsLoading={isStatsLoading()}
       location={props.location}
       match={props.match}

@@ -28,16 +28,16 @@ const data = {
 const handlers = {
   onClose: jest.fn(),
   onDelete: jest.fn(),
-  onEdit: jest.fn,
-  onDownloadReportMultiMonth: jest.fn,
+  onEdit: jest.fn(),
+  onDownloadReportMultiMonth: jest.fn(),
 };
 
 const mutators = {
   udpReloadToggle: {
-    replace: jest.fn,
+    replace: jest.fn(),
   },
   statsReloadToggle: {
-    replace: jest.fn,
+    replace: jest.fn(),
   },
 };
 
@@ -45,7 +45,7 @@ jest.mock('../HarvestingConfiguration/AggregatorInfo/AggregatorContactInfo', () 
   return () => <span>AggregatorContactInfo</span>;
 });
 
-const renderUDP = (stripes, props = {}) => {
+const renderUDP = (stripes) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
@@ -54,7 +54,6 @@ const renderUDP = (stripes, props = {}) => {
           handlers={handlers}
           isHarvesterExistent={false}
           isLoading={false}
-          isNotFound={false}
           isStatsLoading={false}
           location={{}}
           mutator={mutators}
@@ -62,7 +61,6 @@ const renderUDP = (stripes, props = {}) => {
           stripes={stripes}
           tagsEnabled={false}
           udpReloadCount={0}
-          {...props}
         />
       </MemoryRouter>
     </StripesContext.Provider>
@@ -84,27 +82,6 @@ describe('UDP', () => {
 
     await userEvent.click(screen.getByText('Harvesting configuration'));
     expect(harvestingAccordion).toHaveClass('expanded');
-  });
-
-  describe('when the UDP was not found', () => {
-    beforeEach(() => {
-      handlers.onClose.mockClear();
-    });
-
-    test('should render a not found pane instead of the UDP details', () => {
-      renderUDP(stripes, { isNotFound: true });
-
-      expect(screen.getByText('Usage data provider not found')).toBeInTheDocument();
-      expect(screen.queryByText('Actions')).not.toBeInTheDocument();
-    });
-
-    test('should call onClose when the not found pane is dismissed', async () => {
-      renderUDP(stripes, { isNotFound: true });
-
-      await userEvent.click(screen.getByRole('button', { name: /close/i }));
-
-      expect(handlers.onClose).toHaveBeenCalled();
-    });
   });
 
   test('should render action menu button', async () => {
