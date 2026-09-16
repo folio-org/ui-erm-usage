@@ -327,5 +327,6 @@
     "report.upload.modal.label.failed": "Не вдалося завантажити файл",
     "report.upload.selectAnotherFile": "Виберіть інший файл для завантаження",
     "vendorInfo.serviceUrl.info": "Як правило, URL-адреса вказана на внутрішніх інформаційних сторінках провайдера.",
-    "vendorInfo.serviceUrl.note": "Примітка: Вводьте лише базову URL-адресу, а не повну. Наприклад, якщо провайдер вказує URL-адресу {urlSushiReport}, введіть лише її частину - до reports: {urlSushi}. Все інше буде додано збирачем даних (харвестером)."
+    "vendorInfo.serviceUrl.note": "Примітка: Вводьте лише базову URL-адресу, а не повну. Наприклад, якщо провайдер вказує URL-адресу {urlSushiReport}, введіть лише її частину - до reports: {urlSushi}. Все інше буде додано збирачем даних (харвестером).",
+    "errors.enterValidDate": "Please enter a valid date"
 }
