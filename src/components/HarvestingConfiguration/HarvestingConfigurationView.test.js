@@ -94,7 +94,7 @@ describe('HarvestingConfigurationView with unsupported values', () => {
     );
   };
 
-  // the report release is unsupported if the service type of a sushi UDP is unsupported
+  // if the service type is unsupported, the report release shows the service type instead
   describe('report release with harvestVia sushi', () => {
     test('should render report release without suffix if service type is supported', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs51' }));
@@ -102,9 +102,11 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
 
-    test('should append (Unsupported) to report release if service type is unsupported', () => {
+    test('should show service type with (Unsupported) as report release if service type is unsupported', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '4', serviceType: 'cs41' }));
-      expect(screen.getByText('Counter 4 (Unsupported)')).toBeInTheDocument();
+      // service type label and report release label
+      expect(screen.getAllByText('cs41 (Unsupported)')).toHaveLength(2);
+      expect(screen.queryByText(/Counter 4/)).not.toBeInTheDocument();
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {
@@ -122,9 +124,15 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
 
-    test('should append (Unsupported) with leftover unsupported service type', () => {
+    test('should show service type with (Unsupported) as report release with leftover unsupported service type', () => {
       renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4', serviceType: 'cs41' }));
-      expect(screen.getByText('Counter 4 (Unsupported)')).toBeInTheDocument();
+      expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
+      expect(screen.queryByText(/Counter 4/)).not.toBeInTheDocument();
+    });
+
+    test('should show service type with (Unsupported) as report release without report release', () => {
+      renderView(createUdp({ harvestVia: 'aggregator', serviceType: 'cs41' }));
+      expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
     });
   });
 
@@ -138,7 +146,8 @@ describe('HarvestingConfigurationView with unsupported values', () => {
 
     test('should append (Unsupported) to unsupported service type', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }));
-      expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
+      // service type label and report release label
+      expect(screen.getAllByText('cs41 (Unsupported)')).toHaveLength(2);
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {

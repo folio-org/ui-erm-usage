@@ -67,18 +67,15 @@ const HarvestingConfigurationView = ({
   const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
   let reportReleaseLabel = <NoValue />;
 
-  if (counterVersion) {
-    const reportRelease = `Counter ${counterVersion}`;
-
-    // the service type is kept when switching to aggregator, so this applies to all UDPs
-    reportReleaseLabel = serviceTypeSupported
-      ? reportRelease
-      : (
-        <FormattedMessage
-          id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
-          values={{ value: reportRelease }}
-        />
-      );
+  if (!serviceTypeSupported) {
+    reportReleaseLabel = (
+      <FormattedMessage
+        id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
+        values={{ value: serviceType }}
+      />
+    );
+  } else if (counterVersion) {
+    reportReleaseLabel = `Counter ${counterVersion}`;
   }
 
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
