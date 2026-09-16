@@ -26,7 +26,7 @@ import {
   HasCommand,
   Headline,
   Icon,
-  Layout,
+  LoadingPane,
   NoValue,
   Pane,
   PaneHeader,
@@ -58,6 +58,8 @@ import CounterUpload from '../ReportUpload/CounterUpload';
 import NonCounterUpload from '../ReportUpload/NonCounterUpload';
 import UDPHeader from '../UDPHeader/UDPHeader';
 import { UDPInfoView } from '../UDPInfo';
+
+const PANE_ID = 'pane-udpdetails';
 
 let callout;
 
@@ -395,28 +397,6 @@ const UDP = ({
     },
   ];
 
-  const renderLoadingPaneHeader = () => (
-    <PaneHeader
-      dismissible
-      onClose={handlers.onClose}
-      paneTitle="loading"
-    />
-  );
-
-  const renderLoadingPane = () => {
-    return (
-      <Pane
-        defaultWidth="40%"
-        id="pane-collectiondetails"
-        renderHeader={() => renderLoadingPaneHeader()}
-      >
-        <Layout className="marginTop1">
-          <Icon icon="spinner-ellipsis" width="10px" />
-        </Layout>
-      </Pane>
-    );
-  };
-
   const getCounterStatistics = (reports, label, providerId, maxFailedAttempts) => {
     if (isStatsLoading) {
       return <Icon icon="spinner-ellipsis" width="10px" />;
@@ -476,144 +456,152 @@ const UDP = ({
   );
 
   const usageDataProvider = get(data, 'usageDataProvider', {});
-  if (isLoading) return renderLoadingPane();
+
+  if (isLoading) {
+    return (
+      <LoadingPane
+        dismissible
+        id={PANE_ID}
+        onClose={handlers.onClose}
+      />
+    );
+  }
+
+  // Not loading and still no record: the request for the UDP failed.
+  if (isEmpty(usageDataProvider)) return null;
 
   const label = get(usageDataProvider, 'label', <NoValue />);
   const providerId = get(usageDataProvider, 'id', '');
   const counterReportsByRelease = transformReportsForMCL(data.counterReports);
   const maxFailedAttempts = get(data, 'maxFailedAttempts', 5);
 
-  if (isEmpty(usageDataProvider)) {
-    return <div id="pane-udpdetails">Loading...</div>;
-  } else {
-    return (
-      <HasCommand
-        commands={shortcuts}
-        scope={document.body}
-      >
-        <>
-          <Pane
-            defaultWidth="40%"
-            id="pane-udpdetails"
-            renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
-          >
-            <TitleManager record={label} stripes={stripes} />
-            <UDPHeader lastJob={data.lastJob} usageDataProvider={data.usageDataProvider} />
-            <Headline size="xx-large" tag="h2">
-              {label}
-            </Headline>
-            <ViewMetaData
-              metadata={get(usageDataProvider, 'metadata', {})}
-              stripes={stripes}
-            />
-            <UDPInfoView
-              id="udpInfo"
-              stripes={stripes}
-              usageDataProvider={usageDataProvider}
-            />
-            <AccordionStatus ref={accordionStatusRef}>
-              <Row end="xs">
-                <Col xs>
-                  <ExpandAllButton id="clickable-expand-all-view" />
-                </Col>
-              </Row>
-              <AccordionSet initialStatus={getInitialAccordionsState()}>
-                <Accordion
-                  id="harvestingAccordion"
-                  label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
-                >
-                  <HarvestingConfigurationView
-                    harvesterImpls={data.harvesterImpls}
-                    settings={data.settings}
-                    stripes={stripes}
-                    usageDataProvider={usageDataProvider}
-                  />
-                </Accordion>
-                <Pluggable data={{ op: 'match-names', data }} type="ui-agreements-extension" />
-                <Accordion
-                  id="counterStatisticsAccordion"
-                  label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
-                >
-                  {getCounterStatistics(
-                    counterReportsByRelease,
-                    label,
-                    providerId,
-                    maxFailedAttempts
-                  )}
-                </Accordion>
-                <Accordion
-                  id="nonCounterStatisticsAccordion"
-                  label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
-                >
-                  {getCustomStatistics(label, providerId)}
-                </Accordion>
-                <NotesSmartAccordion
-                  domainName="erm-usage"
-                  entityId={usageDataProvider.id}
-                  entityName={usageDataProvider.label}
-                  entityType="erm-usage-data-provider"
-                  id="notesAccordion"
-                  pathToNoteCreate={urls.noteCreate()}
-                  pathToNoteDetails={urls.notes()}
+  return (
+    <HasCommand
+      commands={shortcuts}
+      scope={document.body}
+    >
+      <>
+        <Pane
+          defaultWidth="40%"
+          id={PANE_ID}
+          renderHeader={() => renderDetailPaneHeader(usageDataProvider, label)}
+        >
+          <TitleManager record={label} stripes={stripes} />
+          <UDPHeader lastJob={data.lastJob} usageDataProvider={data.usageDataProvider} />
+          <Headline size="xx-large" tag="h2">
+            {label}
+          </Headline>
+          <ViewMetaData
+            metadata={get(usageDataProvider, 'metadata', {})}
+            stripes={stripes}
+          />
+          <UDPInfoView
+            id="udpInfo"
+            stripes={stripes}
+            usageDataProvider={usageDataProvider}
+          />
+          <AccordionStatus ref={accordionStatusRef}>
+            <Row end="xs">
+              <Col xs>
+                <ExpandAllButton id="clickable-expand-all-view" />
+              </Col>
+            </Row>
+            <AccordionSet initialStatus={getInitialAccordionsState()}>
+              <Accordion
+                id="harvestingAccordion"
+                label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
+              >
+                <HarvestingConfigurationView
+                  harvesterImpls={data.harvesterImpls}
+                  settings={data.settings}
                   stripes={stripes}
+                  usageDataProvider={usageDataProvider}
                 />
-              </AccordionSet>
-            </AccordionStatus>
-          </Pane>
-          {helperApp && (
-            <HelperApp appName={helperApp} onClose={closeHelperApp} />
-          )}
-          <DeleteStatisticsModal
-            counterReports={counterReportsByRelease}
-            handlers={handlers}
-            isStatsLoading={isStatsLoading}
-            maxFailedAttempts={maxFailedAttempts}
-            onCloseModal={doCloseDeleteReports}
-            onFail={handleFail}
-            onSuccess={handleSuccess}
-            open={showDeleteReports}
-            providerId={providerId}
-            stripes={stripes}
-            udpLabel={label}
-          />
-          <CounterUpload
-            onClose={() => setShowCounterUpload(false)}
-            onSuccess={handleSuccess}
-            open={showCounterUpload}
-            stripes={stripes}
-            udpId={providerId}
-          />
-          <NonCounterUpload
-            onClose={() => setShowNonCounterUpload(false)}
-            onFail={handleFail}
-            onSuccess={handleSuccess}
-            open={showNonCounterUpload}
-            stripes={stripes}
-            udpId={providerId}
-          />
-          <Callout
-            ref={(ref) => {
-              callout = ref;
-            }}
-          />
-          <ConfirmationModal
-            buttonStyle="danger"
-            confirmLabel={<FormattedMessage id="ui-erm-usage.general.delete" />}
-            heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
-            id="delete-udp-confirmation"
-            message={getConfirmationMessage(usageDataProvider)}
-            onCancel={() => {
-              doConfirmDelete(false, null);
-            }}
-            onConfirm={() => {
-              doConfirmDelete(true, usageDataProvider);
-            }}
-            open={confirmDelete}
-          />
-        </>
-      </HasCommand>
-    );
-  }
+              </Accordion>
+              <Pluggable data={{ op: 'match-names', data }} type="ui-agreements-extension" />
+              <Accordion
+                id="counterStatisticsAccordion"
+                label={<FormattedMessage id="ui-erm-usage.udp.counterStatistics" />}
+              >
+                {getCounterStatistics(
+                  counterReportsByRelease,
+                  label,
+                  providerId,
+                  maxFailedAttempts
+                )}
+              </Accordion>
+              <Accordion
+                id="nonCounterStatisticsAccordion"
+                label={<FormattedMessage id="ui-erm-usage.udp.nonCounterStatistics" />}
+              >
+                {getCustomStatistics(label, providerId)}
+              </Accordion>
+              <NotesSmartAccordion
+                domainName="erm-usage"
+                entityId={usageDataProvider.id}
+                entityName={usageDataProvider.label}
+                entityType="erm-usage-data-provider"
+                id="notesAccordion"
+                pathToNoteCreate={urls.noteCreate()}
+                pathToNoteDetails={urls.notes()}
+                stripes={stripes}
+              />
+            </AccordionSet>
+          </AccordionStatus>
+        </Pane>
+        {helperApp && (
+          <HelperApp appName={helperApp} onClose={closeHelperApp} />
+        )}
+        <DeleteStatisticsModal
+          counterReports={counterReportsByRelease}
+          handlers={handlers}
+          isStatsLoading={isStatsLoading}
+          maxFailedAttempts={maxFailedAttempts}
+          onCloseModal={doCloseDeleteReports}
+          onFail={handleFail}
+          onSuccess={handleSuccess}
+          open={showDeleteReports}
+          providerId={providerId}
+          stripes={stripes}
+          udpLabel={label}
+        />
+        <CounterUpload
+          onClose={() => setShowCounterUpload(false)}
+          onSuccess={handleSuccess}
+          open={showCounterUpload}
+          stripes={stripes}
+          udpId={providerId}
+        />
+        <NonCounterUpload
+          onClose={() => setShowNonCounterUpload(false)}
+          onFail={handleFail}
+          onSuccess={handleSuccess}
+          open={showNonCounterUpload}
+          stripes={stripes}
+          udpId={providerId}
+        />
+        <Callout
+          ref={(ref) => {
+            callout = ref;
+          }}
+        />
+        <ConfirmationModal
+          buttonStyle="danger"
+          confirmLabel={<FormattedMessage id="ui-erm-usage.general.delete" />}
+          heading={<FormattedMessage id="ui-erm-usage.udp.form.delete.confirm.title" />}
+          id="delete-udp-confirmation"
+          message={getConfirmationMessage(usageDataProvider)}
+          onCancel={() => {
+            doConfirmDelete(false, null);
+          }}
+          onConfirm={() => {
+            doConfirmDelete(true, usageDataProvider);
+          }}
+          open={confirmDelete}
+        />
+      </>
+    </HasCommand>
+  );
 };
 
 UDP.propTypes = {
