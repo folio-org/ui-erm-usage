@@ -12,6 +12,7 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
+import { COUNTER } from '../../../util/constants';
 import CounterStatistics from '../../Counter';
 import css from '../../Counter/CounterStatistics.css';
 import ReportInfoButton from '../../Counter/ReportInfoButton';
@@ -186,7 +187,7 @@ function DeleteStatistics({
       counterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
-            <Accordion id="counter-reports-accordion" label="COUNTER">
+            <Accordion id="counter-reports-accordion" label={COUNTER.toUpperCase()}>
               <CounterStatistics
                 handlers={handlers}
                 infoText={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.infoText" />}

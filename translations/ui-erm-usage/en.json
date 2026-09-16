@@ -126,9 +126,7 @@
   "information.harvestVia": "Harvest via",
 
   "report.action.download": "Download",
-  "report.action.download.csv": "Download report as CSV",
-  "report.action.download.xlsx": "Download report as XLSX",
-  "report.action.download.jsonxml": "Download report as {filetype}",
+  "report.action.download.fileType": "Download report as {filetype}",
   "report.action.general.delete.report": "Delete report",
   "report.action.general.delete.entry": "Delete entry",
   "report.action.failedAttempts": "Failed attempts",
@@ -277,8 +275,7 @@
   "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester.",
 
   "settings.credentials.download": "Download credentials",
-  "settings.credentials.download.csv": "Download as CSV",
-  "settings.credentials.download.xlsx": "Download as XLSX",
+  "settings.credentials.download.fileType": "Download as {filetype}",
   "settings.general": "General",
   "settings.harvester": "Harvester",
   "settings.harvester.config": "Harvester configuration",

@@ -26,6 +26,7 @@ import {
 } from '@folio/stripes/components';
 import stripesFinalForm from '@folio/stripes/final-form';
 
+import { MAIL } from '../../util/constants';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 import {
   mail,
@@ -37,7 +38,7 @@ import DisplayContactsForm from './DisplayContactsForm';
 
 const validateConfigMail = (value, allValues) => {
   const configType = allValues?.accountConfig?.configType;
-  const configTypeIsMail = configType === 'Mail';
+  const configTypeIsMail = configType === MAIL;
 
   if (configTypeIsMail && !value) {
     return required(value);
@@ -157,7 +158,7 @@ const AggregatorForm = ({
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
 
   const configType = getSelectedConfigType();
-  const configTypeIsMail = configType === 'Mail';
+  const configTypeIsMail = configType === MAIL;
 
   return (
     <form

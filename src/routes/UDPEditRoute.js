@@ -44,7 +44,7 @@ const UDPEditRoute = ({
   if (!hasPerms) return <NoPermissionMessage />;
 
   if (fetchIsPending()) {
-    return <LoadingPane onClose={handleClose} />;
+    return <LoadingPane dismissible onClose={handleClose} />;
   }
 
   return (

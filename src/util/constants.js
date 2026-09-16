@@ -3,6 +3,13 @@ export const MAX_FAILED_ATTEMPTS = 5;
 export const DAYS_TO_KEEP_LOGS = 60;
 export const FORM_TYPE_FINAL_FORM = 'final-form';
 
+export const YEAR_MONTH_FORMAT = 'YYYY-MM';
+export const COUNTER = 'Counter';
+export const COUNTER_SUSHI = 'Counter / Sushi';
+export const CSV = 'CSV';
+export const MAIL = 'Mail';
+export const XLSX = 'XLSX';
+
 export const MOD_SETTINGS = {
   BASE_PATH: 'settings/entries',
   RECORD_NAME: 'items',

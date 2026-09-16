@@ -15,13 +15,18 @@ import routeProps from '../../test/fixtures/routeProps';
 import renderWithIntl from '../../test/jest/helpers';
 import UDPViewRoute from './UDPViewRoute';
 
-const renderUDPViewRoute = (stripes) => renderWithIntl(
+const renderUDPViewRoute = (stripes, props = routeProps) => renderWithIntl(
   <StripesContext.Provider value={stripes}>
     <MemoryRouter>
-      <UDPViewRoute {...routeProps} stripes={stripes} />
+      <UDPViewRoute {...props} stripes={stripes} />
     </MemoryRouter>
   </StripesContext.Provider>
 );
+
+const renderWithUdpResource = (stripes, usageDataProvider) => renderUDPViewRoute(stripes, {
+  ...routeProps,
+  resources: { ...routeProps.resources, usageDataProvider },
+});
 
 describe('UDPViewRoute', () => {
   let stripes;
@@ -30,6 +35,29 @@ describe('UDPViewRoute', () => {
     stripes = useStripes();
     routeProps.mutator.usageDataProvider.DELETE.mockClear();
     routeProps.history.push.mockClear();
+  });
+
+  describe('UDP is not available', () => {
+    test('shows the loading pane while a request is pending after an earlier failure', () => {
+      renderWithUdpResource(stripes, {
+        records: [],
+        isPending: true,
+        failed: { httpStatus: 404 },
+      });
+
+      expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+      expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+    });
+
+    test('renders nothing once the request has failed', () => {
+      renderWithUdpResource(stripes, {
+        records: [],
+        isPending: false,
+        failed: { httpStatus: 404 },
+      });
+
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
   });
 
   describe('Delete UDP', () => {

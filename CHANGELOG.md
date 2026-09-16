@@ -17,6 +17,8 @@
 * Jobs list: load only the rows the viewport needs instead of every page ([UIEUS-512](https://folio-org.atlassian.net/browse/UIEUS-512))
 * Check and fix hard coded strings ([UIEUS-537](https://folio-org.atlassian.net/browse/UIEUS-537))
 * Adapt aggregator form pane header ([UIEUS-545](https://folio-org.atlassian.net/browse/UIEUS-545))
+* Use stripes LoadingPane component ([UIEUS-551](https://folio-org.atlassian.net/browse/UIEUS-551))
+* Use constants for proper names ([UIEUS-546](https://folio-org.atlassian.net/browse/UIEUS-546))
 * Service type and report release: Show "(Unsupported)" if no longer supported by the harvester ([UIEUS-552](https://folio-org.atlassian.net/browse/UIEUS-552))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)

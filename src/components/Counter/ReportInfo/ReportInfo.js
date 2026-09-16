@@ -13,6 +13,10 @@ import {
 } from '@folio/stripes/components';
 import { IfPermission } from '@folio/stripes/core';
 
+import {
+  CSV,
+  XLSX,
+} from '../../../util/constants';
 import rawDownloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
 import extractErrorCode from '../../../util/extractErrorCode';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
@@ -63,7 +67,10 @@ const ReportInfo = ({
           onClick={() => onClickDownloadReport('csv')}
         >
           <Icon icon="arrow-down">
-            <FormattedMessage id="ui-erm-usage.report.action.download.csv" />
+            <FormattedMessage
+              id="ui-erm-usage.report.action.download.fileType"
+              values={{ filetype: CSV }}
+            />
           </Icon>
         </Button>
       );
@@ -80,7 +87,10 @@ const ReportInfo = ({
           onClick={() => onClickDownloadReport('xlsx')}
         >
           <Icon icon="arrow-down">
-            <FormattedMessage id="ui-erm-usage.report.action.download.xlsx" />
+            <FormattedMessage
+              id="ui-erm-usage.report.action.download.fileType"
+              values={{ filetype: XLSX }}
+            />
           </Icon>
         </Button>
       );
@@ -124,7 +134,7 @@ const ReportInfo = ({
       >
         <Icon icon="arrow-down">
           <FormattedMessage
-            id="ui-erm-usage.report.action.download.jsonxml"
+            id="ui-erm-usage.report.action.download.fileType"
             values={{ filetype }}
           />
         </Icon>

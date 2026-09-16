@@ -16,6 +16,7 @@ import {
   Row,
 } from '@folio/stripes/components';
 
+import { COUNTER } from '../../util/constants';
 import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
@@ -75,7 +76,7 @@ const HarvestingConfigurationView = ({
       />
     );
   } else if (counterVersion) {
-    reportReleaseLabel = `Counter ${counterVersion}`;
+    reportReleaseLabel = `${COUNTER} ${counterVersion}`;
   }
 
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
