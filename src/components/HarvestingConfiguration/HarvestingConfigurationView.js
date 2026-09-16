@@ -70,8 +70,8 @@ const HarvestingConfigurationView = ({
   if (counterVersion) {
     const reportRelease = `Counter ${counterVersion}`;
 
-    // the service type is kept when switching to aggregator, but only matters for sushi
-    reportReleaseLabel = harvestVia !== 'sushi' || serviceTypeSupported
+    // the service type is kept when switching to aggregator, so this applies to all UDPs
+    reportReleaseLabel = serviceTypeSupported
       ? reportRelease
       : (
         <FormattedMessage

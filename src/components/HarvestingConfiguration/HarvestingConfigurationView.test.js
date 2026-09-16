@@ -114,15 +114,17 @@ describe('HarvestingConfigurationView with unsupported values', () => {
     });
   });
 
-  // the service type is kept when switching from sushi to aggregator, but is not used for harvesting
+  // the service type is kept when switching from sushi to aggregator
   describe('report release with harvestVia aggregator', () => {
-    test.each([
-      ['without service type', undefined],
-      ['with leftover unsupported service type', 'cs41'],
-    ])('should not append (Unsupported) %s', (_description, serviceType) => {
-      renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4', serviceType }));
+    test('should not append (Unsupported) without service type', () => {
+      renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4' }));
       expect(screen.getByText('Counter 4')).toBeInTheDocument();
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
+    });
+
+    test('should append (Unsupported) with leftover unsupported service type', () => {
+      renderView(createUdp({ harvestVia: 'aggregator', reportRelease: '4', serviceType: 'cs41' }));
+      expect(screen.getByText('Counter 4 (Unsupported)')).toBeInTheDocument();
     });
   });
 
