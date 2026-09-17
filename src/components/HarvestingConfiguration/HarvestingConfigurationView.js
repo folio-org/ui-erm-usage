@@ -66,18 +66,7 @@ const HarvestingConfigurationView = ({
   }
 
   const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-  let reportReleaseLabel = <NoValue />;
-
-  if (!serviceTypeSupported) {
-    reportReleaseLabel = (
-      <FormattedMessage
-        id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
-        values={{ value: serviceType }}
-      />
-    );
-  } else if (counterVersion) {
-    reportReleaseLabel = `${COUNTER} ${counterVersion}`;
-  }
+  const reportReleaseLabel = counterVersion ? `${COUNTER} ${counterVersion}` : <NoValue />;
 
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
   const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;
