@@ -53,5 +53,9 @@ describe('harvesterImpls', () => {
     test('should return true while implementations are not loaded', () => {
       expect(isServiceTypeSupported([], 'cs41')).toBe(true);
     });
+
+    test('should return true if no implementations are available', () => {
+      expect(isServiceTypeSupported([{ implementations: [] }], 'cs41')).toBe(true);
+    });
   });
 });
