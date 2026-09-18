@@ -66,7 +66,7 @@ const endDate = values => {
 
   if (new Date(end) < new Date(start)) {
     errors.harvestingConfig = {};
-    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
+    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGreaterStartDate" />;
   }
 
   return errors;
