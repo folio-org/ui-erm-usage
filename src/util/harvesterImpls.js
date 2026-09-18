@@ -15,8 +15,8 @@ const extractHarvesterImpls = (records) => {
 };
 
 const isServiceTypeSupported = (records, serviceType) => {
-  const implementations = getImplementations(records);
-  return !serviceType || !implementations.length || implementations.some(i => i.type === serviceType);
+  if (!serviceType || !records?.length) return true;
+  return getImplementations(records).some(i => i.type === serviceType);
 };
 
 export {

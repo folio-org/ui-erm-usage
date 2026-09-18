@@ -14,17 +14,20 @@ const records = [
 
 describe('harvesterImpls', () => {
   describe('getImplementations', () => {
-    test.each([undefined, null, [], [{}]])('should return empty array for %p', (input) => {
-      expect(getImplementations(input)).toEqual([]);
+    it('should return empty array if records are undefined, null, empty or without implementations', () => {
+      expect(getImplementations(undefined)).toEqual([]);
+      expect(getImplementations(null)).toEqual([]);
+      expect(getImplementations([])).toEqual([]);
+      expect(getImplementations([{}])).toEqual([]);
     });
 
-    test('should return implementations of first record', () => {
+    it('should return implementations of first record', () => {
       expect(getImplementations(records)).toBe(records[0].implementations);
     });
   });
 
   describe('extractHarvesterImpls', () => {
-    test('should map implementations to select options with empty first option', () => {
+    it('should map implementations to select options with empty first option', () => {
       expect(extractHarvesterImpls(records)).toEqual([
         { value: undefined, label: '' },
         { value: 'cs50', label: 'Counter 5.0' },
@@ -32,30 +35,31 @@ describe('harvesterImpls', () => {
       ]);
     });
 
-    test('should return only empty option if no records are loaded', () => {
+    it('should return only empty option if no records are loaded', () => {
       expect(extractHarvesterImpls([])).toEqual([{ value: undefined, label: '' }]);
     });
   });
 
   describe('isServiceTypeSupported', () => {
-    test('should return true for a provided service type', () => {
+    it('should return true for a provided service type', () => {
       expect(isServiceTypeSupported(records, 'cs51')).toBe(true);
     });
 
-    test('should return false for a service type that is not provided', () => {
+    it('should return false for a service type that is not provided', () => {
       expect(isServiceTypeSupported(records, 'cs41')).toBe(false);
     });
 
-    test.each([undefined, ''])('should return true if service type is %p', (serviceType) => {
-      expect(isServiceTypeSupported(records, serviceType)).toBe(true);
+    it('should return true if service type is undefined or empty string', () => {
+      expect(isServiceTypeSupported(records, undefined)).toBe(true);
+      expect(isServiceTypeSupported(records, '')).toBe(true);
     });
 
-    test('should return true while implementations are not loaded', () => {
+    it('should return true while implementations are not loaded', () => {
       expect(isServiceTypeSupported([], 'cs41')).toBe(true);
     });
 
-    test('should return true if no implementations are available', () => {
-      expect(isServiceTypeSupported([{ implementations: [] }], 'cs41')).toBe(true);
+    it('should return false if no implementations are available', () => {
+      expect(isServiceTypeSupported([{ implementations: [] }], 'cs41')).toBe(false);
     });
   });
 });
