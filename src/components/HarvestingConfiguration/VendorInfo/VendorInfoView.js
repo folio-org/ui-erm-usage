@@ -15,10 +15,18 @@ import { COUNTER_SUSHI } from '../../../util/constants';
 const VendorInfoView = ({
   usageDataProvider,
   harvesterImpls,
+  isServiceTypeSupported = true,
 }) => {
   const currentSType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');
-  const serviceType = harvesterImpls ? harvesterImpls.find((e) => e.value === currentSType) : [];
-  const serviceTypeLabel = serviceType?.label ?? <NoValue />;
+  const serviceType = harvesterImpls?.find((e) => e.value === currentSType);
+  const serviceTypeLabel = isServiceTypeSupported
+    ? serviceType?.label ?? <NoValue />
+    : (
+      <FormattedMessage
+        id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
+        values={{ value: currentSType }}
+      />
+    );
 
   return (
     <Row>
@@ -46,6 +54,7 @@ const VendorInfoView = ({
 
 VendorInfoView.propTypes = {
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
+  isServiceTypeSupported: PropTypes.bool,
   usageDataProvider: PropTypes.object.isRequired,
 };
 

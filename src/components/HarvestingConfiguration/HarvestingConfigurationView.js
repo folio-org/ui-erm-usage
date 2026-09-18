@@ -17,7 +17,7 @@ import {
 } from '@folio/stripes/components';
 
 import { COUNTER } from '../../util/constants';
-import extractHarvesterImpls from '../../util/harvesterImpls';
+import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
@@ -30,9 +30,11 @@ const HarvestingConfigurationView = ({
   settings,
   harvesterImpls,
 }) => {
-  const createProvider = (udp) => {
-    const harvestVia = get(udp, 'harvestingConfig.harvestVia');
+  const harvestVia = get(usageDataProvider, 'harvestingConfig.harvestVia');
+  const serviceType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType');
+  const serviceTypeSupported = isServiceTypeSupported(harvesterImpls, serviceType);
 
+  const createProvider = () => {
     if (!harvestVia) {
       return null;
     }
@@ -41,20 +43,21 @@ const HarvestingConfigurationView = ({
       return (
         <AggregatorInfoView
           stripes={stripes}
-          usageDataProvider={udp}
+          usageDataProvider={usageDataProvider}
         />
       );
     } else {
       return (
         <VendorInfoView
           harvesterImpls={extractHarvesterImpls(harvesterImpls)}
-          usageDataProvider={udp}
+          isServiceTypeSupported={serviceTypeSupported}
+          usageDataProvider={usageDataProvider}
         />
       );
     }
   };
 
-  const provider = createProvider(usageDataProvider);
+  const provider = createProvider();
   const reports = get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
   let requestedReports = '';
 
