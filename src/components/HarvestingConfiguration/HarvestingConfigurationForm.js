@@ -13,7 +13,10 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import extractHarvesterImpls from '../../util/harvesterImpls';
+import extractHarvesterImpls, {
+  getImplementations,
+  isServiceTypeSupported,
+} from '../../util/harvesterImpls';
 import formCss from '../../util/sharedStyles/form.css';
 import { AggregatorInfoForm } from './AggregatorInfo';
 import {
@@ -41,9 +44,7 @@ const HarvestingConfigurationForm = ({
 
   const serviceType = get(values, 'harvestingConfig.sushiConfig.serviceType');
 
-  const implementations = harvesterImplementations?.length
-    ? harvesterImplementations[0].implementations
-    : [];
+  const implementations = getImplementations(harvesterImplementations);
 
   const changeSelectedServiceType = (event) => {
     const selectedType = (event.target.value === '') ? undefined : event.target.value;
@@ -94,6 +95,10 @@ const HarvestingConfigurationForm = ({
   const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
+  const unsupportedServiceType = isServiceTypeSupported(harvesterImplementations, serviceType)
+    ? undefined
+    : serviceType;
+
   const currentImpl = implementations.find(i => i.type === serviceType);
   const supportedReports = currentImpl?.supportedReports ?? [];
 
@@ -143,6 +148,7 @@ const HarvestingConfigurationForm = ({
               disabled={harvestVia !== 'sushi'}
               harvesterImpls={extractHarvesterImpls(harvesterImplementations)}
               isRequired={isHarvestingStatusActive}
+              unsupportedServiceType={unsupportedServiceType}
             />
           </section>
           <section className={formCss.separator}>
