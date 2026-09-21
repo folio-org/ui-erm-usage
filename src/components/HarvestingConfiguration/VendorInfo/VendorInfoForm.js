@@ -26,7 +26,21 @@ const VendorInfoForm = ({
   harvesterImpls,
   intl,
   isRequired,
+  unsupportedServiceType,
 }) => {
+  const serviceTypeOptions = unsupportedServiceType
+    ? [
+      ...harvesterImpls,
+      {
+        value: unsupportedServiceType,
+        label: intl.formatMessage(
+          { id: 'ui-erm-usage.udpHarvestingConfig.unsupportedValue' },
+          { value: unsupportedServiceType }
+        ),
+      },
+    ]
+    : harvesterImpls;
+
   return (
     <>
       <Row>
@@ -34,7 +48,7 @@ const VendorInfoForm = ({
           <Field
             component={Select}
             data={!disabled && isRequired ? 1 : 0}
-            dataOptions={harvesterImpls}
+            dataOptions={serviceTypeOptions}
             disabled={disabled}
             fullWidth
             id="addudp_servicetype"
@@ -94,6 +108,7 @@ VendorInfoForm.propTypes = {
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   intl: PropTypes.object,
   isRequired: PropTypes.bool,
+  unsupportedServiceType: PropTypes.string,
 };
 
 export default injectIntl(VendorInfoForm);
