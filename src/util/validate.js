@@ -41,6 +41,16 @@ const yearMonth = value => {
   return undefined;
 };
 
+const yyyyRegex = /^[12]\d{3}$/;
+
+const year = value => {
+  if (value && !yyyyRegex.test(value)) {
+    return <FormattedMessage id="ui-erm-usage.errors.yearInvalid" />;
+  }
+
+  return undefined;
+};
+
 const endDate = values => {
   if (!values || !values.harvestingConfig) {
     return undefined;
@@ -56,7 +66,7 @@ const endDate = values => {
 
   if (new Date(end) < new Date(start)) {
     errors.harvestingConfig = {};
-    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGraterStartDate" />;
+    errors.harvestingConfig.harvestingEnd = <FormattedMessage id="ui-erm-usage.errors.endDateMustBeGreaterStartDate" />;
   }
 
   return errors;
@@ -102,6 +112,7 @@ export {
   required,
   requiredArray,
   requiredValidDate,
+  year,
   yearMonth,
   requiredValidateUrl,
 };

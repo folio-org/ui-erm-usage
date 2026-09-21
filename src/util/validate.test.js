@@ -1,6 +1,7 @@
 import {
   isValidUrl,
   requiredValidDate,
+  year,
 } from './validate';
 
 describe('isValidUrl function', () => {
@@ -30,6 +31,27 @@ describe('requiredValidDate function', () => {
   test('returns the valid-date message for empty values', () => {
     [undefined, null, ''].forEach((value) => {
       expect(requiredValidDate(value).props.id).toBe('ui-erm-usage.errors.enterValidDate');
+    });
+  });
+});
+
+describe('year validation', () => {
+  // test for numbers and strings, since final-form returns the value of the field as a string
+  it('should return undefined for min, max and other valid years', () => {
+    [1000, 2999, 2026, '1000', '2999', '2026'].forEach((value) => {
+      expect(year(value)).toBeUndefined();
+    });
+  });
+
+  it('should return the year-invalid message for invalid years', () => {
+    ['0999', '3000', '999', '20260', '202a', ' 2026', '2026-01', 'abcd'].forEach((value) => {
+      expect(year(value).props.id).toBe('ui-erm-usage.errors.yearInvalid');
+    });
+  });
+
+  it('should return undefined for empty values', () => {
+    [undefined, null, ''].forEach((value) => {
+      expect(year(value)).toBeUndefined();
     });
   });
 });

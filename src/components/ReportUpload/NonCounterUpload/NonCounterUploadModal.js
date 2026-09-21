@@ -9,8 +9,10 @@ import {
 import stripesFinalForm from '@folio/stripes/final-form';
 
 import {
+  composeValidators,
   isValidUrl,
   required,
+  year,
 } from '../../../util/validate';
 import NonCounterInnerForm from './NonCounterInnerForm';
 
@@ -99,7 +101,6 @@ export default stripesFinalForm({
   },
   validate: (values) => {
     const errors = {};
-    const yyyyRegex = /^[12]\d{3}$/;
 
     if (!values.fileId && !values.linkUrl) {
       errors.fileId = true;
@@ -108,11 +109,7 @@ export default stripesFinalForm({
       errors.linkUrl = true;
     }
 
-    if (!values.year) {
-      errors.year = required(values.year);
-    } else if (!yyyyRegex.test(values.year)) {
-      errors.year = <FormattedMessage id="ui-erm-usage.errors.yearInvalid" />;
-    }
+    errors.year = composeValidators(required, year)(values.year);
 
     return errors;
   },
