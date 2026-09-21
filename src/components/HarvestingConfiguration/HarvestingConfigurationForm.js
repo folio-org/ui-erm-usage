@@ -31,6 +31,7 @@ import { VendorInfoForm } from './VendorInfo';
 
 const HarvestingConfigurationForm = ({
   accordionId,
+  aggregatorImpls,
   aggregators,
   expanded,
   harvesterImplementations,
@@ -138,6 +139,7 @@ const HarvestingConfigurationForm = ({
             </Row>
             <Row>
               <AggregatorInfoForm
+                aggregatorImpls={aggregatorImpls}
                 aggregators={aggregators}
                 disabled={harvestVia !== 'aggregator'}
                 isRequired={isHarvestingStatusActive}
@@ -196,6 +198,7 @@ const HarvestingConfigurationForm = ({
 
 HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.object),
   aggregators: PropTypes.arrayOf(PropTypes.shape()),
   expanded: PropTypes.bool,
   form: PropTypes.shape({

@@ -1,19 +1,27 @@
 import {
   isEmpty,
   isNil,
+  omit,
   sortBy,
 } from 'lodash';
 import PropTypes from 'prop-types';
+import { useIntl } from 'react-intl';
 
 import { EntryManager } from '@folio/stripes/smart-components';
 
+import {
+  formatUnsupportedLabel,
+  isServiceTypeSupported,
+} from '../../util/harvesterImpls';
 import AggregatorDetails from './AggregatorDetails';
 import AggregatorForm from './AggregatorForm';
 
 const parseInitialValues = (aggregator) => {
   if (!aggregator) return aggregator;
 
-  const { aggregatorConfig } = aggregator;
+  // displayLabel is only used for display in the EntryManager and must not be saved
+  const aggregatorWithoutDisplayLabel = omit(aggregator, 'displayLabel');
+  const { aggregatorConfig } = aggregatorWithoutDisplayLabel;
 
   // Transform aggregatorConfig from object to array
   let aggregatorConfigArray = [];
@@ -27,7 +35,7 @@ const parseInitialValues = (aggregator) => {
   }
 
   return {
-    ...aggregator,
+    ...aggregatorWithoutDisplayLabel,
     aggregatorConfig: aggregatorConfigArray.length > 0 ? aggregatorConfigArray : undefined,
     accountConfig: {
       ...aggregator.accountConfig,
@@ -39,7 +47,7 @@ const parseInitialValues = (aggregator) => {
 };
 
 const onBeforeSave = (formData) => {
-  const { aggregatorConfig, ...rest } = formData;
+  const { aggregatorConfig, ...rest } = omit(formData, 'displayLabel');
 
   // Transform aggregatorConfig from array to object
   const aggregatorConfigObj = {};
@@ -64,8 +72,13 @@ const AggregatorManager = ({
   mutator,
   stripes,
 }) => {
-  const entryList = sortBy(resources?.entries?.records || [], ['label']);
+  const intl = useIntl();
   const records = resources.aggregatorImpls?.records ?? [];
+  const entryList = sortBy(resources?.entries?.records || [], ['label'])
+    .map(entry => ({
+      ...entry,
+      displayLabel: formatUnsupportedLabel(intl, entry.label, isServiceTypeSupported(records, entry.serviceType)),
+    }));
   const implementations = records.length ? records[0].implementations : [];
   const serviceTypes = implementations.map(i => ({
     value: i.type,
@@ -75,13 +88,14 @@ const AggregatorManager = ({
   return (
     <div style={{ flex: '0 0 50%', left: '0px' }}>
       <EntryManager
+        aggregatorImpls={records}
         aggregators={serviceTypes}
         detailComponent={AggregatorDetails}
         enableDetailsActionMenu
         entryFormComponent={AggregatorForm}
         entryLabel={label}
         entryList={entryList}
-        nameKey="label"
+        nameKey="displayLabel"
         onBeforeSave={onBeforeSave}
         paneTitle={label}
         parentMutator={mutator}

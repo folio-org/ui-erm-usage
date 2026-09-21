@@ -1,6 +1,9 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import {
@@ -10,9 +13,19 @@ import {
   Row,
 } from '@folio/stripes/components';
 
+import {
+  formatUnsupportedLabel,
+  isServiceTypeSupported,
+} from '../../../util/harvesterImpls';
 import AggregatorContactInfo from './AggregatorContactInfo';
 
-const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
+const AggregatorInfoView = ({
+  aggregatorImpls,
+  aggregators,
+  usageDataProvider,
+  stripes,
+}) => {
+  const intl = useIntl();
   const aggregatorId = get(
     usageDataProvider,
     'harvestingConfig.aggregator.id',
@@ -24,12 +37,21 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
     ''
   );
 
+  const aggregatorSettings = aggregators?.[0]?.aggregatorSettings ?? [];
+  const aggregatorServiceType = aggregatorSettings.find(a => a.id === aggregatorId)?.serviceType;
+
+  const aggregatorNameLabel = formatUnsupportedLabel(
+    intl,
+    aggregatorName,
+    isServiceTypeSupported(aggregatorImpls, aggregatorServiceType)
+  );
+
   const hasPermGeneralSettingsManage = stripes.hasPerm('ui-erm-usage.generalSettings.manage');
   const displayAggregationName = hasPermGeneralSettingsManage ?
     <Link to={`/settings/eusage/aggregators/${aggregatorId}`}>
-      {aggregatorName}
+      {aggregatorNameLabel}
     </Link> :
-    <>{aggregatorName}</>;
+    <>{aggregatorNameLabel}</>;
   const aggregatorContact = (
     <AggregatorContactInfo aggregatorId={aggregatorId} stripes={stripes} />
   );
@@ -68,6 +90,8 @@ const AggregatorInfoView = ({ usageDataProvider, stripes }) => {
 };
 
 AggregatorInfoView.propTypes = {
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.shape()),
+  aggregators: PropTypes.arrayOf(PropTypes.shape()),
   stripes: PropTypes.shape({
     hasPerm: PropTypes.func.isRequired,
   }).isRequired,

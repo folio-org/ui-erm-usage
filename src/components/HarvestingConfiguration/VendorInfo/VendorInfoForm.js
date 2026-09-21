@@ -13,6 +13,7 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
+import { formatUnsupportedLabel } from '../../../util/harvesterImpls';
 import {
   notRequired,
   required,
@@ -33,10 +34,7 @@ const VendorInfoForm = ({
       ...harvesterImpls,
       {
         value: unsupportedServiceType,
-        label: intl.formatMessage(
-          { id: 'ui-erm-usage.udpHarvestingConfig.unsupportedValue' },
-          { value: unsupportedServiceType }
-        ),
+        label: formatUnsupportedLabel(intl, unsupportedServiceType, false),
       },
     ]
     : harvesterImpls;

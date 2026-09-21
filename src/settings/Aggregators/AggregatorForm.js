@@ -29,6 +29,10 @@ import stripesFinalForm from '@folio/stripes/final-form';
 import { MAIL } from '../../util/constants';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
 import {
+  formatUnsupportedLabel,
+  isServiceTypeSupported,
+} from '../../util/harvesterImpls';
+import {
   mail,
   required,
 } from '../../util/validate';
@@ -61,6 +65,7 @@ const AggregatorForm = ({
   pristine,
   submitting,
   values,
+  aggregatorImpls,
   aggregators,
 }) => {
   const [sections, setSections] = useState({
@@ -138,11 +143,13 @@ const AggregatorForm = ({
     setSections(secs);
   };
 
+  const savedServiceTypeSupported = isServiceTypeSupported(aggregatorImpls, initialValues?.serviceType);
+
   const renderPaneTitle = () => {
     const agg = initialValues || {};
 
     if (agg.id) {
-      return agg.label;
+      return formatUnsupportedLabel(intl, agg.label, savedServiceTypeSupported);
     }
 
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
@@ -278,6 +285,7 @@ const AggregatorForm = ({
 };
 
 AggregatorForm.propTypes = {
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.object),
   aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.object,

@@ -21,11 +21,12 @@ const aggregators = [
 
 jest.mock('../../util/downloadReport');
 
-const renderAggregatorDetails = (stripes, sendCallout) => {
+const renderAggregatorDetails = (stripes, sendCallout, aggregatorImpls = []) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <CalloutContext.Provider value={{ sendCallout }}>
         <AggregatorDetails
+          aggregatorImpls={aggregatorImpls}
           aggregators={aggregators}
           initialValues={initialValues}
           stripes={stripes}
@@ -85,5 +86,26 @@ describe('AggregatorDetails', () => {
 
       expect(sendCalloutMock).toHaveBeenCalledWith({ type: 'error', message: errMsg });
     });
+  });
+});
+
+describe('AggregatorDetails unsupported service type', () => {
+  let stripes;
+
+  beforeEach(() => {
+    stripes = useStripes();
+  });
+
+  test('should render aggregator name without suffix if service type is supported', () => {
+    renderAggregatorDetails(stripes, jest.fn(), [{ implementations: [{ type: 'NSS' }] }]);
+
+    expect(screen.getByText('Aggregator Test')).toBeVisible();
+    expect(screen.queryByText('Aggregator Test (Unsupported)')).not.toBeInTheDocument();
+  });
+
+  test('should render aggregator name with unsupported suffix if service type is not supported', () => {
+    renderAggregatorDetails(stripes, jest.fn(), [{ implementations: [{ type: 'OTHER' }] }]);
+
+    expect(screen.getByText('Aggregator Test (Unsupported)')).toBeVisible();
   });
 });

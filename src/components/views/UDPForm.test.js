@@ -109,12 +109,13 @@ const onClose = jest.fn();
 const handleSubmit = jest.fn();
 const onSubmit = jest.fn();
 
-const renderUDPForm = (stripes, udp = initialValues, harvesterImpls = stubHarvesterImpls) => {
+const renderUDPForm = (stripes, udp = initialValues, harvesterImpls = stubHarvesterImpls, aggregatorImpls = []) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>
       <MemoryRouter>
         <UDPForm
           data={{
+            aggregatorImpls,
             aggregators: stubAggregators,
             harvesterImpls,
           }}
@@ -231,6 +232,35 @@ describe('UDPForm', () => {
 
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
+    });
+  });
+
+  describe('unsupported aggregator', () => {
+    const aggregatorName = 'German National Statistics Server';
+    const supportedAggregatorImpls = [{ implementations: [{ type: 'NSS', isAggregator: true }] }];
+    const otherAggregatorImpls = [{ implementations: [{ type: 'OTHER', isAggregator: true }] }];
+
+    it('should mark aggregator with unsupported service type', () => {
+      renderUDPForm(stripes, initialValues, stubHarvesterImpls, otherAggregatorImpls);
+
+      const aggregatorSelect = screen.getByRole('combobox', { name: 'Aggregator' });
+      const option = within(aggregatorSelect).getByRole('option', { name: `${aggregatorName} (Unsupported)` });
+      expect(option).toBeInTheDocument();
+    });
+
+    it('should not mark aggregator with supported service type', () => {
+      renderUDPForm(stripes, initialValues, stubHarvesterImpls, supportedAggregatorImpls);
+
+      const aggregatorSelect = screen.getByRole('combobox', { name: 'Aggregator' });
+      expect(within(aggregatorSelect).getByRole('option', { name: aggregatorName })).toBeInTheDocument();
+      expect(within(aggregatorSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
+    });
+
+    it('should not mark aggregator while aggregator implementations are not loaded', () => {
+      renderUDPForm(stripes, initialValues, stubHarvesterImpls, []);
+
+      const aggregatorSelect = screen.getByRole('combobox', { name: 'Aggregator' });
+      expect(within(aggregatorSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
     });
   });
 

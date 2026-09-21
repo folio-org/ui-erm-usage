@@ -183,6 +183,7 @@ const UDPForm = ({
                 />
                 <HarvestingConfigurationForm
                   accordionId="editHarvestingConfig"
+                  aggregatorImpls={data.aggregatorImpls}
                   aggregators={data.aggregators}
                   expanded={sections.editHarvestingConfig}
                   form={form}
@@ -201,6 +202,7 @@ const UDPForm = ({
 
 UDPForm.propTypes = {
   data: PropTypes.shape({
+    aggregatorImpls: PropTypes.arrayOf(PropTypes.object),
     aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
     harvesterImpls: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,

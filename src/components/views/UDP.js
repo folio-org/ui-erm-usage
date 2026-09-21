@@ -512,6 +512,8 @@ const UDP = ({
                 label={<FormattedMessage id="ui-erm-usage.udp.harvestingConfiguration" />}
               >
                 <HarvestingConfigurationView
+                  aggregatorImpls={data.aggregatorImpls}
+                  aggregators={data.aggregators}
                   harvesterImpls={data.harvesterImpls}
                   settings={data.settings}
                   stripes={stripes}
@@ -607,6 +609,8 @@ const UDP = ({
 UDP.propTypes = {
   canEdit: PropTypes.bool,
   data: PropTypes.shape({
+    aggregatorImpls: PropTypes.arrayOf(PropTypes.shape()),
+    aggregators: PropTypes.arrayOf(PropTypes.shape()),
     counterReports: PropTypes.arrayOf(PropTypes.shape()),
     customReports: PropTypes.arrayOf(PropTypes.shape()),
     harvesterImpls: PropTypes.arrayOf(PropTypes.shape()),

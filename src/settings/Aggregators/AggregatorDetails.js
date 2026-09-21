@@ -1,7 +1,10 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
 import {
   Accordion,
@@ -16,15 +19,21 @@ import { stripesConnect } from '@folio/stripes/core';
 
 import { MOD_SETTINGS } from '../../util/constants';
 import aggregatorAccountConfigTypes from '../../util/data/aggregatorAccountConfigTypes';
+import {
+  formatUnsupportedLabel,
+  isServiceTypeSupported,
+} from '../../util/harvesterImpls';
 import { AggregatorConfigView } from './AggregatorConfig';
 import DownloadCredentialsButton from './DownloadCredentialsButton';
 
 const AggregatorDetails = ({
+  aggregatorImpls,
   initialValues,
   resources,
   stripes,
   aggregators,
 }) => {
+  const intl = useIntl();
   const [sections, setSections] = useState({
     generalInformation: true,
     aggregatorConfig: true,
@@ -56,6 +65,11 @@ const AggregatorDetails = ({
   const sType = aggregator.serviceType;
   const serviceType = aggregators.find((e) => e.value === sType);
   const serviceTypeLabel = serviceType?.label ?? <NoValue />;
+  const aggregatorNameLabel = formatUnsupportedLabel(
+    intl,
+    aggregator.label,
+    isServiceTypeSupported(aggregatorImpls, sType)
+  );
 
   const currentConfTypeValue = get(
     aggregator,
@@ -98,7 +112,7 @@ const AggregatorDetails = ({
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.aggregator.name" />}
-                value={aggregator.label}
+                value={aggregatorNameLabel}
               />
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}
@@ -169,6 +183,7 @@ AggregatorDetails.manifest = Object.freeze({
 });
 
 AggregatorDetails.propTypes = {
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.object),
   aggregators: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialValues: PropTypes.object,
   resources: PropTypes.shape({

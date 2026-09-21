@@ -13,6 +13,7 @@ import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
+import { splitHarvesterImpls } from '../util/harvesterImpls';
 import urls from '../util/urls';
 import withReportHandlers from './components/withReportHandlers';
 
@@ -111,7 +112,11 @@ function UDPViewRoute(props) {
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = get(resources, 'settings.records', []);
-  const harvesterImpls = resources.harvesterImpls?.records || [];
+  const aggregators = resources.aggregators?.records || [];
+  const {
+    aggregatorImpls,
+    harvesterImpls,
+  } = splitHarvesterImpls(resources.serviceImplementations?.records);
   const statsReloadCount = get(resources, 'statsReloadToggle', 0);
   const udpReloadCount = get(resources, 'udpReloadToggle', 0);
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
@@ -119,6 +124,8 @@ function UDPViewRoute(props) {
     <UDPView
       canEdit={stripes.hasPerm('ui-erm-usage.udp.edit')}
       data={{
+        aggregatorImpls,
+        aggregators,
         counterReports,
         customReports,
         harvesterImpls,
@@ -171,11 +178,12 @@ UDPViewRoute.propTypes = {
     }).isRequired,
   }).isRequired,
   resources: PropTypes.shape({
+    aggregators: PropTypes.shape(),
     counterReports: PropTypes.shape(),
     failedAttemptsSettings: PropTypes.shape(),
-    harvesterImpls: PropTypes.shape(),
     harvesterJobs: PropTypes.shape(),
     query: PropTypes.object,
+    serviceImplementations: PropTypes.shape(),
     settings: PropTypes.shape({
       records: PropTypes.arrayOf(PropTypes.object),
     }),
@@ -201,9 +209,17 @@ UDPViewRoute.manifest = Object.freeze({
     path: 'usage-data-providers/:{id}?unused=%{udpReloadToggle}',
     shouldRefresh: () => false,
   },
-  harvesterImpls: {
+  aggregators: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl?aggregator=false',
+    path: 'aggregator-settings',
+    params: {
+      limit: '1000',
+    },
+    shouldRefresh: () => false,
+  },
+  serviceImplementations: {
+    type: 'okapi',
+    path: 'erm-usage-harvester/impl',
     throwErrors: false,
   },
   harvesterJobs: {

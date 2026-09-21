@@ -16,11 +16,16 @@ import {
 } from '@folio/stripes/components';
 
 import {
+  formatUnsupportedLabel,
+  isServiceTypeSupported,
+} from '../../../util/harvesterImpls';
+import {
   notRequired,
   required,
 } from '../../../util/validate';
 
 const AggregatorInfoForm = ({
+  aggregatorImpls,
   aggregators,
   disabled,
   intl,
@@ -31,9 +36,10 @@ const AggregatorInfoForm = ({
       return [];
     }
 
-    const aggs = items.map((a) => {
-      return { value: a.id, label: a.label };
-    });
+    const aggs = items.map((a) => ({
+      value: a.id,
+      label: formatUnsupportedLabel(intl, a.label, isServiceTypeSupported(aggregatorImpls, a.serviceType)),
+    }));
     return sortBy(aggs, ['label', 'value']);
   };
 
@@ -74,6 +80,7 @@ const AggregatorInfoForm = ({
 };
 
 AggregatorInfoForm.propTypes = {
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.shape()),
   aggregators: PropTypes.arrayOf(PropTypes.shape()),
   disabled: PropTypes.bool,
   intl: PropTypes.object,

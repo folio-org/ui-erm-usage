@@ -23,6 +23,8 @@ import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
 
 const HarvestingConfigurationView = ({
+  aggregatorImpls,
+  aggregators,
   usageDataProvider,
   stripes,
   sushiCredsOpen,
@@ -42,6 +44,8 @@ const HarvestingConfigurationView = ({
     if (harvestVia === 'aggregator') {
       return (
         <AggregatorInfoView
+          aggregatorImpls={aggregatorImpls}
+          aggregators={aggregators}
           stripes={stripes}
           usageDataProvider={usageDataProvider}
         />
@@ -116,6 +120,8 @@ const HarvestingConfigurationView = ({
 };
 
 HarvestingConfigurationView.propTypes = {
+  aggregatorImpls: PropTypes.arrayOf(PropTypes.object),
+  aggregators: PropTypes.arrayOf(PropTypes.object),
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   settings: PropTypes.arrayOf(PropTypes.object).isRequired,

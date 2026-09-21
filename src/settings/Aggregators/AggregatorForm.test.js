@@ -26,11 +26,12 @@ const aggregators = [
 const onSubmit = jest.fn();
 const onCancel = jest.fn();
 
-const renderAggregratorForm = (stripes, initialValues = {}) => {
+const renderAggregratorForm = (stripes, initialValues = {}, aggregatorImpls = []) => {
   return renderWithIntl(
     <MemoryRouter>
       <StripesContext.Provider value={stripes}>
         <AggregatorForm
+          aggregatorImpls={aggregatorImpls}
           aggregators={aggregators}
           initialValues={initialValues}
           onCancel={onCancel}
@@ -172,6 +173,25 @@ describe('AggregatorForm pane title', () => {
     renderAggregratorForm(stripes, aggregatorTransformed);
 
     expect(screen.getByText('Aggregator Test')).toBeInTheDocument();
+  });
+
+  test('edit: renders the aggregator label without suffix if service type is supported', () => {
+    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'NSS' }] }]);
+
+    expect(screen.getByText('Aggregator Test')).toBeInTheDocument();
+    expect(screen.queryByText('Aggregator Test (Unsupported)')).not.toBeInTheDocument();
+  });
+
+  test('edit: renders the aggregator label with unsupported suffix if service type is not supported', () => {
+    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'OTHER' }] }]);
+
+    expect(screen.getByText('Aggregator Test (Unsupported)')).toBeInTheDocument();
+  });
+
+  test('edit: shows plain name in name field even if service type is not supported', () => {
+    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'OTHER' }] }]);
+
+    expect(screen.getByLabelText('Name', { exact: false })).toHaveValue('Aggregator Test');
   });
 
   test('duplicate: renders "New aggregator" as there is no id', () => {

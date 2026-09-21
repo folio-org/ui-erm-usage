@@ -6,6 +6,7 @@ import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
+import { splitHarvesterImpls } from '../util/harvesterImpls';
 import urls from '../util/urls';
 
 const UDPEditRoute = ({
@@ -37,7 +38,10 @@ const UDPEditRoute = ({
       .some((r) => r.isPending);
   };
 
-  const harvesterImpls = resources.harvesterImpls?.records || [];
+  const {
+    aggregatorImpls,
+    harvesterImpls,
+  } = splitHarvesterImpls(resources.serviceImplementations?.records);
   const aggregators = (resources.aggregators || {}).records || [];
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 
@@ -50,6 +54,7 @@ const UDPEditRoute = ({
   return (
     <UDPForm
       data={{
+        aggregatorImpls,
         aggregators,
         harvesterImpls,
       }}
@@ -69,11 +74,14 @@ UDPEditRoute.manifest = Object.freeze({
   aggregators: {
     type: 'okapi',
     path: 'aggregator-settings',
+    params: {
+      limit: '1000',
+    },
     shouldRefresh: () => false,
   },
-  harvesterImpls: {
+  serviceImplementations: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl?aggregator=false',
+    path: 'erm-usage-harvester/impl',
     shouldRefresh: () => false,
   },
   usageDataProvider: {
@@ -98,7 +106,7 @@ UDPEditRoute.propTypes = {
   }).isRequired,
   mutator: PropTypes.shape({
     aggregators: PropTypes.object,
-    harvesterImpls: PropTypes.object,
+    serviceImplementations: PropTypes.object,
     usageDataProvider: PropTypes.shape({
       POST: PropTypes.func.isRequired,
       PUT: PropTypes.func.isRequired,
@@ -106,7 +114,7 @@ UDPEditRoute.propTypes = {
   }),
   resources: PropTypes.shape({
     aggregators: PropTypes.object,
-    harvesterImpls: PropTypes.object,
+    serviceImplementations: PropTypes.object,
     usageDataProvider: PropTypes.object,
   }).isRequired,
   stripes: PropTypes.shape({

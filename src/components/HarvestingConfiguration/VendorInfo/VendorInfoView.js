@@ -1,6 +1,9 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 
 import {
   Col,
@@ -11,22 +14,19 @@ import {
 import { stripesConnect } from '@folio/stripes/core';
 
 import { COUNTER_SUSHI } from '../../../util/constants';
+import { formatUnsupportedLabel } from '../../../util/harvesterImpls';
 
 const VendorInfoView = ({
   usageDataProvider,
   harvesterImpls,
   isServiceTypeSupported = true,
 }) => {
+  const intl = useIntl();
   const currentSType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType', '');
   const serviceType = harvesterImpls?.find((e) => e.value === currentSType);
   const serviceTypeLabel = isServiceTypeSupported
     ? serviceType?.label ?? <NoValue />
-    : (
-      <FormattedMessage
-        id="ui-erm-usage.udpHarvestingConfig.unsupportedValue"
-        values={{ value: currentSType }}
-      />
-    );
+    : formatUnsupportedLabel(intl, currentSType, false);
 
   return (
     <Row>

@@ -7,6 +7,7 @@ import harvesterImpls from '../../../test/fixtures/harvesterImpls';
 import settings from '../../../test/fixtures/settings';
 import udp from '../../../test/fixtures/udp';
 import renderWithIntl from '../../../test/jest/helpers';
+import { splitHarvesterImpls } from '../../util/harvesterImpls';
 import HarvestingConfigurationView from './HarvestingConfigurationView';
 
 const onToggle = jest.fn;
@@ -125,5 +126,64 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }), []);
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('HarvestingConfigurationView with unsupported aggregator', () => {
+  const nssUdp = {
+    ...udp,
+    harvestingConfig: {
+      ...udp.harvestingConfig,
+      aggregator: {
+        ...udp.harvestingConfig.aggregator,
+        name: 'Nationaler Statistikserver',
+      },
+    },
+  };
+
+  const aggregators = [
+    {
+      aggregatorSettings: [
+        {
+          id: udp.harvestingConfig.aggregator.id,
+          label: 'Nationaler Statistikserver',
+          serviceType: 'NSS',
+        },
+      ],
+    },
+  ];
+
+  const renderView = (aggregatorImpls) => {
+    return renderWithIntl(
+      <MemoryRouter>
+        <HarvestingConfigurationView
+          aggregatorImpls={aggregatorImpls}
+          aggregators={aggregators}
+          harvesterImpls={harvesterImpls}
+          onToggle={onToggle}
+          settings={settings}
+          stripes={{ hasPerm: () => true }}
+          usageDataProvider={nssUdp}
+        />
+      </MemoryRouter>
+    );
+  };
+
+  test('should render supported aggregator without suffix', () => {
+    renderView([{ implementations: [{ type: 'NSS', isAggregator: true }] }]);
+    expect(screen.getByText('Nationaler Statistikserver')).toBeInTheDocument();
+    expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
+  });
+
+  // the view route passes the result of splitHarvesterImpls, not an empty array
+  test('should not append (Unsupported) while implementations are not loaded', () => {
+    renderView(splitHarvesterImpls(undefined).aggregatorImpls);
+    expect(screen.getByText('Nationaler Statistikserver')).toBeInTheDocument();
+    expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
+  });
+
+  test('should append (Unsupported) to aggregator with unsupported service type', () => {
+    renderView([{ implementations: [{ type: 'OTHER', isAggregator: true }] }]);
+    expect(screen.getByText('Nationaler Statistikserver (Unsupported)')).toBeInTheDocument();
   });
 });

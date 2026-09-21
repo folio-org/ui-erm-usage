@@ -1,6 +1,8 @@
 import extractHarvesterImpls, {
+  formatUnsupportedLabel,
   getImplementations,
   isServiceTypeSupported,
+  splitHarvesterImpls,
 } from './harvesterImpls';
 
 const records = [
@@ -60,6 +62,55 @@ describe('harvesterImpls', () => {
 
     it('should return false if no implementations are available', () => {
       expect(isServiceTypeSupported([{ implementations: [] }], 'cs41')).toBe(false);
+    });
+  });
+
+  describe('splitHarvesterImpls', () => {
+    it('should split implementations by isAggregator', () => {
+      const nss = { type: 'NSS', name: 'Nationaler Statistikserver', isAggregator: true };
+      const cs51 = { type: 'cs51', name: 'Counter 5.1', isAggregator: false };
+
+      expect(splitHarvesterImpls([{ implementations: [nss, cs51] }])).toEqual({
+        aggregatorImpls: [{ implementations: [nss] }],
+        harvesterImpls: [{ implementations: [cs51] }],
+      });
+    });
+
+    it.each([undefined, null, []])('should return empty records if records are %p', (emptyRecords) => {
+      expect(splitHarvesterImpls(emptyRecords)).toEqual({
+        aggregatorImpls: [],
+        harvesterImpls: [],
+      });
+    });
+
+    // the routes pass the result of splitHarvesterImpls to isServiceTypeSupported
+    it('should not mark service types as unsupported while implementations are not loaded', () => {
+      const { aggregatorImpls, harvesterImpls } = splitHarvesterImpls(undefined);
+
+      expect(isServiceTypeSupported(aggregatorImpls, 'NSS')).toBe(true);
+      expect(isServiceTypeSupported(harvesterImpls, 'cs41')).toBe(true);
+    });
+
+    it('should mark aggregator service types as unsupported if no aggregator implementations are loaded', () => {
+      const cs51 = { type: 'cs51', name: 'Counter 5.1', isAggregator: false };
+      const { aggregatorImpls, harvesterImpls } = splitHarvesterImpls([{ implementations: [cs51] }]);
+
+      expect(isServiceTypeSupported(aggregatorImpls, 'NSS')).toBe(false);
+      expect(isServiceTypeSupported(harvesterImpls, 'cs51')).toBe(true);
+    });
+  });
+
+  describe('formatUnsupportedLabel', () => {
+    const intl = { formatMessage: jest.fn(({ id }, { value }) => `${value} [${id}]`) };
+
+    it('should return the label unchanged if supported', () => {
+      expect(formatUnsupportedLabel(intl, 'NSS', true)).toBe('NSS');
+    });
+
+    it('should add the unsupported message if not supported', () => {
+      const expected = 'NSS [ui-erm-usage.udpHarvestingConfig.unsupportedValue]';
+
+      expect(formatUnsupportedLabel(intl, 'NSS', false)).toBe(expected);
     });
   });
 });
