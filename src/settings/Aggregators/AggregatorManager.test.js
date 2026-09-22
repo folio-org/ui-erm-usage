@@ -56,14 +56,14 @@ describe('AggregatorManager', () => {
       expect.objectContaining({
         parentMutator: defaultProps.mutator,
         entryList: [
-          { label: 'Entry A', displayLabel: 'Entry A' },
-          { label: 'Entry B', displayLabel: 'Entry B' },
+          { label: 'Entry A' },
+          { label: 'Entry B' },
         ],
         detailComponent: expect.any(Function),
         entryFormComponent: expect.any(Function),
         paneTitle: 'Test Label',
         entryLabel: 'Test Label',
-        nameKey: 'displayLabel',
+        nameKey: 'label',
         permissions: {
           put: 'ui-erm-usage.generalSettings.manage',
           post: 'ui-erm-usage.generalSettings.manage',
@@ -116,58 +116,6 @@ describe('AggregatorManager', () => {
   });
 });
 
-describe('AggregatorManager unsupported service type', () => {
-  const renderWithEntries = (entries) => {
-    renderWithIntl(
-      <AggregatorManager
-        {...defaultProps}
-        resources={{
-          ...defaultProps.resources,
-          entries: { records: entries },
-        }}
-      />
-    );
-    return EntryManager.mock.calls.at(-1)[0];
-  };
-
-  it('should add (Unsupported) to displayLabel of entries with unsupported service type', () => {
-    const { entryList } = renderWithEntries([
-      { label: 'Supported', serviceType: 'type1' },
-      { label: 'Unsupported', serviceType: 'NSS' },
-    ]);
-
-    expect(entryList).toEqual([
-      { label: 'Supported', serviceType: 'type1', displayLabel: 'Supported' },
-      { label: 'Unsupported', serviceType: 'NSS', displayLabel: 'Unsupported (Unsupported)' },
-    ]);
-  });
-
-  it('should not add (Unsupported) while aggregator implementations are not loaded', () => {
-    renderWithIntl(
-      <AggregatorManager
-        {...defaultProps}
-        resources={{
-          entries: { records: [{ label: 'Agg', serviceType: 'NSS' }] },
-          aggregatorImpls: { records: [] },
-        }}
-      />
-    );
-    const { entryList } = EntryManager.mock.calls.at(-1)[0];
-
-    expect(entryList[0].displayLabel).toBe('Agg');
-  });
-
-  it('should remove displayLabel before saving and when editing', () => {
-    const { onBeforeSave, parseInitialValues } = renderWithEntries([]);
-    const entry = { label: 'Agg', serviceType: 'NSS', displayLabel: 'Agg (Unsupported)' };
-
-    expect(onBeforeSave(entry)).not.toHaveProperty('displayLabel');
-    expect(onBeforeSave(entry).label).toBe('Agg');
-    expect(parseInitialValues(entry)).not.toHaveProperty('displayLabel');
-    expect(parseInitialValues(entry).label).toBe('Agg');
-  });
-});
-
 describe('Aggregator action menu', () => {
   // Smoke test with the real EntryManager (not the stub above): confirms
   // that our wiring (enableDetailsActionMenu + the put/post/delete
@@ -209,8 +157,7 @@ describe('Aggregator action menu', () => {
       </StripesContext.Provider>
     );
 
-    // aggregator fixture has service type NSS, which is not part of the stubbed implementations
-    await userEvent.click(screen.getByRole('link', { name: `${aggregator.label} (Unsupported)` }));
+    await userEvent.click(screen.getByRole('link', { name: aggregator.label }));
     await userEvent.click(screen.getByRole('button', { name: /Actions/ }));
 
     expect(screen.getByRole('button', { name: /Duplicate/ })).toBeInTheDocument();
