@@ -143,13 +143,11 @@ const AggregatorForm = ({
     setSections(secs);
   };
 
-  const savedServiceTypeSupported = isServiceTypeSupported(aggregatorImpls, initialValues?.serviceType);
-
   const renderPaneTitle = () => {
     const agg = initialValues || {};
 
     if (agg.id) {
-      return formatUnsupportedLabel(intl, agg.label, savedServiceTypeSupported);
+      return agg.label;
     }
 
     return <FormattedMessage id="ui-erm-usage.aggregator.form.newAggregator" />;
@@ -163,6 +161,15 @@ const AggregatorForm = ({
   );
 
   const disabled = !stripes.hasPerm('ui-erm-usage.generalSettings.manage');
+
+  // keep an unsupported service type selectable, so the saved value is shown
+  const selectedServiceType = values?.serviceType;
+  const serviceTypeOptions = isServiceTypeSupported(aggregatorImpls, selectedServiceType)
+    ? aggregators
+    : [
+      ...aggregators,
+      { value: selectedServiceType, label: formatUnsupportedLabel(intl, selectedServiceType, false) },
+    ];
 
   const configType = getSelectedConfigType();
   const configTypeIsMail = configType === MAIL;
@@ -209,7 +216,7 @@ const AggregatorForm = ({
                     />
                     <Field
                       component={Select}
-                      dataOptions={aggregators}
+                      dataOptions={serviceTypeOptions}
                       fullWidth
                       id="input-aggregator-service-type"
                       label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}

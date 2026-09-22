@@ -96,16 +96,24 @@ describe('AggregatorDetails unsupported service type', () => {
     stripes = useStripes();
   });
 
-  test('should render aggregator name without suffix if service type is supported', () => {
+  test('should render service type name if service type is supported', () => {
     renderAggregatorDetails(stripes, jest.fn(), [{ implementations: [{ type: 'NSS' }] }]);
 
-    expect(screen.getByText('Aggregator Test')).toBeVisible();
-    expect(screen.queryByText('Aggregator Test (Unsupported)')).not.toBeInTheDocument();
+    expect(screen.getByText('Nationaler Statistikserver')).toBeVisible();
+    expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
   });
 
-  test('should render aggregator name with unsupported suffix if service type is not supported', () => {
+  test('should render service type with unsupported suffix if service type is not supported', () => {
     renderAggregatorDetails(stripes, jest.fn(), [{ implementations: [{ type: 'OTHER' }] }]);
 
-    expect(screen.getByText('Aggregator Test (Unsupported)')).toBeVisible();
+    expect(screen.getByText('NSS (Unsupported)')).toBeVisible();
+    expect(screen.getByText('Aggregator Test')).toBeVisible();
+  });
+
+  test('should render service type name while implementations are not loaded', () => {
+    renderAggregatorDetails(stripes, jest.fn(), []);
+
+    expect(screen.getByText('Nationaler Statistikserver')).toBeVisible();
+    expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
   });
 });

@@ -64,12 +64,9 @@ const AggregatorDetails = ({
   const aggregator = initialValues;
   const sType = aggregator.serviceType;
   const serviceType = aggregators.find((e) => e.value === sType);
-  const serviceTypeLabel = serviceType?.label ?? <NoValue />;
-  const aggregatorNameLabel = formatUnsupportedLabel(
-    intl,
-    aggregator.label,
-    isServiceTypeSupported(aggregatorImpls, sType)
-  );
+  const serviceTypeLabel = isServiceTypeSupported(aggregatorImpls, sType)
+    ? serviceType?.label ?? <NoValue />
+    : formatUnsupportedLabel(intl, sType, false);
 
   const currentConfTypeValue = get(
     aggregator,
@@ -112,7 +109,7 @@ const AggregatorDetails = ({
             <Col xs={4}>
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.aggregator.name" />}
-                value={aggregatorNameLabel}
+                value={aggregator.label}
               />
               <KeyValue
                 label={<FormattedMessage id="ui-erm-usage.aggregator.serviceType" />}

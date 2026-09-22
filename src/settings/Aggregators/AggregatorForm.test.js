@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import {
   screen,
   waitFor,
+  within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
@@ -175,29 +176,38 @@ describe('AggregatorForm pane title', () => {
     expect(screen.getByText('Aggregator Test')).toBeInTheDocument();
   });
 
-  test('edit: renders the aggregator label without suffix if service type is supported', () => {
-    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'NSS' }] }]);
-
-    expect(screen.getByText('Aggregator Test')).toBeInTheDocument();
-    expect(screen.queryByText('Aggregator Test (Unsupported)')).not.toBeInTheDocument();
-  });
-
-  test('edit: renders the aggregator label with unsupported suffix if service type is not supported', () => {
-    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'OTHER' }] }]);
-
-    expect(screen.getByText('Aggregator Test (Unsupported)')).toBeInTheDocument();
-  });
-
-  test('edit: shows plain name in name field even if service type is not supported', () => {
-    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'OTHER' }] }]);
-
-    expect(screen.getByLabelText('Name', { exact: false })).toHaveValue('Aggregator Test');
-  });
-
   test('duplicate: renders "New aggregator" as there is no id', () => {
     renderAggregratorForm(stripes, omit(aggregatorTransformed, 'id'));
 
     expect(screen.getByText('New aggregator')).toBeInTheDocument();
     expect(screen.queryByText('Aggregator Test')).not.toBeInTheDocument();
+  });
+});
+
+describe('AggregatorForm unsupported service type', () => {
+  let stripes;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    stripes = useStripes();
+  });
+
+  test('edit: adds unsupported service type as selected option', () => {
+    const unsupportedAggregator = { ...aggregatorTransformed, serviceType: 'TESTAGG' };
+    renderAggregratorForm(stripes, unsupportedAggregator, [{ implementations: [{ type: 'NSS' }] }]);
+
+    const serviceTypeSelect = screen.getByLabelText('Service type', { exact: false });
+    expect(serviceTypeSelect).toHaveValue('TESTAGG');
+    expect(within(serviceTypeSelect).getByRole('option', { name: 'TESTAGG (Unsupported)' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Name', { exact: false })).toHaveValue('Aggregator Test');
+    expect(screen.queryByText('Aggregator Test (Unsupported)')).not.toBeInTheDocument();
+  });
+
+  test('edit: does not add an unsupported option for a supported service type', () => {
+    renderAggregratorForm(stripes, aggregatorTransformed, [{ implementations: [{ type: 'NSS' }] }]);
+
+    const serviceTypeSelect = screen.getByLabelText('Service type', { exact: false });
+    expect(serviceTypeSelect).toHaveValue('NSS');
+    expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
   });
 });
