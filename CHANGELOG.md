@@ -21,6 +21,7 @@
 * Use constants for proper names ([UIEUS-546](https://folio-org.atlassian.net/browse/UIEUS-546))
 * Service type: Show "(Unsupported)" if no longer supported by the harvester ([UIEUS-552](https://folio-org.atlassian.net/browse/UIEUS-552))
 * Move validation for year to validate file, fix typo in translation key ([UIEUS-549](https://folio-org.atlassian.net/browse/UIEUS-549))
+* Remove "counter" label for report release ([UIEUS-561](https://folio-org.atlassian.net/browse/UIEUS-561))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
