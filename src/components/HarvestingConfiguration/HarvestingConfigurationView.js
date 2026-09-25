@@ -64,6 +64,7 @@ const HarvestingConfigurationView = ({
     requestedReports = reports.join(', ');
   }
 
+  const reportRelease = usageDataProvider.harvestingConfig?.reportRelease;
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
   const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;
 
@@ -74,7 +75,7 @@ const HarvestingConfigurationView = ({
         <Col xs={3}>
           <KeyValue
             label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
-            value={usageDataProvider.harvestingConfig?.reportRelease}
+            value={reportRelease}
           />
         </Col>
         <Col xs={3}>
