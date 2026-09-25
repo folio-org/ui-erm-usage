@@ -38,7 +38,6 @@ const UDPEditRoute = ({
   };
 
   const harvesterImpls = resources.harvesterImpls?.records || [];
-  const aggregators = (resources.aggregators || {}).records || [];
   const udp = get(resources, 'usageDataProvider.records[0]', {});
 
   if (!hasPerms) return <NoPermissionMessage />;
@@ -50,7 +49,6 @@ const UDPEditRoute = ({
   return (
     <UDPForm
       data={{
-        aggregators,
         harvesterImpls,
       }}
       handlers={{
@@ -66,11 +64,6 @@ const UDPEditRoute = ({
 };
 
 UDPEditRoute.manifest = Object.freeze({
-  aggregators: {
-    type: 'okapi',
-    path: 'aggregator-settings',
-    shouldRefresh: () => false,
-  },
   harvesterImpls: {
     type: 'okapi',
     path: 'erm-usage-harvester/impl?aggregator=false',
@@ -97,7 +90,6 @@ UDPEditRoute.propTypes = {
     }).isRequired,
   }).isRequired,
   mutator: PropTypes.shape({
-    aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProvider: PropTypes.shape({
       POST: PropTypes.func.isRequired,
@@ -105,7 +97,6 @@ UDPEditRoute.propTypes = {
     }).isRequired,
   }),
   resources: PropTypes.shape({
-    aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProvider: PropTypes.object,
   }).isRequired,

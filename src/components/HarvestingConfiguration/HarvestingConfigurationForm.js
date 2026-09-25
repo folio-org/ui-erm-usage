@@ -18,7 +18,6 @@ import extractHarvesterImpls, {
   isServiceTypeSupported,
 } from '../../util/harvesterImpls';
 import formCss from '../../util/sharedStyles/form.css';
-import { AggregatorInfoForm } from './AggregatorInfo';
 import {
   HarvestingEndField,
   HarvestingStartField,
@@ -31,7 +30,6 @@ import { VendorInfoForm } from './VendorInfo';
 
 const HarvestingConfigurationForm = ({
   accordionId,
-  aggregators,
   expanded,
   harvesterImplementations,
   form,
@@ -132,16 +130,6 @@ const HarvestingConfigurationForm = ({
                   required={isHarvestingStatusActive}
                 />
               </Col>
-              <Col className={formCss.centerNote} xs={8}>
-                <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
-              </Col>
-            </Row>
-            <Row>
-              <AggregatorInfoForm
-                aggregators={aggregators}
-                disabled={harvestVia !== 'aggregator'}
-                isRequired={isHarvestingStatusActive}
-              />
             </Row>
             <VendorInfoForm
               changeSelectedServiceType={changeSelectedServiceType}
@@ -155,7 +143,6 @@ const HarvestingConfigurationForm = ({
             <SushiCredentialsForm
               form={form}
               required={isHarvestingStatusActive}
-              useAggregator={harvestVia === 'aggregator'}
               values={values}
             />
           </section>
@@ -196,7 +183,6 @@ const HarvestingConfigurationForm = ({
 
 HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,
-  aggregators: PropTypes.arrayOf(PropTypes.shape()),
   expanded: PropTypes.bool,
   form: PropTypes.shape({
     change: PropTypes.func,

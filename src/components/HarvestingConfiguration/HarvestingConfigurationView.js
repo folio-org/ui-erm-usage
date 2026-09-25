@@ -18,13 +18,11 @@ import {
 
 import { COUNTER } from '../../util/constants';
 import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
-import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
 
 const HarvestingConfigurationView = ({
   usageDataProvider,
-  stripes,
   sushiCredsOpen,
   onToggle,
   settings,
@@ -39,22 +37,13 @@ const HarvestingConfigurationView = ({
       return null;
     }
 
-    if (harvestVia === 'aggregator') {
-      return (
-        <AggregatorInfoView
-          stripes={stripes}
-          usageDataProvider={usageDataProvider}
-        />
-      );
-    } else {
-      return (
-        <VendorInfoView
-          harvesterImpls={extractHarvesterImpls(harvesterImpls)}
-          isServiceTypeSupported={serviceTypeSupported}
-          usageDataProvider={usageDataProvider}
-        />
-      );
-    }
+    return (
+      <VendorInfoView
+        harvesterImpls={extractHarvesterImpls(harvesterImpls)}
+        isServiceTypeSupported={serviceTypeSupported}
+        usageDataProvider={usageDataProvider}
+      />
+    );
   };
 
   const provider = createProvider();
@@ -119,7 +108,6 @@ HarvestingConfigurationView.propTypes = {
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   settings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  stripes: PropTypes.object.isRequired,
   sushiCredsOpen: PropTypes.bool,
   usageDataProvider: PropTypes.object.isRequired,
 };

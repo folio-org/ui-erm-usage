@@ -17,7 +17,7 @@ import {
 } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { useAggregator, values, form } = props;
+  const { values, form } = props;
   const intl = useIntl();
 
   const isDisableApiKey = values.harvestingConfig?.reportRelease === '4';
@@ -28,14 +28,14 @@ const SushiCredentialsForm = (props) => {
         <Col xs={4}>
           <Field
             component={TextField}
-            data={!useAggregator && props.required ? 1 : 0}
+            data={props.required ? 1 : 0}
             fullWidth
             id="addudp_customerid"
             label={<FormattedMessage id="ui-erm-usage.credentials.customerId" />}
             name="sushiCredentials.customerId"
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.customerId' })}
-            required={!useAggregator && props.required}
-            validate={!useAggregator && props.required ? required : notRequired}
+            required={props.required}
+            validate={props.required ? required : notRequired}
           />
         </Col>
         <Col xs={4}>
@@ -105,7 +105,6 @@ const SushiCredentialsForm = (props) => {
 SushiCredentialsForm.propTypes = {
   form: PropTypes.shape(),
   required: PropTypes.bool,
-  useAggregator: PropTypes.bool,
   values: PropTypes.shape(),
 };
 

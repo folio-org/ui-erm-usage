@@ -7,7 +7,6 @@ export const YEAR_MONTH_FORMAT = 'YYYY-MM';
 export const COUNTER = 'Counter';
 export const COUNTER_SUSHI = 'Counter / Sushi';
 export const CSV = 'CSV';
-export const MAIL = 'Mail';
 export const XLSX = 'XLSX';
 
 export const MOD_SETTINGS = {

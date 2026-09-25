@@ -12,7 +12,6 @@ import {
 } from '@folio/stripes/core';
 
 import '../../../test/jest/__mock__';
-import aggregator from '../../../test/fixtures/aggregator';
 import udps from '../../../test/fixtures/udps';
 import renderWithIntl from '../../../test/jest/helpers/renderWithIntl';
 import UDPs from './UDPs';
@@ -47,7 +46,6 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
         <UDPs
           data={{
             udps: udpsData,
-            aggregators: [aggregator],
             tags: [],
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
@@ -61,7 +59,7 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
           querySetter={jest.fn()}
           searchString="status.active"
           selectedRecordId=""
-          visibleColumns={['label', 'reportReleases', 'harvestingStatus', 'Latest statistics', 'aggregator']}
+          visibleColumns={['label', 'reportReleases', 'harvestingStatus', 'Latest statistics']}
           {...props}
         />
       </ModuleHierarchyProvider>
@@ -169,10 +167,6 @@ describe('UDPs SASQ View', () => {
       expect(screen.getByRole('button', { name: 'Harvest via filter list' })).toBeInTheDocument();
     });
 
-    it('should be present the aggregators filter', () => {
-      expect(screen.getByRole('button', { name: 'Aggregators filter list' })).toBeInTheDocument();
-    });
-
     it('should be present the report types filter', () => {
       expect(screen.getByRole('button', { name: 'Report types filter list' })).toBeInTheDocument();
     });
@@ -251,7 +245,6 @@ describe('UDPs SASQ View', () => {
       expect(screen.getByText('Provider name')).toBeInTheDocument();
       expect(document.querySelector('#clickable-list-column-harvestingstatus')).toBeInTheDocument();
       expect(screen.getByText('Latest statistics')).toBeInTheDocument();
-      expect(document.querySelector('#list-column-aggregator')).toBeInTheDocument();
       expect(document.querySelector('#clickable-list-column-reportreleases')).toBeInTheDocument();
     });
   });

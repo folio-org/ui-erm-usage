@@ -18,7 +18,7 @@ const HarvestingViaSelect = (props) => {
       dataOptions={harvestingViaOptions}
       fullWidth
       id="harvestingConfig.harvestVia"
-      label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestViaAggregator" />}
+      label={<FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.harvestStatisticsVia" />}
       name="harvestingConfig.harvestVia"
       onChange={props.onChange}
       required={props.required}

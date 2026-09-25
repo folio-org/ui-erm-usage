@@ -34,7 +34,6 @@ const UDPCreateRoute = ({
   };
 
   const harvesterImpls = resources.harvesterImpls?.records || [];
-  const aggregators = (resources.aggregators || {}).records || [];
 
   const implList = harvesterImpls[0]?.implementations ?? [];
   const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
@@ -48,7 +47,6 @@ const UDPCreateRoute = ({
   return (
     <UDPForm
       data={{
-        aggregators,
         harvesterImpls,
       }}
       handlers={{
@@ -72,11 +70,6 @@ const UDPCreateRoute = ({
 };
 
 UDPCreateRoute.manifest = Object.freeze({
-  aggregators: {
-    type: 'okapi',
-    path: 'aggregator-settings',
-    shouldRefresh: () => false,
-  },
   harvesterImpls: {
     type: 'okapi',
     path: 'erm-usage-harvester/impl?aggregator=false',
@@ -99,14 +92,12 @@ UDPCreateRoute.propTypes = {
     search: PropTypes.string.isRequired,
   }).isRequired,
   mutator: PropTypes.shape({
-    aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProviders: PropTypes.shape({
       POST: PropTypes.func.isRequired,
     }).isRequired,
   }),
   resources: PropTypes.shape({
-    aggregators: PropTypes.object,
     harvesterImpls: PropTypes.object,
     usageDataProviders: PropTypes.object,
   }).isRequired,

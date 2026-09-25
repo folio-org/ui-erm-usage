@@ -16,17 +16,7 @@ const filterGroups = [
     name: 'harvestVia',
     cql: 'harvestingConfig.harvestVia',
     operator: '=',
-    values: [
-      { name: COUNTER_SUSHI, cql: 'sushi' },
-      { name: <FormattedMessage id="ui-erm-usage.information.aggregator" />, cql: 'aggregator' },
-    ],
-  },
-  {
-    name: 'aggregators',
-    cql: 'harvestingConfig.aggregator.name',
-    operator: '=',
-    values: [],
-    restrictWhenAllSelected: true,
+    values: [{ name: COUNTER_SUSHI, cql: 'sushi' }],
   },
   {
     name: 'hasFailedReport',
