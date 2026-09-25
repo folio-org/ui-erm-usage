@@ -1,6 +1,9 @@
 import { MemoryRouter } from 'react-router-dom';
 
-import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  screen,
+  within,
+} from '@folio/jest-config-stripes/testing-library/react';
 import { useStripes } from '@folio/stripes/core';
 
 import harvesterImpls from '../../../test/fixtures/harvesterImpls';
@@ -94,6 +97,8 @@ describe('HarvestingConfigurationView with unsupported values', () => {
     );
   };
 
+  const getReportReleaseValue = () => screen.getByText('Report release').closest('[class*="kvRoot"]');
+
   // the report release is always shown as it is, independent of the service type
   describe.each(['aggregator', 'sushi'])('report release with harvestVia %s', (harvestVia) => {
     test.each([
@@ -102,8 +107,16 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       ['no', undefined],
     ])('should render report release without suffix for %s service type', (_description, serviceType) => {
       renderView(createUdp({ harvestVia, reportRelease: '4', serviceType }));
-      expect(screen.getByText('Counter 4')).toBeInTheDocument();
-      expect(screen.queryByText('Counter 4 (Unsupported)')).not.toBeInTheDocument();
+      expect(within(getReportReleaseValue()).getByText('4')).toBeInTheDocument();
+      expect(within(getReportReleaseValue()).queryByText('4 (Unsupported)')).not.toBeInTheDocument();
+    });
+
+    test.each([
+      ['undefined', undefined],
+      ['empty', ''],
+    ])('should render NoValue for %s report release', (_description, reportRelease) => {
+      renderView(createUdp({ harvestVia, reportRelease, serviceType: 'cs51' }));
+      expect(within(getReportReleaseValue()).getByText('-')).toBeInTheDocument();
     });
   });
 
@@ -118,7 +131,7 @@ describe('HarvestingConfigurationView with unsupported values', () => {
     test('should append (Unsupported) to unsupported service type', () => {
       renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }));
       expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
-      expect(screen.getByText('Counter 5.1')).toBeInTheDocument();
+      expect(within(getReportReleaseValue()).getByText('5.1')).toBeInTheDocument();
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {

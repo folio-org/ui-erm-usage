@@ -16,7 +16,6 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-import { COUNTER } from '../../util/constants';
 import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
 import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
@@ -65,9 +64,7 @@ const HarvestingConfigurationView = ({
     requestedReports = reports.join(', ');
   }
 
-  const counterVersion = get(usageDataProvider, 'harvestingConfig.reportRelease', '');
-  const reportReleaseLabel = counterVersion ? `${COUNTER} ${counterVersion}` : <NoValue />;
-
+  const reportRelease = usageDataProvider.harvestingConfig?.reportRelease;
   const harvestingStart = usageDataProvider.harvestingConfig?.harvestingStart ?? <NoValue />;
   const harvestingEnd = usageDataProvider.harvestingConfig?.harvestingEnd ?? <NoValue />;
 
@@ -78,7 +75,7 @@ const HarvestingConfigurationView = ({
         <Col xs={3}>
           <KeyValue
             label={<FormattedMessage id="ui-erm-usage.udpHarvestingConfig.reportRelease" />}
-            value={reportReleaseLabel}
+            value={reportRelease}
           />
         </Col>
         <Col xs={3}>
