@@ -22,7 +22,6 @@ import {
   HarvestingEndField,
   HarvestingStartField,
   HarvestingStatusSelect,
-  HarvestingViaSelect,
 } from './Fields';
 import SelectedReportsForm from './SelectedReports';
 import { SushiCredentialsForm } from './SushiCredentials';
@@ -69,13 +68,6 @@ const HarvestingConfigurationForm = ({
     }
   };
 
-  const changeSelectedHarvestVia = (event) => {
-    event.preventDefault();
-
-    form.change(event.target.name, (event.target.value === '') ? undefined : event.target.value);
-    form.resetFieldState('sushiCredentials.customerId');
-  };
-
   const confirmClearReports = (confirmation) => {
     if (confirmation) {
       form.mutators.clearSelectedReports({}, values);
@@ -88,7 +80,6 @@ const HarvestingConfigurationForm = ({
   };
 
   const onToggleAccordion = onToggle;
-  const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
   const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
   const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
@@ -123,17 +114,8 @@ const HarvestingConfigurationForm = ({
             </Row>
           </section>
           <section className={formCss.separator}>
-            <Row>
-              <Col xs={4}>
-                <HarvestingViaSelect
-                  onChange={changeSelectedHarvestVia}
-                  required={isHarvestingStatusActive}
-                />
-              </Col>
-            </Row>
             <VendorInfoForm
               changeSelectedServiceType={changeSelectedServiceType}
-              disabled={harvestVia !== 'sushi'}
               harvesterImpls={extractHarvesterImpls(harvesterImplementations)}
               isRequired={isHarvestingStatusActive}
               unsupportedServiceType={unsupportedServiceType}

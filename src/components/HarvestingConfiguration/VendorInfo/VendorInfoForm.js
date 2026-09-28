@@ -22,7 +22,6 @@ import css from './VendorInfoForm.css';
 
 const VendorInfoForm = ({
   changeSelectedServiceType,
-  disabled,
   harvesterImpls,
   intl,
   isRequired,
@@ -47,16 +46,15 @@ const VendorInfoForm = ({
         <Col xs={4}>
           <Field
             component={Select}
-            data={!disabled && isRequired ? 1 : 0}
+            data={isRequired ? 1 : 0}
             dataOptions={serviceTypeOptions}
-            disabled={disabled}
             fullWidth
             id="addudp_servicetype"
             label={<FormattedMessage id="ui-erm-usage.vendorInfo.serviceType" />}
             name="harvestingConfig.sushiConfig.serviceType"
             onChange={changeSelectedServiceType}
-            required={!disabled && isRequired}
-            validate={!disabled && isRequired ? required : notRequired}
+            required={isRequired}
+            validate={isRequired ? required : notRequired}
           />
         </Col>
       </Row>
@@ -64,8 +62,7 @@ const VendorInfoForm = ({
         <Col xs={8}>
           <Field
             component={TextField}
-            data={!disabled && isRequired ? 1 : 0}
-            disabled={disabled}
+            data={isRequired ? 1 : 0}
             fullWidth
             id="addudp_serviceurl"
             label={
@@ -93,8 +90,8 @@ const VendorInfoForm = ({
             name="harvestingConfig.sushiConfig.serviceUrl"
             parse={value => value?.trim()}
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.vendor.url' })}
-            required={!disabled && isRequired}
-            validate={!disabled && isRequired ? requiredValidateUrl : notRequired}
+            required={isRequired}
+            validate={isRequired ? requiredValidateUrl : notRequired}
           />
         </Col>
       </Row>
@@ -104,7 +101,6 @@ const VendorInfoForm = ({
 
 VendorInfoForm.propTypes = {
   changeSelectedServiceType: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   intl: PropTypes.object,
   isRequired: PropTypes.bool,

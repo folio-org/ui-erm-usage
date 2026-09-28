@@ -26,7 +26,11 @@ const UDPEditRoute = ({
   };
 
   const handleSubmit = (udp) => {
-    mutator.usageDataProvider.PUT(udp).then(({ id }) => {
+    // since the harvesting fails the job of a UDP without harvestVia,
+    // we need to set it to 'sushi' before saving the UDP
+    const udpToSave = { ...udp, harvestingConfig: { ...udp.harvestingConfig, harvestVia: 'sushi' } };
+
+    mutator.usageDataProvider.PUT(udpToSave).then(({ id }) => {
       history.push(`${urls.udpView(id)}${location.search}`);
     });
   };

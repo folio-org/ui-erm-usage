@@ -2,7 +2,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import {
   screen,
-  waitFor,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
@@ -53,7 +52,6 @@ const initialUdp = {
   status: 'active',
   harvestingConfig: {
     harvestingStatus: 'active',
-    harvestVia: 'sushi',
     sushiConfig: {
       serviceType: 'cs41',
       serviceUrl: 'http://usage.udp.com/SushiServer',
@@ -76,7 +74,6 @@ const initialValues = {
   status: 'active',
   harvestingConfig: {
     harvestingStatus: 'active',
-    harvestVia: 'sushi',
     reportRelease: '5.1',
     sushiConfig: { serviceType: 'cs51' },
   },
@@ -154,30 +151,6 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('test harvestVia options', () => {
-    beforeEach(async () => {
-      renderUDPForm(stripes);
-
-      const harvestingStatusSelect = screen.getByRole('combobox', { name: /harvesting status/i });
-
-      await waitFor(() => expect(harvestingStatusSelect).toBeInTheDocument());
-
-      await userEvent.selectOptions(harvestingStatusSelect, 'active');
-    });
-
-    test('should not offer aggregator option', () => {
-      const harvestViaSelect = screen.getByRole('combobox', { name: /harvest statistics via/i });
-
-      expect(within(harvestViaSelect).queryByRole('option', { name: 'Aggregator' })).not.toBeInTheDocument();
-    });
-
-    test('should enable sushi options', async () => {
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
-
-      expect(screen.getByRole('combobox', { name: 'Service type' })).toBeEnabled();
-    });
-  });
-
   describe('unsupported service type', () => {
     const supportedHarvesterImpls = [
       {
@@ -233,7 +206,6 @@ describe('UDPForm', () => {
     });
 
     const testSwitchFromCounterRelease4To5 = async (serviceType) => {
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
       expect(screen.getByRole('option', { name: 'Counter-Sushi 4.1' })).toBeInTheDocument();
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
@@ -305,7 +277,6 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /provider status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvest statistics via/i }), ['sushi']);
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
       await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
       await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
@@ -335,7 +306,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeRequired();
-      expect(screen.getByRole('combobox', { name: 'Harvest statistics via' })).toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: /service url/i })).toBeRequired();
@@ -362,7 +332,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('textbox', { name: 'Provider name' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: 'Description' })).not.toBeRequired();
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeRequired();
-      expect(screen.getByRole('combobox', { name: 'Harvest statistics via' })).not.toBeRequired();
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).not.toBeRequired();
       expect(screen.getByRole('textbox', { name: /service url/i })).not.toBeRequired();
@@ -408,7 +377,6 @@ describe('UDPForm', () => {
   describe('test that reqId and apiKey fields are disabled and cleared depending on service type selection', () => {
     const reportReleaseProvider = {
       label: 'Provider with reqId and apiKey',
-      harvestingConfig: { harvestVia: 'sushi' },
       sushiCredentials: {
         requestorId: 'id1234',
         apiKey: 'key1234',

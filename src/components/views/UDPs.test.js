@@ -163,10 +163,6 @@ describe('UDPs SASQ View', () => {
       expect(screen.getByRole('button', { name: 'Harvesting status filter list' })).toBeInTheDocument();
     });
 
-    it('should be present the harvestVia filter', () => {
-      expect(screen.getByRole('button', { name: 'Harvest via filter list' })).toBeInTheDocument();
-    });
-
     it('should be present the report types filter', () => {
       expect(screen.getByRole('button', { name: 'Report types filter list' })).toBeInTheDocument();
     });

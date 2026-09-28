@@ -101,7 +101,6 @@
   "information.lastJobFinishedAt": "Last harvesting job finished at",
   "information.latestStatistics": "Latest statistics",
   "information.hasFailedReport": "Has failed report(s)",
-  "information.harvestVia": "Harvest via",
 
   "report.action.download": "Download",
   "report.action.download.fileType": "Download report as {filetype}",
@@ -220,7 +219,6 @@
   "udp.form.udpInfo.changeStatusHeading": "Change of harvesting status?",
   "udp.form.udpInfo.changeStatusMessage": "The harvesting status is still active, although the provider status has been set to inactive.",
   "udp.form.udpInfo.setHarvestingStatusInactive": "Set harvesting status to inactive",
-  "udp.form.harvestingConfig.harvestStatisticsVia": "Harvest statistics via",
   "udp.form.selectedReports.clearModalHeading": "Clear report selection",
   "udp.form.selectedReports.confirmClearMessage": "Do you want to clear selected reports when changing Counter version?",
   "udp.form.selectedReports.confirmClearLabel": "Clear reports",

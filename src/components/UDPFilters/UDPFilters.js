@@ -34,7 +34,6 @@ const UDPFilters = ({
 }) => {
   const [filterState, setFilterState] = useState({
     harvestingStatus: [],
-    harvestVia: [],
     hasFailedReport: [],
     tags: [],
     errorCodes: [],
@@ -181,7 +180,6 @@ const UDPFilters = ({
     <AccordionSet>
       {renderCheckboxFilter('status')}
       {renderCheckboxFilter('harvestingStatus')}
-      {renderCheckboxFilter('harvestVia')}
       {renderMultiSelectionFilter('reportTypes')}
       {renderMultiSelectionFilter('reportReleases')}
       {renderCheckboxFilter('hasFailedReport', true)}
