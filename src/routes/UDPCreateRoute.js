@@ -6,6 +6,7 @@ import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import urls from '../util/urls';
+import withHarvestVia from '../util/withHarvestVia';
 
 const UDPCreateRoute = ({
   handlers = {},
@@ -22,7 +23,7 @@ const UDPCreateRoute = ({
   };
 
   const handleSubmit = (udp) => {
-    mutator.usageDataProviders.POST(udp).then(({ id }) => {
+    mutator.usageDataProviders.POST(withHarvestVia(udp)).then(({ id }) => {
       history.push(`${urls.udpView(id)}${location.search}`);
     });
   };
@@ -57,7 +58,6 @@ const UDPCreateRoute = ({
         status: 'active',
         harvestingConfig: {
           harvestingStatus: 'active',
-          harvestVia: 'sushi',
           reportRelease: defaultImpl?.reportRelease,
           sushiConfig: { serviceType: defaultImpl?.type },
         },
