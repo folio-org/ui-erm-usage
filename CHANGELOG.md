@@ -23,6 +23,7 @@
 * Move validation for year to validate file, fix typo in translation key ([UIEUS-549](https://folio-org.atlassian.net/browse/UIEUS-549))
 * Remove "Counter" label for report release ([UIEUS-561](https://folio-org.atlassian.net/browse/UIEUS-561))
 * *BREAKING* Remove aggregator harvesting (UDP views, list, settings, `aggregator-settings` interface and permissions) ([UIEUS-562](https://folio-org.atlassian.net/browse/UIEUS-562))
+* UDP edit mode: Display requestedReports for unsupported serviceTypes ([UIEUS-557](https://folio-org.atlassian.net/browse/UIEUS-557))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))

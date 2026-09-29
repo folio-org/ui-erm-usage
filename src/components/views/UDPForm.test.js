@@ -181,6 +181,37 @@ describe('UDPForm', () => {
     });
   });
 
+  describe('stored reportTypes', () => {
+    const supportedHarvesterImpls = [
+      {
+        implementations: stubHarvesterImpls[0].implementations.filter(i => i.type !== 'cs41'),
+      },
+    ];
+
+    it('should show stored reportTypes if the serviceType is unsupported', () => {
+      renderUDPForm(stripes, initialUdp, supportedHarvesterImpls);
+
+      expect(screen.getByRole('button', { name: /Report type/ })).toHaveTextContent('DR1');
+    });
+
+    it('should show stored reportTypes that are not supported by the serviceType', () => {
+      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+
+      expect(screen.getByRole('button', { name: /Report type/ })).toHaveTextContent('DR1');
+    });
+
+    it('should offer stored unsupported reportType only in its own row', async () => {
+      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+      const reportTypeButtons = screen.getAllByRole('button', { name: /^Report type/ });
+      await userEvent.click(reportTypeButtons[1]);
+
+      expect(screen.getByRole('option', { name: 'BR1' })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'DR1' })).not.toBeInTheDocument();
+    });
+  });
+
   describe('service url trimming', () => {
     beforeEach(() => {
       renderUDPForm(stripes);

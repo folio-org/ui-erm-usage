@@ -1,8 +1,3 @@
-import {
-  cloneDeep,
-  findIndex,
-  isEmpty,
-} from 'lodash';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
@@ -22,24 +17,18 @@ import {
 } from '../../../util/validate';
 import css from './SelectReportType.css';
 
-const omitUsedOptions = (list, usedValues, id) => {
-  const unUsedValues = cloneDeep(list);
+// Show the stored reportType even if it's unsupported
+// New rows only get supported reports
+// Reports used in other rows are filtered out
+const getReportTypeOptions = (supported, selected, index) => {
+  const reports = selected ?? [];
+  const current = reports[index];
+  const usedElsewhere = new Set(reports.filter((_, i) => i !== index));
+  const options = supported.filter(o => !usedElsewhere.has(o.value));
 
-  if (!isEmpty(usedValues)) {
-    usedValues.forEach((item, index) => {
-      if (id !== index) {
-        const usedValueIndex = findIndex(unUsedValues, (v) => {
-          return v.label === item;
-        });
-
-        if (usedValueIndex !== -1) {
-          unUsedValues.splice(usedValueIndex, 1);
-        }
-      }
-    });
-  }
-
-  return unUsedValues;
+  return current && !options.some(o => o.value === current)
+    ? [...options, { label: current, value: current }]
+    : options;
 };
 
 function SelectReportType(props) {
@@ -56,7 +45,7 @@ function SelectReportType(props) {
                   <Field
                     component={Selection}
                     data={props.required ? 1 : 0}
-                    dataOptions={omitUsedOptions(
+                    dataOptions={getReportTypeOptions(
                       counterReportsCurrentVersion,
                       selectedReports,
                       index
