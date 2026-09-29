@@ -5,11 +5,10 @@ const udps = [
     description: 'This is a mock udp',
     harvestingConfig: {
       harvestingStatus: 'active',
-      harvestVia: 'aggregator',
-      aggregator: {
-        id: '5b6ba83e-d7e5-414e-ba7b-134749c0d950',
-        name: 'German National Statistics Server',
-        vendorCode: 'ACSO',
+      harvestVia: 'sushi',
+      sushiConfig: {
+        serviceType: 'cs51',
+        serviceUrl: 'https://sushi.example.org/counter/r5',
       },
       reportRelease: '5',
       requestedReports: ['IR', 'TR'],
@@ -38,7 +37,7 @@ const udps = [
     harvestingConfig: {
       harvestingStatus: 'active',
     },
-  }
+  },
 ];
 
 export default udps;

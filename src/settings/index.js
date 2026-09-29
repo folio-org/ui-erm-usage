@@ -7,7 +7,6 @@ import {
 
 import { Settings } from '@folio/stripes/smart-components';
 
-import AggregatorManager from './Aggregators/AggregatorManager';
 import DisplaySettings from './DisplaySettings';
 import HarvesterLogsSettings from './HarvesterLogs';
 import MaxFailedAttempts from './MaxFailedAttempts';
@@ -39,11 +38,6 @@ class ErmUsageSettings extends React.Component {
       {
         label: formatMessage({ id: 'ui-erm-usage.settings.general' }),
         pages: [
-          {
-            route: 'aggregators',
-            label: formatMessage({ id: 'ui-erm-usage.information.aggregators' }),
-            component: AggregatorManager,
-          },
           {
             route: 'displaySettings',
             label: formatMessage({ id: 'ui-erm-usage.settings.section.display.settings' }),

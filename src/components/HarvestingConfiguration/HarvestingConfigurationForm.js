@@ -18,12 +18,10 @@ import extractHarvesterImpls, {
   isServiceTypeSupported,
 } from '../../util/harvesterImpls';
 import formCss from '../../util/sharedStyles/form.css';
-import { AggregatorInfoForm } from './AggregatorInfo';
 import {
   HarvestingEndField,
   HarvestingStartField,
   HarvestingStatusSelect,
-  HarvestingViaSelect,
 } from './Fields';
 import SelectedReportsForm from './SelectedReports';
 import { SushiCredentialsForm } from './SushiCredentials';
@@ -31,7 +29,6 @@ import { VendorInfoForm } from './VendorInfo';
 
 const HarvestingConfigurationForm = ({
   accordionId,
-  aggregators,
   expanded,
   harvesterImplementations,
   form,
@@ -71,13 +68,6 @@ const HarvestingConfigurationForm = ({
     }
   };
 
-  const changeSelectedHarvestVia = (event) => {
-    event.preventDefault();
-
-    form.change(event.target.name, (event.target.value === '') ? undefined : event.target.value);
-    form.resetFieldState('sushiCredentials.customerId');
-  };
-
   const confirmClearReports = (confirmation) => {
     if (confirmation) {
       form.mutators.clearSelectedReports({}, values);
@@ -90,7 +80,6 @@ const HarvestingConfigurationForm = ({
   };
 
   const onToggleAccordion = onToggle;
-  const harvestVia = get(values, 'harvestingConfig.harvestVia', '');
   const isHarvestingStatusActive = get(values, 'harvestingConfig.harvestingStatus', '') === 'active';
   const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
@@ -125,27 +114,8 @@ const HarvestingConfigurationForm = ({
             </Row>
           </section>
           <section className={formCss.separator}>
-            <Row>
-              <Col xs={4}>
-                <HarvestingViaSelect
-                  onChange={changeSelectedHarvestVia}
-                  required={isHarvestingStatusActive}
-                />
-              </Col>
-              <Col className={formCss.centerNote} xs={8}>
-                <FormattedMessage id="ui-erm-usage.udp.form.harvestingConfig.noAggInfoText" />
-              </Col>
-            </Row>
-            <Row>
-              <AggregatorInfoForm
-                aggregators={aggregators}
-                disabled={harvestVia !== 'aggregator'}
-                isRequired={isHarvestingStatusActive}
-              />
-            </Row>
             <VendorInfoForm
               changeSelectedServiceType={changeSelectedServiceType}
-              disabled={harvestVia !== 'sushi'}
               harvesterImpls={extractHarvesterImpls(harvesterImplementations)}
               isRequired={isHarvestingStatusActive}
               unsupportedServiceType={unsupportedServiceType}
@@ -155,7 +125,6 @@ const HarvestingConfigurationForm = ({
             <SushiCredentialsForm
               form={form}
               required={isHarvestingStatusActive}
-              useAggregator={harvestVia === 'aggregator'}
               values={values}
             />
           </section>
@@ -196,7 +165,6 @@ const HarvestingConfigurationForm = ({
 
 HarvestingConfigurationForm.propTypes = {
   accordionId: PropTypes.string.isRequired,
-  aggregators: PropTypes.arrayOf(PropTypes.shape()),
   expanded: PropTypes.bool,
   form: PropTypes.shape({
     change: PropTypes.func,

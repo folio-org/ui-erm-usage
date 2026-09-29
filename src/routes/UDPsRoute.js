@@ -33,7 +33,6 @@ class UDPsRoute extends React.Component {
               reportReleases: 'reportReleases',
               harvestingStatus: 'harvestingConfig.harvestingStatus',
               latestStats: 'latestReport',
-              aggregator: 'harvestingConfig.aggregator.name',
             },
             filterGroups,
             2
@@ -41,11 +40,6 @@ class UDPsRoute extends React.Component {
         },
         staticFallback: { params: {} },
       },
-    },
-    aggregatorSettings: {
-      type: 'okapi',
-      path: 'aggregator-settings',
-      records: 'aggregatorSettings',
     },
     harvesterImpls: {
       type: 'okapi',
@@ -115,7 +109,6 @@ class UDPsRoute extends React.Component {
       }),
     }).isRequired,
     resources: PropTypes.shape({
-      aggregatorSettings: PropTypes.shape(),
       harvesterImpls: PropTypes.shape(),
       numFiltersLoaded: PropTypes.number,
       usageDataProviders: PropTypes.shape({
@@ -196,7 +189,6 @@ class UDPsRoute extends React.Component {
       <UDPs
         data={{
           udps: get(resources, 'usageDataProviders.records', []),
-          aggregators: get(resources, 'aggregatorSettings.records', []),
           tags: get(resources, 'tags.records', []),
           errorCodes: get(resources, 'errorCodes.records', []),
           reportTypes: get(resources, 'reportTypes.records', []),

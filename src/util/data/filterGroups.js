@@ -1,7 +1,5 @@
 import { FormattedMessage } from 'react-intl';
 
-import { COUNTER_SUSHI } from '../constants';
-
 const filterGroups = [
   {
     name: 'harvestingStatus',
@@ -11,22 +9,6 @@ const filterGroups = [
       { name: <FormattedMessage id="ui-erm-usage.general.status.active" />, cql: 'active' },
       { name: <FormattedMessage id="ui-erm-usage.general.status.inactive" />, cql: 'inactive' },
     ],
-  },
-  {
-    name: 'harvestVia',
-    cql: 'harvestingConfig.harvestVia',
-    operator: '=',
-    values: [
-      { name: COUNTER_SUSHI, cql: 'sushi' },
-      { name: <FormattedMessage id="ui-erm-usage.information.aggregator" />, cql: 'aggregator' },
-    ],
-  },
-  {
-    name: 'aggregators',
-    cql: 'harvestingConfig.aggregator.name',
-    operator: '=',
-    values: [],
-    restrictWhenAllSelected: true,
   },
   {
     name: 'hasFailedReport',

@@ -17,46 +17,19 @@ import {
 } from '@folio/stripes/components';
 
 import extractHarvesterImpls, { isServiceTypeSupported } from '../../util/harvesterImpls';
-import { AggregatorInfoView } from './AggregatorInfo';
 import { SushiCredentialsView } from './SushiCredentials';
 import { VendorInfoView } from './VendorInfo';
 
 const HarvestingConfigurationView = ({
   usageDataProvider,
-  stripes,
   sushiCredsOpen,
   onToggle,
   settings,
   harvesterImpls,
 }) => {
-  const harvestVia = get(usageDataProvider, 'harvestingConfig.harvestVia');
   const serviceType = get(usageDataProvider, 'harvestingConfig.sushiConfig.serviceType');
   const serviceTypeSupported = isServiceTypeSupported(harvesterImpls, serviceType);
 
-  const createProvider = () => {
-    if (!harvestVia) {
-      return null;
-    }
-
-    if (harvestVia === 'aggregator') {
-      return (
-        <AggregatorInfoView
-          stripes={stripes}
-          usageDataProvider={usageDataProvider}
-        />
-      );
-    } else {
-      return (
-        <VendorInfoView
-          harvesterImpls={extractHarvesterImpls(harvesterImpls)}
-          isServiceTypeSupported={serviceTypeSupported}
-          usageDataProvider={usageDataProvider}
-        />
-      );
-    }
-  };
-
-  const provider = createProvider();
   const reports = get(usageDataProvider, 'harvestingConfig.requestedReports', []).sort();
   let requestedReports = '';
 
@@ -70,7 +43,11 @@ const HarvestingConfigurationView = ({
 
   return (
     <div>
-      {provider}
+      <VendorInfoView
+        harvesterImpls={extractHarvesterImpls(harvesterImpls)}
+        isServiceTypeSupported={serviceTypeSupported}
+        usageDataProvider={usageDataProvider}
+      />
       <Row>
         <Col xs={3}>
           <KeyValue
@@ -116,7 +93,6 @@ HarvestingConfigurationView.propTypes = {
   harvesterImpls: PropTypes.arrayOf(PropTypes.object),
   onToggle: PropTypes.func,
   settings: PropTypes.arrayOf(PropTypes.object).isRequired,
-  stripes: PropTypes.object.isRequired,
   sushiCredsOpen: PropTypes.bool,
   usageDataProvider: PropTypes.object.isRequired,
 };

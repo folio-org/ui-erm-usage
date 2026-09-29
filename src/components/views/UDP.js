@@ -514,7 +514,6 @@ const UDP = ({
                 <HarvestingConfigurationView
                   harvesterImpls={data.harvesterImpls}
                   settings={data.settings}
-                  stripes={stripes}
                   usageDataProvider={usageDataProvider}
                 />
               </Accordion>

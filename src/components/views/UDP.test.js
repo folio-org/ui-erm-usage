@@ -41,10 +41,6 @@ const mutators = {
   },
 };
 
-jest.mock('../HarvestingConfiguration/AggregatorInfo/AggregatorContactInfo', () => {
-  return () => <span>AggregatorContactInfo</span>;
-});
-
 const renderUDP = (stripes) => {
   return renderWithIntl(
     <StripesContext.Provider value={stripes}>

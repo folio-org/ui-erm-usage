@@ -1,6 +1,6 @@
 # Change history for ui-erm-usage
 
-## 12.1.0 (IN PROGRESS)
+## 13.0.0 (IN PROGRESS)
 * Use NoPermissionMessage from stripes-leipzig-components ([UIEUS-517](https://folio-org.atlassian.net/browse/UIEUS-517))
 * Replace hardcoded report release and report type mappings with backend /impl data and remove report release dropdown ([UIEUS-510](https://folio-org.atlassian.net/browse/UIEUS-510))
 * Replace `moment-timezone` with dayjs and `Intl.DateTimeFormat` in date/time utilities ([UIEUS-521](https://folio-org.atlassian.net/browse/UIEUS-521))
@@ -22,6 +22,7 @@
 * Service type: Show "(Unsupported)" if no longer supported by the harvester ([UIEUS-552](https://folio-org.atlassian.net/browse/UIEUS-552))
 * Move validation for year to validate file, fix typo in translation key ([UIEUS-549](https://folio-org.atlassian.net/browse/UIEUS-549))
 * Remove "Counter" label for report release ([UIEUS-561](https://folio-org.atlassian.net/browse/UIEUS-561))
+* *BREAKING* Remove aggregator harvesting (UDP views, list, settings, `aggregator-settings` interface and permissions) ([UIEUS-562](https://folio-org.atlassian.net/browse/UIEUS-562))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))

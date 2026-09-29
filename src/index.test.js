@@ -28,7 +28,6 @@ const editRouteProps = {
     },
   },
   resources: {
-    aggregators: {},
     harvesterImpls: {},
     usageDataProvider: {},
   },

@@ -4,7 +4,6 @@ import {
   screen,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
-import { useStripes } from '@folio/stripes/core';
 
 import harvesterImpls from '../../../test/fixtures/harvesterImpls';
 import settings from '../../../test/fixtures/settings';
@@ -14,10 +13,6 @@ import HarvestingConfigurationView from './HarvestingConfigurationView';
 
 const onToggle = jest.fn;
 
-jest.mock('./AggregatorInfo/AggregatorContactInfo', () => {
-  return () => <span>AggregatorContactInfo</span>;
-});
-
 const renderHarvestingConfigurationView = () => {
   return renderWithIntl(
     <MemoryRouter>
@@ -25,21 +20,6 @@ const renderHarvestingConfigurationView = () => {
         harvesterImpls={harvesterImpls}
         onToggle={onToggle}
         settings={settings}
-        stripes={{ hasPerm: () => true }}
-        usageDataProvider={udp}
-      />
-    </MemoryRouter>
-  );
-};
-
-const renderHarvestingConfigurationViewWithoutPerms = () => {
-  return renderWithIntl(
-    <MemoryRouter>
-      <HarvestingConfigurationView
-        harvesterImpls={harvesterImpls}
-        onToggle={onToggle}
-        settings={settings}
-        stripes={{ hasPerm: () => false }}
         usageDataProvider={udp}
       />
     </MemoryRouter>
@@ -47,25 +27,10 @@ const renderHarvestingConfigurationViewWithoutPerms = () => {
 };
 
 describe('HarvestingConfigurationView', () => {
-  let stripes;
-
-  beforeEach(() => {
-    stripes = useStripes();
-  });
-
   test('should render HarvestingConfigurationView', async () => {
-    await renderHarvestingConfigurationView(stripes);
-    expect(screen.getByText('German National Statistics Server')).toBeVisible();
-  });
-
-  test('render with permissions should render aggregator name as link', async () => {
-    await renderHarvestingConfigurationView(stripes);
-    expect(screen.getByText('German National Statistics Server')).toHaveAttribute('href');
-  });
-
-  test('render without permissions should render aggregator name without link', async () => {
-    await renderHarvestingConfigurationViewWithoutPerms(stripes);
-    expect(screen.getByText('German National Statistics Server')).not.toHaveAttribute('href');
+    await renderHarvestingConfigurationView();
+    expect(screen.getByText('Counter 5.1')).toBeVisible();
+    expect(screen.getByText('https://sushi.example.org/counter/r5')).toBeVisible();
   });
 });
 
@@ -73,11 +38,10 @@ describe('HarvestingConfigurationView with unsupported values', () => {
   const implementations = [{ type: 'cs51', name: 'Counter Sushi 5.1', reportRelease: '5.1' }];
   const harvesterImplRecords = [{ implementations }];
 
-  const createUdp = ({ harvestVia, reportRelease, serviceType }) => ({
+  const createUdp = ({ reportRelease, serviceType }) => ({
     ...udp,
     harvestingConfig: {
       ...udp.harvestingConfig,
-      harvestVia,
       reportRelease,
       sushiConfig: serviceType ? { serviceType, serviceUrl: 'http://example.com' } : undefined,
     },
@@ -90,7 +54,6 @@ describe('HarvestingConfigurationView with unsupported values', () => {
           harvesterImpls={impls}
           onToggle={onToggle}
           settings={settings}
-          stripes={{ hasPerm: () => true }}
           usageDataProvider={usageDataProvider}
         />
       </MemoryRouter>
@@ -100,13 +63,13 @@ describe('HarvestingConfigurationView with unsupported values', () => {
   const getReportReleaseValue = () => screen.getByText('Report release').closest('[class*="kvRoot"]');
 
   // the report release is always shown as it is, independent of the service type
-  describe.each(['aggregator', 'sushi'])('report release with harvestVia %s', (harvestVia) => {
+  describe('report release', () => {
     test.each([
       ['supported', 'cs51'],
       ['unsupported', 'cs41'],
       ['no', undefined],
     ])('should render report release without suffix for %s service type', (_description, serviceType) => {
-      renderView(createUdp({ harvestVia, reportRelease: '4', serviceType }));
+      renderView(createUdp({ reportRelease: '4', serviceType }));
       expect(within(getReportReleaseValue()).getByText('4')).toBeInTheDocument();
       expect(within(getReportReleaseValue()).queryByText('4 (Unsupported)')).not.toBeInTheDocument();
     });
@@ -115,27 +78,26 @@ describe('HarvestingConfigurationView with unsupported values', () => {
       ['undefined', undefined],
       ['empty', ''],
     ])('should render NoValue for %s report release', (_description, reportRelease) => {
-      renderView(createUdp({ harvestVia, reportRelease, serviceType: 'cs51' }));
+      renderView(createUdp({ reportRelease, serviceType: 'cs51' }));
       expect(within(getReportReleaseValue()).getByText('-')).toBeInTheDocument();
     });
   });
 
-  // the service type is only displayed for UDPs that are not harvested via aggregator
   describe('service type', () => {
     test('should render supported service type without suffix', () => {
-      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs51' }));
+      renderView(createUdp({ reportRelease: '5.1', serviceType: 'cs51' }));
       expect(screen.getByText('Counter Sushi 5.1')).toBeInTheDocument();
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
 
     test('should append (Unsupported) to unsupported service type', () => {
-      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }));
+      renderView(createUdp({ reportRelease: '5.1', serviceType: 'cs41' }));
       expect(screen.getByText('cs41 (Unsupported)')).toBeInTheDocument();
       expect(within(getReportReleaseValue()).getByText('5.1')).toBeInTheDocument();
     });
 
     test('should not append (Unsupported) while implementations are not loaded', () => {
-      renderView(createUdp({ harvestVia: 'sushi', reportRelease: '5.1', serviceType: 'cs41' }), []);
+      renderView(createUdp({ reportRelease: '5.1', serviceType: 'cs41' }), []);
       expect(screen.queryByText(/\(Unsupported\)/)).not.toBeInTheDocument();
     });
   });
