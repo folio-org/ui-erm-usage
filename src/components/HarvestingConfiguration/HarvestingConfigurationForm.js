@@ -42,6 +42,7 @@ const HarvestingConfigurationForm = ({
   const serviceType = get(values, 'harvestingConfig.sushiConfig.serviceType');
 
   const implementations = getImplementations(harvesterImplementations);
+  const serviceTypeSupported = isServiceTypeSupported(harvesterImplementations, serviceType);
 
   const changeSelectedServiceType = (event) => {
     const selectedType = (event.target.value === '') ? undefined : event.target.value;
@@ -49,8 +50,10 @@ const HarvestingConfigurationForm = ({
     const impl = implementations.find(i => i.type === selectedType);
     const val = impl?.reportRelease;
     const currentReportRelease = get(values, 'harvestingConfig.reportRelease', null);
+    const reportReleaseChanged = currentReportRelease !== val;
 
-    if (currentReportRelease !== val) {
+    // Leaving an unsupported service type always asks to clear the requested reports
+    if (reportReleaseChanged || !serviceTypeSupported) {
       const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
       if (isEmpty(requestedReports)) {
@@ -60,11 +63,11 @@ const HarvestingConfigurationForm = ({
         setConfirmClear(true);
         setSelectedReportRelease(val);
       }
+    }
 
-      if ((val === '4' && values.sushiCredentials?.apiKey) ||
-        ((val === '5' || val === '5.1') && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId)) {
-        form.change('sushiCredentials.apiKey', undefined);
-      }
+    if (reportReleaseChanged && ((val === '4' && values.sushiCredentials?.apiKey) ||
+      ((val === '5' || val === '5.1') && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId))) {
+      form.change('sushiCredentials.apiKey', undefined);
     }
   };
 
@@ -84,9 +87,7 @@ const HarvestingConfigurationForm = ({
   const isProviderStatusInactive = get(values, 'status', '') === 'inactive';
   const requestedReports = get(values, 'harvestingConfig.requestedReports', []);
 
-  const unsupportedServiceType = isServiceTypeSupported(harvesterImplementations, serviceType)
-    ? undefined
-    : serviceType;
+  const unsupportedServiceType = serviceTypeSupported ? undefined : serviceType;
 
   const currentImpl = implementations.find(i => i.type === serviceType);
   const supportedReports = currentImpl?.supportedReports ?? [];
@@ -108,7 +109,7 @@ const HarvestingConfigurationForm = ({
             <Row>
               <Col xs={4}>
                 <HarvestingStatusSelect
-                  disabled={isProviderStatusInactive}
+                  disabled={isProviderStatusInactive || !serviceTypeSupported}
                 />
               </Col>
             </Row>
@@ -130,7 +131,8 @@ const HarvestingConfigurationForm = ({
           </section>
           <section className={formCss.separator}>
             <SelectedReportsForm
-              required={isHarvestingStatusActive}
+              disabled={!serviceTypeSupported}
+              required={isHarvestingStatusActive && serviceTypeSupported}
               selectedReports={requestedReports}
               supportedReports={supportedReports}
             />

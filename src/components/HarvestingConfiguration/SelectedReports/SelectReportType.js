@@ -32,7 +32,7 @@ const getReportTypeOptions = (supported, selected, index) => {
 };
 
 function SelectReportType(props) {
-  const { counterReportsCurrentVersion, fields, selectedReports } = props;
+  const { counterReportsCurrentVersion, disabled, fields, selectedReports } = props;
 
   return (
     <>
@@ -50,32 +50,38 @@ function SelectReportType(props) {
                       selectedReports,
                       index
                     )}
+                    disabled={disabled}
                     label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
                     name={elem}
                     validate={props.required ? required : notRequired}
                   />
                 </div>
               </Col>
-              <Col xs={1}>
-                <div className={`${css.repeatableFieldRemoveItem}`}>
-                  <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
-                    {([label]) => (
-                      <IconButton
-                        aria-label={label}
-                        icon="trash"
-                        onClick={() => fields.remove(index)}
-                      />
-                    )}
-                  </FormattedMessage>
-                </div>
-              </Col>
+              {!disabled && (
+                <Col xs={1}>
+                  <div className={`${css.repeatableFieldRemoveItem}`}>
+                    <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
+                      {([label]) => (
+                        <IconButton
+                          aria-label={label}
+                          icon="trash"
+                          onClick={() => fields.remove(index)}
+                        />
+                      )}
+                    </FormattedMessage>
+                  </div>
+                </Col>
+              )}
             </Row>
           ))}
         </Col>
       </Row>
       <Row>
         <Col xs={4}>
-          <Button onClick={() => fields.push('')}>
+          <Button
+            disabled={disabled}
+            onClick={() => fields.push('')}
+          >
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
               {([label]) => <Icon icon="plus-sign">{label}</Icon>}
             </FormattedMessage>
@@ -88,6 +94,7 @@ function SelectReportType(props) {
 
 SelectReportType.propTypes = {
   counterReportsCurrentVersion: PropTypes.arrayOf(PropTypes.shape()),
+  disabled: PropTypes.bool,
   fields: PropTypes.object,
   required: PropTypes.bool,
   selectedReports: PropTypes.arrayOf(PropTypes.string),

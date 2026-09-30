@@ -12,6 +12,7 @@ import SelectReportType from './SelectReportType';
 
 class SelectedReportsForm extends React.Component {
   static propTypes = {
+    disabled: PropTypes.bool,
     required: PropTypes.bool,
     selectedReports: PropTypes.arrayOf(PropTypes.string),
     supportedReports: PropTypes.arrayOf(PropTypes.string),
@@ -42,6 +43,7 @@ class SelectedReportsForm extends React.Component {
             {({ fields }) => (
               <SelectReportType
                 counterReportsCurrentVersion={counterReportsCurrentVersion}
+                disabled={this.props.disabled}
                 fields={fields}
                 required={this.props.required}
                 selectedReports={this.props.selectedReports}
