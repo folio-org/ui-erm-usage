@@ -61,6 +61,11 @@ class UDPsRoute extends React.Component {
       path: 'counter-reports/reports/releases',
       records: 'reportReleases',
     },
+    serviceTypes: {
+      type: 'okapi',
+      path: 'usage-data-providers/sushi-config/service-types',
+      records: 'serviceTypes',
+    },
     numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
     initializedFilterConfig: { initialValue: false },
     query: {
@@ -193,6 +198,8 @@ class UDPsRoute extends React.Component {
           errorCodes: get(resources, 'errorCodes.records', []),
           reportTypes: get(resources, 'reportTypes.records', []),
           reportReleases: get(resources, 'reportReleases.records', []),
+          serviceTypes: get(resources, 'serviceTypes.records', []),
+          harvesterImpls: get(resources, 'harvesterImpls.records', []),
         }}
         history={history}
         location={location}

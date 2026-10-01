@@ -71,7 +71,7 @@
       "counter-reports": "5.0",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
-      "usage-data-providers": "3.1",
+      "usage-data-providers": "3.3",
       "settings": "1.2",
       "tags": "1.0",
       "erm-usage-harvester": "2.1"
@@ -147,6 +147,7 @@
           "module.erm-usage.enabled",
           "usagedataproviders.collection.get",
           "usagedataproviders.item.get",
+          "usagedataproviders.servicetypes.collection.get",
           "counterreports.collection.get",
           "counterreports.download.item.get",
           "counterreports.errorcodes.collection.get",
