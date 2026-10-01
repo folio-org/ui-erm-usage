@@ -57,21 +57,20 @@ function SelectReportType(props) {
                   />
                 </div>
               </Col>
-              {!disabled && (
-                <Col xs={1}>
-                  <div className={`${css.repeatableFieldRemoveItem}`}>
-                    <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
-                      {([label]) => (
-                        <IconButton
-                          aria-label={label}
-                          icon="trash"
-                          onClick={() => fields.remove(index)}
-                        />
-                      )}
-                    </FormattedMessage>
-                  </div>
-                </Col>
-              )}
+              <Col xs={1}>
+                <div className={`${css.repeatableFieldRemoveItem}`}>
+                  <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
+                    {([label]) => (
+                      <IconButton
+                        aria-label={label}
+                        disabled={disabled}
+                        icon="trash"
+                        onClick={() => fields.remove(index)}
+                      />
+                    )}
+                  </FormattedMessage>
+                </div>
+              </Col>
             </Row>
           ))}
         </Col>

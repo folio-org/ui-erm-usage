@@ -180,12 +180,12 @@ describe('UDPForm', () => {
       expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
     });
 
-    test('should disable harvesting status and requested reports and hide the delete buttons', () => {
+    test('should disable harvesting status and requested reports including the delete buttons', () => {
       renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
 
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeDisabled();
       expect(screen.getByRole('button', { name: /Report type/ })).toBeDisabled();
-      expect(screen.queryByRole('button', { name: 'Delete this item' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Delete this item' })).toBeDisabled();
       expect(screen.getByRole('button', { name: /Add report type/ })).toBeDisabled();
     });
 
@@ -206,7 +206,7 @@ describe('UDPForm', () => {
 
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeEnabled();
       expect(screen.getByRole('button', { name: /Report type/ })).toBeEnabled();
-      expect(screen.getByRole('button', { name: 'Delete this item' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Delete this item' })).toBeEnabled();
       expect(screen.getByRole('button', { name: /Add report type/ })).toBeEnabled();
     });
 
