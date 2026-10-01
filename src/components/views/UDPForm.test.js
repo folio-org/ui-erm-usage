@@ -2,6 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import {
   screen,
+  waitFor,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
@@ -188,6 +189,18 @@ describe('UDPForm', () => {
       expect(screen.getByRole('button', { name: /Add report type/ })).toBeDisabled();
     });
 
+    test('should show a warning explaining why harvesting status and requested reports are blocked', () => {
+      renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
+
+      expect(screen.getByText(/The selected service type is not supported/)).toBeVisible();
+    });
+
+    test('should not show the warning for a supported service type', () => {
+      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+
+      expect(screen.queryByText(/The selected service type is not supported/)).not.toBeInTheDocument();
+    });
+
     test('should not disable harvesting status and requested reports for a supported service type', () => {
       renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
 
@@ -205,6 +218,10 @@ describe('UDPForm', () => {
 
       await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
 
+      // The banner is removed after its exit transition
+      await waitFor(() => {
+        expect(screen.queryByText(/The selected service type is not supported/)).not.toBeInTheDocument();
+      });
       const harvestingStatusSelect = screen.getByRole('combobox', { name: 'Harvesting status' });
       expect(harvestingStatusSelect).toBeEnabled();
       expect(harvestingStatusSelect).toHaveValue('inactive');
@@ -264,7 +281,13 @@ describe('UDPForm', () => {
       renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.1']);
+      // Wait for the exit transition, so the banner has to come back after cancelling
+      await waitFor(() => {
+        expect(screen.queryByText(/The selected service type is not supported/)).not.toBeInTheDocument();
+      });
       await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Cancel' }));
+
+      expect(await screen.findByText(/The selected service type is not supported/)).toBeVisible();
 
       expect(screen.getByRole('combobox', { name: 'Service type' })).toHaveValue('cs41');
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeDisabled();
@@ -277,6 +300,7 @@ describe('UDPForm', () => {
 
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
+      expect(screen.queryByText(/The selected service type is not supported/)).not.toBeInTheDocument();
     });
   });
 

@@ -10,6 +10,7 @@ import {
   Accordion,
   Col,
   ConfirmationModal,
+  MessageBanner,
   Row,
 } from '@folio/stripes/components';
 
@@ -103,6 +104,12 @@ const HarvestingConfigurationForm = ({
       onToggle={onToggleAccordion}
       open={expanded}
     >
+      <MessageBanner
+        show={!serviceTypeSupported}
+        type="warning"
+      >
+        <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.unsupportedServiceTypeWarning" />
+      </MessageBanner>
       <Row>
         <Col xs>
           <section className={formCss.separator}>

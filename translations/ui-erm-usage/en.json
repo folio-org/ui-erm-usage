@@ -241,6 +241,7 @@
   "udpHarvestingConfig.deleteThisItem": "Delete this item",
   "udpHarvestingConfig.addReportType": "Add report type",
   "udpHarvestingConfig.unsupportedValue": "{value} (Unsupported)",
+  "udpHarvestingConfig.unsupportedServiceTypeWarning": "The selected service type is not supported. Select a supported service type to edit the harvesting status and requested reports.",
 
   "vendorInfo.serviceType": "Service type",
   "vendorInfo.serviceUrl": "Service URL",
