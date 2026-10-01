@@ -12,7 +12,8 @@ export const parseServiceTypes = (values) => {
   const clauses = [];
 
   if (codes.length) {
-    clauses.push(`${SERVICE_TYPE_CQL}=(${codes.map(c => `"${escapeCqlValue(c)}"`).join(' or ')})`);
+    const quotedCodes = codes.map(c => `"${escapeCqlValue(c)}"`).join(' or ');
+    clauses.push(`${SERVICE_TYPE_CQL}=(${quotedCodes})`);
   }
 
   if (values.includes(NO_SERVICE_TYPE)) {
