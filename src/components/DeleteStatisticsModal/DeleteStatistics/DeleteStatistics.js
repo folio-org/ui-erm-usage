@@ -187,7 +187,7 @@ function DeleteStatistics({
       counterStats = (
         <Row className={css.subAccordionSections}>
           <Col xs={12}>
-            <Accordion id="counter-reports-accordion" label={COUNTER.toUpperCase()}>
+            <Accordion id="counter-reports-accordion" label={COUNTER}>
               <CounterStatistics
                 handlers={handlers}
                 infoText={<FormattedMessage id="ui-erm-usage.statistics.multi.delete.infoText" />}
