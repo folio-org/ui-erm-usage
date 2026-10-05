@@ -70,6 +70,34 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
   rerender
 );
 
+// MultiSelection uses window.matchMedia, which jsdom does not provide
+beforeEach(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+});
+
+const openServiceTypesList = async () => {
+  await userEvent.click(screen.getByRole('button', { name: 'Service types filter list' }));
+  const multiselects = screen.getAllByLabelText('open menu');
+  await userEvent.click(
+    multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-serviceTypes')
+  );
+
+  return screen.getAllByRole('listbox')
+    .find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-serviceTypes');
+};
+
 describe('rerender result list', () => {
   let stripes;
 
@@ -80,20 +108,6 @@ describe('rerender result list', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
   });
 
   describe('trigger search with loading new results', () => {
@@ -130,20 +144,6 @@ describe('UDPs SASQ View', () => {
   let stripes;
   beforeEach(() => {
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
 
     renderUDPs(stripes, sourceLoaded, udps);
   });
@@ -259,20 +259,6 @@ describe('UDPs SASQ View - Service types filter', () => {
   beforeEach(() => {
     stripes = useStripes();
 
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
-
     renderUDPs(stripes, { ...sourceLoaded, querySetter }, udps);
   });
 
@@ -281,15 +267,7 @@ describe('UDPs SASQ View - Service types filter', () => {
   });
 
   test('should offer labelled service types and "No service type" and apply the selection', async () => {
-    await userEvent.click(screen.getByRole('button', { name: 'Service types filter list' }));
-
-    const multiselects = screen.getAllByLabelText('open menu');
-    await userEvent.click(
-      multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-serviceTypes')
-    );
-
-    const serviceTypesList = screen.getAllByRole('listbox')
-      .find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-serviceTypes');
+    const serviceTypesList = await openServiceTypesList();
     expect(within(serviceTypesList).getAllByRole('option')).toHaveLength(3);
     expect(within(serviceTypesList).getByRole('option', { name: /^cs41 \(Unsupported\)/ })).toBeInTheDocument();
     expect(within(serviceTypesList).getByRole('option', { name: /^Counter 5\.1/ })).toBeInTheDocument();
@@ -306,33 +284,8 @@ describe('UDPs SASQ View - Service types filter', () => {
 describe('UDPs SASQ View - Service types filter without harvester implementations', () => {
   let stripes;
 
-  const openServiceTypesList = async () => {
-    await userEvent.click(screen.getByRole('button', { name: 'Service types filter list' }));
-    const multiselects = screen.getAllByLabelText('open menu');
-    await userEvent.click(
-      multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-serviceTypes')
-    );
-
-    return screen.getAllByRole('listbox')
-      .find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-serviceTypes');
-  };
-
   beforeEach(() => {
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
   });
 
   test('should show the plain codes until the implementations are loaded and then update the labels', async () => {
@@ -372,20 +325,6 @@ describe('UDPs SASQ View - Without results', () => {
   let stripes;
   beforeEach(() => {
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
 
     renderUDPs(stripes, {}, []);
   });
