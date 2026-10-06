@@ -189,7 +189,11 @@ const JobsView = ({ source, filterGroups, onRefresh }) => {
             defaultWidth="20%"
             renderHeader={renderFilterPaneHeader}
           >
-            <JobsFilter filterGroups={filterGroups} {...renderProps} />
+            <JobsFilter
+              activeFilters={renderProps.activeFilters.state}
+              filterGroups={filterGroups}
+              filterHandlers={renderProps.getFilterHandlers()}
+            />
           </Pane>
 
           <Pane

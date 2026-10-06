@@ -8,6 +8,7 @@ import {
   useLocation,
 } from 'react-router';
 
+import { CheckboxFilterAccordion } from '@folio/stripes-leipzig-components';
 import {
   Accordion,
   AccordionSet,
@@ -15,53 +16,36 @@ import {
 } from '@folio/stripes/components';
 import { CheckboxFilter } from '@folio/stripes/smart-components';
 
-const JobsFilter = (props) => {
+const JobsFilter = ({
+  activeFilters,
+  filterGroups,
+  filterHandlers,
+}) => {
   const location = useLocation();
-  const { formatMessage } = useIntl();
   const history = useHistory();
+  const { formatMessage } = useIntl();
 
   const pathId = new URLSearchParams(location.search).get('providerId');
   const stateId = location.state?.provider?.id;
   const stateLabel = location.state?.provider?.label;
 
-  const renderCheckboxFilter = (key, closedByDefault = false) => {
-    const dataOptions = props.filterGroups
-      .find((e) => e.name === key)
-      .values.map((a) => ({
-        label: formatMessage({
-          id: `ui-erm-usage.harvester.jobs.filter.${key}.${a}`,
-        }),
-        value: a,
-      }));
-    const activeFilters = props.activeFilters.state;
-    const groupFilters = activeFilters[key] || [];
+  const getDataOptions = (key) => filterGroups
+    .find((e) => e.name === key)
+    .values.map((value) => ({
+      label: formatMessage({ id: `ui-erm-usage.harvester.jobs.filter.${key}.${value}` }),
+      value,
+    }));
 
-    return (
-      <Accordion
-        closedByDefault={closedByDefault}
-        displayClearButton={groupFilters.length > 0}
-        header={FilterAccordionHeader}
-        id={`filter-accordion-${key}`}
-        label={<FormattedMessage id={`ui-erm-usage.harvester.jobs.filter.${key}`} />}
-        onClearFilter={() => {
-          props.getFilterHandlers().clearGroup(key);
-        }}
-        separator={false}
-      >
-        <CheckboxFilter
-          dataOptions={dataOptions}
-          name={key}
-          onChange={(group) => {
-            props.getFilterHandlers().state({
-              ...activeFilters,
-              [group.name]: group.values,
-            });
-          }}
-          selectedValues={groupFilters}
-        />
-      </Accordion>
-    );
-  };
+  const renderCheckboxFilter = (key, closedByDefault = false) => (
+    <CheckboxFilterAccordion
+      activeFilters={activeFilters}
+      closedByDefault={closedByDefault}
+      dataOptions={getDataOptions(key)}
+      filterHandlers={filterHandlers}
+      filterKey={key}
+      label={<FormattedMessage id={`ui-erm-usage.harvester.jobs.filter.${key}`} />}
+    />
+  );
 
   const toggleUdp = () => {
     const params = new URLSearchParams(location.search);
@@ -119,7 +103,10 @@ const JobsFilter = (props) => {
 JobsFilter.propTypes = {
   activeFilters: PropTypes.object.isRequired,
   filterGroups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  getFilterHandlers: PropTypes.func.isRequired,
+  filterHandlers: PropTypes.shape({
+    clearGroup: PropTypes.func.isRequired,
+    state: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default JobsFilter;

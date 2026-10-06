@@ -19,9 +19,9 @@ const renderJobFilter = (providerId, id, label) => {
   return renderWithIntl(
     <MemoryRouter initialEntries={[{ pathname: '/eusage/jobs', search, state }]}>
       <JobsFilter
-        activeFilters={{ state: { filters: [] } }}
+        activeFilters={{}}
         filterGroups={filterGroups}
-        getFilterHandlers={() => {}}
+        filterHandlers={{ clearGroup: jest.fn(), state: jest.fn() }}
       />
       <Route
         path="*"
