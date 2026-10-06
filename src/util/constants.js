@@ -7,6 +7,8 @@ export const YEAR_MONTH_FORMAT = 'YYYY-MM';
 export const COUNTER = 'Counter';
 export const CSV = 'CSV';
 export const HARVEST_VIA_SUSHI = 'sushi';
+// Filter value for UDPs without a service type
+export const NO_SERVICE_TYPE = '__none__';
 export const XLSX = 'XLSX';
 
 export const MOD_SETTINGS = {

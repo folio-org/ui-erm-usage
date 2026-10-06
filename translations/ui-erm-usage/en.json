@@ -31,6 +31,8 @@
   "general.errorCodes": "Error codes",
   "general.reportTypes": "Report types",
   "general.reportReleases": "Report releases",
+  "general.serviceTypes": "Service types",
+  "general.noServiceType": "No service type",
   "general.note": "Note",
   "general.year": "Year",
   "general.fileSize.kb": "Filesize in kB",
