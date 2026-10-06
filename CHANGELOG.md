@@ -25,6 +25,8 @@
 * *BREAKING* Remove aggregator harvesting (UDP views, list, settings, `aggregator-settings` interface and permissions) ([UIEUS-562](https://folio-org.atlassian.net/browse/UIEUS-562))
 * UDP edit mode: Display requestedReports for unsupported serviceTypes ([UIEUS-557](https://folio-org.atlassian.net/browse/UIEUS-557))
 * UDP edit mode: Block harvesting status and requested reports for unsupported service types ([UIEUS-556](https://folio-org.atlassian.net/browse/UIEUS-556))
+* Standardizing the text for the word Counter in the UI ([UIEUS-555](https://folio-org.atlassian.net/browse/UIEUS-555))
+* Search: Add filter for service types, requires interface `usage-data-providers 3.3` ([UIEUS-534](https://folio-org.atlassian.net/browse/UIEUS-534))
 * Use component CheckboxFilterAccordion ([UIEUS-520](https://folio-org.atlassian.net/browse/UIEUS-520))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)

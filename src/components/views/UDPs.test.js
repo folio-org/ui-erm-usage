@@ -50,6 +50,8 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
             errorCodes: ['3030', '3031', 'other'],
             reportTypes: ['BR', 'TR'],
             reportReleases: ['5.0', '4'],
+            serviceTypes: ['cs41', 'cs51'],
+            harvesterImpls: [{ implementations: [{ type: 'cs51', name: 'Counter 5.1' }] }],
           }}
           history={history}
           location={{ pathname: '', search: '' }}
@@ -68,6 +70,34 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
   rerender
 );
 
+// MultiSelection uses window.matchMedia, which jsdom does not provide
+beforeEach(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+});
+
+const openServiceTypesList = async () => {
+  await userEvent.click(screen.getByRole('button', { name: 'Service types filter list' }));
+  const multiselects = screen.getAllByLabelText('open menu');
+  await userEvent.click(
+    multiselects.find(btn => btn.getAttribute('aria-controls') === 'multiselect-option-list-filter-serviceTypes')
+  );
+
+  return screen.getAllByRole('listbox')
+    .find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-serviceTypes');
+};
+
 describe('rerender result list', () => {
   let stripes;
 
@@ -78,20 +108,6 @@ describe('rerender result list', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
   });
 
   describe('trigger search with loading new results', () => {
@@ -129,20 +145,6 @@ describe('UDPs SASQ View', () => {
   beforeEach(() => {
     stripes = useStripes();
 
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
-
     renderUDPs(stripes, sourceLoaded, udps);
   });
 
@@ -169,6 +171,10 @@ describe('UDPs SASQ View', () => {
 
     it('should be present the report releases filter', () => {
       expect(screen.getByRole('button', { name: 'Report releases filter list' })).toBeInTheDocument();
+    });
+
+    it('should be present the service types filter', () => {
+      expect(screen.getByRole('button', { name: 'Service types filter list' })).toBeInTheDocument();
     });
 
     it('should be present the has failed reports filter', () => {
@@ -246,24 +252,79 @@ describe('UDPs SASQ View', () => {
   });
 });
 
+describe('UDPs SASQ View - Service types filter', () => {
+  let stripes;
+  const querySetter = jest.fn();
+
+  beforeEach(() => {
+    stripes = useStripes();
+
+    renderUDPs(stripes, { ...sourceLoaded, querySetter }, udps);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('should offer labelled service types and "No service type" and apply the selection', async () => {
+    const serviceTypesList = await openServiceTypesList();
+    expect(within(serviceTypesList).getAllByRole('option')).toHaveLength(3);
+    expect(within(serviceTypesList).getByRole('option', { name: /^cs41 \(Unsupported\)/ })).toBeInTheDocument();
+    expect(within(serviceTypesList).getByRole('option', { name: /^Counter 5\.1/ })).toBeInTheDocument();
+    expect(within(serviceTypesList).getByRole('option', { name: /^No service type/ })).toBeInTheDocument();
+
+    await userEvent.click(within(serviceTypesList).getByRole('option', { name: /cs41/ }));
+
+    expect(querySetter).toHaveBeenLastCalledWith(expect.objectContaining({
+      nsValues: expect.objectContaining({ filters: expect.stringContaining('serviceTypes.cs41') }),
+    }));
+  });
+});
+
+describe('UDPs SASQ View - Service types filter without harvester implementations', () => {
+  let stripes;
+
+  beforeEach(() => {
+    stripes = useStripes();
+  });
+
+  test('should show the plain codes until the implementations are loaded and then update the labels', async () => {
+    const data = (harvesterImpls) => ({
+      data: {
+        udps,
+        tags: [],
+        errorCodes: [],
+        reportTypes: [],
+        reportReleases: [],
+        serviceTypes: ['cs41', 'cs51'],
+        harvesterImpls,
+      },
+    });
+    const { rerender } = renderUDPs(stripes, { ...sourceLoaded, ...data([]) }, udps);
+
+    let serviceTypesList = await openServiceTypesList();
+    expect(within(serviceTypesList).getByRole('option', { name: /^cs41/ })).toBeInTheDocument();
+    expect(within(serviceTypesList).getByRole('option', { name: /^cs51/ })).toBeInTheDocument();
+    expect(within(serviceTypesList).queryByRole('option', { name: /Unsupported/ })).not.toBeInTheDocument();
+
+    renderUDPs(
+      stripes,
+      { ...sourceLoaded, ...data([{ implementations: [{ type: 'cs51', name: 'Counter 5.1' }] }]) },
+      udps,
+      rerender
+    );
+
+    serviceTypesList = screen.getAllByRole('listbox')
+      .find(ul => ul.getAttribute('id') === 'multiselect-option-list-filter-serviceTypes');
+    expect(within(serviceTypesList).getByRole('option', { name: /^cs41 \(Unsupported\)/ })).toBeInTheDocument();
+    expect(within(serviceTypesList).getByRole('option', { name: /^Counter 5\.1/ })).toBeInTheDocument();
+  });
+});
+
 describe('UDPs SASQ View - Without results', () => {
   let stripes;
   beforeEach(() => {
     stripes = useStripes();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
 
     renderUDPs(stripes, {}, []);
   });

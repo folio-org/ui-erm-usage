@@ -1,5 +1,28 @@
 import { FormattedMessage } from 'react-intl';
 
+import { escapeCqlValue } from '@folio/stripes/util';
+
+import { NO_SERVICE_TYPE } from '../constants';
+
+const SERVICE_TYPE_CQL = 'harvestingConfig.sushiConfig.serviceType';
+
+// Selected service types and "No service type" (missing or empty) are combined with "or"
+export const parseServiceTypes = (values) => {
+  const codes = values.filter(v => v !== NO_SERVICE_TYPE);
+  const clauses = [];
+
+  if (codes.length) {
+    const quotedCodes = codes.map(c => `"${escapeCqlValue(c)}"`).join(' or ');
+    clauses.push(`${SERVICE_TYPE_CQL}=(${quotedCodes})`);
+  }
+
+  if (values.includes(NO_SERVICE_TYPE)) {
+    clauses.push(`(cql.allRecords=1 NOT ${SERVICE_TYPE_CQL}="") or ${SERVICE_TYPE_CQL}==""`);
+  }
+
+  return `(${clauses.join(' or ')})`;
+};
+
 const filterGroups = [
   {
     name: 'harvestingStatus',
@@ -42,6 +65,12 @@ const filterGroups = [
     cql: 'reportReleases',
     operator: '=',
     values: [],
+  },
+  {
+    name: 'serviceTypes',
+    cql: SERVICE_TYPE_CQL,
+    values: [],
+    parse: parseServiceTypes,
   },
   {
     name: 'status',

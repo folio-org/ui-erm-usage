@@ -6,6 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import {
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import {
@@ -21,7 +22,12 @@ import {
 } from '@folio/stripes/components';
 import { MultiSelectionFilter } from '@folio/stripes/smart-components';
 
+import { NO_SERVICE_TYPE } from '../../util/constants';
 import filterGroups from '../../util/data/filterGroups';
+import {
+  getImplementations,
+  isServiceTypeSupported,
+} from '../../util/harvesterImpls';
 import isSushiWarningCode from '../../util/isSushiWarningCode';
 
 const UDPFilters = ({
@@ -39,6 +45,23 @@ const UDPFilters = ({
     reportReleases: [],
     status: [],
   });
+
+  // Labels depend on the harvester implementations, which may load after the service types
+  const serviceTypeOptions = useMemo(() => {
+    const implementations = getImplementations(data.harvesterImpls);
+    const options = (data.serviceTypes ?? []).map(code => {
+      const label = isServiceTypeSupported(data.harvesterImpls, code)
+        ? implementations.find(i => i.type === code)?.name ?? code
+        : intl.formatMessage({ id: 'ui-erm-usage.udpHarvestingConfig.unsupportedValue' }, { value: code });
+
+      return { label, value: code };
+    });
+
+    return [
+      ...options,
+      { label: intl.formatMessage({ id: 'ui-erm-usage.general.noServiceType' }), value: NO_SERVICE_TYPE },
+    ];
+  }, [data.harvesterImpls, data.serviceTypes, intl]);
 
   const isFilterDefinedLocally = filter => {
     return filter && !isEmpty(filter.values);
@@ -125,7 +148,7 @@ const UDPFilters = ({
     />
   );
 
-  const renderMultiSelectionFilter = (key, closedByDefault = true) => {
+  const renderMultiSelectionFilter = (key, closedByDefault = true, dataOptions = filterState[key]) => {
     const groupFilters = activeFilters[key] || [];
 
     return (
@@ -140,7 +163,7 @@ const UDPFilters = ({
       >
         <MultiSelectionFilter
           ariaLabelledBy={`clickable-filter-${key}`}
-          dataOptions={filterState[key]}
+          dataOptions={dataOptions}
           id={`filter-${key}`}
           name={key}
           onChange={group => {
@@ -159,6 +182,7 @@ const UDPFilters = ({
     <AccordionSet>
       {renderCheckboxFilter('status')}
       {renderCheckboxFilter('harvestingStatus')}
+      {renderMultiSelectionFilter('serviceTypes', true, serviceTypeOptions)}
       {renderMultiSelectionFilter('reportTypes')}
       {renderMultiSelectionFilter('reportReleases')}
       {renderCheckboxFilter('hasFailedReport', true)}
