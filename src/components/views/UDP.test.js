@@ -95,8 +95,8 @@ describe('UDP', () => {
       expect(screen.getByText('Start harvester')).toBeVisible();
       expect(screen.getByText('Show harvester logs')).toBeVisible();
       expect(screen.getByText('Refresh statistics table')).toBeVisible();
-      expect(screen.getByText('Upload COUNTER report')).toBeVisible();
-      expect(screen.getByText('Upload non-COUNTER report')).toBeVisible();
+      expect(screen.getByText('Upload Counter report')).toBeVisible();
+      expect(screen.getByText('Upload non-Counter report')).toBeVisible();
       expect(screen.getByText('Delete reports')).toBeVisible();
     });
 
@@ -107,14 +107,14 @@ describe('UDP', () => {
     });
 
     test('click upload counter report', async () => {
-      await userEvent.click(screen.getByText('Upload COUNTER report'));
-      const heading = screen.getByRole('heading', { name: 'Upload COUNTER report' });
+      await userEvent.click(screen.getByText('Upload Counter report'));
+      const heading = screen.getByRole('heading', { name: 'Upload Counter report' });
       expect(heading).toBeInTheDocument();
     });
 
     test('click upload non-counter report', async () => {
-      await userEvent.click(screen.getByText('Upload non-COUNTER report'));
-      const heading = screen.getByRole('heading', { name: 'Upload non-COUNTER report' });
+      await userEvent.click(screen.getByText('Upload non-Counter report'));
+      const heading = screen.getByRole('heading', { name: 'Upload non-Counter report' });
       expect(heading).toBeInTheDocument();
     });
 
