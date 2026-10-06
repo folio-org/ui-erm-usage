@@ -195,7 +195,10 @@ const UDPFilters = ({
 UDPFilters.propTypes = {
   activeFilters: PropTypes.object,
   data: PropTypes.object.isRequired,
-  filterHandlers: PropTypes.object,
+  filterHandlers: PropTypes.shape({
+    clearGroup: PropTypes.func.isRequired,
+    state: PropTypes.func.isRequired,
+  }).isRequired,
   intl: PropTypes.object,
 };
 
