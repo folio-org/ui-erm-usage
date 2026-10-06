@@ -1613,10 +1613,10 @@
     prop-types "^15.5.10"
     redux-form "^8.3.0"
 
-"@folio/stripes-leipzig-components@^1.0.0":
-  version "1.0.1099000000000230"
-  resolved "https://repository.folio.org/repository/npm-folioci/@folio/stripes-leipzig-components/-/stripes-leipzig-components-1.0.1099000000000230.tgz#28a446f7e2a8221aa2108a44ce9b6e5d6c31aed6"
-  integrity sha512-01wxP/P/Lcx2d+NUqzqXIkkMJmjR5QXVTHtAG6R4cruUsrj5TW3MYhkGdocZKswISZqDm/HtgcNDSLT8TBWWWA==
+"@folio/stripes-leipzig-components@^1.1.0":
+  version "1.1.1099000000000233"
+  resolved "https://repository.folio.org/repository/npm-folioci/@folio/stripes-leipzig-components/-/stripes-leipzig-components-1.1.1099000000000233.tgz#30b6b9a0c21c8d241669fbde5b5033c2fbd533fb"
+  integrity sha512-vrBlxqB+tpyFWidbNGqgzx2phaeMIngNr10Ey1QSAk2UDEIx0CEY4gixLAt2/o4+t4+ANo5DjZ2xx+PchG+PaA==
   dependencies:
     final-form-arrays "^3.0.2"
     lodash "^4.17.4"
