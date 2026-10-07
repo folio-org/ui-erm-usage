@@ -14,15 +14,13 @@ import {
   injectIntl,
 } from 'react-intl';
 
+import { CheckboxFilterAccordion } from '@folio/stripes-leipzig-components';
 import {
   Accordion,
   AccordionSet,
   FilterAccordionHeader,
 } from '@folio/stripes/components';
-import {
-  CheckboxFilter,
-  MultiSelectionFilter,
-} from '@folio/stripes/smart-components';
+import { MultiSelectionFilter } from '@folio/stripes/smart-components';
 
 import { NO_SERVICE_TYPE } from '../../util/constants';
 import filterGroups from '../../util/data/filterGroups';
@@ -139,35 +137,16 @@ const UDPFilters = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, filterState]);
 
-  const renderCheckboxFilter = (key, closedByDefault = false) => {
-    const groupFilters = activeFilters[key] || [];
-
-    return (
-      <Accordion
-        closedByDefault={closedByDefault}
-        displayClearButton={groupFilters.length > 0}
-        header={FilterAccordionHeader}
-        id={`filter-accordion-${key}`}
-        label={<FormattedMessage id={`ui-erm-usage.information.${key}`} />}
-        onClearFilter={() => {
-          filterHandlers.clearGroup(key);
-        }}
-        separator={false}
-      >
-        <CheckboxFilter
-          dataOptions={filterState[key]}
-          name={key}
-          onChange={group => {
-            filterHandlers.state({
-              ...activeFilters,
-              [group.name]: group.values,
-            });
-          }}
-          selectedValues={groupFilters}
-        />
-      </Accordion>
-    );
-  };
+  const renderCheckboxFilter = (key, closedByDefault = false) => (
+    <CheckboxFilterAccordion
+      activeFilters={activeFilters}
+      closedByDefault={closedByDefault}
+      dataOptions={filterState[key]}
+      filterHandlers={filterHandlers}
+      filterKey={key}
+      label={<FormattedMessage id={`ui-erm-usage.information.${key}`} />}
+    />
+  );
 
   const renderMultiSelectionFilter = (key, closedByDefault = true, dataOptions = filterState[key]) => {
     const groupFilters = activeFilters[key] || [];
@@ -216,7 +195,10 @@ const UDPFilters = ({
 UDPFilters.propTypes = {
   activeFilters: PropTypes.object,
   data: PropTypes.object.isRequired,
-  filterHandlers: PropTypes.object,
+  filterHandlers: PropTypes.shape({
+    clearGroup: PropTypes.func.isRequired,
+    state: PropTypes.func.isRequired,
+  }).isRequired,
   intl: PropTypes.object,
 };
 
