@@ -15,7 +15,7 @@ import UDPEditRoute from './UDPEditRoute';
 
 const udp = {
   id: '9a2427cd-4110-4bd9-b6f9-e3475631bbac',
-  label: 'Provider without harvestVia',
+  label: 'Provider',
   status: 'active',
   harvestingConfig: {
     harvestingStatus: 'inactive',
@@ -43,7 +43,7 @@ const renderUDPEditRoute = (stripes) => renderWithIntl(
 );
 
 describe('UDPEditRoute', () => {
-  test('saves the UDP with harvestVia sushi', async () => {
+  test('saves the UDP without harvestVia', async () => {
     const stripes = useStripes();
     renderUDPEditRoute(stripes);
 
@@ -51,6 +51,6 @@ describe('UDPEditRoute', () => {
     await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
 
     await waitFor(() => expect(PUT).toHaveBeenCalled());
-    expect(PUT.mock.calls[0][0].harvestingConfig.harvestVia).toBe('sushi');
+    expect(PUT.mock.calls[0][0].harvestingConfig).not.toHaveProperty('harvestVia');
   });
 });

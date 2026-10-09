@@ -203,7 +203,7 @@ UDPViewRoute.manifest = Object.freeze({
   },
   harvesterImpls: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl?aggregator=false',
+    path: 'erm-usage-harvester/impl',
     throwErrors: false,
   },
   harvesterJobs: {
