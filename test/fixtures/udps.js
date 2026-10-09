@@ -5,7 +5,6 @@ const udps = [
     description: 'This is a mock udp',
     harvestingConfig: {
       harvestingStatus: 'active',
-      harvestVia: 'sushi',
       sushiConfig: {
         serviceType: 'cs51',
         serviceUrl: 'https://sushi.example.org/counter/r5',

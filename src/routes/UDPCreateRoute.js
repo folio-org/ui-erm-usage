@@ -6,7 +6,6 @@ import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import urls from '../util/urls';
-import withHarvestVia from '../util/withHarvestVia';
 
 const UDPCreateRoute = ({
   handlers = {},
@@ -23,7 +22,7 @@ const UDPCreateRoute = ({
   };
 
   const handleSubmit = (udp) => {
-    mutator.usageDataProviders.POST(withHarvestVia(udp)).then(({ id }) => {
+    mutator.usageDataProviders.POST(udp).then(({ id }) => {
       history.push(`${urls.udpView(id)}${location.search}`);
     });
   };
@@ -72,7 +71,7 @@ const UDPCreateRoute = ({
 UDPCreateRoute.manifest = Object.freeze({
   harvesterImpls: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl?aggregator=false',
+    path: 'erm-usage-harvester/impl',
     shouldRefresh: () => false,
   },
   usageDataProviders: {

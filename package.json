@@ -71,10 +71,10 @@
       "counter-reports": "5.0",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
-      "usage-data-providers": "3.3",
+      "usage-data-providers": "4.0",
       "settings": "1.2",
       "tags": "1.0",
-      "erm-usage-harvester": "2.1"
+      "erm-usage-harvester": "3.0"
     },
     "stripesDeps": [
       "@folio/stripes-leipzig-components"
