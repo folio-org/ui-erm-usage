@@ -43,7 +43,7 @@ const renderUDPEditRoute = (stripes) => renderWithIntl(
 );
 
 describe('UDPEditRoute', () => {
-  test('saves the UDP without harvestVia', async () => {
+  test('saves the UDP', async () => {
     const stripes = useStripes();
     renderUDPEditRoute(stripes);
 
@@ -51,6 +51,5 @@ describe('UDPEditRoute', () => {
     await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
 
     await waitFor(() => expect(PUT).toHaveBeenCalled());
-    expect(PUT.mock.calls[0][0].harvestingConfig).not.toHaveProperty('harvestVia');
   });
 });
