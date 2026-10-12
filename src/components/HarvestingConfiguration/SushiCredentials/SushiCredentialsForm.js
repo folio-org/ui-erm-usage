@@ -17,10 +17,8 @@ import {
 } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { values, form } = props;
+  const { form } = props;
   const intl = useIntl();
-
-  const isDisableApiKey = values.harvestingConfig?.reportRelease === '4';
 
   return (
     <>
@@ -54,7 +52,6 @@ const SushiCredentialsForm = (props) => {
         <Col xs={4}>
           <Field
             component={TextField}
-            disabled={isDisableApiKey}
             fullWidth
             id="addudp_apikey"
             label={<FormattedMessage id="ui-erm-usage.credentials.apiKey" />}
@@ -105,7 +102,6 @@ const SushiCredentialsForm = (props) => {
 SushiCredentialsForm.propTypes = {
   form: PropTypes.shape(),
   required: PropTypes.bool,
-  values: PropTypes.shape(),
 };
 
 export default SushiCredentialsForm;

@@ -578,25 +578,21 @@ describe('UDPForm', () => {
       expect(apiKeyBox).toHaveValue('key1234');
     });
 
-    test('change reqId and apiKey with service type 5 selected', async () => {
-      renderUDPForm(stripes, { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } });
+    test.each([
+      { record: 'Counter 5.0', udp: { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } } },
+      { record: 'stored Counter 4', udp: initialUdp },
+    ])('should allow editing requestor ID and API key of a $record record', async ({ udp }) => {
+      renderUDPForm(stripes, udp);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
       const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
 
-      expect(reqIdBox).toBeEnabled();
-      expect(apiKeyBox).toBeEnabled();
-
-      await userEvent.type(reqIdBox, 'a');
-      expect(reqIdBox).toHaveValue('a');
-      expect(apiKeyBox).toBeEnabled();
       await userEvent.clear(reqIdBox);
-      expect(apiKeyBox).toBeEnabled();
-
-      await userEvent.type(apiKeyBox, 'a');
-      expect(apiKeyBox).toHaveValue('a');
-      expect(reqIdBox).toBeEnabled();
+      await userEvent.type(reqIdBox, 'id');
       await userEvent.clear(apiKeyBox);
-      expect(reqIdBox).toBeEnabled();
+      await userEvent.type(apiKeyBox, 'key');
+
+      expect(reqIdBox).toHaveValue('id');
+      expect(apiKeyBox).toHaveValue('key');
     });
   });
 

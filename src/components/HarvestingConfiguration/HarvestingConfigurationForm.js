@@ -128,7 +128,6 @@ const HarvestingConfigurationForm = ({
             <SushiCredentialsForm
               form={form}
               required={isHarvestingStatusActive}
-              values={values}
             />
           </section>
           <section className={formCss.separator}>
