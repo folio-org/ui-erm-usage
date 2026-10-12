@@ -1,3 +1,4 @@
+import { times } from 'lodash';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
@@ -34,19 +35,22 @@ const getReportTypeOptions = (supported, selected, index) => {
 function SelectReportType(props) {
   const { counterReportsCurrentVersion, disabled, fields, selectedReports } = props;
 
-  // While required, always show a first row, so "Required" can be shown there
-  // It only gets a value once a report type is selected
-  const showEmptyRow = props.required && fields.length === 0;
-  const rows = showEmptyRow ? [`${fields.name}[0]`] : fields.map(elem => elem);
-  // While required, and there is only one row, it cannot be removed
-  const canRemove = !props.required || rows.length > 1;
+  const placeholderRowName = `${fields.name}[0]`;
+  const isPlaceholderRowShown = props.required && fields.length === 0;
+  const rowNames = isPlaceholderRowShown ? [placeholderRowName] : fields.map(name => name);
+  const canRemoveRows = !props.required || fields.length > 1;
+
+  const addReportType = () => {
+    const entriesToAdd = isPlaceholderRowShown ? 2 : 1;
+    times(entriesToAdd, () => fields.push(''));
+  };
 
   return (
     <>
       <Row>
         <Col xs={7}>
-          {rows.map((elem, index) => (
-            <Row key={elem}>
+          {rowNames.map((name, index) => (
+            <Row key={name}>
               <Col xs={6}>
                 <div id={`reportType-selection-${index}`}>
                   <Field
@@ -59,13 +63,13 @@ function SelectReportType(props) {
                     )}
                     disabled={disabled}
                     label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
-                    name={elem}
+                    name={name}
                     validate={props.required ? required : notRequired}
                   />
                 </div>
               </Col>
               <Col xs={1}>
-                {canRemove && (
+                {canRemoveRows && (
                   <div className={`${css.repeatableFieldRemoveItem}`}>
                     <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
                       {([label]) => (
@@ -88,11 +92,7 @@ function SelectReportType(props) {
         <Col xs={4}>
           <Button
             disabled={disabled}
-            onClick={() => {
-              // Keep the shown first row and add another one below it
-              if (showEmptyRow) fields.push('');
-              fields.push('');
-            }}
+            onClick={addReportType}
           >
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
               {([label]) => <Icon icon="plus-sign">{label}</Icon>}
