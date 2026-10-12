@@ -17,7 +17,6 @@ import {
 } from '../../../util/validate';
 
 const SushiCredentialsForm = (props) => {
-  const { form } = props;
   const intl = useIntl();
 
   return (
@@ -43,9 +42,6 @@ const SushiCredentialsForm = (props) => {
             id="addudp_requestorid"
             label={<FormattedMessage id="ui-erm-usage.credentials.requestorId" />}
             name="sushiCredentials.requestorId"
-            onChange={(e) => {
-              form.change(e.target.name, e.target.value);
-            }}
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.requestorId' })}
           />
         </Col>
@@ -56,9 +52,6 @@ const SushiCredentialsForm = (props) => {
             id="addudp_apikey"
             label={<FormattedMessage id="ui-erm-usage.credentials.apiKey" />}
             name="sushiCredentials.apiKey"
-            onChange={(e) => {
-              form.change(e.target.name, e.target.value);
-            }}
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.apiKey' })}
           />
         </Col>
@@ -100,7 +93,6 @@ const SushiCredentialsForm = (props) => {
 };
 
 SushiCredentialsForm.propTypes = {
-  form: PropTypes.shape(),
   required: PropTypes.bool,
 };
 

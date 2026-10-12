@@ -126,7 +126,6 @@ const HarvestingConfigurationForm = ({
           </section>
           <section className={formCss.separator}>
             <SushiCredentialsForm
-              form={form}
               required={isHarvestingStatusActive}
             />
           </section>
