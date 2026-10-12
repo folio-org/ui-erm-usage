@@ -70,23 +70,6 @@ const renderUDPs = (stripes, props, udpsData, rerender) => renderWithIntl(
   rerender
 );
 
-// MultiSelection uses window.matchMedia, which jsdom does not provide
-beforeEach(() => {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
-  });
-});
-
 const openServiceTypesList = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Service types filter list' }));
   const multiselects = screen.getAllByLabelText('open menu');
