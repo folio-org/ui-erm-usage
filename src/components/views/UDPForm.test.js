@@ -528,7 +528,7 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('test that reqId and apiKey fields are disabled and cleared depending on service type selection', () => {
+  describe('test that reqId and apiKey fields are kept when the service type changes', () => {
     const reportReleaseProvider = {
       label: 'Provider with reqId and apiKey',
       sushiCredentials: {
@@ -540,15 +540,18 @@ describe('UDPForm', () => {
     const testSelectServiceType = async (serviceType) => {
       renderUDPForm(stripes, reportReleaseProvider);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
       const serviceTypeSelect = screen.getByRole('combobox', { name: /service type/i });
 
       expect(reqIdBox).toBeEnabled();
       expect(reqIdBox).toHaveValue('id1234');
+      expect(apiKeyBox).toHaveValue('key1234');
 
       await userEvent.selectOptions(serviceTypeSelect, serviceType);
 
       expect(serviceTypeSelect.value).toBe(serviceType);
       expect(reqIdBox).toHaveValue('id1234');
+      expect(apiKeyBox).toHaveValue('key1234');
     };
 
     test('select service type 4', async () => {
@@ -561,6 +564,62 @@ describe('UDPForm', () => {
 
     test('select service type 5.1', async () => {
       await testSelectServiceType('cs51');
+    });
+
+    test.each([
+      { from: 'cs51', to: 'cs50', toName: 'Counter 5.0', requestorId: 'id1234' },
+      { from: 'cs50', to: 'cs51', toName: 'Counter 5.1', requestorId: 'id1234' },
+      { from: 'cs51', to: 'cs50', toName: 'Counter 5.0', requestorId: undefined },
+      { from: 'cs50', to: 'cs51', toName: 'Counter 5.1', requestorId: undefined },
+    ])('should keep and save the API key when switching from $from to $to (requestor ID: $requestorId)', async ({
+      from, to, toName, requestorId,
+    }) => {
+      renderUDPForm(stripes, {
+        label: 'Provider',
+        status: 'active',
+        harvestingConfig: {
+          harvestingStatus: 'inactive',
+          reportRelease: from === 'cs50' ? '5' : '5.1',
+          sushiConfig: { serviceType: from },
+        },
+        sushiCredentials: { requestorId, apiKey: 'key1234' },
+      });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+
+      await userEvent.selectOptions(serviceTypeSelect, [toName]);
+      expect(serviceTypeSelect).toHaveValue(to);
+      expect(apiKeyBox).toHaveValue('key1234');
+
+      await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
+      expect(onSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          sushiCredentials: expect.objectContaining({ apiKey: 'key1234' }),
+        }),
+        expect.anything(),
+        expect.anything()
+      );
+    });
+
+    test('should keep the API key if clearing the report selection is cancelled', async () => {
+      renderUDPForm(stripes, {
+        ...initialValues,
+        label: 'Provider',
+        harvestingConfig: { ...initialValues.harvestingConfig, requestedReports: ['TR'] },
+        sushiCredentials: { requestorId: 'id1234', apiKey: 'key1234' },
+      });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+
+      await userEvent.selectOptions(serviceTypeSelect, ['Counter 5.0']);
+      const dialog = screen.getByRole('dialog');
+      expect(within(dialog).getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
+      expect(apiKeyBox).toHaveValue('key1234');
+
+      await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+
+      expect(serviceTypeSelect).toHaveValue('cs51');
+      expect(apiKeyBox).toHaveValue('key1234');
     });
 
     test('change reqId and apiKey with service type 5 selected', async () => {
