@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import {
   Col,
   KeyValue,
-  NoValue,
   Row,
 } from '@folio/stripes/components';
 
@@ -16,7 +15,7 @@ function UDPInfoView(props) {
         <Col xs={9}>
           <KeyValue
             label={<FormattedMessage id="ui-erm-usage.general.description" />}
-            value={usageDataProvider.description ?? <NoValue />}
+            value={usageDataProvider.description}
           />
         </Col>
       </Row>
