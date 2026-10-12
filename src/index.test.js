@@ -41,6 +41,21 @@ let stripes;
 describe('index', () => {
   beforeEach(() => {
     stripes = useStripes();
+
+    // The first report type row of the create form uses window.matchMedia, which jsdom does not provide
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
   });
 
   it('should render UDPEditRoute', () => {

@@ -34,11 +34,18 @@ const getReportTypeOptions = (supported, selected, index) => {
 function SelectReportType(props) {
   const { counterReportsCurrentVersion, disabled, fields, selectedReports } = props;
 
+  // While required, always show a first row, so "Required" can be shown there
+  // It only gets a value once a report type is selected
+  const showEmptyRow = props.required && fields.length === 0;
+  const rows = showEmptyRow ? [`${fields.name}[0]`] : fields.map(elem => elem);
+  // While required, and there is only one row, it cannot be removed
+  const canRemove = !props.required || rows.length > 1;
+
   return (
     <>
       <Row>
         <Col xs={7}>
-          {fields.map((elem, index) => (
+          {rows.map((elem, index) => (
             <Row key={elem}>
               <Col xs={6}>
                 <div id={`reportType-selection-${index}`}>
@@ -58,18 +65,20 @@ function SelectReportType(props) {
                 </div>
               </Col>
               <Col xs={1}>
-                <div className={`${css.repeatableFieldRemoveItem}`}>
-                  <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
-                    {([label]) => (
-                      <IconButton
-                        aria-label={label}
-                        disabled={disabled}
-                        icon="trash"
-                        onClick={() => fields.remove(index)}
-                      />
-                    )}
-                  </FormattedMessage>
-                </div>
+                {canRemove && (
+                  <div className={`${css.repeatableFieldRemoveItem}`}>
+                    <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
+                      {([label]) => (
+                        <IconButton
+                          aria-label={label}
+                          disabled={disabled}
+                          icon="trash"
+                          onClick={() => fields.remove(index)}
+                        />
+                      )}
+                    </FormattedMessage>
+                  </div>
+                )}
               </Col>
             </Row>
           ))}
@@ -79,7 +88,11 @@ function SelectReportType(props) {
         <Col xs={4}>
           <Button
             disabled={disabled}
-            onClick={() => fields.push('')}
+            onClick={() => {
+              // Keep the shown first row and add another one below it
+              if (showEmptyRow) fields.push('');
+              fields.push('');
+            }}
           >
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
               {([label]) => <Icon icon="plus-sign">{label}</Icon>}
