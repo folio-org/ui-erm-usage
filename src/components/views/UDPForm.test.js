@@ -289,16 +289,16 @@ describe('UDPForm', () => {
   });
 
   describe('stored reportTypes', () => {
+    const udpWithUnsupportedReport = {
+      ...supportedUdp,
+      harvestingConfig: { ...supportedUdp.harvestingConfig, requestedReports: ['DR1'] },
+    };
+
     it('should show stored reportTypes if the serviceType is unsupported', () => {
       renderUDPForm(stripes, initialUdp);
 
       expect(screen.getByRole('button', { name: /Report type/ })).toHaveTextContent('DR1');
     });
-
-    const udpWithUnsupportedReport = {
-      ...supportedUdp,
-      harvestingConfig: { ...supportedUdp.harvestingConfig, requestedReports: ['DR1'] },
-    };
 
     it('should show stored reportTypes that are not supported by the serviceType', () => {
       renderUDPForm(stripes, udpWithUnsupportedReport);
@@ -316,6 +316,38 @@ describe('UDPForm', () => {
       expect(screen.getByRole('option', { name: 'DR' })).toBeInTheDocument();
       expect(screen.queryByRole('option', { name: 'DR1' })).not.toBeInTheDocument();
     });
+  });
+
+  describe('report type options', () => {
+    // The real Counter 5.0 and 5.1 implementations support the same reports, so use distinct ones here
+    const implsWithDistinctReports = [
+      {
+        implementations: [
+          { type: 'cs50', name: 'Counter 5.0', reportRelease: '5', supportedReports: ['DR', 'TR'] },
+          { type: 'cs51', name: 'Counter 5.1', reportRelease: '5.1', supportedReports: ['IR', 'PR'], isDefault: true },
+        ],
+      },
+    ];
+
+    it('should offer the report types of the selected service type', async () => {
+      renderUDPForm(stripes, initialValues, implsWithDistinctReports);
+
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+      expect(screen.getByRole('option', { name: 'IR' })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'DR' })).not.toBeInTheDocument();
+      await userEvent.click(screen.getByRole('option', { name: 'IR' }));
+
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.0']);
+      await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+
+      expect(screen.getByRole('option', { name: 'DR' })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: 'TR' })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'IR' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'PR' })).not.toBeInTheDocument();
+    }, 10000);
   });
 
   describe('service url trimming', () => {
