@@ -43,7 +43,7 @@ class UDPsRoute extends React.Component {
     },
     harvesterImpls: {
       type: 'okapi',
-      path: 'erm-usage-harvester/impl?aggregator=false',
+      path: 'erm-usage-harvester/impl',
       throwErrors: false,
     },
     errorCodes: {
