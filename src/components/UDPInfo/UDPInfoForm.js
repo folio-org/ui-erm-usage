@@ -13,6 +13,7 @@ import {
   ConfirmationModal,
   Row,
   Select,
+  TextArea,
   TextField,
 } from '@folio/stripes/components';
 
@@ -68,9 +69,11 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
             validate={required}
           />
         </Col>
-        <Col xs={8}>
+      </Row>
+      <Row>
+        <Col xs={12}>
           <Field
-            component={TextField}
+            component={TextArea}
             fullWidth
             id="addudp_description"
             label={<FormattedMessage id="ui-erm-usage.general.description" />}

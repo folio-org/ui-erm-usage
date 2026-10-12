@@ -13,7 +13,7 @@ function UDPInfoView(props) {
   return (
     <div id={id}>
       <Row>
-        <Col xs={3}>
+        <Col xs={9}>
           <KeyValue
             label={<FormattedMessage id="ui-erm-usage.general.description" />}
             value={usageDataProvider.description ?? <NoValue />}

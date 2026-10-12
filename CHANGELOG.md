@@ -29,6 +29,7 @@
 * Search: Add filter for service types, requires interface `usage-data-providers 3.3` ([UIEUS-534](https://folio-org.atlassian.net/browse/UIEUS-534))
 * Use component CheckboxFilterAccordion ([UIEUS-520](https://folio-org.atlassian.net/browse/UIEUS-520))
 * *BREAKING* Drop harvestVia seeding, require usage-data-providers 4.0 and erm-usage-harvester 3.0 ([UIEUS-564](https://folio-org.atlassian.net/browse/UIEUS-564))
+* Change description field to TextArea ([UIEUS-572](https://folio-org.atlassian.net/browse/UIEUS-572))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
