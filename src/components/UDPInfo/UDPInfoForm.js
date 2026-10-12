@@ -79,6 +79,7 @@ function UDPInfoForm({ accordionId, expanded, form, onToggle, values }) {
             label={<FormattedMessage id="ui-erm-usage.general.description" />}
             name="description"
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.udpDescription' })}
+            rows={4}
           />
         </Col>
       </Row>
