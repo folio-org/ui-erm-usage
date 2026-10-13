@@ -354,6 +354,23 @@ describe('UDPForm', () => {
     });
   });
 
+  describe('description', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
+
+    test('renders description as textarea', () => {
+      expect(screen.getByRole('textbox', { name: 'Description' })).toBeInstanceOf(HTMLTextAreaElement);
+    });
+
+    test('keeps line breaks in description', async () => {
+      const descriptionInput = screen.getByRole('textbox', { name: 'Description' });
+      await userEvent.type(descriptionInput, 'first line{Enter}second line');
+
+      expect(descriptionInput).toHaveValue('first line\nsecond line');
+    });
+  });
+
   describe('test service type and selected reports options', () => {
     beforeEach(() => {
       renderUDPForm(stripes, {});
@@ -604,22 +621,14 @@ describe('UDPForm', () => {
 
     const renderWithCredentials = ({ from, requestor, requestedReports }) => renderUDPForm(stripes, {
       label: 'Provider',
-      ...(from !== 'no service type' && {
-        harvestingConfig: { reportRelease: reportReleases[from], sushiConfig: { serviceType: from }, requestedReports },
-      }),
+      harvestingConfig: { reportRelease: reportReleases[from], sushiConfig: { serviceType: from }, requestedReports },
       sushiCredentials: { requestorId: requestor === 'with' ? 'id1234' : undefined, apiKey: 'key1234' },
     });
 
     test.each`
-      from                 | to        | requestor
-      ${'no service type'} | ${'cs50'} | ${'with'}
-      ${'no service type'} | ${'cs51'} | ${'with'}
-      ${'cs50'}            | ${'cs51'} | ${'with'}
-      ${'cs51'}            | ${'cs50'} | ${'with'}
-      ${'no service type'} | ${'cs50'} | ${'without'}
-      ${'no service type'} | ${'cs51'} | ${'without'}
-      ${'cs50'}            | ${'cs51'} | ${'without'}
-      ${'cs51'}            | ${'cs50'} | ${'without'}
+      from      | to        | requestor
+      ${'cs50'} | ${'cs51'} | ${'with'}
+      ${'cs51'} | ${'cs50'} | ${'without'}
     `('should keep the credentials when changing from $from to $to $requestor requestor ID', async ({
       from, to, requestor,
     }) => {
