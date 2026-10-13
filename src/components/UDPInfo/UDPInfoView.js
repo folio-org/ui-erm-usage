@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
-  Col,
   KeyValue,
   Row,
 } from '@folio/stripes/components';
@@ -12,12 +11,10 @@ function UDPInfoView(props) {
   return (
     <div id={id}>
       <Row>
-        <Col xs={9}>
-          <KeyValue
-            label={<FormattedMessage id="ui-erm-usage.general.description" />}
-            value={usageDataProvider.description}
-          />
-        </Col>
+        <KeyValue
+          label={<FormattedMessage id="ui-erm-usage.general.description" />}
+          value={usageDataProvider.description}
+        />
       </Row>
     </div>
   );
