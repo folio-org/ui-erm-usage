@@ -365,6 +365,23 @@ describe('UDPForm', () => {
     });
   });
 
+  describe('description', () => {
+    beforeEach(() => {
+      renderUDPForm(stripes);
+    });
+
+    test('renders description as textarea', () => {
+      expect(screen.getByRole('textbox', { name: 'Description' })).toBeInstanceOf(HTMLTextAreaElement);
+    });
+
+    test('keeps line breaks in description', async () => {
+      const descriptionInput = screen.getByRole('textbox', { name: 'Description' });
+      await userEvent.type(descriptionInput, 'first line{Enter}second line');
+
+      expect(descriptionInput).toHaveValue('first line\nsecond line');
+    });
+  });
+
   describe('test service type and selected reports options', () => {
     beforeEach(() => {
       renderUDPForm(stripes, {});
