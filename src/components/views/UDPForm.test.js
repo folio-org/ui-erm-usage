@@ -18,19 +18,6 @@ const stubHarvesterImpls = [
   {
     implementations: [
       {
-        type: 'cs41',
-        name: 'Counter-Sushi 4.1',
-        reportRelease: '4',
-        supportedReports: [
-          'BR1', 'BR2', 'BR3', 'BR4', 'BR5', 'BR7',
-          'DB1', 'DB2',
-          'JR1', 'JR1 GOA', 'JR1a', 'JR2', 'JR3', 'JR3 Mobile', 'JR4', 'JR5',
-          'MR1', 'MR1 Mobile',
-          'PR1',
-          'TR1', 'TR2', 'TR3', 'TR3 Mobile',
-        ],
-      },
-      {
         type: 'cs50',
         name: 'Counter 5.0',
         reportRelease: '5',
@@ -69,6 +56,16 @@ const initialUdp = {
   },
   notes:
     'Please fill in your own credentials: customer ID and requestor ID, name and mail are only demonstrational.',
+};
+
+const supportedUdp = {
+  ...initialUdp,
+  harvestingConfig: {
+    ...initialUdp.harvestingConfig,
+    sushiConfig: { ...initialUdp.harvestingConfig.sushiConfig, serviceType: 'cs51' },
+    reportRelease: '5.1',
+    requestedReports: ['TR'],
+  },
 };
 
 const initialValues = {
@@ -153,20 +150,25 @@ describe('UDPForm', () => {
   });
 
   describe('unsupported service type', () => {
-    const supportedHarvesterImpls = [
-      {
-        implementations: stubHarvesterImpls[0].implementations.filter(i => i.type !== 'cs41'),
-      },
-    ];
-
     // The backend sets the harvesting status of UDPs with an unsupported service type to inactive
     const unsupportedUdp = {
       ...initialUdp,
       harvestingConfig: { ...initialUdp.harvestingConfig, harvestingStatus: 'inactive' },
     };
 
+    const unsupportedCs51Udp = {
+      ...unsupportedUdp,
+      harvestingConfig: {
+        ...unsupportedUdp.harvestingConfig,
+        sushiConfig: { ...unsupportedUdp.harvestingConfig.sushiConfig, serviceType: 'cs51old' },
+        reportRelease: '5.1',
+        requestedReports: ['TR'],
+      },
+      sushiCredentials: { ...unsupportedUdp.sushiCredentials, apiKey: 'secret' },
+    };
+
     test('should add current unsupported service type as selected option', () => {
-      renderUDPForm(stripes, initialUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, initialUdp);
 
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(serviceTypeSelect).toHaveValue('cs41');
@@ -174,14 +176,14 @@ describe('UDPForm', () => {
     });
 
     test('should not add an unsupported option for a supported service type', () => {
-      renderUDPForm(stripes, initialValues, supportedHarvesterImpls);
+      renderUDPForm(stripes, initialValues);
 
       const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
       expect(within(serviceTypeSelect).queryByRole('option', { name: /\(Unsupported\)/ })).not.toBeInTheDocument();
     });
 
     test('should disable harvesting status and requested reports including the delete buttons', () => {
-      renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, unsupportedUdp);
 
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeDisabled();
       expect(screen.getByRole('button', { name: /Report type/ })).toBeDisabled();
@@ -190,19 +192,19 @@ describe('UDPForm', () => {
     });
 
     test('should show a warning explaining why harvesting status and requested reports are blocked', () => {
-      renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, unsupportedUdp);
 
       expect(screen.getByText(/The selected service type is not supported/)).toBeVisible();
     });
 
     test('should not show the warning for a supported service type', () => {
-      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+      renderUDPForm(stripes, supportedUdp);
 
       expect(screen.queryByText(/The selected service type is not supported/)).not.toBeInTheDocument();
     });
 
     test('should not disable harvesting status and requested reports for a supported service type', () => {
-      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+      renderUDPForm(stripes, supportedUdp);
 
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeEnabled();
       expect(screen.getByRole('button', { name: /Report type/ })).toBeEnabled();
@@ -211,7 +213,7 @@ describe('UDPForm', () => {
     });
 
     test('should enable harvesting status and clear requested reports after selecting a supported type', async () => {
-      renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, unsupportedUdp);
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.1']);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
@@ -230,32 +232,14 @@ describe('UDPForm', () => {
     });
 
     test('should ask to clear requested reports even if the report release does not change', async () => {
-      const implsWithoutCs41 = [
-        {
-          implementations: [
-            ...supportedHarvesterImpls[0].implementations,
-            { type: 'cs41new', name: 'Counter-Sushi 4.1 New', reportRelease: '4', supportedReports: ['BR1'] },
-          ],
-        },
-      ];
-      renderUDPForm(stripes, unsupportedUdp, implsWithoutCs41);
+      renderUDPForm(stripes, unsupportedCs51Udp);
 
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter-Sushi 4.1 New']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.1']);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
     });
 
     test('should keep the API key if the report release does not change', async () => {
-      const cs51Udp = {
-        ...unsupportedUdp,
-        harvestingConfig: {
-          ...unsupportedUdp.harvestingConfig,
-          sushiConfig: { ...unsupportedUdp.harvestingConfig.sushiConfig, serviceType: 'cs51old' },
-          reportRelease: '5.1',
-          requestedReports: ['TR'],
-        },
-        sushiCredentials: { ...unsupportedUdp.sushiCredentials, apiKey: 'secret' },
-      };
-      renderUDPForm(stripes, cs51Udp, supportedHarvesterImpls);
+      renderUDPForm(stripes, unsupportedCs51Udp);
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.1']);
       await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
@@ -269,7 +253,7 @@ describe('UDPForm', () => {
         ...initialUdp,
         harvestingConfig: { ...initialUdp.harvestingConfig, requestedReports: [] },
       };
-      renderUDPForm(stripes, udpWithoutReports, supportedHarvesterImpls);
+      renderUDPForm(stripes, udpWithoutReports);
 
       await userEvent.type(screen.getByRole('textbox', { name: 'Description' }), 'foo');
       await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
@@ -278,7 +262,7 @@ describe('UDPForm', () => {
     });
 
     test('should keep the unsupported service type and disabled fields if clearing reports is cancelled', async () => {
-      renderUDPForm(stripes, unsupportedUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, unsupportedUdp);
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.1']);
       // Wait for the exit transition, so the banner has to come back after cancelling
@@ -305,34 +289,65 @@ describe('UDPForm', () => {
   });
 
   describe('stored reportTypes', () => {
-    const supportedHarvesterImpls = [
-      {
-        implementations: stubHarvesterImpls[0].implementations.filter(i => i.type !== 'cs41'),
-      },
-    ];
+    const udpWithUnsupportedReport = {
+      ...supportedUdp,
+      harvestingConfig: { ...supportedUdp.harvestingConfig, requestedReports: ['DR1'] },
+    };
 
     it('should show stored reportTypes if the serviceType is unsupported', () => {
-      renderUDPForm(stripes, initialUdp, supportedHarvesterImpls);
+      renderUDPForm(stripes, initialUdp);
 
       expect(screen.getByRole('button', { name: /Report type/ })).toHaveTextContent('DR1');
     });
 
     it('should show stored reportTypes that are not supported by the serviceType', () => {
-      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+      renderUDPForm(stripes, udpWithUnsupportedReport);
 
       expect(screen.getByRole('button', { name: /Report type/ })).toHaveTextContent('DR1');
     });
 
     it('should offer stored unsupported reportType only in its own row', async () => {
-      renderUDPForm(stripes, initialUdp, stubHarvesterImpls);
+      renderUDPForm(stripes, udpWithUnsupportedReport);
 
       await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
       const reportTypeButtons = screen.getAllByRole('button', { name: /^Report type/ });
       await userEvent.click(reportTypeButtons[1]);
 
-      expect(screen.getByRole('option', { name: 'BR1' })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: 'DR' })).toBeInTheDocument();
       expect(screen.queryByRole('option', { name: 'DR1' })).not.toBeInTheDocument();
     });
+  });
+
+  describe('report type options', () => {
+    // The real Counter 5.0 and 5.1 implementations support the same reports, so use distinct ones here
+    const implsWithDistinctReports = [
+      {
+        implementations: [
+          { type: 'cs50', name: 'Counter 5.0', reportRelease: '5', supportedReports: ['DR', 'TR'] },
+          { type: 'cs51', name: 'Counter 5.1', reportRelease: '5.1', supportedReports: ['IR', 'PR'], isDefault: true },
+        ],
+      },
+    ];
+
+    it('should offer the report types of the selected service type', async () => {
+      renderUDPForm(stripes, initialValues, implsWithDistinctReports);
+
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+      expect(screen.getByRole('option', { name: 'IR' })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'DR' })).not.toBeInTheDocument();
+      await userEvent.click(screen.getByRole('option', { name: 'IR' }));
+
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.0']);
+      await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+      await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
+
+      expect(screen.getByRole('option', { name: 'DR' })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: 'TR' })).toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'IR' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('option', { name: 'PR' })).not.toBeInTheDocument();
+    }, 10000);
   });
 
   describe('service url trimming', () => {
@@ -359,22 +374,25 @@ describe('UDPForm', () => {
       jest.clearAllMocks();
     });
 
-    const testSwitchFromCounterRelease4To5 = async (serviceType) => {
-      expect(screen.getByRole('option', { name: 'Counter-Sushi 4.1' })).toBeInTheDocument();
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
+    test.each([
+      { from: 'Counter 5.0', to: 'Counter 5.1' },
+      { from: 'Counter 5.1', to: 'Counter 5.0' },
+    ])('should clear the selected reports when switching from $from to $to', async ({ from, to }) => {
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), [from]);
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: /Report type/ });
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
 
-      await userEvent.click(screen.getByRole('option', { name: /BR1/ }));
-      expect(screen.getByLabelText('BR1')).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('option', { name: /TR/ }));
+      expect(screen.getByLabelText('TR')).toBeInTheDocument();
 
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), [serviceType]);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), [to]);
       expect(screen.getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
 
       await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
+      expect(screen.queryByLabelText('TR')).not.toBeInTheDocument();
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButtonNew = screen.getByRole('button', { name: 'Report type' });
@@ -386,16 +404,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('option', { name: /TR/ })).toBeInTheDocument();
       await userEvent.click(screen.getByRole('option', { name: /PR/ }));
       expect(screen.getByLabelText('PR')).toBeInTheDocument();
-      expect(screen.queryByRole('option', { name: /BR1/ })).not.toBeInTheDocument();
-      expect(screen.queryByLabelText('BR1')).not.toBeInTheDocument();
-    };
-
-    test('select service type 5', async () => {
-      await testSwitchFromCounterRelease4To5('Counter 5.0');
-    }, 10000);
-
-    test('select service type 5.1', async () => {
-      await testSwitchFromCounterRelease4To5('Counter 5.1');
     }, 10000);
   });
 
@@ -431,7 +439,7 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByRole('textbox', { name: /provider name/i }), 'FooBar');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /provider status/i }), 'active');
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /harvesting status/i }), 'active');
-      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter-Sushi 4.1']);
+      await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter 5.0']);
       await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
       await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
       await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
@@ -440,7 +448,7 @@ describe('UDPForm', () => {
 
       expect(reportTypeButton).toBeInTheDocument();
       await userEvent.click(reportTypeButton);
-      await userEvent.click(await screen.findByText('BR1'));
+      await userEvent.click(await screen.findByText('TR'));
 
       await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
 
@@ -528,66 +536,69 @@ describe('UDPForm', () => {
     });
   });
 
-  describe('test that reqId and apiKey fields are disabled and cleared depending on service type selection', () => {
-    const reportReleaseProvider = {
-      label: 'Provider with reqId and apiKey',
-      sushiCredentials: {
-        requestorId: 'id1234',
-        apiKey: 'key1234',
-      },
-    };
+  describe('requestor ID and API key when changing the service type', () => {
+    const reportReleases = { cs50: '5', cs51: '5.1' };
 
-    const testSelectServiceType = async (serviceType) => {
-      renderUDPForm(stripes, reportReleaseProvider);
-      const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
-      const serviceTypeSelect = screen.getByRole('combobox', { name: /service type/i });
-
-      expect(reqIdBox).toBeEnabled();
-      expect(reqIdBox).toHaveValue('id1234');
-
-      await userEvent.selectOptions(serviceTypeSelect, serviceType);
-
-      expect(serviceTypeSelect.value).toBe(serviceType);
-      expect(reqIdBox).toHaveValue('id1234');
-    };
-
-    test('select service type 4', async () => {
-      await testSelectServiceType('cs41');
+    const renderWithCredentials = ({ from, requestor, requestedReports }) => renderUDPForm(stripes, {
+      label: 'Provider',
+      harvestingConfig: { reportRelease: reportReleases[from], sushiConfig: { serviceType: from }, requestedReports },
+      sushiCredentials: { requestorId: requestor === 'with' ? 'id1234' : undefined, apiKey: 'key1234' },
     });
 
-    test('select service type 5', async () => {
-      await testSelectServiceType('cs50');
+    test.each`
+      from      | to        | requestor
+      ${'cs50'} | ${'cs51'} | ${'with'}
+      ${'cs51'} | ${'cs50'} | ${'without'}
+    `('should keep the credentials when changing from $from to $to $requestor requestor ID', async ({
+      from, to, requestor,
+    }) => {
+      renderWithCredentials({ from, requestor });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+
+      await userEvent.selectOptions(serviceTypeSelect, to);
+
+      expect(serviceTypeSelect).toHaveValue(to);
+      expect(screen.getByRole('textbox', { name: 'Requestor ID' })).toHaveValue(requestor === 'with' ? 'id1234' : '');
+      expect(screen.getByRole('textbox', { name: 'API key' })).toHaveValue('key1234');
     });
 
-    test('select service type 5.1', async () => {
-      await testSelectServiceType('cs51');
+    test('should keep the API key if clearing the report selection is cancelled', async () => {
+      renderWithCredentials({ from: 'cs51', requestor: 'with', requestedReports: ['TR'] });
+      const serviceTypeSelect = screen.getByRole('combobox', { name: 'Service type' });
+      const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
+
+      await userEvent.selectOptions(serviceTypeSelect, 'cs50');
+      const dialog = screen.getByRole('dialog');
+      expect(within(dialog).getByRole('heading', { name: 'Clear report selection' })).toBeVisible();
+      expect(apiKeyBox).toHaveValue('key1234');
+
+      await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+
+      expect(serviceTypeSelect).toHaveValue('cs51');
+      expect(apiKeyBox).toHaveValue('key1234');
     });
 
-    test('change reqId and apiKey with service type 5 selected', async () => {
-      renderUDPForm(stripes, { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } });
+    test.each([
+      { record: 'Counter 5.0', udp: { harvestingConfig: { sushiConfig: { serviceType: 'cs50' } } } },
+      { record: 'stored Counter 4', udp: initialUdp },
+    ])('should allow editing requestor ID and API key of a $record record', async ({ udp }) => {
+      renderUDPForm(stripes, udp);
       const reqIdBox = screen.getByRole('textbox', { name: 'Requestor ID' });
       const apiKeyBox = screen.getByRole('textbox', { name: 'API key' });
 
-      expect(reqIdBox).toBeEnabled();
-      expect(apiKeyBox).toBeEnabled();
-
-      await userEvent.type(reqIdBox, 'a');
-      expect(reqIdBox).toHaveValue('a');
-      expect(apiKeyBox).toBeEnabled();
       await userEvent.clear(reqIdBox);
-      expect(apiKeyBox).toBeEnabled();
-
-      await userEvent.type(apiKeyBox, 'a');
-      expect(apiKeyBox).toHaveValue('a');
-      expect(reqIdBox).toBeEnabled();
+      await userEvent.type(reqIdBox, 'id');
       await userEvent.clear(apiKeyBox);
-      expect(reqIdBox).toBeEnabled();
+      await userEvent.type(apiKeyBox, 'key');
+
+      expect(reqIdBox).toHaveValue('id');
+      expect(apiKeyBox).toHaveValue('key');
     });
   });
 
   describe('set provider status inactive if harvester status is active', () => {
     beforeEach(async () => {
-      renderUDPForm(stripes, initialUdp);
+      renderUDPForm(stripes, supportedUdp);
 
       const providerStatusCombobox = screen.getByRole('combobox', { name: 'Provider status' });
       await userEvent.selectOptions(providerStatusCombobox, ['inactive']);
