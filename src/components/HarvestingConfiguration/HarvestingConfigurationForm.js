@@ -65,11 +65,6 @@ const HarvestingConfigurationForm = ({
         setSelectedReportRelease(val);
       }
     }
-
-    if (reportReleaseChanged && ((val === '4' && values.sushiCredentials?.apiKey) ||
-      ((val === '5' || val === '5.1') && values.sushiCredentials?.apiKey && values.sushiCredentials?.requestorId))) {
-      form.change('sushiCredentials.apiKey', undefined);
-    }
   };
 
   const confirmClearReports = (confirmation) => {
@@ -131,9 +126,7 @@ const HarvestingConfigurationForm = ({
           </section>
           <section className={formCss.separator}>
             <SushiCredentialsForm
-              form={form}
               required={isHarvestingStatusActive}
-              values={values}
             />
           </section>
           <section className={formCss.separator}>
