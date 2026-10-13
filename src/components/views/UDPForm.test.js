@@ -1,6 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import {
+  act,
   screen,
   waitFor,
   within,
@@ -105,20 +106,6 @@ describe('UDPForm', () => {
   beforeEach(() => {
     stripes = useStripes();
     jest.clearAllMocks();
-
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
   });
 
   test('should render form and service url with info button', async () => {
@@ -204,11 +191,15 @@ describe('UDPForm', () => {
     });
 
     test('should not disable harvesting status and requested reports for a supported service type', () => {
-      renderUDPForm(stripes, supportedUdp);
+      // With only one report there is no delete button while harvesting is active
+      renderUDPForm(stripes, {
+        ...supportedUdp,
+        harvestingConfig: { ...supportedUdp.harvestingConfig, requestedReports: ['DR', 'TR'] },
+      });
 
       expect(screen.getByRole('combobox', { name: 'Harvesting status' })).toBeEnabled();
-      expect(screen.getByRole('button', { name: /Report type/ })).toBeEnabled();
-      expect(screen.getByRole('button', { name: 'Delete this item' })).toBeEnabled();
+      screen.getAllByRole('button', { name: /Report type/ }).forEach(button => expect(button).toBeEnabled());
+      screen.getAllByRole('button', { name: 'Delete this item' }).forEach(button => expect(button).toBeEnabled());
       expect(screen.getByRole('button', { name: /Add report type/ })).toBeEnabled();
     });
 
@@ -332,7 +323,6 @@ describe('UDPForm', () => {
     it('should offer the report types of the selected service type', async () => {
       renderUDPForm(stripes, initialValues, implsWithDistinctReports);
 
-      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       expect(screen.getByRole('option', { name: 'IR' })).toBeInTheDocument();
       expect(screen.queryByRole('option', { name: 'DR' })).not.toBeInTheDocument();
@@ -340,7 +330,6 @@ describe('UDPForm', () => {
 
       await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Service type' }), ['Counter 5.0']);
       await userEvent.click(screen.getByRole('button', { name: 'Clear reports' }));
-      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
 
       expect(screen.getByRole('option', { name: 'DR' })).toBeInTheDocument();
@@ -459,7 +448,6 @@ describe('UDPForm', () => {
       await userEvent.selectOptions(screen.getByRole('combobox', { name: /service type/i }), ['Counter 5.0']);
       await userEvent.type(screen.getByRole('textbox', { name: /service url/i }), 'http://abc');
       await userEvent.type(screen.getByRole('textbox', { name: /customer id/i }), 'MyCustomerID');
-      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
 
       const reportTypeButton = screen.getByRole('button', { name: 'Report type' });
 
@@ -470,7 +458,83 @@ describe('UDPForm', () => {
       await userEvent.type(screen.getByLabelText(/Harvesting start/i), '01/2020');
 
       await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
-      expect(onSubmit).toHaveBeenCalled();
+      expect(onSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          harvestingConfig: expect.objectContaining({ requestedReports: ['TR'] }),
+        }),
+        expect.anything(),
+        expect.anything()
+      );
+    });
+  });
+
+  describe('required requested reports', () => {
+    const activeUdp = {
+      label: 'Provider',
+      status: 'active',
+      harvestingConfig: {
+        harvestingStatus: 'active',
+        reportRelease: '5.1',
+        sushiConfig: { serviceType: 'cs51', serviceUrl: 'http://abc' },
+        harvestingStart: '2020-01',
+      },
+      sushiCredentials: { customerId: 'MyCustomerID' },
+    };
+
+    const getReportTypeRow = () => document.querySelector('#reportType-selection-0');
+
+    test.each`
+      status        | reports         | rows | deleteButtons
+      ${'active'}   | ${[]}           | ${1} | ${0}
+      ${'active'}   | ${['TR']}       | ${1} | ${0}
+      ${'active'}   | ${['TR', 'DR']} | ${2} | ${2}
+      ${'inactive'} | ${[]}           | ${0} | ${0}
+      ${'inactive'} | ${['TR']}       | ${1} | ${1}
+    `('while $status with reports $reports, should show rows: $rows, delete buttons: $deleteButtons', ({
+      status, reports, rows, deleteButtons,
+    }) => {
+      renderUDPForm(stripes, {
+        ...activeUdp,
+        harvestingConfig: { ...activeUdp.harvestingConfig, harvestingStatus: status, requestedReports: reports },
+      });
+
+      expect(screen.queryAllByRole('button', { name: /^Report type/ })).toHaveLength(rows);
+      expect(screen.queryAllByRole('button', { name: 'Delete this item' })).toHaveLength(deleteButtons);
+    });
+
+    test('should leave a new form unchanged while showing the first row', () => {
+      renderUDPForm(stripes);
+
+      expect(screen.getByRole('button', { name: 'Report type' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Save & close/ })).toBeDisabled();
+    });
+
+    test('should show "Required" for the first row when saving without a report type', async () => {
+      renderUDPForm(stripes, activeUdp);
+
+      await userEvent.type(screen.getByRole('textbox', { name: 'Description' }), 'foo');
+      await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+      expect(within(getReportTypeRow()).getByText('Required')).toBeVisible();
+    });
+
+    test('should keep the first row and add a second one when adding a report type', async () => {
+      renderUDPForm(stripes, activeUdp);
+
+      await userEvent.click(screen.getByRole('button', { name: /Add report type/ }));
+
+      expect(screen.getAllByRole('button', { name: 'Report type' })).toHaveLength(2);
+    });
+
+    test('should keep the focus after selecting a report type in the first row with the keyboard', async () => {
+      renderUDPForm(stripes, activeUdp);
+
+      act(() => screen.getByRole('button', { name: 'Report type' }).focus());
+      await userEvent.keyboard('{Enter}{ArrowDown}{Enter}');
+
+      expect(getReportTypeRow()).toHaveTextContent('DR');
+      expect(screen.getByPlaceholderText('Filter options list')).toHaveFocus();
     });
   });
 
@@ -489,7 +553,6 @@ describe('UDPForm', () => {
       expect(screen.getByRole('combobox', { name: 'Service type' })).toBeRequired();
       expect(screen.getByRole('textbox', { name: /service url/i })).toBeRequired();
 
-      await userEvent.click(screen.getByRole('button', { name: /add report type/i }));
       await userEvent.click(screen.getByRole('button', { name: 'Report type' }));
       // click somewhere outside of the selection list to close the menu without choosing any report
       await userEvent.click(screen.getByRole('heading', { name: 'Create usage data provider' }));
