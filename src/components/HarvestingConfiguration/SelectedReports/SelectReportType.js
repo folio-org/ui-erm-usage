@@ -1,4 +1,3 @@
-import { times } from 'lodash';
 import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
@@ -41,8 +40,8 @@ function SelectReportType(props) {
   const canRemoveRows = !props.required || fields.length > 1;
 
   const addReportType = () => {
-    const entriesToAdd = isPlaceholderRowShown ? 2 : 1;
-    times(entriesToAdd, () => fields.push(''));
+    if (isPlaceholderRowShown) fields.push('');
+    fields.push('');
   };
 
   return (
