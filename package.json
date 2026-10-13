@@ -114,7 +114,6 @@
           "ermusageharvester.impl.get",
           "ermusageharvester.periodic.get",
           "ermusageharvester.periodic.post",
-          "ermusageharvester.periodic.delete",
           "ermusageharvester.start-all.get",
           "mod-settings.entries.item.post",
           "mod-settings.entries.item.put",
