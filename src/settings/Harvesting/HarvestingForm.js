@@ -148,15 +148,13 @@ const HarvestingForm = ({
       <section className={`${formCss.separator} ${formCss.paddingBottom}`}>
         <Headline margin="none" tag="h3"><FormattedMessage id="ui-erm-usage.harvester.start" /></Headline>
         <p><FormattedMessage id="ui-erm-usage.settings.harvester.start.helpText" /></p>
-
         <p><FormattedMessage id="ui-erm-usage.settings.harvester.start.tenant" /></p>
-
         <Button id="start-harvester" onClick={onStartHarvester}>
           <FormattedMessage id="ui-erm-usage.harvester.start" />
         </Button>
       </section>
 
-      <section className={`${formCss.separator} ${formCss.paddingBottom}`}>
+      <section>
         <Headline margin="none" tag="h3">
           <FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.title" />
         </Headline>
