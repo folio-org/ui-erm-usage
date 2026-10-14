@@ -9,15 +9,8 @@ import { Settings } from '@folio/stripes/smart-components';
 
 import DisplaySettings from './DisplaySettings';
 import HarvesterLogsSettings from './HarvesterLogs';
+import Harvesting from './Harvesting';
 import MaxFailedAttempts from './MaxFailedAttempts';
-import PeriodicHarvestingManager from './PeriodicHarvesting';
-import StartHarvester from './StartHarvester';
-
-/*
-  STRIPES-NEW-APP
-  Your app's settings pages are defined here.
-  The pages "general" and "some feature" are examples. Name them however you like.
-*/
 
 class ErmUsageSettings extends React.Component {
   static propTypes = {
@@ -49,19 +42,15 @@ class ErmUsageSettings extends React.Component {
         label: <FormattedMessage id="ui-erm-usage.settings.harvester" />,
         pages: [
           {
+            route: 'harvesting',
+            label: formatMessage({ id: 'ui-erm-usage.settings.harvesting' }),
+            component: Harvesting,
+            perm: 'ui-erm-usage.generalSettings.manage',
+          },
+          {
             route: 'failed-attempts',
             label: formatMessage({ id: 'ui-erm-usage.settings.section.number.failed' }),
             component: MaxFailedAttempts,
-          },
-          {
-            route: 'start-harvester',
-            label: formatMessage({ id: 'ui-erm-usage.harvester.start' }),
-            component: StartHarvester,
-          },
-          {
-            route: 'periodic-harvesting',
-            label: formatMessage({ id: 'ui-erm-usage.settings.harvester.config.periodic.title' }),
-            component: PeriodicHarvestingManager,
           },
           {
             route: 'harvester-logs',
