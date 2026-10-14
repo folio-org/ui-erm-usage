@@ -34,12 +34,22 @@ const getReportTypeOptions = (supported, selected, index) => {
 function SelectReportType(props) {
   const { counterReportsCurrentVersion, disabled, fields, selectedReports } = props;
 
+  const placeholderRowName = `${fields.name}[0]`;
+  const isPlaceholderRowShown = props.required && fields.length === 0;
+  const rowNames = isPlaceholderRowShown ? [placeholderRowName] : fields.map(name => name);
+  const canRemoveRows = !props.required || fields.length > 1;
+
+  const addReportType = () => {
+    if (isPlaceholderRowShown) fields.push('');
+    fields.push('');
+  };
+
   return (
     <>
       <Row>
         <Col xs={7}>
-          {fields.map((elem, index) => (
-            <Row key={elem}>
+          {rowNames.map((name, index) => (
+            <Row key={name}>
               <Col xs={6}>
                 <div id={`reportType-selection-${index}`}>
                   <Field
@@ -52,24 +62,26 @@ function SelectReportType(props) {
                     )}
                     disabled={disabled}
                     label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
-                    name={elem}
+                    name={name}
                     validate={props.required ? required : notRequired}
                   />
                 </div>
               </Col>
               <Col xs={1}>
-                <div className={`${css.repeatableFieldRemoveItem}`}>
-                  <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
-                    {([label]) => (
-                      <IconButton
-                        aria-label={label}
-                        disabled={disabled}
-                        icon="trash"
-                        onClick={() => fields.remove(index)}
-                      />
-                    )}
-                  </FormattedMessage>
-                </div>
+                {canRemoveRows && (
+                  <div className={`${css.repeatableFieldRemoveItem}`}>
+                    <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.deleteThisItem">
+                      {([label]) => (
+                        <IconButton
+                          aria-label={label}
+                          disabled={disabled}
+                          icon="trash"
+                          onClick={() => fields.remove(index)}
+                        />
+                      )}
+                    </FormattedMessage>
+                  </div>
+                )}
               </Col>
             </Row>
           ))}
@@ -79,7 +91,7 @@ function SelectReportType(props) {
         <Col xs={4}>
           <Button
             disabled={disabled}
-            onClick={() => fields.push('')}
+            onClick={addReportType}
           >
             <FormattedMessage id="ui-erm-usage.udpHarvestingConfig.addReportType">
               {([label]) => <Icon icon="plus-sign">{label}</Icon>}

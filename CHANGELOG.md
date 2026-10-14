@@ -30,6 +30,8 @@
 * Use component CheckboxFilterAccordion ([UIEUS-520](https://folio-org.atlassian.net/browse/UIEUS-520))
 * *BREAKING* Drop harvestVia seeding, require usage-data-providers 4.0 and erm-usage-harvester 3.0 ([UIEUS-564](https://folio-org.atlassian.net/browse/UIEUS-564))
 * UDP form: Keep the API key when switching the service type ([UIEUS-571](https://folio-org.atlassian.net/browse/UIEUS-571))
+* Change the "Description" field from single-line to multi-line ([UIEUS-572](https://folio-org.atlassian.net/browse/UIEUS-572))
+* UDP form: Show "Required" for requested reports if harvesting is active and no report type is selected ([UIEUS-570](https://folio-org.atlassian.net/browse/UIEUS-570))
 * Combine the "Start Harvester" and "Periodic harvesting" settings into a single section in the Settings app ([UIEUS-533](https://folio-org.atlassian.net/browse/UIEUS-533))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
