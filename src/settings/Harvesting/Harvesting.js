@@ -1,3 +1,4 @@
+import { FORM_ERROR } from 'final-form';
 import {
   useContext,
   useEffect,
@@ -11,6 +12,7 @@ import {
 } from '@folio/stripes/core';
 
 import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
+import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 import {
   combineDateTime,
   splitDateTime,
@@ -66,12 +68,17 @@ const Harvesting = () => {
     return periodicConfig
       .saveConfig(periodicConfigData)
       .then(() => {
-        // the saved values become the new baseline
+        // the saved values become the new baseline; reset also clears submitSucceeded,
+        // which would otherwise prevent the unsaved-changes prompt
         form.reset(formValues);
-        setConfig(periodicConfigData);
+        // keep fields that are not part of the form (lastTriggeredAt)
+        setConfig(prevConfig => ({ ...prevConfig, ...periodicConfigData }));
         showSuccessInfo('saved');
       })
-      .catch(showErrorInfo);
+      .catch((error) => {
+        showErrorInfo(error);
+        return { [FORM_ERROR]: error.message };
+      });
   };
 
   useEffect(() => {
@@ -89,7 +96,7 @@ const Harvesting = () => {
       let errMessage = error.message;
 
       try {
-        errMessage = (await error.response?.text?.()) ?? error.message;
+        errMessage = (await error.response?.text?.()) || error.message;
       } catch {
         // keep error.message if the response body cannot be read
       }
@@ -107,6 +114,7 @@ const Harvesting = () => {
       <HarvestingForm
         initialValues={{
           enablePeriodic: false,
+          periodicInterval: periodicHarvestingIntervals[0].value,
           ...config,
           ...splitDateTime(config?.startAt ?? now, locale, timeZone),
         }}

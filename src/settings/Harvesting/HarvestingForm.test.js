@@ -110,7 +110,7 @@ describe('HarvestingForm', () => {
   });
 
   it('should require date and time if periodic harvesting is enabled', async () => {
-    renderHarvestingForm(stripes, { initialVals: { enablePeriodic: false } });
+    renderHarvestingForm(stripes, { initialVals: { enablePeriodic: false, periodicInterval: 'daily' } });
 
     await userEvent.click(getEnableCheckbox());
     await userEvent.click(getSaveButton());

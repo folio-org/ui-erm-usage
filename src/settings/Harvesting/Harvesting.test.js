@@ -71,6 +71,18 @@ describe('Harvesting', () => {
     expect(screen.getByRole('textbox', { name: 'Start time' })).not.toHaveValue('');
   });
 
+  it('should save the first interval by default if no configuration exists', async () => {
+    fetchConfig = jest.fn().mockResolvedValue({});
+    renderHarvesting(stripes, sendCallout);
+
+    await userEvent.click(await findEnableCheckbox());
+    await userEvent.click(getSaveButton());
+
+    await waitFor(() => expect(saveConfig).toHaveBeenCalledWith(
+      expect.objectContaining({ periodicInterval: 'daily' })
+    ));
+  });
+
   it('should show an error callout if fetching fails', async () => {
     fetchConfig = jest.fn().mockRejectedValue(new Error('fetch failed'));
     renderHarvesting(stripes, sendCallout);
@@ -98,6 +110,16 @@ describe('Harvesting', () => {
 
     await waitFor(() => expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' })));
     expect(saveConfig).toHaveBeenCalledWith({ startAt: '2026-10-14T08:00:00+0000', periodicInterval: 'monthly' });
+  });
+
+  it('should keep showing the last triggered date after saving', async () => {
+    renderHarvesting(stripes, sendCallout);
+
+    await userEvent.click(await findEnableCheckbox());
+    await userEvent.click(getSaveButton());
+    await waitFor(() => expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' })));
+
+    expect(screen.getByText('October 7, 2026 8:00 AM')).toBeInTheDocument();
   });
 
   it('should ask before leaving the page if there are unsaved changes after saving', async () => {

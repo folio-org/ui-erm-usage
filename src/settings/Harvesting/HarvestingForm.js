@@ -109,19 +109,13 @@ const HarvestingForm = ({
         <Col xs={8}>
           <Field
             component={Select}
-            dataOptions={periodicHarvestingIntervals.map(
-              ({ label, value }) => ({
-                label: intl.formatMessage({ id: label }),
-                value,
-              })
-            )}
+            dataOptions={periodicHarvestingIntervals.map(({ label, value }) => ({
+              label: intl.formatMessage({ id: label }),
+              value,
+            }))}
             disabled={isDisabled}
             fullWidth
             id="periodic-harvesting-interval"
-            initialValue={
-              initialValues.periodicInterval ||
-              periodicHarvestingIntervals[0].value
-            }
             label={<FormattedMessage id="ui-erm-usage.settings.harvester.config.periodic.periodicInterval" />}
             name="periodicInterval"
             validate={isEnabled(required)}
