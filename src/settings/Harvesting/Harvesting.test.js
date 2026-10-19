@@ -6,6 +6,7 @@ import {
 import {
   screen,
   waitFor,
+  within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
@@ -71,7 +72,7 @@ describe('Harvesting', () => {
     expect(screen.getByRole('textbox', { name: 'Start time' })).not.toHaveValue('');
   });
 
-  it('should save the first interval by default if no configuration exists', async () => {
+  it('should save the default interval (daily) if no configuration exists', async () => {
     fetchConfig = jest.fn().mockResolvedValue({});
     renderHarvesting(stripes, sendCallout);
 
@@ -101,7 +102,7 @@ describe('Harvesting', () => {
     expect(getSaveButton()).toBeDisabled();
   });
 
-  it('should save the configuration without enablePeriodic', async () => {
+  it('should save the configuration without the non-persisted enablePeriodic flag', async () => {
     renderHarvesting(stripes, sendCallout);
 
     await userEvent.click(await findEnableCheckbox());
@@ -132,7 +133,8 @@ describe('Harvesting', () => {
     await userEvent.click(await findEnableCheckbox());
     await userEvent.click(screen.getByRole('link', { name: 'Leave page' }));
 
-    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    const dialog = await screen.findByRole('dialog', { name: 'There are unsaved changes' });
+    expect(within(dialog).getByText('Are you sure?')).toBeInTheDocument();
   });
 
   it('should show an error callout if saving fails', async () => {
