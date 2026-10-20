@@ -185,7 +185,7 @@ describe('Harvesting', () => {
 
     await waitFor(() => expect(sendCallout).toHaveBeenCalledWith({
       type: 'success',
-      message: 'Successfully deleted periodic harvesting config',
+      message: 'Successfully deleted periodic harvesting configuration',
     }));
     expect(deleteConfig).toHaveBeenCalled();
     expect(saveConfig).not.toHaveBeenCalled();
