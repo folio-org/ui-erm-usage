@@ -9,6 +9,15 @@ import {
 } from '@folio/stripes/smart-components';
 
 import UDPs from '../components/views/UDPs';
+import {
+  API_COUNTER_REPORTS_ERROR_CODES,
+  API_COUNTER_REPORTS_RELEASES,
+  API_COUNTER_REPORTS_TYPES,
+  API_HARVESTER_IMPL,
+  API_TAGS,
+  API_UDPS,
+  API_UDPS_SERVICE_TYPES,
+} from '../util/constants';
 import filterGroups from '../util/data/filterGroups';
 import urls from '../util/urls';
 
@@ -19,7 +28,7 @@ class UDPsRoute extends React.Component {
   static manifest = Object.freeze({
     usageDataProviders: {
       type: 'okapi',
-      path: 'usage-data-providers',
+      path: API_UDPS,
       records: 'usageDataProviders',
       recordsRequired: '%{resultCount}',
       perRequest: 30,
@@ -43,27 +52,27 @@ class UDPsRoute extends React.Component {
     },
     harvesterImpls: {
       type: 'okapi',
-      path: 'erm-usage-harvester/impl',
+      path: API_HARVESTER_IMPL,
       throwErrors: false,
     },
     errorCodes: {
       type: 'okapi',
-      path: 'counter-reports/errors/codes',
+      path: API_COUNTER_REPORTS_ERROR_CODES,
       records: 'errorCodes',
     },
     reportTypes: {
       type: 'okapi',
-      path: 'counter-reports/reports/types',
+      path: API_COUNTER_REPORTS_TYPES,
       records: 'reportTypes',
     },
     reportReleases: {
       type: 'okapi',
-      path: 'counter-reports/reports/releases',
+      path: API_COUNTER_REPORTS_RELEASES,
       records: 'reportReleases',
     },
     serviceTypes: {
       type: 'okapi',
-      path: 'usage-data-providers/sushi-config/service-types',
+      path: API_UDPS_SERVICE_TYPES,
       records: 'serviceTypes',
     },
     numFiltersLoaded: { initialValue: 1 }, // will be incremented as each filter loads
@@ -77,7 +86,7 @@ class UDPsRoute extends React.Component {
     },
     tags: {
       type: 'okapi',
-      path: 'tags',
+      path: API_TAGS,
       params: {
         limit: '1000',
         query: 'cql.allRecords=1 sortby label',

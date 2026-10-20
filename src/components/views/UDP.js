@@ -45,6 +45,7 @@ import {
   ViewMetaData,
 } from '@folio/stripes/smart-components';
 
+import { API_HARVESTER_START } from '../../util/constants';
 import transformReportsForMCL from '../../util/transformReportsForMCL';
 import urls from '../../util/urls';
 import CounterStatistics from '../Counter';
@@ -203,7 +204,7 @@ const UDP = ({
   };
 
   const openStartHarvesterModal = (udpId) => {
-    okapiKy(`erm-usage-harvester/start/${udpId}`, {
+    okapiKy(`${API_HARVESTER_START}/${udpId}`, {
       method: 'GET',
       retry: 0,
     })

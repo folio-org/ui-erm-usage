@@ -12,6 +12,7 @@ import {
 } from '@folio/stripes/core';
 
 import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
+import { API_HARVESTER_START } from '../../util/constants';
 import {
   combineDateTime,
   splitDateTime,
@@ -114,7 +115,7 @@ const Harvesting = () => {
 
   const onClickStartHarvester = async () => {
     try {
-      await ky('erm-usage-harvester/start', {
+      await ky(API_HARVESTER_START, {
         method: 'GET',
         retry: 0,
       });

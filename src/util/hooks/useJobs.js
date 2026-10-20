@@ -5,6 +5,8 @@ import {
   useOkapiKy,
 } from '@folio/stripes/core';
 
+import { API_HARVESTER_JOBS } from '../constants';
+
 const PAGE_SIZE = 30;
 
 const useJobs = ({ createdBefore, providerId, query }) => {
@@ -27,7 +29,7 @@ const useJobs = ({ createdBefore, providerId, query }) => {
   } = useInfiniteQuery(
     [namespace, searchParams],
     ({ pageParam: offset = 0, signal }) => ky
-      .get('erm-usage-harvester/jobs', { searchParams: { ...searchParams, offset }, signal })
+      .get(API_HARVESTER_JOBS, { searchParams: { ...searchParams, offset }, signal })
       .json(),
     {
       getNextPageParam: (lastPage, pages) => {

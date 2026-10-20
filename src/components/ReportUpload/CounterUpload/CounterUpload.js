@@ -15,6 +15,7 @@ import {
   ModalFooter,
 } from '@folio/stripes/components';
 
+import { API_COUNTER_REPORTS_MULTI } from '../../../util/constants';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CounterUploadModal from './CounterUploadModal';
 
@@ -151,7 +152,7 @@ function CounterUpload({ onClose, onSuccess, open, stripes: { okapi }, udpId }) 
       formData.append('editReason', values.editReason);
       fetchWithDefaultOptions(
         okapi,
-        `/counter-reports/multipartupload/provider/${udpId}?overwrite=${overwrite || false}`,
+        `/${API_COUNTER_REPORTS_MULTI}/${udpId}?overwrite=${overwrite || false}`,
         {
           method: 'POST',
           body: formData,

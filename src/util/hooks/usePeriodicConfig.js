@@ -2,10 +2,11 @@ import { useIntl } from 'react-intl';
 
 import { useStripes } from '@folio/stripes/core';
 
+import { API_HARVESTER_PERIODIC } from '../constants';
 import fetchWithDefaultOptions from '../fetchWithDefaultOptions';
 
 const usePeriodicConfig = () => {
-  const path = '/erm-usage-harvester/periodic';
+  const path = `/${API_HARVESTER_PERIODIC}`;
   const { formatMessage } = useIntl();
   const { okapi } = useStripes();
 

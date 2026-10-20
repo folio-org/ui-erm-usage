@@ -10,6 +10,11 @@ import { withTags } from '@folio/stripes/smart-components';
 
 import UDPView from '../components/views/UDP';
 import {
+  API_COUNTER_REPORTS_SORTED,
+  API_CUSTOM_REPORTS,
+  API_HARVESTER_IMPL,
+  API_HARVESTER_JOBS,
+  API_UDPS,
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
@@ -198,17 +203,17 @@ UDPViewRoute.propTypes = {
 UDPViewRoute.manifest = Object.freeze({
   usageDataProvider: {
     type: 'okapi',
-    path: 'usage-data-providers/:{id}?unused=%{udpReloadToggle}',
+    path: API_UDPS + '/:{id}?unused=%{udpReloadToggle}',
     shouldRefresh: () => false,
   },
   harvesterImpls: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl',
+    path: API_HARVESTER_IMPL,
     throwErrors: false,
   },
   harvesterJobs: {
     type: 'okapi',
-    path: 'erm-usage-harvester/jobs',
+    path: API_HARVESTER_JOBS,
     params: {
       query: '(providerId==:{id} and startedAt="") sortby finishedAt/sort.descending',
       limit: '1',
@@ -226,12 +231,12 @@ UDPViewRoute.manifest = Object.freeze({
   },
   counterReports: {
     type: 'okapi',
-    path: 'counter-reports/sorted/:{id}?unused=%{statsReloadToggle}&limit=1000',
+    path: API_COUNTER_REPORTS_SORTED + '/:{id}?unused=%{statsReloadToggle}&limit=1000',
   },
   customReports: {
     type: 'okapi',
     path:
-      'custom-reports?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000',
+      API_CUSTOM_REPORTS + '?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000',
   },
   failedAttemptsSettings: {
     type: 'okapi',

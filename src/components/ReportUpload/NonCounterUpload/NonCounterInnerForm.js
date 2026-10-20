@@ -18,6 +18,7 @@ import {
 } from '@folio/stripes/components';
 import { CalloutContext } from '@folio/stripes/core';
 
+import { API_FILES } from '../../../util/constants';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
@@ -50,7 +51,7 @@ function NonCounterUploadInnerForm(props) {
   const doUploadRawFile = (file) => {
     const { mutators, udpId } = props;
     setShowUploadModal(true);
-    fetchWithDefaultOptions(okapi, '/erm-usage/files', {
+    fetchWithDefaultOptions(okapi, `/${API_FILES}`, {
       headers,
       method: 'POST',
       body: file,
@@ -83,7 +84,7 @@ function NonCounterUploadInnerForm(props) {
 
   const doDeleteRawFile = () => {
     const { mutators } = props;
-    fetchWithDefaultOptions(okapi, `/erm-usage/files/${fileId}`, {
+    fetchWithDefaultOptions(okapi, `/${API_FILES}/${fileId}`, {
       headers,
       method: 'DELETE',
     })
