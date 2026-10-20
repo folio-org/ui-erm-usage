@@ -47,7 +47,19 @@ const usePeriodicConfig = () => {
     });
   };
 
-  return { fetchConfig, saveConfig };
+  const deleteConfig = () => {
+    return fetchWithDefaultOptions(okapi, path, {
+      method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 204) {
+        return response;
+      } else {
+        throw createErrorFromResponse(response, 'delete');
+      }
+    });
+  };
+
+  return { fetchConfig, saveConfig, deleteConfig };
 };
 
 export default usePeriodicConfig;

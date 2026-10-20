@@ -129,4 +129,38 @@ describe('test usePeriodConfig hook', () => {
       assertFetchParametersForPost(fetch);
     });
   });
+
+  describe('test deleteConfig', () => {
+    test('fetch returns 204', () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        status: 204,
+      });
+      const { result } = renderHook(() => usePeriodicConfig(), { wrapper });
+      expect(result.current.deleteConfig()).resolves.toEqual({ status: 204 });
+      assertFetchParameters(fetch, 'DELETE');
+    });
+
+    test('fetch returns 500', () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        status: 500,
+        statusText: 'Internal server error',
+      });
+      const { result } = renderHook(() => usePeriodicConfig(), { wrapper });
+      expect(result.current.deleteConfig())
+        .rejects.toThrowError()
+        .catch((err) => expect(err.message).toBe(
+          "Received '500 - Internal server error' while deleting periodic harvesting configuration"
+        ));
+      assertFetchParameters(fetch, 'DELETE');
+    });
+
+    test('fetch fails', () => {
+      global.fetch = jest.fn().mockRejectedValue(new Error('Failed to fetch'));
+      const { result } = renderHook(() => usePeriodicConfig(), { wrapper });
+      expect(result.current.deleteConfig())
+        .rejects.toThrowError()
+        .catch((err) => expect(err.message).toBe('Failed to fetch'));
+      assertFetchParameters(fetch, 'DELETE');
+    });
+  });
 });

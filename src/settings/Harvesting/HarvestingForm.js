@@ -109,10 +109,13 @@ const HarvestingForm = ({
         <Col xs={8}>
           <Field
             component={Select}
-            dataOptions={periodicHarvestingIntervals.map(({ label, value }) => ({
-              label: intl.formatMessage({ id: label }),
-              value,
-            }))}
+            dataOptions={[
+              { label: '', value: '' },
+              ...periodicHarvestingIntervals.map(({ label, value }) => ({
+                label: intl.formatMessage({ id: label }),
+                value,
+              })),
+            ]}
             disabled={isDisabled}
             fullWidth
             id="periodic-harvesting-interval"

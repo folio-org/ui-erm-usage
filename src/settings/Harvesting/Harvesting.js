@@ -12,7 +12,6 @@ import {
 } from '@folio/stripes/core';
 
 import HarvesterInfoModal from '../../components/HarvesterInfoModal/HarvesterInfoModal';
-import periodicHarvestingIntervals from '../../util/data/periodicHarvestingIntervals';
 import {
   combineDateTime,
   splitDateTime,
@@ -29,8 +28,6 @@ const Harvesting = () => {
   const [modalState, setModalState] = useState({ open: false });
   // config is undefined while fetching and an object afterwards ({} if none exists or the fetch fails)
   const [config, setConfig] = useState();
-  // default start if no config exists; captured once so re-renders do not reinitialize the form
-  const [now] = useState(() => new Date().toISOString());
 
   const showSuccessInfo = (intlTag) => {
     sendCallout({
@@ -57,7 +54,40 @@ const Harvesting = () => {
       });
   };
 
+  // enablePeriodic is checked if a schedule exists, without a schedule all fields stay empty
+  const getInitialValues = (cfg) => ({
+    ...cfg,
+    enablePeriodic: Boolean(cfg?.startAt),
+    ...(cfg?.startAt && splitDateTime(cfg.startAt, locale, timeZone)),
+  });
+
+  const handleSubmitError = (error) => {
+    showErrorInfo(error);
+    return { [FORM_ERROR]: error.message };
+  };
+
+  const deletePeriodicHarvestingConf = (form) => {
+    // nothing to delete, just discard the changes
+    if (!config?.startAt) {
+      form.reset();
+      return undefined;
+    }
+
+    return periodicConfig
+      .deleteConfig()
+      .then(() => {
+        form.reset(getInitialValues({}));
+        setConfig({});
+        showSuccessInfo('deleted');
+      })
+      .catch(handleSubmitError);
+  };
+
   const savePeriodicHarvestingConf = (formValues, form) => {
+    if (!formValues.enablePeriodic) {
+      return deletePeriodicHarvestingConf(form);
+    }
+
     const { date, time, periodicInterval } = formValues;
 
     const periodicConfigData = {
@@ -75,10 +105,7 @@ const Harvesting = () => {
         setConfig(prevConfig => ({ ...prevConfig, ...periodicConfigData }));
         showSuccessInfo('saved');
       })
-      .catch((error) => {
-        showErrorInfo(error);
-        return { [FORM_ERROR]: error.message };
-      });
+      .catch(handleSubmitError);
   };
 
   useEffect(() => {
@@ -112,12 +139,7 @@ const Harvesting = () => {
   return (
     <>
       <HarvestingForm
-        initialValues={{
-          enablePeriodic: false,
-          periodicInterval: periodicHarvestingIntervals[0].value,
-          ...config,
-          ...splitDateTime(config?.startAt ?? now, locale, timeZone),
-        }}
+        initialValues={getInitialValues(config)}
         isLoading={!config}
         onStartHarvester={onClickStartHarvester}
         onSubmit={savePeriodicHarvestingConf}
