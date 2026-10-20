@@ -3,6 +3,7 @@ import { IntlProvider } from 'react-intl';
 import componentsTranslations from '@folio/stripes-components/translations/stripes-components/en';
 import smartComponentsTranslations from '@folio/stripes-smart-components/translations/stripes-smart-components/en';
 import stripesCoreTranslations from '@folio/stripes-core/translations/stripes-core/en';
+import stripesFormTranslations from '@folio/stripes-final-form/translations/stripes-final-form/en';
 import stripesLeipzigTranslations from '@folio/stripes-leipzig-components/translations/stripes-leipzig-components/en';
 import ermUsageTranslations from '../../../translations/ui-erm-usage/en';
 
@@ -21,6 +22,7 @@ const translations = {
   ...prefixKeys(componentsTranslations, 'stripes-components'),
   ...prefixKeys(smartComponentsTranslations, 'stripes-smart-components'),
   ...prefixKeys(stripesCoreTranslations, 'stripes-core'),
+  ...prefixKeys(stripesFormTranslations, 'stripes-form'),
   ...prefixKeys(stripesLeipzigTranslations, 'stripes-leipzig-components'),
 };
 
