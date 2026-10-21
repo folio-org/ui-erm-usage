@@ -203,7 +203,7 @@ UDPViewRoute.propTypes = {
 UDPViewRoute.manifest = Object.freeze({
   usageDataProvider: {
     type: 'okapi',
-    path: API_UDPS + '/:{id}?unused=%{udpReloadToggle}',
+    path: `${API_UDPS}/:{id}?unused=%{udpReloadToggle}`,
     shouldRefresh: () => false,
   },
   harvesterImpls: {
@@ -231,12 +231,11 @@ UDPViewRoute.manifest = Object.freeze({
   },
   counterReports: {
     type: 'okapi',
-    path: API_COUNTER_REPORTS_SORTED + '/:{id}?unused=%{statsReloadToggle}&limit=1000',
+    path: `${API_COUNTER_REPORTS_SORTED}/:{id}?unused=%{statsReloadToggle}&limit=1000`,
   },
   customReports: {
     type: 'okapi',
-    path:
-      API_CUSTOM_REPORTS + '?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000',
+    path: `${API_CUSTOM_REPORTS}?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000`,
   },
   failedAttemptsSettings: {
     type: 'okapi',
