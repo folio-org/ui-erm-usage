@@ -1,4 +1,22 @@
-// eslint-disable-next-line import/prefer-default-export
+export const API_COUNTER_REPORTS = 'counter-reports';
+export const API_COUNTER_REPORTS_DELETE = 'counter-reports/reports/delete';
+export const API_COUNTER_REPORTS_ERROR_CODES = 'counter-reports/errors/codes';
+export const API_COUNTER_REPORTS_EXPORT = 'counter-reports/export';
+export const API_COUNTER_REPORTS_EXPORT_PROVIDER = 'counter-reports/export/provider';
+export const API_COUNTER_REPORTS_RELEASES = 'counter-reports/reports/releases';
+export const API_COUNTER_REPORTS_SORTED = 'counter-reports/sorted';
+export const API_COUNTER_REPORTS_TYPES = 'counter-reports/reports/types';
+export const API_COUNTER_REPORTS_UPLOAD_PROVIDER = 'counter-reports/multipartupload/provider';
+export const API_CUSTOM_REPORTS = 'custom-reports';
+export const API_FILES = 'erm-usage/files';
+export const API_HARVESTER_IMPL = 'erm-usage-harvester/impl';
+export const API_HARVESTER_JOBS = 'erm-usage-harvester/jobs';
+export const API_HARVESTER_PERIODIC = 'erm-usage-harvester/periodic';
+export const API_HARVESTER_START = 'erm-usage-harvester/start';
+export const API_TAGS = 'tags';
+export const API_UDPS = 'usage-data-providers';
+export const API_UDPS_SERVICE_TYPES = 'usage-data-providers/sushi-config/service-types';
+
 export const MAX_FAILED_ATTEMPTS = 5;
 export const DAYS_TO_KEEP_LOGS = 60;
 export const FORM_TYPE_FINAL_FORM = 'final-form';

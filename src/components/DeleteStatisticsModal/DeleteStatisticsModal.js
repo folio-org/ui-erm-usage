@@ -13,6 +13,7 @@ import {
 } from '@folio/stripes/components';
 import { useOkapiKy } from '@folio/stripes/core';
 
+import { API_COUNTER_REPORTS_DELETE } from '../../util/constants';
 import DeleteStatistics from './DeleteStatistics';
 
 function DeleteStatisticsModal({
@@ -45,7 +46,7 @@ function DeleteStatisticsModal({
 
   const handleSubmit = () => {
     const idArray = JSON.stringify([...reportsToDelete]);
-    ky('counter-reports/reports/delete', {
+    ky(API_COUNTER_REPORTS_DELETE, {
       method: 'POST',
       headers: {
         Accept: 'text/plain',

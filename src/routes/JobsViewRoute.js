@@ -6,6 +6,7 @@ import { stripesConnect } from '@folio/stripes/core';
 import { makeQueryFunction } from '@folio/stripes/smart-components';
 
 import JobsView from '../components/JobsView';
+import { API_UDPS } from '../util/constants';
 import filterGroups from '../util/data/filterGroupsJobsView';
 import useJobs from '../util/hooks/useJobs';
 
@@ -72,7 +73,7 @@ JobsViewRoute.manifest = Object.freeze({
   query: {},
   udps: {
     type: 'okapi',
-    path: 'usage-data-providers',
+    path: API_UDPS,
     params: {
       limit: '1000',
     },

@@ -6,6 +6,12 @@ import { injectIntl } from 'react-intl';
 import { Callout } from '@folio/stripes/components';
 import { withStripes } from '@folio/stripes/core';
 
+import {
+  API_COUNTER_REPORTS,
+  API_COUNTER_REPORTS_EXPORT,
+  API_COUNTER_REPORTS_EXPORT_PROVIDER,
+  API_FILES,
+} from '../../util/constants';
 import { saveReport } from '../../util/downloadReport';
 import fetchWithDefaultOptions from '../../util/fetchWithDefaultOptions';
 
@@ -31,7 +37,7 @@ export default function withReportHandlers(WrappedComponent) {
       return fetchWithDefaultOptions(
         okapi,
         // eslint-disable-next-line max-len
-        `/counter-reports/export/provider/${udpId}/report/${reportType}/version/${version}/from/${start}/to/${end}?format=${format}`
+        `/${API_COUNTER_REPORTS_EXPORT_PROVIDER}/${udpId}/report/${reportType}/version/${version}/from/${start}/to/${end}?format=${format}`
       )
         .then((response) => {
           calloutRef.current.removeCallout(calloutID);
@@ -62,7 +68,7 @@ export default function withReportHandlers(WrappedComponent) {
     };
 
     const downloadReportSingleMonth = (reportId, format) => {
-      return fetchWithDefaultOptions(okapi, `/counter-reports/export/${reportId}?format=${format}`)
+      return fetchWithDefaultOptions(okapi, `/${API_COUNTER_REPORTS_EXPORT}/${reportId}?format=${format}`)
         .then((response) => {
           if (response.status >= 400) {
             throw new Error(`Error ${response.status} retrieving counter report by id: Fetch counter csv failed`);
@@ -83,7 +89,7 @@ export default function withReportHandlers(WrappedComponent) {
     };
 
     const downloadReportSingleMonthRaw = (reportId, fileType) => {
-      return fetchWithDefaultOptions(okapi, `/counter-reports/${reportId}/download`)
+      return fetchWithDefaultOptions(okapi, `/${API_COUNTER_REPORTS}/${reportId}/download`)
         .then((response) => {
           if (response.status >= 400) {
             throw new Error(`Error ${response.status} downloading counter report by id: Fetch counter csv failed`);
@@ -100,7 +106,7 @@ export default function withReportHandlers(WrappedComponent) {
     };
 
     const downloadErmUsageFile = (fileId, fileName) => {
-      return fetchWithDefaultOptions(okapi, `/erm-usage/files/${fileId}`)
+      return fetchWithDefaultOptions(okapi, `/${API_FILES}/${fileId}`)
         .then((response) => {
           if (response.status >= 400) {
             throw new Error(`Error ${response.status} retrieving file: Fetch file failed`);
