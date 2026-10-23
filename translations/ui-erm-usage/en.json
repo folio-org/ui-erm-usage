@@ -250,6 +250,13 @@
   "vendorInfo.serviceUrl.note": "Note: Only enter the base URL, not the complete URL. For example, if the provider lists the URL {urlSushiReport}, only enter the part before (and excluding) reports: {urlSushi}. Everything else is added by the harvester.",
 
   "settings.general": "General",
+  "settings.errorHandling": "Error handling",
+  "settings.errorHandling.counterApiExceptions": "Counter API exceptions",
+  "settings.errorHandling.counterApiExceptions.helpText": "If the Harvester is configured to harvest Counter reports via Counter/Sushi from the provider, Counter API exceptions may occur that typically prevents the requested reports from being generated. These settings can be used to control the harvester's behavior in these cases.",
+  "settings.errorHandling.general": "General",
+  "settings.errorHandling.helpText": "Set default settings for error handling during harvesting. The harvester uses these settings for all usage data providers in eUsage. If necessary, these settings can be customized in the harvesting configuration of each usage data provider.",
+  "settings.errorHandling.NumFailedAttempts": "Number of failed attempts",
+  "settings.errorHandling.NumFailedAttempts.helpText": "If an error occurs during harvesting, a new attempt will be made later. How many attempts can the harvester make? Please note: The value is limited to 20.",
   "settings.harvester": "Harvester",
   "settings.harvester.config": "Harvester configuration",
   "settings.harvester.config.periodic.fetch.fail": "Received ''{status} - {statusText}'' while fetching periodic harvesting configuration",
@@ -275,7 +282,6 @@
   "settings.harvesting.helpText": "In this section, you can specify when the harvester should start. You have two options: you can either start harvesting reports manually at the same time for all usage data providers with active harvesting status; or you specify when this should happen automatically on a regular basis.",
   "settings.hideCredentials": "Hide credentials in detail views",
   "settings.section.display.settings": "Display settings",
-  "settings.section.number.failed": "Number of failed attempts",
 
   "permission.module.erm-usage.enabled": "UI: eUsage module is enabled",
   "permission.settings.erm-usage.enabled": "Settings (eUsage): Display list of settings pages",

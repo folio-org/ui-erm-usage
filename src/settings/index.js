@@ -8,6 +8,7 @@ import {
 import { Settings } from '@folio/stripes/smart-components';
 
 import DisplaySettings from './DisplaySettings';
+import ErrorHandling from './ErrorHandling/ErrorHandling';
 import HarvesterLogsSettings from './HarvesterLogs';
 import Harvesting from './Harvesting';
 import MaxFailedAttempts from './MaxFailedAttempts';
@@ -41,6 +42,12 @@ class ErmUsageSettings extends React.Component {
       {
         label: <FormattedMessage id="ui-erm-usage.settings.harvester" />,
         pages: [
+          {
+            route: 'error-handling',
+            label: formatMessage({ id: 'ui-erm-usage.settings.errorHandling' }),
+            component: ErrorHandling,
+            perm: 'ui-erm-usage.generalSettings.manage',
+          },
           {
             route: 'harvesting',
             label: formatMessage({ id: 'ui-erm-usage.settings.harvesting' }),
