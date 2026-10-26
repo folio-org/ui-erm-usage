@@ -30,15 +30,8 @@ const ReportInfo = ({
   intl,
   udpLabel,
 }) => {
-  const getFileType = (release) => {
-    if (release === '4') {
-      return 'xml';
-    } else if (release === '5' || release === '5.1') {
-      return 'json';
-    } else {
-      return 'unknown';
-    }
-  };
+  // mirrors mod-erm-usage: release 4 is served as XML, every other release as JSON
+  const getFileType = (release) => (release === '4' ? 'xml' : 'json');
 
   const onClickDownloadRawReport = (release) => {
     const fileType = getFileType(release);

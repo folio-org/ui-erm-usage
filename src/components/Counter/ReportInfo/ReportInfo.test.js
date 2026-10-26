@@ -1,6 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
   StripesContext,
   useStripes,
@@ -92,5 +93,32 @@ describe('ReportInfo.js', () => {
   test('failedReason with HTML-tag', () => {
     render(stripes, '<html lang=`en`>');
     expect(screen.getByText('An error has occured')).toBeInTheDocument();
+  });
+
+  describe('raw report download', () => {
+    test.each([
+      ['4', 'xml', 'json'],
+      ['5', 'json', 'xml'],
+      ['5.1', 'json', 'xml'],
+      ['6', 'json', 'xml'],
+      [undefined, 'json', 'xml'],
+    ])('release %s is downloaded as %s, not as %s', async (release, expectedFileType, absentFileType) => {
+      const downloadRawReport = jest.fn();
+      renderWithIntl(
+        <StripesContext.Provider value={stripes}>
+          <MemoryRouter>
+            <ReportInfo
+              downloadRawReport={downloadRawReport}
+              report={{ release }}
+              udpLabel="Test Provider"
+            />
+          </MemoryRouter>
+        </StripesContext.Provider>
+      );
+
+      expect(screen.queryByText(`Download report as ${absentFileType.toUpperCase()}`)).not.toBeInTheDocument();
+      await userEvent.click(screen.getByText(`Download report as ${expectedFileType.toUpperCase()}`));
+      expect(downloadRawReport).toHaveBeenCalledWith(expectedFileType);
+    });
   });
 });
