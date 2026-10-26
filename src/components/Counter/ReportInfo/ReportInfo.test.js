@@ -97,12 +97,12 @@ describe('ReportInfo.js', () => {
 
   describe('raw report download', () => {
     test.each([
-      ['4', 'xml'],
-      ['5', 'json'],
-      ['5.1', 'json'],
-      ['6', 'json'],
-      [undefined, 'json'],
-    ])('release %s is downloaded as %s', async (release, fileType) => {
+      ['4', 'xml', 'json'],
+      ['5', 'json', 'xml'],
+      ['5.1', 'json', 'xml'],
+      ['6', 'json', 'xml'],
+      [undefined, 'json', 'xml'],
+    ])('release %s is downloaded as %s, not as %s', async (release, expectedFileType, absentFileType) => {
       const downloadRawReport = jest.fn();
       renderWithIntl(
         <StripesContext.Provider value={stripes}>
@@ -116,9 +116,9 @@ describe('ReportInfo.js', () => {
         </StripesContext.Provider>
       );
 
-      expect(screen.queryByText(/unknown/i)).not.toBeInTheDocument();
-      await userEvent.click(screen.getByText(`Download report as ${fileType.toUpperCase()}`));
-      expect(downloadRawReport).toHaveBeenCalledWith(fileType);
+      expect(screen.queryByText(`Download report as ${absentFileType.toUpperCase()}`)).not.toBeInTheDocument();
+      await userEvent.click(screen.getByText(`Download report as ${expectedFileType.toUpperCase()}`));
+      expect(downloadRawReport).toHaveBeenCalledWith(expectedFileType);
     });
   });
 });
