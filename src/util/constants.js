@@ -13,6 +13,7 @@ export const API_HARVESTER_IMPL = 'erm-usage-harvester/impl';
 export const API_HARVESTER_JOBS = 'erm-usage-harvester/jobs';
 export const API_HARVESTER_PERIODIC = 'erm-usage-harvester/periodic';
 export const API_HARVESTER_START = 'erm-usage-harvester/start';
+export const API_SETTINGS_ENTRIES = 'settings/entries';
 export const API_TAGS = 'tags';
 export const API_UDPS = 'usage-data-providers';
 export const API_UDPS_SERVICE_TYPES = 'usage-data-providers/sushi-config/service-types';
@@ -29,7 +30,7 @@ export const NO_SERVICE_TYPE = '__none__';
 export const XLSX = 'XLSX';
 
 export const MOD_SETTINGS = {
-  BASE_PATH: 'settings/entries',
+  BASE_PATH: API_SETTINGS_ENTRIES,
   RECORD_NAME: 'items',
   SCOPES: {
     EUSAGE: 'ui-erm-usage.manage',

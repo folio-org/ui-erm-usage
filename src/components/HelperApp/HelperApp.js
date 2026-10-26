@@ -8,6 +8,8 @@ import {
 } from '@folio/stripes/core';
 import { Tags } from '@folio/stripes/smart-components';
 
+import { API_UDPS } from '../../util/constants';
+
 class HelperApp extends React.Component {
   static propTypes = {
     appName: PropTypes.string,
@@ -34,7 +36,7 @@ class HelperApp extends React.Component {
 
     return (
       <HelperAppComponent
-        link={`usage-data-providers/${params.id}`}
+        link={`${API_UDPS}/${params.id}`}
         onToggle={onClose}
         {...this.props}
       />
