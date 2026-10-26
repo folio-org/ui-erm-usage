@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { API_CUSTOM_REPORTS } from '../../../util/constants';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
@@ -13,7 +14,7 @@ function NonCounterUpload({
 }) {
   const handleNonCounterUpload = (report) => {
     const json = JSON.stringify(report);
-    fetchWithDefaultOptions(stripes.okapi, '/custom-reports', {
+    fetchWithDefaultOptions(stripes.okapi, `/${API_CUSTOM_REPORTS}`, {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: json,

@@ -5,6 +5,10 @@ import { LoadingPane } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
+import {
+  API_HARVESTER_IMPL,
+  API_UDPS,
+} from '../util/constants';
 import urls from '../util/urls';
 
 const UDPCreateRoute = ({
@@ -71,12 +75,12 @@ const UDPCreateRoute = ({
 UDPCreateRoute.manifest = Object.freeze({
   harvesterImpls: {
     type: 'okapi',
-    path: 'erm-usage-harvester/impl',
+    path: API_HARVESTER_IMPL,
     shouldRefresh: () => false,
   },
   usageDataProviders: {
     type: 'okapi',
-    path: 'usage-data-providers',
+    path: API_UDPS,
     fetch: false,
     shouldRefresh: () => false,
   },

@@ -14,6 +14,7 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
+import { API_COUNTER_REPORTS } from '../../../util/constants';
 import extractErrorCode from '../../../util/extractErrorCode';
 import ReportInfo from '../ReportInfo';
 import css from './ReportInfoButton.css';
@@ -200,7 +201,7 @@ ReportInfoButton.manifest = Object.freeze({
     fetch: false,
     accumulate: 'true',
     DELETE: {
-      path: 'counter-reports',
+      path: API_COUNTER_REPORTS,
     },
   },
 });

@@ -14,6 +14,10 @@ import {
 } from '@folio/stripes/components';
 import { stripesConnect } from '@folio/stripes/core';
 
+import {
+  API_CUSTOM_REPORTS,
+  API_FILES,
+} from '../../../util/constants';
 import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CustomReportInfo from '../CustomReportInfo';
 
@@ -31,7 +35,7 @@ function InfoButton(props) {
   };
 
   const doDeleteWithFile = () => {
-    fetchWithDefaultOptions(okapi, `/erm-usage/files/${customReport.fileId}`, {
+    fetchWithDefaultOptions(okapi, `/${API_FILES}/${customReport.fileId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -126,7 +130,7 @@ InfoButton.manifest = Object.freeze({
     type: 'okapi',
     fetch: false,
     DELETE: {
-      path: 'custom-reports',
+      path: API_CUSTOM_REPORTS,
     },
   },
 });
