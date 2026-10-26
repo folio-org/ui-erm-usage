@@ -7,14 +7,28 @@ jest.mock('file-saver');
 saveAs.mockImplementation(jest.fn());
 
 describe('saveReport', () => {
-  it('saves report data as file named by id and file type', () => {
-    const format = 'csv';
-    const content = 'csv content';
+  beforeEach(() => {
+    saveAs.mockClear();
+  });
 
-    saveReport('123', content, format);
-    expect(saveAs).toHaveBeenCalledWith(
-      new Blob([content], { type: format }),
-      `123.${format}`
-    );
+  it.each([
+    ['csv', 'text/csv'],
+    ['json', 'application/json'],
+    ['xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+    ['xml', 'application/xml'],
+  ])('saves %s report data as file named by id with MIME type %s', (fileType, mimeType) => {
+    saveReport('123', 'content', fileType);
+
+    const [blob, fileName] = saveAs.mock.calls[0];
+    expect(blob.type).toBe(mimeType);
+    expect(fileName).toBe(`123.${fileType}`);
+  });
+
+  it('falls back to a generic MIME type for other file types', () => {
+    saveReport('123', 'content', 'foo');
+
+    const [blob, fileName] = saveAs.mock.calls[0];
+    expect(blob.type).toBe('application/octet-stream');
+    expect(fileName).toBe('123.foo');
   });
 });
