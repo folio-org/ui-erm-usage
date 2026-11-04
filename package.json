@@ -119,7 +119,10 @@
           "mod-settings.entries.item.post",
           "mod-settings.entries.item.put",
           "mod-settings.global.write.mod-erm-usage-harvester.manage",
-          "mod-settings.global.write.ui-erm-usage.manage"
+          "mod-settings.global.write.ui-erm-usage.manage",
+          "ermusageharvester.settings.error-handling.get",
+          "ermusageharvester.settings.error-handling.post",
+          "ermusageharvester.settings.error-handling.defaults.get"
         ],
         "visible": true
       },

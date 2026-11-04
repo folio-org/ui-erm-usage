@@ -9,6 +9,8 @@ export const API_COUNTER_REPORTS_TYPES = 'counter-reports/reports/types';
 export const API_COUNTER_REPORTS_UPLOAD_PROVIDER = 'counter-reports/multipartupload/provider';
 export const API_CUSTOM_REPORTS = 'custom-reports';
 export const API_FILES = 'erm-usage/files';
+export const API_HARVESTER_ERROR_HANDLING = 'erm-usage-harvester/error-handling';
+export const API_HARVESTER_ERROR_HANDLING_DEFAULTS = 'erm-usage-harvester/error-handling/defaults';
 export const API_HARVESTER_IMPL = 'erm-usage-harvester/impl';
 export const API_HARVESTER_JOBS = 'erm-usage-harvester/jobs';
 export const API_HARVESTER_PERIODIC = 'erm-usage-harvester/periodic';
@@ -17,6 +19,9 @@ export const API_SETTINGS_ENTRIES = 'settings/entries';
 export const API_TAGS = 'tags';
 export const API_UDPS = 'usage-data-providers';
 export const API_UDPS_SERVICE_TYPES = 'usage-data-providers/sushi-config/service-types';
+
+export const QK_HARVESTER_ERROR_HANDLING = 'error-handling';
+export const QK_HARVESTER_ERROR_HANDLING_DEFAULTS = 'error-handling-defaults';
 
 export const MAX_FAILED_ATTEMPTS = 5;
 export const DAYS_TO_KEEP_LOGS = 60;

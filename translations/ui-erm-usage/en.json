@@ -276,6 +276,10 @@
   "settings.hideCredentials": "Hide credentials in detail views",
   "settings.section.display.settings": "Display settings",
   "settings.section.number.failed": "Number of failed attempts",
+  "settings.errorHandling": "Error handling",
+  "settings.errorHandling.helpText": "Set default settings for error handling during harvesting. The harvester uses these settings for all usage data providers in eUsage. If necessary, these settings can be customized in the harvesting configuration of each usage data provider.",
+  "settings.errorHandling.counterApiExceptions": "Counter API Exceptions",
+  "settings.errorHandling.counterApiExceptions.helpText": "If the Harvester is configured to harvest Counter reports via Counter/Sushi from the provider, Counter API exceptions may occur that typically prevents the requested reports from being generated. These settings can be used to control the harvester's behavior in these cases.",
 
   "permission.module.erm-usage.enabled": "UI: eUsage module is enabled",
   "permission.settings.erm-usage.enabled": "Settings (eUsage): Display list of settings pages",
