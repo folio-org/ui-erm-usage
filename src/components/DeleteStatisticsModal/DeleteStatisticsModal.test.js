@@ -4,6 +4,7 @@ import {
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
   StripesContext,
   useStripes,
@@ -11,10 +12,15 @@ import {
 
 import renderWithIntl from '../../../test/jest/helpers';
 import {
-  rest,
-  server,
-} from '../../../test/jest/testServer';
+  API_COUNTER_REPORTS_DELETE,
+  QK_COUNTER_REPORTS,
+} from '../../util/constants';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
+
+jest.mock('@folio/stripes-leipzig-components', () => ({
+  ...jest.requireActual('@folio/stripes-leipzig-components'),
+  useOkapiKyMutation: jest.fn(),
+}));
 
 const onCloseModal = jest.fn();
 const onFail = jest.fn();
@@ -125,8 +131,19 @@ const renderDeleteStatistics = (stripes) => {
 
 describe('DeleteStatisticsModal', () => {
   let stripes;
+  let deleteReports;
+  let createOptions;
+
   beforeEach(() => {
+    jest.clearAllMocks();
     stripes = useStripes();
+    deleteReports = jest.fn().mockResolvedValue(null);
+    useOkapiKyMutation.mockReturnValue({
+      useCreate: (options) => {
+        createOptions = options;
+        return { mutateAsync: deleteReports };
+      },
+    });
   });
   describe('render checkboxes', () => {
     beforeEach(async () => {
@@ -207,17 +224,17 @@ describe('DeleteStatisticsModal', () => {
       await userEvent.click(submit);
       await waitFor(() => expect(heading).not.toBeVisible());
       expect(onSuccess).toHaveBeenCalled();
+      // the bulk delete endpoint is a POST with the report ids as JSON array
+      expect(useOkapiKyMutation).toHaveBeenCalledWith({
+        mutationKey: QK_COUNTER_REPORTS,
+        api: API_COUNTER_REPORTS_DELETE,
+      });
+      expect(createOptions.kyOptions).toEqual({ headers: { Accept: 'text/plain' } });
+      expect(deleteReports).toHaveBeenCalledWith([counterReports[0].stats[0]['01'].id]);
     });
 
     test('click delete - server error', async () => {
-      server.use(
-        rest.post(
-          'https://folio-testing-okapi.dev.folio.org/counter-reports/reports/delete',
-          (req, res, ctx) => {
-            return res(ctx.status(500));
-          }
-        )
-      );
+      deleteReports.mockRejectedValue(new Error('Internal Server Error'));
       const heading = screen.queryByRole('heading', {
         name: 'Are you sure to delete multiple reports?',
       });
@@ -228,6 +245,8 @@ describe('DeleteStatisticsModal', () => {
       });
       await userEvent.click(submit);
       await waitFor(() => expect(onFail).toHaveBeenCalled());
+      // the confirmation dialog is not closed on error
+      expect(heading).toBeVisible();
     });
   });
 

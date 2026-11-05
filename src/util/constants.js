@@ -18,6 +18,11 @@ export const API_TAGS = 'tags';
 export const API_UDPS = 'usage-data-providers';
 export const API_UDPS_SERVICE_TYPES = 'usage-data-providers/sushi-config/service-types';
 
+export const QK_COUNTER_REPORTS = 'counter-reports';
+export const QK_CUSTOM_REPORTS = 'custom-reports';
+export const QK_FILES = 'files';
+export const QK_HARVESTER_PERIODIC = 'harvester-periodic';
+
 export const MAX_FAILED_ATTEMPTS = 5;
 export const DAYS_TO_KEEP_LOGS = 60;
 export const FORM_TYPE_FINAL_FORM = 'final-form';

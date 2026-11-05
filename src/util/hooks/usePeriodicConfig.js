@@ -1,14 +1,22 @@
+import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { useQueryClient } from 'react-query';
 
-import { useStripes } from '@folio/stripes/core';
+import {
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
 
-import { API_HARVESTER_PERIODIC } from '../constants';
-import fetchWithDefaultOptions from '../fetchWithDefaultOptions';
+import {
+  API_HARVESTER_PERIODIC,
+  QK_HARVESTER_PERIODIC,
+} from '../constants';
+
+const queryKey = [QK_HARVESTER_PERIODIC];
 
 const usePeriodicConfig = () => {
-  const path = `/${API_HARVESTER_PERIODIC}`;
+  const queryClient = useQueryClient();
   const { formatMessage } = useIntl();
-  const { okapi } = useStripes();
 
   const createErrorFromResponse = (response, intlTag) => new Error(
     formatMessage(
@@ -20,47 +28,61 @@ const usePeriodicConfig = () => {
     )
   );
 
-  const fetchConfig = () => {
-    return fetchWithDefaultOptions(okapi, path).then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else if (response.status === 404) {
-        return {};
-      } else {
-        throw createErrorFromResponse(response, 'fetch');
-      }
-    });
-  };
+  const { data, error, isLoading } = useOkapiKyQuery({
+    queryKey,
+    api: API_HARVESTER_PERIODIC,
+    // fetch the config every time the settings are opened, but not again while they are open
+    options: { cacheTime: 0, refetchOnReconnect: false },
+  });
 
-  const saveConfig = (periodicConfig) => {
-    return fetchWithDefaultOptions(okapi, path, {
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(periodicConfig),
-    }).then((response) => {
-      if (response.status === 201) {
-        return response;
-      } else {
-        throw createErrorFromResponse(response, 'save');
-      }
-    });
-  };
+  const notFound = error?.response?.status === 404;
+  const translateError = (err, intlTag) => (err.response ? createErrorFromResponse(err.response, intlTag) : err);
 
-  const deleteConfig = () => {
-    return fetchWithDefaultOptions(okapi, path, {
-      method: 'DELETE',
-    }).then((response) => {
-      if (response.status === 204) {
-        return response;
-      } else {
-        throw createErrorFromResponse(response, 'delete');
-      }
-    });
-  };
+  const fetchError = useMemo(
+    () => (error && !notFound ? translateError(error, 'fetch') : undefined),
+    [error] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
-  return { fetchConfig, saveConfig, deleteConfig };
+  let config;
+
+  if (!isLoading) {
+    config = error ? {} : (data ?? {});
+  }
+
+  const { useCreate, useDelete } = useOkapiKyMutation({
+    mutationKey: QK_HARVESTER_PERIODIC,
+    api: API_HARVESTER_PERIODIC,
+  });
+
+  const { mutateAsync: createConfig } = useCreate({
+    onSuccess: (_, periodicConfig) => {
+      queryClient.setQueryData(queryKey, (prevConfig) => ({ ...prevConfig, ...periodicConfig }));
+    },
+  });
+
+  const { mutateAsync: removeConfig } = useDelete({
+    withoutId: true,
+    onSuccess: () => {
+      queryClient.setQueryData(queryKey, {});
+    },
+  });
+
+  const saveConfig = (periodicConfig) => createConfig(periodicConfig)
+    .catch((err) => {
+      throw translateError(err, 'save');
+    });
+
+  const deleteConfig = () => removeConfig()
+    .catch((err) => {
+      throw translateError(err, 'delete');
+    });
+
+  return {
+    config,
+    fetchError,
+    saveConfig,
+    deleteConfig,
+  };
 };
 
 export default usePeriodicConfig;

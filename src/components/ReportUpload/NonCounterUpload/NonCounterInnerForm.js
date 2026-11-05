@@ -10,6 +10,7 @@ import {
   injectIntl,
 } from 'react-intl';
 
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
   Col,
   RadioButton,
@@ -18,8 +19,10 @@ import {
 } from '@folio/stripes/components';
 import { CalloutContext } from '@folio/stripes/core';
 
-import { API_FILES } from '../../../util/constants';
-import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import {
+  API_FILES,
+  QK_FILES,
+} from '../../../util/constants';
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
 
@@ -30,13 +33,7 @@ function NonCounterUploadInnerForm(props) {
   const [useFile, setUseFile] = useState(true);
   const [linkUrl, setLinkUrl] = useState();
 
-  const {
-    intl,
-    stripes: { okapi },
-  } = props;
-  const headers = {
-    'Content-Type': 'application/octet-stream',
-  };
+  const { intl } = props;
   const callout = useContext(CalloutContext);
 
   const handleFail = (msg) => {
@@ -48,63 +45,56 @@ function NonCounterUploadInnerForm(props) {
     });
   };
 
+  const { useCreate, useDelete } = useOkapiKyMutation({
+    mutationKey: QK_FILES,
+    api: API_FILES,
+    id: fileId,
+  });
+  const { mutateAsync: uploadFile } = useCreate({
+    kyOptions: (file) => ({
+      body: file,
+      headers: { 'Content-Type': 'application/octet-stream' },
+      // large files may take longer than the default timeout of useOkapiKy
+      timeout: false,
+    }),
+  });
+  const { mutateAsync: deleteFile } = useDelete();
+
+  // HTTP errors only show the general message; other errors show general message and details
+  const handleRequestError = (err) => {
+    const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
+    handleFail(err.response ? failText : `${failText} ${err.message}`);
+  };
+
   const doUploadRawFile = (file) => {
     const { mutators, udpId } = props;
     setShowUploadModal(true);
-    fetchWithDefaultOptions(okapi, `/${API_FILES}`, {
-      headers,
-      method: 'POST',
-      body: file,
-    })
-      .then((response) => {
+    uploadFile(file)
+      .then((json) => {
         setShowUploadModal(false);
-
-        if (response.ok) {
-          response.json().then((json) => {
-            mutators.setFileId({}, json.id);
-            mutators.setFileName({}, file.name);
-            mutators.setFileSize({}, file.size);
-            mutators.setProviderId({}, udpId);
-            mutators.setLinkUrl({}, null);
-            setFileId(json.id);
-          });
-        } else {
-          handleFail(
-            intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' })
-          );
-        }
+        mutators.setFileId({}, json.id);
+        mutators.setFileName({}, file.name);
+        mutators.setFileSize({}, file.size);
+        mutators.setProviderId({}, udpId);
+        mutators.setLinkUrl({}, null);
+        setFileId(json.id);
       })
       .catch((err) => {
         setShowUploadModal(false);
-        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
-        const infoText = `${failText} ${err.message}`;
-        handleFail(infoText);
+        handleRequestError(err);
       });
   };
 
   const doDeleteRawFile = () => {
     const { mutators } = props;
-    fetchWithDefaultOptions(okapi, `/${API_FILES}/${fileId}`, {
-      headers,
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.ok) {
-          setFileId();
-          mutators.setFileId({}, null);
-          mutators.setFileName({}, null);
-          mutators.setFileSize({}, null);
-        } else {
-          handleFail(
-            intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' })
-          );
-        }
+    deleteFile()
+      .then(() => {
+        setFileId();
+        mutators.setFileId({}, null);
+        mutators.setFileName({}, null);
+        mutators.setFileSize({}, null);
       })
-      .catch((err) => {
-        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
-        const infoText = `${failText} ${err.message}`;
-        handleFail(infoText);
-      });
+      .catch(handleRequestError);
   };
 
   const handleSelectFile = (acceptedFile) => {
