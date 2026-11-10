@@ -172,10 +172,6 @@ const ReportInfo = ({
       return translateErrorCodes(errorCode);
     }
 
-    if (error !== null) {
-      return error;
-    }
-
     if (report.failedReason?.includes('<html')) {
       const htmlError =
         <details>
@@ -185,7 +181,7 @@ const ReportInfo = ({
       return htmlError;
     }
 
-    return null;
+    return error;
   };
 
   const failInfo = !report.failedReason ? null : (
