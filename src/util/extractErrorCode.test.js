@@ -1,24 +1,60 @@
-import extractErrorCode from './extractErrorCode';
+import {
+  extractErrorCodeFromReport,
+  extractErrorFromReport,
+} from './extractErrorCode';
 
-describe('extractErrorCode', () => {
-  it('extract "code" correctly', () => {
-    const input = '{"Code":3030,"Severity":"Error","Message":"No Usage Available for Requested Dates"}';
-    const result = extractErrorCode(input);
+describe('extractErrorCodeFromReport', () => {
+  it('extracts "code" from failedReason', () => {
+    const report = {
+      failedReason: '{"Code":3030,"Severity":"Error","Message":"No Usage Available for Requested Dates"}',
+    };
 
-    expect(result).toEqual({ code: '3030' });
+    expect(extractErrorCodeFromReport(report)).toBe('3030');
   });
 
-  it('extract "number" instead of "code"', () => {
-    const input = 'Something went wrong. Number=1234.';
-    const result = extractErrorCode(input);
+  it('extracts "number" instead of "code" from failedReason', () => {
+    const report = { failedReason: 'Something went wrong. Number=1234.' };
 
-    expect(result).toEqual({ code: '1234' });
+    expect(extractErrorCodeFromReport(report)).toBe('1234');
   });
 
-  it('return null, if code or number are not available', () => {
-    const input = '{"Message":"Only a message"}';
-    const result = extractErrorCode(input);
+  it('returns null when no code or number is available', () => {
+    const report = { failedReason: '{"Message":"Only a message"}' };
 
-    expect(result).toBe(null);
+    expect(extractErrorCodeFromReport(report)).toBe(null);
+  });
+
+  it('returns the smallest code from api exceptions', () => {
+    const report = {
+      apiExceptions: [
+        { code: 3030 },
+        { code: 1000 },
+        { code: 2000 },
+      ],
+    };
+
+    expect(extractErrorCodeFromReport(report)).toBe(1000);
+  });
+
+  it('returns null when the report has no errors', () => {
+    expect(extractErrorCodeFromReport({})).toBe(null);
+  });
+});
+
+describe('extractErrorFromReport', () => {
+  it('returns failedReason when there are no api exceptions', () => {
+    const report = { failedReason: 'Something went wrong.' };
+
+    expect(extractErrorFromReport(report)).toBe('Something went wrong.');
+  });
+
+  it('joins api exceptions', () => {
+    const report = { apiExceptions: ['first error', 'second error'] };
+
+    expect(extractErrorFromReport(report)).toBe('first error, second error');
+  });
+
+  it('returns null when the report has no errors', () => {
+    expect(extractErrorFromReport({})).toBe(null);
   });
 });

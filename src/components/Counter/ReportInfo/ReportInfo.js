@@ -18,7 +18,10 @@ import {
   XLSX,
 } from '../../../util/constants';
 import rawDownloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
-import extractErrorCode from '../../../util/extractErrorCode';
+import {
+  extractErrorCodeFromReport,
+  extractErrorFromReport,
+} from '../../../util/extractErrorCode';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
 const ReportInfo = ({
@@ -161,27 +164,34 @@ const ReportInfo = ({
     return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.exception' })}: ${label}`;
   };
 
-  const adaptSushiAndHtmlFailedInfo = (failedReason) => {
-    const error = failedReason ? extractErrorCode(failedReason) : null;
+  const adaptSushiAndHtmlFailedInfo = (failedReport) => {
+    const errorCode = extractErrorCodeFromReport(failedReport);
+    const error = extractErrorFromReport(failedReport);
+
+    if (errorCode !== null) {
+      return translateErrorCodes(errorCode);
+    }
 
     if (error !== null) {
-      return translateErrorCodes(error.code);
-    } else if (failedReason.includes('<html')) {
+      return error;
+    }
+
+    if (report.failedReason?.includes('<html')) {
       const htmlError =
         <details>
           <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>
-          {failedReason}
+          {report.failedReason}
         </details>;
       return htmlError;
-    } else {
-      return failedReason;
     }
+
+    return null;
   };
 
   const failInfo = !report.failedReason ? null : (
     <KeyValue
       label={intl.formatMessage({ id: 'ui-erm-usage.general.info' })}
-      value={adaptSushiAndHtmlFailedInfo(report.failedReason)}
+      value={adaptSushiAndHtmlFailedInfo(report)}
     />
   );
 
