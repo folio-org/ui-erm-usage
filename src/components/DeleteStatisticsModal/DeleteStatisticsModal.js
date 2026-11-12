@@ -5,15 +5,18 @@ import {
   injectIntl,
 } from 'react-intl';
 
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
   Button,
   ConfirmationModal,
   Modal,
   ModalFooter,
 } from '@folio/stripes/components';
-import { useOkapiKy } from '@folio/stripes/core';
 
-import { API_COUNTER_REPORTS_DELETE } from '../../util/constants';
+import {
+  API_COUNTER_REPORTS_DELETE,
+  KEY_COUNTER_REPORTS,
+} from '../../util/constants';
 import DeleteStatistics from './DeleteStatistics';
 
 function DeleteStatisticsModal({
@@ -42,37 +45,25 @@ function DeleteStatisticsModal({
     setReportsToDelete((prev) => new Set([...prev].filter((x) => x !== id)));
   };
 
-  const ky = useOkapiKy();
+  const { useCreate } = useOkapiKyMutation({
+    mutationKey: KEY_COUNTER_REPORTS,
+    api: API_COUNTER_REPORTS_DELETE,
+  });
+  // the bulk delete endpoint is a POST, so useCreate is used here
+  const { mutateAsync: deleteReports } = useCreate({
+    kyOptions: { headers: { Accept: 'text/plain' } },
+  });
 
   const handleSubmit = () => {
-    const idArray = JSON.stringify([...reportsToDelete]);
-    ky(API_COUNTER_REPORTS_DELETE, {
-      method: 'POST',
-      headers: {
-        Accept: 'text/plain',
-        'Content-type': 'application/json',
-      },
-      body: idArray,
-    })
-      .then((res) => {
+    deleteReports([...reportsToDelete])
+      .then(() => {
         setShowConfirmDelete(false);
-
-        if (res.ok) {
-          setReportsToDelete(new Set());
-          const msg = intl.formatMessage(
-            {
-              id: 'ui-erm-usage.statistics.multi.delete.success',
-            },
-            {
-              count: reportsToDelete.size,
-            }
-          );
-          onSuccess(msg);
-        } else {
-          onFail(
-            intl.formatMessage({ id: 'ui-erm-usage.statistics.multi.delete.fail' })
-          );
-        }
+        setReportsToDelete(new Set());
+        const msg = intl.formatMessage(
+          { id: 'ui-erm-usage.statistics.multi.delete.success' },
+          { count: reportsToDelete.size }
+        );
+        onSuccess(msg);
       })
       .catch(() => {
         onFail(

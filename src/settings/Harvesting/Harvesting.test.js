@@ -47,14 +47,16 @@ const selectInterval = async (interval) => {
 describe('Harvesting', () => {
   const stripes = useStripes();
   const sendCallout = jest.fn();
-  let fetchConfig;
+  let config;
+  let fetchError;
   let saveConfig;
   let deleteConfig;
-  usePeriodicConfig.mockImplementation(() => ({ fetchConfig, saveConfig, deleteConfig }));
+  usePeriodicConfig.mockImplementation(() => ({ config, fetchError, saveConfig, deleteConfig }));
 
   beforeEach(() => {
     sendCallout.mockClear();
-    fetchConfig = jest.fn().mockResolvedValue(periodicConfig);
+    config = periodicConfig;
+    fetchError = undefined;
     saveConfig = jest.fn().mockResolvedValue();
     deleteConfig = jest.fn().mockResolvedValue();
   });
@@ -69,7 +71,7 @@ describe('Harvesting', () => {
   });
 
   it('should show periodic harvesting disabled if no configuration exists', async () => {
-    fetchConfig = jest.fn().mockResolvedValue({});
+    config = {};
     renderHarvesting(stripes, sendCallout);
 
     expect(await findEnableCheckbox()).not.toBeChecked();
@@ -77,7 +79,7 @@ describe('Harvesting', () => {
   });
 
   it('should show empty fields if no configuration exists', async () => {
-    fetchConfig = jest.fn().mockResolvedValue({});
+    config = {};
     renderHarvesting(stripes, sendCallout);
 
     await findEnableCheckbox();
@@ -87,7 +89,7 @@ describe('Harvesting', () => {
   });
 
   it('should require date, time and interval if periodic harvesting is enabled without a configuration', async () => {
-    fetchConfig = jest.fn().mockResolvedValue({});
+    config = {};
     renderHarvesting(stripes, sendCallout);
 
     await userEvent.click(await findEnableCheckbox());
@@ -99,7 +101,7 @@ describe('Harvesting', () => {
   });
 
   it('should save a new configuration once all fields are filled in', async () => {
-    fetchConfig = jest.fn().mockResolvedValue({});
+    config = {};
     renderHarvesting(stripes, sendCallout);
 
     await userEvent.click(await findEnableCheckbox());
@@ -116,7 +118,8 @@ describe('Harvesting', () => {
   });
 
   it('should show an error callout if fetching fails', async () => {
-    fetchConfig = jest.fn().mockRejectedValue(new Error('fetch failed'));
+    config = {};
+    fetchError = new Error('fetch failed');
     renderHarvesting(stripes, sendCallout);
 
     expect(await findEnableCheckbox()).toBeInTheDocument();
@@ -207,7 +210,7 @@ describe('Harvesting', () => {
   });
 
   it('should not delete anything if periodic harvesting is disabled and no configuration exists', async () => {
-    fetchConfig = jest.fn().mockResolvedValue({});
+    config = {};
     renderHarvesting(stripes, sendCallout);
 
     const checkbox = await findEnableCheckbox();

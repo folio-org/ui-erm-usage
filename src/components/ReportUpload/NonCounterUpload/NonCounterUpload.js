@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 
-import { API_CUSTOM_REPORTS } from '../../../util/constants';
-import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
+
+import {
+  API_CUSTOM_REPORTS,
+  KEY_CUSTOM_REPORTS,
+} from '../../../util/constants';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
 function NonCounterUpload({
@@ -12,23 +16,17 @@ function NonCounterUpload({
   stripes,
   udpId,
 }) {
+  const { useCreate } = useOkapiKyMutation({
+    mutationKey: KEY_CUSTOM_REPORTS,
+    api: API_CUSTOM_REPORTS,
+  });
+  const { mutateAsync: createCustomReport } = useCreate();
+
   const handleNonCounterUpload = (report) => {
-    const json = JSON.stringify(report);
-    fetchWithDefaultOptions(stripes.okapi, `/${API_CUSTOM_REPORTS}`, {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: json,
-    })
-      .then((response) => {
-        if (response.status >= 400) {
-          response.text().then((t) => onFail(t));
-        } else {
-          onSuccess();
-        }
-      })
-      .catch((err) => {
-        onFail(err.message);
-      });
+    createCustomReport(report)
+      .then(() => onSuccess())
+      // HTTP errors only show the response text of the backend; other errors show their message
+      .catch(async (err) => onFail(err.response ? await err.response.text() : err.message));
   };
 
   return (

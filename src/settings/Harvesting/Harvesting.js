@@ -24,11 +24,14 @@ const Harvesting = () => {
   const ky = useOkapiKy();
   const { sendCallout } = useContext(CalloutContext);
   const { formatMessage, timeZone, locale } = useIntl();
-  const periodicConfig = usePeriodicConfig();
+  const {
+    config,
+    fetchError,
+    saveConfig,
+    deleteConfig,
+  } = usePeriodicConfig();
 
   const [modalState, setModalState] = useState({ open: false });
-  // config is undefined while fetching and an object afterwards ({} if none exists or the fetch fails)
-  const [config, setConfig] = useState();
 
   const showSuccessInfo = (intlTag) => {
     sendCallout({
@@ -43,16 +46,6 @@ const Harvesting = () => {
       type: 'error',
       message: `${prefix}: ${error.message}`,
     });
-  };
-
-  const fetchPeriodicHarvestingConf = () => {
-    periodicConfig.fetchConfig()
-      .then(setConfig)
-      .catch((error) => {
-        // show the empty form
-        setConfig({});
-        showErrorInfo(error);
-      });
   };
 
   // enablePeriodic is checked if a schedule exists, without a schedule all fields stay empty
@@ -74,11 +67,9 @@ const Harvesting = () => {
       return undefined;
     }
 
-    return periodicConfig
-      .deleteConfig()
+    return deleteConfig()
       .then(() => {
         form.reset(getInitialValues({}));
-        setConfig({});
         showSuccessInfo('deleted');
       })
       .catch(handleSubmitError);
@@ -96,22 +87,20 @@ const Harvesting = () => {
       periodicInterval,
     };
 
-    return periodicConfig
-      .saveConfig(periodicConfigData)
+    return saveConfig(periodicConfigData)
       .then(() => {
         // the saved values become the new baseline; reset also clears submitSucceeded,
         // which would otherwise prevent the unsaved-changes prompt
         form.reset(formValues);
-        // keep fields that are not part of the form (lastTriggeredAt)
-        setConfig(prevConfig => ({ ...prevConfig, ...periodicConfigData }));
         showSuccessInfo('saved');
       })
       .catch(handleSubmitError);
   };
 
   useEffect(() => {
-    fetchPeriodicHarvestingConf();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    // the form is shown empty in this case
+    if (fetchError) showErrorInfo(fetchError);
+  }, [fetchError]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onClickStartHarvester = async () => {
     try {
