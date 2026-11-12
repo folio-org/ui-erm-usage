@@ -16,7 +16,7 @@ import { stripesConnect } from '@folio/stripes/core';
 
 import { API_COUNTER_REPORTS } from '../../../util/constants';
 import {
-  extractErrorCodeFromReport,
+  extractErrorCodesFromReport,
   isFailedReport,
 } from '../../../util/failedReport';
 import ReportInfo from '../ReportInfo';
@@ -119,7 +119,7 @@ const ReportInfoButton = ({
     return null;
   }
 
-  const errorCode = extractErrorCodeFromReport(report);
+  const [errorCode] = extractErrorCodesFromReport(report);
   const { buttonStyle, buttonClass = '', icon } = getButtonStyle(report.failedAttempts, errorCode);
 
   const confirmMessage = (

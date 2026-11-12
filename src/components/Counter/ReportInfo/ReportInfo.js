@@ -151,14 +151,14 @@ const ReportInfo = ({
     );
   };
 
-  const translateErrorCodes = (val) => {
+  const translateErrorCode = (code) => {
     let label;
 
-    if (isSushiWarningCode(val)) {
-      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${val})`;
+    if (isSushiWarningCode(code)) {
+      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${code})`;
     } else {
-      const id = `ui-erm-usage.report.error.${val}`;
-      label = `${intl.formatMessage({ id })} (${val})`;
+      const id = `ui-erm-usage.report.error.${code}`;
+      label = `${intl.formatMessage({ id })} (${code})`;
     }
 
     return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.exception' })}: ${label}`;
@@ -168,7 +168,7 @@ const ReportInfo = ({
     const errorCodes = extractErrorCodesFromReport(failedReport);
 
     if (errorCodes.length > 0) {
-      return errorCodes.map((code) => <div key={code}>{translateErrorCodes(code)}</div>);
+      return errorCodes.map((code) => <div key={code}>{translateErrorCode(code)}</div>);
     }
 
     if (failedReport.failedReason?.includes('<html')) {

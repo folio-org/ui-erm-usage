@@ -1,5 +1,4 @@
 import {
-  extractErrorCodeFromReport,
   extractErrorCodesFromReport,
   hasApiExceptions,
   isFailedReport,
@@ -60,27 +59,6 @@ describe('extractErrorCodesFromReport', () => {
 
   it('returns an empty array when the report has no errors', () => {
     expect(extractErrorCodesFromReport({})).toEqual([]);
-  });
-});
-
-describe('extractErrorCodeFromReport', () => {
-  it('returns the lowest code from apiExceptions', () => {
-    const report = {
-      apiExceptions: [apiException(3032), apiException(3030), apiException(3031)],
-    };
-
-    expect(extractErrorCodeFromReport(report)).toBe(3030);
-  });
-
-  it('returns the code from failedReason as a number', () => {
-    const report = { failedReason: 'Exception{Number=3031, Severity=ERROR}' };
-
-    expect(extractErrorCodeFromReport(report)).toBe(3031);
-  });
-
-  it('returns null when the report has no codes', () => {
-    expect(extractErrorCodeFromReport({})).toBe(null);
-    expect(extractErrorCodeFromReport({ failedReason: 'failure message' })).toBe(null);
   });
 });
 

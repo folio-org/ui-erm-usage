@@ -6,13 +6,19 @@ const extractErrorCodeFromFailedReason = (failedReason) => {
   return codeMatch ? parseInt(codeMatch[1], 10) : null;
 };
 
+/**
+ * @returns {boolean} `true` if `apiExceptions` has at least one entry.
+ */
 const hasApiExceptions = (report) => report?.apiExceptions?.length > 0;
 
+/**
+ * @returns {boolean} `true` if the report has `apiExceptions` or a `failedReason`.
+ */
 const isFailedReport = (report) => hasApiExceptions(report) || !!report?.failedReason;
 
 /**
- * Returns the distinct exception codes of a report in ascending order.
- * Reads them from `apiExceptions` and falls back to parsing `failedReason`.
+ * @returns {number[]} The distinct codes from `apiExceptions` (or else `failedReason`)
+ *   in ascending order, so the first one has the highest priority.
  */
 const extractErrorCodesFromReport = (report) => {
   if (hasApiExceptions(report)) {
@@ -28,16 +34,7 @@ const extractErrorCodesFromReport = (report) => {
   return [];
 };
 
-/**
- * Returns the lowest exception code of a report, or null if it has none.
- */
-const extractErrorCodeFromReport = (report) => {
-  const codes = extractErrorCodesFromReport(report);
-  return codes.length > 0 ? codes[0] : null;
-};
-
 export {
-  extractErrorCodeFromReport,
   extractErrorCodesFromReport,
   hasApiExceptions,
   isFailedReport,

@@ -10,24 +10,13 @@ import {
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
 import ReportInfo from './ReportInfo';
 
-const renderReport = (stripes, report) => renderWithIntl(
+const renderReport = (stripes, report = {}, props = {}) => renderWithIntl(
   <StripesContext.Provider value={stripes}>
     <MemoryRouter>
-      <ReportInfo report={report} udpLabel="Test Provider" />
+      <ReportInfo report={report} udpLabel="Test Provider" {...props} />
     </MemoryRouter>
   </StripesContext.Provider>
 );
-
-const render = (stripes, failedReason) => {
-  const msg = failedReason ? `{ "failedReason": "${failedReason}"}` : '{}';
-  return renderWithIntl(
-    <StripesContext.Provider value={stripes}>
-      <MemoryRouter>
-        <ReportInfo report={JSON.parse(msg)} udpLabel="Test Provider" />
-      </MemoryRouter>
-    </StripesContext.Provider>
-  );
-};
 
 describe('ReportInfo.js', () => {
   let stripes;
@@ -38,68 +27,59 @@ describe('ReportInfo.js', () => {
 
   test('has permission', () => {
     stripes.hasPerm = () => true;
-    render(stripes);
+    renderReport(stripes);
     expect(screen.getByText('Delete report')).toBeInTheDocument();
   });
 
   test('has no permission', () => {
     stripes.hasPerm = () => false;
-    render(stripes);
+    renderReport(stripes);
     expect(screen.queryByText('Delete report')).not.toBeInTheDocument();
   });
 
   test('no failedReason', () => {
-    render(stripes);
+    renderReport(stripes);
     expect(screen.queryByText('Info')).not.toBeInTheDocument();
   });
 
   test('failedReason without Number or Code', () => {
-    render(stripes, 'failure message');
+    renderReport(stripes, { failedReason: 'failure message' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('failure message')).toBeInTheDocument();
   });
 
   test('failedReason with defined Number', () => {
-    render(stripes, 'Exception{Number=1010, Severity=ERROR, Message=A message}');
+    renderReport(stripes, { failedReason: 'Exception{Number=1010, Severity=ERROR, Message=A message}' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with defined Code with whitespace', () => {
-    render(
-      stripes,
-      '{\\"Code\\": 1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
-    );
+    renderReport(stripes, { failedReason: '{"Code": 1010, "Severity": "Error", "Message": "A message"}' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with defined Code without whitespace', () => {
-    render(
-      stripes,
-      '{\\"Code\\":1010, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
-    );
+    renderReport(stripes, { failedReason: '{"Code":1010, "Severity": "Error", "Message": "A message"}' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with warnings (1-999)', () => {
-    render(
-      stripes,
-      '{\\"Code\\": 123, \\"Severity\\": \\"Error\\", \\"Message\\": \\"A message\\"}'
-    );
+    renderReport(stripes, { failedReason: '{"Code": 123, "Severity": "Error", "Message": "A message"}' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('Exception: Warnings (123)')).toBeInTheDocument();
   });
 
   test('failedReason with multiple defined Numbers', () => {
-    render(stripes, 'Exception{Number=1010, Number=2020}');
+    renderReport(stripes, { failedReason: 'Exception{Number=1010, Number=2020}' });
     expect(screen.getByText('Info')).toBeInTheDocument();
     expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
   });
 
   test('failedReason with HTML-tag', () => {
-    render(stripes, '<html lang=`en`>');
+    renderReport(stripes, { failedReason: '<html lang=`en`>' });
     expect(screen.getByText('An error has occured')).toBeInTheDocument();
   });
 
@@ -161,17 +141,7 @@ describe('ReportInfo.js', () => {
       [undefined, 'json', 'xml'],
     ])('release %s is downloaded as %s, not as %s', async (release, expectedFileType, absentFileType) => {
       const downloadRawReport = jest.fn();
-      renderWithIntl(
-        <StripesContext.Provider value={stripes}>
-          <MemoryRouter>
-            <ReportInfo
-              downloadRawReport={downloadRawReport}
-              report={{ release }}
-              udpLabel="Test Provider"
-            />
-          </MemoryRouter>
-        </StripesContext.Provider>
-      );
+      renderReport(stripes, { release }, { downloadRawReport });
 
       expect(screen.queryByText(`Download report as ${absentFileType.toUpperCase()}`)).not.toBeInTheDocument();
       await userEvent.click(screen.getByText(`Download report as ${expectedFileType.toUpperCase()}`));
