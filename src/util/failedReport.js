@@ -3,7 +3,7 @@ const extractErrorCodeFromFailedReason = (failedReason) => {
   const counter5Regex = /"Code"\s*:\s*(\d{1,4})/;
 
   const codeMatch = failedReason.match(counter4Regex) || failedReason.match(counter5Regex);
-  return codeMatch ? parseInt(codeMatch[1], 10) : null;
+  return codeMatch ? Number.parseInt(codeMatch[1], 10) : null;
 };
 
 /**
