@@ -12,8 +12,8 @@ import renderWithIntl from '../../../../test/jest/helpers';
 import {
   API_CUSTOM_REPORTS,
   API_FILES,
-  QK_CUSTOM_REPORTS,
-  QK_FILES,
+  KEY_CUSTOM_REPORTS,
+  KEY_FILES,
 } from '../../../util/constants';
 import NonCounterUpload from './NonCounterUpload';
 
@@ -108,7 +108,7 @@ describe('NonCounterUpload', () => {
       await waitFor(() => expect(saveButton).toBeEnabled());
       await userEvent.click(saveButton);
       await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-      expect(useOkapiKyMutation).toHaveBeenCalledWith({ mutationKey: QK_CUSTOM_REPORTS, api: API_CUSTOM_REPORTS });
+      expect(useOkapiKyMutation).toHaveBeenCalledWith({ mutationKey: KEY_CUSTOM_REPORTS, api: API_CUSTOM_REPORTS });
       expect(createCustomReport).toHaveBeenCalledWith(expect.objectContaining({
         fileId,
         fileName: 'file.json',
@@ -134,7 +134,7 @@ describe('NonCounterUpload', () => {
       await userEvent.type(linkInput, 'http://www.link.com');
 
       // the uploaded file is deleted, because a link is used instead
-      expect(useOkapiKyMutation).toHaveBeenCalledWith({ mutationKey: QK_FILES, api: API_FILES, id: fileId });
+      expect(useOkapiKyMutation).toHaveBeenCalledWith({ mutationKey: KEY_FILES, api: API_FILES, id: fileId });
       expect(deleteFile).toHaveBeenCalled();
 
       const saveButton = screen.getByRole('button', { name: 'Save' });

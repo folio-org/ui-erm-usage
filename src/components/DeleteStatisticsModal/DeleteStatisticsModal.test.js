@@ -13,7 +13,7 @@ import {
 import renderWithIntl from '../../../test/jest/helpers';
 import {
   API_COUNTER_REPORTS_DELETE,
-  QK_COUNTER_REPORTS,
+  KEY_COUNTER_REPORTS,
 } from '../../util/constants';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
 
@@ -226,7 +226,7 @@ describe('DeleteStatisticsModal', () => {
       expect(onSuccess).toHaveBeenCalled();
       // the bulk delete endpoint is a POST with the report ids as JSON array
       expect(useOkapiKyMutation).toHaveBeenCalledWith({
-        mutationKey: QK_COUNTER_REPORTS,
+        mutationKey: KEY_COUNTER_REPORTS,
         api: API_COUNTER_REPORTS_DELETE,
       });
       expect(createOptions.kyOptions).toEqual({ headers: { Accept: 'text/plain' } });

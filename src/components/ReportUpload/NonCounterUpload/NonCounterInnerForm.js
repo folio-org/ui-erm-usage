@@ -21,7 +21,7 @@ import { CalloutContext } from '@folio/stripes/core';
 
 import {
   API_FILES,
-  QK_FILES,
+  KEY_FILES,
 } from '../../../util/constants';
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
@@ -46,7 +46,7 @@ function NonCounterUploadInnerForm(props) {
   };
 
   const { useCreate, useDelete } = useOkapiKyMutation({
-    mutationKey: QK_FILES,
+    mutationKey: KEY_FILES,
     api: API_FILES,
     id: fileId,
   });

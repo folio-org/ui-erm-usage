@@ -9,10 +9,10 @@ import {
 
 import {
   API_HARVESTER_PERIODIC,
-  QK_HARVESTER_PERIODIC,
+  KEY_HARVESTER_PERIODIC,
 } from '../constants';
 
-const queryKey = [QK_HARVESTER_PERIODIC];
+const queryKey = [KEY_HARVESTER_PERIODIC];
 
 const usePeriodicConfig = () => {
   const queryClient = useQueryClient();
@@ -50,7 +50,7 @@ const usePeriodicConfig = () => {
   }
 
   const { useCreate, useDelete } = useOkapiKyMutation({
-    mutationKey: QK_HARVESTER_PERIODIC,
+    mutationKey: KEY_HARVESTER_PERIODIC,
     api: API_HARVESTER_PERIODIC,
   });
 

@@ -16,7 +16,7 @@ import periodicConfig from '../../../test/fixtures/periodicConfig';
 import Intl from '../../../test/jest/__mock__/intl.mock';
 import {
   API_HARVESTER_PERIODIC,
-  QK_HARVESTER_PERIODIC,
+  KEY_HARVESTER_PERIODIC,
 } from '../constants';
 import usePeriodicConfig from './usePeriodicConfig';
 
@@ -25,7 +25,7 @@ jest.mock('@folio/stripes-leipzig-components', () => ({
   useOkapiKyQuery: jest.fn(),
 }));
 
-const queryKey = [QK_HARVESTER_PERIODIC];
+const queryKey = [KEY_HARVESTER_PERIODIC];
 
 // errors as thrown by ky: HTTP errors carry the response, other errors (e.g. network failures) do not
 const httpError = (status, statusText) => Object.assign(new Error(statusText), { response: { status, statusText } });
@@ -86,7 +86,7 @@ describe('usePeriodicConfig', () => {
         options: { cacheTime: 0, refetchOnReconnect: false },
       });
       expect(useOkapiKyMutation).toHaveBeenCalledWith({
-        mutationKey: QK_HARVESTER_PERIODIC,
+        mutationKey: KEY_HARVESTER_PERIODIC,
         api: API_HARVESTER_PERIODIC,
       });
     });

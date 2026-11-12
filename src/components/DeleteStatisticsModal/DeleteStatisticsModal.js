@@ -15,7 +15,7 @@ import {
 
 import {
   API_COUNTER_REPORTS_DELETE,
-  QK_COUNTER_REPORTS,
+  KEY_COUNTER_REPORTS,
 } from '../../util/constants';
 import DeleteStatistics from './DeleteStatistics';
 
@@ -46,7 +46,7 @@ function DeleteStatisticsModal({
   };
 
   const { useCreate } = useOkapiKyMutation({
-    mutationKey: QK_COUNTER_REPORTS,
+    mutationKey: KEY_COUNTER_REPORTS,
     api: API_COUNTER_REPORTS_DELETE,
   });
   // the bulk delete endpoint is a POST, so useCreate is used here

@@ -4,7 +4,7 @@ import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 
 import {
   API_CUSTOM_REPORTS,
-  QK_CUSTOM_REPORTS,
+  KEY_CUSTOM_REPORTS,
 } from '../../../util/constants';
 import NonCounterUploadModal from './NonCounterUploadModal';
 
@@ -17,7 +17,7 @@ function NonCounterUpload({
   udpId,
 }) {
   const { useCreate } = useOkapiKyMutation({
-    mutationKey: QK_CUSTOM_REPORTS,
+    mutationKey: KEY_CUSTOM_REPORTS,
     api: API_CUSTOM_REPORTS,
   });
   const { mutateAsync: createCustomReport } = useCreate();
