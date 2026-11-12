@@ -83,6 +83,18 @@ const report3032 = {
   providerId: '653afd8c-239f-406c-b765-489774b6ec26',
 };
 
+const withApiExceptions = (codes, failedReason = 'Report not valid') => ({
+  id: 'e75400fa-d6e0-48be-b083-2b11ab5a6e8a',
+  downloadTime: '2020-07-09T01:08:05.231+00:00',
+  failedAttempts: 1,
+  failedReason,
+  apiExceptions: codes.map((code) => ({ code, message: `Message ${code}` })),
+  release: '5.1',
+  reportName: 'TR',
+  yearMonth: '2025-07',
+  providerId: '653afd8c-239f-406c-b765-489774b6ec26',
+});
+
 const renderReportInfoButton = (stripes, report) => {
   return renderWithIntl(
     <ReportInfoButton
@@ -145,5 +157,45 @@ describe('ReportInfoButton', () => {
     const iconButton = screen.getByRole('button', { name: /open report info/i });
     expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
     expect(iconButton).toHaveClass('danger');
+  });
+  describe('with apiExceptions', () => {
+    it.each([
+      [3030, 'default', 'success'],
+      [3031, 'calendar', 'yellow'],
+      [3032, 'calendar', 'danger'],
+    ])('should take code %s from apiExceptions', (code, icon, cssClass) => {
+      renderReportInfoButton(stripes, withApiExceptions([code]));
+
+      const iconButton = screen.getByRole('button', { name: /open report info/i });
+      expect(within(iconButton).getByText(icon)).toBeInTheDocument();
+      expect(iconButton).toHaveClass(cssClass);
+    });
+
+    it('should use the lowest code if there are several', () => {
+      renderReportInfoButton(stripes, withApiExceptions([3032, 3030]));
+
+      const iconButton = screen.getByRole('button', { name: /open report info/i });
+      expect(within(iconButton).getByText('default')).toBeInTheDocument();
+      expect(iconButton).toHaveClass('success');
+    });
+
+    it('should prefer apiExceptions over failedReason', () => {
+      renderReportInfoButton(
+        stripes,
+        withApiExceptions([3031], 'Report not valid: Exception{Number=3030, Severity=ERROR}')
+      );
+
+      const iconButton = screen.getByRole('button', { name: /open report info/i });
+      expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
+      expect(iconButton).toHaveClass('yellow');
+    });
+
+    it('should work without failedReason', () => {
+      renderReportInfoButton(stripes, withApiExceptions([3031], undefined));
+
+      const iconButton = screen.getByRole('button', { name: /open report info/i });
+      expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
+      expect(iconButton).toHaveClass('yellow');
+    });
   });
 });

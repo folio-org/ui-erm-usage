@@ -68,7 +68,7 @@
     "home": "/eusage?filters=status.active&sort=label",
     "queryResource": "query",
     "okapiInterfaces": {
-      "counter-reports": "5.0",
+      "counter-reports": "5.1",
       "custom-reports": "1.0 2.0",
       "erm-usage-files": "1.0",
       "usage-data-providers": "4.0",

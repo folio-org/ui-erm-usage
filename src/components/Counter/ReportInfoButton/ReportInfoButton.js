@@ -15,7 +15,10 @@ import {
 import { stripesConnect } from '@folio/stripes/core';
 
 import { API_COUNTER_REPORTS } from '../../../util/constants';
-import extractErrorCode from '../../../util/extractErrorCode';
+import {
+  extractErrorCodesFromReport,
+  isFailedReport,
+} from '../../../util/failedReport';
 import ReportInfo from '../ReportInfo';
 import css from './ReportInfoButton.css';
 
@@ -34,18 +37,20 @@ const ReportInfoButton = ({
   const log = stripes.logger.log.bind(stripes.logger);
 
   const getButtonStyle = (failedAttempts, errorCode) => {
-    if (report.failedReason && errorCode === '3030') {
+    const isFailed = isFailedReport(report);
+
+    if (isFailed && errorCode === 3030) {
       return {
         buttonStyle: 'success slim',
         icon: <Icon icon="default" />,
       };
-    } else if (report.failedReason && errorCode === '3031') {
+    } else if (isFailed && errorCode === 3031) {
       return {
         buttonStyle: 'slim',
         buttonClass: css.yellow,
         icon: <Icon icon="calendar" />,
       };
-    } else if (report.failedReason && errorCode === '3032') {
+    } else if (isFailed && errorCode === 3032) {
       return {
         buttonStyle: 'danger slim',
         icon: <Icon icon="calendar" />,
@@ -114,8 +119,8 @@ const ReportInfoButton = ({
     return null;
   }
 
-  const error = report.failedReason ? extractErrorCode(report.failedReason) : null;
-  const { buttonStyle, buttonClass = '', icon } = getButtonStyle(report.failedAttempts, error?.code);
+  const [errorCode] = extractErrorCodesFromReport(report);
+  const { buttonStyle, buttonClass = '', icon } = getButtonStyle(report.failedAttempts, errorCode);
 
   const confirmMessage = (
     <>
