@@ -10,6 +10,14 @@ import {
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
 import ReportInfo from './ReportInfo';
 
+const renderReport = (stripes, report) => renderWithIntl(
+  <StripesContext.Provider value={stripes}>
+    <MemoryRouter>
+      <ReportInfo report={report} udpLabel="Test Provider" />
+    </MemoryRouter>
+  </StripesContext.Provider>
+);
+
 const render = (stripes, failedReason) => {
   const msg = failedReason ? `{ "failedReason": "${failedReason}"}` : '{}';
   return renderWithIntl(
@@ -93,6 +101,55 @@ describe('ReportInfo.js', () => {
   test('failedReason with HTML-tag', () => {
     render(stripes, '<html lang=`en`>');
     expect(screen.getByText('An error has occured')).toBeInTheDocument();
+  });
+
+  describe('apiExceptions', () => {
+    const exception = (code) => ({ code, message: `Message ${code}` });
+
+    test('shows the code of a single apiException', () => {
+      renderReport(stripes, { failedReason: 'Report not valid', apiExceptions: [exception(1010)] });
+      expect(screen.getByText('Info')).toBeInTheDocument();
+      expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
+      expect(screen.queryByText('Report not valid')).not.toBeInTheDocument();
+    });
+
+    test('shows a label for every code', () => {
+      renderReport(stripes, { apiExceptions: [exception(1010), exception(123)] });
+      expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
+      expect(screen.getByText('Exception: Warnings (123)')).toBeInTheDocument();
+    });
+
+    test('prefers apiExceptions over failedReason', () => {
+      renderReport(stripes, {
+        failedReason: 'Exception{Number=123, Severity=WARNING}',
+        apiExceptions: [exception(1010)],
+      });
+      expect(screen.getByText('Exception: Service busy (1010)')).toBeInTheDocument();
+      expect(screen.queryByText('Exception: Warnings (123)')).not.toBeInTheDocument();
+    });
+
+    test('shows failedReason when apiExceptions is empty', () => {
+      renderReport(stripes, { failedReason: 'failure message', apiExceptions: [] });
+      expect(screen.getByText('failure message')).toBeInTheDocument();
+    });
+
+    test('treats a report with only apiExceptions as failed', () => {
+      stripes.hasPerm = () => true;
+      renderReport(stripes, { release: '5', reportName: 'TR', apiExceptions: [exception(1010)] });
+      expect(screen.getByText('Delete entry')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /JSON/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /CSV/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /XLSX/ })).not.toBeInTheDocument();
+    });
+
+    test('treats a report with empty apiExceptions and no failedReason as successful', () => {
+      stripes.hasPerm = () => true;
+      renderReport(stripes, { release: '5', reportName: 'TR', apiExceptions: [] });
+      expect(screen.getByText('Delete report')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /JSON/ })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /CSV/ })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /XLSX/ })).toBeInTheDocument();
+    });
   });
 
   describe('raw report download', () => {
