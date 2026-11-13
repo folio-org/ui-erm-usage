@@ -43,7 +43,7 @@ const UDPCreateRoute = ({
     },
   });
 
-  const { data: harvesterImplsData, isHarvesterImplsLoading } = useOkapiKyQuery({
+  const { data: harvesterImplsData, isLoading: isHarvesterImplsLoading } = useOkapiKyQuery({
     queryKey: [KEY_HARVESTER_IMPL],
     api: API_HARVESTER_IMPL,
   });

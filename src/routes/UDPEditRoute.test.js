@@ -9,10 +9,7 @@ import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
-import {
-  StripesContext,
-  useStripes,
-} from '@folio/stripes/core';
+import { useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../../test/jest/helpers';
 import UDPEditRoute from './UDPEditRoute';
@@ -35,16 +32,14 @@ const udp = {
 const mutateAsync = jest.fn();
 
 const renderUDPEditRoute = (stripes) => renderWithIntl(
-  <StripesContext.Provider value={stripes}>
-    <MemoryRouter>
-      <UDPEditRoute
-        history={{ push: jest.fn() }}
-        location={{ search: '' }}
-        match={{ params: { id: udp.id } }}
-        stripes={stripes}
-      />
-    </MemoryRouter>
-  </StripesContext.Provider>
+  <MemoryRouter>
+    <UDPEditRoute
+      history={{ push: jest.fn() }}
+      location={{ search: '' }}
+      match={{ params: { id: udp.id } }}
+      stripes={stripes}
+    />
+  </MemoryRouter>
 );
 
 describe('UDPEditRoute', () => {
