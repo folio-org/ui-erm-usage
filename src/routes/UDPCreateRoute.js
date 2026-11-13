@@ -8,6 +8,7 @@ import {
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
+import { useStripes } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
@@ -22,8 +23,8 @@ const UDPCreateRoute = ({
   handlers = {},
   history,
   location,
-  stripes,
 }) => {
+  const stripes = useStripes();
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.create');
 
   const handleClose = () => {
@@ -48,7 +49,7 @@ const UDPCreateRoute = ({
     api: API_HARVESTER_IMPL,
   });
 
-  const harvesterImpls = harvesterImplsData ?? [];
+  const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const implList = harvesterImpls[0]?.implementations ?? [];
   const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
 
@@ -87,10 +88,6 @@ UDPCreateRoute.propTypes = {
   }).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
-  }).isRequired,
-  stripes: PropTypes.shape({
-    hasPerm: PropTypes.func.isRequired,
-    store: PropTypes.object.isRequired,
   }).isRequired,
 };
 

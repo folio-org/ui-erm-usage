@@ -6,6 +6,7 @@ import {
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
+import { useStripes } from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
@@ -21,8 +22,8 @@ const UDPEditRoute = ({
   history,
   location,
   match,
-  stripes,
 }) => {
+  const stripes = useStripes();
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.edit');
   const id = match.params.id;
 
@@ -53,7 +54,7 @@ const UDPEditRoute = ({
     },
   });
 
-  const harvesterImpls = harvesterImplsData ?? [];
+  const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const udp = udpData ?? {};
   const isLoading = isHarvesterImplsLoading || isUdpLoading;
 
@@ -90,10 +91,6 @@ UDPEditRoute.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
-  }).isRequired,
-  stripes: PropTypes.shape({
-    hasPerm: PropTypes.func.isRequired,
-    store: PropTypes.object.isRequired,
   }).isRequired,
 };
 
