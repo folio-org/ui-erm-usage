@@ -37,10 +37,6 @@ const editRouteProps = {
       id: '9a2427cd-4110-4bd9-b6f9-e3475631bbac',
     },
   },
-  resources: {
-    harvesterImpls: {},
-    usageDataProvider: {},
-  },
 };
 
 const renderWithRouter = (component) => {
@@ -50,22 +46,31 @@ const renderWithRouter = (component) => {
 };
 
 let stripes;
+
 describe('index', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     stripes = useStripes();
-  });
 
-  it('should render UDPEditRoute', () => {
-    renderWithRouter(<UDPEditRoute stripes={stripes} {...editRouteProps} />);
-    expect(document.querySelector('#form-udp')).toBeInTheDocument();
-  });
-
-  it('should render UDPCreateRoute', () => {
     useOkapiKyQuery.mockReturnValue({
       data: [],
       isLoading: false,
     });
+  });
 
+  it('should render UDPEditRoute', () => {
+    useOkapiKyMutation.mockReturnValue({
+      useUpdate: () => ({
+        mutateAsync: jest.fn(),
+      }),
+    });
+
+    renderWithRouter(<UDPEditRoute stripes={stripes} {...editRouteProps} />);
+
+    expect(document.querySelector('#form-udp')).toBeInTheDocument();
+  });
+
+  it('should render UDPCreateRoute', () => {
     useOkapiKyMutation.mockReturnValue({
       useCreate: () => ({
         mutateAsync: jest.fn(),

@@ -43,27 +43,24 @@ const UDPCreateRoute = ({
     },
   });
 
-  const { data: harvesterImplsData, isLoading } = useOkapiKyQuery({
+  const { data: harvesterImplsData, isHarvesterImplsLoading } = useOkapiKyQuery({
     queryKey: [KEY_HARVESTER_IMPL],
     api: API_HARVESTER_IMPL,
   });
 
   const harvesterImpls = harvesterImplsData ?? [];
-
   const implList = harvesterImpls[0]?.implementations ?? [];
   const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
 
   if (!hasPerms) return <NoPermissionMessage />;
 
-  if (isLoading) {
+  if (isHarvesterImplsLoading) {
     return <LoadingPane dismissible onClose={handleClose} />;
   }
 
   return (
     <UDPForm
-      data={{
-        harvesterImpls,
-      }}
+      data={{ harvesterImpls }}
       handlers={{
         ...handlers,
         onClose: handleClose,
@@ -76,7 +73,7 @@ const UDPCreateRoute = ({
           sushiConfig: { serviceType: defaultImpl?.type },
         },
       }}
-      isLoading={isLoading}
+      isLoading={isHarvesterImplsLoading}
       onSubmit={createUdp}
       store={stripes.store}
     />
