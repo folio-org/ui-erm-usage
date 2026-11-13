@@ -36,6 +36,7 @@
 * Report download: use XML for COUNTER 4 and JSON for all other releases instead of 'unknown'; use proper MIME types for all report downloads ([UIEUS-554](https://folio-org.atlassian.net/browse/UIEUS-554))
 * Use constants for endpoints ([UIEUS-547](https://folio-org.atlassian.net/browse/UIEUS-547))
 * Use useOkapiKyQuery and useOkapiKyMutation for periodic harvesting config, deleting multiple reports and non-COUNTER upload ([UIEUS-574](https://folio-org.atlassian.net/browse/UIEUS-574))
+* Use React Query instead of stripes-connect for the UDP create andedit routes ([UIEUS-581](https://folio-org.atlassian.net/browse/UIEUS-581))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))
