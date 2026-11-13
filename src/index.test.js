@@ -1,12 +1,22 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
 import { useStripes } from '@folio/stripes/core';
 
 import renderWithIntl from '../test/jest/helpers';
 import ErmUsage from './index';
 import UDPCreateRoute from './routes/UDPCreateRoute';
 import UDPEditRoute from './routes/UDPEditRoute';
+
+jest.mock('@folio/stripes-leipzig-components', () => ({
+  ...jest.requireActual('@folio/stripes-leipzig-components'),
+  useOkapiKyMutation: jest.fn(),
+  useOkapiKyQuery: jest.fn(),
+}));
 
 const match = {
   isExact: false,
@@ -17,7 +27,7 @@ const match = {
 
 const editRouteProps = {
   history: {
-    push: () => jest.fn(),
+    push: jest.fn(),
   },
   location: {
     search: '',
@@ -34,7 +44,9 @@ const editRouteProps = {
 };
 
 const renderWithRouter = (component) => {
-  renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
+  renderWithIntl(
+    <MemoryRouter>{component}</MemoryRouter>
+  );
 };
 
 let stripes;
@@ -49,7 +61,19 @@ describe('index', () => {
   });
 
   it('should render UDPCreateRoute', () => {
+    useOkapiKyQuery.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+
+    useOkapiKyMutation.mockReturnValue({
+      useCreate: () => ({
+        mutateAsync: jest.fn(),
+      }),
+    });
+
     renderWithRouter(<UDPCreateRoute stripes={stripes} {...editRouteProps} />);
+
     expect(document.querySelector('#form-udp')).toBeInTheDocument();
   });
 });
