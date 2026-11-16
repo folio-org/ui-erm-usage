@@ -44,6 +44,10 @@ const UDPCreateRoute = ({
     },
   });
 
+  const handleSubmit = async (values) => {
+    await createUdp(values);
+  };
+
   const { data: harvesterImplsData, isLoading: isHarvesterImplsLoading } = useOkapiKyQuery({
     queryKey: [KEY_HARVESTER_IMPL],
     api: API_HARVESTER_IMPL,
@@ -52,6 +56,15 @@ const UDPCreateRoute = ({
   const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const implList = harvesterImpls[0]?.implementations ?? [];
   const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
+
+  const initialValues = useMemo(() => ({
+    status: 'active',
+    harvestingConfig: {
+      harvestingStatus: 'active',
+      reportRelease: defaultImpl?.reportRelease,
+      sushiConfig: { serviceType: defaultImpl?.type },
+    },
+  }), [defaultImpl]);
 
   if (!hasPerms) return <NoPermissionMessage />;
 
@@ -66,16 +79,9 @@ const UDPCreateRoute = ({
         ...handlers,
         onClose: handleClose,
       }}
-      initialValues={{
-        status: 'active',
-        harvestingConfig: {
-          harvestingStatus: 'active',
-          reportRelease: defaultImpl?.reportRelease,
-          sushiConfig: { serviceType: defaultImpl?.type },
-        },
-      }}
+      initialValues={initialValues}
       isLoading={isHarvesterImplsLoading}
-      onSubmit={createUdp}
+      onSubmit={handleSubmit}
       store={stripes.store}
     />
   );
