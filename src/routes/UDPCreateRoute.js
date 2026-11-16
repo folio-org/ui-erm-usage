@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   NoPermissionMessage,
@@ -31,16 +30,14 @@ const UDPCreateRoute = ({
     history.push(`${urls.udps()}${location.search}`);
   };
 
-  const id = useMemo(() => uuidv4(), []);
   const { useCreate } = useOkapiKyMutation({
-    mutationKey: [KEY_UDPS, id],
-    id,
+    mutationKey: [KEY_UDPS],
     api: API_UDPS,
   });
 
   const { mutateAsync: createUdp } = useCreate({
-    onSuccess: () => {
-      history.push(`${urls.udpView(id)}${location.search}`);
+    onSuccess: (createdUdp) => {
+      history.push(`${urls.udpView(createdUdp.id)}${location.search}`);
     },
   });
 

@@ -22,6 +22,7 @@ export const KEY_COUNTER_REPORTS = 'counter-reports';
 export const KEY_CUSTOM_REPORTS = 'custom-reports';
 export const KEY_FILES = 'files';
 export const KEY_HARVESTER_IMPL = 'harvester-impl';
+export const KEY_HARVESTER_JOBS = 'jobs';
 export const KEY_HARVESTER_PERIODIC = 'harvester-periodic';
 export const KEY_UDPS = 'usage-data-providers';
 

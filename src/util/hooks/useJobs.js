@@ -5,13 +5,16 @@ import {
   useOkapiKy,
 } from '@folio/stripes/core';
 
-import { API_HARVESTER_JOBS } from '../constants';
+import {
+API_HARVESTER_JOBS,
+KEY_HARVESTER_JOBS,
+} from '../constants';
 
 const PAGE_SIZE = 30;
 
 const useJobs = ({ createdBefore, providerId, query }) => {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'jobs' });
+  const [namespace] = useNamespace({ key: KEY_HARVESTER_JOBS });
 
   const searchParams = {
     limit: PAGE_SIZE,
