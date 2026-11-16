@@ -191,7 +191,7 @@ describe('ReportInfoButton', () => {
     });
 
     it('should work without failedReason', () => {
-      renderReportInfoButton(stripes, withApiExceptions([3031], undefined));
+      renderReportInfoButton(stripes, withApiExceptions([3031], null));
 
       const iconButton = screen.getByRole('button', { name: /open report info/i });
       expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
