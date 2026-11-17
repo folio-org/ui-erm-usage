@@ -6,8 +6,8 @@ import {
 } from '@folio/stripes/core';
 
 import {
-API_HARVESTER_JOBS,
-KEY_HARVESTER_JOBS,
+  API_HARVESTER_JOBS,
+  KEY_HARVESTER_JOBS,
 } from '../constants';
 
 const PAGE_SIZE = 30;
