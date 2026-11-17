@@ -16,7 +16,6 @@ import renderWithIntl from '../../test/jest/helpers';
 import UDPEditRoute from './UDPEditRoute';
 
 jest.mock('@folio/stripes-leipzig-components', () => ({
-  ...jest.requireActual('@folio/stripes-leipzig-components'),
   useOkapiKyMutation: jest.fn(),
   useOkapiKyQuery: jest.fn(),
 }));
