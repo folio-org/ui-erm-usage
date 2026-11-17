@@ -15,16 +15,23 @@ jest.mock('@folio/stripes-leipzig-components', () => ({
 
 jest.mock('../components/views/UDPForm', () => jest.fn(() => null));
 
+const history = { push: jest.fn() };
+const location = { search: '?sort=label' };
+const mutateAsync = jest.fn();
+
+let createOptions;
+
 const renderUDPCreateRoute = () => renderWithIntl(
   <UDPCreateRoute
-    history={{ push: jest.fn() }}
-    location={{ search: '' }}
+    history={history}
+    location={location}
   />
 );
 
 describe('UDPCreateRoute', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    createOptions = undefined;
 
     useOkapiKyQuery.mockReturnValue({
       data: harvesterImpls[0],
@@ -32,9 +39,11 @@ describe('UDPCreateRoute', () => {
     });
 
     useOkapiKyMutation.mockReturnValue({
-      useCreate: () => ({
-        mutateAsync: jest.fn(),
-      }),
+      useCreate: (options) => {
+        createOptions = options;
+
+        return { mutateAsync };
+      },
     });
   });
 
@@ -56,6 +65,34 @@ describe('UDPCreateRoute', () => {
         },
       }),
       expect.anything()
+    );
+  });
+
+  it('navigates to the UDP list when the form is closed', () => {
+    renderUDPCreateRoute();
+
+    const { handlers } = UDPForm.mock.calls[0][0];
+
+    handlers.onClose();
+
+    expect(history.push).toHaveBeenCalledWith('/eusage?sort=label');
+  });
+
+  it('navigates to the created UDP after successful creation', async () => {
+    renderUDPCreateRoute();
+
+    const values = { label: 'Provider' };
+    const createdUdp = { id: 'created-udp-id' };
+    const { onSubmit } = UDPForm.mock.calls[0][0];
+
+    await onSubmit(values);
+
+    expect(mutateAsync).toHaveBeenCalledWith(values);
+
+    createOptions.onSuccess(createdUdp);
+
+    expect(history.push).toHaveBeenCalledWith(
+      '/eusage/view/created-udp-id?sort=label'
     );
   });
 });

@@ -11,6 +11,7 @@ import {
 } from '@folio/stripes-leipzig-components';
 import { useStripes } from '@folio/stripes/core';
 
+import udp from '../../test/fixtures/udp';
 import renderWithIntl from '../../test/jest/helpers';
 import UDPEditRoute from './UDPEditRoute';
 
@@ -20,22 +21,17 @@ jest.mock('@folio/stripes-leipzig-components', () => ({
   useOkapiKyQuery: jest.fn(),
 }));
 
-const udp = {
-  id: '9a2427cd-4110-4bd9-b6f9-e3475631bbac',
-  label: 'Provider',
-  status: 'active',
-  harvestingConfig: {
-    harvestingStatus: 'inactive',
-  },
-};
-
+const history = { push: jest.fn() };
+const location = { search: '?sort=label' };
 const mutateAsync = jest.fn();
+
+let updateOptions;
 
 const renderUDPEditRoute = (stripes) => renderWithIntl(
   <MemoryRouter>
     <UDPEditRoute
-      history={{ push: jest.fn() }}
-      location={{ search: '' }}
+      history={history}
+      location={location}
       match={{ params: { id: udp.id } }}
       stripes={stripes}
     />
@@ -45,6 +41,7 @@ const renderUDPEditRoute = (stripes) => renderWithIntl(
 describe('UDPEditRoute', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    updateOptions = undefined;
 
     useOkapiKyQuery
       .mockReturnValueOnce({
@@ -57,13 +54,15 @@ describe('UDPEditRoute', () => {
       });
 
     useOkapiKyMutation.mockReturnValue({
-      useUpdate: () => ({
-        mutateAsync,
-      }),
+      useUpdate: (options) => {
+        updateOptions = options;
+
+        return { mutateAsync };
+      },
     });
   });
 
-  test('saves the UDP', async () => {
+  test('saves the UDP and navigates to its view after successful update', async () => {
     const stripes = useStripes();
     renderUDPEditRoute(stripes);
 
@@ -71,5 +70,18 @@ describe('UDPEditRoute', () => {
     await userEvent.click(screen.getByRole('button', { name: /Save & close/ }));
 
     await waitFor(() => expect(mutateAsync).toHaveBeenCalled());
+
+    updateOptions.onSuccess();
+
+    expect(history.push).toHaveBeenCalledWith(`/eusage/view/${udp.id}?sort=label`);
+  });
+
+  test('navigates to the UDP view when the form is closed', async () => {
+    const stripes = useStripes();
+    renderUDPEditRoute(stripes);
+
+    await userEvent.click(screen.getByRole('button', { name: /cancel/i }));
+
+    expect(history.push).toHaveBeenCalledWith(`/eusage/view/${udp.id}?sort=label`);
   });
 });
