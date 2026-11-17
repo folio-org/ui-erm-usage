@@ -11,6 +11,7 @@ import {
 } from '@folio/stripes-leipzig-components';
 import { useStripes } from '@folio/stripes/core';
 
+import harvesterImpls from '../../test/fixtures/harvesterImpls';
 import udp from '../../test/fixtures/udp';
 import renderWithIntl from '../../test/jest/helpers';
 import UDPEditRoute from './UDPEditRoute';
@@ -18,6 +19,8 @@ import UDPEditRoute from './UDPEditRoute';
 jest.mock('@folio/stripes-leipzig-components', () => ({
   useOkapiKyMutation: jest.fn(),
   useOkapiKyQuery: jest.fn(),
+  Monthpicker: () => null,
+  NoPermissionMessage: () => null,
 }));
 
 const history = { push: jest.fn() };
@@ -25,6 +28,11 @@ const location = { search: '?sort=label' };
 const mutateAsync = jest.fn();
 
 let updateOptions;
+
+const udpData = {
+  ...udp,
+  status: 'active',
+};
 
 const renderUDPEditRoute = (stripes) => renderWithIntl(
   <MemoryRouter>
@@ -44,11 +52,11 @@ describe('UDPEditRoute', () => {
 
     useOkapiKyQuery
       .mockReturnValueOnce({
-        data: [],
+        data: harvesterImpls[0],
         isLoading: false,
       })
       .mockReturnValueOnce({
-        data: udp,
+        data: udpData,
         isLoading: false,
       });
 
