@@ -18,7 +18,10 @@ import {
   XLSX,
 } from '../../../util/constants';
 import rawDownloadCounterReportTypeMapping from '../../../util/data/downloadReportTypesOptions';
-import extractErrorCode from '../../../util/extractErrorCode';
+import {
+  extractErrorCodesFromReport,
+  isFailedReport,
+} from '../../../util/failedReport';
 import isSushiWarningCode from '../../../util/isSushiWarningCode';
 
 const ReportInfo = ({
@@ -50,7 +53,7 @@ const ReportInfo = ({
     return rawDownloadCounterReportTypeMapping[release]?.[reportName] !== undefined;
   };
 
-  const isCSVPossible = (rep) => !rep.failedReason && isDownloadable(rep.release, rep.reportName);
+  const isCSVPossible = (rep) => !isFailedReport(rep) && isDownloadable(rep.release, rep.reportName);
 
   const renderCSVDownloadButton = (rep) => {
     if (isCSVPossible(rep)) {
@@ -113,7 +116,7 @@ const ReportInfo = ({
   };
 
   const renderRawDownloadButton = (rep) => {
-    if (rep.failedReason) {
+    if (isFailedReport(rep)) {
       return null;
     }
 
@@ -148,40 +151,42 @@ const ReportInfo = ({
     );
   };
 
-  const translateErrorCodes = (val) => {
+  const translateErrorCode = (code) => {
     let label;
 
-    if (isSushiWarningCode(val)) {
-      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${val})`;
+    if (isSushiWarningCode(code)) {
+      label = `${intl.formatMessage({ id: 'ui-erm-usage.report.error.1' })} (${code})`;
     } else {
-      const id = `ui-erm-usage.report.error.${val}`;
-      label = `${intl.formatMessage({ id })} (${val})`;
+      const id = `ui-erm-usage.report.error.${code}`;
+      label = `${intl.formatMessage({ id })} (${code})`;
     }
 
     return `${intl.formatMessage({ id: 'ui-erm-usage.report.error.exception' })}: ${label}`;
   };
 
-  const adaptSushiAndHtmlFailedInfo = (failedReason) => {
-    const error = failedReason ? extractErrorCode(failedReason) : null;
+  const adaptSushiAndHtmlFailedInfo = (failedReport) => {
+    const errorCodes = extractErrorCodesFromReport(failedReport);
 
-    if (error !== null) {
-      return translateErrorCodes(error.code);
-    } else if (failedReason.includes('<html')) {
-      const htmlError =
+    if (errorCodes.length > 0) {
+      return errorCodes.map((code) => <div key={code}>{translateErrorCode(code)}</div>);
+    }
+
+    if (failedReport.failedReason?.includes('<html')) {
+      return (
         <details>
           <summary><b>{intl.formatMessage({ id: 'ui-erm-usage.report.error.htmlResponse' })}</b></summary>
-          {failedReason}
-        </details>;
-      return htmlError;
-    } else {
-      return failedReason;
+          {failedReport.failedReason}
+        </details>
+      );
     }
+
+    return failedReport.failedReason;
   };
 
-  const failInfo = !report.failedReason ? null : (
+  const failInfo = !isFailedReport(report) ? null : (
     <KeyValue
       label={intl.formatMessage({ id: 'ui-erm-usage.general.info' })}
-      value={adaptSushiAndHtmlFailedInfo(report.failedReason)}
+      value={adaptSushiAndHtmlFailedInfo(report)}
     />
   );
 
