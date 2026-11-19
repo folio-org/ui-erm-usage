@@ -1,5 +1,11 @@
+import { FORM_ERROR } from 'final-form';
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
+import { useIntl } from 'react-intl';
 
 import {
   NoPermissionMessage,
@@ -7,7 +13,10 @@ import {
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
-import { useStripes } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
@@ -25,6 +34,25 @@ const UDPCreateRoute = ({
 }) => {
   const stripes = useStripes();
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.create');
+  const callout = useContext(CalloutContext);
+  const { formatMessage } = useIntl();
+
+  const showErrorInfo = (error) => {
+    const errorMessage = error?.message || formatMessage({ id: 'ui-erm-usage.general.error' });
+    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
+
+    callout?.sendCallout?.({
+      type: 'error',
+      message: `${prefix}: ${errorMessage}`,
+      timeout: 0,
+    });
+
+    return errorMessage;
+  };
+
+  const handleSubmitError = (error) => ({
+    [FORM_ERROR]: showErrorInfo(error),
+  });
 
   const handleClose = () => {
     history.push(`${urls.udps()}${location.search}`);
@@ -41,14 +69,30 @@ const UDPCreateRoute = ({
     },
   });
 
-  const handleSubmit = async (values) => {
-    await createUdp(values);
+  const handleSubmit = async values => {
+    try {
+      await createUdp(values);
+      return undefined;
+    } catch (error) {
+      showErrorInfo(error);
+      return handleSubmitError(error);
+    }
   };
 
-  const { data: harvesterImplsData, isLoading: isHarvesterImplsLoading } = useOkapiKyQuery({
+  const {
+    data: harvesterImplsData,
+    error: harvesterImplsError,
+    isLoading: isHarvesterImplsLoading,
+  } = useOkapiKyQuery({
     queryKey: [KEY_HARVESTER_IMPL],
     api: API_HARVESTER_IMPL,
   });
+
+  useEffect(() => {
+    if (hasPerms && harvesterImplsError) {
+      showErrorInfo(harvesterImplsError);
+    }
+  }, [hasPerms, harvesterImplsError]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const implList = harvesterImpls[0]?.implementations ?? [];
@@ -68,6 +112,8 @@ const UDPCreateRoute = ({
   if (isHarvesterImplsLoading) {
     return <LoadingPane dismissible onClose={handleClose} />;
   }
+
+  if (harvesterImplsError) return null;
 
   return (
     <UDPForm

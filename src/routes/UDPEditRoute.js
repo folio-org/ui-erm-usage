@@ -1,4 +1,12 @@
+import { FORM_ERROR } from 'final-form';
 import PropTypes from 'prop-types';
+import {
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
+import { useIntl } from 'react-intl';
+import { useQueryClient } from 'react-query';
 
 import {
   NoPermissionMessage,
@@ -6,7 +14,10 @@ import {
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
-import { useStripes } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
@@ -24,23 +35,55 @@ const UDPEditRoute = ({
   match,
 }) => {
   const stripes = useStripes();
+  const { sendCallout } = useContext(CalloutContext);
+  const { formatMessage } = useIntl();
+  const queryClient = useQueryClient();
+
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.edit');
   const id = match.params.id;
+
+  const showErrorInfo = useCallback((error) => {
+    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
+
+    sendCallout({
+      type: 'error',
+      message: `${prefix}: ${error.message}`,
+    });
+  }, [formatMessage, sendCallout]);
+
+  const handleSubmitError = (error) => {
+    showErrorInfo(error);
+
+    return { [FORM_ERROR]: error.message };
+  };
 
   const handleClose = () => {
     history.push(`${urls.udpView(id)}${location.search}`);
   };
 
-  const { data: harvesterImplsData, isLoading: isHarvesterImplsLoading } = useOkapiKyQuery({
+  const {
+    data: harvesterImplsData,
+    isLoading: isHarvesterImplsLoading,
+    error: harvesterImplsError,
+  } = useOkapiKyQuery({
     queryKey: [KEY_HARVESTER_IMPL],
     api: API_HARVESTER_IMPL,
   });
 
-  const { data: udpData, isLoading: isUdpLoading } = useOkapiKyQuery({
+  const {
+    data: udpData,
+    isLoading: isUdpLoading,
+    error: udpError,
+  } = useOkapiKyQuery({
     queryKey: [KEY_UDPS, id],
     id,
     api: API_UDPS,
   });
+
+  useEffect(() => {
+    if (harvesterImplsError) showErrorInfo(harvesterImplsError);
+    if (udpError) showErrorInfo(udpError);
+  }, [harvesterImplsError, udpError, showErrorInfo]);
 
   const { useUpdate } = useOkapiKyMutation({
     mutationKey: [KEY_UDPS, id],
@@ -49,10 +92,21 @@ const UDPEditRoute = ({
   });
 
   const { mutateAsync: updateUdp } = useUpdate({
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([KEY_UDPS, id]);
+
       history.push(`${urls.udpView(id)}${location.search}`);
     },
   });
+
+  const handleSubmit = async (values) => {
+    try {
+      await updateUdp(values);
+      return undefined;
+    } catch (error) {
+      return handleSubmitError(error);
+    }
+  };
 
   const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const udp = udpData ?? {};
@@ -73,7 +127,7 @@ const UDPEditRoute = ({
       }}
       initialValues={udp}
       isLoading={isLoading}
-      onSubmit={updateUdp}
+      onSubmit={handleSubmit}
       store={stripes.store}
     />
   );
