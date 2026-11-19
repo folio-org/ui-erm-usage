@@ -4,9 +4,12 @@ import {
 } from 'react-query';
 
 import {
+  render,
   renderHook,
+  screen,
   waitFor,
 } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { useOkapiKy } from '@folio/stripes/core';
 
 import periodicConfig from '../../../test/fixtures/periodicConfig';
@@ -17,17 +20,18 @@ import {
 } from '../constants';
 import usePeriodicConfig from './usePeriodicConfig';
 
-jest.mock('@folio/stripes/core', () => ({
-  ...jest.requireActual('@folio/stripes/core'),
-  useOkapiKy: jest.fn(),
-}));
-
 const queryKey = [KEY_HARVESTER_PERIODIC];
 
-// errors as thrown by ky: HTTP errors carry the response, other errors (e.g. network failures) do not
-const httpError = (status, statusText) => Object.assign(new Error(statusText), { response: { status, statusText } });
+const httpError = (status, statusText) => Object.assign(new Error(statusText), {
+  response: { status, statusText },
+});
 const serverError = httpError(500, 'Internal Server Error');
 const networkError = new TypeError('Failed to fetch');
+
+const data = {
+  startAt: '2026-10-21T08:00:00+0000',
+  periodicInterval: 'monthly',
+};
 
 describe('usePeriodicConfig', () => {
   let queryClient;
@@ -39,14 +43,56 @@ describe('usePeriodicConfig', () => {
     });
   };
 
-  const renderUsePeriodicConfig = () => {
+  const createWrapper = () => {
     const wrapper = ({ children }) => (
       <Intl>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       </Intl>
     );
 
-    return renderHook(() => usePeriodicConfig(), { wrapper });
+    return wrapper;
+  };
+
+  const renderUsePeriodicConfig = () => renderHook(
+    () => usePeriodicConfig(),
+    { wrapper: createWrapper() }
+  );
+
+  const PeriodicConfigTest = ({ onError }) => {
+    const {
+      config,
+      saveConfig,
+      deleteConfig,
+    } = usePeriodicConfig();
+
+    const handleSave = () => saveConfig(data).catch(onError);
+    const handleDelete = () => deleteConfig().catch(onError);
+
+    return (
+      <>
+        <div data-testid="config">{JSON.stringify(config)}</div>
+        <button onClick={handleSave} type="button">
+          Save
+        </button>
+        <button onClick={handleDelete} type="button">
+          Delete
+        </button>
+      </>
+    );
+  };
+
+  const renderPeriodicConfigTest = (onError = jest.fn()) => {
+    render(
+      <Intl>
+        <QueryClientProvider client={queryClient}>
+          <PeriodicConfigTest onError={onError} />
+        </QueryClientProvider>
+      </Intl>
+    );
+
+    return onError;
   };
 
   beforeEach(() => {
@@ -68,6 +114,10 @@ describe('usePeriodicConfig', () => {
 
     useOkapiKy.mockReturnValue(ky);
     mockGet(Promise.resolve(periodicConfig));
+  });
+
+  afterEach(() => {
+    queryClient.clear();
   });
 
   describe('fetching', () => {
@@ -141,64 +191,75 @@ describe('usePeriodicConfig', () => {
   });
 
   describe('saving', () => {
-    const data = { startAt: '2026-10-21T08:00:00+0000', periodicInterval: 'monthly' };
-
     it('should post the config and merge it into the fetched one', async () => {
       queryClient.setQueryData(queryKey, periodicConfig);
       ky.post.mockResolvedValue(new Response(null, { status: 204 }));
 
-      const { result } = renderUsePeriodicConfig();
+      renderPeriodicConfigTest();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
       await waitFor(() => {
-        expect(result.current.config).toEqual(periodicConfig);
+        expect(screen.getByTestId('config')).toHaveTextContent(
+          JSON.stringify({ ...periodicConfig, ...data })
+        );
       });
-
-      await result.current.saveConfig(data);
 
       expect(ky.post).toHaveBeenCalledWith(API_HARVESTER_PERIODIC, {
         json: data,
       });
-      expect(queryClient.getQueryData(queryKey)).toEqual({ ...periodicConfig, ...data });
     });
 
     it('should set the config if none exists', async () => {
       mockGet(Promise.reject(httpError(404, 'Not Found')));
       ky.post.mockResolvedValue(new Response(null, { status: 204 }));
 
-      const { result } = renderUsePeriodicConfig();
+      renderPeriodicConfigTest();
 
       await waitFor(() => {
-        expect(result.current.config).toEqual({});
+        expect(screen.getByTestId('config')).toHaveTextContent('{}');
       });
 
-      await result.current.saveConfig(data);
+      await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
-      expect(queryClient.getQueryData(queryKey)).toEqual(data);
+      await waitFor(() => {
+        expect(screen.getByTestId('config')).toHaveTextContent(
+          JSON.stringify(data)
+        );
+      });
     });
 
     it('should reject with a translated error if the server fails', async () => {
       queryClient.setQueryData(queryKey, periodicConfig);
       ky.post.mockRejectedValue(serverError);
 
-      const { result } = renderUsePeriodicConfig();
+      const view = renderPeriodicConfigTest();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
       await waitFor(() => {
-        expect(result.current.config).toEqual(periodicConfig);
+        expect(view).toHaveBeenCalledWith(
+          expect.objectContaining({
+            message: "Received '500 - Internal Server Error' while saving periodic harvesting configuration",
+          })
+        );
       });
 
-      await expect(result.current.saveConfig(data)).rejects.toThrow(
-        "Received '500 - Internal Server Error' while saving periodic harvesting configuration"
+      expect(screen.getByTestId('config')).toHaveTextContent(
+        JSON.stringify(periodicConfig)
       );
-
-      expect(queryClient.getQueryData(queryKey)).toEqual(periodicConfig);
     });
 
     it('should pass network errors through', async () => {
       ky.post.mockRejectedValue(networkError);
 
-      const { result } = renderUsePeriodicConfig();
+      const view = renderPeriodicConfigTest();
 
-      await expect(result.current.saveConfig(data)).rejects.toBe(networkError);
+      await userEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+      await waitFor(() => {
+        expect(view).toHaveBeenCalledWith(networkError);
+      });
     });
   });
 
@@ -207,41 +268,48 @@ describe('usePeriodicConfig', () => {
       queryClient.setQueryData(queryKey, periodicConfig);
       ky.delete.mockResolvedValue(new Response(null, { status: 204 }));
 
-      const { result } = renderUsePeriodicConfig();
+      renderPeriodicConfigTest();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
 
       await waitFor(() => {
-        expect(result.current.config).toEqual(periodicConfig);
+        expect(screen.getByTestId('config')).toHaveTextContent('{}');
       });
 
-      await result.current.deleteConfig();
-
       expect(ky.delete).toHaveBeenCalledWith(API_HARVESTER_PERIODIC, {});
-      expect(queryClient.getQueryData(queryKey)).toEqual({});
     });
 
     it('should reject with a translated error if the server fails', async () => {
       queryClient.setQueryData(queryKey, periodicConfig);
       ky.delete.mockRejectedValue(serverError);
 
-      const { result } = renderUsePeriodicConfig();
+      const view = renderPeriodicConfigTest();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
 
       await waitFor(() => {
-        expect(result.current.config).toEqual(periodicConfig);
+        expect(view).toHaveBeenCalledWith(
+          expect.objectContaining({
+            message: "Received '500 - Internal Server Error' while deleting periodic harvesting configuration",
+          })
+        );
       });
 
-      await expect(result.current.deleteConfig()).rejects.toThrow(
-        "Received '500 - Internal Server Error' while deleting periodic harvesting configuration"
+      expect(screen.getByTestId('config')).toHaveTextContent(
+        JSON.stringify(periodicConfig)
       );
-
-      expect(queryClient.getQueryData(queryKey)).toEqual(periodicConfig);
     });
 
     it('should pass network errors through', async () => {
       ky.delete.mockRejectedValue(networkError);
 
-      const { result } = renderUsePeriodicConfig();
+      const view = renderPeriodicConfigTest();
 
-      await expect(result.current.deleteConfig()).rejects.toBe(networkError);
+      await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
+
+      await waitFor(() => {
+        expect(view).toHaveBeenCalledWith(networkError);
+      });
     });
   });
 });

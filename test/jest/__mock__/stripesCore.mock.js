@@ -104,6 +104,7 @@ jest.mock(
       stripesConnect,
 
       useStripes: () => STRIPES,
+      useOkapiKy: jest.fn(),
 
       withStripes: (Component) => ({ stripes, ...rest }) => {
         const fakeStripes = stripes || STRIPES;
