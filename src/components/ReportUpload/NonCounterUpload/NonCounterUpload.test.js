@@ -63,15 +63,14 @@ describe('NonCounterUpload', () => {
 
     useOkapiKy.mockReturnValue(ky);
 
-    ky.post.mockImplementation((url) => ({
-      text: jest.fn().mockResolvedValue(
-        JSON.stringify(url === API_FILES ? { id: fileId } : {})
-      ),
-    }));
+    ky.post.mockImplementation((url) => Promise.resolve(
+      new Response(
+        JSON.stringify(url === API_FILES ? { id: fileId } : {}),
+        { status: 201 }
+      )
+    ));
 
-    ky.delete.mockResolvedValue({
-      text: jest.fn().mockResolvedValue(''),
-    });
+    ky.delete.mockResolvedValue(new Response(null, { status: 204 }));
   });
 
   describe('render non-counter upload', () => {
