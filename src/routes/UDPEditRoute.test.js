@@ -9,7 +9,11 @@ import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
-import { useStripes } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  StripesContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import harvesterImpls from '../../test/fixtures/harvesterImpls';
 import udp from '../../test/fixtures/udp';
@@ -34,15 +38,21 @@ const udpData = {
   status: 'active',
 };
 
+const sendCallout = jest.fn();
+
 const renderUDPEditRoute = (stripes) => renderWithIntl(
-  <MemoryRouter>
-    <UDPEditRoute
-      history={history}
-      location={location}
-      match={{ params: { id: udp.id } }}
-      stripes={stripes}
-    />
-  </MemoryRouter>
+  <StripesContext.Provider value={stripes}>
+    <CalloutContext.Provider value={{ sendCallout }}>
+      <MemoryRouter>
+        <UDPEditRoute
+          history={history}
+          location={location}
+          match={{ params: { id: udp.id } }}
+          stripes={stripes}
+        />
+      </MemoryRouter>
+    </CalloutContext.Provider>
+  </StripesContext.Provider>
 );
 
 describe('UDPEditRoute', () => {
@@ -78,7 +88,7 @@ describe('UDPEditRoute', () => {
 
     await waitFor(() => expect(mutateAsync).toHaveBeenCalled());
 
-    updateOptions.onSuccess();
+    await updateOptions.onSuccess();
 
     expect(history.push).toHaveBeenCalledWith(`/eusage/view/${udp.id}?sort=label`);
   });

@@ -5,8 +5,12 @@ import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
-import { useStripes } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
+import harvesterImpls from '../test/fixtures/harvesterImpls';
 import renderWithIntl from '../test/jest/helpers';
 import ErmUsage from './index';
 import UDPCreateRoute from './routes/UDPCreateRoute';
@@ -39,9 +43,13 @@ const editRouteProps = {
   },
 };
 
+const sendCallout = jest.fn();
+
 const renderWithRouter = (component) => {
   renderWithIntl(
-    <MemoryRouter>{component}</MemoryRouter>
+    <CalloutContext.Provider value={{ sendCallout }}>
+      <MemoryRouter>{component}</MemoryRouter>
+    </CalloutContext.Provider>
   );
 };
 
@@ -53,7 +61,7 @@ describe('index', () => {
     stripes = useStripes();
 
     useOkapiKyQuery.mockReturnValue({
-      data: [],
+      data: harvesterImpls[0],
       isLoading: false,
     });
   });
