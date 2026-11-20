@@ -1,6 +1,8 @@
 jest.mock(
   '@folio/stripes/core',
   () => {
+    const stripesCore = jest.requireActual('@folio/stripes/core');
+
     const STRIPES = {
       actionNames: [],
       clone: () => ({ ...STRIPES }),
@@ -100,8 +102,10 @@ jest.mock(
     STRIPES.connect = stripesConnect;
 
     return {
-      ...jest.requireActual('@folio/stripes/core'),
+      ...stripesCore,
       stripesConnect,
+
+      useOkapiKy: jest.fn((...args) => stripesCore.useOkapiKy(...args)),
 
       useStripes: () => STRIPES,
 
