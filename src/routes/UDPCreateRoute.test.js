@@ -1,7 +1,11 @@
+import { FORM_ERROR } from 'final-form';
+
+import { waitFor } from '@folio/jest-config-stripes/testing-library/react';
 import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
+import { CalloutContext } from '@folio/stripes/core';
 
 import harvesterImpls from '../../test/fixtures/harvesterImpls';
 import renderWithIntl from '../../test/jest/helpers';
@@ -21,11 +25,15 @@ const mutateAsync = jest.fn();
 
 let createOptions;
 
+const sendCallout = jest.fn();
+
 const renderUDPCreateRoute = () => renderWithIntl(
-  <UDPCreateRoute
-    history={history}
-    location={location}
-  />
+  <CalloutContext.Provider value={{ sendCallout }}>
+    <UDPCreateRoute
+      history={history}
+      location={location}
+    />
+  </CalloutContext.Provider>
 );
 
 describe('UDPCreateRoute', () => {
@@ -94,5 +102,52 @@ describe('UDPCreateRoute', () => {
     expect(history.push).toHaveBeenCalledWith(
       '/eusage/view/created-udp-id?sort=label'
     );
+  });
+
+  it('shows an error when creating a UDP fails', async () => {
+    const error = new Error('Create failed');
+
+    mutateAsync.mockRejectedValueOnce(error);
+
+    renderUDPCreateRoute();
+
+    const values = { label: 'Provider' };
+    const { onSubmit } = UDPForm.mock.calls[0][0];
+
+    const result = await onSubmit(values);
+
+    expect(result).toEqual({
+      [FORM_ERROR]: error.message,
+    });
+
+    expect(sendCallout).toHaveBeenCalledTimes(1);
+    expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'error',
+      message: expect.stringContaining(error.message),
+      timeout: 0,
+    }));
+
+    expect(history.push).not.toHaveBeenCalled();
+  });
+
+  it('shows an error when loading harvester implementations fails', async () => {
+    const error = new Error('Loading harvester implementations failed');
+
+    useOkapiKyQuery.mockReset().mockReturnValue({
+      data: undefined,
+      error,
+      isLoading: false,
+    });
+
+    renderUDPCreateRoute();
+
+    await waitFor(() => {
+      expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({
+        type: 'error',
+        message: expect.stringContaining(error.message),
+      }));
+    });
+
+    expect(UDPForm).not.toHaveBeenCalled();
   });
 });

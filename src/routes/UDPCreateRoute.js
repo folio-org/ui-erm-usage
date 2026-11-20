@@ -74,7 +74,6 @@ const UDPCreateRoute = ({
       await createUdp(values);
       return undefined;
     } catch (error) {
-      showErrorInfo(error);
       return handleSubmitError(error);
     }
   };
