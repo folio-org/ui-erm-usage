@@ -118,6 +118,8 @@ const UDPEditRoute = ({
     return <LoadingPane dismissible onClose={handleClose} />;
   }
 
+  if (harvesterImplsError || udpError) return null;
+
   return (
     <UDPForm
       data={{ harvesterImpls }}

@@ -22,6 +22,7 @@ import {
 import harvesterImpls from '../../test/fixtures/harvesterImpls';
 import udp from '../../test/fixtures/udp';
 import renderWithIntl from '../../test/jest/helpers';
+import { KEY_UDPS } from '../util/constants';
 import UDPEditRoute from './UDPEditRoute';
 
 jest.mock('@folio/stripes-leipzig-components', () => ({
@@ -176,6 +177,11 @@ describe('UDPEditRoute', () => {
     });
 
     await updateOptions.onSuccess();
+
+    expect(queryClient.invalidateQueries).toHaveBeenCalledWith([
+      KEY_UDPS,
+      udp.id,
+    ]);
 
     unmount();
 
