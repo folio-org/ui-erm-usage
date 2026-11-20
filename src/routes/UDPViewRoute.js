@@ -4,7 +4,12 @@ import {
   isEmpty,
 } from 'lodash';
 import PropTypes from 'prop-types';
+import { useQueryClient } from 'react-query';
 
+import {
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
 import { stripesConnect } from '@folio/stripes/core';
 import { withTags } from '@folio/stripes/smart-components';
 
@@ -15,6 +20,7 @@ import {
   API_HARVESTER_IMPL,
   API_HARVESTER_JOBS,
   API_UDPS,
+  KEY_UDPS,
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
@@ -35,6 +41,32 @@ function UDPViewRoute(props) {
     },
   } = props;
 
+  const queryClient = useQueryClient();
+
+  const {
+    data: udpData,
+    isLoading: isUdpLoading,
+    isFetching: isUdpFetching,
+    error: udpError,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_UDPS, id],
+    id,
+    api: API_UDPS,
+  });
+
+  const { useDelete } = useOkapiKyMutation({
+    mutationKey: [KEY_UDPS, id],
+    id,
+    api: API_UDPS,
+  });
+
+  const { mutate: deleteUdp } = useDelete({
+    onSuccess: () => {
+      queryClient.removeQueries([KEY_UDPS, id]);
+      props.history.push(`${urls.udps()}${props.location.search}`);
+    },
+  });
+
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
   };
@@ -44,16 +76,12 @@ function UDPViewRoute(props) {
     props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
   };
 
-  const handleDelete = (udpId) => {
-    mutator.usageDataProvider.DELETE({ id: udpId }).then(() => {
-      props.history.push(`${urls.udps()}${props.location.search}`);
-    });
+  const handleDelete = () => {
+    deleteUdp();
   };
 
-  const getRecord = (udpId) => {
-    return get(resources, 'usageDataProvider.records', []).find(
-      (i) => i.id === udpId
-    );
+  const reloadUdp = () => {
+    return queryClient.invalidateQueries([KEY_UDPS, id]);
   };
 
   const getLastHarvestingJob = () => {
@@ -109,17 +137,16 @@ function UDPViewRoute(props) {
     }
   };
 
-  const selectedRecord = getRecord(id);
-  const isUdpPending = get(resources, 'usageDataProvider.isPending', true);
-  const hasUdpFailed = Boolean(get(resources, 'usageDataProvider.failed'));
-  const isLoading = isEmpty(selectedRecord) && (isUdpPending || !hasUdpFailed);
+  // Do not display cached data when the latest request failed.
+  const selectedRecord = udpError ? {} : (udpData ?? {});
+  const isLoading = isUdpLoading || isUdpFetching;
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = get(resources, 'settings.records', []);
   const harvesterImpls = resources.harvesterImpls?.records || [];
   const statsReloadCount = get(resources, 'statsReloadToggle', 0);
-  const udpReloadCount = get(resources, 'udpReloadToggle', 0);
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
+
   return (
     <UDPView
       canEdit={stripes.hasPerm('ui-erm-usage.udp.edit')}
@@ -137,6 +164,7 @@ function UDPViewRoute(props) {
         onClose: handleClose,
         onDelete: handleDelete,
         onEdit: handleEdit,
+        onReloadUdp: reloadUdp,
       }}
       history={props.history}
       isHarvesterExistent={isHarvesterExistent()}
@@ -148,7 +176,6 @@ function UDPViewRoute(props) {
       statsReloadCount={statsReloadCount}
       stripes={stripes}
       tagsEnabled={tagsEnabled}
-      udpReloadCount={udpReloadCount}
     />
   );
 }
@@ -167,24 +194,15 @@ UDPViewRoute.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  mutator: PropTypes.shape({
-    query: PropTypes.shape({
-      update: PropTypes.func.isRequired,
-    }).isRequired,
-    usageDataProvider: PropTypes.shape({
-      DELETE: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
+  mutator: PropTypes.object.isRequired,
   resources: PropTypes.shape({
     counterReports: PropTypes.shape(),
     failedAttemptsSettings: PropTypes.shape(),
     harvesterImpls: PropTypes.shape(),
     harvesterJobs: PropTypes.shape(),
-    query: PropTypes.object,
     settings: PropTypes.shape({
       records: PropTypes.arrayOf(PropTypes.object),
     }),
-    usageDataProvider: PropTypes.shape(),
   }).isRequired,
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
@@ -201,11 +219,6 @@ UDPViewRoute.propTypes = {
 };
 
 UDPViewRoute.manifest = Object.freeze({
-  usageDataProvider: {
-    type: 'okapi',
-    path: `${API_UDPS}/:{id}?unused=%{udpReloadToggle}`,
-    shouldRefresh: () => false,
-  },
   harvesterImpls: {
     type: 'okapi',
     path: API_HARVESTER_IMPL,
@@ -246,11 +259,6 @@ UDPViewRoute.manifest = Object.freeze({
     },
   },
   statsReloadToggle: {
-    // We mutate this when we update a report, to force a stripes-connect reload.
-    // Thanks to Mike Taylor.
-    initialValue: 0,
-  },
-  udpReloadToggle: {
     // We mutate this when we update a report, to force a stripes-connect reload.
     // Thanks to Mike Taylor.
     initialValue: 0,

@@ -229,7 +229,6 @@ UDPForm.propTypes = {
 
 export default stripesFinalForm({
   navigationCheck: true,
-  enableReinitialize: true,
   mutators: {
     clearSelectedReports: (_args, state, tools) => {
       tools.changeValue(state, 'harvestingConfig.requestedReports', () => []);
