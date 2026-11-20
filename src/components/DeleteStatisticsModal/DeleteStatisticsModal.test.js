@@ -4,23 +4,14 @@ import {
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
-  StripesContext,
+  useOkapiKy,
   useStripes,
 } from '@folio/stripes/core';
 
 import renderWithIntl from '../../../test/jest/helpers';
-import {
-  API_COUNTER_REPORTS_DELETE,
-  KEY_COUNTER_REPORTS,
-} from '../../util/constants';
+import { API_COUNTER_REPORTS_DELETE } from '../../util/constants';
 import DeleteStatisticsModal from './DeleteStatisticsModal';
-
-jest.mock('@folio/stripes-leipzig-components', () => ({
-  ...jest.requireActual('@folio/stripes-leipzig-components'),
-  useOkapiKyMutation: jest.fn(),
-}));
 
 const onCloseModal = jest.fn();
 const onFail = jest.fn();
@@ -109,50 +100,54 @@ const counterReports = [
   },
 ];
 
-const renderDeleteStatistics = (stripes) => {
+const DeleteStatisticsModalWithStripes = (props) => {
+  const stripes = useStripes();
+
+  return <DeleteStatisticsModal {...props} stripes={stripes} />;
+};
+
+const renderDeleteStatistics = () => {
   renderWithIntl(
-    <StripesContext.Provider value={stripes}>
-      <DeleteStatisticsModal
-        counterReports={counterReports}
-        handlers={handlers}
-        isStatsLoading={false}
-        maxFailedAttempts={5}
-        onCloseModal={onCloseModal}
-        onFail={onFail}
-        onSuccess={onSuccess}
-        open
-        providerId={udpId}
-        stripes={stripes}
-        udpLabel={udpLabel}
-      />
-    </StripesContext.Provider>
+    <DeleteStatisticsModalWithStripes
+      counterReports={counterReports}
+      handlers={handlers}
+      isStatsLoading={false}
+      maxFailedAttempts={5}
+      onCloseModal={onCloseModal}
+      onFail={onFail}
+      onSuccess={onSuccess}
+      open
+      providerId={udpId}
+      udpLabel={udpLabel}
+    />
   );
 };
 
 describe('DeleteStatisticsModal', () => {
-  let stripes;
-  let deleteReports;
-  let createOptions;
+  let ky;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    stripes = useStripes();
-    deleteReports = jest.fn().mockResolvedValue(null);
-    useOkapiKyMutation.mockReturnValue({
-      useCreate: (options) => {
-        createOptions = options;
-        return { mutateAsync: deleteReports };
-      },
-    });
+
+    ky = {
+      get: jest.fn(),
+      post: jest.fn(),
+      put: jest.fn(),
+      delete: jest.fn(),
+    };
+
+    useOkapiKy.mockReturnValue(ky);
   });
+
   describe('render checkboxes', () => {
     beforeEach(async () => {
-      renderDeleteStatistics(stripes);
+      renderDeleteStatistics();
       const expandAllButton = screen.getByRole('button', {
         name: 'Expand all years',
       });
       await userEvent.click(expandAllButton);
     });
+
     test('header is rendered', async () => {
       const header = screen.getByRole('heading', {
         name: 'Delete multiple reports',
@@ -187,7 +182,7 @@ describe('DeleteStatisticsModal', () => {
 
   describe('check confirm dialog', () => {
     beforeEach(async () => {
-      renderDeleteStatistics(stripes);
+      renderDeleteStatistics();
       const expandAllButton = screen.getByRole('button', {
         name: 'Expand all years',
       });
@@ -221,20 +216,28 @@ describe('DeleteStatisticsModal', () => {
       const submit = screen.getByRole('button', {
         name: 'Delete',
       });
+
+      ky.post.mockResolvedValue(new Response(null, { status: 204 }));
+
       await userEvent.click(submit);
+
       await waitFor(() => expect(heading).not.toBeVisible());
-      expect(onSuccess).toHaveBeenCalled();
-      // the bulk delete endpoint is a POST with the report ids as JSON array
-      expect(useOkapiKyMutation).toHaveBeenCalledWith({
-        mutationKey: KEY_COUNTER_REPORTS,
-        api: API_COUNTER_REPORTS_DELETE,
-      });
-      expect(createOptions.kyOptions).toEqual({ headers: { Accept: 'text/plain' } });
-      expect(deleteReports).toHaveBeenCalledWith([counterReports[0].stats[0]['01'].id]);
+
+      expect(ky.post).toHaveBeenCalledWith(
+        API_COUNTER_REPORTS_DELETE,
+        {
+          json: [counterReports[0].stats[0]['01'].id],
+          headers: { Accept: 'text/plain' },
+        }
+      );
+
+      expect(onSuccess).toHaveBeenCalledWith(expect.any(String));
+      expect(onFail).not.toHaveBeenCalled();
     });
 
     test('click delete - server error', async () => {
-      deleteReports.mockRejectedValue(new Error('Internal Server Error'));
+      ky.post.mockRejectedValue(new Error('Internal Server Error'));
+
       const heading = screen.queryByRole('heading', {
         name: 'Are you sure to delete multiple reports?',
       });
@@ -243,8 +246,11 @@ describe('DeleteStatisticsModal', () => {
       const submit = screen.getByRole('button', {
         name: 'Delete',
       });
+
       await userEvent.click(submit);
+
       await waitFor(() => expect(onFail).toHaveBeenCalled());
+
       // the confirmation dialog is not closed on error
       expect(heading).toBeVisible();
     });
@@ -252,7 +258,7 @@ describe('DeleteStatisticsModal', () => {
 
   describe('check close dialog', () => {
     beforeEach(async () => {
-      renderDeleteStatistics(stripes);
+      renderDeleteStatistics();
       const expandAllButton = screen.getByRole('button', {
         name: 'Expand all years',
       });
@@ -276,7 +282,9 @@ describe('DeleteStatisticsModal', () => {
         name: 'Keep editing',
       });
       await userEvent.click(keepEditing);
+
       await waitFor(() => expect(heading).not.toBeVisible());
+
       const deleteHeader = screen.getByRole('heading', {
         name: 'Delete multiple reports',
       });
@@ -286,7 +294,7 @@ describe('DeleteStatisticsModal', () => {
 
   describe('check report info', () => {
     beforeEach(async () => {
-      renderDeleteStatistics(stripes);
+      renderDeleteStatistics();
       const expandAllButton = screen.getByRole('button', {
         name: 'Expand all years',
       });

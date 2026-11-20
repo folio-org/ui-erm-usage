@@ -37,6 +37,8 @@
 * Use constants for endpoints ([UIEUS-547](https://folio-org.atlassian.net/browse/UIEUS-547))
 * Use useOkapiKyQuery and useOkapiKyMutation for periodic harvesting config, deleting multiple reports and non-COUNTER upload ([UIEUS-574](https://folio-org.atlassian.net/browse/UIEUS-574))
 * Read the exception codes of failed COUNTER reports from `apiExceptions` and show every code in the report view; requires `counter-reports` interface 5.1 ([UIEUS-573](https://folio-org.atlassian.net/browse/UIEUS-573))
+* *BREAKING* Raised peerDep of `stripes` to v10.2.0. This was in order to remove `stripes-logger` from dependency and migrate to `categorical-logger` ([UIEUS-585](https://folio-org.atlassian.net/browse/UIEUS-585))
+* Bump stripes-leipzig-components in yarn.lock and test the migrated requests with the real hooks ([UIEUS-586](https://folio-org.atlassian.net/browse/UIEUS-586))
 * Use React Query instead of stripes-connect for the UDP create and edit routes ([UIEUS-581](https://folio-org.atlassian.net/browse/UIEUS-581))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
