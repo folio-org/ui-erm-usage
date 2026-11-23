@@ -1,4 +1,7 @@
-import { useQueryClient } from 'react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
@@ -29,31 +32,24 @@ const udpData = {
   status: 'active',
 };
 
-let queryClient;
-
-const QueryClientCapture = () => {
-  queryClient = useQueryClient();
-
-  return null;
-};
-
 jest.mock('@folio/stripes-leipzig-components', () => ({
   ...jest.requireActual('@folio/stripes-leipzig-components'),
   Monthpicker: () => null,
 }));
 
-const renderUDPEditRoute = (stripes) => renderWithIntl(
+const createRenderUDPEditRoute = (client) => (stripes) => renderWithIntl(
   <StripesContext.Provider value={stripes}>
     <CalloutContext.Provider value={{ sendCallout }}>
-      <QueryClientCapture />
-      <MemoryRouter>
-        <UDPEditRoute
-          history={history}
-          location={location}
-          match={{ params: { id: udp.id } }}
-          stripes={stripes}
-        />
-      </MemoryRouter>
+      <QueryClientProvider client={client}>
+        <MemoryRouter>
+          <UDPEditRoute
+            history={history}
+            location={location}
+            match={{ params: { id: udp.id } }}
+            stripes={stripes}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>
     </CalloutContext.Provider>
   </StripesContext.Provider>
 );
@@ -62,6 +58,8 @@ describe('UDPEditRoute', () => {
   let stripes;
   let ky;
   let udpRecord;
+  let sharedQueryClient;
+  let renderUDPEditRoute;
 
   const mockGet = () => {
     ky.get.mockImplementation((url) => {
@@ -89,7 +87,8 @@ describe('UDPEditRoute', () => {
 
     stripes = useStripes();
     udpRecord = udpData;
-    queryClient = undefined;
+    sharedQueryClient = new QueryClient();
+    renderUDPEditRoute = createRenderUDPEditRoute(sharedQueryClient);
 
     ky = {
       get: jest.fn(),
@@ -110,7 +109,7 @@ describe('UDPEditRoute', () => {
   test('saves the UDP, invalidates its query and navigates to its view', async () => {
     renderUDPEditRoute(stripes);
 
-    const invalidateQueries = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidateQueries = jest.spyOn(sharedQueryClient, 'invalidateQueries');
 
     await userEvent.type(
       await screen.findByRole('textbox', { name: /provider name/i }), ' edited'
@@ -170,7 +169,7 @@ describe('UDPEditRoute', () => {
 
     const { unmount } = renderUDPEditRoute(stripes);
 
-    const invalidateQueries = jest.spyOn(queryClient, 'invalidateQueries');
+    const invalidateQueries = jest.spyOn(sharedQueryClient, 'invalidateQueries');
 
     const providerName = await screen.findByRole(
       'textbox',
