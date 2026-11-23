@@ -72,11 +72,8 @@ const UDP = ({
   isHarvesterExistent,
   isLoading,
   isStatsLoading,
-  mutator,
-  udpReloadCount,
   stripes,
   tagsEnabled,
-  statsReloadCount,
   location,
   okapiKy,
 }) => {
@@ -91,8 +88,7 @@ const UDP = ({
   const [showNonCounterUpload, setShowNonCounterUpload] = useState(false);
 
   const reloadStatistics = () => {
-    const oldCount = statsReloadCount;
-    mutator.statsReloadToggle.replace(oldCount + 1);
+    if (handlers?.onReloadStatistics) handlers.onReloadStatistics();
   };
 
   const handleSuccess = (msg) => {
@@ -140,8 +136,7 @@ const UDP = ({
   };
 
   const reloadUdp = () => {
-    const oldCount = udpReloadCount;
-    mutator.udpReloadToggle.replace(oldCount + 1);
+    if (handlers?.onReloadUdp) handlers.onReloadUdp();
   };
 
   const doShowDeleteReports = () => {
@@ -628,19 +623,9 @@ UDP.propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  mutator: PropTypes.shape({
-    statsReloadToggle: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-    udpReloadToggle: PropTypes.shape({
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
   okapiKy: PropTypes.func.isRequired,
-  statsReloadCount: PropTypes.number.isRequired,
   stripes: PropTypes.object.isRequired,
   tagsEnabled: PropTypes.bool,
-  udpReloadCount: PropTypes.number.isRequired,
 };
 
 export default injectIntl(withOkapiKy(UDP));

@@ -4,14 +4,13 @@ import {
   isEmpty,
 } from 'lodash';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 
 import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
-import { stripesConnect } from '@folio/stripes/core';
-import { withTags } from '@folio/stripes/smart-components';
 
 import UDPView from '../components/views/UDP';
 import {
@@ -19,7 +18,13 @@ import {
   API_CUSTOM_REPORTS,
   API_HARVESTER_IMPL,
   API_HARVESTER_JOBS,
+  API_SETTINGS_ENTRIES,
   API_UDPS,
+  KEY_COUNTER_REPORTS,
+  KEY_CUSTOM_REPORTS,
+  KEY_HARVESTER_IMPL,
+  KEY_HARVESTER_JOBS,
+  KEY_SETTINGS,
   KEY_UDPS,
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
@@ -32,16 +37,30 @@ const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
 function UDPViewRoute(props) {
   const {
     handlers = {},
-    mutator,
-    resources,
     stripes,
-    tagsEnabled,
     match: {
       params: { id },
     },
   } = props;
 
   const queryClient = useQueryClient();
+  const [statsReloadCount, setStatsReloadCount] = useState(0);
+
+  const {
+    data: tagSettingsData,
+  } = useOkapiKyQuery({
+    queryKey: ['tagSettings', SCOPES.TAGS],
+    api: API_SETTINGS_ENTRIES,
+    params: {
+      query: `(scope==${SCOPES.TAGS} and key==tags_enabled)`,
+    },
+  });
+
+  const tagsEnabled = (() => {
+    const data = tagSettingsData?.items || [];
+    if (!data.length) return true;
+    return Boolean(data[0].value);
+  })();
 
   const {
     data: udpData,
@@ -67,6 +86,67 @@ function UDPViewRoute(props) {
     },
   });
 
+  const {
+    data: harvesterImplsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_HARVESTER_IMPL],
+    api: API_HARVESTER_IMPL,
+  });
+
+  const {
+    data: harvesterJobsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_HARVESTER_JOBS, id],
+    api: API_HARVESTER_JOBS,
+    params: {
+      query: `(providerId==${id} and startedAt="") sortby finishedAt/sort.descending`,
+      limit: '1',
+    },
+  });
+
+  const {
+    data: settingsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_SETTINGS, SCOPES.EUSAGE, CONFIG_NAMES.HIDE_CREDENTIALS],
+    api: API_SETTINGS_ENTRIES,
+    params: {
+      query: `(scope==${SCOPES.EUSAGE} and key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
+    },
+  });
+
+  const {
+    data: counterReportsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_COUNTER_REPORTS, id, statsReloadCount],
+    api: `${API_COUNTER_REPORTS_SORTED}/${id}`,
+    params: {
+      unused: statsReloadCount,
+      limit: '1000',
+    },
+  });
+
+  const {
+    data: customReportsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_CUSTOM_REPORTS, id, statsReloadCount],
+    api: API_CUSTOM_REPORTS,
+    params: {
+      unused: statsReloadCount,
+      query: `(providerId=${id})`,
+      limit: '1000',
+    },
+  });
+
+  const {
+    data: failedAttemptsSettingsData,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_SETTINGS, SCOPES.HARVESTER, CONFIG_NAMES.MAX_FAILED_ATTEMPTS],
+    api: API_SETTINGS_ENTRIES,
+    params: {
+      query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
+    },
+  });
+
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
   };
@@ -85,11 +165,14 @@ function UDPViewRoute(props) {
   };
 
   const getLastHarvestingJob = () => {
-    return get(resources, 'harvesterJobs.records[0]', {});
+    return get(harvesterJobsData, 'jobInfos[0]', {}) || get(harvesterJobsData, '[0]', {});
   };
 
   const getCounterReports = (udpId) => {
-    const records = (resources.counterReports || {}).records || null;
+    const records = counterReportsData?.counterReportsPerYear ?
+      [counterReportsData] :
+      (counterReportsData || {}).records || null;
+
     const reports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
 
     if (
@@ -97,30 +180,23 @@ function UDPViewRoute(props) {
       reports[0].reportsPerType[0].counterReports[0].providerId === udpId
     ) {
       return reports;
-    } else {
-      return [];
     }
+
+    return [];
   };
 
   const getCustomReports = (udpId) => {
-    const reports = get(
-      resources,
-      'customReports.records[0].customReports',
-      []
-    );
+    const reports = get(customReportsData, 'customReports', get(customReportsData, 'records[0].customReports', []));
 
     if (!isEmpty(reports) && reports[0].providerId === udpId) {
       return reports;
-    } else {
-      return [];
     }
+
+    return [];
   };
 
   const isStatsLoading = () => {
-    return (
-      get(resources, 'customReports.isPending', true) ||
-      get(resources, 'counterReports.isPending', true)
-    );
+    return false;
   };
 
   const isHarvesterExistent = () => {
@@ -128,23 +204,24 @@ function UDPViewRoute(props) {
   };
 
   const getMaxFailedAttempts = () => {
-    const settings = resources.failedAttemptsSettings || {};
+    const settings = failedAttemptsSettingsData?.items || [];
 
-    if (isEmpty(settings) || settings.records.length === 0) {
+    if (isEmpty(settings) || settings.length === 0) {
       return MAX_FAILED_ATTEMPTS;
-    } else {
-      return settings.records[0].value;
     }
+
+    return settings[0].value;
   };
 
-  // Do not display cached data when the latest request failed.
   const selectedRecord = udpError ? {} : (udpData ?? {});
   const isLoading = isUdpLoading || isUdpFetching;
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
-  const settings = get(resources, 'settings.records', []);
-  const harvesterImpls = resources.harvesterImpls?.records || [];
-  const statsReloadCount = get(resources, 'statsReloadToggle', 0);
+  const settings = settingsData?.items || [];
+  const harvesterImpls = Array.isArray(harvesterImplsData) ?
+    harvesterImplsData :
+    (harvesterImplsData ? [harvesterImplsData] : []);
+
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
 
   return (
@@ -164,6 +241,7 @@ function UDPViewRoute(props) {
         onClose: handleClose,
         onDelete: handleDelete,
         onEdit: handleEdit,
+        onReloadStatistics: () => setStatsReloadCount((c) => c + 1),
         onReloadUdp: reloadUdp,
       }}
       history={props.history}
@@ -172,7 +250,6 @@ function UDPViewRoute(props) {
       isStatsLoading={isStatsLoading()}
       location={props.location}
       match={props.match}
-      mutator={mutator}
       statsReloadCount={statsReloadCount}
       stripes={stripes}
       tagsEnabled={tagsEnabled}
@@ -194,16 +271,6 @@ UDPViewRoute.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  mutator: PropTypes.object.isRequired,
-  resources: PropTypes.shape({
-    counterReports: PropTypes.shape(),
-    failedAttemptsSettings: PropTypes.shape(),
-    harvesterImpls: PropTypes.shape(),
-    harvesterJobs: PropTypes.shape(),
-    settings: PropTypes.shape({
-      records: PropTypes.arrayOf(PropTypes.object),
-    }),
-  }).isRequired,
   stripes: PropTypes.shape({
     hasInterface: PropTypes.func.isRequired,
     hasPerm: PropTypes.func.isRequired,
@@ -215,61 +282,10 @@ UDPViewRoute.propTypes = {
     }).isRequired,
     store: PropTypes.object.isRequired,
   }).isRequired,
-  tagsEnabled: PropTypes.bool,
 };
 
-UDPViewRoute.manifest = Object.freeze({
-  harvesterImpls: {
-    type: 'okapi',
-    path: API_HARVESTER_IMPL,
-    throwErrors: false,
-  },
-  harvesterJobs: {
-    type: 'okapi',
-    path: API_HARVESTER_JOBS,
-    params: {
-      query: '(providerId==:{id} and startedAt="") sortby finishedAt/sort.descending',
-      limit: '1',
-    },
-    records: 'jobInfos',
-    throwErrors: false,
-  },
-  settings: {
-    type: 'okapi',
-    records: MOD_SETTINGS.RECORD_NAME,
-    path: MOD_SETTINGS.BASE_PATH,
-    params: {
-      query: `(scope==${SCOPES.EUSAGE} and key==${CONFIG_NAMES.HIDE_CREDENTIALS})`,
-    },
-  },
-  counterReports: {
-    type: 'okapi',
-    path: `${API_COUNTER_REPORTS_SORTED}/:{id}?unused=%{statsReloadToggle}&limit=1000`,
-  },
-  customReports: {
-    type: 'okapi',
-    path: `${API_CUSTOM_REPORTS}?unused=%{statsReloadToggle}&query=(providerId=:{id})&limit=1000`,
-  },
-  failedAttemptsSettings: {
-    type: 'okapi',
-    records: MOD_SETTINGS.RECORD_NAME,
-    path: MOD_SETTINGS.BASE_PATH,
-    params: {
-      query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
-    },
-  },
-  statsReloadToggle: {
-    // We mutate this when we update a report, to force a stripes-connect reload.
-    // Thanks to Mike Taylor.
-    initialValue: 0,
-  },
-  query: {},
-});
-
 const UDPViewRouteContainer = compose(
-  withReportHandlers,
-  stripesConnect,
-  withTags
+  withReportHandlers
 )(UDPViewRoute);
 
 UDPViewRouteContainer.defaultProps = {

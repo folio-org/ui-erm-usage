@@ -24,6 +24,7 @@ export const KEY_FILES = 'files';
 export const KEY_HARVESTER_IMPL = 'harvester-impl';
 export const KEY_HARVESTER_JOBS = 'jobs';
 export const KEY_HARVESTER_PERIODIC = 'harvester-periodic';
+export const KEY_SETTINGS = 'settings';
 export const KEY_UDPS = 'usage-data-providers';
 
 export const MAX_FAILED_ATTEMPTS = 5;
