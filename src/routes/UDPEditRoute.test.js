@@ -155,6 +155,7 @@ describe('UDPEditRoute', () => {
     expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({
       type: 'error',
       message: expect.stringContaining(error.message),
+      timeout: 0,
     }));
 
     expect(document.querySelector('#form-udp')).toBeInTheDocument();

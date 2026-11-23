@@ -1,7 +1,6 @@
 import { FORM_ERROR } from 'final-form';
 import PropTypes from 'prop-types';
 import {
-  useCallback,
   useContext,
   useEffect,
 } from 'react';
@@ -35,27 +34,29 @@ const UDPEditRoute = ({
   match,
 }) => {
   const stripes = useStripes();
-  const { sendCallout } = useContext(CalloutContext);
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
+  const callout = useContext(CalloutContext);
 
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.edit');
   const id = match.params.id;
 
-  const showErrorInfo = useCallback((error) => {
+  const showErrorInfo = (error) => {
+    const errorMessage = error?.message || formatMessage({ id: 'ui-erm-usage.general.error' });
     const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
 
-    sendCallout({
+    callout?.sendCallout?.({
       type: 'error',
-      message: `${prefix}: ${error.message}`,
+      message: `${prefix}: ${errorMessage}`,
+      timeout: 0,
     });
-  }, [formatMessage, sendCallout]);
 
-  const handleSubmitError = (error) => {
-    showErrorInfo(error);
-
-    return { [FORM_ERROR]: error.message };
+    return errorMessage;
   };
+
+  const handleSubmitError = (error) => ({
+    [FORM_ERROR]: showErrorInfo(error),
+  });
 
   const handleClose = () => {
     history.push(`${urls.udpView(id)}${location.search}`);
@@ -83,7 +84,7 @@ const UDPEditRoute = ({
   useEffect(() => {
     if (harvesterImplsError) showErrorInfo(harvesterImplsError);
     if (udpError) showErrorInfo(udpError);
-  }, [harvesterImplsError, udpError, showErrorInfo]);
+  }, [harvesterImplsError, udpError]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { useUpdate } = useOkapiKyMutation({
     mutationKey: [KEY_UDPS, id],
