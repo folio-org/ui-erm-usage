@@ -112,8 +112,6 @@ const UDPCreateRoute = ({
     return <LoadingPane dismissible onClose={handleClose} />;
   }
 
-  if (harvesterImplsError) return null;
-
   return (
     <UDPForm
       data={{ harvesterImpls }}
