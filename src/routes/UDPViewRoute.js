@@ -169,9 +169,9 @@ function UDPViewRoute(props) {
   };
 
   const getCounterReports = (udpId) => {
-    const records = counterReportsData?.counterReportsPerYear ?
-      [counterReportsData] :
-      (counterReportsData || {}).records || null;
+    const records = counterReportsData?.counterReportsPerYear
+      ? [counterReportsData]
+      : counterReportsData?.records || null;
 
     const reports = !isEmpty(records) ? records[0].counterReportsPerYear : [];
 
@@ -218,9 +218,14 @@ function UDPViewRoute(props) {
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = settingsData?.items || [];
-  const harvesterImpls = Array.isArray(harvesterImplsData) ?
-    harvesterImplsData :
-    (harvesterImplsData ? [harvesterImplsData] : []);
+
+  let harvesterImpls = [];
+
+  if (Array.isArray(harvesterImplsData)) {
+    harvesterImpls = harvesterImplsData;
+  } else if (harvesterImplsData) {
+    harvesterImpls = [harvesterImplsData];
+  }
 
   const maxFailedAttempts = parseInt(getMaxFailedAttempts(), 10);
 
