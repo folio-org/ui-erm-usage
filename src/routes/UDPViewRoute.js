@@ -4,13 +4,19 @@ import {
   isEmpty,
 } from 'lodash';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useIntl } from 'react-intl';
 import { useQueryClient } from 'react-query';
 
 import {
   useOkapiKyMutation,
   useOkapiKyQuery,
 } from '@folio/stripes-leipzig-components';
+import { CalloutContext } from '@folio/stripes/core';
 
 import UDPView from '../components/views/UDP';
 import {
@@ -29,6 +35,7 @@ import {
   MAX_FAILED_ATTEMPTS,
   MOD_SETTINGS,
 } from '../util/constants';
+import showErrorInfo from '../util/showErrorInfo';
 import urls from '../util/urls';
 import withReportHandlers from './components/withReportHandlers';
 
@@ -43,6 +50,8 @@ function UDPViewRoute(props) {
     },
   } = props;
 
+  const callout = useContext(CalloutContext);
+  const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const [statsReloadCount, setStatsReloadCount] = useState(0);
 
@@ -62,10 +71,18 @@ function UDPViewRoute(props) {
     return Boolean(data[0].value);
   })();
 
+  const refreshUdpList = () => {
+    stripes.store.dispatch({
+      type: 'REFRESH',
+      meta: {
+        path: API_UDPS,
+      },
+    });
+  };
+
   const {
     data: udpData,
     isLoading: isUdpLoading,
-    isFetching: isUdpFetching,
     error: udpError,
   } = useOkapiKyQuery({
     queryKey: [KEY_UDPS, id],
@@ -82,7 +99,11 @@ function UDPViewRoute(props) {
   const { mutate: deleteUdp } = useDelete({
     onSuccess: () => {
       queryClient.removeQueries([KEY_UDPS, id]);
+      refreshUdpList();
       props.history.push(`${urls.udps()}${props.location.search}`);
+    },
+    onError: (error) => {
+      showErrorInfo(error, { callout, formatMessage });
     },
   });
 
@@ -116,22 +137,22 @@ function UDPViewRoute(props) {
 
   const {
     data: counterReportsData,
+    isLoading: isCounterReportsLoading,
   } = useOkapiKyQuery({
     queryKey: [KEY_COUNTER_REPORTS, id, statsReloadCount],
     api: `${API_COUNTER_REPORTS_SORTED}/${id}`,
     params: {
-      unused: statsReloadCount,
       limit: '1000',
     },
   });
 
   const {
     data: customReportsData,
+    isLoading: isCustomReportsLoading,
   } = useOkapiKyQuery({
     queryKey: [KEY_CUSTOM_REPORTS, id, statsReloadCount],
     api: API_CUSTOM_REPORTS,
     params: {
-      unused: statsReloadCount,
       query: `(providerId=${id})`,
       limit: '1000',
     },
@@ -146,6 +167,12 @@ function UDPViewRoute(props) {
       query: `(scope==${SCOPES.HARVESTER} and key==${CONFIG_NAMES.MAX_FAILED_ATTEMPTS})`,
     },
   });
+
+  useEffect(() => {
+    if (udpError) {
+      showErrorInfo(udpError, { callout, formatMessage });
+    }
+  }, [udpError, callout, formatMessage]);
 
   const handleClose = () => {
     props.history.push(`${urls.udps()}${props.location.search}`);
@@ -195,9 +222,7 @@ function UDPViewRoute(props) {
     return [];
   };
 
-  const isStatsLoading = () => {
-    return false;
-  };
+  const isStatsLoading = isCounterReportsLoading || isCustomReportsLoading;
 
   const isHarvesterExistent = () => {
     return props.stripes.hasInterface('erm-usage-harvester');
@@ -213,8 +238,8 @@ function UDPViewRoute(props) {
     return settings[0].value;
   };
 
-  const selectedRecord = udpError ? {} : (udpData ?? {});
-  const isLoading = isUdpLoading || isUdpFetching;
+  const selectedRecord = udpData ?? {};
+  const isLoading = isUdpLoading;
   const counterReports = getCounterReports(id);
   const customReports = getCustomReports(id);
   const settings = settingsData?.items || [];
@@ -252,7 +277,7 @@ function UDPViewRoute(props) {
       history={props.history}
       isHarvesterExistent={isHarvesterExistent()}
       isLoading={isLoading}
-      isStatsLoading={isStatsLoading()}
+      isStatsLoading={isStatsLoading}
       location={props.location}
       match={props.match}
       statsReloadCount={statsReloadCount}

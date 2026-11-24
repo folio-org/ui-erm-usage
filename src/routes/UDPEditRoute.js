@@ -25,6 +25,7 @@ import {
   KEY_HARVESTER_IMPL,
   KEY_UDPS,
 } from '../util/constants';
+import showErrorInfo from '../util/showErrorInfo';
 import urls from '../util/urls';
 
 const UDPEditRoute = ({
@@ -41,21 +42,8 @@ const UDPEditRoute = ({
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.edit');
   const id = match.params.id;
 
-  const showErrorInfo = (error) => {
-    const errorMessage = error?.message || formatMessage({ id: 'ui-erm-usage.general.error' });
-    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
-
-    callout?.sendCallout?.({
-      type: 'error',
-      message: `${prefix}: ${errorMessage}`,
-      timeout: 0,
-    });
-
-    return errorMessage;
-  };
-
   const handleSubmitError = (error) => ({
-    [FORM_ERROR]: showErrorInfo(error),
+    [FORM_ERROR]: showErrorInfo(error, { callout, formatMessage }),
   });
 
   const handleClose = () => {
@@ -82,9 +70,16 @@ const UDPEditRoute = ({
   });
 
   useEffect(() => {
-    if (harvesterImplsError) showErrorInfo(harvesterImplsError);
-    if (udpError) showErrorInfo(udpError);
-  }, [harvesterImplsError, udpError]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (hasPerms && harvesterImplsError) {
+      showErrorInfo(harvesterImplsError, { callout, formatMessage });
+    }
+  }, [hasPerms, harvesterImplsError, callout, formatMessage]);
+
+  useEffect(() => {
+    if (hasPerms && udpError) {
+      showErrorInfo(udpError, { callout, formatMessage });
+    }
+  }, [hasPerms, udpError, callout, formatMessage]);
 
   const { useUpdate } = useOkapiKyMutation({
     mutationKey: [KEY_UDPS, id],

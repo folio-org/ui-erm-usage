@@ -25,6 +25,7 @@ import {
   KEY_HARVESTER_IMPL,
   KEY_UDPS,
 } from '../util/constants';
+import showErrorInfo from '../util/showErrorInfo';
 import urls from '../util/urls';
 
 const UDPCreateRoute = ({
@@ -37,21 +38,8 @@ const UDPCreateRoute = ({
   const callout = useContext(CalloutContext);
   const { formatMessage } = useIntl();
 
-  const showErrorInfo = (error) => {
-    const errorMessage = error?.message || formatMessage({ id: 'ui-erm-usage.general.error' });
-    const prefix = formatMessage({ id: 'ui-erm-usage.general.error2' });
-
-    callout?.sendCallout?.({
-      type: 'error',
-      message: `${prefix}: ${errorMessage}`,
-      timeout: 0,
-    });
-
-    return errorMessage;
-  };
-
   const handleSubmitError = (error) => ({
-    [FORM_ERROR]: showErrorInfo(error),
+    [FORM_ERROR]: showErrorInfo(error, { callout, formatMessage }),
   });
 
   const handleClose = () => {
@@ -89,9 +77,9 @@ const UDPCreateRoute = ({
 
   useEffect(() => {
     if (hasPerms && harvesterImplsError) {
-      showErrorInfo(harvesterImplsError);
+      showErrorInfo(harvesterImplsError, { callout, formatMessage });
     }
-  }, [hasPerms, harvesterImplsError]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [hasPerms, harvesterImplsError, callout, formatMessage]);
 
   const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const implList = harvesterImpls[0]?.implementations ?? [];

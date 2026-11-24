@@ -31,7 +31,11 @@ function InfoButton(props) {
   } = props;
 
   const doDeleteReport = () => {
-    props.mutator.customReport.DELETE({ id: customReport.id }).then(() => {});
+    props.mutator.customReport
+      .DELETE({ id: customReport.id })
+      .then(() => {
+        props.handlers?.onReloadStatistics?.();
+      });
   };
 
   const doDeleteWithFile = () => {
@@ -42,9 +46,9 @@ function InfoButton(props) {
       .then((response) => {
         if (response.status >= 400) {
           throw new Error(`Error ${response.status} deleting file: Fetch file failed`);
-        } else {
-          doDeleteReport();
         }
+
+        return doDeleteReport();
       })
       .catch((err) => {
         throw new Error('Error while deleting custom report. ' + err.message);

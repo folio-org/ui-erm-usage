@@ -98,7 +98,9 @@ const ReportInfoButton = ({
   const doDelete = () => {
     mutator.counterReports
       .DELETE({ id: report.id })
-      .then(() => {})
+      .then(() => {
+        handlers?.onReloadStatistics?.();
+      })
       .catch((err) => {
         const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
         const infoText = failText + ' ' + err.message;
