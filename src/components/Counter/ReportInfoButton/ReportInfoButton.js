@@ -6,13 +6,14 @@ import {
   injectIntl,
 } from 'react-intl';
 
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
   Button,
   ConfirmationModal,
   Icon,
   Modal,
 } from '@folio/stripes/components';
-import { stripesConnect } from '@folio/stripes/core';
+import { useStripes } from '@folio/stripes/core';
 
 import { API_COUNTER_REPORTS } from '../../../util/constants';
 import {
@@ -23,18 +24,35 @@ import ReportInfo from '../ReportInfo';
 import css from './ReportInfoButton.css';
 
 const ReportInfoButton = ({
-  stripes,
   report,
-  mutator,
   intl,
   maxFailedAttempts,
   udpLabel,
   handlers,
 }) => {
+  const stripes = useStripes();
   const [showDropDown, setShowDropDown] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const log = stripes.logger.log.bind(stripes.logger);
+
+  const { useDelete } = useOkapiKyMutation({
+    mutationKey: ['counter-reports', report?.id],
+    api: API_COUNTER_REPORTS,
+    id: report?.id,
+  });
+
+  const { mutate: deleteCounterReport } = useDelete({
+    onSuccess: () => {
+      handlers?.onReloadStatistics?.();
+    },
+    onError: (err) => {
+      const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
+      const infoText = failText + ' ' + err.message;
+
+      log('Delete of counter report failed: ' + infoText);
+    },
+  });
 
   const getButtonStyle = (failedAttempts, errorCode) => {
     const isFailed = isFailedReport(report);
@@ -96,16 +114,7 @@ const ReportInfoButton = ({
   };
 
   const doDelete = () => {
-    mutator.counterReports
-      .DELETE({ id: report.id })
-      .then(() => {
-        handlers?.onReloadStatistics?.();
-      })
-      .catch((err) => {
-        const failText = intl.formatMessage({ id: 'ui-erm-usage.report.upload.failed' });
-        const infoText = failText + ' ' + err.message;
-        log('Delete of counter report failed: ' + infoText);
-      });
+    deleteCounterReport();
     setShowConfirmDelete(false);
   };
 
@@ -202,31 +211,16 @@ const ReportInfoButton = ({
   );
 };
 
-ReportInfoButton.manifest = Object.freeze({
-  counterReports: {
-    type: 'okapi',
-    fetch: false,
-    accumulate: 'true',
-    DELETE: {
-      path: API_COUNTER_REPORTS,
-    },
-  },
-});
-
 ReportInfoButton.propTypes = {
   handlers: PropTypes.shape({
     onDownloadReportSingleMonth: PropTypes.func,
     onDownloadReportSingleMonthRaw: PropTypes.func,
+    onReloadStatistics: PropTypes.func,
   }),
   intl: PropTypes.object,
   maxFailedAttempts: PropTypes.number,
-  mutator: PropTypes.shape({
-    counterReports: PropTypes.object,
-    csvReports: PropTypes.object,
-  }),
   report: PropTypes.object,
-  stripes: PropTypes.shape().isRequired,
   udpLabel: PropTypes.string,
 };
 
-export default stripesConnect(injectIntl(ReportInfoButton));
+export default injectIntl(ReportInfoButton);
