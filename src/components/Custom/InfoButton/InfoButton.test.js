@@ -33,10 +33,12 @@ const customReport = {
 };
 
 const udpLabel = 'American Chemical Society';
-
 const doDownloadFile = jest.fn();
+const onReloadStatistics = jest.fn();
+
 const handlers = {
   doDownloadFile,
+  onReloadStatistics,
 };
 
 describe('InfoButton', () => {
@@ -118,5 +120,6 @@ describe('InfoButton', () => {
     );
 
     expect(screen.queryByRole('heading', { name: 'Delete report?' })).not.toBeInTheDocument();
+    expect(onReloadStatistics).toHaveBeenCalledTimes(1);
   });
 });
