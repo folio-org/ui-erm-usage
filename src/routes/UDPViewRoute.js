@@ -238,6 +238,13 @@ function UDPViewRoute(props) {
     return settings[0].value;
   };
 
+  const reloadStatistics = () => {
+    queryClient.removeQueries([KEY_COUNTER_REPORTS, id]);
+    queryClient.removeQueries([KEY_CUSTOM_REPORTS, id]);
+
+    setStatsReloadCount((c) => c + 1);
+  };
+
   const selectedRecord = udpData ?? {};
   const isLoading = isUdpLoading;
   const counterReports = getCounterReports(id);
@@ -271,7 +278,7 @@ function UDPViewRoute(props) {
         onClose: handleClose,
         onDelete: handleDelete,
         onEdit: handleEdit,
-        onReloadStatistics: () => setStatsReloadCount((c) => c + 1),
+        onReloadStatistics: reloadStatistics,
         onReloadUdp: reloadUdp,
       }}
       history={props.history}
