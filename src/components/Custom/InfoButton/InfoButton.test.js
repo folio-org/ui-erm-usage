@@ -122,4 +122,35 @@ describe('InfoButton', () => {
     expect(screen.queryByRole('heading', { name: 'Delete report?' })).not.toBeInTheDocument();
     expect(onReloadStatistics).toHaveBeenCalledTimes(1);
   });
+
+  test('deletes a custom report without a file', async () => {
+    stripes.hasPerm = () => true;
+
+    renderWithIntl(
+      <StripesContext.Provider value={stripes}>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <InfoButton
+              customReport={{ ...customReport, fileId: null }}
+              handlers={handlers}
+              udpLabel={udpLabel}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>
+      </StripesContext.Provider>
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: /report 2020 - foo/ }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Icon Delete custom report' }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Yes' }));
+
+    expect(ky.delete).toHaveBeenCalledTimes(1);
+    expect(ky.delete).toHaveBeenCalledWith(
+      `${API_CUSTOM_REPORTS}/${customReport.id}`,
+      {}
+    );
+    expect(onReloadStatistics).toHaveBeenCalledTimes(1);
+  });
 });

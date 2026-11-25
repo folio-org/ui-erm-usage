@@ -1,10 +1,21 @@
 import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query';
+
+import {
   screen,
   within,
 } from '@folio/jest-config-stripes/testing-library/react';
-import { useStripes } from '@folio/stripes/core';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import {
+  StripesContext,
+  useOkapiKy,
+  useStripes,
+} from '@folio/stripes/core';
 
 import renderWithIntl from '../../../../test/jest/helpers';
+import { API_COUNTER_REPORTS } from '../../../util/constants';
 import ReportInfoButton from './ReportInfoButton';
 
 jest.mock('@folio/stripes-components/lib/Icon', () => {
@@ -95,20 +106,27 @@ const withApiExceptions = (codes, failedReason = 'Report not valid') => ({
   providerId: '653afd8c-239f-406c-b765-489774b6ec26',
 });
 
-const renderReportInfoButton = (stripes, report) => {
+const renderReportInfoButton = (stripes, report, handlers, client, udpLabel = 'American Chemical Society') => {
+  const component = (
+    <StripesContext.Provider value={stripes}>
+      <ReportInfoButton handlers={handlers} report={report} udpLabel={udpLabel} />
+    </StripesContext.Provider>
+  );
+
   return renderWithIntl(
-    <ReportInfoButton
-      report={report}
-      stripes={stripes}
-    />
+    client
+      ? <QueryClientProvider client={client}>{component}</QueryClientProvider>
+      : component
   );
 };
 
 describe('ReportInfoButton', () => {
   let stripes;
+  let queryClient;
 
   beforeEach(() => {
     stripes = useStripes();
+    queryClient = new QueryClient();
   });
 
   it('should render `checked` icon and `success` style for default report', () => {
@@ -158,6 +176,7 @@ describe('ReportInfoButton', () => {
     expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
     expect(iconButton).toHaveClass('danger');
   });
+
   describe('with apiExceptions', () => {
     it.each([
       [3030, 'default', 'success'],
@@ -197,5 +216,29 @@ describe('ReportInfoButton', () => {
       expect(within(iconButton).getByText('calendar')).toBeInTheDocument();
       expect(iconButton).toHaveClass('yellow');
     });
+  });
+
+  it('reloads statistics after successfully deleting a report', async () => {
+    stripes.hasPerm = () => true;
+
+    const onReloadStatistics = jest.fn();
+    const handlers = { onReloadStatistics };
+    const ky = {
+      delete: jest.fn().mockResolvedValue(null),
+    };
+
+    useOkapiKy.mockReturnValue(ky);
+
+    renderReportInfoButton(stripes, reportDefault, handlers, queryClient);
+
+    await userEvent.click(screen.getByRole('button', { name: /open report info/i }));
+    await userEvent.click(document.getElementById('delete-report-button'));
+    await userEvent.click(screen.getByRole('button', { name: 'Yes' }));
+
+    expect(ky.delete).toHaveBeenCalledWith(
+      `${API_COUNTER_REPORTS}/${reportDefault.id}`,
+      {}
+    );
+    expect(onReloadStatistics).toHaveBeenCalledTimes(1);
   });
 });
