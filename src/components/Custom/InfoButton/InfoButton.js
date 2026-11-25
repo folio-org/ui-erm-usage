@@ -6,52 +6,63 @@ import {
   useIntl,
 } from 'react-intl';
 
+import { useOkapiKyMutation } from '@folio/stripes-leipzig-components';
 import {
   Button,
   ConfirmationModal,
   IconButton,
   Modal,
 } from '@folio/stripes/components';
-import { stripesConnect } from '@folio/stripes/core';
+import { useStripes } from '@folio/stripes/core';
 
 import {
   API_CUSTOM_REPORTS,
   API_FILES,
 } from '../../../util/constants';
-import fetchWithDefaultOptions from '../../../util/fetchWithDefaultOptions';
 import CustomReportInfo from '../CustomReportInfo';
 
 function InfoButton(props) {
   const intl = useIntl();
+  const stripes = useStripes();
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const {
-    customReport,
-    stripes: { okapi },
-  } = props;
+  const { customReport } = props;
 
-  const doDeleteReport = () => {
-    props.mutator.customReport
-      .DELETE({ id: customReport.id })
-      .then(() => {
-        props.handlers?.onReloadStatistics?.();
-      });
-  };
+  const { useDelete: useDeleteReport } = useOkapiKyMutation({
+    mutationKey: ['custom-reports', customReport.id],
+    api: API_CUSTOM_REPORTS,
+    id: customReport.id,
+  });
+
+  const { mutateAsync: deleteReport } = useDeleteReport({
+    onSuccess: () => {
+      props.handlers?.onReloadStatistics?.();
+    },
+  });
+
+  const { useDelete: useDeleteFile } = useOkapiKyMutation({
+    mutationKey: ['files', customReport.fileId],
+    api: API_FILES,
+    id: customReport.fileId,
+  });
+
+  const { mutateAsync: deleteFile } = useDeleteFile({
+    kyOptions: {
+      headers: { 'Content-Type': 'application/json' },
+    },
+  });
+
+  const doDeleteReport = () => deleteReport();
 
   const doDeleteWithFile = () => {
-    fetchWithDefaultOptions(okapi, `/${API_FILES}/${customReport.fileId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error(`Error ${response.status} deleting file: Fetch file failed`);
-        }
-
-        return doDeleteReport();
-      })
+    return deleteFile()
+      .then(doDeleteReport)
       .catch((err) => {
-        throw new Error('Error while deleting custom report. ' + err.message);
+        const fileError = err.response?.status >= 400
+          ? new Error(`Error ${err.response.status} deleting file: Fetch file failed`)
+          : err;
+
+        throw new Error('Error while deleting custom report. ' + fileError.message);
       });
   };
 
@@ -111,7 +122,7 @@ function InfoButton(props) {
             customReport={customReport}
             handlers={props.handlers}
             onDelete={handleDelete}
-            stripes={props.stripes}
+            stripes={stripes}
             udpLabel={props.udpLabel}
           />
         </div>
@@ -129,33 +140,12 @@ function InfoButton(props) {
   );
 }
 
-InfoButton.manifest = Object.freeze({
-  customReport: {
-    type: 'okapi',
-    fetch: false,
-    DELETE: {
-      path: API_CUSTOM_REPORTS,
-    },
-  },
-});
-
 InfoButton.propTypes = {
   customReport: PropTypes.shape().isRequired,
-  handlers: PropTypes.shape(),
-  mutator: PropTypes.shape({
-    customReport: PropTypes.object,
+  handlers: PropTypes.shape({
+    onReloadStatistics: PropTypes.func,
   }),
-  stripes: PropTypes.shape({
-    connect: PropTypes.func,
-    okapi: PropTypes.shape({
-      tenant: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    }).isRequired,
-    store: PropTypes.shape({
-      getState: PropTypes.func,
-    }),
-  }).isRequired,
   udpLabel: PropTypes.string.isRequired,
 };
 
-export default stripesConnect(InfoButton);
+export default InfoButton;

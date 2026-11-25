@@ -1,14 +1,23 @@
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import {
   StripesContext,
+  useOkapiKy,
   useStripes,
 } from '@folio/stripes/core';
 
 import '../../../../test/jest/__mock__';
 import renderWithIntl from '../../../../test/jest/helpers/renderWithIntl';
+import {
+  API_CUSTOM_REPORTS,
+  API_FILES,
+} from '../../../util/constants';
 import InfoButton from './InfoButton';
 
 jest.mock('@folio/stripes/smart-components');
@@ -24,45 +33,51 @@ const customReport = {
 };
 
 const udpLabel = 'American Chemical Society';
-
 const doDownloadFile = jest.fn();
+const onReloadStatistics = jest.fn();
+
 const handlers = {
   doDownloadFile,
-};
-
-const doDeleteReport = jest.fn(() => Promise.resolve());
-const mutator = {
-  customReport: {
-    DELETE: doDeleteReport,
-  },
-};
-
-const renderInfoButton = (stripes) => {
-  return renderWithIntl(
-    <StripesContext.Provider value={stripes}>
-      <MemoryRouter>
-        <InfoButton
-          customReport={customReport}
-          handlers={handlers}
-          mutator={mutator}
-          stripes={stripes}
-          udpLabel={udpLabel}
-        />
-      </MemoryRouter>
-    </StripesContext.Provider>
-  );
+  onReloadStatistics,
 };
 
 describe('InfoButton', () => {
   let stripes;
+  let ky;
+  let queryClient;
+
+  const renderInfoButton = () => renderWithIntl(
+    <StripesContext.Provider value={stripes}>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <InfoButton
+            customReport={customReport}
+            handlers={handlers}
+            udpLabel={udpLabel}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>
+    </StripesContext.Provider>
+  );
 
   beforeEach(() => {
+    jest.clearAllMocks();
+
     stripes = useStripes();
+    queryClient = new QueryClient();
+
+    ky = {
+      delete: jest.fn().mockResolvedValue(null),
+    };
+
+    useOkapiKy.mockReturnValue(ky);
   });
 
   test('has no permission', async () => {
     stripes.hasPerm = () => false;
-    renderInfoButton(stripes);
+
+    renderInfoButton();
+
     const iconButton = screen.getByRole('button', { name: /report 2020 - foo/ });
     await userEvent.click(iconButton);
     expect(screen.queryByText('Delete custom report')).not.toBeInTheDocument();
@@ -70,7 +85,9 @@ describe('InfoButton', () => {
 
   test('renders report info', async () => {
     stripes.hasPerm = () => true;
-    renderInfoButton(stripes);
+
+    renderInfoButton();
+
     const iconButton = screen.getByRole('button', { name: /report 2020 - foo/ });
     await userEvent.click(iconButton);
     expect(screen.getByText('American Chemical Society')).toBeVisible();
@@ -88,9 +105,52 @@ describe('InfoButton', () => {
     const deleteReport = screen.getByRole('heading', { name: 'Delete report?' });
     expect(deleteReport).toBeInTheDocument();
 
-    const yesButton = screen.getByRole('button', { name: 'Yes' });
-    await userEvent.click(yesButton);
-    expect(deleteReport).not.toBeInTheDocument();
-    expect(doDeleteReport).toHaveBeenCalled();
+    await userEvent.click(screen.getByRole('button', { name: 'Yes' }));
+
+    expect(ky.delete).toHaveBeenNthCalledWith(
+      1,
+      `${API_FILES}/${customReport.fileId}`,
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    expect(ky.delete).toHaveBeenNthCalledWith(
+      2,
+      `${API_CUSTOM_REPORTS}/${customReport.id}`,
+      {}
+    );
+
+    expect(screen.queryByRole('heading', { name: 'Delete report?' })).not.toBeInTheDocument();
+    expect(onReloadStatistics).toHaveBeenCalledTimes(1);
+  });
+
+  test('deletes a custom report without a file', async () => {
+    stripes.hasPerm = () => true;
+
+    renderWithIntl(
+      <StripesContext.Provider value={stripes}>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <InfoButton
+              customReport={{ ...customReport, fileId: null }}
+              handlers={handlers}
+              udpLabel={udpLabel}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>
+      </StripesContext.Provider>
+    );
+
+    await userEvent.click(screen.getByRole('button', { name: /report 2020 - foo/ }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Icon Delete custom report' }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Yes' }));
+
+    expect(ky.delete).toHaveBeenCalledTimes(1);
+    expect(ky.delete).toHaveBeenCalledWith(
+      `${API_CUSTOM_REPORTS}/${customReport.id}`,
+      {}
+    );
+    expect(onReloadStatistics).toHaveBeenCalledTimes(1);
   });
 });
