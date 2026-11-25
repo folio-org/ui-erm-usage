@@ -1,12 +1,26 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { screen } from '@folio/jest-config-stripes/testing-library/react';
-import { useStripes } from '@folio/stripes/core';
+import {
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
+import harvesterImpls from '../test/fixtures/harvesterImpls';
 import renderWithIntl from '../test/jest/helpers';
 import ErmUsage from './index';
 import UDPCreateRoute from './routes/UDPCreateRoute';
 import UDPEditRoute from './routes/UDPEditRoute';
+
+jest.mock('@folio/stripes-leipzig-components', () => ({
+  ...jest.requireActual('@folio/stripes-leipzig-components'),
+  useOkapiKyMutation: jest.fn(),
+  useOkapiKyQuery: jest.fn(),
+}));
 
 const match = {
   isExact: false,
@@ -17,7 +31,7 @@ const match = {
 
 const editRouteProps = {
   history: {
-    push: () => jest.fn(),
+    push: jest.fn(),
   },
   location: {
     search: '',
@@ -27,29 +41,52 @@ const editRouteProps = {
       id: '9a2427cd-4110-4bd9-b6f9-e3475631bbac',
     },
   },
-  resources: {
-    harvesterImpls: {},
-    usageDataProvider: {},
-  },
 };
 
+const sendCallout = jest.fn();
+
 const renderWithRouter = (component) => {
-  renderWithIntl(<MemoryRouter>{component}</MemoryRouter>);
+  renderWithIntl(
+    <CalloutContext.Provider value={{ sendCallout }}>
+      <MemoryRouter>{component}</MemoryRouter>
+    </CalloutContext.Provider>
+  );
 };
 
 let stripes;
+
 describe('index', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     stripes = useStripes();
+
+    useOkapiKyQuery.mockReturnValue({
+      data: harvesterImpls[0],
+      isLoading: false,
+    });
   });
 
   it('should render UDPEditRoute', () => {
+    useOkapiKyMutation.mockReturnValue({
+      useUpdate: () => ({
+        mutateAsync: jest.fn(),
+      }),
+    });
+
     renderWithRouter(<UDPEditRoute stripes={stripes} {...editRouteProps} />);
+
     expect(document.querySelector('#form-udp')).toBeInTheDocument();
   });
 
   it('should render UDPCreateRoute', () => {
+    useOkapiKyMutation.mockReturnValue({
+      useCreate: () => ({
+        mutateAsync: jest.fn(),
+      }),
+    });
+
     renderWithRouter(<UDPCreateRoute stripes={stripes} {...editRouteProps} />);
+
     expect(document.querySelector('#form-udp')).toBeInTheDocument();
   });
 });

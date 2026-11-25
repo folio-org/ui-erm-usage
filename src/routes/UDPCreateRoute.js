@@ -1,90 +1,119 @@
+import { FORM_ERROR } from 'final-form';
 import PropTypes from 'prop-types';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
+import { useIntl } from 'react-intl';
 
-import { NoPermissionMessage } from '@folio/stripes-leipzig-components';
+import {
+  NoPermissionMessage,
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
-import { stripesConnect } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
   API_HARVESTER_IMPL,
   API_UDPS,
+  KEY_HARVESTER_IMPL,
+  KEY_UDPS,
 } from '../util/constants';
+import showErrorInfo from '../util/showErrorInfo';
 import urls from '../util/urls';
 
 const UDPCreateRoute = ({
   handlers = {},
   history,
   location,
-  mutator,
-  resources,
-  stripes,
 }) => {
+  const stripes = useStripes();
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.create');
+  const callout = useContext(CalloutContext);
+  const { formatMessage } = useIntl();
+
+  const handleSubmitError = (error) => ({
+    [FORM_ERROR]: showErrorInfo(error, { callout, formatMessage }),
+  });
 
   const handleClose = () => {
     history.push(`${urls.udps()}${location.search}`);
   };
 
-  const handleSubmit = (udp) => {
-    mutator.usageDataProviders.POST(udp).then(({ id }) => {
-      history.push(`${urls.udpView(id)}${location.search}`);
-    });
+  const { useCreate } = useOkapiKyMutation({
+    mutationKey: [KEY_UDPS],
+    api: API_UDPS,
+  });
+
+  const { mutateAsync: createUdp } = useCreate({
+    onSuccess: (createdUdp) => {
+      history.push(`${urls.udpView(createdUdp.id)}${location.search}`);
+    },
+  });
+
+  const handleSubmit = async values => {
+    try {
+      await createUdp(values);
+      return undefined;
+    } catch (error) {
+      return handleSubmitError(error);
+    }
   };
 
-  const fetchIsPending = () => {
-    return Object.values(resources)
-      .filter((r) => r && r.resource !== 'usageDataProviders')
-      .some((r) => r.isPending);
-  };
+  const {
+    data: harvesterImplsData,
+    error: harvesterImplsError,
+    isLoading: isHarvesterImplsLoading,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_HARVESTER_IMPL],
+    api: API_HARVESTER_IMPL,
+  });
 
-  const harvesterImpls = resources.harvesterImpls?.records || [];
+  useEffect(() => {
+    if (hasPerms && harvesterImplsError) {
+      showErrorInfo(harvesterImplsError, { callout, formatMessage });
+    }
+  }, [hasPerms, harvesterImplsError, callout, formatMessage]);
 
+  const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
   const implList = harvesterImpls[0]?.implementations ?? [];
   const defaultImpl = implList.find(i => i.isDefault) ?? implList[0];
 
+  const initialValues = useMemo(() => ({
+    status: 'active',
+    harvestingConfig: {
+      harvestingStatus: 'active',
+      reportRelease: defaultImpl?.reportRelease,
+      sushiConfig: { serviceType: defaultImpl?.type },
+    },
+  }), [defaultImpl]);
+
   if (!hasPerms) return <NoPermissionMessage />;
 
-  if (fetchIsPending()) {
+  if (isHarvesterImplsLoading) {
     return <LoadingPane dismissible onClose={handleClose} />;
   }
 
   return (
     <UDPForm
-      data={{
-        harvesterImpls,
-      }}
+      data={{ harvesterImpls }}
       handlers={{
         ...handlers,
         onClose: handleClose,
       }}
-      initialValues={{
-        status: 'active',
-        harvestingConfig: {
-          harvestingStatus: 'active',
-          reportRelease: defaultImpl?.reportRelease,
-          sushiConfig: { serviceType: defaultImpl?.type },
-        },
-      }}
-      isLoading={fetchIsPending()}
+      initialValues={initialValues}
+      isLoading={isHarvesterImplsLoading}
       onSubmit={handleSubmit}
       store={stripes.store}
     />
   );
 };
-
-UDPCreateRoute.manifest = Object.freeze({
-  harvesterImpls: {
-    type: 'okapi',
-    path: API_HARVESTER_IMPL,
-    shouldRefresh: () => false,
-  },
-  usageDataProviders: {
-    type: 'okapi',
-    path: API_UDPS,
-    fetch: false,
-    shouldRefresh: () => false,
-  },
-});
 
 UDPCreateRoute.propTypes = {
   handlers: PropTypes.object,
@@ -94,21 +123,6 @@ UDPCreateRoute.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
   }).isRequired,
-  mutator: PropTypes.shape({
-    harvesterImpls: PropTypes.object,
-    usageDataProviders: PropTypes.shape({
-      POST: PropTypes.func.isRequired,
-    }).isRequired,
-  }),
-  resources: PropTypes.shape({
-    harvesterImpls: PropTypes.object,
-    usageDataProviders: PropTypes.object,
-  }).isRequired,
-  stripes: PropTypes.shape({
-    hasPerm: PropTypes.func.isRequired,
-    okapi: PropTypes.object.isRequired,
-    store: PropTypes.object.isRequired,
-  }).isRequired,
 };
 
-export default stripesConnect(UDPCreateRoute);
+export default UDPCreateRoute;

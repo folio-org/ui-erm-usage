@@ -1,15 +1,31 @@
-import { get } from 'lodash';
+import { FORM_ERROR } from 'final-form';
 import PropTypes from 'prop-types';
+import {
+  useContext,
+  useEffect,
+} from 'react';
+import { useIntl } from 'react-intl';
+import { useQueryClient } from 'react-query';
 
-import { NoPermissionMessage } from '@folio/stripes-leipzig-components';
+import {
+  NoPermissionMessage,
+  useOkapiKyMutation,
+  useOkapiKyQuery,
+} from '@folio/stripes-leipzig-components';
 import { LoadingPane } from '@folio/stripes/components';
-import { stripesConnect } from '@folio/stripes/core';
+import {
+  CalloutContext,
+  useStripes,
+} from '@folio/stripes/core';
 
 import UDPForm from '../components/views/UDPForm';
 import {
   API_HARVESTER_IMPL,
   API_UDPS,
+  KEY_HARVESTER_IMPL,
+  KEY_UDPS,
 } from '../util/constants';
+import showErrorInfo from '../util/showErrorInfo';
 import urls from '../util/urls';
 
 const UDPEditRoute = ({
@@ -17,68 +33,101 @@ const UDPEditRoute = ({
   history,
   location,
   match,
-  mutator,
-  resources,
-  stripes,
 }) => {
+  const stripes = useStripes();
+  const { formatMessage } = useIntl();
+  const queryClient = useQueryClient();
+  const callout = useContext(CalloutContext);
+
   const hasPerms = stripes.hasPerm('ui-erm-usage.udp.edit');
+  const id = match.params.id;
+
+  const handleSubmitError = (error) => ({
+    [FORM_ERROR]: showErrorInfo(error, { callout, formatMessage }),
+  });
 
   const handleClose = () => {
-    history.push(
-      `${urls.udpView(match.params.id)}${location.search}`
-    );
+    history.push(`${urls.udpView(id)}${location.search}`);
   };
 
-  const handleSubmit = (udp) => {
-    mutator.usageDataProvider.PUT(udp).then(({ id }) => {
+  const {
+    data: harvesterImplsData,
+    isLoading: isHarvesterImplsLoading,
+    error: harvesterImplsError,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_HARVESTER_IMPL],
+    api: API_HARVESTER_IMPL,
+  });
+
+  const {
+    data: udpData,
+    isLoading: isUdpLoading,
+    error: udpError,
+  } = useOkapiKyQuery({
+    queryKey: [KEY_UDPS, id],
+    id,
+    api: API_UDPS,
+  });
+
+  useEffect(() => {
+    if (hasPerms && harvesterImplsError) {
+      showErrorInfo(harvesterImplsError, { callout, formatMessage });
+    }
+  }, [hasPerms, harvesterImplsError, callout, formatMessage]);
+
+  useEffect(() => {
+    if (hasPerms && udpError) {
+      showErrorInfo(udpError, { callout, formatMessage });
+    }
+  }, [hasPerms, udpError, callout, formatMessage]);
+
+  const { useUpdate } = useOkapiKyMutation({
+    mutationKey: [KEY_UDPS, id],
+    id,
+    api: API_UDPS,
+  });
+
+  const { mutateAsync: updateUdp } = useUpdate({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([KEY_UDPS, id]);
+
       history.push(`${urls.udpView(id)}${location.search}`);
-    });
+    },
+  });
+
+  const handleSubmit = async (values) => {
+    try {
+      await updateUdp(values);
+      return undefined;
+    } catch (error) {
+      return handleSubmitError(error);
+    }
   };
 
-  const fetchIsPending = () => {
-    return Object.values(resources)
-      .filter((r) => r && r.resource !== 'usageDataProvider')
-      .some((r) => r.isPending);
-  };
-
-  const harvesterImpls = resources.harvesterImpls?.records || [];
-  const udp = get(resources, 'usageDataProvider.records[0]', {});
+  const harvesterImpls = harvesterImplsData ? [harvesterImplsData] : [];
+  const udp = udpData ?? {};
+  const isLoading = isHarvesterImplsLoading || isUdpLoading;
 
   if (!hasPerms) return <NoPermissionMessage />;
 
-  if (fetchIsPending()) {
+  if (isLoading) {
     return <LoadingPane dismissible onClose={handleClose} />;
   }
 
   return (
     <UDPForm
-      data={{
-        harvesterImpls,
-      }}
+      data={{ harvesterImpls }}
       handlers={{
         ...handlers,
         onClose: handleClose,
       }}
       initialValues={udp}
-      isLoading={fetchIsPending()}
+      isLoading={isLoading}
       onSubmit={handleSubmit}
       store={stripes.store}
     />
   );
 };
-
-UDPEditRoute.manifest = Object.freeze({
-  harvesterImpls: {
-    type: 'okapi',
-    path: API_HARVESTER_IMPL,
-    shouldRefresh: () => false,
-  },
-  usageDataProvider: {
-    type: 'okapi',
-    path: `${API_UDPS}/:{id}`,
-    shouldRefresh: () => false,
-  },
-});
 
 UDPEditRoute.propTypes = {
   handlers: PropTypes.object,
@@ -93,22 +142,6 @@ UDPEditRoute.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  mutator: PropTypes.shape({
-    harvesterImpls: PropTypes.object,
-    usageDataProvider: PropTypes.shape({
-      POST: PropTypes.func.isRequired,
-      PUT: PropTypes.func.isRequired,
-    }).isRequired,
-  }),
-  resources: PropTypes.shape({
-    harvesterImpls: PropTypes.object,
-    usageDataProvider: PropTypes.object,
-  }).isRequired,
-  stripes: PropTypes.shape({
-    hasPerm: PropTypes.func.isRequired,
-    okapi: PropTypes.object.isRequired,
-    store: PropTypes.object.isRequired,
-  }).isRequired,
 };
 
-export default stripesConnect(UDPEditRoute);
+export default UDPEditRoute;
