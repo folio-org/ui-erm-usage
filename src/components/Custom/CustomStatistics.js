@@ -4,7 +4,6 @@ import {
   has,
   keys,
 } from 'lodash';
-import PropTypes from 'prop-types';
 import {
   useEffect,
   useState,
@@ -23,11 +22,16 @@ import {
 import css from './CustomStatistics.css';
 import InfoButton from './InfoButton';
 
-function CustomStatistics(props) {
+function CustomStatistics({
+  customReports,
+  handlers,
+  stripes,
+  udpLabel,
+}) {
   const [yearAccordions, setYearAccordions] = useState({});
 
   useEffect(() => {
-    const py = groupBy(props.customReports, (r) => r.year);
+    const py = groupBy(customReports, (r) => r.year);
     const groupedKeys = keys(py);
     const yearAccs = {};
     groupedKeys.forEach((y) => {
@@ -40,13 +44,11 @@ function CustomStatistics(props) {
     return function cleanup() {
       setYearAccordions({});
     };
-  }, [props.customReports]);
-
-  const { handlers, stripes, udpLabel } = props;
+  }, [customReports]);
 
   const groupReportsByYear = (reports) => groupBy(reports, (r) => r.year);
 
-  const perYear = groupReportsByYear(props.customReports);
+  const perYear = groupReportsByYear(customReports);
   const dataPerYear = keys(perYear)
     .sort()
     .map((y) => {
@@ -118,21 +120,5 @@ function CustomStatistics(props) {
     </>
   );
 }
-
-CustomStatistics.propTypes = {
-  customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
-  handlers: PropTypes.shape(),
-  stripes: PropTypes.shape({
-    connect: PropTypes.func,
-    okapi: PropTypes.shape({
-      tenant: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    }).isRequired,
-    store: PropTypes.shape({
-      getState: PropTypes.func,
-    }),
-  }).isRequired,
-  udpLabel: PropTypes.string.isRequired,
-};
 
 export default CustomStatistics;

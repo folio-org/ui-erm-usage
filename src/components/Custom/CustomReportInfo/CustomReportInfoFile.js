@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   FormattedMessage,
   useIntl,
@@ -14,8 +13,12 @@ import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
-function CustomReportInfoFile(props) {
-  const { customReport, handlers, onDelete, udpLabel } = props;
+function CustomReportInfoFile({
+  customReport,
+  handlers,
+  onDelete,
+  udpLabel,
+}) {
   const intl = useIntl();
 
   return (
@@ -57,14 +60,5 @@ function CustomReportInfoFile(props) {
     </>
   );
 }
-
-CustomReportInfoFile.propTypes = {
-  customReport: PropTypes.shape().isRequired,
-  handlers: PropTypes.shape({
-    doDownloadFile: PropTypes.func,
-  }),
-  onDelete: PropTypes.func.isRequired,
-  udpLabel: PropTypes.string.isRequired,
-};
 
 export default CustomReportInfoFile;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,7 +12,7 @@ import {
 
 import {
   notRequired,
-  required,
+  required as requiredValidator,
 } from '../../../util/validate';
 import css from './SelectReportType.css';
 
@@ -31,13 +30,17 @@ const getReportTypeOptions = (supported, selected, index) => {
     : options;
 };
 
-function SelectReportType(props) {
-  const { counterReportsCurrentVersion, disabled, fields, selectedReports } = props;
-
+function SelectReportType({
+  counterReportsCurrentVersion,
+  disabled,
+  fields,
+  required,
+  selectedReports,
+}) {
   const placeholderRowName = `${fields.name}[0]`;
-  const isPlaceholderRowShown = props.required && fields.length === 0;
+  const isPlaceholderRowShown = required && fields.length === 0;
   const rowNames = isPlaceholderRowShown ? [placeholderRowName] : fields.map(name => name);
-  const canRemoveRows = !props.required || fields.length > 1;
+  const canRemoveRows = !required || fields.length > 1;
 
   const addReportType = () => {
     if (isPlaceholderRowShown) fields.push('');
@@ -54,7 +57,7 @@ function SelectReportType(props) {
                 <div id={`reportType-selection-${index}`}>
                   <Field
                     component={Selection}
-                    data={props.required ? 1 : 0}
+                    data={required ? 1 : 0}
                     dataOptions={getReportTypeOptions(
                       counterReportsCurrentVersion,
                       selectedReports,
@@ -63,7 +66,7 @@ function SelectReportType(props) {
                     disabled={disabled}
                     label={<FormattedMessage id="ui-erm-usage.reportOverview.reportType" />}
                     name={name}
-                    validate={props.required ? required : notRequired}
+                    validate={required ? requiredValidator : notRequired}
                   />
                 </div>
               </Col>
@@ -102,13 +105,5 @@ function SelectReportType(props) {
     </>
   );
 }
-
-SelectReportType.propTypes = {
-  counterReportsCurrentVersion: PropTypes.arrayOf(PropTypes.shape()),
-  disabled: PropTypes.bool,
-  fields: PropTypes.object,
-  required: PropTypes.bool,
-  selectedReports: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default SelectReportType;

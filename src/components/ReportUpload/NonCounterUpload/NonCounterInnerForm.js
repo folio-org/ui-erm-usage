@@ -1,5 +1,4 @@
 import { isNil } from 'lodash';
-import PropTypes from 'prop-types';
 import {
   useContext,
   useState,
@@ -26,18 +25,22 @@ import {
 import NonCounterUploadFile from './NonCounterUploadFile';
 import NonCounterUploadLink from './NonCounterUploadLink';
 
-function NonCounterUploadInnerForm(props) {
+function NonCounterUploadInnerForm({
+  intl,
+  mutators,
+  stripes,
+  udpId,
+}) {
   const [selectedFile, setSelectedFile] = useState();
   const [fileId, setFileId] = useState();
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [useFile, setUseFile] = useState(true);
   const [linkUrl, setLinkUrl] = useState();
 
-  const { intl } = props;
   const callout = useContext(CalloutContext);
 
   const handleFail = (msg) => {
-    props.stripes.logger.log('action', msg);
+    stripes.logger.log('action', msg);
     callout.sendCallout({
       type: 'error',
       message: msg,
@@ -67,7 +70,6 @@ function NonCounterUploadInnerForm(props) {
   };
 
   const doUploadRawFile = (file) => {
-    const { mutators, udpId } = props;
     setShowUploadModal(true);
     uploadFile(file)
       .then((json) => {
@@ -86,7 +88,6 @@ function NonCounterUploadInnerForm(props) {
   };
 
   const doDeleteRawFile = () => {
-    const { mutators } = props;
     deleteFile()
       .then(() => {
         setFileId();
@@ -103,7 +104,6 @@ function NonCounterUploadInnerForm(props) {
   };
 
   const handleLinkUrlChange = (e) => {
-    const { mutators, udpId } = props;
     const value = e.target.value;
 
     if (!isNil(fileId)) {
@@ -191,18 +191,5 @@ function NonCounterUploadInnerForm(props) {
     </Row>
   );
 }
-
-NonCounterUploadInnerForm.propTypes = {
-  intl: PropTypes.object,
-  mutators: PropTypes.shape({
-    setFileId: PropTypes.func,
-    setFileName: PropTypes.func,
-    setFileSize: PropTypes.func,
-    setLinkUrl: PropTypes.func,
-    setProviderId: PropTypes.func,
-  }),
-  stripes: PropTypes.shape().isRequired,
-  udpId: PropTypes.string,
-};
 
 export default injectIntl(NonCounterUploadInnerForm);

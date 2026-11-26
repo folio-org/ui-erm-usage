@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   FormattedMessage,
   useIntl,
@@ -10,8 +9,11 @@ import {
 } from '@folio/stripes/components';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 
-function ReportInfoHeader(props) {
-  const { children, customReport, udpLabel } = props;
+function ReportInfoHeader({
+  children,
+  customReport,
+  udpLabel,
+}) {
   const intl = useIntl();
   return (
     <MenuSection
@@ -32,11 +34,5 @@ function ReportInfoHeader(props) {
     </MenuSection>
   );
 }
-
-ReportInfoHeader.propTypes = {
-  children: PropTypes.node,
-  customReport: PropTypes.shape().isRequired,
-  udpLabel: PropTypes.string.isRequired,
-};
 
 export default ReportInfoHeader;

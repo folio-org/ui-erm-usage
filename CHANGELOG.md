@@ -41,6 +41,7 @@
 * Bump stripes-leipzig-components in yarn.lock and test the migrated requests with the real hooks ([UIEUS-586](https://folio-org.atlassian.net/browse/UIEUS-586))
 * Support keyboardjs in Jest configuration ([UIEUS-584](https://folio-org.atlassian.net/browse/UIEUS-584))
 * Use React Query instead of stripes-connect for the UDP view, create and edit routes ([UIEUS-581](https://folio-org.atlassian.net/browse/UIEUS-581))
+* Clean up props access in functional components ([UIEUS-579](https://folio-org.atlassian.net/browse/UIEUS-579))
 
 ## [12.0.0](https://github.com/folio-org/ui-erm-usage/tree/v12.0.0) (2026-04-17)
 * Flag uploaded reports: Indicate manual changes in stats table icon ([UIEUS-225](https://folio-org.atlassian.net/browse/UIEUS-225))

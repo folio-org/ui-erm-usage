@@ -1,5 +1,4 @@
 import { isNil } from 'lodash';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
   FormattedMessage,
@@ -21,12 +20,15 @@ import {
 } from '../../../util/constants';
 import CustomReportInfo from '../CustomReportInfo';
 
-function InfoButton(props) {
+function InfoButton({
+  customReport,
+  handlers,
+  udpLabel,
+}) {
   const intl = useIntl();
   const stripes = useStripes();
   const [showModal, setShowModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const { customReport } = props;
 
   const { useDelete: useDeleteReport } = useOkapiKyMutation({
     mutationKey: ['custom-reports', customReport.id],
@@ -36,7 +38,7 @@ function InfoButton(props) {
 
   const { mutateAsync: deleteReport } = useDeleteReport({
     onSuccess: () => {
-      props.handlers?.onReloadStatistics?.();
+      handlers?.onReloadStatistics?.();
     },
   });
 
@@ -120,10 +122,10 @@ function InfoButton(props) {
         <div className="custom-report-info" id="custom-report-info">
           <CustomReportInfo
             customReport={customReport}
-            handlers={props.handlers}
+            handlers={handlers}
             onDelete={handleDelete}
             stripes={stripes}
-            udpLabel={props.udpLabel}
+            udpLabel={udpLabel}
           />
         </div>
       </Modal>
@@ -139,13 +141,5 @@ function InfoButton(props) {
     </>
   );
 }
-
-InfoButton.propTypes = {
-  customReport: PropTypes.shape().isRequired,
-  handlers: PropTypes.shape({
-    onReloadStatistics: PropTypes.func,
-  }),
-  udpLabel: PropTypes.string.isRequired,
-};
 
 export default InfoButton;

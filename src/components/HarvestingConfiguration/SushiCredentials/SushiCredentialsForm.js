@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import {
   FormattedMessage,
@@ -13,10 +12,10 @@ import {
 
 import {
   notRequired,
-  required,
+  required as requiredValidator,
 } from '../../../util/validate';
 
-const SushiCredentialsForm = (props) => {
+const SushiCredentialsForm = ({ required }) => {
   const intl = useIntl();
 
   return (
@@ -25,14 +24,14 @@ const SushiCredentialsForm = (props) => {
         <Col xs={4}>
           <Field
             component={TextField}
-            data={props.required ? 1 : 0}
+            data={required ? 1 : 0}
             fullWidth
             id="addudp_customerid"
             label={<FormattedMessage id="ui-erm-usage.credentials.customerId" />}
             name="sushiCredentials.customerId"
             placeholder={intl.formatMessage({ id: 'ui-erm-usage.udp.form.placeholder.customerId' })}
-            required={props.required}
-            validate={props.required ? required : notRequired}
+            required={required}
+            validate={required ? requiredValidator : notRequired}
           />
         </Col>
         <Col xs={4}>
@@ -90,10 +89,6 @@ const SushiCredentialsForm = (props) => {
       </Row>
     </>
   );
-};
-
-SushiCredentialsForm.propTypes = {
-  required: PropTypes.bool,
 };
 
 export default SushiCredentialsForm;

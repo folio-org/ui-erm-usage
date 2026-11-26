@@ -3,7 +3,6 @@ import {
   get,
   isEmpty,
 } from 'lodash';
-import PropTypes from 'prop-types';
 import {
   useContext,
   useEffect,
@@ -41,15 +40,14 @@ import withReportHandlers from './components/withReportHandlers';
 
 const { SCOPES, CONFIG_NAMES } = MOD_SETTINGS;
 
-function UDPViewRoute(props) {
-  const {
-    handlers = {},
-    stripes,
-    match: {
-      params: { id },
-    },
-  } = props;
-
+function UDPViewRoute({
+  handlers = {},
+  history,
+  location,
+  match,
+  stripes,
+}) {
+  const { id } = match.params;
   const callout = useContext(CalloutContext);
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
@@ -100,7 +98,7 @@ function UDPViewRoute(props) {
     onSuccess: () => {
       queryClient.removeQueries([KEY_UDPS, id]);
       refreshUdpList();
-      props.history.push(`${urls.udps()}${props.location.search}`);
+      history.push(`${urls.udps()}${location.search}`);
     },
     onError: (error) => {
       showErrorInfo(error, { callout, formatMessage });
@@ -175,12 +173,11 @@ function UDPViewRoute(props) {
   }, [udpError, callout, formatMessage]);
 
   const handleClose = () => {
-    props.history.push(`${urls.udps()}${props.location.search}`);
+    history.push(`${urls.udps()}${location.search}`);
   };
 
   const handleEdit = () => {
-    const { location, match } = props;
-    props.history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
+    history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
   };
 
   const handleDelete = () => {
@@ -225,7 +222,7 @@ function UDPViewRoute(props) {
   const isStatsLoading = isCounterReportsLoading || isCustomReportsLoading;
 
   const isHarvesterExistent = () => {
-    return props.stripes.hasInterface('erm-usage-harvester');
+    return stripes.hasInterface('erm-usage-harvester');
   };
 
   const getMaxFailedAttempts = () => {
@@ -281,45 +278,18 @@ function UDPViewRoute(props) {
         onReloadStatistics: reloadStatistics,
         onReloadUdp: reloadUdp,
       }}
-      history={props.history}
+      history={history}
       isHarvesterExistent={isHarvesterExistent()}
       isLoading={isLoading}
       isStatsLoading={isStatsLoading}
-      location={props.location}
-      match={props.match}
+      location={location}
+      match={match}
       statsReloadCount={statsReloadCount}
       stripes={stripes}
       tagsEnabled={tagsEnabled}
     />
   );
 }
-
-UDPViewRoute.propTypes = {
-  handlers: PropTypes.object,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-    search: PropTypes.string.isRequired,
-  }).isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  stripes: PropTypes.shape({
-    hasInterface: PropTypes.func.isRequired,
-    hasPerm: PropTypes.func.isRequired,
-    logger: PropTypes.shape().isRequired,
-    okapi: PropTypes.shape({
-      tenant: PropTypes.string.isRequired,
-      token: PropTypes.string,
-      url: PropTypes.string.isRequired,
-    }).isRequired,
-    store: PropTypes.object.isRequired,
-  }).isRequired,
-};
 
 const UDPViewRouteContainer = compose(
   withReportHandlers

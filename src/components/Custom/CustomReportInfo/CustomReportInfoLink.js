@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   FormattedMessage,
   useIntl,
@@ -14,8 +13,11 @@ import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
-function CustomReportInfoLink(props) {
-  const { customReport, onDelete, udpLabel } = props;
+function CustomReportInfoLink({
+  customReport,
+  onDelete,
+  udpLabel,
+}) {
   const intl = useIntl();
 
   return (
@@ -49,11 +51,5 @@ function CustomReportInfoLink(props) {
     </>
   );
 }
-
-CustomReportInfoLink.propTypes = {
-  customReport: PropTypes.shape().isRequired,
-  onDelete: PropTypes.func.isRequired,
-  udpLabel: PropTypes.string.isRequired,
-};
 
 export default CustomReportInfoLink;

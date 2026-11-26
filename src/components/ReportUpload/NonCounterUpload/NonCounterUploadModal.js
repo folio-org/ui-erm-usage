@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -16,9 +15,15 @@ import {
 } from '../../../util/validate';
 import NonCounterInnerForm from './NonCounterInnerForm';
 
-function NonCounterUploadModal(props) {
-  const { invalid, onClose } = props;
-
+function NonCounterUploadModal({
+  form,
+  handleSubmit,
+  invalid,
+  onClose,
+  open,
+  stripes,
+  udpId,
+}) {
   const renderFooter = (onSubmit) => (
     <ModalFooter>
       <Button
@@ -38,43 +43,26 @@ function NonCounterUploadModal(props) {
   return (
     <form
       id="form-custom-report"
-      onSubmit={props.handleSubmit}
+      onSubmit={handleSubmit}
     >
       <Modal
         closeOnBackgroundClick
-        footer={renderFooter(props.handleSubmit)}
+        footer={renderFooter(handleSubmit)}
         id="upload-non-counter-modal"
         label={<FormattedMessage id="ui-erm-usage.statistics.custom.upload" />}
-        open={props.open}
+        open={open}
       >
         <div className="upload-non-counter-modal">
           <NonCounterInnerForm
-            mutators={props.form.mutators}
-            stripes={props.stripes}
-            udpId={props.udpId}
+            mutators={form.mutators}
+            stripes={stripes}
+            udpId={udpId}
           />
         </div>
       </Modal>
     </form>
   );
 }
-
-NonCounterUploadModal.propTypes = {
-  form: PropTypes.shape({
-    mutators: PropTypes.shape({
-      setFileId: PropTypes.func,
-      setFileName: PropTypes.func,
-      setFileSize: PropTypes.func,
-      setProviderId: PropTypes.func,
-    }),
-  }),
-  handleSubmit: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  stripes: PropTypes.shape().isRequired,
-  udpId: PropTypes.string,
-};
 
 export default stripesFinalForm({
   navigationCheck: true,
