@@ -6,8 +6,10 @@ import {
   Row,
 } from '@folio/stripes/components';
 
-function UDPInfoView(props) {
-  const { usageDataProvider, id } = props;
+function UDPInfoView({
+  id,
+  usageDataProvider,
+}) {
   return (
     <div id={id}>
       <Row>
