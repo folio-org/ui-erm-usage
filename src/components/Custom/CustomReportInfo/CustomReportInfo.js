@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import CustomReportInfoFile from './CustomReportInfoFile';
 import CustomReportInfoLink from './CustomReportInfoLink';
 
-function CustomReportInfo(props) {
-  const { customReport, handlers, onDelete, udpLabel } = props;
-
+function CustomReportInfo({
+  customReport,
+  handlers,
+  onDelete,
+  udpLabel,
+}) {
   if (!isNil(customReport.fileId)) {
     return (
       <CustomReportInfoFile

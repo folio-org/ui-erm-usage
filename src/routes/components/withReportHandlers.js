@@ -16,21 +16,26 @@ import { saveReport } from '../../util/downloadReport';
 import fetchWithDefaultOptions from '../../util/fetchWithDefaultOptions';
 
 export default function withReportHandlers(WrappedComponent) {
-  function WithReportHandlers(props) {
+  function WithReportHandlers({
+    handlers = {},
+    intl,
+    stripes,
+    ...rest
+  }) {
     const calloutRef = useRef();
-    const { okapi } = props.stripes;
+    const { okapi } = stripes;
 
     const downloadReportMultipleMonths = (udpId, reportType, version, start, end, format) => {
       const calloutID = calloutRef.current.sendCallout({
         type: 'success',
-        message: props.intl.formatMessage(
+        message: intl.formatMessage(
           { id: 'ui-erm-usage.statistics.counter.download.multiMonth.prepare' },
           { reportType, start, end, format }
         ),
         timeout: 0,
       });
 
-      const errorMsg = props.intl.formatMessage(
+      const errorMsg = intl.formatMessage(
         { id: 'ui-erm-usage.statistics.counter.download.multiMonth.error' },
         { reportType, start, end, format }
       );
@@ -122,8 +127,6 @@ export default function withReportHandlers(WrappedComponent) {
         });
     };
 
-    const { handlers = {}, ...rest } = props;
-
     return (
       <>
         <WrappedComponent
@@ -134,6 +137,7 @@ export default function withReportHandlers(WrappedComponent) {
             onDownloadReportSingleMonthRaw: downloadReportSingleMonthRaw,
             doDownloadFile: downloadErmUsageFile,
           }}
+          stripes={stripes}
           {...rest}
         />
         <Callout ref={calloutRef} />

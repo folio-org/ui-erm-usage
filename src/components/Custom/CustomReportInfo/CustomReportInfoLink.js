@@ -14,8 +14,11 @@ import { IfPermission } from '@folio/stripes/core';
 
 import ReportInfoHeader from './ReportInfoHeader';
 
-function CustomReportInfoLink(props) {
-  const { customReport, onDelete, udpLabel } = props;
+function CustomReportInfoLink({
+  customReport,
+  onDelete,
+  udpLabel,
+}) {
   const intl = useIntl();
 
   return (

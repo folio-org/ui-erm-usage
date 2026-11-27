@@ -10,8 +10,11 @@ import {
 } from '@folio/stripes/components';
 import { ViewMetaData } from '@folio/stripes/smart-components';
 
-function ReportInfoHeader(props) {
-  const { children, customReport, udpLabel } = props;
+function ReportInfoHeader({
+  children,
+  customReport,
+  udpLabel,
+}) {
   const intl = useIntl();
   return (
     <MenuSection
