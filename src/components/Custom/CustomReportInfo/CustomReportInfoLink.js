@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   FormattedMessage,
   useIntl,
@@ -51,5 +52,11 @@ function CustomReportInfoLink({
     </>
   );
 }
+
+CustomReportInfoLink.propTypes = {
+  customReport: PropTypes.shape().isRequired,
+  onDelete: PropTypes.func.isRequired,
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default CustomReportInfoLink;

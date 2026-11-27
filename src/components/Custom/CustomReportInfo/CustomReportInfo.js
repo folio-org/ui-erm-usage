@@ -1,4 +1,5 @@
 import { isNil } from 'lodash';
+import PropTypes from 'prop-types';
 
 import CustomReportInfoFile from './CustomReportInfoFile';
 import CustomReportInfoLink from './CustomReportInfoLink';
@@ -28,5 +29,14 @@ function CustomReportInfo({
     );
   }
 }
+
+CustomReportInfo.propTypes = {
+  customReport: PropTypes.shape().isRequired,
+  handlers: PropTypes.shape({
+    doDownloadFile: PropTypes.func,
+  }),
+  onDelete: PropTypes.func.isRequired,
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default CustomReportInfo;

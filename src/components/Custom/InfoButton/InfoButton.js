@@ -1,4 +1,5 @@
 import { isNil } from 'lodash';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
   FormattedMessage,
@@ -141,5 +142,13 @@ function InfoButton({
     </>
   );
 }
+
+InfoButton.propTypes = {
+  customReport: PropTypes.shape().isRequired,
+  handlers: PropTypes.shape({
+    onReloadStatistics: PropTypes.func,
+  }),
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default InfoButton;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   FormattedMessage,
   useIntl,
@@ -34,5 +35,11 @@ function ReportInfoHeader({
     </MenuSection>
   );
 }
+
+ReportInfoHeader.propTypes = {
+  children: PropTypes.node,
+  customReport: PropTypes.shape().isRequired,
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default ReportInfoHeader;

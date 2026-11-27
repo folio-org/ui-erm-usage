@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -105,5 +106,13 @@ function SelectReportType({
     </>
   );
 }
+
+SelectReportType.propTypes = {
+  counterReportsCurrentVersion: PropTypes.arrayOf(PropTypes.shape()),
+  disabled: PropTypes.bool,
+  fields: PropTypes.object,
+  required: PropTypes.bool,
+  selectedReports: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default SelectReportType;

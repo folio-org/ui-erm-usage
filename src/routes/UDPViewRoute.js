@@ -3,6 +3,7 @@ import {
   get,
   isEmpty,
 } from 'lodash';
+import PropTypes from 'prop-types';
 import {
   useContext,
   useEffect,
@@ -177,7 +178,7 @@ function UDPViewRoute({
   };
 
   const handleEdit = () => {
-    history.push(`${urls.udpEdit(match.params.id)}${location.search}`);
+    history.push(`${urls.udpEdit(id)}${location.search}`);
   };
 
   const handleDelete = () => {
@@ -278,18 +279,43 @@ function UDPViewRoute({
         onReloadStatistics: reloadStatistics,
         onReloadUdp: reloadUdp,
       }}
-      history={history}
       isHarvesterExistent={isHarvesterExistent()}
       isLoading={isLoading}
       isStatsLoading={isStatsLoading}
       location={location}
-      match={match}
       statsReloadCount={statsReloadCount}
       stripes={stripes}
       tagsEnabled={tagsEnabled}
     />
   );
 }
+
+UDPViewRoute.propTypes = {
+  handlers: PropTypes.object,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  stripes: PropTypes.shape({
+    hasInterface: PropTypes.func.isRequired,
+    hasPerm: PropTypes.func.isRequired,
+    logger: PropTypes.shape().isRequired,
+    okapi: PropTypes.shape({
+      tenant: PropTypes.string.isRequired,
+      token: PropTypes.string,
+      url: PropTypes.string.isRequired,
+    }).isRequired,
+    store: PropTypes.object.isRequired,
+  }).isRequired,
+};
 
 const UDPViewRouteContainer = compose(
   withReportHandlers

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -63,6 +64,23 @@ function NonCounterUploadModal({
     </form>
   );
 }
+
+NonCounterUploadModal.propTypes = {
+  form: PropTypes.shape({
+    mutators: PropTypes.shape({
+      setFileId: PropTypes.func,
+      setFileName: PropTypes.func,
+      setFileSize: PropTypes.func,
+      setProviderId: PropTypes.func,
+    }),
+  }),
+  handleSubmit: PropTypes.func.isRequired,
+  invalid: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  stripes: PropTypes.shape().isRequired,
+  udpId: PropTypes.string,
+};
 
 export default stripesFinalForm({
   navigationCheck: true,

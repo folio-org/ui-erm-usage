@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Field } from 'react-final-form';
 import {
   FormattedMessage,
@@ -89,6 +90,10 @@ const SushiCredentialsForm = ({ required }) => {
       </Row>
     </>
   );
+};
+
+SushiCredentialsForm.propTypes = {
+  required: PropTypes.bool,
 };
 
 export default SushiCredentialsForm;

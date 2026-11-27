@@ -4,6 +4,7 @@ import {
   has,
   keys,
 } from 'lodash';
+import PropTypes from 'prop-types';
 import {
   useEffect,
   useState,
@@ -120,5 +121,21 @@ function CustomStatistics({
     </>
   );
 }
+
+CustomStatistics.propTypes = {
+  customReports: PropTypes.arrayOf(PropTypes.shape().isRequired),
+  handlers: PropTypes.shape(),
+  stripes: PropTypes.shape({
+    connect: PropTypes.func,
+    okapi: PropTypes.shape({
+      tenant: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    }).isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func,
+    }),
+  }).isRequired,
+  udpLabel: PropTypes.string.isRequired,
+};
 
 export default CustomStatistics;

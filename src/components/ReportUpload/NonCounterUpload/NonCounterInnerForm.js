@@ -1,4 +1,5 @@
 import { isNil } from 'lodash';
+import PropTypes from 'prop-types';
 import {
   useContext,
   useState,
@@ -191,5 +192,18 @@ function NonCounterUploadInnerForm({
     </Row>
   );
 }
+
+NonCounterUploadInnerForm.propTypes = {
+  intl: PropTypes.object,
+  mutators: PropTypes.shape({
+    setFileId: PropTypes.func,
+    setFileName: PropTypes.func,
+    setFileSize: PropTypes.func,
+    setLinkUrl: PropTypes.func,
+    setProviderId: PropTypes.func,
+  }),
+  stripes: PropTypes.shape().isRequired,
+  udpId: PropTypes.string,
+};
 
 export default injectIntl(NonCounterUploadInnerForm);
