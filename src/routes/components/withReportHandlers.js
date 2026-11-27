@@ -137,6 +137,7 @@ export default function withReportHandlers(WrappedComponent) {
             onDownloadReportSingleMonthRaw: downloadReportSingleMonthRaw,
             doDownloadFile: downloadErmUsageFile,
           }}
+          stripes={stripes}
           {...rest}
         />
         <Callout ref={calloutRef} />
